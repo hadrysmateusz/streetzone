@@ -4,10 +4,9 @@ import ItemForm from "./ItemForm"
 
 export default class NewItem extends Component {
 	onSubmit = (data) => {
+		console.log(data)
 		API.post("items", "/items", {
-			body: {
-				data
-			}
+			body: { ...data }
 		})
 	}
 

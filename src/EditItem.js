@@ -5,9 +5,7 @@ import ItemForm from "./ItemForm"
 export default class Edytuj extends Component {
 	onSubmit = (data) => {
 		API.post("items", "/items", {
-			body: {
-				data
-			}
+			body: { ...data }
 		})
 	}
 
