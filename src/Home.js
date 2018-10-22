@@ -1,5 +1,6 @@
 import React from "react"
 import { API } from "aws-amplify"
+import { Link } from "react-router-dom"
 
 export default class Home extends React.Component {
 	state = {
@@ -8,7 +9,6 @@ export default class Home extends React.Component {
 	componentDidMount = async () => {
 		let data = await API.get("items", "/items")
 		this.setState({ items: data.Items })
-		console.log(this.state)
 	}
 
 	render() {
@@ -16,7 +16,24 @@ export default class Home extends React.Component {
 			<div>
 				<h3>Home</h3>
 				{this.state.items.map((item) => (
-					<div>{item.name}</div>
+					<div key={item.itemId}>
+						<Link to={"/i/" + item.itemId}>
+							<div>
+								<h4>
+									{item.name}
+									<span style={{ color: "#adadad" }}>
+										{" "}
+										- {item.price}
+										zł
+									</span>
+								</h4>
+								<div style={{ fontSize: "18px", fontWeight: "bold" }}>
+									{item.designers.join(" & ")}
+								</div>
+								<p>{item.description}</p>
+							</div>
+						</Link>
+					</div>
 				))}
 			</div>
 		)
