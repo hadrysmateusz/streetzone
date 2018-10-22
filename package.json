@@ -3,9 +3,16 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "aws-amplify": "^1.1.7",
+    "final-form": "^4.10.0",
+    "node-sass": "^4.9.4",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
-    "react-scripts": "2.0.5"
+    "react-final-form": "^3.6.7",
+    "react-router-dom": "^4.3.1",
+    "react-scripts": "2.0.5",
+    "typography": "^0.16.17",
+    "typography-theme-fairy-gates": "^0.15.11"
   },
   "scripts": {
     "start": "react-scripts start",
