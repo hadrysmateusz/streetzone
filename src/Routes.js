@@ -10,6 +10,7 @@ import Signup from "./Signup"
 import NotFound from "./NotFound"
 import Home from "./Home"
 import NewItem from "./NewItem"
+import ItemDetails from "./ItemDetails"
 
 export default ({ childProps }) => {
 	return (
@@ -31,6 +32,12 @@ export default ({ childProps }) => {
 				path="/signup"
 				exact
 				component={Signup}
+				props={childProps}
+			/>
+			<AppliedRoute
+				path="/i/:id"
+				exact
+				component={ItemDetails}
 				props={childProps}
 			/>
 			<Route component={NotFound} />
