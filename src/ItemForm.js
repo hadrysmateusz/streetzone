@@ -28,7 +28,7 @@ export default ({ onSubmit, validate, initialValues }) => (
 				</div>
 				<div>
 					<label>Kategoria</label>
-					<Field name="category" component="select" type="select" disabled>
+					<Field name="category" component="select" type="select">
 						<option />
 						<option value="Tee">Tee</option>
 						<option value="Buty">Buty</option>
