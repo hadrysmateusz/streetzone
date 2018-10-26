@@ -30,6 +30,9 @@ export default class Home extends React.Component {
 								<div style={{ fontSize: "18px", fontWeight: "bold" }}>
 									{item.designers.join(" & ")}
 								</div>
+								<div style={{ fontSize: "15px", fontWeight: "bold" }}>
+									{"Dodano: " + new Date(item.createdAt).toLocaleString()}
+								</div>
 								<p>{item.description}</p>
 							</div>
 						</Link>
