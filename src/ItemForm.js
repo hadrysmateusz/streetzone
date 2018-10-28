@@ -8,15 +8,15 @@ export default ({ onSubmit, validate, initialValues }) => (
 		render={({ handleSubmit, submitting, pristine, values }) => (
 			<form onSubmit={handleSubmit}>
 				<div>
-					<label>Nazwa</label>
+					<label>Nazwa </label>
 					<Field name="name" component="input" type="text" />
 				</div>
 				<div>
-					<label>Rozmiar</label>
+					<label>Rozmiar </label>
 					<Field name="size" component="input" type="text" />
 				</div>
 				<div>
-					<label>Cena</label>
+					<label>Cena </label>
 					<Field
 						name="price"
 						component="input"
@@ -27,7 +27,7 @@ export default ({ onSubmit, validate, initialValues }) => (
 					/>
 				</div>
 				<div>
-					<label>Kategoria</label>
+					<label>Kategoria </label>
 					<Field name="category" component="select" type="select">
 						<option />
 						<option value="Tee">Tee</option>
@@ -38,7 +38,7 @@ export default ({ onSubmit, validate, initialValues }) => (
 				</div>
 				<div>
 					{/* TODO: add a better way to select multiple */}
-					<label>Projektanci</label>
+					<label>Projektanci </label>
 					<Field name="designers" component="select" type="select" multiple>
 						<option value="Adidas">Adidas</option>
 						<option value="Givenchy">Givenchy</option>
@@ -49,7 +49,7 @@ export default ({ onSubmit, validate, initialValues }) => (
 					</Field>
 				</div>
 				<div>
-					<label>Opis</label>
+					<label>Opis </label>
 					<Field name="description" component="textarea" />
 				</div>
 				<div className="buttons">
@@ -57,7 +57,6 @@ export default ({ onSubmit, validate, initialValues }) => (
 						Gotowe
 					</button>
 				</div>
-				<pre>{JSON.stringify(values, 0, 2)}</pre>
 			</form>
 		)}
 	/>
