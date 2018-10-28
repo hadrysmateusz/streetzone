@@ -3,10 +3,15 @@ import { API } from "aws-amplify"
 import ItemForm from "./ItemForm"
 
 export default class NewItem extends Component {
-	onSubmit = (data) => {
-		API.post("items", "/items", {
-			body: { ...data }
-		})
+	onSubmit = (data, actions) => {
+		try {
+			actions.reset()
+			API.post("items", "/items", {
+				body: { ...data }
+			})
+		} catch (e) {
+			alert("Wystąpił problem podczas wystawiania przedmiotu")
+		}
 	}
 
 	validate = (data) => {
