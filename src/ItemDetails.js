@@ -53,7 +53,10 @@ export default class ItemDetails extends Component {
 							</span>
 						</h3>
 						<h4 style={{ color: "#3f3f3f" }}>{item.designers.join(" & ")}</h4>
-						<h4 style={{ color: "#999" }}>{item.category}</h4>
+						<h5 style={{ color: "#8a8a8a" }}>
+							Dodano: {new Date(item.createdAt).toLocaleString()}
+						</h5>
+
 						<p>{item.description}</p>
 						{userIsOwner && (
 							<>
