@@ -1,10 +1,21 @@
-.App {
-	text-align: center;
-}
+@import "./scss/variables.scss";
+
 .mainNav {
-	border: 3px solid hsl(220, 13%, 18%);
+	border-bottom: $border-width-main solid $black;
 	display: flex;
 	flex-direction: row;
 	align-items: center;
 	justify-content: center;
+	padding: 15px 0 9px;
+}
+.navLink {
+	padding: 0 12px;
+	height: 100%;
+	user-select: none;
+}
+.brand {
+	font-size: 1.4rem;
+	color: red;
+	flex-grow: 1;
+	text-align: left;
 }

@@ -1,17 +1,27 @@
 import React, { Component } from "react"
 import { API, Auth } from "aws-amplify"
+import { Link } from "react-router-dom"
+import LoaderButton from "./components/LoaderButton"
+import LoadingSpinner from "./components/LoadingSpinner"
+import EmptyState from "./components/EmptyState"
+import Button from "./components/Button"
+import styles from "./ItemDetails.module.scss"
+import { ITEM_DELETE_CONFIRM_MESSAGE } from "./const.js"
 
-export default class ItemDetails extends Component {
+class ItemDetails extends Component {
 	state = {
 		item: null,
 		userIsOwner: false,
-		isLoading: true
+		isLoading: true,
+		isDeleting: false
 	}
+
 	componentDidMount = async () => {
 		try {
 			// get the item
 			let itemId = this.props.match.params.id
 			let item = await API.get("items", `/items/${itemId}`)
+			// TODO: handle not found items (the api simply returns an empty object which passes the test and react tries to render the page instead of the empty state)
 			this.setState({ item })
 
 			// check if current user is the owner
@@ -28,45 +38,76 @@ export default class ItemDetails extends Component {
 	}
 
 	deleteItem = async () => {
-		try {
-			let itemId = this.props.match.params.id
-			await API.del("items", `/items/${itemId}`)
-		} catch (e) {
-			alert("Usuwanie nie powiodło się")
+		// TODO: better confirmation dialog
+		this.setState({ isDeleting: true })
+		let confirmation = window.confirm(ITEM_DELETE_CONFIRM_MESSAGE)
+		if (confirmation) {
+			try {
+				let itemId = this.props.match.params.id
+				await API.del("items", `/items/${itemId}`)
+				this.props.history.push("/")
+			} catch (e) {
+				alert("Usuwanie nie powiodło się")
+			}
 		}
+		this.setState({ isDeleting: false })
 	}
 
 	render() {
-		const { item, userIsOwner } = this.state
+		const { item, userIsOwner, isLoading, isDeleting } = this.state
 
 		return (
-			<div className="ItemDetails">
-				<h2>ItemDetails</h2>
-				{item && (
-					<div>
-						<h3>
-							{item.name}
-							<span style={{ color: "#adadad" }}>
-								{" "}
-								- {item.price}
-								zł
-							</span>
-						</h3>
-						<h4 style={{ color: "#3f3f3f" }}>{item.designers.join(" & ")}</h4>
-						<h5 style={{ color: "#8a8a8a" }}>
-							Dodano: {new Date(item.createdAt).toLocaleString()}
-						</h5>
-
-						<p>{item.description}</p>
-						{userIsOwner && (
-							<>
-								<button>Edytuj</button>
-								<button onClick={this.deleteItem}>Usuń</button>
-							</>
-						)}
+			<>
+				{item ? (
+					<div className={styles.mainContainer}>
+						<div className={styles.itemContainer}>
+							<div className={styles.photosContainer}>
+								<div className={styles.currentImage}>
+									<img src="https://picsum.photos/400/500/?random" alt="" />
+								</div>
+							</div>
+							<div className={styles.infoContainer}>
+								<div className={styles.basicInfo}>
+									<h2>
+										{item.designers.join(" & ")}: {item.name}
+									</h2>
+									<div>
+										Cena: {item.price}
+										zł
+									</div>
+									<div>Dodano: {new Date(item.createdAt).toLocaleString()}</div>
+								</div>
+								<div className="buttons">
+									{userIsOwner ? (
+										<>
+											<Link to={`/e/${item.itemId}`}>
+												<Button>Edytuj</Button>
+											</Link>
+											<LoaderButton
+												isLoading={isDeleting}
+												text="Usuń"
+												loadingText="Usuwanie..."
+												onClick={this.deleteItem}
+											/>
+										</>
+									) : (
+										<Button primary>Kup</Button>
+									)}
+								</div>
+								<div className="user" />
+								<div className="description">{item.description}</div>
+							</div>
+						</div>
+						<div className="recommendedContainer" />
 					</div>
+				) : isLoading ? (
+					<LoadingSpinner />
+				) : (
+					<EmptyState text="Nie znaleziono przedmiotu" />
 				)}
-			</div>
+			</>
 		)
 	}
 }
+
+export default ItemDetails

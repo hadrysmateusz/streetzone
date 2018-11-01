@@ -49,25 +49,25 @@ class App extends Component {
 			!this.state.isAuthenticating && (
 				<div className={styles.App}>
 					<nav className={styles.mainNav}>
-						<Link to="/">
-							<div className="brand">{BRAND_NAME}</div>
+						<Link to="/" className={styles.navLink + " " + styles.brand}>
+							{BRAND_NAME}
 						</Link>
 						{this.state.isAuthenticated ? (
 							<>
-								<Link to="/nowy">
-									<div className="nav-link">Nowy</div>
+								<Link to="/nowy" className={styles.navLink}>
+									Nowy
 								</Link>
-								<div className="nav-link" onClick={this.handleLogout}>
-									Logout
+								<div className={styles.navLink} onClick={this.handleLogout}>
+									Wyloguj
 								</div>
 							</>
 						) : (
 							<>
-								<Link to="/login">
-									<div className="nav-link">Login</div>
+								<Link to="/login" className={styles.navLink}>
+									Logowanie
 								</Link>
-								<Link to="/signup">
-									<div className="nav-link">Signup</div>
+								<Link to="/signup" className={styles.navLink}>
+									Rejestracja
 								</Link>
 							</>
 						)}

@@ -1,0 +1,18 @@
+@import "variables.scss";
+a:any-link {
+	color: inherit;
+	&:hover {
+		color: $primary;
+	}
+	text-decoration: none;
+}
+body {
+	font-family: sans-serif;
+	margin: 0 20px;
+	height: 100vh;
+}
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}

@@ -2,13 +2,14 @@ import React, { Component } from "react"
 import { Auth } from "aws-amplify"
 import { Form, Field } from "react-final-form"
 
-export default class Signup extends Component {
+class Signup extends Component {
 	state = {
 		isLoading: false,
 		newUser: null
 	}
 
 	handleSubmit = async (data) => {
+		// TODO: show confiramation form if user trying to register exists but is unverified
 		this.setState({ isLoading: true })
 
 		try {
@@ -106,3 +107,5 @@ export default class Signup extends Component {
 		)
 	}
 }
+
+export default Signup

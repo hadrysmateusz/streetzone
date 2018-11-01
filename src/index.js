@@ -1,12 +1,15 @@
 import React from "react"
 import ReactDOM from "react-dom"
 import Amplify from "aws-amplify"
-import Typography from "typography"
-import fairyGatesTheme from "typography-theme-fairy-gates"
 import { BrowserRouter as Router } from "react-router-dom"
-import App from "./App"
-import awsConfig from "./awsConfig"
+import { library } from "@fortawesome/fontawesome-svg-core"
+import { faSpinner, faSync } from "@fortawesome/free-solid-svg-icons"
 import * as serviceWorker from "./serviceWorker"
+import awsConfig from "./awsConfig"
+import App from "./App"
+import "./scss/index.scss"
+
+library.add(faSpinner, faSync)
 
 Amplify.configure({
 	Auth: {
@@ -26,9 +29,6 @@ Amplify.configure({
 		]
 	}
 })
-
-const typography = new Typography(fairyGatesTheme)
-typography.injectStyles()
 
 ReactDOM.render(
 	<Router>

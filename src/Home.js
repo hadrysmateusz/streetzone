@@ -1,48 +1,56 @@
-import React from "react"
+import React, { Component } from "react"
 import { API } from "aws-amplify"
-import { Link } from "react-router-dom"
+import styles from "./Home.module.scss"
+import ItemCard from "./ItemCard"
+import CenteredLayout from "./CenteredLayout"
+import LoadingSpinner from "./components/LoadingSpinner"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import cn from "classnames"
+import animations from "./scss/animations.module.scss"
 
-export default class Home extends React.Component {
+class Home extends Component {
 	state = {
-		items: null
+		items: null,
+		isLoading: true
 	}
+
+	getItems = async () => {
+		this.setState({ isLoading: true })
+		try {
+			let data = await API.get("items", "/items")
+			this.setState({ items: data.items })
+		} catch (e) {
+			console.log("Database connection error")
+		}
+		this.setState({ isLoading: false })
+	}
+
 	componentDidMount = async () => {
-		let data = await API.get("items", "/items")
-		this.setState({ items: data.items })
+		this.getItems()
 	}
 
 	render() {
-		const { items } = this.state
+		const { items, isLoading } = this.state
 		return (
-			<div>
-				<h3>Home</h3>
-				{/* TODO: prawidłowa odmiana 'przedmiotów' */}
-				{items && <h4>{items.length} Wyniki</h4>}
-				{items &&
-					items.map((item) => (
-						<div key={item.itemId}>
-							<Link to={"/i/" + item.itemId}>
-								<div>
-									<h4>
-										{item.name}
-										<span style={{ color: "#adadad" }}>
-											{" "}
-											- {item.price}
-											zł
-										</span>
-									</h4>
-									<div style={{ fontSize: "18px", fontWeight: "bold" }}>
-										{item.designers.join(" & ")}
-									</div>
-									<div style={{ fontSize: "15px", fontWeight: "bold" }}>
-										{new Date(item.createdAt).toLocaleString()}
-									</div>
-									<p>{item.description}</p>
-								</div>
-							</Link>
-						</div>
-					))}
-			</div>
+			<CenteredLayout>
+				<div className={styles.header}>
+					{items && <h4>{items.length} Wyniki</h4>}
+					<FontAwesomeIcon
+						icon="sync"
+						className={cn({ [animations.spinning]: isLoading })}
+						onClick={this.getItems}
+					/>
+				</div>
+				<div className={styles.mainContainer}>
+					{!isLoading && items ? (
+						items.map((item) => <ItemCard key={item.itemId} item={item} />)
+					) : (
+						<LoadingSpinner />
+					)}
+				</div>
+			</CenteredLayout>
 		)
 	}
 }
+
+export default Home

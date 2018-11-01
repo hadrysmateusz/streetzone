@@ -1,0 +1,7 @@
+@import "../scss/animations.module.scss";
+@import "../scss/variables.scss";
+.LoadingSpinner {
+	margin: 40px;
+	font-size: 3rem;
+	color: $black;
+}

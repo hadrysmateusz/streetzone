@@ -1,0 +1,22 @@
+.mainContainer {
+	display: flex;
+	flex-direction: column;
+}
+
+.itemContainer {
+	display: flex;
+	flex-direction: row;
+}
+
+.photosContainer,
+.infoContainer {
+	flex: 1 1 50%;
+}
+
+.currentImage {
+	padding: 20px;
+	img {
+		display: block;
+		width: 100%;
+	}
+}

@@ -2,20 +2,25 @@ import React, { Component } from "react"
 import { API } from "aws-amplify"
 import ItemForm from "./ItemForm"
 
-export default class NewItem extends Component {
+class NewItem extends Component {
+	state = {
+		isLoading: false
+	}
 	onSubmit = (data, actions) => {
 		try {
+			this.setState({ isLoading: true })
+
 			actions.reset()
+
 			API.post("items", "/items", {
 				body: { ...data }
 			})
+
+			this.props.history.push("/")
 		} catch (e) {
 			alert("Wystąpił problem podczas wystawiania przedmiotu")
 		}
-	}
-
-	validate = (data) => {
-		console.log("validating")
+		this.setState({ isLoading: false })
 	}
 
 	render() {
@@ -27,3 +32,5 @@ export default class NewItem extends Component {
 		)
 	}
 }
+
+export default NewItem

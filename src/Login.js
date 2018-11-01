@@ -2,7 +2,7 @@ import React, { Component } from "react"
 import { Auth } from "aws-amplify"
 import { Form, Field } from "react-final-form"
 
-export default class Login extends Component {
+class Login extends Component {
 	state = {
 		isLoading: false
 	}
@@ -19,13 +19,17 @@ export default class Login extends Component {
 			this.setState({ isLoading: false })
 		}
 	}
+	validate = () => {
+		console.log("validating")
+		/* TODO: form validation */
+	}
 
 	render() {
 		return (
 			<div className="Login">
-				{/* TODO: form validation */}
 				<Form
 					onSubmit={this.handleSubmit}
+					validate={this.validate}
 					render={({ handleSubmit, submitting, pristine }) => (
 						<form onSubmit={handleSubmit}>
 							<div>
@@ -48,3 +52,5 @@ export default class Login extends Component {
 		)
 	}
 }
+
+export default Login

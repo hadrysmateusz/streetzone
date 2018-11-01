@@ -11,8 +11,9 @@ import NotFound from "./NotFound"
 import Home from "./Home"
 import NewItem from "./NewItem"
 import ItemDetails from "./ItemDetails"
+import EditItem from "./EditItem"
 
-export default ({ childProps }) => {
+const Routes = ({ childProps }) => {
 	return (
 		<Switch>
 			<AppliedRoute path="/" exact component={Home} props={childProps} />
@@ -40,7 +41,15 @@ export default ({ childProps }) => {
 				component={ItemDetails}
 				props={childProps}
 			/>
+			<AppliedRoute
+				path="/e/:id"
+				exact
+				component={EditItem}
+				props={childProps}
+			/>
 			<Route component={NotFound} />
 		</Switch>
 	)
 }
+
+export default Routes

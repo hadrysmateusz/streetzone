@@ -1,0 +1,60 @@
+@import "./scss/variables.scss";
+
+.ItemCard {
+	border: $border-width-main solid $black;
+	margin: 10px auto;
+	width: 100%;
+	max-width: 340px;
+	@media (min-width: 550px) {
+		width: calc(50% - 20px);
+		margin: 10px;
+	}
+	@media (min-width: 850px) {
+		width: calc(33.333% - 20px);
+		margin: 10px;
+	}
+}
+
+.innerContainer {
+	display: flex;
+	justify-content: space-between;
+	font-size: 0.91rem;
+	font-weight: bold;
+}
+
+.price {
+	color: $primary;
+}
+
+.thumbnail {
+	width: 100%;
+	img {
+		min-width: 200px;
+		min-height: 250px;
+		width: 100%;
+		height: auto;
+		display: block;
+	}
+}
+.info {
+	padding: 0 8px;
+}
+
+.designers {
+	text-transform: uppercase;
+	margin-bottom: 4px;
+}
+.name {
+	font-size: 0.91rem;
+	color: #333;
+}
+.date {
+	color: #777;
+	font-size: 0.88rem;
+	padding: 10px 7px 11px;
+	margin-top: 10px;
+	border-top: 1px solid #bbb;
+}
+.topContainer {
+	padding: 14px 7px 0;
+}
