@@ -1,30 +1,54 @@
 import React, { Component } from "react"
-import { API, Auth } from "aws-amplify"
+import API from "@aws-amplify/api"
+import Auth from "@aws-amplify/auth"
+import Storage from "@aws-amplify/storage"
 import { Link } from "react-router-dom"
+
+import styles from "./ItemDetails.module.scss"
+import { ITEM_DELETE_CONFIRM_MESSAGE } from "./const.js"
+
 import LoaderButton from "./components/LoaderButton"
 import LoadingSpinner from "./components/LoadingSpinner"
 import EmptyState from "./components/EmptyState"
 import Button from "./components/Button"
-import styles from "./ItemDetails.module.scss"
-import { ITEM_DELETE_CONFIRM_MESSAGE } from "./const.js"
+import CenteredLayout from "./CenteredLayout"
 
 class ItemDetails extends Component {
 	state = {
+		isLoading: true,
 		item: null,
 		userIsOwner: false,
-		isLoading: true,
-		isDeleting: false
+		isDeleting: false,
+		attachmentURLs: []
+	}
+
+	loadImages = async (attachments) => {
+		// TODO: lazy-loading
+		let attachmentURLs = await Promise.all(
+			attachments.map((attachment) =>
+				Storage.get(attachment, {
+					identityId: this.state.item.userId
+				})
+			)
+		)
+		this.setState({ attachmentURLs })
 	}
 
 	componentDidMount = async () => {
-		try {
-			// get the item
-			let itemId = this.props.match.params.id
-			let item = await API.get("items", `/items/${itemId}`)
-			// TODO: handle not found items (the api simply returns an empty object which passes the test and react tries to render the page instead of the empty state)
-			this.setState({ item })
+		let item
 
-			// check if current user is the owner
+		try {
+			let itemId = this.props.match.params.id
+			item = await API.get("items", `/items/${itemId}`)
+			await this.setState({ item })
+			this.loadImages(item.attachments)
+		} catch (e) {
+			console.log("Error while loading item")
+		}
+
+		// TODO: improve speed of this
+		// check if current user is the owner
+		try {
 			let { isAuthenticated } = this.props
 			if (isAuthenticated) {
 				let info = await Auth.currentUserInfo()
@@ -54,22 +78,37 @@ class ItemDetails extends Component {
 	}
 
 	render() {
-		const { item, userIsOwner, isLoading, isDeleting } = this.state
+		const {
+			item,
+			userIsOwner,
+			isLoading,
+			isDeleting,
+			attachmentURLs
+		} = this.state
 
 		return (
-			<>
+			<CenteredLayout>
 				{item ? (
 					<div className={styles.mainContainer}>
 						<div className={styles.itemContainer}>
 							<div className={styles.photosContainer}>
-								<div className={styles.currentImage}>
-									<img src="https://picsum.photos/400/500/?random" alt="" />
+								<div className={styles.thumbnailsContainer}>
+									{attachmentURLs.map((url, i) => (
+										<div key={i} className={styles.thumbnailContainer}>
+											<img src={url} className={styles.thumbnail} alt="" />
+										</div>
+									))}
 								</div>
+								{/* TODO: Make image gallery into separate component */}
+								{/* <div className={styles.currentImage}>
+									<img src="https://picsum.photos/400/500/?random" alt="" />
+								</div> */}
 							</div>
 							<div className={styles.infoContainer}>
 								<div className={styles.basicInfo}>
 									<h2>
-										{item.designers.join(" & ")}: {item.name}
+										{item.designers && item.designers.join(" & ") + ": "}
+										{item.name}
 									</h2>
 									<div>
 										Cena: {item.price}
@@ -105,7 +144,7 @@ class ItemDetails extends Component {
 				) : (
 					<EmptyState text="Nie znaleziono przedmiotu" />
 				)}
-			</>
+			</CenteredLayout>
 		)
 	}
 }

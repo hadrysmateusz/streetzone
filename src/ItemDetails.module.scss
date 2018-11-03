@@ -8,15 +8,37 @@
 	flex-direction: row;
 }
 
-.photosContainer,
+// .photosContainer,
 .infoContainer {
 	flex: 1 1 50%;
 }
 
-.currentImage {
-	padding: 20px;
-	img {
-		display: block;
-		width: 100%;
-	}
+// .currentImage {
+// 	padding: 20px;
+// 	img {
+// 		display: block;
+// 		width: 100%;
+// 	}
+// }
+
+.photosContainer {
+	flex: 1 1 50%;
+}
+
+.thumbnailsContainer {
+	display: flex;
+	flex-direction: row;
+}
+
+// TODO: handle images of different aspect ratios (probably by setting it as background or editing on server side or sth
+.thumbnailContainer {
+	height: 90px;
+	width: 90px;
+	background: #3a3a3a;
+	margin: 0 3px;
+	text-align: center;
+}
+
+.thumbnail {
+	height: 100%;
 }

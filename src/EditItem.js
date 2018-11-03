@@ -1,12 +1,27 @@
 import React, { Component } from "react"
-import { API } from "aws-amplify"
+import API from "@aws-amplify/api"
+import Storage from "@aws-amplify/storage"
 import ItemForm from "./ItemForm"
 import LoadingSpinner from "./components/LoadingSpinner"
 import EmptyState from "./components/EmptyState"
+import CenteredLayout from "./CenteredLayout"
+// import { MAX_ATTACHMENT_SIZE } from "./const"
+import s3Upload from "./libs/s3Upload"
 
 class EditItem extends Component {
 	state = {
-		isLoading: true
+		isLoading: true,
+		item: {},
+		files: [],
+		attachmentURLs: []
+	}
+
+	loadImages = async (attachments) => {
+		// TODO: lazy-loading
+		let attachmentURLs = await Promise.all(
+			attachments.map((attachment) => Storage.get(attachment))
+		)
+		this.setState({ attachmentURLs })
 	}
 
 	componentDidMount = async () => {
@@ -14,40 +29,69 @@ class EditItem extends Component {
 			let itemId = this.props.match.params.id
 			let item = await API.get("items", `/items/${itemId}`)
 			this.setState({ item })
+			// TODO: the below only gets the url of the image not the file object
+			// this.setState({ attachmentURLs })
 		} catch (e) {
 			console.log("Failed to find item")
 		}
 		this.setState({ isLoading: false })
 	}
 
-	onSubmit = (data, actions) => {
-		try {
-			this.setState({ isLoading: true })
+	onFileChange = async (files) => {
+		files = [...files]
+		this.setState({ files })
+	}
 
-			actions.reset()
+	onSubmit = async (data, actions) => {
+		this.setState({ isLoading: true })
 
-			API.put("items", `/items/${this.props.match.params.id}`, {
-				body: { ...data }
-			})
-
-			this.setState({ isLoading: false })
-		} catch (e) {
-			alert("Wystąpił problem podczas uaktualniania przedmiotu")
+		// upload files to s3 and get their id's
+		let attachments = []
+		for (let file of this.state.files) {
+			try {
+				let attachment = await s3Upload(file)
+				attachment && attachments.push(attachment)
+			} catch (e) {
+				console.log(e)
+			}
 		}
+
+		console.log(this.state.item.attachments)
+		console.log(attachments)
+
+		let body = { ...data, attachments }
+
+		// upload data to dynamodDb
+		try {
+			let itemId = this.props.match.params.id
+			API.put("items", `/items/${itemId}`, { body })
+			this.props.history.push("/")
+		} catch (e) {
+			alert("Wystąpił problem podczas wystawiania przedmiotu")
+		}
+
+		this.setState({ isLoading: false })
 	}
 
 	render() {
 		return (
-			<>
+			<CenteredLayout>
 				<h1>Edytuj</h1>
 				{this.state.item ? (
-					<ItemForm onSubmit={this.onSubmit} initialValues={this.state.item} />
+					<>
+						<ItemForm
+							onSubmit={this.onSubmit}
+							onFileChange={this.onFileChange}
+							initialValues={this.state.item}
+							files={this.state.files}
+						/>
+					</>
 				) : this.state.isLoading ? (
 					<LoadingSpinner />
 				) : (
 					<EmptyState text="Nie znaleziono przedmiotu" />
 				)}
-			</>
+			</CenteredLayout>
 		)
 	}
 }

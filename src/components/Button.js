@@ -3,7 +3,13 @@ import styles from "./Button.module.scss"
 import PropTypes from "prop-types"
 import cn from "classnames"
 
-const Button = ({ disabled = false, children, primary, ...props }) => {
+const Button = ({
+	disabled = false,
+	type = "button",
+	children,
+	primary,
+	...props
+}) => {
 	let classNames = cn({
 		[styles.base]: true,
 		[styles.regular]: !primary && !disabled,
@@ -11,7 +17,7 @@ const Button = ({ disabled = false, children, primary, ...props }) => {
 		[styles.disabled]: disabled
 	})
 	return (
-		<button className={classNames} disabled={disabled} {...props}>
+		<button className={classNames} type={type} disabled={disabled} {...props}>
 			{children}
 		</button>
 	)

@@ -1,5 +1,5 @@
 import React, { Component } from "react"
-import { API } from "aws-amplify"
+import API from "@aws-amplify/api"
 import styles from "./Home.module.scss"
 import ItemCard from "./ItemCard"
 import CenteredLayout from "./CenteredLayout"
@@ -11,34 +11,42 @@ import animations from "./scss/animations.module.scss"
 class Home extends Component {
 	state = {
 		items: null,
-		isLoading: true
+		isLoading: true,
+		isRefreshing: false
+	}
+
+	refresh = async () => {
+		// TODO: make this trigger refresh on all Item cards as well
+		await this.setState({ isRefreshing: true })
+		await this.getItems()
+		await this.setState({ isRefreshing: false })
 	}
 
 	getItems = async () => {
-		this.setState({ isLoading: true })
 		try {
 			let data = await API.get("items", "/items")
-			this.setState({ items: data.items })
+			let items = data.items.sort((a, b) => b.createdAt - a.createdAt)
+			this.setState({ items })
 		} catch (e) {
 			console.log("Database connection error")
 		}
-		this.setState({ isLoading: false })
 	}
 
 	componentDidMount = async () => {
-		this.getItems()
+		await this.getItems()
+		await this.setState({ isLoading: false })
 	}
 
 	render() {
-		const { items, isLoading } = this.state
+		const { items, isLoading, isRefreshing } = this.state
 		return (
 			<CenteredLayout>
 				<div className={styles.header}>
 					{items && <h4>{items.length} Wyniki</h4>}
 					<FontAwesomeIcon
 						icon="sync"
-						className={cn({ [animations.spinning]: isLoading })}
-						onClick={this.getItems}
+						className={cn({ [animations.spinning]: isRefreshing })}
+						onClick={this.refresh}
 					/>
 				</div>
 				<div className={styles.mainContainer}>

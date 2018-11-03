@@ -12,6 +12,7 @@ import Home from "./Home"
 import NewItem from "./NewItem"
 import ItemDetails from "./ItemDetails"
 import EditItem from "./EditItem"
+import FileHandler from "./FileHandler"
 
 const Routes = ({ childProps }) => {
 	return (
@@ -21,6 +22,12 @@ const Routes = ({ childProps }) => {
 				path="/nowy"
 				exact
 				component={NewItem}
+				props={childProps}
+			/>
+			<AuthenticatedRoute
+				path="/nowy/test"
+				exact
+				component={FileHandler}
 				props={childProps}
 			/>
 			<UnauthenticatedRoute

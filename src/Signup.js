@@ -1,6 +1,7 @@
 import React, { Component } from "react"
-import { Auth } from "aws-amplify"
+import Auth from "@aws-amplify/auth"
 import { Form, Field } from "react-final-form"
+import CenteredLayout from "./CenteredLayout"
 
 class Signup extends Component {
 	state = {
@@ -99,11 +100,11 @@ class Signup extends Component {
 
 	render() {
 		return (
-			<div className="Signup">
+			<CenteredLayout>
 				{this.state.newUser === null
 					? this.renderForm()
 					: this.renderConfirmationForm()}
-			</div>
+			</CenteredLayout>
 		)
 	}
 }

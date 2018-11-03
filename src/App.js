@@ -1,9 +1,9 @@
 import React, { Component } from "react"
 import { withRouter, Link } from "react-router-dom"
-import { Auth } from "aws-amplify"
-import styles from "./App.module.scss"
-import { BRAND_NAME } from "./const.js"
+import Auth from "@aws-amplify/auth"
 import Routes from "./Routes.js"
+import { BRAND_NAME } from "./const.js"
+import styles from "./App.module.scss"
 
 class App extends Component {
 	state = {
@@ -55,7 +55,7 @@ class App extends Component {
 						{this.state.isAuthenticated ? (
 							<>
 								<Link to="/nowy" className={styles.navLink}>
-									Nowy
+									Wystaw Przedmiot
 								</Link>
 								<div className={styles.navLink} onClick={this.handleLogout}>
 									Wyloguj

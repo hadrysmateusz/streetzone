@@ -1,6 +1,7 @@
 import React, { Component } from "react"
-import { Auth } from "aws-amplify"
+import Auth from "@aws-amplify/auth"
 import { Form, Field } from "react-final-form"
+import CenteredLayout from "./CenteredLayout"
 
 class Login extends Component {
 	state = {
@@ -26,7 +27,7 @@ class Login extends Component {
 
 	render() {
 		return (
-			<div className="Login">
+			<CenteredLayout>
 				<Form
 					onSubmit={this.handleSubmit}
 					validate={this.validate}
@@ -48,7 +49,7 @@ class Login extends Component {
 						</form>
 					)}
 				/>
-			</div>
+			</CenteredLayout>
 		)
 	}
 }

@@ -1,7 +1,7 @@
 import React from "react"
 import ReactDOM from "react-dom"
-import Amplify from "aws-amplify"
 import { BrowserRouter as Router } from "react-router-dom"
+import Amplify from "@aws-amplify/core"
 import { library } from "@fortawesome/fontawesome-svg-core"
 import { faSpinner, faSync } from "@fortawesome/free-solid-svg-icons"
 import * as serviceWorker from "./serviceWorker"
@@ -13,11 +13,17 @@ library.add(faSpinner, faSync)
 
 Amplify.configure({
 	Auth: {
-		mandatorySignIn: true,
+		mandatorySignIn: false,
 		region: awsConfig.cognito.REGION,
 		userPoolId: awsConfig.cognito.USER_POOL_ID,
 		identityPoolId: awsConfig.cognito.IDENTITY_POOL_ID,
 		userPoolWebClientId: awsConfig.cognito.APP_CLIENT_ID
+	},
+	Storage: {
+		region: awsConfig.s3.REGION,
+		bucket: awsConfig.s3.BUCKET,
+		identityPoolId: awsConfig.cognito.IDENTITY_POOL_ID,
+		level: "protected"
 	},
 	API: {
 		endpoints: [
