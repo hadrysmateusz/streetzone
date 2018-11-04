@@ -23,3 +23,12 @@ export async function s3Get(fileKey, userId) {
 		errorLog(e, "Error while getting file")
 	}
 }
+
+export async function s3Remove(fileKey, userId) {
+	try {
+		const url = await Storage.remove(fileKey, { identityId: userId })
+		return url
+	} catch (e) {
+		errorLog(e, "Error while removing file")
+	}
+}

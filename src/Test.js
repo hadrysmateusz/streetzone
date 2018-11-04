@@ -2,7 +2,7 @@ import { Form, Field } from "react-final-form"
 import React, { Component } from "react"
 import Button from "./components/Button"
 import FileHandler from "./FileHandler"
-import { s3Get } from "./libs/s3lib"
+import { s3Get, s3Upload, s3Remove } from "./libs/s3lib"
 import API from "@aws-amplify/api"
 import File from "./File"
 
@@ -75,7 +75,46 @@ class ItemForm extends Component {
 		console.log(this.state)
 	}
 
-	onSubmit = async () => {}
+	onSubmit = async (data) => {
+		let fileItems = this.state.fileItems
+
+		// Upload only the new files to s3 and get their keys
+		for (let fileItem of fileItems) {
+			// File is considered to be new if its key is unset (empty string)
+			if (!fileItem.fileKey) {
+				fileItem.fileKey = await s3Upload(fileItem.data)
+			}
+		}
+
+		// All of the new keys
+		let newKeys = fileItems.map((fileItem) => fileItem.fileKey)
+
+		// Just the old keys
+		let oldKeys = this.state.item.attachments
+
+		// Old keys no longer present in new keys are marked for deletion from s3
+		let keysToDelete = oldKeys.filter((oldKey) => !newKeys.includes(oldKey))
+
+		// Remove files associated with the marked keys
+		let { userId } = this.state.item.userId
+		for (let fileKey of keysToDelete) {
+			await s3Remove(fileKey, userId)
+		}
+
+		// Merge form data with new attachments to create the request body
+		let body = { ...data, attachments: newKeys }
+
+		// Upload data to dynamodDb
+		try {
+			let itemId = this.props.match.params.id
+			await API.put("items", `/items/${itemId}`, { body })
+			this.props.history.push("/")
+			return
+		} catch (e) {
+			alert("Wystąpił problem podczas edytowania przedmiotu")
+		}
+		this.setState({ isLoading: false })
+	}
 
 	render() {
 		return (
