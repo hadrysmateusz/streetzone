@@ -1,32 +1,25 @@
 import { Form, Field } from "react-final-form"
 import React, { Component } from "react"
-import PropTypes from "prop-types"
 import Button from "./components/Button"
 import FileHandler from "./FileHandler"
-import filesize from "filesize"
+import File from "./File"
 
 class ItemForm extends Component {
-	static propTypes = {
-		onSubmit: PropTypes.func.isRequired,
-		onFileChange: PropTypes.func.isRequired,
-		initialValues: PropTypes.object,
-		files: PropTypes.array
-	}
-
-	validate = (data) => {
-		console.log("validating")
-	}
-
 	render() {
-		const { onSubmit, validate, initialValues = {} } = this.props
-		console.log(this.props.files)
+		const {
+			initialValues = {},
+			fileItems,
+			onSubmit,
+			deleteFileItem,
+			onFileChange,
+			cancel
+		} = this.props
 
 		return (
 			<Form
-				onSubmit={onSubmit}
-				initialValues={initialValues}
-				validate={validate}
-				render={({ handleSubmit, submitting, pristine, values }) => {
+				onSubmit={this.props.onSubmit}
+				initialValues={this.props.initialValues}
+				render={({ handleSubmit, submitting, values }) => {
 					return (
 						<form onSubmit={handleSubmit}>
 							<div>
@@ -83,20 +76,25 @@ class ItemForm extends Component {
 								<label>Zdjęcia </label>
 								<FileHandler onChange={this.props.onFileChange} />
 								<ul>
-									{this.props.files.map((file, i) => (
-										<li key={i}>
-											<img src={file.preview} height={120} alt="" />
-											{file.name} - {filesize(file.size)}
-										</li>
+									{this.props.fileItems.map((fileItem, i) => (
+										<File
+											key={i}
+											onDelete={this.props.deleteFileItem}
+											fileItem={fileItem}
+										/>
 									))}
 								</ul>
 							</div>
-							<div>
-								<pre>{JSON.stringify(values, 0, 2)}</pre>
-							</div>
 							<div className="buttons">
-								<Button type="submit" disabled={submitting || pristine}>
+								<Button type="submit" disabled={submitting}>
 									Gotowe
+								</Button>
+								<Button
+									type="button"
+									disabled={submitting}
+									onClick={this.props.cancel}
+								>
+									Anuluj
 								</Button>
 							</div>
 						</form>
