@@ -48,12 +48,7 @@ const Routes = ({ childProps }) => {
 				component={ItemDetails}
 				props={childProps}
 			/>
-			<AppliedRoute
-				path="/e/:id"
-				exact
-				component={EditItem}
-				props={childProps}
-			/>
+			<AppliedRoute path="/e/:id" exact component={Test} props={childProps} />
 			<Route component={NotFound} />
 		</Switch>
 	)
