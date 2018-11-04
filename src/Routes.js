@@ -12,7 +12,6 @@ import Home from "./Home"
 import NewItem from "./NewItem"
 import ItemDetails from "./ItemDetails"
 import EditItem from "./EditItem"
-import Test from "./Test"
 
 const Routes = ({ childProps }) => {
 	return (
@@ -22,12 +21,6 @@ const Routes = ({ childProps }) => {
 				path="/nowy"
 				exact
 				component={NewItem}
-				props={childProps}
-			/>
-			<AuthenticatedRoute
-				path="/test/:id"
-				exact
-				component={Test}
 				props={childProps}
 			/>
 			<UnauthenticatedRoute
@@ -48,7 +41,12 @@ const Routes = ({ childProps }) => {
 				component={ItemDetails}
 				props={childProps}
 			/>
-			<AppliedRoute path="/e/:id" exact component={Test} props={childProps} />
+			<AppliedRoute
+				path="/e/:id"
+				exact
+				component={EditItem}
+				props={childProps}
+			/>
 			<Route component={NotFound} />
 		</Switch>
 	)

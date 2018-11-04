@@ -1,4 +1,5 @@
 import React, { Component } from "react"
+import Button from "./components/Button"
 
 export class FileHandler extends Component {
 	fileInput = React.createRef()
@@ -18,9 +19,9 @@ export class FileHandler extends Component {
 					onChange={(e) => this.props.onChange(e.target.files)}
 					multiple
 				/>
-				<button type="button" onClick={this.clickFileInput}>
-					Select files
-				</button>
+				<Button type="button" onClick={this.clickFileInput}>
+					Wybierz pliki
+				</Button>
 			</div>
 		)
 	}

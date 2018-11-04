@@ -1,13 +1,6 @@
 import React, { Component } from "react"
-// import { s3Get } from "./libs/s3lib"
 
 export class File extends Component {
-	// componentDidMount = async () => {
-	// 	const { fileKey, userId } = this.props
-	// 	const url = s3Get(fileKey, userId)
-	// 	this.setState({ url })
-	// }
-
 	render() {
 		return (
 			<li key={this.props.fileItem.id}>
