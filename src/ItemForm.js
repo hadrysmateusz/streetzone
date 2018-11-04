@@ -19,6 +19,7 @@ class ItemForm extends Component {
 
 	render() {
 		const { onSubmit, validate, initialValues = {} } = this.props
+		console.log(this.props.files)
 
 		return (
 			<Form
@@ -84,14 +85,7 @@ class ItemForm extends Component {
 								<ul>
 									{this.props.files.map((file, i) => (
 										<li key={i}>
-											<img
-												src={window.URL.createObjectURL(file)}
-												height={150}
-												onLoad={(e) => {
-													window.URL.revokeObjectURL(e.target.src)
-												}}
-												alt=""
-											/>
+											<img src={file.preview} height={120} alt="" />
 											{file.name} - {filesize(file.size)}
 										</li>
 									))}

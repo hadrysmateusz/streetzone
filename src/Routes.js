@@ -12,7 +12,7 @@ import Home from "./Home"
 import NewItem from "./NewItem"
 import ItemDetails from "./ItemDetails"
 import EditItem from "./EditItem"
-import Dropzone from "./Dropzone"
+import Test from "./Test"
 
 const Routes = ({ childProps }) => {
 	return (
@@ -25,9 +25,9 @@ const Routes = ({ childProps }) => {
 				props={childProps}
 			/>
 			<AuthenticatedRoute
-				path="/test"
+				path="/test/:id"
 				exact
-				component={Dropzone}
+				component={Test}
 				props={childProps}
 			/>
 			<UnauthenticatedRoute
