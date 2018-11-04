@@ -2,7 +2,7 @@ import React, { Component } from "react"
 import API from "@aws-amplify/api"
 import ItemForm from "./ItemForm"
 import CenteredLayout from "./CenteredLayout"
-import s3Upload from "./libs/s3Upload"
+import { s3Upload } from "./libs/s3lib"
 // import { MAX_ATTACHMENT_SIZE } from "./const"
 
 class NewItem extends Component {
@@ -29,12 +29,9 @@ class NewItem extends Component {
 
 		let body = { ...data, attachments }
 
-		// clear the form
-		// actions.reset()
-
 		// upload data to dynamodDb
 		try {
-			API.post("items", "/items", { body })
+			await API.post("items", "/items", { body })
 			this.props.history.push("/")
 			return
 		} catch (e) {

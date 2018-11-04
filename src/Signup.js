@@ -38,6 +38,7 @@ class Signup extends Component {
 
 			this.props.userHasAuthenticated(true)
 			this.props.history.push("/")
+			return
 		} catch (e) {
 			alert(e.message)
 			this.setState({ isLoading: false })

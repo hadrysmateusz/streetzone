@@ -1,12 +1,12 @@
 import React, { Component } from "react"
 import PropTypes from "prop-types"
 import { Link } from "react-router-dom"
-import Storage from "@aws-amplify/storage"
 import moment from "moment"
 import styles from "./ItemCard.module.scss"
+import { s3Get } from "./libs/s3lib"
 
 class ItemCard extends Component {
-	// TODO: add static placeholder
+	// TODO: add static image placeholder
 	state = {
 		imageURL: ""
 	}
@@ -16,16 +16,10 @@ class ItemCard extends Component {
 	}
 
 	loadImage = async () => {
-		// TODO: lazy-loading
-		try {
-			console.log(this.props.item)
-			let imageURL = await Storage.get(this.props.item.attachments[0], {
-				identityId: this.props.item.userId
-			})
-			this.setState({ imageURL })
-		} catch (e) {
-			console.log(e)
-		}
+		let fileKey = this.props.item.attachments[0]
+		let userId = this.props.item.userId
+		let imageURL = await s3Get(fileKey, userId)
+		this.setState({ imageURL })
 	}
 
 	render() {
@@ -40,7 +34,7 @@ class ItemCard extends Component {
 						<div className={styles.topContainer}>
 							<div className={styles.innerContainer}>
 								<div className={styles.designers}>
-									{designers.join(" & ").toUpperCase()}
+									{designers && designers.join(" & ").toUpperCase()}
 								</div>
 								<div className={styles.price}>
 									{price}

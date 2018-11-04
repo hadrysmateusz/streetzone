@@ -1,7 +1,6 @@
 import React, { Component } from "react"
 import API from "@aws-amplify/api"
 import Auth from "@aws-amplify/auth"
-import Storage from "@aws-amplify/storage"
 import { Link } from "react-router-dom"
 
 import styles from "./ItemDetails.module.scss"
@@ -12,6 +11,7 @@ import LoadingSpinner from "./components/LoadingSpinner"
 import EmptyState from "./components/EmptyState"
 import Button from "./components/Button"
 import CenteredLayout from "./CenteredLayout"
+import { s3Get } from "./libs/s3lib"
 
 class ItemDetails extends Component {
 	state = {
@@ -22,14 +22,10 @@ class ItemDetails extends Component {
 		attachmentURLs: []
 	}
 
-	loadImages = async (attachments) => {
-		// TODO: lazy-loading
+	loadImages = async () => {
+		const { userId, attachments } = this.state.item
 		let attachmentURLs = await Promise.all(
-			attachments.map((attachment) =>
-				Storage.get(attachment, {
-					identityId: this.state.item.userId
-				})
-			)
+			attachments.map((attachment) => s3Get(attachment, userId))
 		)
 		this.setState({ attachmentURLs })
 	}
@@ -41,7 +37,7 @@ class ItemDetails extends Component {
 			let itemId = this.props.match.params.id
 			item = await API.get("items", `/items/${itemId}`)
 			await this.setState({ item })
-			this.loadImages(item.attachments)
+			this.loadImages()
 		} catch (e) {
 			console.log("Error while loading item")
 		}
@@ -70,6 +66,7 @@ class ItemDetails extends Component {
 				let itemId = this.props.match.params.id
 				await API.del("items", `/items/${itemId}`)
 				this.props.history.push("/")
+				return
 			} catch (e) {
 				alert("Usuwanie nie powiodło się")
 			}

@@ -12,7 +12,7 @@ import Home from "./Home"
 import NewItem from "./NewItem"
 import ItemDetails from "./ItemDetails"
 import EditItem from "./EditItem"
-import FileHandler from "./FileHandler"
+import Dropzone from "./Dropzone"
 
 const Routes = ({ childProps }) => {
 	return (
@@ -25,9 +25,9 @@ const Routes = ({ childProps }) => {
 				props={childProps}
 			/>
 			<AuthenticatedRoute
-				path="/nowy/test"
+				path="/test"
 				exact
-				component={FileHandler}
+				component={Dropzone}
 				props={childProps}
 			/>
 			<UnauthenticatedRoute

@@ -1,12 +1,11 @@
 import React, { Component } from "react"
 import API from "@aws-amplify/api"
-import Storage from "@aws-amplify/storage"
 import ItemForm from "./ItemForm"
 import LoadingSpinner from "./components/LoadingSpinner"
 import EmptyState from "./components/EmptyState"
 import CenteredLayout from "./CenteredLayout"
 // import { MAX_ATTACHMENT_SIZE } from "./const"
-import s3Upload from "./libs/s3Upload"
+import { s3Get, s3Upload } from "./libs/s3lib"
 
 class EditItem extends Component {
 	state = {
@@ -17,9 +16,9 @@ class EditItem extends Component {
 	}
 
 	loadImages = async (attachments) => {
-		// TODO: lazy-loading
+		let userId = this.state.item.userId
 		let attachmentURLs = await Promise.all(
-			attachments.map((attachment) => Storage.get(attachment))
+			attachments.map((attachment) => s3Get(attachment, userId))
 		)
 		this.setState({ attachmentURLs })
 	}
@@ -48,26 +47,20 @@ class EditItem extends Component {
 		// upload files to s3 and get their id's
 		let attachments = []
 		for (let file of this.state.files) {
-			try {
-				let attachment = await s3Upload(file)
-				attachment && attachments.push(attachment)
-			} catch (e) {
-				console.log(e)
-			}
+			let attachment = await s3Upload(file)
+			attachment && attachments.push(attachment)
 		}
-
-		console.log(this.state.item.attachments)
-		console.log(attachments)
 
 		let body = { ...data, attachments }
 
 		// upload data to dynamodDb
 		try {
 			let itemId = this.props.match.params.id
-			API.put("items", `/items/${itemId}`, { body })
+			await API.put("items", `/items/${itemId}`, { body })
 			this.props.history.push("/")
+			return
 		} catch (e) {
-			alert("Wystąpił problem podczas wystawiania przedmiotu")
+			alert("Wystąpił problem podczas edytowania przedmiotu")
 		}
 
 		this.setState({ isLoading: false })

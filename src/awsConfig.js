@@ -1,5 +1,5 @@
 const stages = {
-	dev: {
+	development: {
 		apiGateway: {
 			REGION: "eu-west-1",
 			URL: "https://36v6zocygg.execute-api.eu-west-1.amazonaws.com/dev"
@@ -16,7 +16,20 @@ const stages = {
 		}
 	},
 
-	prod: {
+	test: {
+		apiGateway: {
+			REGION: "eu-west-1",
+			URL: ""
+		},
+		cognito: {
+			REGION: "eu-west-1",
+			USER_POOL_ID: "",
+			APP_CLIENT_ID: "",
+			IDENTITY_POOL_ID: ""
+		}
+	},
+
+	production: {
 		apiGateway: {
 			REGION: "eu-west-1",
 			URL: ""
@@ -30,6 +43,6 @@ const stages = {
 	}
 }
 
-const awsConfig = stages[process.env.REACT_APP_STAGE] || stages.dev
+const awsConfig = stages[process.env.NODE_ENV] || stages.development
 
 export default awsConfig
