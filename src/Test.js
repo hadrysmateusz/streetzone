@@ -32,6 +32,7 @@ class ItemForm extends Component {
 		let userId = this.state.item.userId
 
 		for (let fileKey of fileKeys) {
+			// Get the url based on s3 key
 			let previewUrl = await s3Get(fileKey, userId)
 			this.setState({
 				fileItems: [
@@ -49,22 +50,24 @@ class ItemForm extends Component {
 	componentDidMount = async () => {
 		// Get item from dynamoDb
 		await this.getItem()
+		// Get items attachments' keys and urls for previews
 		await this.getFilesFromS3(this.state.item.attachments)
-		console.log(this.state)
 	}
 
 	onFileChange = async (newFiles) => {
+		// Convert FileList into an array
 		newFiles = [...newFiles]
 
+		// Create a new FileItem for every newly selected file
+		// along with a generated ObjectURL for preview
 		for (let newFile of newFiles) {
 			let previewUrl = window.URL.createObjectURL(newFile)
-			await this.setState({
+			this.setState({
 				fileItems: [
 					...this.state.fileItems,
 					new FileItem({ previewUrl, data: newFile })
 				]
 			})
-			console.log(this.state)
 		}
 	}
 
@@ -72,7 +75,6 @@ class ItemForm extends Component {
 		await this.setState({
 			fileItems: this.state.fileItems.filter((fileItem) => fileItem.id !== id)
 		})
-		console.log(this.state)
 	}
 
 	onSubmit = async (data) => {
@@ -189,9 +191,6 @@ class ItemForm extends Component {
 										/>
 									))}
 								</ul>
-							</div>
-							<div>
-								<pre>{JSON.stringify(values, 0, 2)}</pre>
 							</div>
 							<div className="buttons">
 								<Button type="submit" disabled={submitting}>
