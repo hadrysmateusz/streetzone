@@ -8,7 +8,8 @@ import styles from "./App.module.scss"
 class App extends Component {
 	state = {
 		isAuthenticated: false,
-		isAuthenticating: true
+		isAuthenticating: true,
+		currentUserId: null
 	}
 
 	async componentDidMount() {
@@ -26,8 +27,20 @@ class App extends Component {
 
 	// needs to be a separate class to allow
 	// modification from other components via props
-	userHasAuthenticated = (authenticated) => {
+	userHasAuthenticated = async (authenticated) => {
 		this.setState({ isAuthenticated: authenticated })
+
+		try {
+			if (authenticated) {
+				let userInfo = await Auth.currentUserInfo()
+				let currentUserId = userInfo.id
+				this.setState({ currentUserId })
+			} else {
+				this.setState({ currentUserId: null })
+			}
+		} catch (e) {
+			console.log("Authorization error")
+		}
 	}
 
 	handleLogout = async (event) => {
@@ -43,6 +56,7 @@ class App extends Component {
 		const childProps = {
 			isAuthenticated: this.state.isAuthenticated,
 			isAuthenticating: this.state.isAuthenticating,
+			currentUserId: this.state.currentUserId,
 			userHasAuthenticated: this.userHasAuthenticated
 		}
 
@@ -57,6 +71,12 @@ class App extends Component {
 							<>
 								<Link to="/nowy" className={styles.navLink}>
 									Wystaw Przedmiot
+								</Link>
+								<Link
+									to={`/profil/${this.state.currentUserId}`}
+									className={styles.navLink}
+								>
+									Profil
 								</Link>
 								<div className={styles.navLink} onClick={this.handleLogout}>
 									Wyloguj
