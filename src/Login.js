@@ -86,7 +86,7 @@ class Login extends Component {
 									marginTop: "10px"
 								}}
 							>
-								authorize endpoint
+								oauth2/authorize endpoint
 							</a>
 							<a
 								href={`https://streetwear-dev.auth.eu-west-1.amazoncognito.com/login?response_type=code&client_id=5cdq6tmbrpm6aqbej1qip0duhq&redirect_uri=https://flamboyant-jepsen-0627c4.netlify.com/&state=123`}
