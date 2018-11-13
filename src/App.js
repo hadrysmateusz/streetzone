@@ -12,7 +12,31 @@ class App extends Component {
 		currentUserId: null
 	}
 
+	// facebookInit() {
+	// 	window.fbAsyncInit = function() {
+	// 		window.FB.init({
+	// 			appId: "2066475883419137",
+	// 			autoLogAppEvents: true,
+	// 			xfbml: true,
+	// 			version: "v3.2"
+	// 		})
+	// 	}
+	// 	;(function(d, s, id) {
+	// 		var js,
+	// 			fjs = d.getElementsByTagName(s)[0]
+	// 		if (d.getElementById(id)) {
+	// 			return
+	// 		}
+	// 		js = d.createElement(s)
+	// 		js.id = id
+	// 		js.src = "https://connect.facebook.net/en_US/sdk.js"
+	// 		fjs.parentNode.insertBefore(js, fjs)
+	// 	})(document, "script", "facebook-jssdk")
+	// }
+
 	async componentDidMount() {
+		// this.facebookInit()
+
 		try {
 			await Auth.currentSession()
 			this.userHasAuthenticated(true)
@@ -53,11 +77,13 @@ class App extends Component {
 	}
 
 	render() {
+		console.log("APP PROPS:", this.props)
 		const childProps = {
 			isAuthenticated: this.state.isAuthenticated,
 			isAuthenticating: this.state.isAuthenticating,
 			currentUserId: this.state.currentUserId,
-			userHasAuthenticated: this.userHasAuthenticated
+			userHasAuthenticated: this.userHasAuthenticated,
+			authState: this.props.authState
 		}
 
 		return (
@@ -84,6 +110,10 @@ class App extends Component {
 							</>
 						) : (
 							<>
+								{/* Do celów testowych */}
+								<div className={styles.navLink} onClick={this.handleLogout}>
+									Wyloguj
+								</div>
 								<Link to="/login" className={styles.navLink}>
 									Logowanie
 								</Link>
