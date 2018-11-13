@@ -7,17 +7,18 @@ import { faSpinner, faSync } from "@fortawesome/free-solid-svg-icons"
 import * as serviceWorker from "./serviceWorker"
 import awsConfig from "./awsConfig"
 import App from "./App"
+import { Authenticator } from "aws-amplify-react"
 import "./scss/index.scss"
 
 library.add(faSpinner, faSync)
 
-Amplify.configure({
+let config = {
 	Auth: {
-		mandatorySignIn: false,
+		identityPoolId: awsConfig.cognito.IDENTITY_POOL_ID,
 		region: awsConfig.cognito.REGION,
 		userPoolId: awsConfig.cognito.USER_POOL_ID,
-		identityPoolId: awsConfig.cognito.IDENTITY_POOL_ID,
-		userPoolWebClientId: awsConfig.cognito.APP_CLIENT_ID
+		userPoolWebClientId: awsConfig.cognito.APP_CLIENT_ID,
+		mandatorySignIn: false
 	},
 	Storage: {
 		region: awsConfig.s3.REGION,
@@ -34,11 +35,20 @@ Amplify.configure({
 			}
 		]
 	}
-})
+}
+
+Amplify.configure(config)
 
 ReactDOM.render(
 	<Router>
+		{/* Reasons to not use authenticator component: it uses federated identities instead of user pool */}
+		{/* <Authenticator
+			// hideDefault={true}
+			onStateChange={(e) => console.log("AUTH STATE CHANGE: ", e)}
+			federated={{ facebook_app_id: "559041151184975" }}
+		> */}
 		<App />
+		{/* </Authenticator> */}
 	</Router>,
 	document.getElementById("root")
 )
