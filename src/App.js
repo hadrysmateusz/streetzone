@@ -77,7 +77,7 @@ class App extends Component {
 	}
 
 	render() {
-		console.log("APP PROPS:", this.props)
+		// console.log("APP PROPS:", this.props)
 		const childProps = {
 			isAuthenticated: this.state.isAuthenticated,
 			isAuthenticating: this.state.isAuthenticating,
@@ -110,10 +110,9 @@ class App extends Component {
 							</>
 						) : (
 							<>
-								{/* Do celów testowych */}
-								<div className={styles.navLink} onClick={this.handleLogout}>
+								{/* <div className={styles.navLink} onClick={this.handleLogout}>
 									Wyloguj
-								</div>
+								</div> */}
 								<Link to="/login" className={styles.navLink}>
 									Logowanie
 								</Link>
