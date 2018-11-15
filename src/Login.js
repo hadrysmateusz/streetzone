@@ -8,9 +8,9 @@ class Login extends Component {
 		isLoading: false
 	}
 
-	componentDidMount = () => {
-		console.log("LOGIN PROPS:", this.props)
-	}
+	// componentDidMount = () => {
+	// 	console.log("LOGIN PROPS:", this.props)
+	// }
 
 	fbLogin() {
 		// window.FB.login(function(response) {
@@ -76,7 +76,7 @@ class Login extends Component {
 								</div>
 							</form>
 							{this.props.authState}
-							<a
+							{/* <a
 								href={`https://streetwear-dev.auth.eu-west-1.amazoncognito.com/oauth2/authorize?response_type=code&client_id=5cdq6tmbrpm6aqbej1qip0duhq&redirect_uri=https://flamboyant-jepsen-0627c4.netlify.com/&state=123&identity_provider=Facebook`}
 								style={{
 									background: "#3B5998",
@@ -99,7 +99,7 @@ class Login extends Component {
 								}}
 							>
 								login endpoint
-							</a>
+							</a> */}
 						</>
 					)}
 				/>
