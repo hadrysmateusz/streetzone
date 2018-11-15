@@ -2,7 +2,7 @@ const stages = {
 	development: {
 		apiGateway: {
 			REGION: "eu-west-1",
-			URL: "https://36v6zocygg.execute-api.eu-west-1.amazonaws.com/dev"
+			URL: "https://ejgd601bzj.execute-api.eu-west-1.amazonaws.com/dev"
 		},
 		s3: {
 			REGION: "eu-west-1",
@@ -10,9 +10,9 @@ const stages = {
 		},
 		cognito: {
 			REGION: "eu-west-1",
-			USER_POOL_ID: "eu-west-1_Qw1jxdPzT",
-			APP_CLIENT_ID: "5cdq6tmbrpm6aqbej1qip0duhq",
-			IDENTITY_POOL_ID: "eu-west-1:5411f17d-e01c-4e8a-9d22-ff0f8104a7f2"
+			USER_POOL_ID: "eu-west-1_yRWLFgy8d",
+			APP_CLIENT_ID: "7gb03lcr4vqtts3kare9uhjgrb",
+			IDENTITY_POOL_ID: "eu-west-1:a775a382-17f1-4c4a-85f9-6cb072c71231"
 		}
 	},
 
@@ -33,7 +33,7 @@ const stages = {
 	production: {
 		apiGateway: {
 			REGION: "eu-west-1",
-			URL: "https://36v6zocygg.execute-api.eu-west-1.amazonaws.com/dev"
+			URL: "https://ejgd601bzj.execute-api.eu-west-1.amazonaws.com/dev"
 		},
 		s3: {
 			REGION: "eu-west-1",
@@ -41,9 +41,9 @@ const stages = {
 		},
 		cognito: {
 			REGION: "eu-west-1",
-			USER_POOL_ID: "eu-west-1_Qw1jxdPzT",
-			APP_CLIENT_ID: "5cdq6tmbrpm6aqbej1qip0duhq",
-			IDENTITY_POOL_ID: "eu-west-1:5411f17d-e01c-4e8a-9d22-ff0f8104a7f2"
+			USER_POOL_ID: "eu-west-1_yRWLFgy8d",
+			APP_CLIENT_ID: "7gb03lcr4vqtts3kare9uhjgrb",
+			IDENTITY_POOL_ID: "eu-west-1:a775a382-17f1-4c4a-85f9-6cb072c71231"
 		}
 	}
 }
