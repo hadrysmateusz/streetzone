@@ -15,18 +15,18 @@ export async function s3Upload(file) {
 	}
 }
 
-export async function s3Get(fileKey, userId) {
+export async function s3Get(fileKey, identityId) {
 	try {
-		const url = await Storage.get(fileKey, { identityId: userId })
+		const url = await Storage.get(fileKey, { identityId: identityId })
 		return url
 	} catch (e) {
 		errorLog(e, "Error while getting file")
 	}
 }
 
-export async function s3Remove(fileKey, userId) {
+export async function s3Remove(fileKey, identityId) {
 	try {
-		const url = await Storage.remove(fileKey, { identityId: userId })
+		const url = await Storage.remove(fileKey, { identityId: identityId })
 		return url
 	} catch (e) {
 		errorLog(e, "Error while removing file")

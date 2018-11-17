@@ -7,6 +7,7 @@ import LoadingSpinner from "./components/LoadingSpinner"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import cn from "classnames"
 import animations from "./scss/animations.module.scss"
+// import Auth from "@aws-amplify/auth"
 
 class Home extends Component {
 	state = {

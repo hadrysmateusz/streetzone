@@ -4,39 +4,17 @@ import Auth from "@aws-amplify/auth"
 import Routes from "./Routes.js"
 import { BRAND_NAME } from "./const.js"
 import styles from "./App.module.scss"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import errorLog from "./libs/errorLog.js"
 
 class App extends Component {
 	state = {
 		isAuthenticated: false,
 		isAuthenticating: true,
-		currentUserId: null
+		currentUser: null
 	}
 
-	// facebookInit() {
-	// 	window.fbAsyncInit = function() {
-	// 		window.FB.init({
-	// 			appId: "2066475883419137",
-	// 			autoLogAppEvents: true,
-	// 			xfbml: true,
-	// 			version: "v3.2"
-	// 		})
-	// 	}
-	// 	;(function(d, s, id) {
-	// 		var js,
-	// 			fjs = d.getElementsByTagName(s)[0]
-	// 		if (d.getElementById(id)) {
-	// 			return
-	// 		}
-	// 		js = d.createElement(s)
-	// 		js.id = id
-	// 		js.src = "https://connect.facebook.net/en_US/sdk.js"
-	// 		fjs.parentNode.insertBefore(js, fjs)
-	// 	})(document, "script", "facebook-jssdk")
-	// }
-
 	async componentDidMount() {
-		// this.facebookInit()
-
 		try {
 			await Auth.currentSession()
 			this.userHasAuthenticated(true)
@@ -56,18 +34,17 @@ class App extends Component {
 
 		try {
 			if (authenticated) {
-				let userInfo = await Auth.currentUserInfo()
-				let currentUserId = userInfo.id
-				this.setState({ currentUserId })
+				let currentUser = await Auth.currentAuthenticatedUser()
+				this.setState({ currentUser })
 			} else {
-				this.setState({ currentUserId: null })
+				this.setState({ currentUser: null })
 			}
 		} catch (e) {
-			console.log("Authorization error")
+			errorLog(e, "Authorization error")
 		}
 	}
 
-	handleLogout = async (event) => {
+	handleLogout = async () => {
 		await Auth.signOut()
 
 		this.userHasAuthenticated(false)
@@ -77,13 +54,11 @@ class App extends Component {
 	}
 
 	render() {
-		// console.log("APP PROPS:", this.props)
 		const childProps = {
 			isAuthenticated: this.state.isAuthenticated,
 			isAuthenticating: this.state.isAuthenticating,
-			currentUserId: this.state.currentUserId,
-			userHasAuthenticated: this.userHasAuthenticated,
-			authState: this.props.authState
+			currentUser: this.state.currentUser,
+			userHasAuthenticated: this.userHasAuthenticated
 		}
 
 		return (
@@ -96,23 +71,23 @@ class App extends Component {
 						{this.state.isAuthenticated ? (
 							<>
 								<Link to="/nowy" className={styles.navLink}>
-									Wystaw Przedmiot
+									<FontAwesomeIcon icon="plus" /> Wystaw Przedmiot
 								</Link>
-								<Link
-									to={`/profil/${this.state.currentUserId}`}
-									className={styles.navLink}
-								>
-									Profil
-								</Link>
+								{this.state.currentUser && (
+									<Link
+										to={`/profil/${this.state.currentUser.username}`}
+										className={styles.navLink}
+									>
+										<FontAwesomeIcon icon="user" />
+										{" " + this.state.currentUser.attributes.name}
+									</Link>
+								)}
 								<div className={styles.navLink} onClick={this.handleLogout}>
 									Wyloguj
 								</div>
 							</>
 						) : (
 							<>
-								{/* <div className={styles.navLink} onClick={this.handleLogout}>
-									Wyloguj
-								</div> */}
 								<Link to="/login" className={styles.navLink}>
 									Logowanie
 								</Link>

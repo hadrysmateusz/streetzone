@@ -1,9 +1,9 @@
 import React, { Component } from "react"
-import Auth from "@aws-amplify/auth"
 import API from "@aws-amplify/api"
 
 import LoadingSpinner from "./components/LoadingSpinner"
 import ItemCard from "./ItemCard"
+import errorLog from "./libs/errorLog"
 
 export class UserProfile extends Component {
 	state = {
@@ -13,24 +13,26 @@ export class UserProfile extends Component {
 	}
 
 	componentDidMount = async () => {
-		let user = await Auth.currentAuthenticatedUser()
-		if (user) this.setState({ user })
-		let items = await API.get(
-			"items",
-			`/items/owner/${this.props.match.params.id}`
-		)
-		if (items) {
-			await this.setState({ items })
+		let userId = this.props.match.params.id
+		let user, items
+
+		try {
+			user = await API.get("items", `/users/${userId}`)
+			items = await API.get("items", `/items/owner/${userId}`)
+		} catch (e) {
+			errorLog(e, "Wystąpił problem podczas wyszukiwania użytkownika.")
 		}
-		this.setState({ isLoading: false })
+
+		this.setState({ isLoading: false, user, items })
 	}
 
 	render() {
 		const { isLoading, items, user } = this.state
+		console.log(this.state)
 		if (!isLoading && items && user) {
 			return (
 				<>
-					<h3>Profil użytkownika {user.attributes.name}</h3>
+					<h3>Profil użytkownika {user.name}</h3>
 					<p>Przedmioty użytkownika:</p>
 					<div style={{ display: "flex", flexDirection: "row" }}>
 						{items.map((item) => (

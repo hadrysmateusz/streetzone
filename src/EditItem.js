@@ -26,11 +26,11 @@ class EditItem extends Component {
 	}
 
 	getFilesFromS3 = async (fileKeys) => {
-		let userId = this.state.item.userId
+		let identityId = this.state.item.identityId
 
 		for (let fileKey of fileKeys) {
 			// Get the url based on s3 key
-			let previewUrl = await s3Get(fileKey, userId)
+			let previewUrl = await s3Get(fileKey, identityId)
 			this.setState({
 				fileItems: [
 					...this.state.fileItems,
@@ -91,9 +91,9 @@ class EditItem extends Component {
 		let keysToDelete = oldKeys.filter((oldKey) => !newKeys.includes(oldKey))
 
 		// Remove files associated with the marked keys
-		let { userId } = this.state.item.userId
+		let { identityId } = this.state.item.identityId
 		for (let fileKey of keysToDelete) {
-			await s3Remove(fileKey, userId)
+			await s3Remove(fileKey, identityId)
 		}
 
 		// Merge form data with new attachments to create the request body
