@@ -46,10 +46,10 @@ class NewItem extends Component {
 		}
 
 		// All of the new keys
-		let newKeys = fileItems.map((fileItem) => fileItem.fileKey)
+		let attachments = fileItems.map((fileItem) => fileItem.fileKey)
 
 		// Merge form data with new attachments to create the request body
-		let body = { ...data, attachments: newKeys }
+		let body = { ...data, attachments }
 
 		// upload data to dynamodDb
 		try {

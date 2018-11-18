@@ -8,9 +8,9 @@ class Login extends Component {
 		isLoading: false
 	}
 
-	componentDidMount = () => {
-		console.log("LOGIN PROPS:", this.props)
-	}
+	// componentDidMount = () => {
+	// 	console.log("LOGIN PROPS:", this.props)
+	// }
 
 	fbLogin() {
 		// window.FB.login(function(response) {
@@ -76,8 +76,8 @@ class Login extends Component {
 								</div>
 							</form>
 							{this.props.authState}
-							<a
-								href={`https://streetwear-dev.auth.eu-west-1.amazoncognito.com/oauth2/authorize?response_type=code&client_id=5cdq6tmbrpm6aqbej1qip0duhq&redirect_uri=https://flamboyant-jepsen-0627c4.netlify.com/&state=123&identity_provider=Facebook`}
+							{/* <a
+								href={`https://streetwear-dev.auth.eu-central-1.amazoncognito.com/oauth2/authorize?response_type=code&client_id=5cdq6tmbrpm6aqbej1qip0duhq&redirect_uri=https://flamboyant-jepsen-0627c4.netlify.com/&state=123&identity_provider=Facebook`}
 								style={{
 									background: "#3B5998",
 									color: "white",
@@ -89,7 +89,7 @@ class Login extends Component {
 								oauth2/authorize endpoint
 							</a>
 							<a
-								href={`https://streetwear-dev.auth.eu-west-1.amazoncognito.com/login?response_type=code&client_id=5cdq6tmbrpm6aqbej1qip0duhq&redirect_uri=https://flamboyant-jepsen-0627c4.netlify.com/&state=123`}
+								href={`https://streetwear-dev.auth.eu-central-1.amazoncognito.com/login?response_type=code&client_id=5cdq6tmbrpm6aqbej1qip0duhq&redirect_uri=https://flamboyant-jepsen-0627c4.netlify.com/&state=123`}
 								style={{
 									background: "#3B5998",
 									color: "white",
@@ -99,7 +99,7 @@ class Login extends Component {
 								}}
 							>
 								login endpoint
-							</a>
+							</a> */}
 						</>
 					)}
 				/>

@@ -2,15 +2,11 @@ import React from "react"
 import ReactDOM from "react-dom"
 import { BrowserRouter as Router } from "react-router-dom"
 import Amplify from "@aws-amplify/core"
-import { library } from "@fortawesome/fontawesome-svg-core"
-import { faSpinner, faSync } from "@fortawesome/free-solid-svg-icons"
 import * as serviceWorker from "./serviceWorker"
 import awsConfig from "./awsConfig"
 import App from "./App"
-import { Authenticator } from "aws-amplify-react"
+import "./fontAwesomeConfig"
 import "./scss/index.scss"
-
-library.add(faSpinner, faSync)
 
 let config = {
 	Auth: {
@@ -41,14 +37,7 @@ Amplify.configure(config)
 
 ReactDOM.render(
 	<Router>
-		{/* Reasons to not use authenticator component: it uses federated identities instead of user pool */}
-		{/* <Authenticator
-			// hideDefault={true}
-			onStateChange={(e) => console.log("AUTH STATE CHANGE: ", e)}
-			federated={{ facebook_app_id: "559041151184975" }}
-		> */}
 		<App />
-		{/* </Authenticator> */}
 	</Router>,
 	document.getElementById("root")
 )

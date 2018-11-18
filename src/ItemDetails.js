@@ -1,6 +1,5 @@
 import React, { Component } from "react"
 import API from "@aws-amplify/api"
-import Auth from "@aws-amplify/auth"
 import { Link } from "react-router-dom"
 
 import styles from "./ItemDetails.module.scss"
@@ -11,7 +10,10 @@ import LoadingSpinner from "./components/LoadingSpinner"
 import EmptyState from "./components/EmptyState"
 import Button from "./components/Button"
 import CenteredLayout from "./CenteredLayout"
+import UserPreview from "./UserPreview"
+
 import { s3Get } from "./libs/s3lib"
+import errorLog from "./libs/errorLog"
 
 class ItemDetails extends Component {
 	state = {
@@ -19,41 +21,30 @@ class ItemDetails extends Component {
 		item: null,
 		userIsOwner: false,
 		isDeleting: false,
-		attachmentURLs: []
+		attachmentURLs: [],
+		currentImageIndex: 0
 	}
 
 	loadImages = async () => {
-		const { userId, attachments } = this.state.item
+		const { identityId, attachments } = this.state.item
 		let attachmentURLs = await Promise.all(
-			attachments.map((attachment) => s3Get(attachment, userId))
+			attachments.map((attachment) => s3Get(attachment, identityId))
 		)
-		this.setState({ attachmentURLs })
+		await this.setState({ attachmentURLs })
 	}
 
 	componentDidMount = async () => {
-		let item
-
 		try {
 			let itemId = this.props.match.params.id
-			item = await API.get("items", `/items/${itemId}`)
+			let item = await API.get("items", `/items/${itemId}`)
 			await this.setState({ item })
-			this.loadImages()
+			await this.loadImages()
 		} catch (e) {
-			console.log("Error while loading item")
+			errorLog(e, "Error while loading item")
 		}
 
-		// TODO: improve speed of this
-		// check if current user is the owner
-		try {
-			let { isAuthenticated } = this.props
-			if (isAuthenticated) {
-				let info = await Auth.currentUserInfo()
-				let userIsOwner = isAuthenticated && info.id === item.userId
-				this.setState({ userIsOwner })
-			}
-		} catch (e) {
-			console.log("Authorization error")
-		}
+		console.log(this.state.item)
+
 		this.setState({ isLoading: false })
 	}
 
@@ -74,14 +65,17 @@ class ItemDetails extends Component {
 		this.setState({ isDeleting: false })
 	}
 
+	changeCurrentImage = (e) => {
+		let currentImageIndex = e.currentTarget.dataset.index
+		this.setState({ currentImageIndex })
+	}
+
 	render() {
-		const {
-			item,
-			userIsOwner,
-			isLoading,
-			isDeleting,
-			attachmentURLs
-		} = this.state
+		const { item, isLoading, isDeleting, attachmentURLs } = this.state
+		const { currentUser } = this.props
+
+		const userIsOwner =
+			item && currentUser ? currentUser.username === item.userId : false
 
 		return (
 			<CenteredLayout>
@@ -89,21 +83,29 @@ class ItemDetails extends Component {
 					<div className={styles.mainContainer}>
 						<div className={styles.itemContainer}>
 							<div className={styles.photosContainer}>
+								{/* TODO: Make image gallery into separate component */}
+								<div className={styles.currentImage}>
+									<img
+										src={attachmentURLs[this.state.currentImageIndex]}
+										alt=""
+									/>
+								</div>
 								<div className={styles.thumbnailsContainer}>
 									{attachmentURLs.map((url, i) => (
-										<div key={i} className={styles.thumbnailContainer}>
+										<div
+											key={i}
+											data-index={i}
+											className={styles.thumbnailContainer}
+											onClick={this.changeCurrentImage}
+										>
 											<img src={url} className={styles.thumbnail} alt="" />
 										</div>
 									))}
 								</div>
-								{/* TODO: Make image gallery into separate component */}
-								{/* <div className={styles.currentImage}>
-									<img src="https://picsum.photos/400/500/?random" alt="" />
-								</div> */}
 							</div>
 							<div className={styles.infoContainer}>
 								<div className={styles.basicInfo}>
-									<h2>
+									<h2 className={styles.mainInfo}>
 										{item.designers && item.designers.join(" & ") + ": "}
 										{item.name}
 									</h2>
@@ -113,7 +115,7 @@ class ItemDetails extends Component {
 									</div>
 									<div>Dodano: {new Date(item.createdAt).toLocaleString()}</div>
 								</div>
-								<div className="buttons">
+								<div className={styles.buttons}>
 									{userIsOwner ? (
 										<>
 											<Link to={`/e/${item.itemId}`}>
@@ -130,8 +132,13 @@ class ItemDetails extends Component {
 										<Button primary>Kup</Button>
 									)}
 								</div>
-								<div className="user" />
-								<div className="description">{item.description}</div>
+								<pre className={styles.description}>{item.description}</pre>
+								{!userIsOwner && (
+									<div className={styles.user}>
+										<strong>Sprzedawca:</strong>
+										<UserPreview id={item.userId} />
+									</div>
+								)}
 							</div>
 						</div>
 						<div className="recommendedContainer" />

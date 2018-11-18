@@ -12,6 +12,7 @@ import Home from "./Home"
 import NewItem from "./NewItem"
 import ItemDetails from "./ItemDetails"
 import EditItem from "./EditItem"
+import UserProfile from "./UserProfile"
 
 const Routes = ({ childProps }) => {
 	return (
@@ -45,6 +46,12 @@ const Routes = ({ childProps }) => {
 				path="/e/:id"
 				exact
 				component={EditItem}
+				props={childProps}
+			/>
+			<AppliedRoute
+				path="/profil/:id"
+				exact
+				component={UserProfile}
 				props={childProps}
 			/>
 			<Route component={NotFound} />
