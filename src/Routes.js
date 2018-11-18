@@ -13,6 +13,7 @@ import NewItem from "./NewItem"
 import ItemDetails from "./ItemDetails"
 import EditItem from "./EditItem"
 import UserProfile from "./UserProfile"
+import VerifyUser from "./VerifyUser"
 
 const Routes = ({ childProps }) => {
 	return (
@@ -34,6 +35,12 @@ const Routes = ({ childProps }) => {
 				path="/signup"
 				exact
 				component={Signup}
+				props={childProps}
+			/>
+			<UnauthenticatedRoute
+				path="/verifyUser"
+				exact
+				component={VerifyUser}
 				props={childProps}
 			/>
 			<AppliedRoute

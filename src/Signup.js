@@ -2,11 +2,12 @@ import React, { Component } from "react"
 import Auth from "@aws-amplify/auth"
 import { Form, Field } from "react-final-form"
 import CenteredLayout from "./CenteredLayout"
+import LoaderButton from "./components/LoaderButton"
 
 class Signup extends Component {
 	state = {
 		isLoading: false,
-		newUser: null
+		isDone: false
 	}
 
 	handleSubmit = async (data) => {
@@ -14,16 +15,14 @@ class Signup extends Component {
 		this.setState({ isLoading: true })
 
 		try {
-			const newUser = await Auth.signUp({
+			await Auth.signUp({
 				username: data.email,
 				password: data.password,
 				attributes: {
 					name: data.name
 				}
 			})
-			this.setState({
-				newUser
-			})
+			this.setState({ isDone: true })
 		} catch (e) {
 			alert(e.message)
 		}
@@ -31,80 +30,40 @@ class Signup extends Component {
 		this.setState({ isLoading: false })
 	}
 
-	handleConfirmationSubmit = async (data) => {
-		try {
-			await Auth.confirmSignUp(data.email, data.confirmationCode)
-			await Auth.signIn(data.email, data.password)
-
-			this.props.userHasAuthenticated(true)
-			this.props.history.push("/")
-			return
-		} catch (e) {
-			alert(e.message)
-			this.setState({ isLoading: false })
-		}
-	}
-
-	renderConfirmationForm() {
-		return (
-			<Form
-				onSubmit={this.handleConfirmationSubmit}
-				render={({ handleSubmit, submitting, pristine, values }) => (
-					<form onSubmit={handleSubmit}>
-						<div>
-							Na twój adres email została wysłana wiadomość z kodem
-							potwierdzającym.
-						</div>
-						<div>
-							<label>Kod Potwierdzający</label>
-							<Field name="confirmationCode" component="input" type="tel" />
-						</div>
-						<div className="buttons">
-							<button type="submit" disabled={submitting || pristine}>
-								Potwierdź
-							</button>
-						</div>
-					</form>
-				)}
-			/>
-		)
-	}
-
-	renderForm() {
-		return (
-			<Form
-				onSubmit={this.handleSubmit}
-				render={({ handleSubmit, submitting, pristine, values }) => (
-					<form onSubmit={handleSubmit}>
-						<div>
-							<label>Imię</label>
-							<Field name="name" component="input" type="text" autoFocus />
-						</div>
-						<div>
-							<label>E-Mail</label>
-							<Field name="email" component="input" type="text" />
-						</div>
-						<div>
-							<label>Hasło</label>
-							<Field name="password" component="input" type="password" />
-						</div>
-						<div className="buttons">
-							<button type="submit" disabled={submitting || pristine}>
-								OK
-							</button>
-						</div>
-					</form>
-				)}
-			/>
-		)
-	}
-
 	render() {
 		return (
 			<CenteredLayout>
-				{this.state.newUser === null
-					? this.renderForm()
-					: this.renderConfirmationForm()}
+				{this.state.isDone ? (
+					<div>Na twój adres email został wysłany link potwierdzający.</div>
+				) : (
+					<Form
+						onSubmit={this.handleSubmit}
+						render={({ handleSubmit, submitting, pristine, values }) => (
+							<form onSubmit={handleSubmit}>
+								<div>
+									<label>Imię</label>
+									<Field name="name" component="input" type="text" autoFocus />
+								</div>
+								<div>
+									<label>E-Mail</label>
+									<Field name="email" component="input" type="text" />
+								</div>
+								<div>
+									<label>Hasło</label>
+									<Field name="password" component="input" type="password" />
+								</div>
+								<div className="buttons">
+									<LoaderButton
+										isLoading={this.state.isLoading}
+										type="submit"
+										text="OK"
+										disabled={submitting || pristine}
+									/>
+								</div>
+							</form>
+						)}
+					/>
+				)}
 			</CenteredLayout>
 		)
 	}
