@@ -16,10 +16,8 @@ class ItemCard extends Component {
 	}
 
 	loadImage = async () => {
-		console.log(this.props)
 		let fileKey = this.props.item.attachments[0]
 		let identityId = this.props.item.identityId
-		console.log(fileKey, identityId)
 		let imageURL = await s3Get(fileKey, identityId)
 		this.setState({ imageURL })
 	}

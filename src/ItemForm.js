@@ -17,8 +17,8 @@ class ItemForm extends Component {
 
 		return (
 			<Form
-				onSubmit={this.props.onSubmit}
-				initialValues={this.props.initialValues}
+				onSubmit={onSubmit}
+				initialValues={initialValues}
 				render={({ handleSubmit, submitting, values }) => {
 					return (
 						<form onSubmit={handleSubmit}>
@@ -74,12 +74,12 @@ class ItemForm extends Component {
 							</div>
 							<div>
 								<label>Zdjęcia </label>
-								<FileHandler onChange={this.props.onFileChange} />
+								<FileHandler onChange={onFileChange} />
 								<ul>
-									{this.props.fileItems.map((fileItem, i) => (
+									{fileItems.map((fileItem, i) => (
 										<File
 											key={i}
-											onDelete={this.props.deleteFileItem}
+											onDelete={deleteFileItem}
 											fileItem={fileItem}
 										/>
 									))}
@@ -89,11 +89,7 @@ class ItemForm extends Component {
 								<Button type="submit" disabled={submitting}>
 									Gotowe
 								</Button>
-								<Button
-									type="button"
-									disabled={submitting}
-									onClick={this.props.cancel}
-								>
+								<Button type="button" disabled={submitting} onClick={cancel}>
 									Anuluj
 								</Button>
 							</div>

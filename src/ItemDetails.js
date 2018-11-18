@@ -21,7 +21,8 @@ class ItemDetails extends Component {
 		item: null,
 		userIsOwner: false,
 		isDeleting: false,
-		attachmentURLs: []
+		attachmentURLs: [],
+		currentImageIndex: 0
 	}
 
 	loadImages = async () => {
@@ -64,9 +65,12 @@ class ItemDetails extends Component {
 		this.setState({ isDeleting: false })
 	}
 
+	changeCurrentImage = (e) => {
+		let currentImageIndex = e.currentTarget.dataset.index
+		this.setState({ currentImageIndex })
+	}
+
 	render() {
-		console.log(this.state)
-		console.log(this.props)
 		const { item, isLoading, isDeleting, attachmentURLs } = this.state
 		const { currentUser } = this.props
 
@@ -79,17 +83,25 @@ class ItemDetails extends Component {
 					<div className={styles.mainContainer}>
 						<div className={styles.itemContainer}>
 							<div className={styles.photosContainer}>
+								{/* TODO: Make image gallery into separate component */}
+								<div className={styles.currentImage}>
+									<img
+										src={attachmentURLs[this.state.currentImageIndex]}
+										alt=""
+									/>
+								</div>
 								<div className={styles.thumbnailsContainer}>
 									{attachmentURLs.map((url, i) => (
-										<div key={i} className={styles.thumbnailContainer}>
+										<div
+											key={i}
+											data-index={i}
+											className={styles.thumbnailContainer}
+											onClick={this.changeCurrentImage}
+										>
 											<img src={url} className={styles.thumbnail} alt="" />
 										</div>
 									))}
 								</div>
-								{/* TODO: Make image gallery into separate component */}
-								{/* <div className={styles.currentImage}>
-									<img src="https://picsum.photos/400/500/?random" alt="" />
-								</div> */}
 							</div>
 							<div className={styles.infoContainer}>
 								<div className={styles.basicInfo}>
