@@ -6,8 +6,8 @@ import Button from "./Button"
 const LoaderButton = ({
 	isLoading = false,
 	disabled = false,
-	text,
-	loadingText,
+	text = "OK",
+	loadingText = text,
 	...props
 }) => (
 	<Button disabled={disabled || isLoading} {...props}>
@@ -20,7 +20,7 @@ LoaderButton.propTypes = {
 	isLoading: PropTypes.bool,
 	disabled: PropTypes.bool,
 	text: PropTypes.string.isRequired,
-	loadingText: PropTypes.string.isRequired
+	loadingText: PropTypes.string
 }
 
 export default LoaderButton
