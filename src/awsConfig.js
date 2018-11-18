@@ -1,49 +1,52 @@
 const stages = {
 	development: {
 		apiGateway: {
-			REGION: "eu-west-1",
-			URL: "https://jbfnwqgp7k.execute-api.eu-west-1.amazonaws.com/dev"
+			REGION: "eu-central-1",
+			URL: "https://dqmk14o709.execute-api.eu-central-1.amazonaws.com/dev"
 		},
 		s3: {
-			REGION: "eu-west-1",
+			REGION: "eu-central-1",
 			BUCKET: "streetwear-dev-images-bucket"
 		},
 		cognito: {
-			REGION: "eu-west-1",
-			USER_POOL_ID: "eu-west-1_QkGo3xzLl",
-			APP_CLIENT_ID: "7cho8982qvnh5sr3gru1bko26a",
-			IDENTITY_POOL_ID: "eu-west-1:1097ca1d-2dbd-4c4f-ab4a-dfb36d347334"
+			REGION: "eu-central-1",
+			USER_POOL_ID: "eu-central-1_SR0p8iEv9",
+			APP_CLIENT_ID: "5230m6nigd23uo7b50gqsir8np",
+			IDENTITY_POOL_ID: "eu-central-1:ee18470a-40f8-4e5d-9556-1f88b427eb47"
 		}
 	},
 
 	test: {
 		apiGateway: {
-			REGION: "eu-west-1",
+			REGION: "",
 			URL: ""
 		},
+		s3: {
+			REGION: "",
+			BUCKET: ""
+		},
 		cognito: {
-			REGION: "eu-west-1",
+			REGION: "",
 			USER_POOL_ID: "",
 			APP_CLIENT_ID: "",
 			IDENTITY_POOL_ID: ""
 		}
 	},
 
-	// Currently a duplicate of the development config
 	production: {
 		apiGateway: {
-			REGION: "eu-west-1",
-			URL: "https://jbfnwqgp7k.execute-api.eu-west-1.amazonaws.com/dev"
+			REGION: "eu-central-1",
+			URL: "https://dqmk14o709.execute-api.eu-central-1.amazonaws.com/dev"
 		},
 		s3: {
-			REGION: "eu-west-1",
+			REGION: "eu-central-1",
 			BUCKET: "streetwear-dev-images-bucket"
 		},
 		cognito: {
-			REGION: "eu-west-1",
-			USER_POOL_ID: "eu-west-1_QkGo3xzLl",
-			APP_CLIENT_ID: "7cho8982qvnh5sr3gru1bko26a",
-			IDENTITY_POOL_ID: "eu-west-1:1097ca1d-2dbd-4c4f-ab4a-dfb36d347334"
+			REGION: "eu-central-1",
+			USER_POOL_ID: "eu-central-1_SR0p8iEv9",
+			APP_CLIENT_ID: "5230m6nigd23uo7b50gqsir8np",
+			IDENTITY_POOL_ID: "eu-central-1:ee18470a-40f8-4e5d-9556-1f88b427eb47"
 		}
 	}
 }
