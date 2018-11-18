@@ -42,20 +42,27 @@ class Home extends Component {
 		const { items, isLoading, isRefreshing } = this.state
 		return (
 			<CenteredLayout>
-				<div className={styles.header}>
-					{items && <h4>{items.length} Wyniki</h4>}
-					<FontAwesomeIcon
-						icon="sync"
-						className={cn({ [animations.spinning]: isRefreshing })}
-						onClick={this.refresh}
-					/>
-				</div>
 				<div className={styles.mainContainer}>
-					{!isLoading && items ? (
-						items.map((item) => <ItemCard key={item.itemId} item={item} />)
-					) : (
-						<LoadingSpinner />
-					)}
+					<div className={styles.sidebar}>
+						<h4>Filtry</h4>
+						{items && (
+							<div className={styles.header}>
+								{items.length} Wyniki&nbsp;
+								<FontAwesomeIcon
+									icon="sync"
+									className={cn({ [animations.spinning]: isRefreshing })}
+									onClick={this.refresh}
+								/>
+							</div>
+						)}
+					</div>
+					<div className={styles.content}>
+						{!isLoading && items ? (
+							items.map((item) => <ItemCard key={item.itemId} item={item} />)
+						) : (
+							<LoadingSpinner />
+						)}
+					</div>
 				</div>
 			</CenteredLayout>
 		)
