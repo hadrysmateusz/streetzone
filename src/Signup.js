@@ -11,7 +11,6 @@ class Signup extends Component {
 	}
 
 	handleSubmit = async (data) => {
-		// TODO: show confiramation form if user trying to register exists but is unverified
 		this.setState({ isLoading: true })
 
 		try {

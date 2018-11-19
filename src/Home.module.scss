@@ -3,20 +3,25 @@
 .mainContainer {
 	display: flex;
 	flex-flow: column;
+	max-width: 650px;
 	@media (min-width: 800px) {
 		flex-flow: row;
+		max-width: 1100px;
 	}
 	justify-content: center;
-	max-width: 1100px;
 	margin: 0 auto;
 }
+
 .sidebar {
+	// @media (max-width: 555px) {
+	// 	display: none;
+	// }
 	@media (max-width: 800px) {
 		min-height: 280px;
 		width: 100%;
 	}
 	@media (min-width: 800px) {
-		width: 240px;
+		width: 250px;
 		min-width: 190px;
 		margin-right: 10px;
 	}

@@ -1,0 +1,19 @@
+.outerContainer {
+	padding: 5px 15px;
+	display: flex;
+	@media (max-width: 555px) {
+		flex-direction: column;
+	}
+	@media (min-width: 800px) {
+		flex-direction: column;
+	}
+}
+.categoryBody {
+	padding: 4px 10px;
+}
+.categoryContainer {
+	margin-bottom: 10px;
+}
+.miscContainer {
+	padding: 0 15px;
+}

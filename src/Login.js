@@ -1,39 +1,17 @@
 import React, { Component } from "react"
 import Auth from "@aws-amplify/auth"
 import { Form, Field } from "react-final-form"
+
 import CenteredLayout from "./CenteredLayout"
+import LoaderButton from "./components/LoaderButton"
 
 class Login extends Component {
 	state = {
 		isLoading: false
 	}
 
-	// componentDidMount = () => {
-	// 	console.log("LOGIN PROPS:", this.props)
-	// }
-
-	fbLogin() {
-		// window.FB.login(function(response) {
-		// 	if (response.status === "connected") {
-		// 		const { accessToken, expiresAt, userId } = response.authResponse
-		// 		Auth.federatedSignIn(
-		// 			"facebook",
-		// 			{ token: accessToken, expires_at: expiresAt },
-		// 			{ name: userId }
-		// 		)
-		// 			.then((credentials) => {
-		// 				console.log("get aws credentials", credentials)
-		// 			})
-		// 			.catch((e) => {
-		// 				console.log(e)
-		// 			})
-		// 	} else {
-		// 		// The person is not logged into this app or we are unable to tell.
-		// 	}
-		// })
-	}
-
 	handleSubmit = async (data) => {
+		// TODO: ask for confirmation if user trying to register exists but is unverified
 		this.setState({ isLoading: true })
 
 		try {
@@ -44,13 +22,6 @@ class Login extends Component {
 			alert(e.message)
 			this.setState({ isLoading: false })
 		}
-	}
-	handleResponse = (data) => {
-		console.log(data)
-	}
-
-	handleError = (error) => {
-		this.setState({ error })
 	}
 
 	render() {
@@ -70,36 +41,14 @@ class Login extends Component {
 									<Field name="password" component="input" type="password" />
 								</div>
 								<div className="buttons">
-									<button type="submit" disabled={submitting || pristine}>
-										OK
-									</button>
+									<LoaderButton
+										isLoading={this.state.isLoading}
+										type="submit"
+										text="OK"
+										disabled={submitting || pristine}
+									/>
 								</div>
 							</form>
-							{this.props.authState}
-							{/* <a
-								href={`https://streetwear-dev.auth.eu-central-1.amazoncognito.com/oauth2/authorize?response_type=code&client_id=5cdq6tmbrpm6aqbej1qip0duhq&redirect_uri=https://flamboyant-jepsen-0627c4.netlify.com/&state=123&identity_provider=Facebook`}
-								style={{
-									background: "#3B5998",
-									color: "white",
-									padding: "10px 20px",
-									display: "inline-block",
-									marginTop: "10px"
-								}}
-							>
-								oauth2/authorize endpoint
-							</a>
-							<a
-								href={`https://streetwear-dev.auth.eu-central-1.amazoncognito.com/login?response_type=code&client_id=5cdq6tmbrpm6aqbej1qip0duhq&redirect_uri=https://flamboyant-jepsen-0627c4.netlify.com/&state=123`}
-								style={{
-									background: "#3B5998",
-									color: "white",
-									padding: "10px 20px",
-									display: "inline-block",
-									marginTop: "10px"
-								}}
-							>
-								login endpoint
-							</a> */}
 						</>
 					)}
 				/>
