@@ -1,9 +1,9 @@
 import React, { Component } from "react"
 import API from "@aws-amplify/api"
 import { s3Get, s3Upload, s3Remove } from "./libs/s3lib"
+import errorLog from "./libs/errorLog"
 
 import FileItem from "./classes/FileItem"
-
 import LoadingSpinner from "./components/LoadingSpinner"
 import EmptyState from "./components/EmptyState"
 import CenteredLayout from "./CenteredLayout"
@@ -20,9 +20,16 @@ class EditItem extends Component {
 	}
 
 	getItem = async () => {
-		let itemId = this.props.match.params.id
-		let item = await API.get("items", `/items/${itemId}`)
-		this.setState({ item })
+		try {
+			const { partitionKey, sortKey } = this.props.match.params
+			const compositeKey = partitionKey + "." + sortKey
+			const item = await API.get("items", `/items/${compositeKey}`)
+
+			await this.setState({ item, isLoading: false })
+		} catch (e) {
+			errorLog(e, "Error while loading item")
+			await this.setState({ isLoading: false })
+		}
 	}
 
 	getFilesFromS3 = async (fileKeys) => {
@@ -43,7 +50,7 @@ class EditItem extends Component {
 	componentDidMount = async () => {
 		// Get item from dynamoDb
 		await this.getItem()
-		// Get items attachments' keys and urls for previews
+		// Get item attachments' keys and urls for previews
 		await this.getFilesFromS3(this.state.item.attachments)
 	}
 
@@ -101,8 +108,9 @@ class EditItem extends Component {
 
 		// Upload data to dynamodDb
 		try {
-			let itemId = this.props.match.params.id
-			await API.put("items", `/items/${itemId}`, { body })
+			let sortKey = this.state.item.createdAt
+			console.log(`/items/${sortKey}`)
+			await API.put("items", `/items/${sortKey}`, { body })
 			this.props.history.push("/")
 			return
 		} catch (e) {

@@ -3,6 +3,7 @@ import React, { Component } from "react"
 import Button from "./components/Button"
 import FileHandler from "./FileHandler"
 import File from "./File"
+import itemSchema from "./itemSchema"
 
 class ItemForm extends Component {
 	render() {
@@ -35,12 +36,11 @@ class ItemForm extends Component {
 									type="select"
 									multiple
 								>
-									<option value="Adidas">Adidas</option>
-									<option value="Givenchy">Givenchy</option>
-									<option value="Gucci">Gucci</option>
-									<option value="Nike">Nike</option>
-									<option value="Off-White">Off-White</option>
-									<option value="Supreme">Supreme</option>
+									{itemSchema.designers.map((designerName, i) => (
+										<option key={i} value={designerName}>
+											{designerName}
+										</option>
+									))}
 								</Field>
 							</div>
 							<div>
@@ -58,10 +58,11 @@ class ItemForm extends Component {
 								<label>Kategoria </label>
 								<Field name="category" component="select" type="select">
 									<option />
-									<option value="Tee">Tee</option>
-									<option value="Buty">Buty</option>
-									<option value="Longsleeve">Longsleeve</option>
-									<option value="Spodnie">Spodnie</option>
+									{itemSchema.category.map((categoryName, i) => (
+										<option key={i} value={categoryName}>
+											{categoryName}
+										</option>
+									))}
 								</Field>
 							</div>
 							<div>

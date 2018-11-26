@@ -91,7 +91,7 @@ class App extends Component {
 								<Link to="/login" className={styles.navLink}>
 									Logowanie
 								</Link>
-								<Link to="/signup" className={styles.navLink}>
+								<Link to="/rejestracja" className={styles.navLink}>
 									Rejestracja
 								</Link>
 							</>

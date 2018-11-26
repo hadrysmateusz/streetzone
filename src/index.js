@@ -3,10 +3,10 @@ import ReactDOM from "react-dom"
 import { BrowserRouter as Router } from "react-router-dom"
 import Amplify from "@aws-amplify/core"
 import * as serviceWorker from "./serviceWorker"
-import awsConfig from "./awsConfig"
-import App from "./App"
-import "./fontAwesomeConfig"
+import awsConfig from "./config/awsConfig"
+import "./config/fontAwesomeConfig"
 import "./scss/index.scss"
+import App from "./App"
 
 let config = {
 	Auth: {

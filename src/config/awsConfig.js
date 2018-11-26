@@ -2,17 +2,17 @@ const stages = {
 	development: {
 		apiGateway: {
 			REGION: "eu-central-1",
-			URL: "https://ov9jodm6b4.execute-api.eu-central-1.amazonaws.com/dev"
+			URL: "https://tiowvs0wgh.execute-api.eu-central-1.amazonaws.com/dev"
 		},
 		s3: {
 			REGION: "eu-central-1",
-			BUCKET: "streetwear-dev-imagesbucket-1t3drmbvpd8by"
+			BUCKET: "streetwear-dev-imagesbucket-k11bcldx718y"
 		},
 		cognito: {
 			REGION: "eu-central-1",
-			USER_POOL_ID: "eu-central-1_NnSTv7GLl",
-			APP_CLIENT_ID: "54lu1t4e76e21p1n0r6ibdrfkp",
-			IDENTITY_POOL_ID: "eu-central-1:197f3f15-8222-4b36-a9c9-fcb3db983a89"
+			USER_POOL_ID: "eu-central-1_UsObjCfJK",
+			APP_CLIENT_ID: "5e7u6o8ju386efgje2cm0473io",
+			IDENTITY_POOL_ID: "eu-central-1:ee66018b-e10b-4e1f-9398-b26b8245be1e"
 		}
 	},
 
@@ -36,17 +36,17 @@ const stages = {
 	production: {
 		apiGateway: {
 			REGION: "eu-central-1",
-			URL: "https://ov9jodm6b4.execute-api.eu-central-1.amazonaws.com/dev"
+			URL: "https://tiowvs0wgh.execute-api.eu-central-1.amazonaws.com/dev"
 		},
 		s3: {
 			REGION: "eu-central-1",
-			BUCKET: "streetwear-dev-imagesbucket-1t3drmbvpd8by"
+			BUCKET: "streetwear-dev-imagesbucket-k11bcldx718y"
 		},
 		cognito: {
 			REGION: "eu-central-1",
-			USER_POOL_ID: "eu-central-1_NnSTv7GLl",
-			APP_CLIENT_ID: "54lu1t4e76e21p1n0r6ibdrfkp",
-			IDENTITY_POOL_ID: "eu-central-1:197f3f15-8222-4b36-a9c9-fcb3db983a89"
+			USER_POOL_ID: "eu-central-1_UsObjCfJK",
+			APP_CLIENT_ID: "5e7u6o8ju386efgje2cm0473io",
+			IDENTITY_POOL_ID: "eu-central-1:ee66018b-e10b-4e1f-9398-b26b8245be1e"
 		}
 	}
 }

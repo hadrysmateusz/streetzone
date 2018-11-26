@@ -4,7 +4,11 @@ import {
 	faSync,
 	faUser,
 	faPlus,
-	faUserCircle
+	faUserCircle,
+	faAngleRight,
+	faAngleDoubleRight,
+	faAngleLeft,
+	faAngleDoubleLeft
 } from "@fortawesome/free-solid-svg-icons"
 import { faSquare, faCheckSquare } from "@fortawesome/free-regular-svg-icons"
 // import {} from "@fortawesome/free-brands-svg-icons"
@@ -16,5 +20,9 @@ library.add(
 	faPlus,
 	faUserCircle,
 	faSquare,
-	faCheckSquare
+	faCheckSquare,
+	faAngleRight,
+	faAngleDoubleRight,
+	faAngleLeft,
+	faAngleDoubleLeft
 )

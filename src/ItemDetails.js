@@ -1,19 +1,19 @@
 import React, { Component } from "react"
-import API from "@aws-amplify/api"
 import { Link } from "react-router-dom"
+import API from "@aws-amplify/api"
 
-import styles from "./ItemDetails.module.scss"
 import { ITEM_DELETE_CONFIRM_MESSAGE } from "./const.js"
+import styles from "./ItemDetails.module.scss"
 
-import LoaderButton from "./components/LoaderButton"
 import LoadingSpinner from "./components/LoadingSpinner"
+import LoaderButton from "./components/LoaderButton"
 import EmptyState from "./components/EmptyState"
-import Button from "./components/Button"
 import CenteredLayout from "./CenteredLayout"
+import Button from "./components/Button"
 import UserPreview from "./UserPreview"
 
-import { s3Get } from "./libs/s3lib"
 import errorLog from "./libs/errorLog"
+import { s3Get } from "./libs/s3lib"
 
 class ItemDetails extends Component {
 	state = {
@@ -35,15 +35,18 @@ class ItemDetails extends Component {
 
 	componentDidMount = async () => {
 		try {
-			let itemId = this.props.match.params.id
-			let item = await API.get("items", `/items/${itemId}`)
+			const { partitionKey, sortKey } = this.props.match.params
+
+			const compositeKey = partitionKey + "." + sortKey
+
+			const item = await API.get("items", `/items/${compositeKey}`)
 			await this.setState({ item })
 			await this.loadImages()
 		} catch (e) {
 			errorLog(e, "Error while loading item")
 		}
 
-		console.log(this.state.item)
+		console.log("item", this.state.item)
 
 		this.setState({ isLoading: false })
 	}
@@ -54,8 +57,8 @@ class ItemDetails extends Component {
 		let confirmation = window.confirm(ITEM_DELETE_CONFIRM_MESSAGE)
 		if (confirmation) {
 			try {
-				let itemId = this.props.match.params.id
-				await API.del("items", `/items/${itemId}`)
+				let sortKey = this.props.match.params.sortKey
+				await API.del("items", `/items/${sortKey}`)
 				this.props.history.push("/")
 				return
 			} catch (e) {
@@ -118,7 +121,7 @@ class ItemDetails extends Component {
 								<div className={styles.buttons}>
 									{userIsOwner ? (
 										<>
-											<Link to={`/e/${item.itemId}`}>
+											<Link to={`/e/${item.userId}/${item.createdAt}`}>
 												<Button>Edytuj</Button>
 											</Link>
 											<LoaderButton

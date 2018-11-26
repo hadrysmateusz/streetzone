@@ -19,7 +19,7 @@ export class UserProfile extends Component {
 
 		try {
 			user = await API.get("items", `/users/${userId}`)
-			items = await API.get("items", `/items/owner/${userId}`)
+			items = await API.get("items", `/items/user/${userId}`)
 		} catch (e) {
 			errorLog(e, "Wystąpił problem podczas wyszukiwania użytkownika.")
 		}
@@ -36,7 +36,7 @@ export class UserProfile extends Component {
 					<p>Przedmioty użytkownika:</p>
 					<div style={{ display: "flex", flexFlow: "row wrap" }}>
 						{items.map((item) => (
-							<ItemCard key={item.itemId} item={item} />
+							<ItemCard key={item.createdAt} item={item} />
 						))}
 					</div>
 				</CenteredLayout>

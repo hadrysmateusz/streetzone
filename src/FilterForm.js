@@ -3,44 +3,59 @@ import itemSchema from "./itemSchema"
 import { Form, Field } from "react-final-form"
 import LoaderButton from "./components/LoaderButton"
 import styles from "./FilterForm.module.scss"
-import API from "@aws-amplify/auth"
-import errorLog from "./libs/errorLog"
 
 export class FilterForm extends Component {
 	state = {
 		isLoading: false
 	}
 
-	handleSubmit = async (data) => {
-		try {
-			await API.post("items", "/items/filter", { body: data })
-		} catch (e) {
-			errorLog(e, "Wystąpił błąd podczas łączenia z serwerem")
-		}
-	}
-
 	render() {
 		return (
 			<Form
-				onSubmit={this.handleSubmit}
+				onSubmit={this.props.onSubmit}
+				initialValues={{
+					sort: "date-DESC"
+				}}
 				render={({ handleSubmit, submitting, pristine, values }) => (
 					<form onSubmit={handleSubmit}>
 						<div className={styles.outerContainer}>
+							<div className={styles.categoryContainer}>
+								<div className={styles.categoryHeader}>
+									<strong>Sortuj według</strong>
+								</div>
+								<div className={styles.categoryBody}>
+									<Field
+										name="sort"
+										component="select"
+										className={styles.sortInput}
+									>
+										<option value="date-DESC">Najnowsze</option>
+										<option value="date-ASC">Najstarsze</option>
+										<option value="price-ASC">Cena Rosnąco</option>
+										<option value="price-DESC">Cena Malejąco</option>
+									</Field>
+								</div>
+							</div>
+
 							<div className={styles.categoryContainer}>
 								<div className={styles.categoryHeader}>
 									<strong>Kategoria</strong>
 								</div>
 								<div className={styles.categoryBody}>
 									{itemSchema.category.map((categoryName, i) => (
-										<div key={i}>
+										<div
+											key={i}
+											className={styles.filterItem}
+											title={categoryName}
+										>
 											<label>
 												<Field
 													name="category"
 													component="input"
-													type="checkbox"
+													type="radio"
 													value={categoryName}
 												/>
-												{categoryName}
+												<span>{categoryName}</span>
 											</label>
 										</div>
 									))}
@@ -53,7 +68,11 @@ export class FilterForm extends Component {
 								</div>
 								<div className={styles.categoryBody}>
 									{itemSchema.designers.map((designerName, i) => (
-										<div key={i}>
+										<div
+											key={i}
+											className={styles.filterItem}
+											title={designerName}
+										>
 											<label>
 												<Field
 													name="designers"
@@ -61,7 +80,7 @@ export class FilterForm extends Component {
 													type="checkbox"
 													value={designerName}
 												/>
-												{designerName}
+												<span>{designerName}</span>
 											</label>
 										</div>
 									))}
@@ -79,39 +98,27 @@ export class FilterForm extends Component {
 											justifyContent: "flex-start"
 										}}
 									>
-										<label>
-											<Field
-												name="price_min"
-												component="input"
-												type="number"
-												min="0"
-												step="1"
-												max="99999"
-												style={{
-													minWidth: "66px",
-													padding: "6px 8px",
-													maxWidth: "90px",
-													marginRight: "8px"
-												}}
-												placeholder="Od"
-											/>
-										</label>
-										<label>
-											<Field
-												name="price_max"
-												component="input"
-												type="number"
-												min="0"
-												step="1"
-												max="99999"
-												style={{
-													minWidth: "66px",
-													padding: "6px 8px",
-													maxWidth: "90px"
-												}}
-												placeholder="Do"
-											/>
-										</label>
+										<Field
+											name="price_min"
+											className={styles.priceInput}
+											component="input"
+											type="number"
+											min="0"
+											step="1"
+											max="99999"
+											style={{ marginRight: "8px" }}
+											placeholder="Od"
+										/>
+										<Field
+											name="price_max"
+											className={styles.priceInput}
+											component="input"
+											type="number"
+											min="0"
+											step="1"
+											max="99999"
+											placeholder="Do"
+										/>
 									</div>
 								</div>
 							</div>
@@ -122,7 +129,7 @@ export class FilterForm extends Component {
 									isLoading={this.state.isLoading}
 									type="submit"
 									text="Filtruj"
-									disabled={submitting || pristine}
+									disabled={submitting}
 								/>
 								<pre>{JSON.stringify(values, 0, 2)}</pre>
 							</div>

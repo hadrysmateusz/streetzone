@@ -11,9 +11,22 @@
 .categoryBody {
 	padding: 4px 10px;
 }
+.filterItem {
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
 .categoryContainer {
 	margin-bottom: 10px;
 }
 .miscContainer {
 	padding: 0 15px;
+}
+.priceInput {
+	min-width: 66px;
+	padding: 6px 8px;
+	max-width: 90px;
+}
+.sortInput {
+	padding: 6px 8px;
 }

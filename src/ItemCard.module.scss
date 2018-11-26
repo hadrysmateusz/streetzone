@@ -3,6 +3,7 @@
 .ItemCard {
 	border: $border-width-main solid $black;
 	margin: 10px auto;
+	height: 400px;
 	width: 100%;
 	max-width: 330px;
 	a {
@@ -34,9 +35,9 @@
 
 .thumbnail {
 	width: 100%;
-	height: 300px;
 	background: $thumbnail-bg;
 	display: flex;
+	height: 300px;
 	justify-content: center;
 	align-items: center;
 

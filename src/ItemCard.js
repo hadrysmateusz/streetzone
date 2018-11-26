@@ -23,10 +23,17 @@ class ItemCard extends Component {
 	}
 
 	render() {
-		const { itemId, name, price, designers = [], createdAt } = this.props.item
+		const {
+			userId,
+			name,
+			price,
+			designers = [],
+			createdAt,
+			category
+		} = this.props.item
 		return (
 			<div className={styles.ItemCard}>
-				<Link to={"/i/" + itemId}>
+				<Link to={`/i/${userId}/${createdAt}`}>
 					<div className={styles.thumbnail}>
 						<img src={this.state.imageURL} alt="" />
 					</div>
@@ -43,8 +50,9 @@ class ItemCard extends Component {
 							</div>
 							<div className={styles.name}>{name}</div>
 						</div>
+						<div>{category}</div>
 						<div className={styles.date}>
-							Dodano: {moment(createdAt).format("D.M.YY")}
+							Dodano {moment(createdAt).format("D.M.YY o HH:mm")}
 						</div>
 					</div>
 				</Link>
@@ -55,11 +63,14 @@ class ItemCard extends Component {
 
 ItemCard.propTypes = {
 	item: PropTypes.shape({
-		itemId: PropTypes.string.isRequired,
-		name: PropTypes.string.isRequired,
-		price: PropTypes.number.isRequired,
-		designers: PropTypes.arrayOf(PropTypes.string),
-		createdAt: PropTypes.number.isRequired
+		userId: PropTypes.string.isRequired, // Partition key
+		createdAt: PropTypes.number.isRequired, // Sort key, Display
+		identityId: PropTypes.string.isRequired, // Access to s3
+		category: PropTypes.string.isRequired, // Partition key (Index)
+		designers: PropTypes.arrayOf(PropTypes.string), // Display
+		name: PropTypes.string.isRequired, // Display
+		price: PropTypes.number.isRequired, // Sort key, Display
+		size: PropTypes.string.isRequired // Display
 	})
 }
 
