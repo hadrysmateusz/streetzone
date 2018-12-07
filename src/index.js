@@ -1,44 +1,17 @@
 import React from "react"
 import ReactDOM from "react-dom"
-import { BrowserRouter as Router } from "react-router-dom"
-import Amplify from "@aws-amplify/core"
+
 import * as serviceWorker from "./serviceWorker"
-import awsConfig from "./config/awsConfig"
-import "./config/fontAwesomeConfig"
 import "./scss/index.scss"
-import App from "./App"
+import "./config/fontAwesomeConfig"
 
-let config = {
-	Auth: {
-		identityPoolId: awsConfig.cognito.IDENTITY_POOL_ID,
-		region: awsConfig.cognito.REGION,
-		userPoolId: awsConfig.cognito.USER_POOL_ID,
-		userPoolWebClientId: awsConfig.cognito.APP_CLIENT_ID,
-		mandatorySignIn: false
-	},
-	Storage: {
-		region: awsConfig.s3.REGION,
-		bucket: awsConfig.s3.BUCKET,
-		identityPoolId: awsConfig.cognito.IDENTITY_POOL_ID,
-		level: "protected"
-	},
-	API: {
-		endpoints: [
-			{
-				name: "items",
-				endpoint: awsConfig.apiGateway.URL,
-				region: awsConfig.apiGateway.REGION
-			}
-		]
-	}
-}
-
-Amplify.configure(config)
+import App from "./components/App"
+import { Firebase, FirebaseContext } from "./components/Firebase"
 
 ReactDOM.render(
-	<Router>
+	<FirebaseContext.Provider value={new Firebase()}>
 		<App />
-	</Router>,
+	</FirebaseContext.Provider>,
 	document.getElementById("root")
 )
 

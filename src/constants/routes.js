@@ -1,0 +1,8 @@
+export const SIGN_UP = "/rejestracja"
+export const SIGN_IN = "/login"
+export const HOME = "/"
+export const PASSWORD_FORGET = "/pw-reset"
+export const ACCOUNT = "/u/:id"
+export const NEW_ITEM = "/nowy"
+export const ITEM_DETAILS = "/i/:id"
+export const EDIT_ITEM = "/e/:id"

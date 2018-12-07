@@ -1,0 +1,62 @@
+@import "../../scss/variables.scss";
+
+.mainContainer {
+	display: flex;
+	flex-flow: column;
+	max-width: 650px;
+	@media (min-width: 800px) {
+		flex-flow: row;
+		max-width: 1100px;
+	}
+	justify-content: center;
+	margin: 0 auto;
+}
+
+.sidebar {
+	min-width: 212px;
+	@media (max-width: 800px) {
+		min-height: 280px;
+		width: 100%;
+	}
+	@media (min-width: 800px) {
+		width: 250px;
+		min-width: 190px;
+		margin-right: 10px;
+	}
+}
+
+.content {
+	display: flex;
+	flex-flow: row wrap;
+	flex-grow: 1;
+	justify-content: left;
+	@media (min-width: 800px) {
+		max-width: 700px;
+	}
+	@media (min-width: 1100px) {
+		max-width: 820px;
+	}
+}
+
+.header {
+	display: flex;
+	font-weight: bold;
+	padding: 10px 15px 10px;
+	margin-top: 7px;
+	margin-bottom: 15px;
+	justify-content: space-between;
+	border-bottom: $border-width-main solid $black;
+	// border-top: $border-width-main solid $black;
+}
+.header_prev,
+.header_next {
+	flex: 0 0 50px;
+	text-align: center;
+}
+.header_refresh {
+	cursor: pointer;
+}
+
+.header_currentPage {
+	white-space: nowrap;
+}
