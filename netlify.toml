@@ -1,0 +1,47 @@
+# Global settings applied to the whole site.
+# “base” is directory to change to before starting build, and
+# “publish” is the directory to publish (relative to root of your repo).
+# “command” is your build command.
+
+[build]
+  base    = ""
+  publish = "build"
+  command = "REACT_APP_STAGE=dev npm run build"
+  environment = { ACCESS_TOKEN = "super secret", NODE_ENV = "8.0.1" }
+
+# Production context: All deploys to the main
+# repository branch will inherit these settings.
+[context.production]
+  command = "REACT_APP_STAGE=prod npm run build"
+
+[context.production.environment]
+  REACT_APP_API_KEY="AIzaSyBRz96ggb3WZQWkTPkcOsA-4pQfDs4cFPM"
+  REACT_APP_AUTH_DOMAIN="streetwear-app.firebaseapp.com"
+  REACT_APP_DATABASE_URL="https://streetwear-app.firebaseio.com"
+  REACT_APP_PROJECT_ID="streetwear-app"
+  REACT_APP_STORAGE_BUCKET="streetwear-app.appspot.com"
+  REACT_APP_MESSAGING_SENDER_ID="1095236809107"
+
+# Deploy Preview context: All Deploy Previews
+# will inherit these settings.
+[context.deploy-preview]
+  command = "REACT_APP_STAGE=dev npm run build"
+[context.deploy-preview.environment]
+  REACT_APP_API_KEY="AIzaSyBRz96ggb3WZQWkTPkcOsA-4pQfDs4cFPM"
+  REACT_APP_AUTH_DOMAIN="streetwear-app.firebaseapp.com"
+  REACT_APP_DATABASE_URL="https://streetwear-app.firebaseio.com"
+  REACT_APP_PROJECT_ID="streetwear-app"
+  REACT_APP_STORAGE_BUCKET="streetwear-app.appspot.com"
+  REACT_APP_MESSAGING_SENDER_ID="1095236809107"
+
+# Branch Deploy context: All deploys that are not in
+# an active Deploy Preview will inherit these settings.
+[context.branch-deploy]
+  command = "REACT_APP_STAGE=dev npm run build"
+[context.branch-deploy.environment]
+  REACT_APP_API_KEY="AIzaSyBRz96ggb3WZQWkTPkcOsA-4pQfDs4cFPM"
+  REACT_APP_AUTH_DOMAIN="streetwear-app.firebaseapp.com"
+  REACT_APP_DATABASE_URL="https://streetwear-app.firebaseio.com"
+  REACT_APP_PROJECT_ID="streetwear-app"
+  REACT_APP_STORAGE_BUCKET="streetwear-app.appspot.com"
+  REACT_APP_MESSAGING_SENDER_ID="1095236809107"
