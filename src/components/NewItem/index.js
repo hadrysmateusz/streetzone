@@ -4,7 +4,7 @@ import uuidv1 from "uuid/v1"
 
 import { withAuthorization } from "../UserSession"
 import { withFirebase } from "../Firebase"
-import ItemForm from "../ItemForm"
+import { ItemForm } from "../ItemForm"
 import CenteredLayout from "../CenteredLayout"
 
 import { itemSchema } from "../../constants"

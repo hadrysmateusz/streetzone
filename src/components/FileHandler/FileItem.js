@@ -19,6 +19,7 @@ export class FileItem extends Component {
 				<button
 					className={styles.removeButton}
 					type="button"
+					title="Usuń zdjęcie"
 					onClick={() => this.props.onDelete(this.props.fileItem.id)}
 				>
 					<FontAwesomeIcon icon="times" />

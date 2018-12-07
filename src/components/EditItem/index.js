@@ -7,7 +7,7 @@ import { withAuthorization } from "../UserSession"
 import LoadingSpinner from "../LoadingSpinner"
 import EmptyState from "../EmptyState"
 import CenteredLayout from "../CenteredLayout"
-import ItemForm from "../ItemForm"
+import { ItemForm } from "../ItemForm"
 
 import { CustomFile } from "../FileHandler"
 import { formData, dbData } from "../../utils/formatItemData"

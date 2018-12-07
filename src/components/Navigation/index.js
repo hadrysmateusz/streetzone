@@ -32,7 +32,7 @@ const Navigation = ({ authUser }) => {
 						</Link>{" "}
 					</li>
 					<li>
-						<SignOutButton />
+						<SignOutButton className={styles.signOutButton} />
 					</li>
 				</>
 			)}

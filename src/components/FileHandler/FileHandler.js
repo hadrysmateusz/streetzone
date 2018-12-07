@@ -50,7 +50,10 @@ class FileHandler extends Component {
 
 	render() {
 		const { input, meta, isLoading, ...rest } = this.props
-		console.log(meta)
+
+		const hasContent = Array.isArray(input.value) && input.value.length > 0
+
+		const buttonText = hasContent ? "Dodaj pliki" : "Wybierz pliki"
 
 		return (
 			<div>
@@ -68,9 +71,8 @@ class FileHandler extends Component {
 						type="button"
 						onClick={this.clickFileInput}
 						disabled={meta.submitting || isLoading}
-					>
-						Wybierz pliki
-					</Button>
+						text={buttonText}
+					/>
 					<Button
 						type="button"
 						onClick={this.clear}
@@ -80,16 +82,8 @@ class FileHandler extends Component {
 					</Button>
 				</div>
 
-				<div className={styles.mainErrorContainer}>
-					{meta.error && meta.dirty && meta.error.main && (
-						<span>
-							<FontAwesomeIcon icon="exclamation" />
-							<span className={styles.mainErrorText}>{meta.error.main}</span>
-						</span>
-					)}
-				</div>
 				<div className={styles.fileListContainer}>
-					{input.value &&
+					{hasContent ? (
 						input.value.map((file, i) => {
 							const error = meta.error && meta.error.specific[i]
 							return (
@@ -100,7 +94,21 @@ class FileHandler extends Component {
 									error={error}
 								/>
 							)
-						})}
+						})
+					) : (
+						<div className={styles.emptyState}>
+							Wybierz lub przeciągnij(TODO) pliki
+						</div>
+					)}
+				</div>
+
+				<div className={styles.mainErrorContainer}>
+					{meta.error && (meta.dirty || meta.submitFailed) && meta.error.main && (
+						<span>
+							<FontAwesomeIcon icon="exclamation" />
+							<span className={styles.mainErrorText}>{meta.error.main}</span>
+						</span>
+					)}
 				</div>
 			</div>
 		)
