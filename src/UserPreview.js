@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import LoadingSpinner from "./components/LoadingSpinner"
 import errorLog from "./libs/errorLog"
 
-export class UserProfile extends Component {
+export class UserPreview extends Component {
 	state = {
 		user: null,
 		isLoading: true
@@ -48,4 +48,4 @@ export class UserProfile extends Component {
 	}
 }
 
-export default UserProfile
+export default UserPreview

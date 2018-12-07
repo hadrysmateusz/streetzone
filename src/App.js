@@ -27,7 +27,7 @@ class App extends Component {
 		this.setState({ isAuthenticating: false })
 	}
 
-	// needs to be a separate class to allow
+	// needs to be a separate function to allow
 	// modification from other components via props
 	userHasAuthenticated = async (authenticated) => {
 		this.setState({ isAuthenticated: authenticated })
