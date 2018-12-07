@@ -4,7 +4,6 @@ import FileItem from "./FileItem"
 import CustomFile from "./CustomFile"
 import styles from "./FileHandler.module.scss"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { FORMS } from "../../constants"
 
 class FileHandler extends Component {
 	fileInput = React.createRef()
@@ -50,7 +49,7 @@ class FileHandler extends Component {
 	}
 
 	render() {
-		const { input, meta, ...rest } = this.props
+		const { input, meta, isLoading, ...rest } = this.props
 		console.log(meta)
 
 		return (
@@ -68,18 +67,14 @@ class FileHandler extends Component {
 					<Button
 						type="button"
 						onClick={this.clickFileInput}
-						disabled={meta.submitting || !meta.initial}
+						disabled={meta.submitting || isLoading}
 					>
 						Wybierz pliki
 					</Button>
 					<Button
 						type="button"
 						onClick={this.clear}
-						disabled={
-							meta.submitting ||
-							!meta.initial ||
-							meta.error.main === FORMS.ERR_FILES_REQUIRED
-						}
+						disabled={meta.submitting || isLoading}
 					>
 						Usuń wszystkie
 					</Button>
@@ -112,5 +107,4 @@ class FileHandler extends Component {
 	}
 }
 
-// export default FileHandlerAdapter
 export default FileHandler

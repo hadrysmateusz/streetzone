@@ -126,6 +126,7 @@ class EditItemPage extends Component {
 					{(this.state.data || this.state.isLoading) && (
 						<ItemForm
 							initialValues={this.state.data}
+							isLoading={this.state.isLoading}
 							onSubmit={this.onSubmit}
 						/>
 					)}

@@ -1,0 +1,64 @@
+.fieldRow {
+	margin-bottom: 15px;
+	label {
+		display: block;
+		font-weight: bold;
+		font-size: 0.92rem;
+		padding-bottom: 4px;
+	}
+	input {
+		padding: 6px 8px;
+		width: 200px;
+	}
+	select {
+		width: 200px;
+	}
+	select:not([multiple]) {
+		padding: 6px 8px;
+	}
+	select[multiple] {
+		padding: 2px 0;
+		height: 150px;
+	}
+	option {
+		padding: 4px 8px;
+	}
+	textarea {
+		padding: 6px 8px;
+		width: 100%;
+		height: 150px;
+	}
+}
+
+.outerContainer {
+	padding: 5px 15px;
+	display: flex;
+	@media (max-width: 555px) {
+		flex-direction: column;
+	}
+	@media (min-width: 800px) {
+		flex-direction: column;
+	}
+}
+.categoryBody {
+	padding: 4px 10px;
+}
+.filterItem {
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+.categoryContainer {
+	margin-bottom: 10px;
+}
+.miscContainer {
+	padding: 0 15px;
+}
+.priceInput {
+	min-width: 66px;
+	padding: 6px 8px;
+	max-width: 90px;
+}
+.sortInput {
+	padding: 6px 8px;
+}

@@ -86,7 +86,7 @@ class NewItemPage extends Component {
 }
 
 const initialValues =
-	process.env.NODE_ENV === "development"
+	process.env.NODE_ENV === "asdf"
 		? {
 				name: "test" + Date.now(),
 				designers: [
@@ -99,7 +99,7 @@ const initialValues =
 				description:
 					"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
 		  }
-		: {}
+		: null
 
 const condition = (authUser) => !!authUser
 

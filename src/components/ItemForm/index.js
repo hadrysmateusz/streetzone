@@ -7,6 +7,7 @@ import { FileHandler } from "../FileHandler"
 import { withRouter } from "react-router-dom"
 
 import { itemSchema, ROUTES, FORMS, CONST } from "../../constants"
+import styles from "./ItemForm.module.scss"
 
 const validate = (values) => {
 	const { name, designers, price, category, size, description, files } = values
@@ -18,7 +19,7 @@ const validate = (values) => {
 	}
 
 	// Designers
-	if (!designers) {
+	if (!designers || designers.length === 0) {
 		errors.designers = FORMS.ERR_IS_REQUIRED
 	}
 
@@ -67,10 +68,11 @@ const validate = (values) => {
 		return errObj
 	})()
 
+	console.log(errors)
 	return errors
 }
 
-const ItemForm = ({ initialValues, onSubmit, history }) => {
+const ItemForm = ({ initialValues, onSubmit, history, isLoading }) => {
 	if (!initialValues) {
 		initialValues = {
 			name: "",
@@ -99,7 +101,7 @@ const ItemForm = ({ initialValues, onSubmit, history }) => {
 						{/* Name */}
 						<Field name="name">
 							{({ input, meta }) => (
-								<div>
+								<div className={styles.fieldRow}>
 									<label>Nazwa </label>
 									<input {...input} type="text" placeholder="Nazwa" />
 									{meta.error && meta.touched && <span>{meta.error}</span>}
@@ -110,7 +112,7 @@ const ItemForm = ({ initialValues, onSubmit, history }) => {
 						{/* Designers */}
 						<Field name="designers" type="select">
 							{({ input, meta }) => (
-								<div>
+								<div className={styles.fieldRow}>
 									{/* TODO: add a better way to select multiple */}
 									<label>Projektanci </label>
 									<select {...input} multiple>
@@ -128,7 +130,7 @@ const ItemForm = ({ initialValues, onSubmit, history }) => {
 						{/* Price */}
 						<Field name="price">
 							{({ input, meta }) => (
-								<div>
+								<div className={styles.fieldRow}>
 									<label>Cena </label>
 									<input
 										{...input}
@@ -146,7 +148,7 @@ const ItemForm = ({ initialValues, onSubmit, history }) => {
 						{/* Category */}
 						<Field name="category" type="select">
 							{({ input, meta }) => (
-								<div>
+								<div className={styles.fieldRow}>
 									{/* TODO: add a better way to select multiple */}
 									<label>Kategoria </label>
 									<select {...input}>
@@ -166,7 +168,7 @@ const ItemForm = ({ initialValues, onSubmit, history }) => {
 						{/* Price */}
 						<Field name="size">
 							{({ input, meta }) => (
-								<div>
+								<div className={styles.fieldRow}>
 									<label>Rozmiar </label>
 									<input {...input} type="text" placeholder="Rozmiar" />
 									{meta.error && meta.touched && <span>{meta.error}</span>}
@@ -177,7 +179,7 @@ const ItemForm = ({ initialValues, onSubmit, history }) => {
 						{/* Price */}
 						<Field name="description">
 							{({ input, meta }) => (
-								<div>
+								<div className={styles.fieldRow}>
 									<label>Opis </label>
 									<textarea {...input} placeholder="Opis" />
 									{meta.error && meta.touched && <span>{meta.error}</span>}
@@ -186,9 +188,13 @@ const ItemForm = ({ initialValues, onSubmit, history }) => {
 						</Field>
 
 						{/* Files (handled by separate component) */}
-						<div>
+						<div className={styles.fieldRow}>
 							<label>Zdjęcia </label>
-							<Field name="files" component={FileHandler} />
+							<Field
+								name="files"
+								isLoading={isLoading}
+								component={FileHandler}
+							/>
 						</div>
 
 						<div className="buttons">
@@ -196,7 +202,7 @@ const ItemForm = ({ initialValues, onSubmit, history }) => {
 								text="Gotowe"
 								type="submit"
 								isLoading={submitting}
-								disabled={submitting || pristine || invalid}
+								disabled={submitting || pristine}
 							/>
 							<Button
 								text="Anuluj"
@@ -205,7 +211,9 @@ const ItemForm = ({ initialValues, onSubmit, history }) => {
 								onClick={() => history.push(ROUTES.HOME)}
 							/>
 						</div>
-						<pre>{JSON.stringify(values, 0, 2)}</pre>
+						{process.env.NODE_ENV === "development" && (
+							<pre>{JSON.stringify(values, 0, 2)}</pre>
+						)}
 					</form>
 				)
 			}}
