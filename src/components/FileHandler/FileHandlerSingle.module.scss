@@ -1,0 +1,55 @@
+@import "../../scss/variables.scss";
+
+$size: 160px;
+
+.avatarPreviewContainer {
+	width: $size;
+	height: $size;
+	position: relative;
+}
+
+.avatarPreviewOverlay {
+	opacity: 0;
+	transition: opacity 0.15s linear;
+	width: $size;
+	height: $size;
+	background: rgba(0, 0, 0, 0.38);
+	border-radius: 50%;
+	position: absolute;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: 2.1rem;
+	.icon {
+		padding: 13px;
+		color: #eee;
+		transition: all;
+		&:hover {
+			color: white;
+			transform: scale(1.13);
+		}
+	}
+	&:hover {
+		opacity: 1;
+	}
+}
+
+.avatarPreview {
+	width: $size;
+	height: $size;
+	border-radius: 50%;
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+
+.emptyPreview {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: $size;
+	height: $size;
+	border-radius: 50%;
+	border: 2px dashed $black;
+	font-size: 1.45rem;
+	color: $black;
+}

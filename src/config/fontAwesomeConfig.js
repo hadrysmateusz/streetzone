@@ -11,7 +11,9 @@ import {
 	faAngleDoubleLeft,
 	faTimes,
 	faExclamation,
-	faBars
+	faBars,
+	faUpload,
+	faTrash
 } from "@fortawesome/free-solid-svg-icons"
 import { faSquare, faCheckSquare } from "@fortawesome/free-regular-svg-icons"
 // import {} from "@fortawesome/free-brands-svg-icons"
@@ -30,5 +32,7 @@ library.add(
 	faAngleDoubleLeft,
 	faTimes,
 	faExclamation,
-	faBars
+	faBars,
+	faTrash,
+	faUpload
 )

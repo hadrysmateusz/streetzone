@@ -128,12 +128,12 @@ class AccountPage extends Component {
 			<>
 				<h1>{user.name}</h1>
 				<h3>Informacje</h3>
-				<p>Email {user.email}</p>
+				<p>Email: {user.email}</p>
 				{userIsOwner && (
 					<>
 						<h3>Edytuj</h3>
 						<h4>Awatar</h4>
-						<AvatarChangeForm avatarURL={"https://picsum.photos/200/200"} />
+						<AvatarChangeForm onSubmit={this.onAvatarSubmit} />
 						<h4>Hasło</h4>
 						<PasswordChangeForm />
 					</>
