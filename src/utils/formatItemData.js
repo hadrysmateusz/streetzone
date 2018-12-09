@@ -1,3 +1,5 @@
+import foldCase from "fold-case"
+
 // Data to be passed to final-form
 export const formData = (data) => ({
 	name: data.name,
@@ -10,14 +12,26 @@ export const formData = (data) => ({
 })
 
 // Data to be passed to the database
-export const dbData = (data, userId, attachments) => ({
-	name: data.name,
-	designers: data.designers,
-	price: Number.parseInt(data.price),
-	category: data.category,
-	size: data.size,
-	description: data.description,
-	createdAt: Date.now(),
-	userId,
-	attachments
-})
+export const dbData = (data, time, userId, attachments) => {
+	let formattedData = {
+		name: data.name,
+		name_folded: foldCase(data.name),
+		designers: data.designers,
+		price: Number.parseInt(data.price),
+		category: data.category,
+		size: data.size,
+		description: data.description,
+		userId,
+		attachments
+	}
+
+	if (time.createdAt) {
+		formattedData.createdAt = time.createdAt
+	}
+
+	if (time.modifiedAt) {
+		formattedData.modifiedAt = time.modifiedAt
+	}
+
+	return formattedData
+}

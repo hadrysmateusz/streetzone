@@ -6,6 +6,7 @@ import { withAuthorization } from "../UserSession"
 import LoadingSpinner from "../LoadingSpinner"
 import { PasswordChangeForm } from "../PasswordChange"
 import ItemCard from "../ItemCard"
+import AvatarChangeForm from "../AvatarChange"
 
 class AccountPage extends Component {
 	constructor(props) {
@@ -131,6 +132,9 @@ class AccountPage extends Component {
 				{userIsOwner && (
 					<>
 						<h3>Edytuj</h3>
+						<h4>Awatar</h4>
+						<AvatarChangeForm avatarURL={"https://picsum.photos/200/200"} />
+						<h4>Hasło</h4>
 						<PasswordChangeForm />
 					</>
 				)}

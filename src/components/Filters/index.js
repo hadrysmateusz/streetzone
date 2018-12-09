@@ -1,148 +1,144 @@
 import React, { Component } from "react"
-import { itemSchema } from "../../constants"
 import { Form, Field } from "react-final-form"
+import cn from "classnames"
+
 import LoaderButton from "../LoaderButton"
+import SelectAdapter from "../SelectAdapter"
+
 import styles from "./FilterForm.module.scss"
+import { itemSchema } from "../../constants"
 
-export class FilterForm extends Component {
-	state = {
-		isLoading: false
-	}
+const sortOptions = [
+	{ value: "createdAt-desc", label: "Najnowsze" },
+	{ value: "price-asc", label: "Cena Rosnąco" },
+	{ value: "price-desc", label: "Cena Malejąco" }
+]
 
-	onSubmit = (values) => {
-		console.log(values)
-	}
+const categoryOptions = itemSchema.categories.map((categoryName, i) => ({
+	value: categoryName,
+	label: categoryName
+}))
 
-	render() {
-		return (
-			<Form
-				onSubmit={this.onSubmit}
-				initialValues={{
-					sort: "date-DESC"
-				}}
-				render={({ handleSubmit, submitting, pristine, values }) => (
-					<form onSubmit={handleSubmit}>
-						<div className={styles.outerContainer}>
-							<div className={styles.categoryContainer}>
-								<div className={styles.categoryHeader}>
-									<strong>Sortuj według</strong>
-								</div>
-								<div className={styles.categoryBody}>
-									<Field
-										name="sort"
-										component="select"
-										className={styles.sortInput}
-									>
-										<option value="date-DESC">Najnowsze</option>
-										<option value="date-ASC">Najstarsze</option>
-										<option value="price-ASC">Cena Rosnąco</option>
-										<option value="price-DESC">Cena Malejąco</option>
-									</Field>
-								</div>
-							</div>
+const designerOptions = itemSchema.designers.map((designerName, i) => ({
+	value: designerName,
+	label: designerName
+}))
 
-							<div className={styles.categoryContainer}>
-								<div className={styles.categoryHeader}>
-									<strong>Kategoria</strong>
-								</div>
-								<div className={styles.categoryBody}>
-									{itemSchema.categories.map((categoryName, i) => (
-										<div
-											key={i}
-											className={styles.filterItem}
-											title={categoryName}
-										>
-											<label>
-												<Field
-													name="category"
-													component="input"
-													type="radio"
-													value={categoryName}
-												/>
-												<span>{categoryName}</span>
-											</label>
-										</div>
-									))}
-								</div>
-							</div>
+const FilterForm = (props) => (
+	<Form
+		onSubmit={props.onSubmit}
+		initialValues={{
+			sort: "createdAt-desc"
+		}}
+		render={({ handleSubmit, submitting, pristine, values }) => (
+			<form onSubmit={handleSubmit}>
+				<div className={styles.outerContainer}>
+					{/* SortBy */}
+					<div className={styles.categoryContainer}>
+						<Field name="sort" type="select">
+							{({ input, meta }) => (
+								<>
+									<div className={styles.categoryHeader}>Sortuj według</div>
+									<SelectAdapter
+										placeholder={"Sortuj według"}
+										options={sortOptions}
+										isClearable={false}
+										isSearchable={false}
+										{...meta}
+										{...input}
+									/>
+								</>
+							)}
+						</Field>
+					</div>
 
-							<div className={styles.categoryContainer}>
-								<div className={styles.categoryHeader}>
-									<strong>Projektanci</strong>
-								</div>
-								<div className={styles.categoryBody}>
-									{itemSchema.designers.map((designerName, i) => (
-										<div
-											key={i}
-											className={styles.filterItem}
-											title={designerName}
-										>
-											<label>
-												<Field
-													name="designers"
-													component="input"
-													type="checkbox"
-													value={designerName}
-												/>
-												<span>{designerName}</span>
-											</label>
-										</div>
-									))}
-								</div>
-							</div>
-
-							<div className={styles.categoryContainer}>
-								<div className={styles.categoryHeader}>
-									<strong>Cena</strong>
-								</div>
-								<div className={styles.categoryBody}>
-									<div
-										style={{
-											display: "flex",
-											justifyContent: "flex-start"
-										}}
-									>
-										<Field
-											name="price_min"
-											className={styles.priceInput}
-											component="input"
-											type="number"
-											min="0"
-											step="1"
-											max="99999"
-											style={{ marginRight: "8px" }}
-											placeholder="Od"
+					<div className={styles.filtersContainer}>
+						{/* Category */}
+						<div className={styles.categoryContainer}>
+							<Field name="category" type="select">
+								{({ input, meta }) => (
+									<>
+										<div className={styles.categoryHeader}>Kategoria</div>
+										<SelectAdapter
+											placeholder={"Kategoria"}
+											options={categoryOptions}
+											isClearable={true}
+											isSearchable={true}
+											{...meta}
+											{...input}
 										/>
-										<Field
-											name="price_max"
-											className={styles.priceInput}
-											component="input"
-											type="number"
-											min="0"
-											step="1"
-											max="99999"
-											placeholder="Do"
-										/>
-									</div>
-								</div>
-							</div>
+									</>
+								)}
+							</Field>
 						</div>
-						<div>
-							<div className={styles.miscContainer}>
-								<LoaderButton
-									isLoading={this.state.isLoading}
-									type="submit"
-									text="Filtruj"
-									disabled={submitting}
+
+						{/* Designer */}
+						<div className={styles.categoryContainer}>
+							<Field name="designer" type="select">
+								{({ input, meta }) => (
+									<>
+										<div className={styles.categoryHeader}>
+											Projektant / Marka
+										</div>
+										<SelectAdapter
+											placeholder={"Marka"}
+											options={designerOptions}
+											isClearable={true}
+											isSearchable={true}
+											{...meta}
+											{...input}
+										/>
+									</>
+								)}
+							</Field>
+						</div>
+
+						{/* Price */}
+						<div className={styles.categoryContainer}>
+							<div className={styles.categoryHeader}>
+								<strong>Cena</strong>
+							</div>
+							<div className={cn(styles.categoryBody, styles.priceInputBody)}>
+								<Field
+									name="price_min"
+									className={styles.priceInput}
+									component="input"
+									type="number"
+									min="0"
+									step="1"
+									max="99999"
+									style={{ marginRight: "8px" }}
+									placeholder="Od"
 								/>
-								<pre>{JSON.stringify(values, 0, 2)}</pre>
+								<Field
+									name="price_max"
+									className={styles.priceInput}
+									component="input"
+									type="number"
+									min="0"
+									step="1"
+									max="99999"
+									placeholder="Do"
+								/>
 							</div>
 						</div>
-					</form>
-				)}
-			/>
-		)
-	}
-}
+					</div>
+				</div>
+				<div className={styles.miscContainer}>
+					<LoaderButton
+						isLoading={submitting}
+						type="submit"
+						text="Filtruj"
+						disabled={submitting || pristine}
+						wide
+					/>
+					{/* {process.env.NODE_ENV === "development" && (
+						<pre>{JSON.stringify(values, 0, 2)}</pre>
+					)} */}
+				</div>
+			</form>
+		)}
+	/>
+)
 
 export default FilterForm

@@ -18,14 +18,18 @@ code {
 
 a:any-link {
 	color: inherit;
+	text-decoration: none;
 	&:hover {
 		color: $primary;
 	}
-	// text-decoration: none;
 }
 
 *,
 *::before,
 *::after {
 	box-sizing: border-box;
+}
+
+.link {
+	text-decoration: underline;
 }

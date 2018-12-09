@@ -79,13 +79,16 @@ class EditItemPage extends Component {
 				(oldRef) => !attachments.includes(oldRef)
 			)
 
+			// Update modifiedAt
+			const time = { modifiedAt: Date.now() }
+
 			// Make sure only the required values are passed
-			const data = dbData(values, userId, attachments)
+			const data = dbData(values, time, userId, attachments)
 
 			// Check if all data is present
 			for (let [key, value] of Object.entries(data)) {
 				const err = new Error("missing data: " + key)
-				if (!value) {
+				if (!value && key !== "description") {
 					throw err
 				}
 				if (Array.isArray(value) && value.length === 0) {

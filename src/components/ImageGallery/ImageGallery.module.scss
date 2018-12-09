@@ -12,7 +12,7 @@
 .navigation {
 	opacity: 0.86;
 	transition: all 0.2s;
-	display: none;
+	// display: none;
 	background: $black;
 	color: $white;
 	font-size: 15px;
@@ -63,9 +63,9 @@
 		max-width: 100%;
 	}
 
-	&:hover .navigation {
-		display: block;
-	}
+	// &:hover .navigation {
+	// 	display: block;
+	// }
 }
 
 .thumbnailsContainer {
@@ -75,9 +75,9 @@
 
 // TODO: handle images of different aspect ratios (probably by setting it as background or editing on server side or sth
 .thumbnailContainer {
-	@media (max-width: 550px) {
-		display: none;
-	}
+	// @media (max-width: 350px) {
+	// 	display: none;
+	// }
 	filter: grayscale(85%);
 	cursor: pointer;
 	height: 74px;

@@ -16,8 +16,15 @@ class ItemCard extends Component {
 		this.loadImage()
 	}
 
+	// Make sure if component's props change the images get updated
+	componentDidUpdate = (prevProps, prevState) => {
+		if (prevProps.item.attachments[0] !== this.props.item.attachments[0]) {
+			this.loadImage()
+		}
+	}
+
 	loadImage = async () => {
-		console.log(this.props.item)
+		// console.log(this.props.item)
 		let ref = this.props.firebase.storageRef.child(
 			this.props.item.attachments[0]
 		)
@@ -50,6 +57,9 @@ class ItemCard extends Component {
 								</div>
 							</div>
 							<div className={styles.name}>{name}</div>
+							<div className={styles.name}>
+								<em>{this.props.item.category}</em>
+							</div>
 						</div>
 						<div className={styles.date}>
 							Dodano {moment(createdAt).format("D.M.YY o HH:mm")}

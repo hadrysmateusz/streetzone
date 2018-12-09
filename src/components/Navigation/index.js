@@ -41,6 +41,9 @@ const Navigation = ({ authUser }) => {
 					<Link to={ROUTES.SIGN_IN}>Zaloguj się</Link>
 				</li>
 			)}
+			{/* <li className={styles.burgerMenuButton}>
+				<FontAwesomeIcon icon="bars" />
+			</li> */}
 		</ul>
 	)
 }

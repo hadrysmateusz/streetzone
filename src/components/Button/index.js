@@ -9,13 +9,15 @@ const Button = ({
 	children,
 	text,
 	primary,
+	wide,
 	...props
 }) => {
 	let classNames = cn({
 		[styles.base]: true,
 		[styles.regular]: !primary && !disabled,
 		[styles.primary]: primary,
-		[styles.disabled]: disabled
+		[styles.disabled]: disabled,
+		[styles.wide]: wide
 	})
 
 	if (text && children) {

@@ -16,7 +16,7 @@ class NewItemPage extends Component {
 	}
 
 	onSubmit = async (values) => {
-		this.setState({ isLoading: true })
+		// this.setState({ isLoading: true })
 
 		try {
 			const { firebase, history } = this.props
@@ -44,13 +44,19 @@ class NewItemPage extends Component {
 				})
 			)
 
+			// Get time values
+			const createdAt = Date.now()
+			const modifiedAt = Date.now()
+			const time = { createdAt, modifiedAt }
+
 			// Make sure only the required values are passed
-			const data = dbData(values, userId, attachments)
+			const data = dbData(values, time, userId, attachments)
 
 			// Check if all data is present
 			for (let [key, value] of Object.entries(data)) {
 				const err = new Error("missing data: " + key)
-				if (!value) {
+				// Description is not required
+				if (!value && key !== "description") {
 					throw err
 				}
 				if (Array.isArray(value) && value.length === 0) {
@@ -71,11 +77,26 @@ class NewItemPage extends Component {
 		} catch (error) {
 			alert("Wystąpił problem podczas wystawiania przedmiotu")
 			console.log(error)
-			this.setState({ isLoading: false })
+			// this.setState({ isLoading: false })
 		}
 	}
 
 	render() {
+		const initialValues =
+			process.env.NODE_ENV === "development"
+				? {
+						name: "test" + Date.now(),
+						designers: [
+							itemSchema.designers[Math.floor(Math.random() * 13)],
+							itemSchema.designers[Math.floor(Math.random() * 13)]
+						],
+						category: itemSchema.categories[Math.floor(Math.random() * 5)],
+						price: Math.max(50, Math.floor(Math.random() * 500) * 10) + "",
+						size: Math.max(36, Math.floor(Math.random() * 50)) + "",
+						description:
+							"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+				  }
+				: null
 		return (
 			<CenteredLayout>
 				<h1>Nowy</h1>
@@ -84,22 +105,6 @@ class NewItemPage extends Component {
 		)
 	}
 }
-
-const initialValues =
-	process.env.NODE_ENV === "asdf"
-		? {
-				name: "test" + Date.now(),
-				designers: [
-					itemSchema.designers[Math.floor(Math.random() * 13)],
-					itemSchema.designers[Math.floor(Math.random() * 13)]
-				],
-				category: itemSchema.categories[Math.floor(Math.random() * 5)],
-				price: Math.max(50, Math.floor(Math.random() * 500) * 10) + "",
-				size: Math.max(36, Math.floor(Math.random() * 50)) + "",
-				description:
-					"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-		  }
-		: null
 
 const condition = (authUser) => !!authUser
 

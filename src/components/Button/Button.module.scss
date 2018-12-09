@@ -11,6 +11,7 @@
 	margin-right: 8px;
 	display: inline-flex;
 	flex-direction: row;
+
 	svg {
 		margin-right: 8px;
 		animation: spin 1s infinite linear;
@@ -36,4 +37,9 @@
 .disabled {
 	color: #888;
 	border-color: #999;
+}
+
+.wide {
+	width: 100%;
+	justify-content: center;
 }

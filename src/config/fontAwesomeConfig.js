@@ -10,7 +10,8 @@ import {
 	faAngleLeft,
 	faAngleDoubleLeft,
 	faTimes,
-	faExclamation
+	faExclamation,
+	faBars
 } from "@fortawesome/free-solid-svg-icons"
 import { faSquare, faCheckSquare } from "@fortawesome/free-regular-svg-icons"
 // import {} from "@fortawesome/free-brands-svg-icons"
@@ -28,5 +29,6 @@ library.add(
 	faAngleLeft,
 	faAngleDoubleLeft,
 	faTimes,
-	faExclamation
+	faExclamation,
+	faBars
 )

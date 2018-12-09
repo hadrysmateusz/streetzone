@@ -212,9 +212,9 @@ const ItemForm = ({ initialValues, onSubmit, history, isLoading }) => {
 								onClick={() => history.push(ROUTES.HOME)}
 							/>
 						</div>
-						{process.env.NODE_ENV === "development" && (
+						{/* {process.env.NODE_ENV === "development" && (
 							<pre>{JSON.stringify(values, 0, 2)}</pre>
-						)}
+						)} */}
 					</form>
 				)
 			}}

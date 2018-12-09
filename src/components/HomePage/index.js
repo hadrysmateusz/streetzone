@@ -24,71 +24,83 @@ class HomePage extends Component {
 			items: null,
 			isLoading: true,
 			isRefreshing: false,
-			itemsPerPage: CONST.DEFAULT_PAGINATION_ITEMS_PER_PAGE,
-			lastEvaluatedKey: null
+			isFiltering: false
 		}
-
-		// Create default cursor
-		// this.state.cursor = {
-		// 	itemsPerPage: this.state.itemsPerPage,
-		// 	sortBy: "date",
-		// 	sortDirection: "DESC",
-		// 	filter: {}
-		// }
 	}
 
-	refresh = async () => {
-		// TODO: make this trigger refresh on all Item cards as well
-		await this.setState({ isRefreshing: true })
+	// refresh = async () => {
+	// 	// TODO: make this trigger refresh on all Item cards as well
+	// 	await this.setState({ isRefreshing: true })
+	// 	await this.getItems()
+	// 	await this.setState({ isRefreshing: false })
+	// }
 
-		await this.getItems()
-		await this.setState({ isRefreshing: false })
+	filterItems = async (values) => {
+		await this.setState({ isFiltering: true })
+
+		const [sortBy, sortDirection] = values.sort.split("-")
+		// Create new object as to not overwrite the FilterForm data
+
+		let filters = {}
+		if (values.category) filters.category = values.category
+		if (values.designer) filters.designer = values.designer
+		if (values.price_min) filters.price_min = values.price_min
+		if (values.price_max) filters.price_max = values.price_max
+
+		let filterData = {
+			sortBy,
+			sortDirection,
+			filters
+		}
+		await this.makeQuery(filterData)
+		await this.setState({ isFiltering: false })
 	}
 
-	getMoreItems = async () => {
-		// console.log("Getting more")
-		// let res = this.getItems({
-		// 	...this.state.cursor,
-		// 	lastEvaluatedKey: this.state.lastEvaluatedKey
-		// })
+	makeQuery = async (data) => {
+		try {
+			const { sortBy, sortDirection, filters = {} } = data
+
+			let query = this.props.firebase.items()
+
+			if (filters) {
+				const { category, designer, price_min, price_max } = filters
+
+				if (category) {
+					query = query.where("category", "==", category)
+				}
+				if (designer) {
+					query = query.where("designers", "array-contains", designer)
+				}
+				if (price_min) {
+					query = query.where("price", ">=", +price_min)
+				}
+				if (price_max) {
+					query = query.where("price", "<=", +price_max)
+				}
+				// When using range comparison operators
+				// the first sorting has to be by the same property
+				if ((price_max || price_min) && sortBy !== "price") {
+					query = query.orderBy("price")
+				}
+
+				query = query.orderBy(sortBy, sortDirection)
+
+				const snapshot = await query.get()
+				const items = snapshot.docs.map((doc) => ({
+					...doc.data(),
+					itemId: doc.id
+				}))
+
+				return this.setState({ items, isLoading: false })
+			}
+		} catch (e) {
+			console.log(e)
+		}
 	}
 
-	filterItems = async (data) => {
-		// try {
-		// 	this.setState({ lastEvaluatedKey: null })
-		// 	const [sortBy = "date", sortDirection = "DESC"] = data.sort.split("-")
-		// 	// Create new object as to not overwrite the FilterForm data
-		// 	let dataToSend = {
-		// 		itemsPerPage: this.state.itemsPerPage,
-		// 		sortBy: sortBy,
-		// 		sortDirection: sortDirection,
-		// 		filter: {
-		// 			category: data.category,
-		// 			designers: data.designers ? [...data.designers] : [],
-		// 			price_min: data.price_min,
-		// 			price_max: data.price_max
-		// 		}
-		// 	}
-		// 	console.log("Data To Send", dataToSend)
-		// 	await this.getItems(dataToSend)
-		// } catch (e) {
-		// console.log(e)
-		// }
-	}
-
-	getItems = async (cursor) => {
+	getItems = async (query) => {
 		this.setState({ isLoading: true })
-	}
-
-	onSubmit = async (data) => {
-		// console.log("Filtering...")
-		// const res = await this.filterItems(data)
-	}
-
-	componentDidMount = async () => {
-		console.log("MOUNTED")
-
-		const snapshot = await this.props.firebase.items().get()
+		const snapshot = await query.get()
 		const items = snapshot.docs.map((doc) => ({
 			...doc.data(),
 			itemId: doc.id
@@ -96,22 +108,16 @@ class HomePage extends Component {
 		this.setState({ items, isLoading: false })
 	}
 
-	// renderItems = (currentPage) => {
-	// 	const { items, itemsPerPage } = this.state
-	// 	const start = itemsPerPage * (currentPage - 1)
-	// 	const end = start + itemsPerPage
-	// 	console.log(start, end)
-	// 	if (items.length % itemsPerPage > 0) {
-	// 		// console.log("try getting more")
-	// 	}
-	// 	return items /* .slice(start, end) */
-	// 		.map((item) => {
-	// 			return <ItemCard key={item.userId + item.createdAt} item={item} />
-	// 		})
-	// }
+	componentDidMount = async () => {
+		/* const query =  */ this.makeQuery({
+			sortBy: "createdAt",
+			sortDirection: "desc"
+		})
+		// this.getItems(query)
+	}
 
 	render() {
-		const { items, isLoading, isRefreshing, itemsPerPage } = this.state
+		const { items, isLoading, isFiltering, isRefreshing } = this.state
 
 		// get current page from props
 		const currentPage = this.props.match.params.page || 1
@@ -120,7 +126,7 @@ class HomePage extends Component {
 			<CenteredLayout>
 				<div className={styles.mainContainer}>
 					<div className={styles.sidebar}>
-						<FilterForm />
+						<FilterForm onSubmit={this.filterItems} isLoading={isFiltering} />
 					</div>
 					<div className={styles.content}>
 						{!isLoading && items ? (

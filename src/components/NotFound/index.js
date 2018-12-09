@@ -7,7 +7,9 @@ const NotFound = () => {
 			<h1>404</h1>
 			<div>Strona której szukasz nie została znaleziona</div>
 			<p>
-				<a href={ROUTES.HOME}>Wróć do strony głównej</a>
+				<a className="link" href={ROUTES.HOME}>
+					Wróć do strony głównej
+				</a>
 			</p>
 		</div>
 	)

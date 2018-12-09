@@ -8,7 +8,11 @@
 	justify-content: center;
 	padding: 15px 0 9px;
 	margin: 0;
-	margin-bottom: 30px;
+	margin-bottom: 10px;
+	@media (min-width: 800px) {
+		margin-bottom: 30px;
+	}
+
 	a {
 		text-decoration: none;
 	}
