@@ -132,7 +132,7 @@ class AccountPage extends Component {
 				{userIsOwner && (
 					<>
 						<h3>Edytuj</h3>
-						<h4>Awatar</h4>
+						<h4>Profilowe</h4>
 						<AvatarChangeForm onSubmit={this.onAvatarSubmit} />
 						<h4>Hasło</h4>
 						<PasswordChangeForm />

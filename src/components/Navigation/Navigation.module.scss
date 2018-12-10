@@ -29,7 +29,7 @@
 
 .brand {
 	font-size: 1.45rem;
-	color: $primary;
+	color: darken($primary, 5%);
 	flex-grow: 1;
 	text-align: left;
 }

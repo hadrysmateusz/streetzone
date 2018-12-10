@@ -4,13 +4,13 @@ import { compose } from "recompose"
 import uuidv1 from "uuid/v1"
 
 import LoaderButton from "../LoaderButton"
-import Button from "../Button"
+// import Button from "../Button"
 import { FileHandlerSingle, CustomFile } from "../FileHandler"
 import { withRouter } from "react-router-dom"
 import { withFirebase } from "../Firebase"
 
 // import styles from "./AvatarChange.module.scss"
-import { ROUTES, FORMS, CONST } from "../../constants"
+// import { ROUTES, FORMS, CONST } from "../../constants"
 
 class AvatarChangeForm extends React.Component {
 	state = {

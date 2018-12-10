@@ -1,46 +1,47 @@
 import React, { Component } from "react"
 // import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 // import { Link } from "react-router-dom"
-// import API from "@aws-amplify/api"
 // import cn from "classnames"
-// import benchmark from "../../utils/benchmark"
 
 import { withFirebase } from "../Firebase"
 import ItemCard from "../ItemCard"
 import CenteredLayout from "../CenteredLayout"
 import LoadingSpinner from "../LoadingSpinner"
 import FilterForm from "../Filters"
-// import FilterForm from "./FilterForm"
 // import LoaderButton from "../LoaderButton"
 
 import styles from "./Home.module.scss"
 // import animations from "../../scss/animations.module.scss"
 import { CONST } from "../../constants"
 
-class HomePage extends Component {
-	constructor(props) {
-		super(props)
-		this.state = {
-			items: null,
-			isLoading: true,
-			isRefreshing: false,
-			isFiltering: false
-		}
+const INITIAL_STATE = {
+	items: [],
+	isLoading: true,
+	isRefreshing: false,
+	isFiltering: false,
+	cursor: null,
+	noMoreItems: false,
+	filterData: {
+		sortBy: "createdAt",
+		sortDirection: "desc"
 	}
+}
 
-	// refresh = async () => {
-	// 	// TODO: make this trigger refresh on all Item cards as well
-	// 	await this.setState({ isRefreshing: true })
-	// 	await this.getItems()
-	// 	await this.setState({ isRefreshing: false })
-	// }
+class HomePage extends Component {
+	state = INITIAL_STATE
 
 	filterItems = async (values) => {
-		await this.setState({ isFiltering: true })
+		// Reset the cursor when changing the filters
+		await this.setState({
+			isFiltering: true,
+			cursor: null,
+			items: [],
+			noMoreItems: false
+		})
 
 		const [sortBy, sortDirection] = values.sort.split("-")
-		// Create new object as to not overwrite the FilterForm data
 
+		// Create new object as to not overwrite the FilterForm data
 		let filters = {}
 		if (values.category) filters.category = values.category
 		if (values.designer) filters.designer = values.designer
@@ -52,14 +53,17 @@ class HomePage extends Component {
 			sortDirection,
 			filters
 		}
-		await this.makeQuery(filterData)
-		await this.setState({ isFiltering: false })
+
+		await this.setState({ filterData })
+		await this.getItems()
+		return this.setState({ isFiltering: false })
 	}
 
-	makeQuery = async (data) => {
+	getItems = async () => {
 		try {
-			const { sortBy, sortDirection, filters = {} } = data
+			const { sortBy, sortDirection, filters = {} } = this.state.filterData
 
+			// Create the base query
 			let query = this.props.firebase.items()
 
 			if (filters) {
@@ -82,45 +86,70 @@ class HomePage extends Component {
 				if ((price_max || price_min) && sortBy !== "price") {
 					query = query.orderBy("price")
 				}
-
-				query = query.orderBy(sortBy, sortDirection)
-
-				const snapshot = await query.get()
-				const items = snapshot.docs.map((doc) => ({
-					...doc.data(),
-					itemId: doc.id
-				}))
-
-				return this.setState({ items, isLoading: false })
 			}
+
+			query = query.orderBy(sortBy, sortDirection)
+
+			const cursor = this.state.cursor
+
+			if (cursor) {
+				query = query.startAfter(cursor)
+			}
+
+			query = query.limit(CONST.ITEMS_PER_PAGE)
+
+			// execute the query and add itemIds
+			const snapshot = await query.get()
+			let items = snapshot.docs.map((doc) => ({
+				...doc.data(),
+				itemId: doc.id
+			}))
+
+			// If there weren't any items returned, return early and set noMoreItems flag
+			if (items.length === 0) {
+				return this.setState({ isLoading: false, noMoreItems: true })
+			}
+
+			// If there were less items found than the limit, set noMoreItems flag
+			if (items.length < CONST.ITEMS_PER_PAGE) {
+				this.setState({ noMoreItems: true })
+			}
+
+			if (this.state.items && this.state.items.length > 0) {
+				items = this.state.items.concat(items)
+			}
+
+			// Get last fetched document and set it as new cursor
+			const newCursor = snapshot.docs[snapshot.docs.length - 1]
+
+			return this.setState({ items, cursor: newCursor, isLoading: false })
 		} catch (e) {
 			console.log(e)
 		}
 	}
 
-	getItems = async (query) => {
-		this.setState({ isLoading: true })
-		const snapshot = await query.get()
-		const items = snapshot.docs.map((doc) => ({
-			...doc.data(),
-			itemId: doc.id
-		}))
-		this.setState({ items, isLoading: false })
-	}
+	// refresh = async () => {
+	// 	// TODO: make this trigger refresh on all Item cards as well
+	// 	await this.setState({ isRefreshing: true })
+	// 	await this.getItems()
+	// 	return this.setState({ isRefreshing: false })
+	// }
 
 	componentDidMount = async () => {
-		/* const query =  */ this.makeQuery({
-			sortBy: "createdAt",
-			sortDirection: "desc"
-		})
-		// this.getItems(query)
+		this.getItems()
 	}
 
 	render() {
-		const { items, isLoading, isFiltering, isRefreshing } = this.state
+		const {
+			items,
+			isLoading,
+			isFiltering,
+			isRefreshing,
+			noMoreItems
+		} = this.state
 
 		// get current page from props
-		const currentPage = this.props.match.params.page || 1
+		// const currentPage = this.props.match.params.page || 1
 
 		return (
 			<CenteredLayout>
@@ -129,10 +158,19 @@ class HomePage extends Component {
 						<FilterForm onSubmit={this.filterItems} isLoading={isFiltering} />
 					</div>
 					<div className={styles.content}>
-						{!isLoading && items ? (
-							items.map((item, i) => {
-								return <ItemCard key={i} item={item} />
-							})
+						{!isLoading ? (
+							<>
+								<div className={styles.itemsContainer}>
+									{items.map((item, i) => {
+										return <ItemCard key={i} item={item} />
+									})}
+								</div>
+								{!noMoreItems && (
+									<div className={styles.loadMore} onClick={this.getItems}>
+										Więcej
+									</div>
+								)}
+							</>
 						) : (
 							<LoadingSpinner />
 						)}

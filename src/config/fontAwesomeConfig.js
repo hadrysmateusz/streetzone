@@ -15,7 +15,7 @@ import {
 	faUpload,
 	faTrash
 } from "@fortawesome/free-solid-svg-icons"
-import { faSquare, faCheckSquare } from "@fortawesome/free-regular-svg-icons"
+// import { faSquare, faCheckSquare } from "@fortawesome/free-regular-svg-icons"
 // import {} from "@fortawesome/free-brands-svg-icons"
 
 library.add(
@@ -24,8 +24,8 @@ library.add(
 	faUser,
 	faPlus,
 	faUserCircle,
-	faSquare,
-	faCheckSquare,
+	// faSquare,
+	// faCheckSquare,
 	faAngleRight,
 	faAngleDoubleRight,
 	faAngleLeft,
