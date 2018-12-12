@@ -146,9 +146,9 @@
   dependencies:
     "@babel/types" "^7.0.0"
 
-"@babel/helper-module-transforms@^7.1.0":
+"@babel/helper-module-transFORM_ERR@^7.1.0":
   version "7.1.0"
-  resolved "https://registry.yarnpkg.com/@babel/helper-module-transforms/-/helper-module-transforms-7.1.0.tgz#470d4f9676d9fad50b324cdcce5fbabbc3da5787"
+  resolved "https://registry.yarnpkg.com/@babel/helper-module-transFORM_ERR/-/helper-module-transFORM_ERR-7.1.0.tgz#470d4f9676d9fad50b324cdcce5fbabbc3da5787"
   integrity sha512-0JZRd2yhawo79Rcm4w0LwSMILFmFXjugG3yqf+P/UsKsRS1mJCmMwwlHDlMg7Avr9LrvSpp4ZSULO9r8jpCzcw==
   dependencies:
     "@babel/helper-module-imports" "^7.0.0"
@@ -505,7 +505,7 @@
   resolved "https://registry.yarnpkg.com/@babel/plugin-transform-modules-amd/-/plugin-transform-modules-amd-7.1.0.tgz#f9e0a7072c12e296079b5a59f408ff5b97bf86a8"
   integrity sha512-wt8P+xQ85rrnGNr2x1iV3DW32W8zrB6ctuBkYBbf5/ZzJY99Ob4MFgsZDFgczNU76iy9PWsy4EuxOliDjdKw6A==
   dependencies:
-    "@babel/helper-module-transforms" "^7.1.0"
+    "@babel/helper-module-transFORM_ERR" "^7.1.0"
     "@babel/helper-plugin-utils" "^7.0.0"
 
 "@babel/plugin-transform-modules-commonjs@^7.1.0":
@@ -513,7 +513,7 @@
   resolved "https://registry.yarnpkg.com/@babel/plugin-transform-modules-commonjs/-/plugin-transform-modules-commonjs-7.1.0.tgz#0a9d86451cbbfb29bd15186306897c67f6f9a05c"
   integrity sha512-wtNwtMjn1XGwM0AXPspQgvmE6msSJP15CX2RVfpTSTNPLhKhaOjaIfBaVfj4iUZ/VrFSodcFedwtPg/NxwQlPA==
   dependencies:
-    "@babel/helper-module-transforms" "^7.1.0"
+    "@babel/helper-module-transFORM_ERR" "^7.1.0"
     "@babel/helper-plugin-utils" "^7.0.0"
     "@babel/helper-simple-access" "^7.1.0"
 
@@ -530,7 +530,7 @@
   resolved "https://registry.yarnpkg.com/@babel/plugin-transform-modules-umd/-/plugin-transform-modules-umd-7.1.0.tgz#a29a7d85d6f28c3561c33964442257cc6a21f2a8"
   integrity sha512-enrRtn5TfRhMmbRwm7F8qOj0qEYByqUvTttPEGimcBH4CJHphjyK1Vg7sdU7JjeEmgSpM890IT/efS2nMHwYig==
   dependencies:
-    "@babel/helper-module-transforms" "^7.1.0"
+    "@babel/helper-module-transFORM_ERR" "^7.1.0"
     "@babel/helper-plugin-utils" "^7.0.0"
 
 "@babel/plugin-transform-new-target@^7.0.0":
@@ -2944,7 +2944,7 @@ cssnano-preset-default@^4.0.5:
     postcss-normalize-whitespace "^4.0.1"
     postcss-ordered-values "^4.1.1"
     postcss-reduce-initial "^4.0.2"
-    postcss-reduce-transforms "^4.0.1"
+    postcss-reduce-transFORM_ERR "^4.0.1"
     postcss-svgo "^4.0.1"
     postcss-unique-selectors "^4.0.1"
 
@@ -3221,6 +3221,11 @@ detect-port-alt@1.1.6:
   dependencies:
     address "^1.0.1"
     debug "^2.6.0"
+
+dialog-polyfill@^0.4.7:
+  version "0.4.10"
+  resolved "https://registry.yarnpkg.com/dialog-polyfill/-/dialog-polyfill-0.4.10.tgz#c4ea68a0deed4abb59a6a2a025c548b278cd532e"
+  integrity sha512-j5yGMkP8T00UFgyO+78OxiN5vC5dzRQF3BEio+LhNvDbyfxWBsi3sfPArDm54VloaJwy2hm3erEiDWqHRC8rzw==
 
 diff@^3.2.0:
   version "3.5.0"
@@ -4158,6 +4163,13 @@ firebase@^5.5.9:
     "@firebase/messaging" "0.3.7"
     "@firebase/polyfill" "0.3.3"
     "@firebase/storage" "0.2.4"
+
+firebaseui@^3.4.1:
+  version "3.4.1"
+  resolved "https://registry.yarnpkg.com/firebaseui/-/firebaseui-3.4.1.tgz#f440f1cc653d98f97caadf8f58f7d67b83d00fde"
+  integrity sha512-DKXSFKC2ryCjpbifpLXC/erXPR8v7aCyWMicRXO0m7GNj+cpQgw7L3XOwzgpyoLKOL1DhsJ0Qniwi5qvvRSbjQ==
+  dependencies:
+    dialog-polyfill "^0.4.7"
 
 flat-cache@^1.2.1:
   version "1.3.0"
@@ -7984,9 +7996,9 @@ postcss-reduce-initial@^4.0.2:
     has "^1.0.0"
     postcss "^7.0.0"
 
-postcss-reduce-transforms@^4.0.1:
+postcss-reduce-transFORM_ERR@^4.0.1:
   version "4.0.1"
-  resolved "https://registry.yarnpkg.com/postcss-reduce-transforms/-/postcss-reduce-transforms-4.0.1.tgz#8600d5553bdd3ad640f43bff81eb52f8760d4561"
+  resolved "https://registry.yarnpkg.com/postcss-reduce-transFORM_ERR/-/postcss-reduce-transFORM_ERR-4.0.1.tgz#8600d5553bdd3ad640f43bff81eb52f8760d4561"
   integrity sha512-sZVr3QlGs0pjh6JAIe6DzWvBaqYw05V1t3d9Tp+VnFRT5j+rsqoWsysh/iSD7YNsULjq9IAylCznIwVd5oU/zA==
   dependencies:
     cssnano-util-get-match "^4.0.0"

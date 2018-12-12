@@ -2,7 +2,7 @@ import React, { Component } from "react"
 import { Form, Field } from "react-final-form"
 
 // import { withFirebase } from "../Firebase"
-import { FORMS } from "../../constants"
+import { FORM_ERR } from "../../constants"
 
 class PasswordChangeForm extends Component {
 	state = { error: null }
@@ -27,14 +27,14 @@ class PasswordChangeForm extends Component {
 
 		// New Password
 		if (!passwordNew) {
-			errors.passwordNew = FORMS.ERR_IS_REQUIRED
+			errors.passwordNew = FORM_ERR.IS_REQUIRED
 		}
 
 		// Confirm New Password
 		if (!passwordConfirm) {
-			errors.passwordConfirm = FORMS.ERR_IS_REQUIRED
+			errors.passwordConfirm = FORM_ERR.IS_REQUIRED
 		} else if (passwordNew !== passwordConfirm) {
-			errors.passwordConfirm = FORMS.ERR_PASSWORDS_NOT_MATCHING
+			errors.passwordConfirm = FORM_ERR.PASSWORDS_NOT_MATCHING
 		}
 
 		return errors

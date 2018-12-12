@@ -12,6 +12,10 @@
 	display: inline-flex;
 	flex-direction: row;
 
+	&:not([disabled]) {
+		cursor: pointer;
+	}
+
 	svg {
 		margin-right: 8px;
 		animation: spin 1s infinite linear;

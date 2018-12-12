@@ -7,7 +7,7 @@ import Error from "./Error"
 import { FileHandler } from "../FileHandler"
 import { withRouter } from "react-router-dom"
 
-import { itemSchema, ROUTES, FORMS, CONST } from "../../constants"
+import { itemSchema, ROUTES, FORM_ERR, CONST } from "../../constants"
 import styles from "./ItemForm.module.scss"
 
 const validate = (values) => {
@@ -16,32 +16,32 @@ const validate = (values) => {
 
 	// Name
 	if (!name) {
-		errors.name = FORMS.ERR_IS_REQUIRED
+		errors.name = FORM_ERR.IS_REQUIRED
 	}
 
 	// Designers
 	if (!designers || designers.length === 0) {
-		errors.designers = FORMS.ERR_IS_REQUIRED
+		errors.designers = FORM_ERR.IS_REQUIRED
 	}
 
 	// Price
 	if (!price) {
-		errors.price = FORMS.ERR_IS_REQUIRED
+		errors.price = FORM_ERR.IS_REQUIRED
 	}
 
 	// Category
 	if (!category) {
-		errors.category = FORMS.ERR_IS_REQUIRED
+		errors.category = FORM_ERR.IS_REQUIRED
 	}
 
 	// Size
 	if (!size) {
-		errors.size = FORMS.ERR_IS_REQUIRED
+		errors.size = FORM_ERR.IS_REQUIRED
 	}
 
 	// Description
 	if (description.length > 2000) {
-		errors.description = FORMS.ERR_DESC_TOO_LONG
+		errors.description = FORM_ERR.DESC_TOO_LONG
 	}
 
 	// Files
@@ -51,16 +51,16 @@ const validate = (values) => {
 
 		if (!files || files.length === 0) {
 			// Empty field
-			main = FORMS.ERR_FILES_REQUIRED
+			main = FORM_ERR.FILES_REQUIRED
 		} else {
 			// Too many files
 			if (files.length > CONST.ATTACHMENTS_MAX_COUNT) {
-				main = FORMS.ERR_TOO_MANY_FILES
+				main = FORM_ERR.TOO_MANY_FILES
 			}
 			// Attachment too big
 			files.forEach((file, i) => {
 				if (file.data.size > CONST.ATTACHMENTS_MAX_SIZE) {
-					specific[i] = FORMS.ERR_FILE_TOO_BIG
+					specific[i] = FORM_ERR.FILE_TOO_BIG
 				}
 			})
 		}

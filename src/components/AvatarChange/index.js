@@ -10,7 +10,7 @@ import { withRouter } from "react-router-dom"
 import { withFirebase } from "../Firebase"
 
 // import styles from "./AvatarChange.module.scss"
-// import { ROUTES, FORMS, CONST } from "../../constants"
+// import { ROUTES, FORM_ERR, CONST } from "../../constants"
 
 class AvatarChangeForm extends React.Component {
 	state = {
@@ -28,12 +28,13 @@ class AvatarChangeForm extends React.Component {
 	}
 
 	loadImage = async () => {
+		console.log("loading image")
 		const currentUser = this.props.firebase.currentUser()
 		const currentUserData = (await currentUser.get()).data()
 
-		if (currentUserData.profilePicture) {
+		if (currentUserData.profilePictureRef) {
 			let ref = this.props.firebase.storageRef.child(
-				currentUserData.profilePicture
+				currentUserData.profilePictureRef
 			)
 
 			try {
@@ -41,11 +42,12 @@ class AvatarChangeForm extends React.Component {
 
 				const file = new CustomFile({ ref: ref, previewUrl: imageURL })
 
-				this.setState({ file, isLoading: false })
+				this.setState({ file })
 			} catch (error) {
 				console.log(error)
 			}
 		}
+		this.setState({ isLoading: false })
 	}
 
 	onSubmit = async (values) => {
@@ -63,7 +65,7 @@ class AvatarChangeForm extends React.Component {
 			// If there is no file, check if user has a picture
 			// If so, mark it for deletion, otherwise throw error
 			if (!file) {
-				if (currentUserData.profilePicture) {
+				if (currentUserData.profilePictureRef) {
 					// Create a new empty ref
 					newFileRef = null
 				} else {
@@ -81,12 +83,12 @@ class AvatarChangeForm extends React.Component {
 			}
 
 			// Get ref of current profile picture
-			if (currentUserData.profilePicture) {
-				oldFileRef = currentUserData.profilePicture
+			if (currentUserData.profilePictureRef) {
+				oldFileRef = currentUserData.profilePictureRef
 			}
 
-			// Update (or clear) profilePicture in database
-			await currentUser.update({ profilePicture: newFileRef })
+			// Update (or clear) profilePictureRef in database
+			await currentUser.update({ profilePictureRef: newFileRef })
 
 			// Remove old file
 			if (oldFileRef) {

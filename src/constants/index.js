@@ -1,7 +1,8 @@
 import * as ROUTES from "./routes"
-import * as FORMS from "./forms"
+import * as FORM_ERR from "./form_errors"
+import * as AUTH_ERR from "./auth_errors"
 import * as REGEX from "./regex"
 import * as CONST from "./const"
 import itemSchema from "./itemSchema"
 
-export { ROUTES, FORMS, REGEX, CONST, itemSchema }
+export { ROUTES, FORM_ERR, AUTH_ERR, REGEX, CONST, itemSchema }

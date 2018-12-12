@@ -3,9 +3,9 @@ import { Link, withRouter } from "react-router-dom"
 import { Form, Field } from "react-final-form"
 import { compose } from "recompose"
 
-import { withAuthorization } from "../UserSession"
+// import { withAuthorization } from "../UserSession"
 import { withFirebase } from "../Firebase"
-import { ROUTES, FORMS, REGEX } from "../../constants"
+import { ROUTES, FORM_ERR, AUTH_ERR, REGEX } from "../../constants"
 
 const SignUpPage = () => {
 	return (
@@ -42,6 +42,9 @@ class SignUpFormBase extends Component {
 			// Redirect
 			this.props.history.push(ROUTES.HOME)
 		} catch (error) {
+			if (error.code === AUTH_ERR.CODE_SOCIAL_ACCOUNT_EXISTS) {
+				error.message = AUTH_ERR.MSG_SOCIAL_ACCOUNT_EXISTS
+			}
 			this.setState({ error })
 		}
 	}
@@ -52,26 +55,26 @@ class SignUpFormBase extends Component {
 
 		// E-mail
 		if (!email) {
-			errors.email = FORMS.ERR_IS_REQUIRED
+			errors.email = FORM_ERR.IS_REQUIRED
 		} else if (!REGEX.EMAIL.test(email)) {
-			errors.email = FORMS.ERR_EMAIL_INVALID
+			errors.email = FORM_ERR.EMAIL_INVALID
 		}
 
 		// Name
 		if (!name) {
-			errors.name = FORMS.ERR_IS_REQUIRED
+			errors.name = FORM_ERR.IS_REQUIRED
 		}
 
 		// Password
 		if (!password) {
-			errors.password = FORMS.ERR_IS_REQUIRED
+			errors.password = FORM_ERR.IS_REQUIRED
 		}
 
 		// Password Confirm
 		if (!passwordConfirm) {
-			errors.passwordConfirm = FORMS.ERR_IS_REQUIRED
+			errors.passwordConfirm = FORM_ERR.IS_REQUIRED
 		} else if (password !== passwordConfirm) {
-			errors.passwordConfirm = FORMS.ERR_PASSWORDS_NOT_MATCHING
+			errors.passwordConfirm = FORM_ERR.PASSWORDS_NOT_MATCHING
 		}
 
 		return errors

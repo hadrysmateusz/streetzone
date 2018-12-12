@@ -2,11 +2,12 @@ import React, { Component } from "react"
 import { compose } from "recompose"
 
 import { withFirebase } from "../Firebase"
-import { withAuthorization } from "../UserSession"
+import { withAuthorization, withAuthentication } from "../UserSession"
 import LoadingSpinner from "../LoadingSpinner"
 import { PasswordChangeForm } from "../PasswordChange"
 import ItemCard from "../ItemCard"
 import AvatarChangeForm from "../AvatarChange"
+import LoginManagement from "../LoginManagement"
 
 class AccountPage extends Component {
 	constructor(props) {
@@ -38,16 +39,21 @@ class AccountPage extends Component {
 	}
 
 	getItems = async () => {
-		// If the user is missing refetch it
-		if (!this.state.user) {
-			await this.getUser()
-		}
+		try {
+			// If the user is missing refetch it
+			if (!this.state.user) {
+				await this.getUser()
+			}
 
-		const items = this.state.user.items
+			const items = this.state.user.items
+			if (!items) throw new Error("This user has no items")
 
-		// Register new listeners for all items
-		for (let itemId of items) {
-			this.registerItemListener(itemId)
+			// Register new listeners for all items
+			for (let itemId of items) {
+				this.registerItemListener(itemId)
+			}
+		} catch (error) {
+			console.log(error)
 		}
 	}
 
@@ -124,6 +130,7 @@ class AccountPage extends Component {
 
 	render() {
 		const { isLoading, user, userIsOwner, items } = this.state
+		console.log(this.props.authUser)
 		return !isLoading && user ? (
 			<>
 				<h1>{user.name}</h1>
@@ -131,13 +138,17 @@ class AccountPage extends Component {
 				<p>Email: {user.email}</p>
 				{userIsOwner && (
 					<>
+						<hr />
 						<h3>Edytuj</h3>
 						<h4>Profilowe</h4>
 						<AvatarChangeForm onSubmit={this.onAvatarSubmit} />
 						<h4>Hasło</h4>
 						<PasswordChangeForm />
+						<h4>Konta Społecznościowe</h4>
+						<LoginManagement authUser={this.props.authUser} />
 					</>
 				)}
+				<hr />
 				<h3>Przedmioty na sprzedaż</h3>
 				{Object.values(items).map((item, i) => (
 					<ItemCard key={i} item={item} />
@@ -152,6 +163,7 @@ class AccountPage extends Component {
 const condition = (authUser) => !!authUser
 
 export default compose(
+	withAuthentication,
 	withAuthorization(condition),
 	withFirebase
 )(AccountPage)

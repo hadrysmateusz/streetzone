@@ -42,15 +42,12 @@ class FileHandlerSingle extends Component {
 
 	render() {
 		const { input, meta, isLoading, ...rest } = this.props
-		console.log(isLoading)
 
 		const hasContent = input.value
 
 		return (
 			<div>
-				{isLoading ? (
-					<LoadingSpinner />
-				) : hasContent ? (
+				{hasContent ? (
 					<div className={styles.avatarPreviewContainer}>
 						<div className={styles.avatarPreviewOverlay}>
 							<div
@@ -75,15 +72,24 @@ class FileHandlerSingle extends Component {
 					</div>
 				) : (
 					<div className={styles.avatarPreviewContainer}>
-						<div
-							className={styles.avatarPreviewOverlay}
-							onClick={this.clickFileInput}
-						>
-							<div className={cn(styles.icon, styles.iconChange)} title="Dodaj">
-								<FontAwesomeIcon icon="plus" />
-							</div>
-						</div>
-						<div className={styles.emptyPreview}>Brak</div>
+						{isLoading ? (
+							<LoadingSpinner width="160px" height="160px" />
+						) : (
+							<>
+								<div
+									className={styles.avatarPreviewOverlay}
+									onClick={this.clickFileInput}
+								>
+									<div
+										className={cn(styles.icon, styles.iconChange)}
+										title="Dodaj"
+									>
+										<FontAwesomeIcon icon="plus" />
+									</div>
+								</div>
+								<div className={styles.emptyPreview}>Brak</div>
+							</>
+						)}
 					</div>
 				)}
 				<div>

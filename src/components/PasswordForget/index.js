@@ -5,7 +5,7 @@ import { compose } from "recompose"
 
 import { withAuthorization } from "../UserSession"
 import { withFirebase } from "../Firebase"
-import { ROUTES, FORMS, REGEX } from "../../constants"
+import { ROUTES, FORM_ERR, REGEX } from "../../constants"
 
 const PasswordForgetPage = () => {
 	return (
@@ -39,9 +39,9 @@ class PasswordForgetFormBase extends Component {
 
 		// E-mail
 		if (!email) {
-			errors.email = FORMS.ERR_IS_REQUIRED
+			errors.email = FORM_ERR.IS_REQUIRED
 		} else if (!REGEX.EMAIL.test(email)) {
-			errors.email = FORMS.ERR_EMAIL_INVALID
+			errors.email = FORM_ERR.EMAIL_INVALID
 		}
 
 		return errors

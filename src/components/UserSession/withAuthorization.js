@@ -9,12 +9,13 @@ import { ROUTES } from "../../constants"
 const withAuthorization = (condition) => (Component) => {
 	class WithAuthorization extends React.Component {
 		componentDidMount = () => {
-			this.removeListener = this.props.firebase.auth.onAuthStateChanged(
+			this.removeListener = this.props.firebase.onAuthUserListener(
 				(authUser) => {
 					if (!condition(authUser)) {
 						this.props.history.push(ROUTES.SIGN_IN)
 					}
-				}
+				},
+				() => this.props.history.push(ROUTES.SIGN_IN)
 			)
 		}
 

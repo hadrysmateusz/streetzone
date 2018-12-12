@@ -10,6 +10,7 @@ const Button = ({
 	text,
 	primary,
 	wide,
+	theme,
 	...props
 }) => {
 	let classNames = cn({
@@ -20,13 +21,27 @@ const Button = ({
 		[styles.wide]: wide
 	})
 
+	const style = theme
+		? {
+				color: theme.color,
+				backgroundColor: theme.backgroundColor,
+				borderColor: theme.borderColor
+		  }
+		: {}
+
 	if (text && children) {
 		throw new Error(
 			"The button component can take either children or the text prop, not both"
 		)
 	}
 	return (
-		<button className={classNames} type={type} disabled={disabled} {...props}>
+		<button
+			className={classNames}
+			style={style}
+			type={type}
+			disabled={disabled}
+			{...props}
+		>
 			{children || text}
 		</button>
 	)

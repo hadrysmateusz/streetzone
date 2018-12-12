@@ -17,8 +17,13 @@ class Firebase {
 		app.initializeApp(config)
 
 		// Auth
+		/* emailAuthProvider needs to be on top or else it will be overriden */
+		this.emailAuthProvider = app.auth.EmailAuthProvider
 		this.auth = app.auth()
 		this.auth.languageCode = "pl"
+
+		this.googleProvider = new app.auth.GoogleAuthProvider()
+		this.facebookProvider = new app.auth.FacebookAuthProvider()
 
 		// Storage
 		this.storage = app.storage()
@@ -38,6 +43,10 @@ class Firebase {
 
 	signInWithEmail = (email, password) =>
 		this.auth.signInWithEmailAndPassword(email, password)
+
+	signInWithGoogle = () => this.auth.signInWithPopup(this.googleProvider)
+
+	signInWithFacebook = () => this.auth.signInWithPopup(this.facebookProvider)
 
 	signOut = () => this.auth.signOut()
 
@@ -84,6 +93,32 @@ class Firebase {
 			console.log(error)
 		}
 	}
+
+	// Marge Auth and DB User API
+
+	onAuthUserListener = (next, fallback) =>
+		this.auth.onAuthStateChanged(async (authUser) => {
+			if (authUser) {
+				const snapshot = await this.user(authUser.uid).get()
+				const dbUser = snapshot.data()
+
+				// default empty roles
+				if (!dbUser.roles) {
+					dbUser.roles = []
+				}
+
+				// merge auth and db user
+				authUser = {
+					uid: authUser.uid,
+					email: authUser.email,
+					...dbUser
+				}
+
+				next(authUser)
+			} else {
+				fallback()
+			}
+		})
 }
 
 export default Firebase

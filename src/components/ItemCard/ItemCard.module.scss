@@ -5,7 +5,7 @@
 	margin: 10px auto;
 	height: 400px;
 	width: 100%;
-	max-width: 330px;
+	// max-width: 330px;
 	a {
 		display: flex;
 		flex-direction: column;
@@ -15,6 +15,9 @@
 
 	@media (min-width: 600px) {
 		width: calc(50% - 14px);
+		max-width: 330px;
+
+		// width: 100%;
 		margin: 7px;
 	}
 	@media (min-width: 1100px) {
@@ -34,14 +37,20 @@
 }
 
 .thumbnail {
-	width: 100%;
-	background: $thumbnail-bg;
 	display: flex;
-	height: 300px;
 	justify-content: center;
 	align-items: center;
+	background: $thumbnail-bg;
+	height: 300px;
+	max-height: 300px;
+	max-height: 100%;
+	flex-grow: 0;
+	display: flex;
 
 	img {
+		display: block;
+		width: auto;
+		height: auto;
 		max-height: 100%;
 		max-width: 100%;
 	}
@@ -49,6 +58,7 @@
 .info {
 	padding: 0 8px;
 	flex-grow: 0;
+	flex-shrink: 0;
 }
 
 .designers {

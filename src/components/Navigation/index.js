@@ -14,6 +14,11 @@ const Navigation = ({ authUser }) => {
 			<li className={styles.brand}>
 				<Link to={ROUTES.HOME}>{CONST.BRAND_NAME}</Link>
 			</li>
+			<li>
+				<Link to={ROUTES.BLOG_HOME} className={styles.navLink}>
+					Blog
+				</Link>
+			</li>
 			{authUser && (
 				<>
 					<li>

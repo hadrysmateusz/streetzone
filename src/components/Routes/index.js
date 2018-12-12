@@ -10,6 +10,7 @@ import AccountPage from "../AccountPage"
 import EditItemPage from "../EditItem"
 import ItemDetailsPage from "../ItemDetailsPage"
 import NotFound from "../NotFound"
+import BlogHomePage from "../BlogHome"
 
 import { ROUTES } from "../../constants"
 
@@ -45,6 +46,10 @@ const routes = [
 	{
 		path: ROUTES.EDIT_ITEM,
 		component: EditItemPage
+	},
+	{
+		path: ROUTES.BLOG_HOME,
+		component: BlogHomePage
 	}
 ]
 
