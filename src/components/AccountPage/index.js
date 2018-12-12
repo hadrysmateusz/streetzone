@@ -8,6 +8,7 @@ import { PasswordChangeForm } from "../PasswordChange"
 import ItemCard from "../ItemCard"
 import AvatarChangeForm from "../AvatarChange"
 import LoginManagement from "../LoginManagement"
+import CenteredLayout from "../CenteredLayout"
 
 class AccountPage extends Component {
 	constructor(props) {
@@ -131,31 +132,35 @@ class AccountPage extends Component {
 	render() {
 		const { isLoading, user, userIsOwner, items } = this.state
 		console.log(this.props.authUser)
-		return !isLoading && user ? (
-			<>
-				<h1>{user.name}</h1>
-				<h3>Informacje</h3>
-				<p>Email: {user.email}</p>
-				{userIsOwner && (
+		return (
+			<CenteredLayout>
+				{!isLoading && user ? (
 					<>
+						<h1>{user.name}</h1>
+						<h3>Informacje</h3>
+						<p>Email: {user.email}</p>
+						{userIsOwner && (
+							<>
+								<hr />
+								<h3>Edytuj</h3>
+								<h4>Profilowe</h4>
+								<AvatarChangeForm onSubmit={this.onAvatarSubmit} />
+								<h4>Hasło</h4>
+								<PasswordChangeForm />
+								<h4>Konta Społecznościowe</h4>
+								<LoginManagement authUser={this.props.authUser} />
+							</>
+						)}
 						<hr />
-						<h3>Edytuj</h3>
-						<h4>Profilowe</h4>
-						<AvatarChangeForm onSubmit={this.onAvatarSubmit} />
-						<h4>Hasło</h4>
-						<PasswordChangeForm />
-						<h4>Konta Społecznościowe</h4>
-						<LoginManagement authUser={this.props.authUser} />
+						<h3>Przedmioty na sprzedaż</h3>
+						{Object.values(items).map((item, i) => (
+							<ItemCard key={i} item={item} />
+						))}
 					</>
+				) : (
+					<LoadingSpinner />
 				)}
-				<hr />
-				<h3>Przedmioty na sprzedaż</h3>
-				{Object.values(items).map((item, i) => (
-					<ItemCard key={i} item={item} />
-				))}
-			</>
-		) : (
-			<LoadingSpinner />
+			</CenteredLayout>
 		)
 	}
 }
