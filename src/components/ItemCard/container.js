@@ -5,7 +5,6 @@ import styles from "./ItemCard.module.scss"
 import { itemSchema } from "../../constants"
 import styled from "styled-components"
 import { withFirebase } from "../Firebase"
-import { CSS } from "../../constants"
 
 class ItemCardUnstyled extends Component {
 	state = { imageURL: "" }
@@ -34,43 +33,39 @@ class ItemCardUnstyled extends Component {
 
 	render() {
 		const { itemId, name, price, designers = [], createdAt } = this.props.item
+
 		return (
-			<Link to={`/i/${itemId}`}>
-				<div className={this.props.className}>
-					<div className="thumbnail">
+			<div className={styles.ItemCard}>
+				<Link to={`/i/${itemId}`}>
+					<div className={styles.thumbnail}>
 						<img src={this.state.imageURL} alt="" />
 					</div>
-					<div className="info">
-						<div className="topContainer">
-							<div className="innerContainer">
-								<div className="designers">
+					<div className={styles.info}>
+						<div className={styles.topContainer}>
+							<div className={styles.innerContainer}>
+								<div className={styles.designers}>
 									{designers && designers.join(" & ").toUpperCase()}
 								</div>
-								<div className="price">
+								<div className={styles.price}>
 									{price}
 									zł
 								</div>
 							</div>
-							<div className="name">{name}</div>
+							<div className={styles.name}>{name}</div>
+							<div className={styles.name}>
+								<em>{this.props.item.category}</em>
+							</div>
 						</div>
-						<div className="date">
+						<div className={styles.date}>
 							Dodano {moment(createdAt).format("D.M.YY o HH:mm")}
 						</div>
 					</div>
-				</div>
-			</Link>
+				</Link>
+			</div>
 		)
 	}
 }
 
-const ItemCard = styled(ItemCardUnstyled)`
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
-	height: 400px;
-	width: 100%;
-	margin: 10px auto;
-	border: 2px solid ${CSS.COLOR_BLACK};
-`
+const ItemCard = styled(ItemCardUnstyled)``
 
 export default withFirebase(ItemCard)

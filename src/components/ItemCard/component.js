@@ -5,7 +5,6 @@ import styles from "./ItemCard.module.scss"
 import { itemSchema } from "../../constants"
 import styled from "styled-components"
 import { withFirebase } from "../Firebase"
-import { CSS } from "../../constants"
 
 class ItemCardUnstyled extends Component {
 	state = { imageURL: "" }
@@ -36,7 +35,7 @@ class ItemCardUnstyled extends Component {
 		const { itemId, name, price, designers = [], createdAt } = this.props.item
 		return (
 			<Link to={`/i/${itemId}`}>
-				<div className={this.props.className}>
+				<div>
 					<div className="thumbnail">
 						<img src={this.state.imageURL} alt="" />
 					</div>
@@ -63,14 +62,6 @@ class ItemCardUnstyled extends Component {
 	}
 }
 
-const ItemCard = styled(ItemCardUnstyled)`
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
-	height: 400px;
-	width: 100%;
-	margin: 10px auto;
-	border: 2px solid ${CSS.COLOR_BLACK};
-`
+const ItemCard = styled(ItemCardUnstyled)``
 
 export default withFirebase(ItemCard)

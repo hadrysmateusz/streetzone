@@ -17,7 +17,7 @@ const withAuthenticationProvider = (Component) => {
 			this.removeListener = this.props.firebase.onAuthUserListener(
 				(authUser) => {
 					localStorage.setItem("authUser", JSON.stringify(authUser))
-					this.setState({ authUser }, () => console.log("cdm", this.state))
+					this.setState({ authUser })
 				},
 				() => {
 					localStorage.removeItem("authUser")
