@@ -1,55 +1,61 @@
 import React from "react"
-import styles from "./Button.module.scss"
-import PropTypes from "prop-types"
-import cn from "classnames"
+import styled, { keyframes } from "styled-components"
 
-const Button = ({
-	disabled = false,
-	type = "button",
-	children,
-	text,
-	primary,
-	wide,
-	theme,
-	...props
-}) => {
-	let classNames = cn({
-		[styles.base]: true,
-		[styles.regular]: !primary && !disabled,
-		[styles.primary]: primary,
-		[styles.disabled]: disabled,
-		[styles.wide]: wide
-	})
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
-	const style = theme
-		? {
-				color: theme.color,
-				backgroundColor: theme.backgroundColor,
-				borderColor: theme.borderColor
-		  }
-		: {}
+import { CSS } from "../../constants"
 
-	if (text && children) {
-		throw new Error(
-			"The button component can take either children or the text prop, not both"
-		)
+const spin = keyframes`
+	from {
+		transform: rotate(0deg);
 	}
-	return (
-		<button
-			className={classNames}
-			style={style}
-			type={type}
-			disabled={disabled}
-			{...props}
-		>
-			{children || text}
-		</button>
-	)
-}
 
-Button.propTypes = {
-	disabled: PropTypes.bool,
-	primary: PropTypes.bool
-}
+	to {
+		transform: rotate(360deg);
+	}
+`
+
+const Button = styled.button`
+	border: 2px solid;
+	border-color: ${(props) => (props.disabled ? CSS.COLOR_DISABLED : CSS.COLOR_BLACK)};
+	background: ${(props) => (props.primary ? CSS.COLOR_BLACK : `transparent`)};
+	color: ${(props) => (props.primary ? CSS.COLOR_WHITE : CSS.COLOR_BLACK_DARKER)};
+	${(props) => props.disabled && `color: ${CSS.COLOR_DISABLED_DARKER}`}
+	width: ${(props) => (props.fullWidth ? "100%" : "auto")};
+	padding: 0.6rem 1.8rem;
+	text-align: center;
+	font-size: 0.9rem;
+	font-weight: bold;
+	display: inline-block;
+
+	&:not([disabled]) {
+		cursor: pointer;
+	}
+`
+
+const LoaderButtonUnstyled = ({ isLoading, text, loadingText = text, ...rest }) => (
+	<Button {...rest}>
+		<span className="contentContainer">
+			<FontAwesomeIcon className="spinner" icon="spinner" />
+			<span className="text">{isLoading ? loadingText : text}</span>
+		</span>
+	</Button>
+)
+
+const LoaderButton = styled(LoaderButtonUnstyled)`
+	.contentContainer {
+		position: relative;
+		width: auto;
+	}
+	.spinner {
+		${(props) => !props.isLoading && "display: none"};
+		margin-right: 8px;
+		position: absolute;
+		top: 0;
+		left: -1.3rem;
+		animation: ${spin} 1.3s linear infinite;
+	}
+`
 
 export default Button
+export { LoaderButton }

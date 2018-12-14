@@ -2,7 +2,8 @@ import React, { Component } from "react"
 import { Form, Field } from "react-final-form"
 import cn from "classnames"
 
-import LoaderButton from "../LoaderButton"
+// import LoaderButton from "../LoaderButton"
+import { LoaderButton } from "../Button"
 import SelectAdapter from "../SelectAdapter"
 
 import styles from "./FilterForm.module.scss"
@@ -77,9 +78,7 @@ const FilterForm = (props) => (
 							<Field name="designer" type="select">
 								{({ input, meta }) => (
 									<>
-										<div className={styles.categoryHeader}>
-											Projektant / Marka
-										</div>
+										<div className={styles.categoryHeader}>Projektant / Marka</div>
 										<SelectAdapter
 											placeholder={"Marka"}
 											options={designerOptions}
@@ -130,7 +129,7 @@ const FilterForm = (props) => (
 						type="submit"
 						text="Filtruj"
 						disabled={submitting || pristine}
-						wide
+						fullWidth
 					/>
 					{/* {process.env.NODE_ENV === "development" && (
 						<pre>{JSON.stringify(values, 0, 2)}</pre>
