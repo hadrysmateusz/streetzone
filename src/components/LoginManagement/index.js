@@ -5,7 +5,7 @@ import styled from "styled-components"
 
 import { StyledField } from "../Basics"
 import { SocialButton } from "../Button"
-import LoaderButton from "../LoaderButton"
+import { LoaderButton } from "../Button"
 import { withFirebase } from "../Firebase"
 import { PasswordChangeForm } from "../PasswordChange"
 

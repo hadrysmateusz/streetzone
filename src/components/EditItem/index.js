@@ -6,12 +6,10 @@ import { withFirebase } from "../Firebase"
 import { withAuthorization } from "../UserSession"
 import LoadingSpinner from "../LoadingSpinner"
 import EmptyState from "../EmptyState"
-import CenteredLayout from "../CenteredLayout"
 import { ItemForm } from "../ItemForm"
 
 import { CustomFile } from "../FileHandler"
 import { formData, dbData } from "../../utils/formatItemData"
-import styles from "./EditItem.module.scss"
 
 class EditItemPage extends Component {
 	state = {
@@ -75,9 +73,7 @@ class EditItemPage extends Component {
 			let oldRefs = this.state.data.files.map((file) => file.ref)
 
 			// Old refs no longer present in new refs are marked for deletion
-			let refsToDelete = oldRefs.filter(
-				(oldRef) => !attachments.includes(oldRef)
-			)
+			let refsToDelete = oldRefs.filter((oldRef) => !attachments.includes(oldRef))
 
 			// Update modifiedAt
 			const time = { modifiedAt: Date.now() }
@@ -117,27 +113,25 @@ class EditItemPage extends Component {
 
 	render() {
 		return (
-			<CenteredLayout>
-				<div className={styles.mainContainer}>
-					<h1>Edytuj</h1>
-					{this.state.isLoading && (
-						<h4>
-							Ładowanie...&nbsp;
-							<LoadingSpinner inline />
-						</h4>
-					)}
-					{(this.state.data || this.state.isLoading) && (
-						<ItemForm
-							initialValues={this.state.data}
-							isLoading={this.state.isLoading}
-							onSubmit={this.onSubmit}
-						/>
-					)}
-					{!this.state.data && !this.state.isLoading && (
-						<EmptyState text="Nie znaleziono przedmiotu" />
-					)}
-				</div>
-			</CenteredLayout>
+			<div>
+				<h1>Edytuj</h1>
+				{this.state.isLoading && (
+					<h4>
+						Ładowanie...&nbsp;
+						<LoadingSpinner inline />
+					</h4>
+				)}
+				{(this.state.data || this.state.isLoading) && (
+					<ItemForm
+						initialValues={this.state.data}
+						isLoading={this.state.isLoading}
+						onSubmit={this.onSubmit}
+					/>
+				)}
+				{!this.state.data && !this.state.isLoading && (
+					<EmptyState text="Nie znaleziono przedmiotu" />
+				)}
+			</div>
 		)
 	}
 }

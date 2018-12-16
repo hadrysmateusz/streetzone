@@ -1,4 +1,4 @@
-export default {
+const schema = {
 	designers: [
 		"Adidas",
 		"Gucci",
@@ -16,3 +16,15 @@ export default {
 	],
 	categories: ["Buty", "Tee", "Longsleeve", "Akcesoria", "Spodnie"]
 }
+
+// options for react-select
+const categoryOptions = schema.categories.map((categoryName, i) => ({
+	value: categoryName,
+	label: categoryName
+}))
+const designerOptions = schema.designers.map((designerName, i) => ({
+	value: designerName,
+	label: designerName
+}))
+
+export { schema, categoryOptions, designerOptions }

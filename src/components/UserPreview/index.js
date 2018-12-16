@@ -1,12 +1,24 @@
 import React, { Component } from "react"
-
-import styles from "./UserPreview.module.scss"
+import styled from "styled-components"
 
 import { withFirebase } from "../Firebase"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import LoadingSpinner from "../LoadingSpinner"
 
 import { ROUTES } from "../../constants"
+
+const Name = styled.div`
+	font-size: 1.22rem;
+	padding: 0 10px;
+	height: 100%;
+`
+
+const Container = styled.div`
+	margin: 10px 0;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+`
 
 export class UserPreview extends Component {
 	state = {
@@ -30,17 +42,15 @@ export class UserPreview extends Component {
 		const { isLoading, user } = this.state
 		if (!isLoading && user) {
 			return (
-				<div className={styles.container}>
-					<div className={styles.avatar}>
+				<Container>
+					<div>
 						{/* TODO: replace the icon with avatar */}
 						<FontAwesomeIcon icon="user-circle" size="2x" />
 					</div>
-					<div className={styles.name}>
-						<a href={ROUTES.ACCOUNT.replace(":id", this.props.id)}>
-							{user.name}
-						</a>
-					</div>
-				</div>
+					<Name>
+						<a href={ROUTES.ACCOUNT.replace(":id", this.props.id)}>{user.name}</a>
+					</Name>
+				</Container>
 			)
 		} else {
 			return <LoadingSpinner />

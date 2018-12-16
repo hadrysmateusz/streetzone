@@ -1,18 +1,69 @@
 import React, { Component } from "react"
-// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-// import { Link } from "react-router-dom"
-// import cn from "classnames"
+import styled from "styled-components"
 
 import { withFirebase } from "../Firebase"
 import ItemCard from "../ItemCard"
-import CenteredLayout from "../CenteredLayout"
 import LoadingSpinner from "../LoadingSpinner"
 import FilterForm from "../Filters"
-// import LoaderButton from "../LoaderButton"
-
-import styles from "./Home.module.scss"
-// import animations from "../../scss/animations.module.scss"
 import { CONST } from "../../constants"
+
+const Container = styled.div`
+	display: flex;
+	flex-flow: column;
+	max-width: 650px;
+	@media (min-width: 800px) {
+		flex-flow: row;
+		max-width: 1100px;
+	}
+	justify-content: center;
+	margin: 0 auto;
+`
+
+const Sidebar = styled.aside`
+	min-width: 212px;
+	padding-bottom: 30px;
+	// padding: $item-spacing 0;
+	width: 100%;
+	@media (min-width: 800px) {
+		width: 200px;
+		min-width: 190px;
+		padding: $item-spacing;
+		margin-right: $item-spacing * 2;
+	}
+`
+
+const MainContent = styled.main`
+	width: auto;
+	min-width: 60%;
+`
+
+const ItemsContainer = styled.div`
+	width: auto;
+	display: flex;
+	flex-flow: row wrap;
+	justify-content: left;
+	align-content: flex-start;
+	margin-top: -$item-spacing;
+	@media (min-width: 600px) {
+		max-width: 670px;
+		margin: -$item-spacing;
+	}
+	@media (min-width: 800px) {
+		max-width: 670px;
+	}
+	@media (min-width: 1100px) {
+		max-width: 820px;
+	}
+`
+
+const LoadMore = styled.div`
+	text-align: center;
+	font-size: 1.2rem;
+	font-weight: bold;
+	padding: 30px 0 30px 0;
+	cursor: pointer;
+	margin: 10px 10px 20px 10px;
+`
 
 const INITIAL_STATE = {
 	items: [],
@@ -43,6 +94,7 @@ class HomePage extends Component {
 
 		// Create new object as to not overwrite the FilterForm data
 		let filters = {}
+
 		if (values.category) filters.category = values.category
 		if (values.designer) filters.designer = values.designer
 		if (values.price_min) filters.price_min = values.price_min
@@ -66,21 +118,14 @@ class HomePage extends Component {
 			// Create the base query
 			let query = this.props.firebase.items()
 
+			// apply filters
 			if (filters) {
 				const { category, designer, price_min, price_max } = filters
 
-				if (category) {
-					query = query.where("category", "==", category)
-				}
-				if (designer) {
-					query = query.where("designers", "array-contains", designer)
-				}
-				if (price_min) {
-					query = query.where("price", ">=", +price_min)
-				}
-				if (price_max) {
-					query = query.where("price", "<=", +price_max)
-				}
+				if (category) query = query.where("category", "==", category)
+				if (designer) query = query.where("designers", "array-contains", designer)
+				if (price_min) query = query.where("price", ">=", +price_min)
+				if (price_max) query = query.where("price", "<=", +price_max)
 				// When using range comparison operators
 				// the first sorting has to be by the same property
 				if ((price_max || price_min) && sortBy !== "price") {
@@ -88,14 +133,16 @@ class HomePage extends Component {
 				}
 			}
 
+			// apply sorting
 			query = query.orderBy(sortBy, sortDirection)
 
+			// get the old cursor
 			const cursor = this.state.cursor
 
-			if (cursor) {
-				query = query.startAfter(cursor)
-			}
+			// if there was a cursor start after it
+			if (cursor) query = query.startAfter(cursor)
 
+			// limit the result set
 			query = query.limit(CONST.ITEMS_PER_PAGE)
 
 			// execute the query and add itemIds
@@ -115,11 +162,12 @@ class HomePage extends Component {
 				this.setState({ noMoreItems: true })
 			}
 
+			// If there are old items add the new items to them
 			if (this.state.items && this.state.items.length > 0) {
 				items = this.state.items.concat(items)
 			}
 
-			// Get last fetched document and set it as new cursor
+			// Get last fetched document and set it as the new cursor
 			const newCursor = snapshot.docs[snapshot.docs.length - 1]
 
 			return this.setState({ items, cursor: newCursor, isLoading: false })
@@ -128,55 +176,33 @@ class HomePage extends Component {
 		}
 	}
 
-	// refresh = async () => {
-	// 	// TODO: make this trigger refresh on all Item cards as well
-	// 	await this.setState({ isRefreshing: true })
-	// 	await this.getItems()
-	// 	return this.setState({ isRefreshing: false })
-	// }
-
 	componentDidMount = async () => {
 		this.getItems()
 	}
 
 	render() {
-		const {
-			items,
-			isLoading,
-			isFiltering,
-			isRefreshing,
-			noMoreItems
-		} = this.state
-
-		// get current page from props
-		// const currentPage = this.props.match.params.page || 1
+		const { items, isLoading, isFiltering, noMoreItems } = this.state
 
 		return (
-			<CenteredLayout>
-				<div className={styles.mainContainer}>
-					<div className={styles.sidebar}>
-						<FilterForm onSubmit={this.filterItems} isLoading={isFiltering} />
-					</div>
-					<div className={styles.content}>
-						{!isLoading ? (
-							<>
-								<div className={styles.itemsContainer}>
-									{items.map((item, i) => {
-										return <ItemCard key={i} item={item} />
-									})}
-								</div>
-								{!noMoreItems && (
-									<div className={styles.loadMore} onClick={this.getItems}>
-										Więcej
-									</div>
-								)}
-							</>
-						) : (
-							<LoadingSpinner />
-						)}
-					</div>
-				</div>
-			</CenteredLayout>
+			<Container>
+				<Sidebar>
+					<FilterForm onSubmit={this.filterItems} isLoading={isFiltering} />
+				</Sidebar>
+				<MainContent>
+					{!isLoading ? (
+						<>
+							<ItemsContainer>
+								{items.map((item, i) => {
+									return <ItemCard key={i} item={item} />
+								})}
+							</ItemsContainer>
+							{!noMoreItems && <LoadMore onClick={this.getItems}>Więcej</LoadMore>}
+						</>
+					) : (
+						<LoadingSpinner />
+					)}
+				</MainContent>
+			</Container>
 		)
 	}
 }

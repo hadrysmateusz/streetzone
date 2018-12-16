@@ -97,7 +97,9 @@ class FileHandlerUnstyled extends Component {
 							)
 						})
 					) : (
-						<div className="empty-state">Wybierz lub przeciągnij(TODO) pliki</div>
+						<div className="empty-state" onClick={this.clickFileInput}>
+							Wybierz lub przeciągnij(TODO) pliki
+						</div>
 					)}
 				</div>
 

@@ -1,11 +1,12 @@
 import React, { Component } from "react"
-import PropTypes from "prop-types"
 import styles from "./ImageGallery.module.scss"
 import cn from "classnames"
+import styled from "styled-components"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+
 import { withFirebase } from "../Firebase"
 
-export class ImageGallery extends Component {
+export class ImageGalleryUnstyled extends Component {
 	state = {
 		isLoading: true,
 		imageURLs: [],
@@ -14,9 +15,7 @@ export class ImageGallery extends Component {
 
 	componentDidMount = async () => {
 		// Get item attachments' refs and urls for previews
-		const imageURLs = await this.props.firebase.getImageURLs(
-			this.props.item.attachments
-		)
+		const imageURLs = await this.props.firebase.getImageURLs(this.props.item.attachments)
 
 		this.setState({ imageURLs, isLoading: false })
 	}
@@ -88,8 +87,120 @@ export class ImageGallery extends Component {
 	}
 }
 
-ImageGallery.propTypes = {
-	item: PropTypes.object.isRequired
-}
+const ImageGallery = styled(ImageGalleryUnstyled)`
+	.photosContainer {
+		flex: 0 0 100%;
+		user-select: none;
+		@media (min-width: 700px) {
+			max-width: 50%;
+			padding-right: 20px;
+		}
+	}
+
+	.navigation {
+		opacity: 0.86;
+		transition: all 0.2s;
+		background: ${CSS.COLOR_BLACK};
+		color: ${CSS.COLOR_WHITE};
+		font-size: 15px;
+
+		width: 40px;
+		height: 40px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		font-size: 12px;
+
+		border-radius: 50%;
+		position: absolute;
+		top: calc(50% - 25px);
+		box-shadow: 0 0 10px rgba(3, 3, 3, 0.3);
+		&:hover {
+			background: black;
+		}
+	}
+
+	.next {
+		right: 20px;
+		padding-right: 13px;
+		padding-left: 15px;
+	}
+
+	.previous {
+		left: 20px;
+		padding-right: 15px;
+		padding-left: 13px;
+	}
+
+	.currentImage {
+		/* cursor: zoom-in; */
+		position: relative;
+		width: 100%;
+		height: 30vh;
+		@media (min-width: 950px) {
+			height: 45vh;
+		}
+		@media (min-width: 1050px) {
+			height: 50vh;
+		}
+
+		background: ${CSS.COLOR_THUMBNAIL_BG};
+		text-align: center;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+
+		img {
+			max-height: 100%;
+			max-width: 100%;
+		}
+
+		/* &:hover .navigation {
+		display: block;
+	} */
+	}
+
+	.thumbnailsContainer {
+		display: flex;
+		flex-direction: row;
+	}
+
+	/* TODO: handle images of different aspect ratios (probably by setting it as background or editing on server side or sth */
+	.thumbnailContainer {
+		/* @media (max-width: 350px) {
+		display: none;
+	} */
+		filter: grayscale(85%);
+		cursor: pointer;
+		height: 74px;
+		width: 74px;
+		@media (min-width: 950px) {
+			height: 84px;
+			width: 84px;
+		}
+		@media (min-width: 1050px) {
+			height: 98px;
+			width: 98px;
+		}
+
+		background: ${CSS.COLOR_THUMBNAIL_BG};
+		margin: 10px 10px 0 0;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+
+		&:last-child {
+			margin-right: 0;
+		}
+		img {
+			max-height: 100%;
+			max-width: 100%;
+		}
+	}
+
+	.currentThumbnail {
+		filter: grayscale(0);
+	}
+`
 
 export default withFirebase(ImageGallery)

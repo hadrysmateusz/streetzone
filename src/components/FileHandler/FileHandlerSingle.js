@@ -113,20 +113,6 @@ class FileHandlerSingle extends Component {
 						Anuluj
 					</Button>
 				</div>
-				{/* <div className={styles.fileListContainer}>
-					{hasContent &&
-						input.value.map((file, i) => {
-							const error = meta.error && meta.error.specific[i]
-							return (
-								<FileItem
-									key={i}
-									onDelete={this.deleteFileItem}
-									fileItem={file}
-									error={error}
-								/>
-							)
-						})}
-				</div> */}
 			</div>
 		)
 	}

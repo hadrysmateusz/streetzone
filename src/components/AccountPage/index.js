@@ -9,7 +9,6 @@ import { Separator, Container } from "../Basics"
 import ItemCard from "../ItemCard"
 import AvatarChangeForm from "../AvatarChange"
 import LoginManagement from "../LoginManagement"
-import CenteredLayout from "../CenteredLayout"
 
 class AccountPageUnstyled extends Component {
 	constructor(props) {

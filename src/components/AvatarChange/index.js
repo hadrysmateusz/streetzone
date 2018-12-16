@@ -3,7 +3,7 @@ import { Form, Field } from "react-final-form"
 import { compose } from "recompose"
 import uuidv1 from "uuid/v1"
 
-import LoaderButton from "../LoaderButton"
+import { LoaderButton } from "../Button"
 import { Container } from "../Basics"
 import { FileHandlerSingle, CustomFile } from "../FileHandler"
 import { withRouter } from "react-router-dom"

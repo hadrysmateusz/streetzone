@@ -1,24 +1,13 @@
 import React, { Component } from "react"
 import { compose } from "recompose"
 import uuidv1 from "uuid/v1"
-import styled from "styled-components"
 
 import { withAuthorization } from "../UserSession"
 import { withFirebase } from "../Firebase"
 import { ItemForm } from "../ItemForm"
-// import CenteredLayout from "../CenteredLayout"
-
-import { itemSchema } from "../../constants"
+import { Container } from "../Basics"
+import { ITEM_SCHEMA } from "../../constants"
 import { dbData } from "../../utils/formatItemData"
-
-const Container = styled.div`
-	display: flex;
-	align-items: stretch;
-	align-content: stretch;
-	flex-direction: column;
-	max-width: 750px;
-	margin: 0 auto;
-`
 
 class NewItemPage extends Component {
 	state = {
@@ -26,8 +15,6 @@ class NewItemPage extends Component {
 	}
 
 	onSubmit = async (values) => {
-		// this.setState({ isLoading: true })
-
 		try {
 			const { firebase, history } = this.props
 			const files = values.files || []
@@ -87,7 +74,6 @@ class NewItemPage extends Component {
 		} catch (error) {
 			alert("Wystąpił problem podczas wystawiania przedmiotu")
 			console.log(error)
-			// this.setState({ isLoading: false })
 		}
 	}
 
@@ -97,10 +83,10 @@ class NewItemPage extends Component {
 				? {
 						name: "test" + Date.now(),
 						designers: [
-							itemSchema.designers[Math.floor(Math.random() * 13)],
-							itemSchema.designers[Math.floor(Math.random() * 13)]
+							ITEM_SCHEMA.schema.designers[Math.floor(Math.random() * 13)],
+							ITEM_SCHEMA.schema.designers[Math.floor(Math.random() * 13)]
 						],
-						category: itemSchema.categories[Math.floor(Math.random() * 5)],
+						category: ITEM_SCHEMA.schema.categories[Math.floor(Math.random() * 5)],
 						price: Math.max(50, Math.floor(Math.random() * 500) * 10) + "",
 						size: Math.max(36, Math.floor(Math.random() * 50)) + "",
 						description:
@@ -108,7 +94,7 @@ class NewItemPage extends Component {
 				  }
 				: null
 		return (
-			<Container>
+			<Container width="550">
 				<h1>Nowy</h1>
 				<ItemForm initialValues={initialValues} onSubmit={this.onSubmit} />
 			</Container>

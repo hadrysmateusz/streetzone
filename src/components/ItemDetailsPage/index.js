@@ -7,10 +7,9 @@ import ImageGallery from "../ImageGallery"
 import { withFirebase } from "../Firebase"
 import { withAuthentication } from "../UserSession"
 import LoadingSpinner from "../LoadingSpinner"
-import LoaderButton from "../LoaderButton"
+import Button, { LoaderButton } from "../Button"
+import { Container } from "../Basics"
 import EmptyState from "../EmptyState"
-import CenteredLayout from "../CenteredLayout"
-import Button from "../Button"
 import UserPreview from "../UserPreview"
 
 import styles from "./ItemDetails.module.scss"
@@ -71,7 +70,7 @@ class ItemDetailsPage extends Component {
 		}
 
 		return (
-			<CenteredLayout>
+			<Container width={1100}>
 				{item && !isLoading ? (
 					<div className={styles.mainContainer}>
 						<div className={styles.itemContainer}>
@@ -121,7 +120,7 @@ class ItemDetailsPage extends Component {
 				) : (
 					<EmptyState text="Nie znaleziono przedmiotu, być może został usunięty." />
 				)}
-			</CenteredLayout>
+			</Container>
 		)
 	}
 }

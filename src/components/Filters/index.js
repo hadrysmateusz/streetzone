@@ -1,13 +1,13 @@
 import React from "react"
 import { Form, Field } from "react-final-form"
-import cn from "classnames"
+import styled from "styled-components"
 
 import { LoaderButton } from "../Button"
+import { FieldLabel, FieldRow, StyledInput } from "../Basics"
 import SelectAdapter from "../SelectAdapter"
 import { Error } from "../ItemForm"
 
-import styles from "./FilterForm.module.scss"
-import { itemSchema, FORM_ERR, CONST } from "../../constants"
+import { ITEM_SCHEMA, FORM_ERR } from "../../constants"
 
 const sortOptions = [
 	{ value: "createdAt-desc", label: "Najnowsze" },
@@ -15,15 +15,25 @@ const sortOptions = [
 	{ value: "price-desc", label: "Cena Malejąco" }
 ]
 
-const categoryOptions = itemSchema.categories.map((categoryName, i) => ({
-	value: categoryName,
-	label: categoryName
-}))
+// const HalfWidthInput = styled(StyledInput)`
+// 	/* min-width: 66px;
+// 	padding: 10px;
+// 	font-size: 0.91rem;
 
-const designerOptions = itemSchema.designers.map((designerName, i) => ({
-	value: designerName,
-	label: designerName
-}))
+// 	border: 1px solid #c6c6c6;
+// 	&::placeholder {
+// 		color: #898989;
+// 	} */
+// 	/* background: red;
+// 	width: 50%;
+// 	@media (max-width: 555px) {
+// 		width: 100%;
+// 	} */
+// `
+
+const PriceInputContainer = styled.div`
+	display: flex;
+`
 
 const validate = (values) => {
 	const { price_min, price_max } = values
@@ -41,30 +51,21 @@ const validate = (values) => {
 const FilterForm = (props) => (
 	<Form
 		onSubmit={props.onSubmit}
+		className={props.className}
 		initialValues={{
 			sort: "createdAt-desc"
 		}}
 		validate={validate}
-		render={({
-			handleSubmit,
-			submitting,
-			pristine,
-			invalid,
-			errors,
-			values,
-			...rest
-		}) => {
+		render={({ handleSubmit, submitting, invalid, errors }) => {
 			return (
 				<form onSubmit={handleSubmit}>
-					<div className={styles.outerContainer}>
+					<div className="outer-container">
 						{/* SortBy */}
-						<div className={styles.categoryContainer}>
+						<FieldRow>
 							<Field name="sort" type="select">
 								{({ input, meta }) => (
 									<>
-										<label htmlFor="sort-input" className={styles.categoryHeader}>
-											Sortuj według
-										</label>
+										<FieldLabel htmlFor="sort-input">Sortuj według</FieldLabel>
 										<SelectAdapter
 											id="sort-input"
 											placeholder={"Sortuj według"}
@@ -78,96 +79,84 @@ const FilterForm = (props) => (
 									</>
 								)}
 							</Field>
-						</div>
+						</FieldRow>
 
-						<div className={styles.filtersContainer}>
-							{/* Category */}
-							<div className={styles.categoryContainer}>
-								<Field name="category" type="select">
-									{({ input, meta }) => (
-										<>
-											<label htmlFor="category-input" className={styles.categoryHeader}>
-												Kategoria
-											</label>
-											<SelectAdapter
-												id="category-input"
-												placeholder={"Kategoria"}
-												options={categoryOptions}
-												isClearable={true}
-												isSearchable={true}
-												{...meta}
-												{...input}
-											/>
-											<Error meta={meta} />
-										</>
-									)}
-								</Field>
-							</div>
+						{/* Category */}
+						<FieldRow>
+							<Field name="category" type="select">
+								{({ input, meta }) => (
+									<>
+										<FieldLabel htmlFor="category-input">Kategoria</FieldLabel>
+										<SelectAdapter
+											id="category-input"
+											placeholder={"Kategoria"}
+											options={ITEM_SCHEMA.categoryOptions}
+											isClearable={true}
+											isSearchable={true}
+											{...meta}
+											{...input}
+										/>
+										<Error meta={meta} />
+									</>
+								)}
+							</Field>
+						</FieldRow>
 
-							{/* Designer */}
-							<div className={styles.categoryContainer}>
-								<Field name="designer" type="select">
-									{({ input, meta }) => (
-										<>
-											<label htmlFor="designer-input" className={styles.categoryHeader}>
-												Projektant / Marka
-											</label>
-											<SelectAdapter
-												id="designer-input"
-												placeholder={"Marka"}
-												options={designerOptions}
-												isClearable={true}
-												isSearchable={true}
-												{...meta}
-												{...input}
-											/>
-											<Error meta={meta} />
-										</>
-									)}
-								</Field>
-							</div>
+						{/* Designer */}
+						<FieldRow>
+							<Field name="designer" type="select">
+								{({ input, meta }) => (
+									<>
+										<FieldLabel htmlFor="designer-input">Projektant / Marka</FieldLabel>
+										<SelectAdapter
+											id="designer-input"
+											placeholder={"Marka"}
+											options={ITEM_SCHEMA.designerOptions}
+											isClearable={true}
+											isSearchable={true}
+											{...meta}
+											{...input}
+										/>
+										<Error meta={meta} />
+									</>
+								)}
+							</Field>
+						</FieldRow>
 
-							{/* Price */}
-							<div className={styles.categoryContainer}>
-								<div className={styles.categoryHeader}>
-									<strong>Cena</strong>
-								</div>
-								<div className={cn(styles.categoryBody, styles.priceInputBody)}>
-									<Field
-										name="price_min"
-										className={styles.priceInput}
-										component="input"
-										type="number"
-										min="0"
-										step="1"
-										max="99999"
-										style={{ marginRight: "8px" }}
-										placeholder="Od"
-									/>
-									<Field
-										name="price_max"
-										className={styles.priceInput}
-										component="input"
-										type="number"
-										min="0"
-										step="1"
-										max="99999"
-										placeholder="Do"
-									/>
-								</div>
-								<Error meta={{ error: errors.price, touched: true }} />
-							</div>
-						</div>
+						{/* Price */}
+						<FieldRow>
+							<FieldLabel as="div">Cena</FieldLabel>
+							<PriceInputContainer>
+								<Field
+									name="price_min"
+									component={StyledInput}
+									type="number"
+									min="0"
+									step="1"
+									max="99999"
+									style={{ marginRight: "8px" }}
+									placeholder="Od"
+								/>
+								<Field
+									name="price_max"
+									component={StyledInput}
+									type="number"
+									min="0"
+									step="1"
+									max="99999"
+									placeholder="Do"
+								/>
+							</PriceInputContainer>
+							<Error meta={{ error: errors.price, touched: true }} />
+						</FieldRow>
 					</div>
-					<div className={styles.miscContainer}>
-						<LoaderButton
-							isLoading={submitting}
-							type="submit"
-							text="Filtruj"
-							disabled={submitting || invalid}
-							fullWidth
-						/>
-					</div>
+					<LoaderButton
+						isLoading={submitting}
+						type="submit"
+						text="Filtruj"
+						disabled={submitting || invalid}
+						fullWidth
+					/>
 				</form>
 			)
 		}}

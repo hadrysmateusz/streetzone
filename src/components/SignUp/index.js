@@ -4,16 +4,15 @@ import { Form, Field } from "react-final-form"
 import { compose } from "recompose"
 
 import { StyledLink } from "../Basics"
-import CenteredLayout from "../CenteredLayout"
 import { withFirebase } from "../Firebase"
 import { ROUTES, FORM_ERR, AUTH_ERR, REGEX, CSS } from "../../constants"
 
 const SignUpPage = () => {
 	return (
-		<CenteredLayout>
+		<div>
 			<h1>Utwórz konto</h1>
 			<SignUpForm />
-		</CenteredLayout>
+		</div>
 	)
 }
 
