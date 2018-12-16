@@ -80,10 +80,7 @@ class FileHandlerSingle extends Component {
 									className={styles.avatarPreviewOverlay}
 									onClick={this.clickFileInput}
 								>
-									<div
-										className={cn(styles.icon, styles.iconChange)}
-										title="Dodaj"
-									>
+									<div className={cn(styles.icon, styles.iconChange)} title="Dodaj">
 										<FontAwesomeIcon icon="plus" />
 									</div>
 								</div>
@@ -92,7 +89,7 @@ class FileHandlerSingle extends Component {
 						)}
 					</div>
 				)}
-				<div>
+				<div className={styles.buttons}>
 					<input
 						{...rest}
 						type="file"
@@ -105,14 +102,16 @@ class FileHandlerSingle extends Component {
 						type="button"
 						onClick={this.clickFileInput}
 						disabled={meta.submitting || isLoading}
-						text="Wybierz plik"
-					/>
+					>
+						Wybierz plik
+					</Button>
 					<Button
-						text="Anuluj"
 						type="button"
 						disabled={meta.submitting || meta.pristine || isLoading}
 						onClick={this.reset}
-					/>
+					>
+						Anuluj
+					</Button>
 				</div>
 				{/* <div className={styles.fileListContainer}>
 					{hasContent &&

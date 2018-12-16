@@ -1,8 +1,8 @@
 import React from "react"
 import { Form, Field } from "react-final-form"
 
-import LoaderButton from "../LoaderButton"
-import Button from "../Button"
+// import LoaderButton from "../LoaderButton"
+import Button, { LoaderButton } from "../Button"
 import Error from "./Error"
 import { FileHandler } from "../FileHandler"
 import { withRouter } from "react-router-dom"
@@ -65,7 +65,6 @@ const validate = (values) => {
 			})
 		}
 		let errObj = { main, specific }
-		// console.log(errObj)
 		return errObj
 	})()
 
@@ -89,14 +88,7 @@ const ItemForm = ({ initialValues, onSubmit, history, isLoading }) => {
 			onSubmit={onSubmit}
 			validate={validate}
 			initialValues={initialValues}
-			render={({
-				handleSubmit,
-				submitting,
-				values,
-				invalid,
-				pristine,
-				active
-			}) => {
+			render={({ handleSubmit, submitting, values, invalid, pristine, active }) => {
 				return (
 					<form onSubmit={handleSubmit}>
 						{/* Name */}
@@ -191,11 +183,7 @@ const ItemForm = ({ initialValues, onSubmit, history, isLoading }) => {
 						{/* Files (handled by separate component) */}
 						<div className={styles.fieldRow}>
 							<label>Zdjęcia </label>
-							<Field
-								name="files"
-								isLoading={isLoading}
-								component={FileHandler}
-							/>
+							<Field name="files" isLoading={isLoading} component={FileHandler} />
 						</div>
 
 						<div className="buttons">
@@ -210,7 +198,9 @@ const ItemForm = ({ initialValues, onSubmit, history, isLoading }) => {
 								type="button"
 								disabled={submitting}
 								onClick={() => history.push(ROUTES.HOME)}
-							/>
+							>
+								Anuluj
+							</Button>
 						</div>
 						{/* {process.env.NODE_ENV === "development" && (
 							<pre>{JSON.stringify(values, 0, 2)}</pre>

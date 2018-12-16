@@ -1,8 +1,8 @@
 import React, { Component } from "react"
-import { Link } from "react-router-dom"
 import { Form, Field } from "react-final-form"
 import { compose } from "recompose"
 
+import { StyledLink } from "../Basics"
 import { withAuthorization } from "../UserSession"
 import { withFirebase } from "../Firebase"
 import { ROUTES, FORM_ERR, REGEX } from "../../constants"
@@ -89,7 +89,7 @@ const PasswordForgetForm = compose(
 
 const PasswordForgetLink = () => (
 	<p>
-		<Link to={ROUTES.PASSWORD_FORGET}>Zapomniałeś hasła?</Link>
+		<StyledLink to={ROUTES.PASSWORD_FORGET}>Zapomniałeś hasła?</StyledLink>
 	</p>
 )
 

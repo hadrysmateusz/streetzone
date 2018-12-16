@@ -1,56 +1,90 @@
 import React from "react"
-import { Link } from "react-router-dom"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { Link } from "react-router-dom"
+import styled from "styled-components"
 
 import { withAuthentication } from "../UserSession"
 import SignOutButton from "../SignOut"
+import { ROUTES, CONST, CSS } from "../../constants"
 
-import styles from "./Navigation.module.scss"
-import { ROUTES, CONST } from "../../constants"
+const NavLink = styled(Link)`
+	background: none;
+	border: none;
+	outline: none;
+	padding: 0;
+	&:hover {
+		color: ${CSS.COLOR_ACCENT};
+	}
+`
 
-const Navigation = ({ authUser }) => {
-	return (
-		<ul className={styles.mainNav}>
-			<li className={styles.brand}>
-				<Link to={ROUTES.HOME}>{CONST.BRAND_NAME}</Link>
-			</li>
-			<li>
-				<Link to={ROUTES.BLOG_HOME} className={styles.navLink}>
-					Blog
-				</Link>
-			</li>
-			{authUser && (
-				<>
-					<li>
-						<Link to={ROUTES.NEW_ITEM} className={styles.navLink}>
-							<FontAwesomeIcon className={styles.icon} icon="plus" />
-							Wystaw Przedmiot
-						</Link>
-					</li>
-					<li>
-						<Link
-							to={ROUTES.ACCOUNT.replace(":id", authUser.uid)}
-							className={styles.navLIn}
-						>
-							<FontAwesomeIcon className={styles.icon} icon="user" />
-							{authUser.displayName ? authUser.displayName : "Profil"}
-						</Link>{" "}
-					</li>
-					<li>
-						<SignOutButton className={styles.signOutButton} />
-					</li>
-				</>
-			)}
-			{!authUser && (
+const NavigationUnstyled = ({ authUser, ...rest }) => (
+	<ul {...rest}>
+		<li className="brand">
+			<NavLink to={ROUTES.HOME}>{CONST.BRAND_NAME}</NavLink>
+		</li>
+		<li>
+			<NavLink to={ROUTES.BLOG_HOME}>Blog</NavLink>
+		</li>
+		{authUser && (
+			<>
 				<li>
-					<Link to={ROUTES.SIGN_IN}>Zaloguj się</Link>
+					<NavLink to={ROUTES.NEW_ITEM}>
+						<FontAwesomeIcon className="icon" icon="plus" />
+						Wystaw Przedmiot
+					</NavLink>
 				</li>
-			)}
-			{/* <li className={styles.burgerMenuButton}>
+				<li>
+					<NavLink to={ROUTES.ACCOUNT.replace(":id", authUser.uid)}>
+						<FontAwesomeIcon className="icon" icon="user" />
+						{authUser.displayName ? authUser.displayName : "Profil"}
+					</NavLink>{" "}
+				</li>
+				<li>
+					<NavLink as={SignOutButton} />
+				</li>
+			</>
+		)}
+		{!authUser && (
+			<li>
+				<NavLink to={ROUTES.SIGN_IN}>Zaloguj się</NavLink>
+			</li>
+		)}
+		{/* <li className={styles.burgerMenuButton}>
 				<FontAwesomeIcon icon="bars" />
 			</li> */}
-		</ul>
-	)
-}
+	</ul>
+)
+
+const Navigation = styled(NavigationUnstyled)`
+	border-bottom: 2px solid ${CSS.COLOR_BLACK};
+	/* box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); */
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	padding: 15px 4px 10px;
+	margin: 0 12px;
+	margin-bottom: 10px;
+
+	@media (min-width: 800px) {
+		margin-bottom: 30px;
+	}
+
+	li {
+		list-style-type: none;
+		padding: 0 12px;
+		height: 100%;
+		.icon {
+			margin-right: 8px;
+		}
+	}
+
+	.brand {
+		font-size: 1.45rem;
+		color: darken($primary, 5%);
+		flex-grow: 1;
+		text-align: left;
+	}
+`
 
 export default withAuthentication(Navigation)

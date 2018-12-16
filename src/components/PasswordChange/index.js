@@ -1,5 +1,8 @@
 import React, { Component } from "react"
-import { Form, Field } from "react-final-form"
+import { Form } from "react-final-form"
+
+import { StyledField } from "../Basics"
+import Button from "../Button"
 
 // import { withFirebase } from "../Firebase"
 import { FORM_ERR } from "../../constants"
@@ -50,36 +53,30 @@ class PasswordChangeForm extends Component {
 				render={({ handleSubmit, submitting, pristine }) => (
 					<form onSubmit={handleSubmit}>
 						{/* Nowe Hasło */}
-						<Field name="passwordNew">
-							{({ input, meta }) => (
-								<div>
+						<StyledField name="passwordNew">
+							{({ input, meta, ...rest }) => (
+								<div {...rest}>
 									<label>Nowe Hasło </label>
 									<input {...input} type="password" placeholder="Nowe Hasło" />
 									{meta.error && meta.touched && <span>{meta.error}</span>}
 								</div>
 							)}
-						</Field>
+						</StyledField>
 
 						{/* Powtórz Hasło */}
-						<Field name="passwordConfirm">
-							{({ input, meta }) => (
-								<div>
+						<StyledField name="passwordConfirm">
+							{({ input, meta, ...rest }) => (
+								<div {...rest}>
 									<label>Potwierdź Nowe Hasło </label>
-									<input
-										{...input}
-										type="password"
-										placeholder="Potwierdź Nowe Hasło"
-									/>
+									<input {...input} type="password" placeholder="Potwierdź Nowe Hasło" />
 									{meta.error && meta.touched && <span>{meta.error}</span>}
 								</div>
 							)}
-						</Field>
+						</StyledField>
 
-						<div className="buttons">
-							<button type="submit" disabled={submitting || pristine}>
-								Zmień hasło
-							</button>
-						</div>
+						<Button type="submit" fullWidth disabled={submitting || pristine}>
+							Zmień hasło
+						</Button>
 						{error && <p>{error.message}</p>}
 					</form>
 				)}

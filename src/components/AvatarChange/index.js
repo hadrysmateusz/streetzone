@@ -4,13 +4,10 @@ import { compose } from "recompose"
 import uuidv1 from "uuid/v1"
 
 import LoaderButton from "../LoaderButton"
-// import Button from "../Button"
+import { Container } from "../Basics"
 import { FileHandlerSingle, CustomFile } from "../FileHandler"
 import { withRouter } from "react-router-dom"
 import { withFirebase } from "../Firebase"
-
-// import styles from "./AvatarChange.module.scss"
-// import { ROUTES, FORM_ERR, CONST } from "../../constants"
 
 class AvatarChangeForm extends React.Component {
 	state = {
@@ -33,9 +30,7 @@ class AvatarChangeForm extends React.Component {
 		const currentUserData = (await currentUser.get()).data()
 
 		if (currentUserData.profilePictureRef) {
-			let ref = this.props.firebase.storageRef.child(
-				currentUserData.profilePictureRef
-			)
+			let ref = this.props.firebase.storageRef.child(currentUserData.profilePictureRef)
 
 			try {
 				const imageURL = await ref.getDownloadURL()
@@ -75,9 +70,7 @@ class AvatarChangeForm extends React.Component {
 				// Upload the new file and return its ref
 				const name = uuidv1()
 				const userId = currentUser.id
-				const ref = firebase.storageRef.child(
-					`profile-pictures/${userId}/${name}`
-				)
+				const ref = firebase.storageRef.child(`profile-pictures/${userId}/${name}`)
 				const snapshot = await ref.put(file.data)
 				newFileRef = snapshot.ref.fullPath
 			}
@@ -106,44 +99,40 @@ class AvatarChangeForm extends React.Component {
 
 	render() {
 		return (
-			<Form
-				onSubmit={this.onSubmit}
-				validate={this.validate}
-				initialValues={{ file: this.state.file }}
-				render={({
-					handleSubmit,
-					submitting,
-					values,
-					invalid,
-					pristine,
-					active
-				}) => {
-					return (
-						<form onSubmit={handleSubmit}>
-							{/* Files (handled by separate component) */}
-							<div>
-								<Field
-									name="file"
-									isLoading={this.state.isLoading}
-									component={FileHandlerSingle}
-								/>
-							</div>
+			<Container width={500}>
+				<Form
+					onSubmit={this.onSubmit}
+					validate={this.validate}
+					initialValues={{ file: this.state.file }}
+					render={({ handleSubmit, submitting, values, invalid, pristine, active }) => {
+						return (
+							<form onSubmit={handleSubmit}>
+								{/* Files (handled by separate component) */}
+								<div>
+									<Field
+										name="file"
+										isLoading={this.state.isLoading}
+										component={FileHandlerSingle}
+									/>
+								</div>
 
-							<div className="buttons">
-								<LoaderButton
-									text="Gotowe"
-									type="submit"
-									isLoading={submitting}
-									disabled={submitting || pristine || this.state.isLoading}
-								/>
-							</div>
-							{/* {process.env.NODE_ENV === "development" && (
+								<div className="buttons">
+									<LoaderButton
+										text="Gotowe"
+										type="submit"
+										fullWidth
+										isLoading={submitting}
+										disabled={submitting || pristine || this.state.isLoading}
+									/>
+								</div>
+								{/* {process.env.NODE_ENV === "development" && (
 								<pre>{JSON.stringify(values, 0, 2)}</pre>
 							)} */}
-						</form>
-					)
-				}}
-			/>
+							</form>
+						)
+					}}
+				/>
+			</Container>
 		)
 	}
 }

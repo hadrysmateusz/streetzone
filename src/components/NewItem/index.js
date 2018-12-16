@@ -1,14 +1,24 @@
 import React, { Component } from "react"
 import { compose } from "recompose"
 import uuidv1 from "uuid/v1"
+import styled from "styled-components"
 
 import { withAuthorization } from "../UserSession"
 import { withFirebase } from "../Firebase"
 import { ItemForm } from "../ItemForm"
-import CenteredLayout from "../CenteredLayout"
+// import CenteredLayout from "../CenteredLayout"
 
 import { itemSchema } from "../../constants"
 import { dbData } from "../../utils/formatItemData"
+
+const Container = styled.div`
+	display: flex;
+	align-items: stretch;
+	align-content: stretch;
+	flex-direction: column;
+	max-width: 750px;
+	margin: 0 auto;
+`
 
 class NewItemPage extends Component {
 	state = {
@@ -98,10 +108,10 @@ class NewItemPage extends Component {
 				  }
 				: null
 		return (
-			<CenteredLayout>
+			<Container>
 				<h1>Nowy</h1>
 				<ItemForm initialValues={initialValues} onSubmit={this.onSubmit} />
-			</CenteredLayout>
+			</Container>
 		)
 	}
 }

@@ -1,29 +1,29 @@
 import React from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import styles from "./LoadingSpinner.module.scss"
-import animations from "../../scss/animations.module.scss"
-import cn from "classnames"
+import styled from "styled-components"
 
-export default function LoadingSpinner({
-	inline = false,
-	width = "100%",
-	height = "100%"
-}) {
-	let classNames = cn({
-		[styles.base]: true,
-		[styles.block]: !inline,
-		[styles.inline]: inline
-	})
+import { CSS } from "../../constants"
 
-	return (
-		<div
-			className={classNames}
-			style={{
-				width,
-				height
-			}}
-		>
-			<FontAwesomeIcon icon="spinner" className={animations.spinning} />
-		</div>
-	)
-}
+const LoadingSpinnerUnstyled = (props) => (
+	<div className={props.className}>
+		<FontAwesomeIcon icon="spinner" className="spinner" />
+	</div>
+)
+
+const LoadingSpinner = styled(LoadingSpinnerUnstyled)`
+	width: ${(props) => props.width || "100%"};
+	height: ${(props) => props.height || "100%"};
+
+	${(props) => !props.inline && "font-size: 3rem"};
+
+	color: ${CSS.COLOR_BLACK};
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	.spinner {
+		animation: ${CSS.KEYFRAMES_SPIN} 1.3s linear infinite;
+	}
+`
+
+export default LoadingSpinner

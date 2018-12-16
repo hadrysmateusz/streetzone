@@ -1,26 +1,29 @@
 import React, { Component } from "react"
 import { withRouter } from "react-router-dom"
-import { Form, Field } from "react-final-form"
+import { Form } from "react-final-form"
 import { compose } from "recompose"
 
-// import { withAuthorization } from "../UserSession"
+import { StyledField, Separator, Container } from "../Basics"
+import Button, { FacebookButton, GoogleButton } from "../Button"
 import { PasswordForgetLink } from "../PasswordForget"
 import { SignUpLink } from "../SignUp"
 import { withFirebase } from "../Firebase"
-import { ROUTES, FORM_ERR, AUTH_ERR, REGEX } from "../../constants"
+import { ROUTES, FORM_ERR, AUTH_ERR, REGEX, CSS } from "../../constants"
 
 const SignInPage = () => {
 	return (
-		<>
+		<Container width={300}>
 			<h1>Zaloguj się</h1>
-
-			<SignInGoogle />
-			<SignInFacebook />
-			<h3>lub</h3>
+			<div className="social">
+				<SignInGoogle />
+				<SignInFacebook />
+			</div>
+			<Separator text="lub" />
 			<SignInForm />
 			<PasswordForgetLink />
+			<Separator />
 			<SignUpLink />
-		</>
+		</Container>
 	)
 }
 
@@ -72,31 +75,31 @@ class SignInFormBase extends Component {
 				render={({ handleSubmit, submitting, pristine }) => (
 					<form onSubmit={handleSubmit}>
 						{/* E-mail */}
-						<Field name="email">
-							{({ input, meta }) => (
-								<div>
+						<StyledField name="email">
+							{({ input, meta, ...rest }) => (
+								<div {...rest}>
 									<label>E-mail </label>
 									<input {...input} type="text" placeholder="E-mail" />
 									{meta.error && meta.touched && <span>{meta.error}</span>}
 								</div>
 							)}
-						</Field>
+						</StyledField>
 
 						{/* Hasło */}
-						<Field name="password">
-							{({ input, meta }) => (
-								<div>
+						<StyledField name="password">
+							{({ input, meta, ...rest }) => (
+								<div {...rest}>
 									<label>Hasło </label>
 									<input {...input} type="password" placeholder="Hasło" />
 									{meta.error && meta.touched && <span>{meta.error}</span>}
 								</div>
 							)}
-						</Field>
+						</StyledField>
 
 						<div className="buttons">
-							<button type="submit" disabled={submitting}>
+							<Button type="submit" fullWidth disabled={submitting}>
 								Zaloguj się
-							</button>
+							</Button>
 						</div>
 						{error && <p>{error.message}</p>}
 					</form>
@@ -140,7 +143,9 @@ class SignInGoogleBase extends Component {
 
 		return (
 			<form onSubmit={this.onSubmit}>
-				<button type="submit">Zaloguj się przez Google</button>
+				<GoogleButton fullWidth type="submit">
+					Zaloguj się przez Google
+				</GoogleButton>
 				{error && <p>{error.message}</p>}
 			</form>
 		)
@@ -182,7 +187,9 @@ class SignInFacebookBase extends Component {
 
 		return (
 			<form onSubmit={this.onSubmit}>
-				<button type="submit">Zaloguj się przez Facebooka</button>
+				<FacebookButton fullWidth type="submit">
+					Zaloguj się przez Facebooka
+				</FacebookButton>
 				{error && <p>{error.message}</p>}
 			</form>
 		)

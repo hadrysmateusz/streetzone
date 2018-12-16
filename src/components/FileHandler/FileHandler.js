@@ -1,11 +1,13 @@
 import React, { Component } from "react"
+import styled from "styled-components"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+
 import Button from "../Button"
 import FileItem from "./FileItem"
 import CustomFile from "./CustomFile"
-import styles from "./FileHandler.module.scss"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { CSS } from "../../constants"
 
-class FileHandler extends Component {
+class FileHandlerUnstyled extends Component {
 	fileInput = React.createRef()
 
 	clickFileInput = () => {
@@ -39,9 +41,7 @@ class FileHandler extends Component {
 		const files = this.props.input.value
 
 		// Update value in final-form
-		await this.props.input.onChange(
-			files.filter((fileItem) => fileItem.id !== id)
-		)
+		await this.props.input.onChange(files.filter((fileItem) => fileItem.id !== id))
 	}
 
 	clear = async () => {
@@ -56,7 +56,7 @@ class FileHandler extends Component {
 		const buttonText = hasContent ? "Dodaj pliki" : "Wybierz pliki"
 
 		return (
-			<div>
+			<div {...rest}>
 				<div>
 					<input
 						{...rest}
@@ -71,8 +71,9 @@ class FileHandler extends Component {
 						type="button"
 						onClick={this.clickFileInput}
 						disabled={meta.submitting || isLoading}
-						text={buttonText}
-					/>
+					>
+						{buttonText}
+					</Button>
 					<Button
 						type="button"
 						onClick={this.clear}
@@ -82,7 +83,7 @@ class FileHandler extends Component {
 					</Button>
 				</div>
 
-				<div className={styles.fileListContainer}>
+				<div className="file-list-container">
 					{hasContent ? (
 						input.value.map((file, i) => {
 							const error = meta.error && meta.error.specific[i]
@@ -96,17 +97,15 @@ class FileHandler extends Component {
 							)
 						})
 					) : (
-						<div className={styles.emptyState}>
-							Wybierz lub przeciągnij(TODO) pliki
-						</div>
+						<div className="empty-state">Wybierz lub przeciągnij(TODO) pliki</div>
 					)}
 				</div>
 
-				<div className={styles.mainErrorContainer}>
+				<div className="main-error-container">
 					{meta.error && (meta.dirty || meta.submitFailed) && meta.error.main && (
 						<span>
 							<FontAwesomeIcon icon="exclamation" />
-							<span className={styles.mainErrorText}>{meta.error.main}</span>
+							<span className="main-error-text">{meta.error.main}</span>
 						</span>
 					)}
 				</div>
@@ -114,5 +113,42 @@ class FileHandler extends Component {
 		)
 	}
 }
+
+const FileHandler = styled(FileHandlerUnstyled)`
+	.file-list-container {
+		display: flex;
+		justify-items: left;
+		justify-content: left;
+		flex-wrap: wrap;
+		margin: 10px 0 0 0;
+		padding: 10px 10px 0 10px;
+		min-height: 150px;
+		border: 2px dashed ${CSS.COLOR_BLACK};
+
+		.empty-state {
+			width: 100%;
+			height: auto;
+			margin-bottom: 10px;
+			font-size: 1.1rem;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+	}
+
+	.main-error-container {
+		&:not(:empty) {
+			background: rgb(243, 148, 148);
+			border: 2px solid rgb(133, 5, 5);
+			padding: 12px 18px;
+			margin-top: 10px;
+		}
+		color: rgb(112, 11, 11);
+	}
+
+	.main-error-text {
+		margin-left: 7px;
+	}
+`
 
 export default FileHandler

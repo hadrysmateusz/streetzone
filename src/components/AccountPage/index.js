@@ -1,16 +1,17 @@
 import React, { Component } from "react"
 import { compose } from "recompose"
+import styled from "styled-components"
 
 import { withFirebase } from "../Firebase"
 import { withAuthorization, withAuthentication } from "../UserSession"
 import LoadingSpinner from "../LoadingSpinner"
-import { PasswordChangeForm } from "../PasswordChange"
+import { Separator, Container } from "../Basics"
 import ItemCard from "../ItemCard"
 import AvatarChangeForm from "../AvatarChange"
 import LoginManagement from "../LoginManagement"
 import CenteredLayout from "../CenteredLayout"
 
-class AccountPage extends Component {
+class AccountPageUnstyled extends Component {
 	constructor(props) {
 		super(props)
 
@@ -87,12 +88,10 @@ class AccountPage extends Component {
 		}
 
 		// Register a new listener
-		this.itemsListener = this.props.firebase
-			.user(userId)
-			.onSnapshot(async () => {
-				await this.getUser()
-				this.getItems()
-			})
+		this.itemsListener = this.props.firebase.user(userId).onSnapshot(async () => {
+			await this.getUser()
+			this.getItems()
+		})
 	}
 
 	componentDidMount = async () => {
@@ -105,11 +104,9 @@ class AccountPage extends Component {
 		this.registerItemsListener()
 
 		// If logged-in user changes check if they are owner again
-		this.authListener = this.props.firebase.auth.onAuthStateChanged(
-			(authUser) => {
-				this.setState({ userIsOwner: userId === authUser.uid })
-			}
-		)
+		this.authListener = this.props.firebase.auth.onAuthStateChanged((authUser) => {
+			this.setState({ userIsOwner: userId === authUser.uid })
+		})
 
 		this.setState({ isLoading: false })
 	}
@@ -131,39 +128,48 @@ class AccountPage extends Component {
 
 	render() {
 		const { isLoading, user, userIsOwner, items } = this.state
-		console.log(this.props.authUser)
 		return (
-			<CenteredLayout>
+			<Container width={750}>
 				{!isLoading && user ? (
-					<>
-						<h1>{user.name}</h1>
-						<h3>Informacje</h3>
+					<div className={this.props.className}>
+						<Separator text="Informacje" />
+						<h2>Imię: {user.name}</h2>
 						<p>Email: {user.email}</p>
 						{userIsOwner && (
 							<>
-								<hr />
-								<h3>Edytuj</h3>
-								<h4>Profilowe</h4>
+								<Separator text="Profilowe" />
 								<AvatarChangeForm onSubmit={this.onAvatarSubmit} />
-								<h4>Hasło</h4>
-								<PasswordChangeForm />
-								<h4>Konta Społecznościowe</h4>
+								<Separator text="Metody Logowania" />
 								<LoginManagement authUser={this.props.authUser} />
 							</>
 						)}
-						<hr />
-						<h3>Przedmioty na sprzedaż</h3>
-						{Object.values(items).map((item, i) => (
-							<ItemCard key={i} item={item} />
-						))}
-					</>
+						<Separator text="Przedmioty na sprzedaż" />
+						<div className="itemsContainer">
+							{Object.values(items).map((item, i) => (
+								<ItemCard key={i} item={item} />
+							))}
+						</div>
+					</div>
 				) : (
 					<LoadingSpinner />
 				)}
-			</CenteredLayout>
+			</Container>
 		)
 	}
 }
+
+const AccountPage = styled(AccountPageUnstyled)`
+	.itemsContainer {
+		width: auto;
+		display: flex;
+		flex-flow: row wrap;
+		justify-content: left;
+		align-content: flex-start;
+		> * {
+			width: 23%;
+		}
+	}
+`
 
 const condition = (authUser) => !!authUser
 

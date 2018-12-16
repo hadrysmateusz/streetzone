@@ -31,9 +31,7 @@ class ItemDetailsPage extends Component {
 
 	deleteItem = async () => {
 		// TODO: better confirmation dialog
-		let confirmation = window.confirm(
-			"Czy napewno chcesz usunąć ten przedmiot?"
-		)
+		let confirmation = window.confirm("Czy napewno chcesz usunąć ten przedmiot?")
 
 		if (confirmation) {
 			this.setState({ isDeleting: true })
@@ -88,16 +86,14 @@ class ItemDetailsPage extends Component {
 										Cena: {item.price}
 										zł
 									</div>
-									<div>
-										Dodano: {moment(item.createdAt).format("D.M.YY o HH:mm")}
-									</div>
+									<div>Dodano: {moment(item.createdAt).format("D.M.YY o HH:mm")}</div>
 								</div>
 								<div className={styles.buttons}>
 									{userIsOwner ? (
 										<>
-											<Link to={`/e/${item.itemId}`}>
-												<Button>Edytuj</Button>
-											</Link>
+											<Button as={Link} to={`/e/${item.itemId}`}>
+												Edytuj
+											</Button>
 											<LoaderButton
 												isLoading={isDeleting}
 												text="Usuń"

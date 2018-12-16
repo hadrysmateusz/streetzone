@@ -4,10 +4,8 @@ import Loadable from "react-loadable"
 
 import { ROUTES } from "../../constants"
 
-// TODO: create a proper loader component for Loadable
 import LoadingSpinner from "../LoadingSpinner"
 import NotFound from "../NotFound"
-// import HomePage from "../HomePage"
 
 const AsyncNewItemPage = Loadable({
 	loader: () => import("../NewItem"),
@@ -96,17 +94,14 @@ const routes = [
 const Routes = () => {
 	return (
 		<Switch>
-			{routes.map((route, i) => {
-				console.log(route)
-				return (
-					<Route
-						key={i}
-						exact={route.exact === false ? false : true}
-						path={route.path}
-						component={route.component}
-					/>
-				)
-			})}
+			{routes.map((route, i) => (
+				<Route
+					key={i}
+					exact={route.exact === false ? false : true}
+					path={route.path}
+					component={route.component}
+				/>
+			))}
 			<Route path="*" component={NotFound} />
 		</Switch>
 	)

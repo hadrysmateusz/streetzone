@@ -1,18 +1,19 @@
 import React, { Component } from "react"
-import { Link, withRouter } from "react-router-dom"
+import { withRouter } from "react-router-dom"
 import { Form, Field } from "react-final-form"
 import { compose } from "recompose"
 
-// import { withAuthorization } from "../UserSession"
+import { StyledLink } from "../Basics"
+import CenteredLayout from "../CenteredLayout"
 import { withFirebase } from "../Firebase"
-import { ROUTES, FORM_ERR, AUTH_ERR, REGEX } from "../../constants"
+import { ROUTES, FORM_ERR, AUTH_ERR, REGEX, CSS } from "../../constants"
 
 const SignUpPage = () => {
 	return (
-		<>
+		<CenteredLayout>
 			<h1>Utwórz konto</h1>
 			<SignUpForm />
-		</>
+		</CenteredLayout>
 	)
 }
 
@@ -24,10 +25,7 @@ class SignUpFormBase extends Component {
 
 		try {
 			// Create user for auth
-			const authUser = await this.props.firebase.signUpWithEmail(
-				email,
-				password
-			)
+			const authUser = await this.props.firebase.signUpWithEmail(email, password)
 
 			// Add the name to the auth user
 			await authUser.user.updateProfile({
@@ -35,9 +33,7 @@ class SignUpFormBase extends Component {
 			})
 
 			// Create user in db
-			await this.props.firebase
-				.user(authUser.user.uid)
-				.set({ name, email, items: [] })
+			await this.props.firebase.user(authUser.user.uid).set({ name, email, items: [] })
 
 			// Redirect
 			this.props.history.push(ROUTES.HOME)
@@ -127,11 +123,7 @@ class SignUpFormBase extends Component {
 							{({ input, meta }) => (
 								<div>
 									<label>Potwierdź Hasło </label>
-									<input
-										{...input}
-										type="password"
-										placeholder="Potwierdź Hasło"
-									/>
+									<input {...input} type="password" placeholder="Potwierdź Hasło" />
 									{meta.error && meta.touched && <span>{meta.error}</span>}
 								</div>
 							)}
@@ -155,9 +147,12 @@ const SignUpForm = compose(
 	withFirebase
 )(SignUpFormBase)
 
-const SignUpLink = () => (
-	<p>
-		Nie masz jeszcze konta? <Link to={ROUTES.SIGN_UP}>Utwórz konto</Link>
+const SignUpLink = (props) => (
+	<p {...props}>
+		Nie masz jeszcze konta?{" "}
+		<StyledLink to={ROUTES.SIGN_UP} className="link">
+			Utwórz konto
+		</StyledLink>
 	</p>
 )
 

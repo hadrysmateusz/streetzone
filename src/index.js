@@ -1,9 +1,11 @@
+import "react-app-polyfill/ie11"
 import React from "react"
 import ReactDOM from "react-dom"
 
 import * as serviceWorker from "./serviceWorker"
-import "./scss/index.scss"
 import "./config/fontAwesomeConfig"
+import "./scss/index.scss"
+import "./normalize.css"
 
 import App from "./components/App"
 import { Firebase, FirebaseContext } from "./components/Firebase"
