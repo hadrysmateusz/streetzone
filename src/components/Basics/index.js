@@ -106,6 +106,7 @@ const Container = styled.div`
 	align-content: stretch;
 	flex-direction: column;
 	max-width: ${(props) => props.width}px;
+	padding: 0 20px;
 	margin: 0 auto;
 `
 

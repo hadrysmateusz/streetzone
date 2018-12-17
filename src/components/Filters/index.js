@@ -15,22 +15,6 @@ const sortOptions = [
 	{ value: "price-desc", label: "Cena Malejąco" }
 ]
 
-// const HalfWidthInput = styled(StyledInput)`
-// 	/* min-width: 66px;
-// 	padding: 10px;
-// 	font-size: 0.91rem;
-
-// 	border: 1px solid #c6c6c6;
-// 	&::placeholder {
-// 		color: #898989;
-// 	} */
-// 	/* background: red;
-// 	width: 50%;
-// 	@media (max-width: 555px) {
-// 		width: 100%;
-// 	} */
-// `
-
 const PriceInputContainer = styled.div`
 	display: flex;
 `

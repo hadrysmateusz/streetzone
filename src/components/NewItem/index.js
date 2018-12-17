@@ -94,7 +94,7 @@ class NewItemPage extends Component {
 				  }
 				: null
 		return (
-			<Container width="550">
+			<Container width={670}>
 				<h1>Nowy</h1>
 				<ItemForm initialValues={initialValues} onSubmit={this.onSubmit} />
 			</Container>

@@ -7,9 +7,9 @@ import { withAuthorization } from "../UserSession"
 import LoadingSpinner from "../LoadingSpinner"
 import EmptyState from "../EmptyState"
 import { ItemForm } from "../ItemForm"
-
 import { CustomFile } from "../FileHandler"
 import { formData, dbData } from "../../utils/formatItemData"
+import { Container } from "../Basics"
 
 class EditItemPage extends Component {
 	state = {
@@ -113,7 +113,7 @@ class EditItemPage extends Component {
 
 	render() {
 		return (
-			<div>
+			<Container width={670}>
 				<h1>Edytuj</h1>
 				{this.state.isLoading && (
 					<h4>
@@ -131,7 +131,7 @@ class EditItemPage extends Component {
 				{!this.state.data && !this.state.isLoading && (
 					<EmptyState text="Nie znaleziono przedmiotu" />
 				)}
-			</div>
+			</Container>
 		)
 	}
 }

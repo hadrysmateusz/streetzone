@@ -64,7 +64,7 @@ class ItemCardUnstyled extends Component {
 }
 
 const ItemCard = styled(ItemCardUnstyled)`
-	height: 400px;
+	height: 365px;
 
 	margin: 10px auto;
 	border: 2px solid ${CSS.COLOR_BLACK};
@@ -93,7 +93,7 @@ const ItemCard = styled(ItemCardUnstyled)`
 
 	.thumbnail {
 		background: ${CSS.COLOR_THUMBNAIL_BG};
-		height: 298px;
+		height: 263px;
 
 		img {
 			object-fit: contain;

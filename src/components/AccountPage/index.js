@@ -10,7 +10,18 @@ import ItemCard from "../ItemCard"
 import AvatarChangeForm from "../AvatarChange"
 import LoginManagement from "../LoginManagement"
 
-class AccountPageUnstyled extends Component {
+const ItemsContainer = styled.div`
+	width: auto;
+	display: flex;
+	flex-flow: row wrap;
+	justify-content: left;
+	align-content: flex-start;
+	> * {
+		width: 23%;
+	}
+`
+
+class AccountPage extends Component {
 	constructor(props) {
 		super(props)
 
@@ -128,7 +139,7 @@ class AccountPageUnstyled extends Component {
 	render() {
 		const { isLoading, user, userIsOwner, items } = this.state
 		return (
-			<Container width={750}>
+			<Container width={1100}>
 				{!isLoading && user ? (
 					<div className={this.props.className}>
 						<Separator text="Informacje" />
@@ -143,11 +154,11 @@ class AccountPageUnstyled extends Component {
 							</>
 						)}
 						<Separator text="Przedmioty na sprzedaż" />
-						<div className="itemsContainer">
+						<ItemsContainer>
 							{Object.values(items).map((item, i) => (
 								<ItemCard key={i} item={item} />
 							))}
-						</div>
+						</ItemsContainer>
 					</div>
 				) : (
 					<LoadingSpinner />
@@ -156,19 +167,6 @@ class AccountPageUnstyled extends Component {
 		)
 	}
 }
-
-const AccountPage = styled(AccountPageUnstyled)`
-	.itemsContainer {
-		width: auto;
-		display: flex;
-		flex-flow: row wrap;
-		justify-content: left;
-		align-content: flex-start;
-		> * {
-			width: 23%;
-		}
-	}
-`
 
 const condition = (authUser) => !!authUser
 
