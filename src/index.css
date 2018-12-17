@@ -12,11 +12,11 @@ code {
 	font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
 }
 
-// Not using :any-link as it causes issues in edge and ie
+/* Not using :any-link as it causes issues in edge and ie */
 a,
 a:link,
 a:hover {
-	color: black; // fallback for ie
+	color: black; /* fallback for ie */
 	color: unset;
 	text-decoration: none;
 }

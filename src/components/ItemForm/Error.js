@@ -1,16 +1,31 @@
 import React from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import styles from "./Error.module.scss"
+import styled from "styled-components"
+import { CSS } from "../../constants"
 
-export default function Error({ meta }) {
+const ErrorContainer = styled.div`
+	&:not(:empty) {
+		background: ${CSS.COLOR_DANGER_LIGHT};
+		border: 2px solid ${CSS.COLOR_DANGER_DARKER};
+		padding: 12px 18px;
+		margin-top: 10px;
+		color: ${CSS.COLOR_DANGER_DARK};
+	}
+`
+
+const ErrorMessage = styled.span`
+	margin-left: 7px;
+`
+
+export default function Error({ message, showIf }) {
 	return (
-		<div className={styles.mainErrorContainer}>
-			{meta.error && meta.touched && (
-				<span>
+		<ErrorContainer>
+			{showIf && (
+				<>
 					<FontAwesomeIcon icon="exclamation" />
-					<span className={styles.mainErrorText}>{meta.error}</span>
-				</span>
+					<ErrorMessage>{message}</ErrorMessage>
+				</>
 			)}
-		</div>
+		</ErrorContainer>
 	)
 }

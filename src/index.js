@@ -4,7 +4,7 @@ import ReactDOM from "react-dom"
 
 import * as serviceWorker from "./serviceWorker"
 import "./config/fontAwesomeConfig"
-import "./scss/index.scss"
+import "./index.css"
 import "./normalize.css"
 
 import App from "./components/App"

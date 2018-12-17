@@ -34,6 +34,17 @@ const StyledField = styled(Field)`
 	}
 `
 
+const StyledFieldCommon = css`
+	width: 100%;
+	border: 1px solid ${CSS.COLOR_GRAY};
+	color: ${CSS.COLOR_BLACK_LIGHTER};
+
+	:focus {
+		border: 1px solid ${CSS.COLOR_ACCENT};
+		outline: 1px solid ${CSS.COLOR_ACCENT};
+	}
+`
+
 const StyledInputNumberSpecific = css`
 	/* only show arrows on hover in firefox */
 	&[type="number"] {
@@ -44,27 +55,24 @@ const StyledInputNumberSpecific = css`
 		-moz-appearance: number-input;
 	}
 `
-
 const StyledInput = styled.input`
+	${StyledFieldCommon}
 	min-width: 0;
-	padding: 0 8px;
-	line-height: 2.1rem;
-	width: 100%;
 	min-height: 35px; /* ie compatibility */
-	border: 1px solid #c6c6c6;
-
-	color: ${CSS.COLOR_BLACK_LIGHTER};
-
-	:focus {
-		outline: #c6c6c6;
-	}
-
-	:focus {
-		outline: none;
-		border: 2px solid ${CSS.COLOR_ACCENT};
-	}
+	padding: 0 10px;
+	line-height: 2.1rem;
 
 	${(props) => props.type === "number" && StyledInputNumberSpecific}
+`
+
+const StyledTextarea = styled.textarea`
+	${StyledFieldCommon}
+	line-height: 1.45rem;
+	padding: 6px 10px;
+	width: 100%;
+	border: 1px solid ${CSS.COLOR_GRAY};
+	height: 150px;
+	resize: none;
 `
 
 const FieldLabel = styled.div`
@@ -110,12 +118,40 @@ const Container = styled.div`
 	margin: 0 auto;
 `
 
+const MiniButton = styled.div`
+	outline: none;
+	opacity: 0.84;
+	transition: all 0.2s;
+	background: ${(p) => (p.error ? CSS.COLOR_DANGER : CSS.COLOR_BLACK)};
+	color: ${CSS.COLOR_WHITE};
+	font-size: 15px;
+	width: ${(p) => p.size}px;
+	height: ${(p) => p.size}px;
+	${(p) => p.position.top && `top: ${p.position.top}`};
+	${(p) => p.position.right && `right: ${p.position.right}`};
+	${(p) => p.position.bottom && `bottom: ${p.position.bottom}`};
+	${(p) => p.position.left && `left: ${p.position.left}`};
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: 12px;
+	border-radius: 50%;
+	position: absolute;
+	/* top: calc(50% - 25px); */
+	box-shadow: 0 0 10px rgba(3, 3, 3, 0.3);
+	:hover {
+		background: ${(p) => (p.error ? CSS.COLOR_DANGER_LIGHTER : "black")};
+	}
+`
+
 export {
 	StyledLink,
 	StyledField,
 	StyledInput,
+	StyledTextarea,
 	Separator,
 	Container,
 	FieldLabel,
-	FieldRow
+	FieldRow,
+	MiniButton
 }

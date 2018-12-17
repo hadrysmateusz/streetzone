@@ -82,6 +82,8 @@ class HomePage extends Component {
 	state = INITIAL_STATE
 
 	filterItems = async (values) => {
+		console.log(values)
+
 		// Reset the cursor when changing the filters
 		await this.setState({
 			isFiltering: true,
@@ -114,6 +116,7 @@ class HomePage extends Component {
 	getItems = async () => {
 		try {
 			const { sortBy, sortDirection, filters = {} } = this.state.filterData
+			console.log(this.state.filterData)
 
 			// Create the base query
 			let query = this.props.firebase.items()

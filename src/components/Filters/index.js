@@ -23,6 +23,7 @@ const validate = (values) => {
 	const { price_min, price_max } = values
 	const errors = {}
 
+	console.log("VALIDATING: ", values)
 	if (price_min && price_max) {
 		if (+price_max < +price_min) {
 			errors.price = FORM_ERR.PRICE_MAX_LOWER_THAN_MIN
@@ -40,7 +41,7 @@ const FilterForm = (props) => (
 			sort: "createdAt-desc"
 		}}
 		validate={validate}
-		render={({ handleSubmit, submitting, invalid, errors }) => {
+		render={({ handleSubmit, submitting, invalid, errors, ...rest }) => {
 			return (
 				<form onSubmit={handleSubmit}>
 					<div className="outer-container">
@@ -111,27 +112,35 @@ const FilterForm = (props) => (
 						<FieldRow>
 							<FieldLabel as="div">Cena</FieldLabel>
 							<PriceInputContainer>
-								<Field
-									name="price_min"
-									component={StyledInput}
-									type="number"
-									min="0"
-									step="1"
-									max="99999"
-									style={{ marginRight: "8px" }}
-									placeholder="Od"
-								/>
-								<Field
-									name="price_max"
-									component={StyledInput}
-									type="number"
-									min="0"
-									step="1"
-									max="99999"
-									placeholder="Do"
-								/>
+								{/* Price Min */}
+								<Field name="price_min">
+									{({ input }) => (
+										<StyledInput
+											{...input}
+											type="number"
+											min="0"
+											step="1"
+											max="99999"
+											placeholder="Od"
+											style={{ marginRight: "8px" }}
+										/>
+									)}
+								</Field>
+								{/* Price Max */}
+								<Field name="price_max">
+									{({ input }) => (
+										<StyledInput
+											{...input}
+											type="number"
+											min="0"
+											step="1"
+											max="99999"
+											placeholder="Do"
+										/>
+									)}
+								</Field>
 							</PriceInputContainer>
-							<Error meta={{ error: errors.price, touched: true }} />
+							<Error message={errors.price} showIf={!!errors.price} />
 						</FieldRow>
 					</div>
 					<LoaderButton
@@ -141,6 +150,9 @@ const FilterForm = (props) => (
 						disabled={submitting || invalid}
 						fullWidth
 					/>
+					{process.env.NODE_ENV === "development" && (
+						<pre>{JSON.stringify(rest.values, 0, 2)}</pre>
+					)}
 				</form>
 			)
 		}}

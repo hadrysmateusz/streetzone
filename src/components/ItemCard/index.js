@@ -65,6 +65,7 @@ class ItemCardUnstyled extends Component {
 
 const ItemCard = styled(ItemCardUnstyled)`
 	height: 365px;
+	overflow: hidden;
 
 	margin: 10px auto;
 	border: 2px solid ${CSS.COLOR_BLACK};
@@ -93,7 +94,7 @@ const ItemCard = styled(ItemCardUnstyled)`
 
 	.thumbnail {
 		background: ${CSS.COLOR_THUMBNAIL_BG};
-		height: 263px;
+		height: 260px;
 
 		img {
 			object-fit: contain;
@@ -121,6 +122,7 @@ const ItemCard = styled(ItemCardUnstyled)`
 		white-space: nowrap;
 		overflow: hidden;
 		text-overflow: ellipsis;
+		line-height: 1.3rem;
 	}
 
 	.date {

@@ -1,21 +1,14 @@
 import React from "react"
 import { Form, Field } from "react-final-form"
-import styled from "styled-components"
 
 import Button, { LoaderButton } from "../Button"
-import { Container, FieldRow, FieldLabel, Separator, StyledInput } from "../Basics"
+import { FieldRow, FieldLabel, StyledInput, StyledTextarea } from "../Basics"
 import SelectAdapter from "../SelectAdapter"
 import Error from "./Error"
 import { FileHandler } from "../FileHandler"
 import { withRouter } from "react-router-dom"
 
 import { ITEM_SCHEMA, ROUTES, FORM_ERR, CONST } from "../../constants"
-
-const Textarea = styled.textarea`
-	padding: 6px 8px;
-	width: 100%;
-	height: 150px;
-`
 
 const validate = (values) => {
 	const { name, designers, price, category, size, description, files } = values
@@ -47,7 +40,7 @@ const validate = (values) => {
 	}
 
 	// Description
-	if (description.length > 2000) {
+	if (description && description.length > CONST.DESC_MAX_CHARACTERS) {
 		errors.description = FORM_ERR.DESC_TOO_LONG
 	}
 
@@ -105,7 +98,7 @@ const ItemForm = ({ initialValues, onSubmit, history, isLoading }) => {
 									<>
 										<FieldLabel>Nazwa</FieldLabel>
 										<StyledInput {...input} type="text" placeholder="Nazwa" />
-										<Error meta={meta} />
+										<Error message={meta.error} showIf={meta.error && meta.touched} />
 									</>
 								)}
 							</Field>
@@ -127,7 +120,7 @@ const ItemForm = ({ initialValues, onSubmit, history, isLoading }) => {
 											{...meta}
 											{...input}
 										/>
-										<Error meta={meta} />
+										<Error message={meta.error} showIf={meta.error && meta.touched} />
 									</>
 								)}
 							</Field>
@@ -146,7 +139,7 @@ const ItemForm = ({ initialValues, onSubmit, history, isLoading }) => {
 											step="1"
 											placeholder="Cena"
 										/>
-										<Error meta={meta} />
+										<Error message={meta.error} showIf={meta.error && meta.touched} />
 									</>
 								)}
 							</Field>
@@ -167,7 +160,7 @@ const ItemForm = ({ initialValues, onSubmit, history, isLoading }) => {
 											{...meta}
 											{...input}
 										/>
-										<Error meta={meta} />
+										<Error message={meta.error} showIf={meta.error && meta.touched} />
 									</>
 								)}
 							</Field>
@@ -180,7 +173,7 @@ const ItemForm = ({ initialValues, onSubmit, history, isLoading }) => {
 									<>
 										<FieldLabel>Rozmiar </FieldLabel>
 										<StyledInput {...input} type="text" placeholder="Rozmiar" />
-										<Error meta={meta} />
+										<Error message={meta.error} showIf={meta.error && meta.touched} />
 									</>
 								)}
 							</Field>
@@ -192,8 +185,8 @@ const ItemForm = ({ initialValues, onSubmit, history, isLoading }) => {
 								{({ input, meta }) => (
 									<>
 										<FieldLabel>Opis </FieldLabel>
-										<Textarea {...input} placeholder="Opis" />
-										<Error meta={meta} />
+										<StyledTextarea {...input} placeholder="Opis" />
+										<Error message={meta.error} showIf={meta.error && meta.touched} />
 									</>
 								)}
 							</Field>

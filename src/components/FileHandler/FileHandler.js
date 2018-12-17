@@ -6,6 +6,7 @@ import Button from "../Button"
 import FileItem from "./FileItem"
 import CustomFile from "./CustomFile"
 import { CSS } from "../../constants"
+import { Error } from "../ItemForm"
 
 class FileHandlerUnstyled extends Component {
 	fileInput = React.createRef()
@@ -50,10 +51,7 @@ class FileHandlerUnstyled extends Component {
 
 	render() {
 		const { input, meta, isLoading, ...rest } = this.props
-
 		const hasContent = Array.isArray(input.value) && input.value.length > 0
-
-		const buttonText = hasContent ? "Dodaj pliki" : "Wybierz pliki"
 
 		return (
 			<div {...rest}>
@@ -72,7 +70,7 @@ class FileHandlerUnstyled extends Component {
 						onClick={this.clickFileInput}
 						disabled={meta.submitting || isLoading}
 					>
-						{buttonText}
+						{hasContent ? "Dodaj pliki" : "Wybierz pliki"}
 					</Button>
 					<Button
 						type="button"
@@ -103,14 +101,10 @@ class FileHandlerUnstyled extends Component {
 					)}
 				</div>
 
-				<div className="main-error-container">
-					{meta.error && (meta.dirty || meta.submitFailed) && meta.error.main && (
-						<span>
-							<FontAwesomeIcon icon="exclamation" />
-							<span className="main-error-text">{meta.error.main}</span>
-						</span>
-					)}
-				</div>
+				<Error
+					message={meta.error.main}
+					showIf={meta.error && (meta.dirty || meta.submitFailed) && meta.error.main}
+				/>
 			</div>
 		)
 	}

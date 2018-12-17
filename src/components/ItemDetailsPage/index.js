@@ -2,6 +2,7 @@ import React, { Component } from "react"
 import { Link } from "react-router-dom"
 import { compose } from "recompose"
 import moment from "moment"
+import styled from "styled-components"
 
 import ImageGallery from "../ImageGallery"
 import { withFirebase } from "../Firebase"
@@ -12,7 +13,51 @@ import { Container } from "../Basics"
 import EmptyState from "../EmptyState"
 import UserPreview from "../UserPreview"
 
-import styles from "./ItemDetails.module.scss"
+const MainContainer = styled.main`
+	display: flex;
+	flex-direction: column;
+`
+
+const ItemContainer = styled.div`
+	display: flex;
+	flex-direction: column;
+	@media (min-width: 700px) {
+		flex-direction: row;
+	}
+`
+
+const InfoContainer = styled.div`
+	flex: 0 0 100%;
+	@media (min-width: 700px) {
+		max-width: 50%;
+	}
+`
+
+const UserInfoContainer = styled.div`
+	margin-top: 10px;
+`
+
+const Description = styled.div`
+	margin-top: 10px;
+	color: #3d3d3d;
+`
+
+const ButtonsContainer = styled.div`
+	margin-top: 10px;
+	display: flex;
+	align-content: flex-start;
+`
+
+const MainInfo = styled.div`
+	margin: 0 0 15px;
+	font-size: 1.5rem;
+`
+
+const Designers = styled.h3`
+	display: inline;
+	font-size: 1.8rem;
+	font-weight: bold;
+`
 
 class ItemDetailsPage extends Component {
 	state = {
@@ -72,22 +117,21 @@ class ItemDetailsPage extends Component {
 		return (
 			<Container width={1100}>
 				{item && !isLoading ? (
-					<div className={styles.mainContainer}>
-						<div className={styles.itemContainer}>
+					<MainContainer>
+						<ItemContainer>
 							<ImageGallery item={item} />
-							<div className={styles.infoContainer}>
-								<div className={styles.basicInfo}>
-									<h2 className={styles.mainInfo}>
-										{item.designers && item.designers.join(" & ") + ": "}
+							<InfoContainer>
+								<div>
+									<MainInfo>
+										{item.designers && (
+											<Designers>{item.designers.join(" & ") + " "}</Designers>
+										)}
 										{item.name}
-									</h2>
-									<div>
-										Cena: {item.price}
-										zł
-									</div>
+									</MainInfo>
+									<div>{`Cena: ${item.price}zł`}</div>
 									<div>Dodano: {moment(item.createdAt).format("D.M.YY o HH:mm")}</div>
 								</div>
-								<div className={styles.buttons}>
+								<ButtonsContainer>
 									{userIsOwner ? (
 										<>
 											<Button as={Link} to={`/e/${item.itemId}`}>
@@ -103,18 +147,18 @@ class ItemDetailsPage extends Component {
 									) : (
 										<Button primary>Kup</Button>
 									)}
-								</div>
-								<div className={styles.description}>{item.description}</div>
+								</ButtonsContainer>
+								<Description>{item.description}</Description>
 								{!userIsOwner && (
-									<div className={styles.user}>
+									<UserInfoContainer>
 										<strong>Sprzedawca:</strong>
 										<UserPreview id={item.userId} />
-									</div>
+									</UserInfoContainer>
 								)}
-							</div>
-						</div>
+							</InfoContainer>
+						</ItemContainer>
 						<div className="recommendedContainer" />
-					</div>
+					</MainContainer>
 				) : isLoading ? (
 					<LoadingSpinner />
 				) : (
