@@ -2,10 +2,9 @@ import React, { Component } from "react"
 import { Link } from "react-router-dom"
 import styled from "styled-components"
 import moment from "moment"
+import { withFirebase } from "../Firebase"
 
 import { CSS } from "../../constants"
-
-import { withFirebase } from "../Firebase"
 
 const Container = styled.div`
 	height: 365px;
@@ -74,7 +73,7 @@ const Designers = styled.div`
 	text-overflow: ellipsis;
 `
 
-class ItemCardUnstyled extends Component {
+class ItemCard extends Component {
 	state = { imageURL: "" }
 
 	componentDidMount = () => {
@@ -102,7 +101,7 @@ class ItemCardUnstyled extends Component {
 	render() {
 		const { itemId, name, price, designers = [], createdAt } = this.props.item
 		return (
-			<div className={this.props.className}>
+			<Container className={this.props.className}>
 				<Link to={`/i/${itemId}`}>
 					<ThumbnailContainer>
 						<img src={this.state.imageURL} alt="" />
@@ -122,76 +121,9 @@ class ItemCardUnstyled extends Component {
 						</BottomContainer>
 					</InfoContainer>
 				</Link>
-			</div>
+			</Container>
 		)
 	}
 }
-
-const ItemCard = styled(ItemCardUnstyled)`
-	height: 365px;
-	overflow: hidden;
-
-	border: 2px solid ${CSS.COLOR_BLACK};
-	width: 100%;
-
-	.innerContainer {
-		display: flex;
-		justify-content: space-between;
-		font-size: 0.91rem;
-		font-weight: bold;
-	}
-
-	.price {
-		color: ${CSS.COLOR_ACCENT};
-	}
-
-	.thumbnail {
-		background: ${CSS.COLOR_THUMBNAIL_BG};
-		height: 260px;
-
-		img {
-			object-fit: contain;
-			width: 100%;
-			height: 100%;
-		}
-	}
-
-	.info {
-		padding: 0 8px;
-	}
-
-	.designers {
-		text-transform: uppercase;
-		margin-bottom: 4px;
-		padding-right: 10px;
-		white-space: nowrap;
-		overflow: hidden;
-		text-overflow: ellipsis;
-	}
-
-	.name {
-		color: #333;
-		font-size: 0.91rem;
-		white-space: nowrap;
-		overflow: hidden;
-		text-overflow: ellipsis;
-		line-height: 1.3rem;
-	}
-
-	.date {
-		color: #777;
-		font-size: 0.88rem;
-		padding: 10px 7px 11px;
-		margin-top: 10px;
-		border-top: 1px solid #bbb;
-		white-space: nowrap;
-		overflow: hidden;
-		text-overflow: ellipsis;
-	}
-
-	.topContainer {
-		padding: 14px 7px 0;
-	}
-`
 
 export default withFirebase(ItemCard)
