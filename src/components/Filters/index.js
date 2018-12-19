@@ -23,7 +23,6 @@ const validate = (values) => {
 	const { price_min, price_max } = values
 	const errors = {}
 
-	console.log("VALIDATING: ", values)
 	if (price_min && price_max) {
 		if (+price_max < +price_min) {
 			errors.price = FORM_ERR.PRICE_MAX_LOWER_THAN_MIN
@@ -150,9 +149,9 @@ const FilterForm = (props) => (
 						disabled={submitting || invalid}
 						fullWidth
 					/>
-					{process.env.NODE_ENV === "development" && (
+					{/* {process.env.NODE_ENV === "development" && (
 						<pre>{JSON.stringify(rest.values, 0, 2)}</pre>
-					)}
+					)} */}
 				</form>
 			)
 		}}

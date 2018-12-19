@@ -7,7 +7,12 @@ import { ROUTES } from "../../constants"
 import LoadingSpinner from "../LoadingSpinner"
 import NotFound from "../NotFound"
 
-const AsyncNewItemPage = Loadable({
+const BlogPostPage = Loadable({
+	loader: () => import("../BlogPost"),
+	loading: () => <LoadingSpinner />
+})
+
+const NewItemPage = Loadable({
 	loader: () => import("../NewItem"),
 	loading: () => <LoadingSpinner />
 })
@@ -54,6 +59,10 @@ const BlogHomePage = Loadable({
 
 const routes = [
 	{
+		path: ROUTES.BLOG_POST,
+		component: BlogPostPage
+	},
+	{
 		path: ROUTES.SIGN_UP,
 		component: SignUpPage
 	},
@@ -75,7 +84,7 @@ const routes = [
 	},
 	{
 		path: ROUTES.NEW_ITEM,
-		component: AsyncNewItemPage
+		component: NewItemPage
 	},
 	{
 		path: ROUTES.ITEM_DETAILS,

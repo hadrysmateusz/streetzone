@@ -116,7 +116,6 @@ class HomePage extends Component {
 	getItems = async () => {
 		try {
 			const { sortBy, sortDirection, filters = {} } = this.state.filterData
-			console.log(this.state.filterData)
 
 			// Create the base query
 			let query = this.props.firebase.items()

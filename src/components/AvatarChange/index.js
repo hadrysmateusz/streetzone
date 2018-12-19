@@ -25,7 +25,6 @@ class AvatarChangeForm extends React.Component {
 	}
 
 	loadImage = async () => {
-		console.log("loading image")
 		const currentUser = this.props.firebase.currentUser()
 		const currentUserData = (await currentUser.get()).data()
 

@@ -49,13 +49,11 @@ export class LoginManagementBase extends Component {
 	}
 
 	onDefaultLoginLink = async (password) => {
-		console.log("linking password", password)
 		try {
 			const credential = this.props.firebase.emailAuthProvider.credential(
 				this.props.authUser.email,
 				password
 			)
-			console.log("credential", credential)
 
 			await this.props.firebase.auth.currentUser.linkAndRetrieveDataWithCredential(
 				credential
@@ -174,10 +172,7 @@ class DefaultLoginToggle extends Component {
 	}
 
 	onSubmit = async (values, actions) => {
-		console.log("submitting", values)
 		await this.props.onLink(values.password)
-		console.log("about to reset")
-		// actions.reset()
 	}
 
 	render() {

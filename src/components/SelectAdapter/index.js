@@ -2,7 +2,6 @@ import React from "react"
 import Select from "react-select"
 
 const SelectAdapter = ({ onChange, value, initial, options, isMulti, ...rest }) => {
-	console.log("VALUE", value)
 	if (isMulti) {
 		value = value.map((singleValue) =>
 			options.find((option) => option.value === singleValue)

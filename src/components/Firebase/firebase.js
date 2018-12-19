@@ -66,7 +66,6 @@ class Firebase {
 
 	item = (id) => this.db.collection("items").doc(id)
 	items = () => this.db.collection("items")
-
 	getItem = async (itemId) => {
 		try {
 			// Get data from database
@@ -93,6 +92,11 @@ class Firebase {
 			console.log(error)
 		}
 	}
+
+	// Posts API
+
+	post = (id) => this.db.collection("posts").doc(id)
+	posts = () => this.db.collection("posts")
 
 	// Marge Auth and DB User API
 
