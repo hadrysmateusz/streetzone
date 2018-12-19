@@ -7,6 +7,73 @@ import { CSS } from "../../constants"
 
 import { withFirebase } from "../Firebase"
 
+const Container = styled.div`
+	height: 365px;
+	overflow: hidden;
+
+	border: 2px solid ${CSS.COLOR_BLACK};
+	width: 100%;
+`
+
+const ThumbnailContainer = styled.div`
+	background: ${CSS.COLOR_THUMBNAIL_BG};
+	height: 260px;
+
+	img {
+		object-fit: contain;
+		width: 100%;
+		height: 100%;
+	}
+`
+
+const InfoContainer = styled.div`
+	padding: 0 8px;
+`
+
+const TopContainer = styled.div`
+	padding: 14px 7px 0;
+`
+
+const Name = styled.div`
+	color: #333;
+	font-size: 0.91rem;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	line-height: 1.3rem;
+`
+
+const BottomContainer = styled.div`
+	color: #777;
+	font-size: 0.88rem;
+	padding: 10px 7px 11px;
+	margin-top: 10px;
+	border-top: 1px solid #bbb;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+`
+
+const InnerContainer = styled.div`
+	display: flex;
+	justify-content: space-between;
+	font-size: 0.91rem;
+	font-weight: bold;
+`
+
+const Price = styled.div`
+	color: ${CSS.COLOR_ACCENT};
+`
+
+const Designers = styled.div`
+	text-transform: uppercase;
+	margin-bottom: 4px;
+	padding-right: 10px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+`
+
 class ItemCardUnstyled extends Component {
 	state = { imageURL: "" }
 
@@ -37,26 +104,23 @@ class ItemCardUnstyled extends Component {
 		return (
 			<div className={this.props.className}>
 				<Link to={`/i/${itemId}`}>
-					<div className="thumbnail">
+					<ThumbnailContainer>
 						<img src={this.state.imageURL} alt="" />
-					</div>
-					<div className="info">
-						<div className="topContainer">
-							<div className="innerContainer">
-								<div className="designers">
-									{designers && designers.join(" & ").toUpperCase()}
-								</div>
-								<div className="price">
-									{price}
-									zł
-								</div>
-							</div>
-							<div className="name">{name}</div>
-						</div>
-						<div className="date">
+					</ThumbnailContainer>
+					<InfoContainer>
+						<TopContainer>
+							<InnerContainer>
+								{designers && (
+									<Designers>{designers.join(" & ").toUpperCase()}</Designers>
+								)}
+								<Price>{price}zł</Price>
+							</InnerContainer>
+							<Name>{name}</Name>
+						</TopContainer>
+						<BottomContainer>
 							Dodano {moment(createdAt).format("D.M.YY o HH:mm")}
-						</div>
-					</div>
+						</BottomContainer>
+					</InfoContainer>
 				</Link>
 			</div>
 		)
@@ -67,19 +131,8 @@ const ItemCard = styled(ItemCardUnstyled)`
 	height: 365px;
 	overflow: hidden;
 
-	margin: 10px auto;
 	border: 2px solid ${CSS.COLOR_BLACK};
-	/* box-shadow: 0 0 5px rgba(0, 0, 0, 0.25); */
-
-	@media (min-width: 600px) {
-		width: calc(50% - 14px);
-		max-width: 330px;
-		margin: 7px;
-	}
-
-	@media (min-width: 1100px) {
-		width: calc(33.333% - 14px);
-	}
+	width: 100%;
 
 	.innerContainer {
 		display: flex;
