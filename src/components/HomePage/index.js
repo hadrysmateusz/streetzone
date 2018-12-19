@@ -1,11 +1,14 @@
 import React, { Component } from "react"
 import styled from "styled-components"
+import { Grid, GridItem } from "styled-grid-component"
 
 import { withFirebase } from "../Firebase"
 import ItemCard from "../ItemCard"
 import LoadingSpinner from "../LoadingSpinner"
 import FilterForm from "../Filters"
 import { CONST } from "../../constants"
+
+// #region Styled Components
 
 const Container = styled.div`
 	display: flex;
@@ -64,6 +67,8 @@ const LoadMore = styled.div`
 	cursor: pointer;
 	margin: 10px 10px 20px 10px;
 `
+
+//  #endregion
 
 const INITIAL_STATE = {
 	items: [],
@@ -184,27 +189,32 @@ class HomePage extends Component {
 
 	render() {
 		const { items, isLoading, isFiltering, noMoreItems } = this.state
-
 		return (
-			<Container>
-				<Sidebar>
+			<Grid
+				width="100%"
+				style={{ maxWidth: "1100px", margin: "0 auto" }}
+				templateColumns="200px auto"
+				gap="20px"
+				autoRows="minmax(100px, auto)"
+			>
+				<GridItem column="1/2" row="1">
 					<FilterForm onSubmit={this.filterItems} isLoading={isFiltering} />
-				</Sidebar>
-				<MainContent>
-					{!isLoading ? (
-						<>
-							<ItemsContainer>
-								{items.map((item, i) => {
-									return <ItemCard key={i} item={item} />
-								})}
-							</ItemsContainer>
-							{!noMoreItems && <LoadMore onClick={this.getItems}>Więcej</LoadMore>}
-						</>
-					) : (
-						<LoadingSpinner />
+				</GridItem>
+				<GridItem column="2/3" row="1">
+					{!isLoading && (
+						<Grid width="100%" templateColumns="repeat(3,1fr)" gap="10px" autoRows="auto">
+							{items.map((item, i) => (
+								<GridItem style={{ minWidth: 0 }}>
+									<ItemCard key={i} item={item} />
+								</GridItem>
+							))}
+						</Grid>
 					)}
-				</MainContent>
-			</Container>
+				</GridItem>
+				<GridItem column="2/3" row="2">
+					{!noMoreItems && <LoadMore onClick={this.getItems}>Więcej</LoadMore>}
+				</GridItem>
+			</Grid>
 		)
 	}
 }

@@ -8702,6 +8702,11 @@ react-app-polyfill@^0.1.3:
     raf "3.4.0"
     whatwg-fetch "3.0.0"
 
+react-awesome-styled-grid@^2.2.2:
+  version "2.2.2"
+  resolved "https://registry.yarnpkg.com/react-awesome-styled-grid/-/react-awesome-styled-grid-2.2.2.tgz#38168e52b29dd294248aa2c3769b01f87c4621f4"
+  integrity sha512-IycaeiRas+DAevPoM9VgyJtNdW34Ie/bR4dSAfeGxxGJLYVKjDXGDLoNqfnOYA+cdkQg5EY7qBKrLeUlH6SsNw==
+
 react-dev-utils@^6.1.1:
   version "6.1.1"
   resolved "https://registry.yarnpkg.com/react-dev-utils/-/react-dev-utils-6.1.1.tgz#a07e3e8923c4609d9f27e5af5207e3ca20724895"
