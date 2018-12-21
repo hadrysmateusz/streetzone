@@ -11,7 +11,14 @@ const Container = styled.div`
 	overflow: hidden;
 	min-width: 0;
 	min-height: 0;
-	border: 2px solid ${CSS.COLOR_BLACK};
+	border: 1px solid #cfcfcf;
+	box-shadow: 0 3px 6px -2px rgba(0, 0, 0, 0.13);
+	/* border-radius: 3px; */
+	transition: transform 0.18s ease;
+	&:hover {
+		/* box-shadow: 0 5px 6px -2px rgba(0, 0, 0, 0.14); */
+		transform: translateY(-2px);
+	}
 `
 
 const ThumbnailContainer = styled.div`
@@ -31,10 +38,11 @@ const InfoContainer = styled.div`
 
 const TopContainer = styled.div`
 	padding: 14px 7px 0;
+	color: #3f3f3f;
 `
 
 const Name = styled.div`
-	color: #333;
+	color: #666;
 	font-size: 0.91rem;
 	white-space: nowrap;
 	overflow: hidden;
@@ -43,11 +51,11 @@ const Name = styled.div`
 `
 
 const BottomContainer = styled.div`
-	color: #777;
+	color: #999;
 	font-size: 0.88rem;
 	padding: 10px 7px 11px;
 	margin-top: 10px;
-	border-top: 1px solid #bbb;
+	border-top: 1px solid #e0e0e0;
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;

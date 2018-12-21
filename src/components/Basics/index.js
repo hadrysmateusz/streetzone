@@ -79,6 +79,7 @@ const FieldLabel = styled.div`
 	font-size: 0.92rem;
 	font-weight: bold;
 	display: block;
+	color: #373737;
 	padding-bottom: 4px;
 	margin-left: 1px;
 `

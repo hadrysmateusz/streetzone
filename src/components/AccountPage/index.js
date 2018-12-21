@@ -11,13 +11,17 @@ import AvatarChangeForm from "../AvatarChange"
 import LoginManagement from "../LoginManagement"
 
 const ItemsContainer = styled.div`
-	width: auto;
-	display: flex;
-	flex-flow: row wrap;
-	justify-content: left;
-	align-content: flex-start;
-	> * {
-		width: 23%;
+	display: grid;
+	grid-gap: 14px;
+
+	@media (min-width: 570px) {
+		grid-template-columns: 1fr 1fr;
+	}
+	@media (min-width: 750px) {
+		grid-template-columns: 1fr 1fr 1fr;
+	}
+	@media (min-width: 1050px) {
+		grid-template-columns: 1fr 1fr 1fr 1fr;
 	}
 `
 

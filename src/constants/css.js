@@ -3,7 +3,7 @@ import { keyframes } from "styled-components"
 // Colors
 export const COLOR_BLACK_DARKER = "#23282f"
 export const COLOR_BLACK = "#272b33"
-export const COLOR_BLACK_LIGHTER = "#2a2d37"
+export const COLOR_BLACK_LIGHTER = "#474b53"
 
 export const COLOR_DISABLED_DARKER = "#9b9b9b"
 export const COLOR_DISABLED = "#acacac"

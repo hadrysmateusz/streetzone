@@ -20,13 +20,13 @@ const MainGrid = styled(Box)`
 
 	@media (min-width: 750px) {
 		max-width: 860px;
-		grid-template-columns: 200px 4fr 200px;
+		grid-template-columns: 200px 4fr;
 		grid-template-areas:
 			"filters content"
 			"filters load-more";
 	}
 	@media (min-width: 1050px) {
-		max-width: 1320px;
+		max-width: 1050px;
 	}
 `
 
@@ -50,7 +50,7 @@ const LoadMore = styled.div`
 
 const ItemsGrid = styled.div`
 	display: grid;
-	grid-gap: 10px;
+	grid-gap: 14px;
 
 	@media (min-width: 570px) {
 		grid-template-columns: 1fr 1fr;
