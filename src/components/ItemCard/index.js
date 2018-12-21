@@ -9,9 +9,9 @@ import { CSS } from "../../constants"
 const Container = styled.div`
 	height: 365px;
 	overflow: hidden;
-
+	min-width: 0;
+	min-height: 0;
 	border: 2px solid ${CSS.COLOR_BLACK};
-	width: 100%;
 `
 
 const ThumbnailContainer = styled.div`

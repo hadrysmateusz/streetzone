@@ -1,18 +1,22 @@
 import "react-app-polyfill/ie11"
 import React from "react"
 import ReactDOM from "react-dom"
+import { ThemeProvider } from "styled-components"
 
 import * as serviceWorker from "./serviceWorker"
 import "./config/fontAwesomeConfig"
 import "./index.css"
 import "./normalize.css"
 
+import { THEME } from "./constants"
 import App from "./components/App"
 import { Firebase, FirebaseContext } from "./components/Firebase"
 
 ReactDOM.render(
 	<FirebaseContext.Provider value={new Firebase()}>
-		<App />
+		<ThemeProvider theme={THEME}>
+			<App />
+		</ThemeProvider>
 	</FirebaseContext.Provider>,
 	document.getElementById("root")
 )

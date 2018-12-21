@@ -57,7 +57,6 @@ const NavigationUnstyled = ({ authUser, ...rest }) => (
 
 const Navigation = styled(NavigationUnstyled)`
 	border-bottom: 2px solid ${CSS.COLOR_BLACK};
-	/* box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); */
 	display: flex;
 	flex-direction: row;
 	align-items: center;
@@ -65,9 +64,8 @@ const Navigation = styled(NavigationUnstyled)`
 	padding: 15px 4px 10px;
 	margin: 0 12px;
 	margin-bottom: 10px;
-
-	@media (min-width: 800px) {
-		margin-bottom: 30px;
+	@media (min-width: 1050px) {
+		margin-bottom: 70px;
 	}
 
 	li {

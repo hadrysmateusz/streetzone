@@ -17,12 +17,11 @@ const SelectAdapter = ({ onChange, value, initial, options, isMulti, ...rest }) 
 			options={options}
 			isMulti={isMulti}
 			onChange={(data, action) => {
-				const value = isMulti ? data.map((dataObj) => dataObj.value) : data.value
-
 				if (action.action === "clear") {
 					// in development this resets to the generated value
 					onChange(initial)
 				} else {
+					const value = isMulti ? data.map((dataObj) => dataObj.value) : data.value
 					onChange(value)
 				}
 			}}

@@ -1,6 +1,6 @@
 import React, { Component } from "react"
 import styled from "styled-components"
-import { Grid, GridItem } from "styled-grid-component"
+import { Box } from "rebass"
 
 import { withFirebase } from "../Firebase"
 import ItemCard from "../ItemCard"
@@ -8,67 +8,62 @@ import LoadingSpinner from "../LoadingSpinner"
 import FilterForm from "../Filters"
 import { CONST } from "../../constants"
 
-// #region Styled Components
+const MainGrid = styled(Box)`
+	/* margin: 0 auto;
+	padding: 10px; */
+	display: grid;
+	grid-gap: 20px;
+	grid-template-areas:
+		"filters"
+		"content"
+		"load-more";
 
-const Container = styled.div`
-	display: flex;
-	flex-flow: column;
-	max-width: 650px;
-	@media (min-width: 800px) {
-		flex-flow: row;
-		max-width: 1100px;
+	@media (min-width: 750px) {
+		max-width: 860px;
+		grid-template-columns: 200px 4fr 200px;
+		grid-template-areas:
+			"filters content"
+			"filters load-more";
 	}
-	justify-content: center;
-	margin: 0 auto;
-`
-
-const Sidebar = styled.aside`
-	min-width: 212px;
-	padding-bottom: 30px;
-	// padding: $item-spacing 0;
-	width: 100%;
-	@media (min-width: 800px) {
-		width: 200px;
-		min-width: 190px;
-		padding: $item-spacing;
-		margin-right: $item-spacing * 2;
+	@media (min-width: 1050px) {
+		max-width: 1320px;
 	}
 `
 
-const MainContent = styled.main`
-	width: auto;
-	min-width: 60%;
+const Content = styled.div`
+	grid-area: content;
 `
 
-const ItemsContainer = styled.div`
-	width: auto;
-	display: flex;
-	flex-flow: row wrap;
-	justify-content: left;
-	align-content: flex-start;
-	margin-top: -$item-spacing;
-	@media (min-width: 600px) {
-		max-width: 670px;
-		margin: -$item-spacing;
-	}
-	@media (min-width: 800px) {
-		max-width: 670px;
-	}
-	@media (min-width: 1100px) {
-		max-width: 820px;
-	}
+const Filters = styled.div`
+	grid-area: filters;
 `
 
 const LoadMore = styled.div`
+	grid-area: load-more;
 	text-align: center;
 	font-size: 1.2rem;
 	font-weight: bold;
-	padding: 30px 0 30px 0;
+	padding: 20px 0;
 	cursor: pointer;
 	margin: 10px 10px 20px 10px;
 `
 
-//  #endregion
+const ItemsGrid = styled.div`
+	display: grid;
+	grid-gap: 10px;
+
+	@media (min-width: 570px) {
+		grid-template-columns: 1fr 1fr;
+	}
+	@media (min-width: 750px) {
+		grid-template-columns: 1fr 1fr;
+	}
+	@media (min-width: 1050px) {
+		grid-template-columns: 1fr 1fr 1fr;
+	}
+`
+
+// #region
 
 const INITIAL_STATE = {
 	items: [],
@@ -187,34 +182,29 @@ class HomePage extends Component {
 		this.getItems()
 	}
 
+	// #endregion
 	render() {
 		const { items, isLoading, isFiltering, noMoreItems } = this.state
 		return (
-			<Grid
-				width="100%"
-				style={{ maxWidth: "1100px", margin: "0 auto" }}
-				templateColumns="200px auto"
-				gap="20px"
-				autoRows="minmax(100px, auto)"
-			>
-				<GridItem column="1/2" row="1">
+			<MainGrid my={0} mx={"auto"} p={3}>
+				<Filters>
 					<FilterForm onSubmit={this.filterItems} isLoading={isFiltering} />
-				</GridItem>
-				<GridItem column="2/3" row="1">
-					{!isLoading && (
-						<Grid width="100%" templateColumns="repeat(3,1fr)" gap="10px" autoRows="auto">
+				</Filters>
+				<Content>
+					{!isLoading ? (
+						<ItemsGrid>
 							{items.map((item, i) => (
-								<GridItem style={{ minWidth: 0 }}>
-									<ItemCard key={i} item={item} />
-								</GridItem>
+								<ItemCard key={i} item={item} />
 							))}
-						</Grid>
+						</ItemsGrid>
+					) : (
+						<LoadingSpinner />
 					)}
-				</GridItem>
-				<GridItem column="2/3" row="2">
-					{!noMoreItems && <LoadMore onClick={this.getItems}>Więcej</LoadMore>}
-				</GridItem>
-			</Grid>
+				</Content>
+				{!noMoreItems && !isLoading && (
+					<LoadMore onClick={this.getItems}>Więcej</LoadMore>
+				)}
+			</MainGrid>
 		)
 	}
 }
