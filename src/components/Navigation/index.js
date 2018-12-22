@@ -73,10 +73,10 @@ const NavItem = styled.div`
 
 const Navigation = ({ authUser, ...rest }) => (
 	<>
-		<Header>Streetwear</Header>
+		<Header>{CONST.BRAND_NAME}</Header>
 		<Nav {...rest}>
 			{/* <NavItem className="brand">
-				<CustomNavLink to={ROUTES.HOME}>{CONST.BRAND_NAME}</CustomNavLink>
+				<CustomNavLink to={ROUTES.HOME}></CustomNavLink>
 			</NavItem> */}
 			<NavItem>
 				<CustomNavLink to={ROUTES.BLOG_HOME} exact={false}>

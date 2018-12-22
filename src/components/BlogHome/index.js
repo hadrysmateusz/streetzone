@@ -31,8 +31,8 @@ const Title = styled.h2`
 export class BlogHomePage extends Component {
 	state = { posts: [] }
 
-	getPosts = async () => {
-		let query = this.props.firebase.posts()
+	getPosts = async (sortBy = "createdAt") => {
+		let query = this.props.firebase.posts().orderBy(sortBy)
 		const snapshot = await query.get()
 		let posts = snapshot.docs.map((doc) => ({ ...doc.data(), postId: doc.id }))
 		await this.setState({ posts })
