@@ -112,18 +112,19 @@ class FileHandlerUnstyled extends Component {
 
 const FileHandler = styled(FileHandlerUnstyled)`
 	.file-list-container {
-		display: flex;
-		justify-items: left;
-		justify-content: left;
-		flex-wrap: wrap;
-		margin: 10px 0 0 0;
-		padding: 10px 10px 0 10px;
-		min-height: 150px;
-		border: 2px dashed ${CSS.COLOR_BLACK};
+		display: grid;
+		grid-gap: 10px;
+		grid-template-columns: 1fr 1fr 1fr;
 
+		margin: 10px 0 0 0;
+		padding: 10px;
+		height: 201px;
+		min-height: 201px;
+		border: 1px solid #c6c6c6;
+		background: white;
 		.empty-state {
 			width: 100%;
-			height: auto;
+			/* height: auto; */
 			margin-bottom: 10px;
 			font-size: 1.1rem;
 			display: flex;

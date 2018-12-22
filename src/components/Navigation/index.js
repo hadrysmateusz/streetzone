@@ -8,8 +8,8 @@ import { withAuthentication } from "../UserSession"
 import SignOutButton from "../SignOut"
 import { ROUTES, CONST, CSS } from "../../constants"
 
-let CustomNavLink = (props) => (
-	<NavLink exact activeStyle={{ color: CSS.COLOR_ACCENT }} {...props} />
+let CustomNavLink = ({ exact = true, ...rest }) => (
+	<NavLink exact={exact} activeStyle={{ color: CSS.COLOR_ACCENT }} {...rest} />
 )
 
 CustomNavLink = styled(CustomNavLink)`
@@ -17,18 +17,18 @@ CustomNavLink = styled(CustomNavLink)`
 	border: none;
 	outline: none;
 	padding: 0;
-	color: #666;
+	color: #292929;
 	&:hover {
 		color: ${CSS.COLOR_ACCENT};
 	}
 `
 
 const Header = styled.div`
-	color: #373737;
+	color: #333;
 	text-align: center;
 	font-size: 2.2rem;
 	background: white;
-	border-bottom: 1px solid #d0d0d0;
+	border-bottom: 1px solid #ddd;
 	padding: 10px 0;
 `
 
@@ -36,17 +36,20 @@ const Nav = styled.ul`
 	position: sticky;
 	top: 0;
 	background: white;
-	z-index: 9999;
+	z-index: 9990;
 
 	display: flex;
 	justify-content: center;
 	margin: 0;
+	margin-bottom: 20px;
 	padding: 11px;
-	border-bottom: 1px solid #d0d0d0;
+	border-bottom: 1px solid #ddd;
 	overflow: auto;
+	box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.05);
 
 	@media (max-width: 768px) {
 		justify-content: flex-start;
+		padding: 18px 8px;
 		* {
 			margin: auto;
 		}
@@ -58,10 +61,13 @@ const NavItem = styled.div`
 	padding: 0 16px;
 	height: 100%;
 	white-space: nowrap;
-	color: #666;
+	color: #292929;
 	display: inline-block;
 	.icon {
 		margin-right: 8px;
+	}
+	@media (max-width: 768px) {
+		padding: 0 12px;
 	}
 `
 
@@ -73,7 +79,9 @@ const Navigation = ({ authUser, ...rest }) => (
 				<CustomNavLink to={ROUTES.HOME}>{CONST.BRAND_NAME}</CustomNavLink>
 			</NavItem> */}
 			<NavItem>
-				<CustomNavLink to={ROUTES.BLOG_HOME}>Blog</CustomNavLink>
+				<CustomNavLink to={ROUTES.BLOG_HOME} exact={false}>
+					Blog
+				</CustomNavLink>
 			</NavItem>
 			<NavItem>
 				<CustomNavLink to={ROUTES.HOME}>Tablica</CustomNavLink>

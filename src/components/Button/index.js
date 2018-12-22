@@ -5,8 +5,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { CSS } from "../../constants"
 
 const Button = styled.button`
-	/* border: 2px solid;
-	border-color: ${(props) => (props.disabled ? CSS.COLOR_DISABLED : CSS.COLOR_BLACK)};
+	border: 1px solid;
+	border-color: ${(props) =>
+		props.disabled ? CSS.COLOR_DISABLED : CSS.COLOR_BLACK_LIGHTER};
 	background: ${(props) => (props.primary ? CSS.COLOR_BLACK : `transparent`)};
 	color: ${(props) => (props.primary ? CSS.COLOR_WHITE : CSS.COLOR_BLACK_DARKER)};
 	${(props) => props.disabled && `color: ${CSS.COLOR_DISABLED_DARKER}`}
@@ -15,7 +16,6 @@ const Button = styled.button`
 	padding: 0.7rem 1.8rem;
 	text-align: center;
 	font-size: 0.9rem;
-	font-weight: bold;
 	display: inline-block;
 	line-height: 0.9rem;
 
@@ -30,31 +30,24 @@ const Button = styled.button`
 			border-color: ${CSS.COLOR_BLACK};
 			color: ${CSS.COLOR_WHITE};
 		}
-	} */
-
-	border: 1px solid ${(props) => (props.primary ? CSS.COLOR_BLACK : "#9f9f9f")};
-	/* border-radius: 3px; */
-	background: white;
-	color: ${(props) => (props.primary ? CSS.COLOR_WHITE : "#555")};
-	${(props) => props.disabled && `color: ${CSS.COLOR_DISABLED_DARKER}`}
-	width: ${(props) => (props.fullWidth ? "100%" : "auto")};
-	${(props) => props.fullWidth && "margin: 4px 0;"}
-	padding: 0.78rem 1.8rem;
-	text-align: center;
-	font-size: 0.9rem;
-	/* font-weight: bold; */
-	display: inline-block;
-	line-height: 0.9rem;
-
-	:not(:last-child) {
-		margin-right: 8px;
 	}
+`
+
+const AccentButton = styled(Button)`
+	text-shadow: 1px 1px ${CSS.COLOR_ACCENT};
+	border-color: ${(props) => (props.disabled ? CSS.COLOR_DISABLED : CSS.COLOR_ACCENT)};
+	background: ${(props) =>
+		props.disabled
+			? CSS.COLOR_DISABLED
+			: `linear-gradient(to bottom right, ${CSS.COLOR_ACCENT}, rgb(186, 234, 230))`};
+	color: ${CSS.COLOR_WHITE};
+	${(props) => props.disabled && `color: ${CSS.COLOR_DISABLED_DARKER}`}
+	font-weight: bold;
 
 	:not([disabled]) {
-		cursor: pointer;
 		:hover {
-			background: ${CSS.COLOR_BLACK};
-			border-color: ${CSS.COLOR_BLACK};
+			background: ${CSS.COLOR_ACCENT};
+			border-color: ${CSS.COLOR_ACCENT};
 			color: ${CSS.COLOR_WHITE};
 		}
 	}
@@ -121,4 +114,4 @@ const SocialButton = ({ provider, ...rest }) => {
 }
 
 export default Button
-export { LoaderButton, FacebookButton, GoogleButton, SocialButton }
+export { LoaderButton, FacebookButton, GoogleButton, SocialButton, AccentButton }

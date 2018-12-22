@@ -8,10 +8,10 @@ import LoadingSpinner from "../LoadingSpinner"
 import FilterForm from "../Filters"
 import { CONST } from "../../constants"
 
-const MainGrid = styled(Box)`
-	/* margin: 0 auto;
-	padding: 10px; */
+const MainGrid = styled.div`
 	display: grid;
+	margin: 0 auto;
+	padding: 0 20px;
 	grid-gap: 20px;
 	grid-template-areas:
 		"filters"
@@ -27,6 +27,9 @@ const MainGrid = styled(Box)`
 	}
 	@media (min-width: 1050px) {
 		max-width: 1050px;
+	}
+	@media (min-width: 1260px) {
+		max-width: 1260px;
 	}
 `
 
@@ -45,7 +48,7 @@ const LoadMore = styled.div`
 	font-weight: bold;
 	padding: 20px 0;
 	cursor: pointer;
-	margin: 10px 10px 20px 10px;
+	margin-bottom: 20px;
 `
 
 const ItemsGrid = styled.div`
@@ -60,6 +63,9 @@ const ItemsGrid = styled.div`
 	}
 	@media (min-width: 1050px) {
 		grid-template-columns: 1fr 1fr 1fr;
+	}
+	@media (min-width: 1260px) {
+		grid-template-columns: 1fr 1fr 1fr 1fr;
 	}
 `
 
@@ -186,7 +192,7 @@ class HomePage extends Component {
 	render() {
 		const { items, isLoading, isFiltering, noMoreItems } = this.state
 		return (
-			<MainGrid my={0} mx={"auto"} p={3}>
+			<MainGrid>
 				<Filters>
 					<FilterForm onSubmit={this.filterItems} isLoading={isFiltering} />
 				</Filters>

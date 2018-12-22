@@ -6,15 +6,18 @@ import { CSS } from "../../constants"
 const ErrorContainer = styled.div`
 	&:not(:empty) {
 		background: ${CSS.COLOR_DANGER_LIGHT};
-		border: 2px solid ${CSS.COLOR_DANGER_DARKER};
-		padding: 12px 18px;
+		border: 1px solid ${CSS.COLOR_DANGER_DARKER};
+		padding: 0 10px;
+		line-height: 36px;
+		min-height: 38px;
 		margin-top: 10px;
+		font-size: 0.92rem;
 		color: ${CSS.COLOR_DANGER_DARK};
 	}
 `
 
 const ErrorMessage = styled.span`
-	margin-left: 7px;
+	margin-left: 9px;
 `
 
 export default function Error({ message, showIf }) {

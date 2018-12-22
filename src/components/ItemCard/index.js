@@ -11,13 +11,11 @@ const Container = styled.div`
 	overflow: hidden;
 	min-width: 0;
 	min-height: 0;
-	border: 1px solid #cfcfcf;
+	border: 1px solid #474b53;
 	box-shadow: 0 3px 6px -2px rgba(0, 0, 0, 0.13);
-	/* border-radius: 3px; */
 	transition: transform 0.18s ease;
 	&:hover {
-		/* box-shadow: 0 5px 6px -2px rgba(0, 0, 0, 0.14); */
-		transform: translateY(-2px);
+		transform: translateY(-3px);
 	}
 `
 
@@ -34,15 +32,16 @@ const ThumbnailContainer = styled.div`
 
 const InfoContainer = styled.div`
 	padding: 0 8px;
+	background: white;
 `
 
 const TopContainer = styled.div`
 	padding: 14px 7px 0;
-	color: #3f3f3f;
+	color: #3a3a3a;
 `
 
 const Name = styled.div`
-	color: #666;
+	color: #555;
 	font-size: 0.91rem;
 	white-space: nowrap;
 	overflow: hidden;
@@ -51,7 +50,7 @@ const Name = styled.div`
 `
 
 const BottomContainer = styled.div`
-	color: #999;
+	color: #888;
 	font-size: 0.88rem;
 	padding: 10px 7px 11px;
 	margin-top: 10px;

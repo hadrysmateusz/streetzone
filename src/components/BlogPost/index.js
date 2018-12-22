@@ -13,10 +13,29 @@ import { Container } from "../Basics"
 import { ROUTES } from "../../constants"
 
 const Content = styled.div`
-	background: #f4f5f3;
+	background: white;
+	border: 1px solid #dcdcdc;
 	padding: 20px;
 	border-radius: 5px;
 	margin: 20px 0;
+`
+
+const TopContainer = styled.div`
+	color: #2f2f2f;
+	padding: 0 8px;
+`
+
+const Author = styled.div`
+	margin: 6px 0;
+`
+
+const CreatedAt = styled.div`
+	margin: 6px 0;
+`
+
+const Title = styled.h2`
+	margin: 16px 0 12px;
+	font-size: 2.6rem;
 `
 
 const ReactMarkdown = Loadable({
@@ -52,15 +71,17 @@ export class BlogPost extends Component {
 			<Container width={1100}>
 				{this.state.post && (
 					<>
-						<StyledLink to={ROUTES.BLOG_HOME}>Powrót do strony głównej</StyledLink>
-						<h2>{this.state.post.title}</h2>
-						<p>
-							<FontAwesomeIcon icon="user" /> {this.state.post.author}
-						</p>
-						<p>
-							<FontAwesomeIcon icon="calendar" />{" "}
-							{moment(this.state.post.createdAt).format("D.M.YY")}
-						</p>
+						<TopContainer>
+							<StyledLink to={ROUTES.BLOG_HOME}>Powrót do strony głównej</StyledLink>
+							<Title>{this.state.post.title}</Title>
+							<Author>
+								<FontAwesomeIcon icon="user" /> {this.state.post.author}
+							</Author>
+							<CreatedAt>
+								<FontAwesomeIcon icon="calendar" />{" "}
+								{moment(this.state.post.createdAt).format("D.M.YY")}
+							</CreatedAt>
+						</TopContainer>
 						<Content>
 							<ReactMarkdown source={this.state.post.content} />
 						</Content>

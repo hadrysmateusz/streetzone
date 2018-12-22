@@ -8,7 +8,7 @@ import ImageGallery from "../ImageGallery"
 import { withFirebase } from "../Firebase"
 import { withAuthentication } from "../UserSession"
 import LoadingSpinner from "../LoadingSpinner"
-import Button, { LoaderButton } from "../Button"
+import Button, { LoaderButton, AccentButton } from "../Button"
 import { Container } from "../Basics"
 import EmptyState from "../EmptyState"
 import UserPreview from "../UserPreview"
@@ -145,7 +145,7 @@ class ItemDetailsPage extends Component {
 											/>
 										</>
 									) : (
-										<Button primary>Kup</Button>
+										<AccentButton primary>Kup</AccentButton>
 									)}
 								</ButtonsContainer>
 								<Description>{item.description}</Description>

@@ -2,12 +2,17 @@ import React from "react"
 import { Form, Field } from "react-final-form"
 import { compose } from "recompose"
 import uuidv1 from "uuid/v1"
+import styled from "styled-components"
 
 import { LoaderButton } from "../Button"
-import { Container } from "../Basics"
 import { FileHandlerSingle, CustomFile } from "../FileHandler"
 import { withRouter } from "react-router-dom"
 import { withFirebase } from "../Firebase"
+
+const Container = styled.div`
+	max-width: 460px;
+	margin: 0 auto;
+`
 
 class AvatarChangeForm extends React.Component {
 	state = {

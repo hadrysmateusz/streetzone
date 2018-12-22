@@ -230,7 +230,7 @@ class DefaultLoginToggle extends Component {
 const LoginManagementUnstyled = withFirebase(LoginManagementBase)
 
 const LoginManagement = styled(LoginManagementUnstyled)`
-	width: 500px;
+	max-width: 460px;
 	margin: 35px auto 50px;
 	.provider-container {
 		margin: 15px 0;

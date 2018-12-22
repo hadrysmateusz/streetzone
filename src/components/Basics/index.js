@@ -36,12 +36,20 @@ const StyledField = styled(Field)`
 
 const StyledFieldCommon = css`
 	width: 100%;
+
 	border: 1px solid ${CSS.COLOR_GRAY};
 	color: ${CSS.COLOR_BLACK_LIGHTER};
 
-	:focus {
-		border: 1px solid ${CSS.COLOR_ACCENT};
-		outline: 1px solid ${CSS.COLOR_ACCENT};
+	&:not([disabled]) {
+		&:focus {
+			border: 1px solid ${CSS.COLOR_ACCENT};
+			outline: 1px solid ${CSS.COLOR_ACCENT};
+		}
+		&:not(:focus) {
+			&:hover {
+				border-color: #adadad;
+			}
+		}
 	}
 `
 
@@ -58,9 +66,9 @@ const StyledInputNumberSpecific = css`
 const StyledInput = styled.input`
 	${StyledFieldCommon}
 	min-width: 0;
-	min-height: 35px; /* ie compatibility */
+	min-height: 38px; /* ie compatibility */
 	padding: 0 10px;
-	line-height: 2.1rem;
+	line-height: 36px;
 
 	${(props) => props.type === "number" && StyledInputNumberSpecific}
 `
@@ -69,9 +77,6 @@ const StyledTextarea = styled.textarea`
 	${StyledFieldCommon}
 	line-height: 1.45rem;
 	padding: 6px 10px;
-	width: 100%;
-	border: 1px solid ${CSS.COLOR_GRAY};
-	height: 150px;
 	resize: none;
 `
 
@@ -79,27 +84,27 @@ const FieldLabel = styled.div`
 	font-size: 0.92rem;
 	font-weight: bold;
 	display: block;
-	color: #373737;
-	padding-bottom: 4px;
+	color: #3e3e3e;
+	padding-bottom: 5px;
 	margin-left: 1px;
 `
 
 const FieldRow = styled.div`
-	margin-bottom: 9px;
+	margin-bottom: 10px;
 `
 
 const SeparatorTextContent = css`
 	&::after {
-		color: #777;
+		color: #888;
 		content: "${(props) => props.text}";
-		background: white;
+		background: #fbfbfb;
 		padding: 0 4px;
 		transform: translateY(-0.6rem)
 	}
 `
 
 const Separator = styled.p`
-	border-top: 1px solid #777;
+	border-top: 1px solid #ccc;
 	position: relative;
 	display: flex;
 	justify-content: center;
@@ -123,7 +128,7 @@ const MiniButton = styled.div`
 	outline: none;
 	opacity: 0.84;
 	transition: all 0.2s;
-	background: ${(p) => (p.error ? CSS.COLOR_DANGER : CSS.COLOR_BLACK)};
+	background: ${(p) => (p.error ? CSS.COLOR_DANGER : CSS.COLOR_BLACK_DARKER)};
 	color: ${CSS.COLOR_WHITE};
 	font-size: 15px;
 	width: ${(p) => p.size}px;
@@ -138,10 +143,10 @@ const MiniButton = styled.div`
 	font-size: 12px;
 	border-radius: 50%;
 	position: absolute;
-	/* top: calc(50% - 25px); */
 	box-shadow: 0 0 10px rgba(3, 3, 3, 0.3);
 	:hover {
-		background: ${(p) => (p.error ? CSS.COLOR_DANGER_LIGHTER : "black")};
+		/* background: ${(p) => (p.error ? CSS.COLOR_DANGER_LIGHTER : "black")}; */
+		opacity: 1;
 	}
 `
 

@@ -12,11 +12,8 @@ import { ROUTES, FORM_ERR, AUTH_ERR, REGEX, CSS } from "../../constants"
 
 const SignInPage = () => {
 	return (
-		<Container
-			width={320}
-			style={{ height: "calc(100vh * 0.65)", justifyContent: "center" }}
-		>
-			<h1>Zaloguj się</h1>
+		<Container width={320}>
+			<h1 style={{ textAlign: "center" }}>Zaloguj się</h1>
 			<div className="social">
 				<SignInGoogle />
 				<SignInFacebook />

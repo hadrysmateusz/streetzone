@@ -113,7 +113,7 @@ class EditItemPage extends Component {
 
 	render() {
 		return (
-			<Container width={670}>
+			<Container width={620}>
 				<h1>Edytuj</h1>
 				{this.state.isLoading && (
 					<h4>

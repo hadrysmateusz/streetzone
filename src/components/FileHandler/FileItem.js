@@ -11,11 +11,8 @@ const ContainerError = css`
 const Container = styled.div`
 	box-sizing: content-box;
 	user-select: none;
-	border: 2px solid ${CSS.COLOR_BLACK};
-	margin-right: 10px;
-	margin-bottom: 10px;
-	height: 140px;
-	flex: 0 0 140px;
+	border: 1px solid ${CSS.COLOR_BLACK_LIGHTER};
+	height: 177px;
 	position: relative;
 	${(props) => props.error && ContainerError}
 `

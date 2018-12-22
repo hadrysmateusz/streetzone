@@ -5,14 +5,20 @@ import styled from "styled-components"
 import { withFirebase } from "../Firebase"
 import { withAuthorization, withAuthentication } from "../UserSession"
 import LoadingSpinner from "../LoadingSpinner"
-import { Separator, Container } from "../Basics"
+import { Separator } from "../Basics"
 import ItemCard from "../ItemCard"
 import AvatarChangeForm from "../AvatarChange"
 import LoginManagement from "../LoginManagement"
 
+const Container = styled.div`
+	max-width: 1050px;
+	margin: 20px auto;
+`
+
 const ItemsContainer = styled.div`
 	display: grid;
 	grid-gap: 14px;
+	padding: 0 20px;
 
 	@media (min-width: 570px) {
 		grid-template-columns: 1fr 1fr;
@@ -143,12 +149,12 @@ class AccountPage extends Component {
 	render() {
 		const { isLoading, user, userIsOwner, items } = this.state
 		return (
-			<Container width={1100}>
+			<Container>
 				{!isLoading && user ? (
 					<div className={this.props.className}>
 						<Separator text="Informacje" />
-						<h2>Imię: {user.name}</h2>
-						<p>Email: {user.email}</p>
+						<h2 style={{ textAlign: "center" }}>Imię: {user.name}</h2>
+						<p style={{ textAlign: "center" }}>Email: {user.email}</p>
 						{userIsOwner && (
 							<>
 								<Separator text="Profilowe" />

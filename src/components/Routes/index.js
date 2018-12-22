@@ -1,7 +1,6 @@
 import React from "react"
 import { Route, Switch } from "react-router-dom"
 import Loadable from "react-loadable"
-import styled from "styled-components"
 
 import { ROUTES } from "../../constants"
 
@@ -101,16 +100,9 @@ const routes = [
 	}
 ]
 
-const Container = styled.div`
-	/* margin-top: 100px;
-	@media (min-width: 1050px) {
-		margin-top: 140px;
-	} */
-`
-
 const Routes = () => {
 	return (
-		<Container>
+		<>
 			<Switch>
 				{routes.map((route, i) => (
 					<Route
@@ -122,7 +114,7 @@ const Routes = () => {
 				))}
 				<Route path="*" component={NotFound} />
 			</Switch>
-		</Container>
+		</>
 	)
 }
 
