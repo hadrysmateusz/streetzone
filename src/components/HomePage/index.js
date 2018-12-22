@@ -1,12 +1,13 @@
 import React, { Component } from "react"
 import styled from "styled-components"
-import { Box } from "rebass"
 
 import { withFirebase } from "../Firebase"
 import ItemCard from "../ItemCard"
 import LoadingSpinner from "../LoadingSpinner"
 import FilterForm from "../Filters"
 import { CONST } from "../../constants"
+
+// #region styled-components
 
 const MainGrid = styled.div`
 	display: grid;
@@ -69,7 +70,7 @@ const ItemsGrid = styled.div`
 	}
 `
 
-// #region
+// #endregion
 
 const INITIAL_STATE = {
 	items: [],
@@ -87,9 +88,19 @@ const INITIAL_STATE = {
 class HomePage extends Component {
 	state = INITIAL_STATE
 
-	filterItems = async (values) => {
-		console.log(values)
+	updateURL = (values) => {
+		const searchParams = new URLSearchParams()
 
+		if (values.sort) searchParams.set("sort", values.sort)
+		if (values.category) searchParams.set("category", values.category)
+		if (values.designer) searchParams.set("designer", values.designer)
+		if (values.price_min) searchParams.set("price_min", values.price_min)
+		if (values.price_max) searchParams.set("price_max", values.price_max)
+
+		this.props.history.push(`?${searchParams.toString()}`)
+	}
+
+	filterItems = async (searchString) => {
 		// Reset the cursor when changing the filters
 		await this.setState({
 			isFiltering: true,
@@ -98,21 +109,30 @@ class HomePage extends Component {
 			noMoreItems: false
 		})
 
-		const [sortBy, sortDirection] = values.sort.split("-")
+		const searchParams = new URLSearchParams(searchString)
+
+		const sortParam = searchParams.get("sort")
+
+		// Get sorting from url or fallback to default of Newest
+		const [sortBy, sortDirection] = sortParam
+			? sortParam.split("-")
+			: ["createdAt", "desc"]
 
 		// Create new object as to not overwrite the FilterForm data
 		let filters = {}
 
-		if (values.category) filters.category = values.category
-		if (values.designer) filters.designer = values.designer
-		if (values.price_min) filters.price_min = values.price_min
-		if (values.price_max) filters.price_max = values.price_max
+		if (searchParams.get("category")) filters.category = searchParams.get("category")
+		if (searchParams.get("designer")) filters.designer = searchParams.get("designer")
+		if (searchParams.get("price_min")) filters.price_min = searchParams.get("price_min")
+		if (searchParams.get("price_max")) filters.price_max = searchParams.get("price_max")
 
 		let filterData = {
 			sortBy,
 			sortDirection,
 			filters
 		}
+
+		console.log(filterData)
 
 		await this.setState({ filterData })
 		await this.getItems()
@@ -184,17 +204,24 @@ class HomePage extends Component {
 		}
 	}
 
-	componentDidMount = async () => {
-		this.getItems()
+	componentDidMount = () => {
+		this.filterItems(this.props.location.search)
+
+		this.removeLocationListener = this.props.history.listen((location) => {
+			this.filterItems(location.search)
+		})
 	}
 
-	// #endregion
+	componentWillUnmount = () => {
+		this.removeLocationListener()
+	}
+
 	render() {
 		const { items, isLoading, isFiltering, noMoreItems } = this.state
 		return (
 			<MainGrid>
 				<Filters>
-					<FilterForm onSubmit={this.filterItems} isLoading={isFiltering} />
+					<FilterForm onSubmit={this.updateURL} isLoading={isFiltering} />
 				</Filters>
 				<Content>
 					{!isLoading ? (
