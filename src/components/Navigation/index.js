@@ -26,10 +26,11 @@ CustomNavLink = styled(CustomNavLink)`
 const Header = styled.div`
 	color: #333;
 	text-align: center;
-	font-size: 2.2rem;
+	font-size: 2.1rem;
 	background: white;
 	border-bottom: 1px solid #ddd;
 	padding: 10px 0;
+	font-family: "Playfair Display SC", serif;
 `
 
 const Nav = styled.ul`
@@ -75,9 +76,6 @@ const Navigation = ({ authUser, ...rest }) => (
 	<>
 		<Header>{CONST.BRAND_NAME}</Header>
 		<Nav {...rest}>
-			{/* <NavItem className="brand">
-				<CustomNavLink to={ROUTES.HOME}></CustomNavLink>
-			</NavItem> */}
 			<NavItem>
 				<CustomNavLink to={ROUTES.BLOG_HOME} exact={false}>
 					Blog
