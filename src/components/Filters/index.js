@@ -2,7 +2,7 @@ import React from "react"
 import { Form, Field } from "react-final-form"
 import styled from "styled-components"
 
-import { LoaderButton } from "../Button"
+import Button, { LoaderButton } from "../Button"
 import { FieldLabel, FieldRow, StyledInput } from "../Basics"
 import SelectAdapter from "../SelectAdapter"
 import { Error } from "../ItemForm"
@@ -36,11 +36,9 @@ const FilterForm = (props) => (
 	<Form
 		onSubmit={props.onSubmit}
 		className={props.className}
-		initialValues={{
-			sort: "createdAt-desc"
-		}}
+		initialValues={props.initialValues}
 		validate={validate}
-		render={({ handleSubmit, submitting, invalid, errors, ...rest }) => {
+		render={({ form, handleSubmit, submitting, invalid, errors, values, ...rest }) => {
 			return (
 				<form onSubmit={handleSubmit}>
 					<div className="outer-container">
@@ -149,8 +147,17 @@ const FilterForm = (props) => (
 						disabled={submitting || invalid}
 						fullWidth
 					/>
+
+					<Button
+						type="button"
+						disabled={false}
+						onClick={() => props.onReset(form)}
+						fullWidth
+					>
+						Wyczyść filtry
+					</Button>
 					{/* {process.env.NODE_ENV === "development" && (
-						<pre>{JSON.stringify(rest.values, 0, 2)}</pre>
+						<pre>{JSON.stringify(values, 0, 2)}</pre>
 					)} */}
 				</form>
 			)

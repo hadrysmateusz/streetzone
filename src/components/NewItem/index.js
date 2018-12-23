@@ -78,7 +78,7 @@ class NewItemPage extends Component {
 	}
 
 	render() {
-		const initialValues =
+		const initialValues = /* 
 			process.env.NODE_ENV === "development"
 				? {
 						name: "test" + Date.now(),
@@ -92,7 +92,7 @@ class NewItemPage extends Component {
 						description:
 							"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
 				  }
-				: null
+				:  */ null
 		return (
 			<Container width={620}>
 				<h1>Nowy</h1>

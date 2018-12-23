@@ -100,6 +100,24 @@ class HomePage extends Component {
 		this.props.history.push(`?${searchParams.toString()}`)
 	}
 
+	clearFilterForm = (form) => {
+		console.log("resetting form...")
+		form.initialize({ sort: "createdAt-desc" })
+		const fields = form.getRegisteredFields()
+		form.batch(() => {
+			for (let field of fields) {
+				if (field === "sort") {
+					form.change(field, "createdAt-desc")
+				} else {
+					form.change(field, undefined)
+				}
+			}
+			// form.change("firstName", "Erik") // listeners not notified
+			// form.change("lastName", "Rasmussen") // listeners not notified
+		}) // NOW all listeners notified
+		// this.props.history.push("?")
+	}
+
 	filterItems = async (searchString) => {
 		// Reset the cursor when changing the filters
 		await this.setState({
@@ -111,11 +129,11 @@ class HomePage extends Component {
 
 		const searchParams = new URLSearchParams(searchString)
 
-		const sortParam = searchParams.get("sort")
+		const sortParams = searchParams.get("sort")
 
 		// Get sorting from url or fallback to default of Newest
-		const [sortBy, sortDirection] = sortParam
-			? sortParam.split("-")
+		const [sortBy, sortDirection] = sortParams
+			? sortParams.split("-")
 			: ["createdAt", "desc"]
 
 		// Create new object as to not overwrite the FilterForm data
@@ -136,7 +154,6 @@ class HomePage extends Component {
 
 		await this.setState({ filterData })
 		await this.getItems()
-		return this.setState({ isFiltering: false })
 	}
 
 	getItems = async () => {
@@ -205,7 +222,27 @@ class HomePage extends Component {
 	}
 
 	componentDidMount = () => {
+		// filter items based on data from url
 		this.filterItems(this.props.location.search)
+
+		// populate form with data from url
+		const searchParams = new URLSearchParams(this.props.location.search)
+
+		let initialValues = {}
+		// created at defaults to Newest
+		initialValues.sort = searchParams.get("sort")
+			? searchParams.get("sort")
+			: "createdAt-desc"
+		if (searchParams.get("category"))
+			initialValues.category = searchParams.get("category")
+		if (searchParams.get("designer"))
+			initialValues.designer = searchParams.get("designer")
+		if (searchParams.get("price_min"))
+			initialValues.price_min = searchParams.get("price_min")
+		if (searchParams.get("price_max"))
+			initialValues.price_max = searchParams.get("price_max")
+		console.log("initialValues", initialValues)
+		this.setState({ initialValues })
 
 		this.removeLocationListener = this.props.history.listen((location) => {
 			this.filterItems(location.search)
@@ -217,11 +254,15 @@ class HomePage extends Component {
 	}
 
 	render() {
-		const { items, isLoading, isFiltering, noMoreItems } = this.state
+		const { items, isLoading, initialValues, noMoreItems } = this.state
 		return (
 			<MainGrid>
 				<Filters>
-					<FilterForm onSubmit={this.updateURL} isLoading={isFiltering} />
+					<FilterForm
+						onSubmit={this.updateURL}
+						onReset={this.clearFilterForm}
+						initialValues={initialValues}
+					/>
 				</Filters>
 				<Content>
 					{!isLoading ? (
