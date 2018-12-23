@@ -1,11 +1,9 @@
 import React, { Component } from "react"
 import styled from "styled-components"
-import InfiniteScroll from "react-infinite-scroller"
+// import InfiniteScroll from "react-infinite-scroller"
 
 import { withFirebase } from "../Firebase"
-// import ItemCard from "../ItemCard"
 import ItemsView from "../ItemsView"
-// import LoadingSpinner from "../LoadingSpinner"
 import FilterForm from "../Filters"
 import { BREAKPOINTS } from "../../constants/const"
 
