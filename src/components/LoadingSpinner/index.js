@@ -1,13 +1,14 @@
 import React from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import styled from "styled-components"
+import { Box } from "rebass"
 
 import { CSS } from "../../constants"
 
 const LoadingSpinnerUnstyled = (props) => (
-	<div className={props.className}>
+	<Box {...props}>
 		<FontAwesomeIcon icon="spinner" className="spinner" />
-	</div>
+	</Box>
 )
 
 const LoadingSpinner = styled(LoadingSpinnerUnstyled)`

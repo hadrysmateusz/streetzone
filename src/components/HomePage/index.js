@@ -1,11 +1,34 @@
 import React, { Component } from "react"
 import styled from "styled-components"
+import InfiniteScroll from "react-infinite-scroller"
 
 import { withFirebase } from "../Firebase"
-import ItemCard from "../ItemCard"
-import LoadingSpinner from "../LoadingSpinner"
+// import ItemCard from "../ItemCard"
+import ItemsView from "../ItemsView"
+// import LoadingSpinner from "../LoadingSpinner"
 import FilterForm from "../Filters"
-import { CONST } from "../../constants"
+import { BREAKPOINTS } from "../../constants/const"
+
+const getItemsPerPage = () => {
+	const height = window.innerHeight
+	const width = window.innerWidth
+
+	let rows = Math.floor(height / 333)
+	let cols = 1
+
+	if (width < BREAKPOINTS[0]) {
+		cols = 1
+	} else if (width < BREAKPOINTS[2]) {
+		cols = 2
+	} else if (width < BREAKPOINTS[3]) {
+		cols = 3
+	} else if (width >= BREAKPOINTS[3]) {
+		cols = 4
+	}
+	console.log(width, BREAKPOINTS)
+	console.log(rows, cols)
+	return rows * cols
+}
 
 // #region styled-components
 
@@ -19,18 +42,18 @@ const MainGrid = styled.div`
 		"content"
 		"load-more";
 
-	@media (min-width: 750px) {
+	@media (min-width: ${BREAKPOINTS[1]}px) {
 		max-width: 860px;
-		grid-template-columns: 200px 4fr;
+		grid-template-columns: 200px 1fr;
 		grid-template-areas:
 			"filters content"
 			"filters load-more";
 	}
-	@media (min-width: 1050px) {
-		max-width: 1050px;
+	@media (min-width: ${BREAKPOINTS[2]}px) {
+		min-width: ${BREAKPOINTS[2]}px;
 	}
-	@media (min-width: 1260px) {
-		max-width: 1260px;
+	@media (min-width: ${BREAKPOINTS[3]}px) {
+		min-width: ${BREAKPOINTS[3]}px;
 	}
 `
 
@@ -50,24 +73,6 @@ const LoadMore = styled.div`
 	padding: 20px 0;
 	cursor: pointer;
 	margin-bottom: 20px;
-`
-
-const ItemsGrid = styled.div`
-	display: grid;
-	grid-gap: 14px;
-
-	@media (min-width: 570px) {
-		grid-template-columns: 1fr 1fr;
-	}
-	@media (min-width: 750px) {
-		grid-template-columns: 1fr 1fr;
-	}
-	@media (min-width: 1050px) {
-		grid-template-columns: 1fr 1fr 1fr;
-	}
-	@media (min-width: 1260px) {
-		grid-template-columns: 1fr 1fr 1fr 1fr;
-	}
 `
 
 // #endregion
@@ -112,15 +117,13 @@ class HomePage extends Component {
 					form.change(field, undefined)
 				}
 			}
-			// form.change("firstName", "Erik") // listeners not notified
-			// form.change("lastName", "Rasmussen") // listeners not notified
-		}) // NOW all listeners notified
+		})
 		// this.props.history.push("?")
 	}
 
 	filterItems = async (searchString) => {
 		// Reset the cursor when changing the filters
-		await this.setState({
+		this.setState({
 			isFiltering: true,
 			cursor: null,
 			items: [],
@@ -153,10 +156,12 @@ class HomePage extends Component {
 		console.log(filterData)
 
 		await this.setState({ filterData })
-		await this.getItems()
+		this.getItems()
 	}
 
 	getItems = async () => {
+		console.log("getting more...")
+		const t1 = Date.now()
 		try {
 			const { sortBy, sortDirection, filters = {} } = this.state.filterData
 
@@ -188,7 +193,7 @@ class HomePage extends Component {
 			if (cursor) query = query.startAfter(cursor)
 
 			// limit the result set
-			query = query.limit(CONST.ITEMS_PER_PAGE)
+			query = query.limit(getItemsPerPage())
 
 			// execute the query and add itemIds
 			const snapshot = await query.get()
@@ -203,7 +208,7 @@ class HomePage extends Component {
 			}
 
 			// If there were less items found than the limit, set noMoreItems flag
-			if (items.length < CONST.ITEMS_PER_PAGE) {
+			if (items.length < getItemsPerPage()) {
 				this.setState({ noMoreItems: true })
 			}
 
@@ -215,6 +220,7 @@ class HomePage extends Component {
 			// Get last fetched document and set it as the new cursor
 			const newCursor = snapshot.docs[snapshot.docs.length - 1]
 
+			console.log(`took: ${Date.now() - t1}ms`)
 			return this.setState({ items, cursor: newCursor, isLoading: false })
 		} catch (e) {
 			console.log(e)
@@ -254,6 +260,7 @@ class HomePage extends Component {
 	}
 
 	render() {
+		console.log("rendering...")
 		const { items, isLoading, initialValues, noMoreItems } = this.state
 		return (
 			<MainGrid>
@@ -265,15 +272,7 @@ class HomePage extends Component {
 					/>
 				</Filters>
 				<Content>
-					{!isLoading ? (
-						<ItemsGrid>
-							{items.map((item, i) => (
-								<ItemCard key={i} item={item} />
-							))}
-						</ItemsGrid>
-					) : (
-						<LoadingSpinner />
-					)}
+					<ItemsView isLoading={isLoading} items={items} />
 				</Content>
 				{!noMoreItems && !isLoading && (
 					<LoadMore onClick={this.getItems}>Więcej</LoadMore>

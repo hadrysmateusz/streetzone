@@ -23,16 +23,6 @@ CustomNavLink = styled(CustomNavLink)`
 	}
 `
 
-const Header = styled.div`
-	color: #333;
-	text-align: center;
-	font-size: 2.1rem;
-	background: white;
-	border-bottom: 1px solid #ddd;
-	padding: 10px 0;
-	font-family: "Playfair Display SC", serif;
-`
-
 const Nav = styled.ul`
 	position: sticky;
 	top: 0;
@@ -46,7 +36,7 @@ const Nav = styled.ul`
 	padding: 11px;
 	border-bottom: 1px solid #ddd;
 	overflow: auto;
-	box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.05);
+	/* box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.05); */
 
 	@media (max-width: 768px) {
 		justify-content: flex-start;
@@ -73,46 +63,42 @@ const NavItem = styled.div`
 `
 
 const Navigation = ({ authUser, ...rest }) => (
-	<>
-		<Header>{CONST.BRAND_NAME}</Header>
-		<Nav {...rest}>
-			<NavItem>
-				<CustomNavLink to={ROUTES.BLOG_HOME} exact={false}>
-					Blog
-				</CustomNavLink>
-			</NavItem>
-			<NavItem>
-				<CustomNavLink to={ROUTES.HOME}>Tablica</CustomNavLink>
-			</NavItem>
-			{authUser && (
-				<>
-					<NavItem>
-						<CustomNavLink to={ROUTES.NEW_ITEM}>
-							{/* <FontAwesomeIcon className="icon" icon="plus" /> */}
-							Wystaw Przedmiot
-						</CustomNavLink>
-					</NavItem>
-					<NavItem>
-						<CustomNavLink to={ROUTES.ACCOUNT.replace(":id", authUser.uid)}>
-							{/* <FontAwesomeIcon className="icon" icon="user" /> */}
-							{authUser.displayName ? authUser.displayName : "Profil"}
-						</CustomNavLink>{" "}
-					</NavItem>
-					<NavItem>
-						<CustomNavLink as={SignOutButton} />
-					</NavItem>
-				</>
-			)}
-			{!authUser && (
+	<Nav {...rest}>
+		<NavItem>
+			<CustomNavLink to={ROUTES.BLOG_HOME} exact={false}>
+				Blog
+			</CustomNavLink>
+		</NavItem>
+		<NavItem>
+			<CustomNavLink to={ROUTES.HOME}>Tablica</CustomNavLink>
+		</NavItem>
+		{authUser && (
+			<>
 				<NavItem>
-					<CustomNavLink to={ROUTES.SIGN_IN}>Zaloguj się</CustomNavLink>
+					<CustomNavLink to={ROUTES.NEW_ITEM}>Wystaw Przedmiot</CustomNavLink>
 				</NavItem>
-			)}
-			{/* <NavItem className={styles.burgerMenuButton}>
+				<NavItem>
+					<CustomNavLink to={ROUTES.ACCOUNT.replace(":id", authUser.uid)}>
+						<FontAwesomeIcon className="icon" icon="user" />
+						{console.log(authUser)}
+						<img src={authUser.profilePictureURL} />
+						{authUser.name ? authUser.name : "Profil"}
+					</CustomNavLink>{" "}
+				</NavItem>
+				<NavItem>
+					<CustomNavLink as={SignOutButton} />
+				</NavItem>
+			</>
+		)}
+		{!authUser && (
+			<NavItem>
+				<CustomNavLink to={ROUTES.SIGN_IN}>Zaloguj się</CustomNavLink>
+			</NavItem>
+		)}
+		{/* <NavItem className={styles.burgerMenuButton}>
 				<FontAwesomeIcon icon="bars" />
 			</NavItem> */}
-		</Nav>
-	</>
+	</Nav>
 )
 
 // .brand {

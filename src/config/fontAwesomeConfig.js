@@ -17,7 +17,7 @@ import {
 	faCalendar
 } from "@fortawesome/free-solid-svg-icons"
 // import { faSquare, faCheckSquare } from "@fortawesome/free-regular-svg-icons"
-// import {} from "@fortawesome/free-brands-svg-icons"
+import { fab } from "@fortawesome/free-brands-svg-icons"
 
 library.add(
 	faSpinner,
@@ -36,5 +36,6 @@ library.add(
 	faBars,
 	faTrash,
 	faUpload,
-	faCalendar
+	faCalendar,
+	fab
 )
