@@ -16,16 +16,19 @@ const Container = styled.div`
 	transition: transform 0.18s ease;
 	background: white;
 
+	a {
+		display: flex;
+		flex-direction: column;
+		height: 100%;
+	}
 	&:hover {
 		transform: translateY(-3px);
 	}
 `
 
 const ThumbnailContainer = styled.div`
-	/* background: #fafafa; */
-	height: 260px;
-
-	/* padding-bottom: 4px; */
+	min-height: 0; /* prevent content from overflowing container */
+	flex: 1 1 100%;
 
 	img {
 		object-fit: contain;
@@ -35,18 +38,14 @@ const ThumbnailContainer = styled.div`
 `
 
 const InfoContainer = styled.div`
-	padding: 0 8px;
+	padding: 0 9px;
 	background: white;
 	border-top: 1px solid #eaeaea;
-	/* box-shadow: 0 -2px 2px rgba(0, 0, 0, 0.05); */
 `
 
 const TopContainer = styled.div`
-	padding: 14px 7px 0;
+	padding: 12px 9px 9px;
 	color: #3a3a3a;
-
-	/* border-top: 1px solid #e0e0e0; */
-	/* border-bottom: 1px solid #e0e0e0; */
 `
 
 const Name = styled.div`
@@ -54,15 +53,14 @@ const Name = styled.div`
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
-	font-size: 0.89rem;
-	line-height: 1.3rem;
+	font-size: 0.9rem;
+	line-height: 1.15rem;
 `
 
 const BottomContainer = styled.div`
+	font-size: 0.83rem;
 	color: #888;
-	font-size: 0.88rem;
-	padding: 10px 7px 11px;
-	margin-top: 10px;
+	padding: 9px 9px 11px;
 	border-top: 1px solid #e0e0e0;
 	white-space: nowrap;
 	overflow: hidden;
@@ -72,24 +70,24 @@ const BottomContainer = styled.div`
 const InnerContainer = styled.div`
 	display: flex;
 	justify-content: space-between;
-	font-size: 0.91rem;
 	font-weight: bold;
+	line-height: 0.89rem;
+	margin-bottom: 4px;
 `
 
 const Price = styled.div`
 	color: ${CSS.COLOR_ACCENT};
-	font-size: 0.86rem;
+	font-size: 0.89rem;
 `
 
 const Designers = styled.div`
+	font-size: 0.87rem;
 	text-transform: uppercase;
-	margin-bottom: 4px;
 	padding-right: 8px;
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	word-spacing: 0.35ch;
-	font-size: 0.86rem;
 `
 
 class ItemCard extends Component {

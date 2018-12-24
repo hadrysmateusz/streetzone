@@ -1,11 +1,11 @@
 import React, { Component } from "react"
 import styled from "styled-components"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 import Button from "../Button"
 import FileItem from "./FileItem"
 import CustomFile from "./CustomFile"
-import { CSS } from "../../constants"
+// import { CSS } from "../../constants"
 import { Error } from "../ItemForm"
 
 class FileHandlerUnstyled extends Component {
@@ -118,7 +118,6 @@ const FileHandler = styled(FileHandlerUnstyled)`
 
 		margin: 10px 0 0 0;
 		padding: 10px;
-		height: 201px;
 		min-height: 201px;
 		border: 1px solid #c6c6c6;
 		background: white;

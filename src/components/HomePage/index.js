@@ -15,18 +15,16 @@ const getItemsPerPage = () => {
 	let rows = Math.floor(height / 333)
 	let cols = 1
 
-	if (width < BREAKPOINTS[0]) {
+	if (width < BREAKPOINTS[1]) {
 		cols = 1
-	} else if (width < BREAKPOINTS[2]) {
-		cols = 2
 	} else if (width < BREAKPOINTS[3]) {
+		cols = 2
+	} else if (width < BREAKPOINTS[4]) {
 		cols = 3
-	} else if (width >= BREAKPOINTS[3]) {
+	} else if (width >= BREAKPOINTS[4]) {
 		cols = 4
 	}
-	console.log(width, BREAKPOINTS)
-	console.log(rows, cols)
-	return rows * cols
+	return Math.max(3, rows * cols)
 }
 
 // #region styled-components
@@ -41,18 +39,18 @@ const MainGrid = styled.div`
 		"content"
 		"load-more";
 
-	@media (min-width: ${BREAKPOINTS[1]}px) {
+	@media (min-width: ${BREAKPOINTS[2]}px) {
 		max-width: 860px;
 		grid-template-columns: 200px 1fr;
 		grid-template-areas:
 			"filters content"
 			"filters load-more";
 	}
-	@media (min-width: ${BREAKPOINTS[2]}px) {
-		min-width: ${BREAKPOINTS[2]}px;
-	}
 	@media (min-width: ${BREAKPOINTS[3]}px) {
 		min-width: ${BREAKPOINTS[3]}px;
+	}
+	@media (min-width: ${BREAKPOINTS[4]}px) {
+		min-width: ${BREAKPOINTS[4]}px;
 	}
 `
 

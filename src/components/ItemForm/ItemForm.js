@@ -185,7 +185,7 @@ const ItemForm = ({ initialValues, onSubmit, history, isLoading }) => {
 								{({ input, meta }) => (
 									<>
 										<FieldLabel>Opis </FieldLabel>
-										<StyledTextarea {...input} placeholder="Opis" />
+										<StyledTextarea {...input} placeholder="Dodatkowe informacje" />
 										<Error message={meta.error} showIf={meta.error && meta.touched} />
 									</>
 								)}

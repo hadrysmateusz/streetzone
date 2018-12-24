@@ -4,6 +4,16 @@ import styled, { css } from "styled-components"
 
 import { CSS } from "../../constants"
 
+const Header = styled.h2`
+	text-align: center;
+	color: #2f2f2f;
+	font-size: 1.95rem;
+	font-weight: normal;
+	margin-bottom: 30px;
+	margin-top: 0px;
+	font-family: "Playfair Display SC", serif;
+`
+
 // TODO: modify global styles to not overwrite the text-decoration
 // and remove the !important
 const StyledLink = styled(Link)`
@@ -36,9 +46,14 @@ const StyledField = styled(Field)`
 
 const StyledFieldCommon = css`
 	width: 100%;
+	font-size: 1rem;
 
 	border: 1px solid ${CSS.COLOR_GRAY};
 	color: ${CSS.COLOR_BLACK_LIGHTER};
+
+	&::placeholder {
+		color: #808080;
+	}
 
 	&:not([disabled]) {
 		&:focus {
@@ -75,18 +90,21 @@ const StyledInput = styled.input`
 
 const StyledTextarea = styled.textarea`
 	${StyledFieldCommon}
-	line-height: 1.45rem;
+	line-height: 1.45em;
 	padding: 6px 10px;
-	resize: none;
+	resize: vertical;
+	min-height: calc(4 * 1.45em + 0.7em);
+	height: calc(6 * 1.45em + 0.7em);
 `
 
 const FieldLabel = styled.div`
-	font-size: 0.92rem;
+	font-size: 0.75rem;
 	font-weight: bold;
 	display: block;
-	color: #3a3a3a;
-	padding-bottom: 3px;
-	margin-left: 1px;
+	color: #3f3f3f;
+	padding-bottom: 2px;
+	margin-left: 2px;
+	text-transform: uppercase;
 `
 
 const FieldRow = styled.div`
@@ -143,7 +161,7 @@ const MiniButton = styled.div`
 	font-size: 12px;
 	border-radius: 50%;
 	position: absolute;
-	box-shadow: 0 0 10px rgba(3, 3, 3, 0.3);
+	box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
 	:hover {
 		/* background: ${(p) => (p.error ? CSS.COLOR_DANGER_LIGHTER : "black")}; */
 		opacity: 1;
@@ -159,5 +177,6 @@ export {
 	Container,
 	FieldLabel,
 	FieldRow,
-	MiniButton
+	MiniButton,
+	Header
 }

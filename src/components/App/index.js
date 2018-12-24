@@ -27,9 +27,8 @@ const Header = styled.div`
 const Container = styled.div`
 	display: grid;
 	grid-template-columns: 100%;
-	grid-template-rows: auto 1fr 60px;
+	grid-template-rows: auto 1fr minmax(60px, auto);
 	min-height: calc(100% - 59px);
-	/* height: 100%; */
 	gap: 20px;
 `
 

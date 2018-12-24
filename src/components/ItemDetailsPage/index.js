@@ -12,6 +12,7 @@ import Button, { LoaderButton, AccentButton } from "../Button"
 import { Container } from "../Basics"
 import EmptyState from "../EmptyState"
 import UserPreview from "../UserPreview"
+import { BREAKPOINTS } from "../../constants/const"
 
 const MainContainer = styled.main`
 	display: flex;
@@ -21,14 +22,14 @@ const MainContainer = styled.main`
 const ItemContainer = styled.div`
 	display: flex;
 	flex-direction: column;
-	@media (min-width: 700px) {
+	@media (min-width: ${BREAKPOINTS[2]}px) {
 		flex-direction: row;
 	}
 `
 
 const InfoContainer = styled.div`
 	flex: 0 0 100%;
-	@media (min-width: 700px) {
+	@media (min-width: ${BREAKPOINTS[2]}px) {
 		max-width: 50%;
 	}
 `

@@ -32,7 +32,6 @@ const Nav = styled.ul`
 	display: flex;
 	justify-content: center;
 	margin: 0;
-	margin-bottom: 20px;
 	padding: 11px;
 	border-bottom: 1px solid #ddd;
 	overflow: auto;

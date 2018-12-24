@@ -9,7 +9,7 @@ import EmptyState from "../EmptyState"
 import { ItemForm } from "../ItemForm"
 import { CustomFile } from "../FileHandler"
 import { formData, dbData } from "../../utils/formatItemData"
-import { Container } from "../Basics"
+import { Container, Header } from "../Basics"
 
 class EditItemPage extends Component {
 	state = {
@@ -114,7 +114,7 @@ class EditItemPage extends Component {
 	render() {
 		return (
 			<Container width={620}>
-				<h1>Edytuj</h1>
+				<Header>Edytuj</Header>
 				{this.state.isLoading && (
 					<h4>
 						Ładowanie...&nbsp;

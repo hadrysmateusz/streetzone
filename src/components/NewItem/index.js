@@ -5,8 +5,8 @@ import uuidv1 from "uuid/v1"
 import { withAuthorization } from "../UserSession"
 import { withFirebase } from "../Firebase"
 import { ItemForm } from "../ItemForm"
-import { Container } from "../Basics"
-import { ITEM_SCHEMA } from "../../constants"
+import { Container, Header } from "../Basics"
+// import { ITEM_SCHEMA } from "../../constants"
 import { dbData } from "../../utils/formatItemData"
 
 class NewItemPage extends Component {
@@ -95,7 +95,7 @@ class NewItemPage extends Component {
 				:  */ null
 		return (
 			<Container width={620}>
-				<h1>Nowy</h1>
+				<Header>Nowy</Header>
 				<ItemForm initialValues={initialValues} onSubmit={this.onSubmit} />
 			</Container>
 		)

@@ -5,29 +5,22 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { withFirebase } from "../Firebase"
 import { MiniButton } from "../Basics"
 import { CSS } from "../../constants"
-
-const Container = styled.div`
-	flex: 0 0 100%;
-	user-select: none;
-	@media (min-width: 700px) {
-		max-width: 50%;
-		padding-right: 20px;
-	}
-`
+import { BREAKPOINTS } from "../../constants/const"
 
 const CurrentImage = styled.div`
 	/* cursor: zoom-in; */
 	position: relative;
 	width: 100%;
 	height: 30vh;
-	@media (min-width: 950px) {
+	/* @media (min-width: 950px) {
 		height: 45vh;
-	}
-	@media (min-width: 1050px) {
+	} */
+	@media (min-width: ${BREAKPOINTS[3]}px) {
 		height: 50vh;
 	}
 
-	background: ${CSS.COLOR_THUMBNAIL_BG};
+	background: white;
+	border: 1px solid #c6c6c6;
 	text-align: center;
 	display: flex;
 	justify-content: center;
@@ -39,11 +32,58 @@ const CurrentImage = styled.div`
 	}
 `
 
-const ThumbnailsContainer = styled.div`
-	display: flex;
-	flex-direction: row;
+const Container = styled.div`
+	flex: 0 0 100%;
+	user-select: none;
+	@media (min-width: ${BREAKPOINTS[2]}px) {
+		max-width: 50%;
+		padding-right: 20px;
+	}
 `
 
+const ThumbnailsContainer = styled.div`
+	display: grid;
+	gap: 10px;
+
+	grid-template-columns: repeat(4, 1fr);
+	@media (min-width: ${BREAKPOINTS[0]}px) {
+		grid-template-columns: repeat(6, 1fr);
+	}
+
+	margin-top: 10px;
+`
+
+const Thumbnail = styled.div`
+	${(p) => p.isCurrent === false && overlay}
+	position: relative;
+
+	height: 102px;
+	max-height: 21vw;
+
+	@media (min-width: ${BREAKPOINTS[0]}px) {
+		height: 109px;
+		max-height: 14.65vw;
+	}
+
+	@media (min-width: ${BREAKPOINTS[2]}px) {
+		height: 76px;
+		max-height: 6.8vw;
+	}
+
+	cursor: pointer;
+
+	background: white;
+	border: 1px solid #c6c6c6;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	img {
+		max-height: 100%;
+		max-width: 100%;
+	}
+`
 const overlay = css`
 	&::before {
 		content: "";
@@ -54,36 +94,6 @@ const overlay = css`
 		width: 100%;
 		background: white;
 		opacity: 0.45;
-	}
-`
-const Thumbnail = styled.div`
-	${(p) => p.isCurrent === false && overlay}
-	cursor: pointer;
-	height: 74px;
-	width: 74px;
-	position: relative;
-	@media (min-width: 950px) {
-		height: 84px;
-		width: 84px;
-	}
-	@media (min-width: 1050px) {
-		height: 98px;
-		width: 98px;
-	}
-
-	background: ${CSS.COLOR_THUMBNAIL_BG};
-	margin: 10px 10px 0 0;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-
-	&:last-child {
-		margin-right: 0;
-	}
-
-	img {
-		max-height: 100%;
-		max-width: 100%;
 	}
 `
 
