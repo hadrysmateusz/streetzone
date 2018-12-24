@@ -17,11 +17,19 @@ import { BREAKPOINTS } from "../../constants/const"
 const MainContainer = styled.main`
 	display: flex;
 	flex-direction: column;
+	max-width: ${BREAKPOINTS[4]}px;
+	margin: 0 auto;
+	height: 100%;
+		padding: 0 20px;
+	/* @media (min-width: ${BREAKPOINTS[2]}px) {
+	} */
 `
 
 const ItemContainer = styled.div`
 	display: flex;
 	flex-direction: column;
+	max-width: 100%;
+	height: 100%;
 	@media (min-width: ${BREAKPOINTS[2]}px) {
 		flex-direction: row;
 	}
@@ -30,7 +38,16 @@ const ItemContainer = styled.div`
 const InfoContainer = styled.div`
 	flex: 0 0 100%;
 	@media (min-width: ${BREAKPOINTS[2]}px) {
-		max-width: 50%;
+		padding-left: 20px;
+		padding-top: 10px;
+		max-width: 330px;
+	}
+	@media (min-width: ${BREAKPOINTS[3]}px) {
+		max-width: 380px;
+	}
+	@media (min-width: ${BREAKPOINTS[4]}px) {
+		padding-left: 30px;
+		padding-top: 15px;
 	}
 `
 
@@ -115,57 +132,53 @@ class ItemDetailsPage extends Component {
 			userIsOwner = authUserId && ownerId === authUserId
 		}
 
-		return (
-			<Container width={1100}>
-				{item && !isLoading ? (
-					<MainContainer>
-						<ItemContainer>
-							<ImageGallery item={item} />
-							<InfoContainer>
-								<div>
-									<MainInfo>
-										{item.designers && (
-											<Designers>{item.designers.join(" & ") + " "}</Designers>
-										)}
-										{item.name}
-									</MainInfo>
-									<div>{`Cena: ${item.price}zł`}</div>
-									<div>Dodano: {moment(item.createdAt).format("D.M.YY o HH:mm")}</div>
-								</div>
-								<ButtonsContainer>
-									{userIsOwner ? (
-										<>
-											<Button as={Link} to={`/e/${item.itemId}`}>
-												Edytuj
-											</Button>
-											<LoaderButton
-												isLoading={isDeleting}
-												text="Usuń"
-												loadingText="Usuwanie..."
-												onClick={this.deleteItem}
-											/>
-										</>
-									) : (
-										<AccentButton primary>Kup</AccentButton>
-									)}
-								</ButtonsContainer>
-								<Description>{item.description}</Description>
-								{!userIsOwner && (
-									<UserInfoContainer>
-										<strong>Sprzedawca:</strong>
-										<UserPreview id={item.userId} />
-									</UserInfoContainer>
+		return item && !isLoading ? (
+			<MainContainer>
+				<ItemContainer>
+					<ImageGallery item={item} />
+					<InfoContainer>
+						<div>
+							<MainInfo>
+								{item.designers && (
+									<Designers>{item.designers.join(" & ") + " "}</Designers>
 								)}
-							</InfoContainer>
-						</ItemContainer>
-						<div className="recommendedContainer" />
-					</MainContainer>
-				) : isLoading ? (
-					<LoadingSpinner />
-				) : (
-					<EmptyState text="Nie znaleziono przedmiotu, być może został usunięty." />
-				)}
-			</Container>
+								{item.name}
+							</MainInfo>
+							<div>{`Cena: ${item.price}zł`}</div>
+							<div>Dodano: {moment(item.createdAt).format("D.M.YY o HH:mm")}</div>
+						</div>
+						<ButtonsContainer>
+							{userIsOwner ? (
+								<>
+									<Button as={Link} to={`/e/${item.itemId}`}>
+										Edytuj
+									</Button>
+									<LoaderButton
+										isLoading={isDeleting}
+										text="Usuń"
+										loadingText="Usuwanie..."
+										onClick={this.deleteItem}
+									/>
+								</>
+							) : (
+								<AccentButton primary>Kup</AccentButton>
+							)}
+						</ButtonsContainer>
+						<Description>{item.description}</Description>
+						{!userIsOwner && (
+							<UserInfoContainer>
+								<strong>Sprzedawca:</strong>
+								<UserPreview id={item.userId} />
+							</UserInfoContainer>
+						)}
+					</InfoContainer>
+				</ItemContainer>
+				<div className="recommendedContainer" />
+			</MainContainer>
+		) : isLoading ? (
+			<LoadingSpinner />
+		) : (
+			<EmptyState text="Nie znaleziono przedmiotu, być może został usunięty." />
 		)
 	}
 }

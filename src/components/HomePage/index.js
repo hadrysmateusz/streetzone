@@ -19,9 +19,9 @@ const getItemsPerPage = () => {
 		cols = 1
 	} else if (width < BREAKPOINTS[3]) {
 		cols = 2
-	} else if (width < BREAKPOINTS[4]) {
+	} else if (width < BREAKPOINTS[5]) {
 		cols = 3
-	} else if (width >= BREAKPOINTS[4]) {
+	} else if (width >= BREAKPOINTS[5]) {
 		cols = 4
 	}
 	return Math.max(3, rows * cols)
@@ -49,8 +49,8 @@ const MainGrid = styled.div`
 	@media (min-width: ${BREAKPOINTS[3]}px) {
 		min-width: ${BREAKPOINTS[3]}px;
 	}
-	@media (min-width: ${BREAKPOINTS[4]}px) {
-		min-width: ${BREAKPOINTS[4]}px;
+	@media (min-width: ${BREAKPOINTS[5]}px) {
+		min-width: ${BREAKPOINTS[5]}px;
 	}
 `
 

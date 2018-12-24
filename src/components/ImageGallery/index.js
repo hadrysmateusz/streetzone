@@ -33,22 +33,34 @@ const CurrentImage = styled.div`
 `
 
 const Container = styled.div`
-	flex: 0 0 100%;
+	flex: 0 1 100%;
 	user-select: none;
+	min-width: 0;
+
 	@media (min-width: ${BREAKPOINTS[2]}px) {
-		max-width: 50%;
-		padding-right: 20px;
+		/* max-width: 50%; */
+		/* padding-right: 40px; */
 	}
 `
 
 const ThumbnailsContainer = styled.div`
 	display: grid;
 	gap: 10px;
+	min-width: 0;
 
-	grid-template-columns: repeat(4, 1fr);
+	grid-template-columns: repeat(6, 1fr);
+
+	@media (max-width: ${BREAKPOINTS[0] - 1}px) {
+	grid-template-columns: repeat(6, 70px);
+
+	}
+		overflow-x: auto;
+
+
+	/* grid-template-columns: repeat(4, 1fr);
 	@media (min-width: ${BREAKPOINTS[0]}px) {
 		grid-template-columns: repeat(6, 1fr);
-	}
+	} */
 
 	margin-top: 10px;
 `
@@ -57,17 +69,29 @@ const Thumbnail = styled.div`
 	${(p) => p.isCurrent === false && overlay}
 	position: relative;
 
-	height: 102px;
-	max-height: 21vw;
+	height: 70px;
+	min-width: 70px;
+	min-height: 70px;
+	/* max-height: 20.6vw; */
 
 	@media (min-width: ${BREAKPOINTS[0]}px) {
-		height: 109px;
-		max-height: 14.65vw;
+		max-height: 14.2vw;
+		height: 80px;
+	}
+
+	@media (min-width: ${BREAKPOINTS[1]}px) {
+		max-height: 14.2vw;
+		height: 112px;
 	}
 
 	@media (min-width: ${BREAKPOINTS[2]}px) {
-		height: 76px;
-		max-height: 6.8vw;
+		max-height: 8.3vw;
+		height: 90px;
+	}
+
+	@media (min-width: ${BREAKPOINTS[3]}px) {
+		max-height: 8.6vw;
+		height: 92px;
 	}
 
 	cursor: pointer;

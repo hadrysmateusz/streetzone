@@ -18,7 +18,7 @@ const ItemsGrid = styled.div`
 	@media (min-width: ${BREAKPOINTS[3]}px) {
 		grid-template-columns: 1fr 1fr 1fr;
 	}
-	@media (min-width: ${BREAKPOINTS[4]}px) {
+	@media (min-width: ${BREAKPOINTS[5]}px) {
 		grid-template-columns: 1fr 1fr 1fr 1fr;
 	}
 `

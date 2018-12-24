@@ -9,6 +9,7 @@ import { Separator } from "../Basics"
 import ItemCard from "../ItemCard"
 import AvatarChangeForm from "../AvatarChange"
 import LoginManagement from "../LoginManagement"
+import { BREAKPOINTS } from "../../constants/const"
 
 const Container = styled.div`
 	max-width: 1050px;
@@ -20,13 +21,13 @@ const ItemsContainer = styled.div`
 	grid-gap: 14px;
 	padding: 0 20px;
 
-	@media (min-width: 570px) {
+	@media (min-width: ${BREAKPOINTS[1]}px) {
 		grid-template-columns: 1fr 1fr;
 	}
-	@media (min-width: 750px) {
+	@media (min-width: ${BREAKPOINTS[2]}px) {
 		grid-template-columns: 1fr 1fr 1fr;
 	}
-	@media (min-width: 1050px) {
+	@media (min-width: ${BREAKPOINTS[4]}px) {
 		grid-template-columns: 1fr 1fr 1fr 1fr;
 	}
 `
