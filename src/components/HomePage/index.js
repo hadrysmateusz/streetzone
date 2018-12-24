@@ -6,6 +6,7 @@ import { withFirebase } from "../Firebase"
 import ItemsView from "../ItemsView"
 import FilterForm from "../Filters"
 import { BREAKPOINTS } from "../../constants/const"
+// import LoadingSpinner from "../LoadingSpinner"
 
 const getItemsPerPage = () => {
 	const height = window.innerHeight

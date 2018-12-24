@@ -6,8 +6,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 const OuterContainer = styled.div`
 	padding: 0 20px;
 	display: flex;
+	flex-flow: row wrap;
 	justify-content: space-between;
 	align-items: center;
+	padding: 10px;
 	border-top: 1px solid rgb(221, 221, 221);
 	background: white;
 	color: #292929;
@@ -28,6 +30,8 @@ const IconContainer = styled.div`
 `
 
 const Item = styled.div`
+	white-space: nowrap;
+	flex: 0 1;
 	:not(${IconContainer}) {
 		:hover {
 			color: ${CSS.COLOR_ACCENT};
@@ -38,8 +42,10 @@ const Item = styled.div`
 
 const InnerContainer = styled.div`
 	display: flex;
+	flex-flow: row wrap;
+
 	& > div {
-		padding: 0 15px;
+		padding: 8px 15px;
 	}
 `
 

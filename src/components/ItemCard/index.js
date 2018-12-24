@@ -11,17 +11,21 @@ const Container = styled.div`
 	overflow: hidden;
 	min-width: 0;
 	min-height: 0;
-	border: 1px solid #474b53;
+	border: 1px solid #c6c6c6;
 	box-shadow: 0 3px 6px -2px rgba(0, 0, 0, 0.13);
 	transition: transform 0.18s ease;
+	background: white;
+
 	&:hover {
 		transform: translateY(-3px);
 	}
 `
 
 const ThumbnailContainer = styled.div`
-	background: ${CSS.COLOR_THUMBNAIL_BG};
+	/* background: #fafafa; */
 	height: 260px;
+
+	/* padding-bottom: 4px; */
 
 	img {
 		object-fit: contain;
@@ -33,19 +37,24 @@ const ThumbnailContainer = styled.div`
 const InfoContainer = styled.div`
 	padding: 0 8px;
 	background: white;
+	border-top: 1px solid #eaeaea;
+	/* box-shadow: 0 -2px 2px rgba(0, 0, 0, 0.05); */
 `
 
 const TopContainer = styled.div`
 	padding: 14px 7px 0;
 	color: #3a3a3a;
+
+	/* border-top: 1px solid #e0e0e0; */
+	/* border-bottom: 1px solid #e0e0e0; */
 `
 
 const Name = styled.div`
 	color: #555;
-	font-size: 0.91rem;
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
+	font-size: 0.89rem;
 	line-height: 1.3rem;
 `
 
@@ -69,15 +78,18 @@ const InnerContainer = styled.div`
 
 const Price = styled.div`
 	color: ${CSS.COLOR_ACCENT};
+	font-size: 0.86rem;
 `
 
 const Designers = styled.div`
 	text-transform: uppercase;
 	margin-bottom: 4px;
-	padding-right: 10px;
+	padding-right: 8px;
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
+	word-spacing: 0.35ch;
+	font-size: 0.86rem;
 `
 
 class ItemCard extends Component {
@@ -117,11 +129,13 @@ class ItemCard extends Component {
 						<TopContainer>
 							<InnerContainer>
 								{designers && (
-									<Designers>{designers.join(" & ").toUpperCase()}</Designers>
+									<Designers title={designers.join(" X ")}>
+										{designers.join(" X ").toUpperCase()}
+									</Designers>
 								)}
 								<Price>{price}zł</Price>
 							</InnerContainer>
-							<Name>{name}</Name>
+							<Name title={name}>{name}</Name>
 						</TopContainer>
 						<BottomContainer>
 							Dodano {moment(createdAt).format("D.M.YY o HH:mm")}

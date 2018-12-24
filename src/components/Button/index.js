@@ -6,18 +6,19 @@ import { CSS } from "../../constants"
 
 const Button = styled.button`
 	border: 1px solid;
-	border-color: ${(props) =>
-		props.disabled ? CSS.COLOR_DISABLED : CSS.COLOR_BLACK_LIGHTER};
-	background: ${(props) => (props.primary ? CSS.COLOR_BLACK : `transparent`)};
-	color: ${(props) => (props.primary ? CSS.COLOR_WHITE : CSS.COLOR_BLACK_DARKER)};
-	${(props) => props.disabled && `color: ${CSS.COLOR_DISABLED_DARKER}`}
+	border-color: ${(props) => (props.disabled ? "#d7d7d7" : "#c6c6c6")};
+	background: ${(props) => (props.primary ? CSS.COLOR_BLACK : `white`)};
+	color: ${(props) => (props.primary ? CSS.COLOR_WHITE : "#3e3e3e")};
+	${(props) => props.disabled && `color: #c3c3c3;`}
 	width: ${(props) => (props.fullWidth ? "100%" : "auto")};
 	${(props) => props.fullWidth && "margin: 4px 0;"}
-	padding: 0.7rem 1.8rem;
+	padding: 0.8rem 1.85rem;
 	text-align: center;
-	font-size: 0.9rem;
+	font-size: 0.79rem;
 	display: inline-block;
-	line-height: 0.9rem;
+	font-weight: 500;
+	${(props) => props.disabled && `font-weight: normal;`}
+	line-height: 0.79rem;
 
 	:not(:last-child) {
 		margin-right: 8px;

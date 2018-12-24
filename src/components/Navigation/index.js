@@ -36,7 +36,7 @@ const Nav = styled.ul`
 	padding: 11px;
 	border-bottom: 1px solid #ddd;
 	overflow: auto;
-	/* box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.05); */
+	box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.05);
 
 	@media (max-width: 768px) {
 		justify-content: flex-start;
