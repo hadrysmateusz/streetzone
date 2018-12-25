@@ -30,6 +30,10 @@ const Button = styled.button`
 			background: ${CSS.COLOR_BLACK};
 			border-color: ${CSS.COLOR_BLACK};
 			color: ${CSS.COLOR_WHITE};
+		}		
+		:focus {
+			border: 1px solid ${CSS.COLOR_ACCENT};
+			outline: 1px solid ${CSS.COLOR_ACCENT};
 		}
 	}
 `
