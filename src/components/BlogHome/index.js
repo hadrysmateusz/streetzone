@@ -5,15 +5,28 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import styled from "styled-components"
 
 import { withFirebase } from "../Firebase"
-import { Container } from "../Basics"
+import { Header } from "../Basics"
 import { ROUTES } from "../../constants"
 
-const PostContainer = styled.div`
+const Container = styled.div`
+	width: 100%;
+	max-width: ${(p) => p.theme.breakpoints[5]}px;
+	margin: 0 auto;
+`
+
+const PostsContainer = styled.div`
+	display: grid;
+	gap: 10px;
+`
+
+const Post = styled.div`
 	background: white;
 	border: 1px solid #dcdcdc;
 	padding: 18px 32px;
-	border-radius: 5px;
-	margin: 10px 0;
+	@media (max-width: ${(p) => p.theme.breakpoints[5]}px) {
+		border-left: none;
+		border-right: none;
+	}
 `
 
 const Author = styled.div`
@@ -44,21 +57,24 @@ export class BlogHomePage extends Component {
 
 	render() {
 		return (
-			<Container width={1050}>
-				{this.state.posts.map((post) => (
-					<PostContainer>
-						<Link to={ROUTES.BLOG_POST.replace(":id", post.postId)}>
-							<Title as="h3">{post.title}</Title>
-							<Author>
-								<FontAwesomeIcon icon="user" /> {post.author}
-							</Author>
-							<CreatedAt>
-								<FontAwesomeIcon icon="calendar" />{" "}
-								{moment(post.createdAt).format("D.M.YY")}
-							</CreatedAt>
-						</Link>
-					</PostContainer>
-				))}
+			<Container>
+				<Header>Blog</Header>
+				<PostsContainer>
+					{this.state.posts.map((post) => (
+						<Post>
+							<Link to={ROUTES.BLOG_POST.replace(":id", post.postId)}>
+								<Title as="h3">{post.title}</Title>
+								<Author>
+									<FontAwesomeIcon icon="user" /> {post.author}
+								</Author>
+								<CreatedAt>
+									<FontAwesomeIcon icon="calendar" />{" "}
+									{moment(post.createdAt).format("D.M.YY")}
+								</CreatedAt>
+							</Link>
+						</Post>
+					))}
+				</PostsContainer>
 			</Container>
 		)
 	}

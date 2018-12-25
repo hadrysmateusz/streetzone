@@ -2,14 +2,14 @@ import React, { Component } from "react"
 import Loadable from "react-loadable"
 import moment from "moment"
 import { compose } from "recompose"
-import { withRouter } from "react-router-dom"
+import { withRouter, Link } from "react-router-dom"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import styled from "styled-components"
 
 import { StyledLink } from "../Basics"
 import { withFirebase } from "../Firebase"
 import LoadingSpinner from "../LoadingSpinner"
-import { ROUTES } from "../../constants"
+import { ROUTES, CSS } from "../../constants"
 import { BREAKPOINTS } from "../../constants/const"
 
 const Container = styled.div`
@@ -44,6 +44,9 @@ const Text = styled.div`
 	color: #333;
 	margin: 0 auto;
 	font-family: serif;
+	img {
+		max-width: 100%;
+	}
 `
 
 const Image = styled.img`
@@ -57,28 +60,51 @@ const Image = styled.img`
 
 const TopContainer = styled.div`
 	color: #2f2f2f;
-	padding: 0 20px 20px;
-	@media (min-width: ${BREAKPOINTS[2]}px) {
-		padding: 0 15px 20px;
+	padding: 0 15px;
+	a {
+		:hover {
+			color: ${CSS.COLOR_ACCENT};
+		}
+		text-decoration: none !important;
+	}
+	svg {
+		margin: 0 10px 0 0;
 	}
 `
 
 const Author = styled.div`
 	margin: 6px 0;
 	padding: 0 25px;
-	color: #4b4b4b;
 	border-right: 1px solid #ddd;
+	cursor: default;
 `
 
 const CreatedAt = styled.div`
 	margin: 6px 0;
 	padding: 0 25px;
-	color: #4b4b4b;
+	border-right: 1px solid #ddd;
+	cursor: default;
+`
+
+const IconContainer = styled.div`
+	display: grid;
+	grid-template-columns: repeat(3, auto);
+	grid-template-rows: 100%;
+	gap: 15px;
+	margin: 6px 0;
+	padding: 0 25px;
+	& > div {
+		cursor: pointer;
+	}
+	& > div:hover svg {
+		color: #222;
+	}
 `
 
 const Title = styled.h2`
-	margin: 0;
-	margin-top: 15px;
+	font-family: "Playfair Display SC", serif;
+	text-align: center;
+	margin: 30px 0;
 	font-size: 1.6rem;
 	@media (min-width: ${BREAKPOINTS[2]}px) {
 		font-size: 2.6rem;
@@ -86,9 +112,21 @@ const Title = styled.h2`
 `
 
 const Info = styled.div`
+	white-space: nowrap;
+	svg {
+		color: #a8a8a8;
+		margin-right: 3px;
+	}
+	color: #6f6f6f;
+	font-size: 0.85rem;
+
 	display: flex;
-	flex-flow: row nowrap;
+	flex-flow: column;
+	@media (min-width: ${(p) => p.theme.breakpoints[0]}px) {
+		flex-flow: row nowrap;
+	}
 	justify-content: center;
+	align-items: center;
 	margin: 30px 0;
 	border-top: 1px solid #e6e6e6;
 	border-bottom: 1px solid #e6e6e6;
@@ -129,19 +167,35 @@ export class BlogPost extends Component {
 				{this.state.post && (
 					<>
 						<TopContainer>
-							<StyledLink to={ROUTES.BLOG_HOME}>Powrót do strony głównej</StyledLink>
+							<Link to={ROUTES.BLOG_HOME}>
+								<FontAwesomeIcon icon="caret-left" />
+								Powrót do strony głównej
+							</Link>
 							<Title>{this.state.post.title}</Title>
 						</TopContainer>
 						<Content>
-							<Image src="http://cdn.galleries.smcloud.net/t/photos/gf-y6Lt-E86i-g1za_kot-kochany-indywidualista-co-warto-wiedziec-o-kotach.jpg" />
+							<Image src="https://o.aolcdn.com/images/dims?resize=2000%2C2000%2Cshrink&image_uri=https%3A%2F%2Fs.yimg.com%2Fos%2Fcreatr-uploaded-images%2F2018-11%2F672ea4d0-f330-11e8-bed6-cfe15b0bb8c2&client=a1acac3e1b3290917d92&signature=41dc1916fae050901615a19d11ec0346242472c6" />
 							<Info>
-								<Author>
-									<FontAwesomeIcon icon="user" /> {this.state.post.author}
+								<Author title="Autor">
+									<FontAwesomeIcon icon="user" />
+									&nbsp;{this.state.post.author}
 								</Author>
-								<CreatedAt>
-									<FontAwesomeIcon icon="calendar" />{" "}
+								<CreatedAt title="Data dodania">
+									<FontAwesomeIcon icon="calendar" />
+									&nbsp;
 									{moment(this.state.post.createdAt).format("D.M.YY")}
 								</CreatedAt>
+								<IconContainer>
+									<div title="Udostępnij na Twitterze">
+										<FontAwesomeIcon icon={["fab", "twitter"]} />
+									</div>
+									<div title="Udostępnij na Facebooku">
+										<FontAwesomeIcon icon={["fab", "facebook-square"]} />
+									</div>
+									<div title="Udostępnij na Instagramie">
+										<FontAwesomeIcon icon={["fab", "instagram"]} />
+									</div>
+								</IconContainer>
 							</Info>
 							<Text>
 								<ReactMarkdown source={this.state.post.content} />

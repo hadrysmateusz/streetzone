@@ -14,7 +14,8 @@ import {
 	faBars,
 	faUpload,
 	faTrash,
-	faCalendar
+	faCalendar,
+	faCaretLeft
 } from "@fortawesome/free-solid-svg-icons"
 // import { faSquare, faCheckSquare } from "@fortawesome/free-regular-svg-icons"
 import { fab } from "@fortawesome/free-brands-svg-icons"
@@ -37,5 +38,6 @@ library.add(
 	faTrash,
 	faUpload,
 	faCalendar,
-	fab
+	fab,
+	faCaretLeft
 )

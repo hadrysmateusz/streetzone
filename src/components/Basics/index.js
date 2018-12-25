@@ -9,7 +9,7 @@ const Header = styled.h2`
 	color: #2f2f2f;
 	font-size: 1.95rem;
 	font-weight: normal;
-	margin-bottom: 30px;
+	margin-bottom: 20px;
 	margin-top: 0px;
 	font-family: "Playfair Display SC", serif;
 `
