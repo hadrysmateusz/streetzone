@@ -57,6 +57,21 @@ const BlogHomePage = Loadable({
 	loading: () => <LoadingSpinner />
 })
 
+const FAQPage = Loadable({
+	loader: () => import("../FAQPage"),
+	loading: () => <LoadingSpinner />
+})
+
+const PrivacyPolicyPage = Loadable({
+	loader: () => import("../PrivacyPolicyPage"),
+	loading: () => <LoadingSpinner />
+})
+
+const AboutPage = Loadable({
+	loader: () => import("../AboutPage"),
+	loading: () => <LoadingSpinner />
+})
+
 const routes = [
 	{
 		path: ROUTES.BLOG_POST,
@@ -97,6 +112,18 @@ const routes = [
 	{
 		path: ROUTES.BLOG_HOME,
 		component: BlogHomePage
+	},
+	{
+		path: ROUTES.FAQ,
+		component: FAQPage
+	},
+	{
+		path: ROUTES.PRIVACY_POLICY,
+		component: PrivacyPolicyPage
+	},
+	{
+		path: ROUTES.ABOUT,
+		component: AboutPage
 	}
 ]
 

@@ -1,10 +1,11 @@
 import React from "react"
 import styled from "styled-components"
-import { CONST, CSS } from "../../constants"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { Link } from "react-router-dom"
+
+import { CONST, CSS, ROUTES } from "../../constants"
 
 const OuterContainer = styled.div`
-	padding: 0 20px;
 	display: flex;
 	flex-flow: row wrap;
 	justify-content: space-between;
@@ -29,8 +30,9 @@ const IconContainer = styled.div`
 	}
 `
 
-const Item = styled.div`
+const Item = styled(Link)`
 	white-space: nowrap;
+	display: block;
 	flex: 0 1;
 	:not(${IconContainer}) {
 		:hover {
@@ -44,7 +46,7 @@ const InnerContainer = styled.div`
 	display: flex;
 	flex-flow: row wrap;
 
-	& > div {
+	& > * {
 		padding: 8px 15px;
 	}
 `
@@ -53,16 +55,16 @@ const Footer = () => {
 	return (
 		<OuterContainer>
 			<InnerContainer>
-				<Item>FAQ</Item>
-				<Item>Polityka Prywatności</Item>
+				<Item to={ROUTES.FAQ}>FAQ</Item>
+				<Item to={ROUTES.PRIVACY_POLICY}>Polityka Prywatności</Item>
 				<IconContainer>
-					<Item>
+					<Item to={ROUTES.TWITTER_PROFILE}>
 						<FontAwesomeIcon icon={["fab", "twitter"]} />
 					</Item>
-					<Item>
+					<Item to={ROUTES.FACEBOOK_PROFILE}>
 						<FontAwesomeIcon icon={["fab", "facebook-square"]} />
 					</Item>
-					<Item>
+					<Item to={ROUTES.INSTAGRAM_PROFILE}>
 						<FontAwesomeIcon icon={["fab", "instagram"]} />
 					</Item>
 				</IconContainer>
