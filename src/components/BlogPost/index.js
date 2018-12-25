@@ -6,17 +6,13 @@ import { withRouter, Link } from "react-router-dom"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import styled from "styled-components"
 
-import { StyledLink } from "../Basics"
 import { withFirebase } from "../Firebase"
 import LoadingSpinner from "../LoadingSpinner"
 import { ROUTES, CSS } from "../../constants"
-import { BREAKPOINTS } from "../../constants/const"
 
 const Container = styled.div`
-	@media (min-width: ${BREAKPOINTS[2]}px) {
-		width: ${BREAKPOINTS[2]}px;
-		margin: 0 auto;
-	}
+	max-width: ${(p) => p.theme.breakpoints[2]}px;
+	margin: 0 auto;
 `
 
 const Content = styled.div`
@@ -26,20 +22,21 @@ const Content = styled.div`
 	box-shadow: 0 2px 6px -1px rgba(0, 0, 0, 0.14);
 	margin-bottom: 20px;
 	width: 100%;
-	max-width: ${BREAKPOINTS[2]}px;
+	max-width: ${(p) => p.theme.breakpoints[2]}px;
 
-	@media (max-width: ${BREAKPOINTS[2]}px) {
+	@media (max-width: ${(p) => p.theme.breakpoints[2]}px) {
 		border-left: none;
 		border-right: none;
 	}
 `
 
 const Text = styled.div`
-	line-height: 1.5em;
-	font-size: 1.04rem;
-	word-spacing: 3px;
+	line-height: 1.55em;
+	font-size: calc(0.98rem + 0.11vw);
+	padding: 0;
+	word-spacing: 2px;
 	height: 100%;
-	width: 75ch;
+	width: 70ch;
 	max-width: 100%;
 	color: #333;
 	margin: 0 auto;
@@ -106,7 +103,7 @@ const Title = styled.h2`
 	text-align: center;
 	margin: 30px 0;
 	font-size: 1.6rem;
-	@media (min-width: ${BREAKPOINTS[2]}px) {
+	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
 		font-size: 2.6rem;
 	}
 `
@@ -174,7 +171,7 @@ export class BlogPost extends Component {
 							<Title>{this.state.post.title}</Title>
 						</TopContainer>
 						<Content>
-							<Image src="https://o.aolcdn.com/images/dims?resize=2000%2C2000%2Cshrink&image_uri=https%3A%2F%2Fs.yimg.com%2Fos%2Fcreatr-uploaded-images%2F2018-11%2F672ea4d0-f330-11e8-bed6-cfe15b0bb8c2&client=a1acac3e1b3290917d92&signature=41dc1916fae050901615a19d11ec0346242472c6" />
+							<Image src={this.state.post.photo_url} />
 							<Info>
 								<Author title="Autor">
 									<FontAwesomeIcon icon="user" />
