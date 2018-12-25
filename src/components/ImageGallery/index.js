@@ -4,20 +4,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 import { withFirebase } from "../Firebase"
 import { MiniButton } from "../Basics"
-import { CSS } from "../../constants"
+// import { CSS } from "../../constants"
 import { BREAKPOINTS } from "../../constants/const"
 
 const CurrentImage = styled.div`
 	/* cursor: zoom-in; */
 	position: relative;
 	width: 100%;
-	height: 30vh;
-	/* @media (min-width: 950px) {
-		height: 45vh;
-	} */
-	@media (min-width: ${BREAKPOINTS[3]}px) {
-		height: 50vh;
-	}
+	height: 50vh;
 
 	background: white;
 	border: 1px solid #c6c6c6;
@@ -36,69 +30,61 @@ const Container = styled.div`
 	flex: 0 1 100%;
 	user-select: none;
 	min-width: 0;
-
+	margin-bottom: 20px;
 	@media (min-width: ${BREAKPOINTS[2]}px) {
-		/* max-width: 50%; */
-		/* padding-right: 40px; */
+		margin-bottom: 0;
 	}
 `
 
-const ThumbnailsContainer = styled.div`
+const ThumbnailsContainer = styled.ul`
+	/* clear ul styles */
+	list-style: none;
+	margin: 0;
+	padding: 0;
+
+	/* grid setup */
 	display: grid;
+	grid-template-columns: repeat(6, minmax(70px, 1fr));
 	gap: 10px;
-	min-width: 0;
 
-	grid-template-columns: repeat(6, 1fr);
+	position: relative;
 
-	@media (max-width: ${BREAKPOINTS[0] - 1}px) {
-	grid-template-columns: repeat(6, 70px);
-
+	/* remove this if it proves to be too difficult to implement a scrolling indicator */
+	overflow-x: auto;
+	@media (min-width: ${BREAKPOINTS[2]}px) {
+		overflow-x: visible;
+		grid-template-columns: repeat(auto-fill, minmax(75px, 1fr));
 	}
-		overflow-x: auto;
-
-
-	/* grid-template-columns: repeat(4, 1fr);
-	@media (min-width: ${BREAKPOINTS[0]}px) {
-		grid-template-columns: repeat(6, 1fr);
-	} */
 
 	margin-top: 10px;
+
+	li {
+		/* setup aspect ratio hack */
+		position: relative;
+		padding-top: 100%;
+
+		&:after {
+			content: "";
+			display: block;
+		}
+	}
 `
 
 const Thumbnail = styled.div`
 	${(p) => p.isCurrent === false && overlay}
-	position: relative;
 
-	height: 70px;
-	min-width: 70px;
-	min-height: 70px;
-	/* max-height: 20.6vw; */
-
-	@media (min-width: ${BREAKPOINTS[0]}px) {
-		max-height: 14.2vw;
-		height: 80px;
-	}
-
-	@media (min-width: ${BREAKPOINTS[1]}px) {
-		max-height: 14.2vw;
-		height: 112px;
-	}
-
-	@media (min-width: ${BREAKPOINTS[2]}px) {
-		max-height: 8.3vw;
-		height: 90px;
-	}
-
-	@media (min-width: ${BREAKPOINTS[3]}px) {
-		max-height: 8.6vw;
-		height: 92px;
-	}
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
 
 	cursor: pointer;
 
 	background: white;
 	border: 1px solid #c6c6c6;
 
+	/* required for image centering */
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -179,14 +165,15 @@ export class ImageGallery extends Component {
 				</CurrentImage>
 				<ThumbnailsContainer>
 					{imageURLs.map((url, i) => (
-						<Thumbnail
-							key={i}
-							data-index={i}
-							isCurrent={i === +currentImageIndex}
-							onClick={this.changeCurrentImage}
-						>
-							<img src={url} alt="" />
-						</Thumbnail>
+						<li key={i}>
+							<Thumbnail
+								data-index={i}
+								isCurrent={i === +currentImageIndex}
+								onClick={this.changeCurrentImage}
+							>
+								<img src={url} alt="" />
+							</Thumbnail>
+						</li>
 					))}
 				</ThumbnailsContainer>
 			</Container>

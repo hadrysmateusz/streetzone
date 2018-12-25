@@ -9,7 +9,6 @@ import { withFirebase } from "../Firebase"
 import { withAuthentication } from "../UserSession"
 import LoadingSpinner from "../LoadingSpinner"
 import Button, { LoaderButton, AccentButton } from "../Button"
-import { Container } from "../Basics"
 import EmptyState from "../EmptyState"
 import UserPreview from "../UserPreview"
 import { BREAKPOINTS } from "../../constants/const"
@@ -20,9 +19,7 @@ const MainContainer = styled.main`
 	max-width: ${BREAKPOINTS[4]}px;
 	margin: 0 auto;
 	height: 100%;
-		padding: 0 20px;
-	/* @media (min-width: ${BREAKPOINTS[2]}px) {
-	} */
+	padding: 0 20px;
 `
 
 const ItemContainer = styled.div`
@@ -44,8 +41,6 @@ const InfoContainer = styled.div`
 	}
 	@media (min-width: ${BREAKPOINTS[3]}px) {
 		max-width: 380px;
-	}
-	@media (min-width: ${BREAKPOINTS[4]}px) {
 		padding-left: 30px;
 		padding-top: 15px;
 	}
