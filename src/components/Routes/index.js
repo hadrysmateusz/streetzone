@@ -9,67 +9,67 @@ import NotFound from "../NotFound"
 
 const BlogPostPage = Loadable({
 	loader: () => import("../BlogPost"),
-	loading: () => <LoadingSpinner />
+	loading: LoadingSpinner
 })
 
 const NewItemPage = Loadable({
 	loader: () => import("../NewItem"),
-	loading: () => <LoadingSpinner />
+	loading: LoadingSpinner
 })
 
 const SignUpPage = Loadable({
 	loader: () => import("../SignUp"),
-	loading: () => <LoadingSpinner />
+	loading: LoadingSpinner
 })
 
 const SignInPage = Loadable({
 	loader: () => import("../SignIn"),
-	loading: () => <LoadingSpinner />
+	loading: LoadingSpinner
 })
 
 const PasswordForgetPage = Loadable({
 	loader: () => import("../PasswordForget"),
-	loading: () => <LoadingSpinner />
+	loading: LoadingSpinner
 })
 
 const HomePage = Loadable({
 	loader: () => import("../HomePage"),
-	loading: () => <LoadingSpinner />
+	loading: LoadingSpinner
 })
 
 const AccountPage = Loadable({
 	loader: () => import("../AccountPage"),
-	loading: () => <LoadingSpinner />
+	loading: LoadingSpinner
 })
 
 const EditItemPage = Loadable({
 	loader: () => import("../EditItem"),
-	loading: () => <LoadingSpinner />
+	loading: LoadingSpinner
 })
 
 const ItemDetailsPage = Loadable({
 	loader: () => import("../ItemDetailsPage"),
-	loading: () => <LoadingSpinner />
+	loading: LoadingSpinner
 })
 
 const BlogHomePage = Loadable({
 	loader: () => import("../BlogHome"),
-	loading: () => <LoadingSpinner />
+	loading: LoadingSpinner
 })
 
 const FAQPage = Loadable({
 	loader: () => import("../FAQPage"),
-	loading: () => <LoadingSpinner />
+	loading: LoadingSpinner
 })
 
 const PrivacyPolicyPage = Loadable({
 	loader: () => import("../PrivacyPolicyPage"),
-	loading: () => <LoadingSpinner />
+	loading: LoadingSpinner
 })
 
 const AboutPage = Loadable({
 	loader: () => import("../AboutPage"),
-	loading: () => <LoadingSpinner />
+	loading: LoadingSpinner
 })
 
 const routes = [
