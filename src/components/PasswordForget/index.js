@@ -1,18 +1,26 @@
 import React, { Component } from "react"
 import { Form, Field } from "react-final-form"
 import { compose } from "recompose"
+import styled from "styled-components"
 
-import { StyledLink } from "../Basics"
-import { withAuthorization } from "../UserSession"
 import { withFirebase } from "../Firebase"
+import { StyledLink, FieldRow, FieldLabel, StyledInput, Header } from "../Basics"
+import { LoaderButton } from "../Button"
+import { Error } from "../ItemForm"
 import { ROUTES, FORM_ERR, REGEX } from "../../constants"
+
+const Container = styled.div`
+	width: 100%;
+	max-width: 280px;
+	margin: 0 auto;
+`
 
 const PasswordForgetPage = () => {
 	return (
-		<>
-			<h1>Zresetuj hasło</h1>
+		<Container>
+			<Header>Zresetuj hasło</Header>
 			<PasswordForgetForm />
-		</>
+		</Container>
 	)
 }
 
@@ -57,22 +65,26 @@ class PasswordForgetFormBase extends Component {
 				render={({ handleSubmit, submitting, pristine }) => (
 					<form onSubmit={handleSubmit}>
 						{/* E-mail */}
-						<Field name="email">
-							{({ input, meta }) => (
-								<div>
-									<label>E-mail </label>
-									<input {...input} type="text" placeholder="E-mail" />
-									{meta.error && meta.touched && <span>{meta.error}</span>}
-								</div>
-							)}
-						</Field>
+						<FieldRow>
+							<Field name="email">
+								{({ input, meta }) => (
+									<>
+										<FieldLabel>E-mail</FieldLabel>
+										<StyledInput {...input} type="text" placeholder="E-mail" />
+										<Error message={meta.error} showIf={meta.error && meta.touched} />
+									</>
+								)}
+							</Field>
+						</FieldRow>
 
-						<div className="buttons">
-							<button type="submit" disabled={submitting}>
-								Zresetuj hasło
-							</button>
-						</div>
-						{error && <p>{error.message}</p>}
+						<LoaderButton
+							text="Zresetuj hasło"
+							type="submit"
+							isLoading={submitting}
+							disabled={submitting || pristine}
+							fullWidth
+						/>
+						{error && <Error message={error.message} showIf={error} />}
 					</form>
 				)}
 			/>
@@ -80,12 +92,7 @@ class PasswordForgetFormBase extends Component {
 	}
 }
 
-const condition = (authUser) => !!authUser
-
-const PasswordForgetForm = compose(
-	withAuthorization(condition),
-	withFirebase
-)(PasswordForgetFormBase)
+const PasswordForgetForm = compose(withFirebase)(PasswordForgetFormBase)
 
 const PasswordForgetLink = () => (
 	<p>

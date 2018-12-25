@@ -2,15 +2,24 @@ import React, { Component } from "react"
 import { withRouter } from "react-router-dom"
 import { Form, Field } from "react-final-form"
 import { compose } from "recompose"
+import styled from "styled-components"
 
-import { StyledLink } from "../Basics"
 import { withFirebase } from "../Firebase"
-import { ROUTES, FORM_ERR, AUTH_ERR, REGEX, CSS } from "../../constants"
+import { StyledLink, FieldRow, FieldLabel, StyledInput, Header } from "../Basics"
+import { LoaderButton } from "../Button"
+import { Error } from "../ItemForm"
+import { ROUTES, FORM_ERR, AUTH_ERR, REGEX } from "../../constants"
+
+const Container = styled.div`
+	width: 100%;
+	max-width: 280px;
+	margin: 0 auto;
+`
 
 const SignUpPage = () => {
 	return (
 		<div>
-			<h1>Utwórz konto</h1>
+			<Header>Utwórz konto</Header>
 			<SignUpForm />
 		</div>
 	)
@@ -79,64 +88,79 @@ class SignUpFormBase extends Component {
 		const { error } = this.state
 
 		return (
-			<Form
-				onSubmit={this.onSubmit}
-				validate={this.validate}
-				render={({ handleSubmit, submitting, pristine }) => (
-					<form onSubmit={handleSubmit}>
-						{/* Imię */}
-						<Field name="name">
-							{({ input, meta }) => (
-								<div>
-									<label>Imię </label>
-									<input {...input} type="text" placeholder="Imię" />
-									{meta.error && meta.touched && <span>{meta.error}</span>}
-								</div>
-							)}
-						</Field>
+			<Container>
+				<Form
+					onSubmit={this.onSubmit}
+					validate={this.validate}
+					render={({ handleSubmit, submitting, pristine }) => (
+						<form onSubmit={handleSubmit}>
+							{/* Imię */}
+							<FieldRow>
+								<Field name="name">
+									{({ input, meta }) => (
+										<>
+											<FieldLabel>Imię</FieldLabel>
+											<StyledInput {...input} type="text" placeholder="Imię" />
+											<Error message={meta.error} showIf={meta.error && meta.touched} />
+										</>
+									)}
+								</Field>
+							</FieldRow>
 
-						{/* E-mail */}
-						<Field name="email">
-							{({ input, meta }) => (
-								<div>
-									<label>E-mail </label>
-									<input {...input} type="text" placeholder="E-mail" />
-									{meta.error && meta.touched && <span>{meta.error}</span>}
-								</div>
-							)}
-						</Field>
+							{/* E-mail */}
+							<FieldRow>
+								<Field name="email">
+									{({ input, meta }) => (
+										<>
+											<FieldLabel>E-mail</FieldLabel>
+											<StyledInput {...input} type="text" placeholder="E-mail" />
+											<Error message={meta.error} showIf={meta.error && meta.touched} />
+										</>
+									)}
+								</Field>
+							</FieldRow>
 
-						{/* Hasło */}
-						<Field name="password">
-							{({ input, meta }) => (
-								<div>
-									<label>Hasło </label>
-									<input {...input} type="password" placeholder="Hasło" />
-									{meta.error && meta.touched && <span>{meta.error}</span>}
-								</div>
-							)}
-						</Field>
+							{/* Hasło */}
+							<FieldRow>
+								<Field name="password">
+									{({ input, meta }) => (
+										<>
+											<FieldLabel>Hasło</FieldLabel>
+											<StyledInput {...input} type="password" placeholder="Hasło" />
+											<Error message={meta.error} showIf={meta.error && meta.touched} />
+										</>
+									)}
+								</Field>
+							</FieldRow>
 
-						{/* Powtórz Hasło */}
-						<Field name="passwordConfirm">
-							{({ input, meta }) => (
-								<div>
-									<label>Potwierdź Hasło </label>
-									<input {...input} type="password" placeholder="Potwierdź Hasło" />
-									{meta.error && meta.touched && <span>{meta.error}</span>}
-								</div>
-							)}
-						</Field>
-
-						<div className="buttons">
-							<button type="submit" disabled={submitting || pristine}>
-								Utwórz konto
-							</button>
-						</div>
-						{error && <p>{error.message}</p>}
-					</form>
-				)}
-			/>
+							{/* Powtórz Hasło */}
+							<FieldRow>
+								<Field name="passwordConfirm">
+									{({ input, meta }) => (
+										<>
+											<FieldLabel>Potwierdź Hasło</FieldLabel>
+											<StyledInput
+												{...input}
+												type="password"
+												placeholder="Potwierdź Hasło"
+											/>
+											<Error message={meta.error} showIf={meta.error && meta.touched} />
+										</>
+									)}
+								</Field>
+							</FieldRow>
+							<LoaderButton
+								text="Utwórz konto"
+								type="submit"
+								isLoading={submitting}
+								disabled={submitting || pristine}
+								fullWidth
+							/>
+							{error && <Error message={error.message} showIf={error} />}
+						</form>
+					)}
+				/>
+			</Container>
 		)
 	}
 }

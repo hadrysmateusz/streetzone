@@ -1,23 +1,29 @@
 import React, { Component } from "react"
 import { withRouter } from "react-router-dom"
-import { Form } from "react-final-form"
+import { Form, Field } from "react-final-form"
 import { compose } from "recompose"
+import styled from "styled-components"
 
-import { StyledField, Separator, Container } from "../Basics"
-import Button, { FacebookButton, GoogleButton } from "../Button"
+import { FieldRow, FieldLabel, StyledInput, Header, Separator } from "../Basics"
+import { Error } from "../ItemForm"
+import { FacebookButton, GoogleButton, LoaderButton } from "../Button"
 import { PasswordForgetLink } from "../PasswordForget"
 import { SignUpLink } from "../SignUp"
 import { withFirebase } from "../Firebase"
-import { ROUTES, FORM_ERR, AUTH_ERR, REGEX, CSS } from "../../constants"
+import { ROUTES, FORM_ERR, AUTH_ERR, REGEX } from "../../constants"
+
+const Container = styled.div`
+	width: 100%;
+	max-width: 280px;
+	margin: 0 auto;
+`
 
 const SignInPage = () => {
 	return (
-		<Container width={320}>
-			<h1 style={{ textAlign: "center" }}>Zaloguj się</h1>
-			<div className="social">
-				<SignInGoogle />
-				<SignInFacebook />
-			</div>
+		<Container>
+			<Header>Zaloguj się</Header>
+			<SignInGoogle />
+			<SignInFacebook />
 			<Separator text="lub" />
 			<SignInForm />
 			<PasswordForgetLink />
@@ -75,33 +81,39 @@ class SignInFormBase extends Component {
 				render={({ handleSubmit, submitting, pristine }) => (
 					<form onSubmit={handleSubmit}>
 						{/* E-mail */}
-						<StyledField name="email">
-							{({ input, meta, ...rest }) => (
-								<div {...rest}>
-									<label>E-mail </label>
-									<input {...input} type="text" placeholder="E-mail" />
-									{meta.error && meta.touched && <span>{meta.error}</span>}
-								</div>
-							)}
-						</StyledField>
+						<FieldRow>
+							<Field name="email">
+								{({ input, meta }) => (
+									<>
+										<FieldLabel>E-mail</FieldLabel>
+										<StyledInput {...input} type="text" placeholder="E-mail" />
+										<Error message={meta.error} showIf={meta.error && meta.touched} />
+									</>
+								)}
+							</Field>
+						</FieldRow>
 
 						{/* Hasło */}
-						<StyledField name="password">
-							{({ input, meta, ...rest }) => (
-								<div {...rest}>
-									<label>Hasło </label>
-									<input {...input} type="password" placeholder="Hasło" />
-									{meta.error && meta.touched && <span>{meta.error}</span>}
-								</div>
-							)}
-						</StyledField>
+						<FieldRow>
+							<Field name="password">
+								{({ input, meta }) => (
+									<>
+										<FieldLabel>Hasło</FieldLabel>
+										<StyledInput {...input} type="password" placeholder="Hasło" />
+										<Error message={meta.error} showIf={meta.error && meta.touched} />
+									</>
+								)}
+							</Field>
+						</FieldRow>
 
-						<div className="buttons">
-							<Button type="submit" fullWidth disabled={submitting}>
-								Zaloguj się
-							</Button>
-						</div>
-						{error && <p>{error.message}</p>}
+						<LoaderButton
+							text="Zaloguj się"
+							type="submit"
+							isLoading={submitting}
+							disabled={submitting}
+							fullWidth
+						/>
+						{error && <Error message={error.message} showIf={error} />}
 					</form>
 				)}
 			/>
