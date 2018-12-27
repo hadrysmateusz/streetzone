@@ -1,13 +1,18 @@
 import React, { Component } from "react"
-import { Form } from "react-final-form"
+import { Form, Field } from "react-final-form"
 import { FORM_ERR } from "../../constants"
 import styled from "styled-components"
 
-import { StyledField } from "../Basics"
-import { SocialButton } from "../Button"
-import { LoaderButton } from "../Button"
+import { FieldRow, FieldLabel, StyledInput, Separator } from "../Basics"
+import { Error } from "../ItemForm"
+import { SocialButton, LoaderButton } from "../Button"
 import { withFirebase } from "../Firebase"
 import { PasswordChangeForm } from "../PasswordChange"
+
+const EnabledIndicator = styled.span`
+	padding-left: 10px;
+	color: ${(p) => (p.isEnabled ? "green" : "red")};
+`
 
 const SIGN_IN_METHODS = [
 	{
@@ -89,7 +94,28 @@ export class LoginManagementBase extends Component {
 
 		return (
 			<div className={this.props.className}>
-				{activeSignInMethods.includes("password") && <PasswordChangeForm />}
+				{activeSignInMethods.includes("password") && (
+					<>
+						<Separator text="Zmień hasło" />
+						<PasswordChangeForm />
+					</>
+				)}
+				<Separator text="Metody logowania" />
+
+				{/* <div>
+					{SIGN_IN_METHODS.map((signInMethod) => {
+						const isEnabled = activeSignInMethods.includes(signInMethod.id)
+						return (
+							<div>
+								{signInMethod.name}
+								<EnabledIndicator isEnabled={isEnabled}>
+									{isEnabled ? "Włączone" : "Wyłączone"}
+								</EnabledIndicator>
+							</div>
+						)
+					})}
+				</div> */}
+
 				<div className="provider-container">
 					{SIGN_IN_METHODS.map((signInMethod) => {
 						const onlyOneLeft = activeSignInMethods.length === 1
@@ -103,6 +129,10 @@ export class LoginManagementBase extends Component {
 
 						return (
 							<div className="provider-toggle" key={signInMethod.id}>
+								{signInMethod.name}
+								<EnabledIndicator isEnabled={isEnabled}>
+									{isEnabled ? "Włączone" : "Wyłączone"}
+								</EnabledIndicator>
 								{signInMethod.id === "password" ? (
 									<DefaultLoginToggle
 										{...commonProps}
@@ -139,6 +169,9 @@ const SocialLoginToggle = ({
 				provider={signInMethod.id}
 				onClick={() => onUnlink(signInMethod.id)}
 				disabled={onlyOneLeft}
+				title={
+					onlyOneLeft && "Nie można dezaktywować ostatniej metody logowania"
+				}
 				fullWidth
 			>{`Dezaktywuj ${signInMethod.name}`}</SocialButton>
 		) : (
@@ -191,35 +224,54 @@ class DefaultLoginToggle extends Component {
 				render={({ handleSubmit, submitting, pristine, values, invalid }) => (
 					<form onSubmit={handleSubmit}>
 						{/* Hasło */}
-						<StyledField name="password">
-							{({ input, meta, ...rest }) => (
-								<div {...rest}>
-									<label>Hasło </label>
-									<input {...input} type="password" placeholder="Hasło" />
-									{meta.error && meta.touched && <span>{meta.error}</span>}
-								</div>
-							)}
-						</StyledField>
+						<FieldRow>
+							<Field name="password">
+								{({ input, meta }) => (
+									<>
+										<FieldLabel>Hasło</FieldLabel>
+										<StyledInput
+											{...input}
+											type="password"
+											placeholder="Hasło"
+										/>
+										<Error
+											message={meta.error}
+											showIf={meta.error && meta.touched}
+										/>
+									</>
+								)}
+							</Field>
+						</FieldRow>
 
 						{/* Powtórz Hasło */}
-						<StyledField name="passwordConfirm">
-							{({ input, meta, ...rest }) => (
-								<div {...rest}>
-									<label>Potwierdź Hasło </label>
-									<input {...input} type="password" placeholder="Potwierdź Hasło" />
-									{meta.error && meta.touched && <span>{meta.error}</span>}
-								</div>
-							)}
-						</StyledField>
+						{values.password && (
+							<FieldRow>
+								<Field name="passwordConfirm">
+									{({ input, meta }) => (
+										<>
+											<FieldLabel>Potwierdź Hasło</FieldLabel>
+											<StyledInput
+												{...input}
+												type="password"
+												placeholder="Potwierdź Hasło"
+											/>
+											<Error
+												message={meta.error}
+												showIf={meta.error && meta.touched}
+											/>
+										</>
+									)}
+								</Field>
+							</FieldRow>
+						)}
 
-						<div className="buttons">
-							<LoaderButton
-								type="submit"
-								disabled={submitting || pristine || invalid}
-								text={`Powiąż ${signInMethod.name}`}
-								fullWidth
-							/>
-						</div>
+						<LoaderButton
+							text={`Powiąż ${signInMethod.name}`}
+							type="submit"
+							isLoading={submitting}
+							disabled={submitting || pristine || invalid}
+							fullWidth
+						/>
 					</form>
 				)}
 			/>
@@ -230,7 +282,7 @@ class DefaultLoginToggle extends Component {
 const LoginManagementUnstyled = withFirebase(LoginManagementBase)
 
 const LoginManagement = styled(LoginManagementUnstyled)`
-	max-width: 460px;
+	/* max-width: 460px; */
 	margin: 35px auto 50px;
 	.provider-container {
 		margin: 15px 0;

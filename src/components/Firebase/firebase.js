@@ -103,6 +103,7 @@ class Firebase {
 	onAuthUserListener = (next, fallback) =>
 		this.auth.onAuthStateChanged(async (authUser) => {
 			if (authUser) {
+				// get current user's info from database
 				const snapshot = await this.user(authUser.uid).get()
 				const dbUser = snapshot.data()
 

@@ -30,8 +30,8 @@ const getItemsPerPage = () => {
 const MainGrid = styled.div`
 	display: grid;
 	margin: 0 auto;
-	padding: 0 20px;
 	grid-gap: 20px;
+	padding: 0 20px;
 	grid-template-areas:
 		"filters"
 		"content"
@@ -137,10 +137,14 @@ class HomePage extends Component {
 		// Create new object as to not overwrite the FilterForm data
 		let filters = {}
 
-		if (searchParams.get("category")) filters.category = searchParams.get("category")
-		if (searchParams.get("designer")) filters.designer = searchParams.get("designer")
-		if (searchParams.get("price_min")) filters.price_min = searchParams.get("price_min")
-		if (searchParams.get("price_max")) filters.price_max = searchParams.get("price_max")
+		if (searchParams.get("category"))
+			filters.category = searchParams.get("category")
+		if (searchParams.get("designer"))
+			filters.designer = searchParams.get("designer")
+		if (searchParams.get("price_min"))
+			filters.price_min = searchParams.get("price_min")
+		if (searchParams.get("price_max"))
+			filters.price_max = searchParams.get("price_max")
 
 		let filterData = {
 			sortBy,
@@ -168,7 +172,8 @@ class HomePage extends Component {
 				const { category, designer, price_min, price_max } = filters
 
 				if (category) query = query.where("category", "==", category)
-				if (designer) query = query.where("designers", "array-contains", designer)
+				if (designer)
+					query = query.where("designers", "array-contains", designer)
 				if (price_min) query = query.where("price", ">=", +price_min)
 				if (price_max) query = query.where("price", "<=", +price_max)
 				// When using range comparison operators

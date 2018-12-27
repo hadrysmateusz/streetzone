@@ -5,7 +5,13 @@ import { compose } from "recompose"
 import styled from "styled-components"
 
 import { withFirebase } from "../Firebase"
-import { StyledLink, FieldRow, FieldLabel, StyledInput, Header } from "../Basics"
+import {
+	StyledLink,
+	FieldRow,
+	FieldLabel,
+	StyledInput,
+	Header
+} from "../Basics"
 import { LoaderButton } from "../Button"
 import { Error } from "../ItemForm"
 import { ROUTES, FORM_ERR, AUTH_ERR, REGEX } from "../../constants"
@@ -33,7 +39,10 @@ class SignUpFormBase extends Component {
 
 		try {
 			// Create user for auth
-			const authUser = await this.props.firebase.signUpWithEmail(email, password)
+			const authUser = await this.props.firebase.signUpWithEmail(
+				email,
+				password
+			)
 
 			// Add the name to the auth user
 			await authUser.user.updateProfile({
@@ -41,7 +50,9 @@ class SignUpFormBase extends Component {
 			})
 
 			// Create user in db
-			await this.props.firebase.user(authUser.user.uid).set({ name, email, items: [] })
+			await this.props.firebase
+				.user(authUser.user.uid)
+				.set({ name, email, items: [] })
 
 			// Redirect
 			this.props.history.push(ROUTES.HOME)
@@ -101,7 +112,10 @@ class SignUpFormBase extends Component {
 										<>
 											<FieldLabel>Imię</FieldLabel>
 											<StyledInput {...input} type="text" placeholder="Imię" />
-											<Error message={meta.error} showIf={meta.error && meta.touched} />
+											<Error
+												message={meta.error}
+												showIf={meta.error && meta.touched}
+											/>
 										</>
 									)}
 								</Field>
@@ -113,8 +127,15 @@ class SignUpFormBase extends Component {
 									{({ input, meta }) => (
 										<>
 											<FieldLabel>E-mail</FieldLabel>
-											<StyledInput {...input} type="text" placeholder="E-mail" />
-											<Error message={meta.error} showIf={meta.error && meta.touched} />
+											<StyledInput
+												{...input}
+												type="text"
+												placeholder="E-mail"
+											/>
+											<Error
+												message={meta.error}
+												showIf={meta.error && meta.touched}
+											/>
 										</>
 									)}
 								</Field>
@@ -126,8 +147,15 @@ class SignUpFormBase extends Component {
 									{({ input, meta }) => (
 										<>
 											<FieldLabel>Hasło</FieldLabel>
-											<StyledInput {...input} type="password" placeholder="Hasło" />
-											<Error message={meta.error} showIf={meta.error && meta.touched} />
+											<StyledInput
+												{...input}
+												type="password"
+												placeholder="Hasło"
+											/>
+											<Error
+												message={meta.error}
+												showIf={meta.error && meta.touched}
+											/>
 										</>
 									)}
 								</Field>
@@ -144,11 +172,15 @@ class SignUpFormBase extends Component {
 												type="password"
 												placeholder="Potwierdź Hasło"
 											/>
-											<Error message={meta.error} showIf={meta.error && meta.touched} />
+											<Error
+												message={meta.error}
+												showIf={meta.error && meta.touched}
+											/>
 										</>
 									)}
 								</Field>
 							</FieldRow>
+
 							<LoaderButton
 								text="Utwórz konto"
 								type="submit"

@@ -1,11 +1,9 @@
 import React, { Component } from "react"
 import styled from "styled-components"
-// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 import Button from "../Button"
 import FileItem from "./FileItem"
 import CustomFile from "./CustomFile"
-// import { CSS } from "../../constants"
 import { Error } from "../ItemForm"
 
 class FileHandlerUnstyled extends Component {
@@ -96,7 +94,7 @@ class FileHandlerUnstyled extends Component {
 						})
 					) : (
 						<div className="empty-state" onClick={this.clickFileInput}>
-							Wybierz lub przeciągnij(TODO) pliki
+							Wybierz lub przeciągnij pliki
 						</div>
 					)}
 				</div>
@@ -112,6 +110,7 @@ class FileHandlerUnstyled extends Component {
 
 const FileHandler = styled(FileHandlerUnstyled)`
 	.file-list-container {
+		position: relative;
 		display: grid;
 		grid-gap: 10px;
 		grid-template-columns: 1fr 1fr 1fr;
@@ -122,10 +121,13 @@ const FileHandler = styled(FileHandlerUnstyled)`
 		border: 1px solid #c6c6c6;
 		background: white;
 		.empty-state {
+			position: absolute;
+			color: #7f7f7f;
+			top: 0;
+			left: 0;
 			width: 100%;
-			/* height: auto; */
-			margin-bottom: 10px;
-			font-size: 1.1rem;
+			height: 100%;
+			/* font-size: 1.1rem; */
 			display: flex;
 			justify-content: center;
 			align-items: center;

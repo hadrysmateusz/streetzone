@@ -1,10 +1,9 @@
 import React, { Component } from "react"
-import { Form } from "react-final-form"
+import { Form, Field } from "react-final-form"
 
-import { StyledField } from "../Basics"
-import Button from "../Button"
-
-// import { withFirebase } from "../Firebase"
+import { StyledInput, FieldRow, FieldLabel } from "../Basics"
+import { LoaderButton } from "../Button"
+import { Error } from "../ItemForm"
 import { FORM_ERR } from "../../constants"
 
 class PasswordChangeForm extends Component {
@@ -50,34 +49,58 @@ class PasswordChangeForm extends Component {
 			<Form
 				onSubmit={this.onSubmit}
 				validate={this.validate}
-				render={({ handleSubmit, submitting, pristine }) => (
+				render={({ handleSubmit, submitting, pristine, values }) => (
 					<form onSubmit={handleSubmit}>
-						{/* Nowe Hasło */}
-						<StyledField name="passwordNew">
-							{({ input, meta, ...rest }) => (
-								<div {...rest}>
-									<label>Nowe Hasło </label>
-									<input {...input} type="password" placeholder="Nowe Hasło" />
-									{meta.error && meta.touched && <span>{meta.error}</span>}
-								</div>
-							)}
-						</StyledField>
+						{/* Hasło */}
+						<FieldRow>
+							<Field name="passwordNew">
+								{({ input, meta }) => (
+									<>
+										<FieldLabel>Nowe Hasło</FieldLabel>
+										<StyledInput
+											{...input}
+											type="password"
+											placeholder="Nowe Hasło"
+										/>
+										<Error
+											message={meta.error}
+											showIf={meta.error && meta.touched}
+										/>
+									</>
+								)}
+							</Field>
+						</FieldRow>
 
 						{/* Powtórz Hasło */}
-						<StyledField name="passwordConfirm">
-							{({ input, meta, ...rest }) => (
-								<div {...rest}>
-									<label>Potwierdź Nowe Hasło </label>
-									<input {...input} type="password" placeholder="Potwierdź Nowe Hasło" />
-									{meta.error && meta.touched && <span>{meta.error}</span>}
-								</div>
-							)}
-						</StyledField>
+						{values.passwordNew && (
+							<FieldRow>
+								<Field name="passwordConfirm">
+									{({ input, meta }) => (
+										<>
+											<FieldLabel>Potwierdź Nowe Hasło</FieldLabel>
+											<StyledInput
+												{...input}
+												type="password"
+												placeholder="Potwierdź Nowe Hasło"
+											/>
+											<Error
+												message={meta.error}
+												showIf={meta.error && meta.touched}
+											/>
+										</>
+									)}
+								</Field>
+							</FieldRow>
+						)}
 
-						<Button type="submit" fullWidth disabled={submitting || pristine}>
-							Zmień hasło
-						</Button>
-						{error && <p>{error.message}</p>}
+						<LoaderButton
+							text="Zmień hasło"
+							type="submit"
+							isLoading={submitting}
+							disabled={submitting || pristine}
+							fullWidth
+						/>
+						{error && <Error message={error.message} showIf={error} />}
 					</form>
 				)}
 			/>

@@ -6,56 +6,139 @@ import { withFirebase } from "../Firebase"
 import { withAuthorization, withAuthentication } from "../UserSession"
 import LoadingSpinner from "../LoadingSpinner"
 import { Separator } from "../Basics"
-import ItemCard from "../ItemCard"
 import AvatarChangeForm from "../AvatarChange"
 import LoginManagement from "../LoginManagement"
+import { CSS } from "../../constants"
 import { BREAKPOINTS } from "../../constants/const"
+import ItemsView from "../ItemsView"
 
-const Container = styled.div`
-	max-width: 1050px;
-	margin: 20px auto;
+const UserSettings = ({ onAvatarSubmit, authUser }) => (
+	<div>
+		<Separator text="Zdjęcie profilowe" />
+		<AvatarChangeForm onSubmit={onAvatarSubmit} />
+		<LoginManagement authUser={authUser} />
+	</div>
+)
+
+const UserFeedback = () => (
+	<div>
+		<h3>Opinie</h3>
+	</div>
+)
+
+const UserTransactions = () => (
+	<div>
+		<h3>Historia transakcji</h3>
+		<h4>Sprzedane przedmioty</h4>
+		<h4>Kupione przedmioty</h4>
+	</div>
+)
+
+const ProfilePicture = styled.div`
+	width: ${(p) => p.size};
+	height: ${(p) => p.size};
+	border-radius: 50%;
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-image: ${(p) => `url(${p.url})`};
 `
 
-const ItemsContainer = styled.div`
+const MainGrid = styled.div`
 	display: grid;
-	grid-gap: 14px;
+	margin: 0 auto;
+	grid-gap: 20px;
 	padding: 0 20px;
+	grid-template-areas:
+		"info"
+		"tabs-nav"
+		"tabs-content";
 
-	@media (min-width: ${BREAKPOINTS[1]}px) {
-		grid-template-columns: 1fr 1fr;
-	}
 	@media (min-width: ${BREAKPOINTS[2]}px) {
-		grid-template-columns: 1fr 1fr 1fr;
+		max-width: 860px;
+		grid-template-columns: 200px 1fr;
+		grid-template-areas:
+			"info info"
+			"tabs-nav tabs-content";
 	}
-	@media (min-width: ${BREAKPOINTS[4]}px) {
-		grid-template-columns: 1fr 1fr 1fr 1fr;
+	@media (min-width: ${BREAKPOINTS[3]}px) {
+		min-width: ${BREAKPOINTS[3]}px;
+	}
+	@media (min-width: ${BREAKPOINTS[5]}px) {
+		min-width: ${BREAKPOINTS[5]}px;
 	}
 `
+
+const MainInfoContainer = styled.div`
+	grid-area: info;
+	display: grid;
+	grid-template-columns: 120px 1fr;
+	grid-template-rows: 120px;
+`
+
+const TabsContent = styled.div`
+	grid-area: tabs-content;
+`
+
+const TabsNav = styled.nav`
+	grid-area: tabs-nav;
+	background: white;
+	border: 1px solid#c6c6c6;
+	padding: 10px 0;
+	white-space: nowrap;
+	text-align: center;
+	display: grid;
+	grid-template-columns: 1fr;
+	grid-auto-rows: min-content;
+	gap: 12px;
+`
+
+const Tab = styled.div`
+	padding: 0 15px;
+	color: ${(p) => (p.isCurrent ? CSS.COLOR_ACCENT : "#555")};
+	:hover {
+		color: ${CSS.COLOR_ACCENT};
+	}
+	cursor: pointer;
+`
+
+const TABS = {
+	items: { name: "ITEMS", displayName: "Przedmioty na sprzedaż" },
+	settings: { name: "SETTINGS", displayName: "Opcje / Edytuj Profil" },
+	feedback: { name: "FEEDBACK", displayName: "Opinie" },
+	transactions: { name: "TRANSACTIONS", displayName: "Historia Transakcji" }
+}
 
 class AccountPage extends Component {
-	constructor(props) {
-		super(props)
-
-		this.itemListeners = []
-	}
+	itemListeners = []
 
 	state = {
 		isLoading: true,
 		user: null,
 		userIsOwner: false,
-		items: {}
+		items: {},
+		currentTab: TABS.items.name
 	}
 
 	getUser = async () => {
 		try {
+			// Get id from url
 			const userId = this.props.match.params.id
+			// Get user data from db based on id
 			const user = (await this.props.firebase.user(userId).get()).data()
+			// Get the current authenticated user
 			const authUser = this.props.firebase.authUser()
+			// Check if this is the page of the current user
 			const userIsOwner = authUser && userId === authUser.uid
 
+			// Throw an error if user isn't found
 			if (!user) throw new Error("Couldn't find the user")
 
-			return this.setState({ user, userIsOwner })
+			// Get profile image url of the user
+			const profileImageURL = await this.props.firebase.storageRef
+				.child(user.profilePictureRef)
+				.getDownloadURL()
+
+			return this.setState({ user, userIsOwner, profileImageURL })
 		} catch (error) {
 			console.log(error)
 		}
@@ -109,10 +192,12 @@ class AccountPage extends Component {
 		}
 
 		// Register a new listener
-		this.itemsListener = this.props.firebase.user(userId).onSnapshot(async () => {
-			await this.getUser()
-			this.getItems()
-		})
+		this.itemsListener = this.props.firebase
+			.user(userId)
+			.onSnapshot(async () => {
+				await this.getUser()
+				this.getItems()
+			})
 	}
 
 	componentDidMount = async () => {
@@ -125,9 +210,11 @@ class AccountPage extends Component {
 		this.registerItemsListener()
 
 		// If logged-in user changes check if they are owner again
-		this.authListener = this.props.firebase.auth.onAuthStateChanged((authUser) => {
-			this.setState({ userIsOwner: userId === authUser.uid })
-		})
+		this.authListener = this.props.firebase.auth.onAuthStateChanged(
+			(authUser) => {
+				this.setState({ userIsOwner: userId === authUser.uid })
+			}
+		)
 
 		this.setState({ isLoading: false })
 	}
@@ -147,34 +234,60 @@ class AccountPage extends Component {
 		this.itemsListener()
 	}
 
+	switchTab = (e) => {
+		const currentTab = e.currentTarget.dataset.tab
+		this.setState({ currentTab })
+	}
+
 	render() {
-		const { isLoading, user, userIsOwner, items } = this.state
+		const {
+			isLoading,
+			user,
+			userIsOwner,
+			items,
+			currentTab,
+			profileImageURL
+		} = this.state
 		return (
-			<Container>
+			<MainGrid>
 				{!isLoading && user ? (
-					<div className={this.props.className}>
-						<Separator text="Informacje" />
-						<h2 style={{ textAlign: "center" }}>Imię: {user.name}</h2>
-						<p style={{ textAlign: "center" }}>Email: {user.email}</p>
-						{userIsOwner && (
-							<>
-								<Separator text="Profilowe" />
-								<AvatarChangeForm onSubmit={this.onAvatarSubmit} />
-								<Separator text="Metody Logowania" />
-								<LoginManagement authUser={this.props.authUser} />
-							</>
-						)}
-						<Separator text="Przedmioty na sprzedaż" />
-						<ItemsContainer>
-							{Object.values(items).map((item, i) => (
-								<ItemCard key={i} item={item} />
+					<>
+						<MainInfoContainer>
+							<ProfilePicture size="100px" url={profileImageURL} />
+							<div>
+								<h2>Imię: {user.name}</h2>
+								<p>Email: {user.email}</p>
+							</div>
+						</MainInfoContainer>
+						<TabsNav>
+							{Object.values(TABS).map(({ name, displayName }) => (
+								<Tab
+									onClick={this.switchTab}
+									data-tab={name}
+									isCurrent={name === currentTab}
+								>
+									{displayName}
+								</Tab>
 							))}
-						</ItemsContainer>
-					</div>
+						</TabsNav>
+						<TabsContent>
+							{currentTab === TABS.items.name && (
+								<ItemsView items={Object.values(items)} />
+							)}
+							{currentTab === TABS.settings.name && userIsOwner && (
+								<UserSettings
+									authUser={this.props.authUser}
+									onAvatarSubmit={this.onAvatarSubmit}
+								/>
+							)}
+							{currentTab === TABS.feedback.name && <UserFeedback />}
+							{currentTab === TABS.transactions.name && <UserTransactions />}
+						</TabsContent>
+					</>
 				) : (
 					<LoadingSpinner />
 				)}
-			</Container>
+			</MainGrid>
 		)
 	}
 }

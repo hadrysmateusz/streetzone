@@ -24,6 +24,7 @@ const ItemsGrid = styled.div`
 `
 
 const ItemsView = ({ items }) => {
+	console.log(items)
 	return (
 		<ItemsGrid>
 			{items.map((item, i) => (

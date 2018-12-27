@@ -79,8 +79,7 @@ const Navigation = ({ authUser, ...rest }) => (
 				<NavItem>
 					<CustomNavLink to={ROUTES.ACCOUNT.replace(":id", authUser.uid)}>
 						<FontAwesomeIcon className="icon" icon="user" />
-						{console.log(authUser)}
-						<img src={authUser.profilePictureURL} />
+						{/* <img src={authUser.profilePictureURL} alt="Zdjęcie profilowe"/> */}
 						{authUser.name ? authUser.name : "Profil"}
 					</CustomNavLink>{" "}
 				</NavItem>
