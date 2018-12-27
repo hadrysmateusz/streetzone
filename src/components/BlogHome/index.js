@@ -93,7 +93,7 @@ const Title = styled.h2`
 
 const Excerpt = styled.p`
 	white-space: pre-wrap;
-	max-width: 350px;
+	max-width: 400px;
 
 	line-height: 1.5em;
 	font-size: 1.04rem;
@@ -118,7 +118,7 @@ export class BlogHomePage extends Component {
 	render() {
 		return (
 			<Container>
-				<Header>Blog</Header>
+				{/* <Header>Blog</Header> */}
 				<PostsContainer>
 					{this.state.posts.map((post) => {
 						let excerpt = removeMarkdown(post.content, { gfm: true })

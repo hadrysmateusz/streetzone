@@ -9,20 +9,22 @@ import styled from "styled-components"
 import { withFirebase } from "../Firebase"
 import LoadingSpinner from "../LoadingSpinner"
 import { ROUTES, CSS } from "../../constants"
+// import { Separator } from "../Basics"
 
 const Container = styled.div`
-	max-width: ${(p) => p.theme.breakpoints[2]}px;
+	max-width: ${(p) => p.theme.breakpoints[5]}px;
 	margin: 0 auto;
 `
 
 const Content = styled.div`
+	position: relative;
 	border: 1px solid #dcdcdc;
 	background: white;
 	padding: 20px;
 	box-shadow: 0 2px 6px -1px rgba(0, 0, 0, 0.14);
 	margin-bottom: 20px;
 	width: 100%;
-	max-width: ${(p) => p.theme.breakpoints[2]}px;
+	max-width: ${(p) => p.theme.breakpoints[5]}px;
 
 	@media (max-width: ${(p) => p.theme.breakpoints[2]}px) {
 		border-left: none;
@@ -32,7 +34,10 @@ const Content = styled.div`
 
 const Text = styled.div`
 	line-height: 1.55em;
-	font-size: calc(0.98rem + 0.11vw);
+	font-size: calc(1rem + 0.12vw);
+	@media (min-width: ${(p) => p.theme.breakpoints[5]}px) {
+		font-size: 1.15rem;
+	}
 	padding: 0;
 	word-spacing: 2px;
 	height: 100%;
@@ -50,14 +55,20 @@ const Image = styled.img`
 	max-width: 100%;
 	width: auto;
 	height: auto;
-	max-height: 40vh;
+	max-height: 45vh;
 	display: block;
 	margin: 0 auto;
 `
 
-const TopContainer = styled.div`
+const LinkContainer = styled.div`
 	color: #2f2f2f;
-	padding: 0 15px;
+	font-weight: 500;
+	padding: 20px;
+	background: rgba(255, 255, 255, 0.8);
+	text-align: center;
+	position: absolute;
+	top: 0;
+	left: 0;
 	a {
 		:hover {
 			color: ${CSS.COLOR_ACCENT};
@@ -72,14 +83,12 @@ const TopContainer = styled.div`
 const Author = styled.div`
 	margin: 6px 0;
 	padding: 0 25px;
-	border-right: 1px solid #ddd;
 	cursor: default;
 `
 
 const CreatedAt = styled.div`
 	margin: 6px 0;
 	padding: 0 25px;
-	border-right: 1px solid #ddd;
 	cursor: default;
 `
 
@@ -130,6 +139,18 @@ const Info = styled.div`
 	padding: 10px 0;
 `
 
+const Separator = styled.div`
+	margin: 6px 0;
+	background: #d3d3d3;
+
+	height: 1px;
+	width: 2.5rem;
+	@media (min-width: ${(p) => p.theme.breakpoints[0]}px) {
+		height: 1rem;
+		width: 1px;
+	}
+`
+
 const ReactMarkdown = Loadable({
 	loader: () => import("react-markdown"),
 	loading: () => <LoadingSpinner />
@@ -163,25 +184,27 @@ export class BlogPost extends Component {
 			<Container>
 				{this.state.post && (
 					<>
-						<TopContainer>
-							<Link to={ROUTES.BLOG_HOME}>
-								<FontAwesomeIcon icon="caret-left" />
-								Powrót do strony głównej
-							</Link>
-							<Title>{this.state.post.title}</Title>
-						</TopContainer>
 						<Content>
+							<LinkContainer>
+								<Link to={ROUTES.BLOG_HOME}>
+									<FontAwesomeIcon icon="caret-left" />
+									Wróć
+								</Link>
+							</LinkContainer>
 							<Image src={this.state.post.photo_url} />
+							<Title>{this.state.post.title}</Title>
 							<Info>
 								<Author title="Autor">
 									<FontAwesomeIcon icon="user" />
 									&nbsp;{this.state.post.author}
 								</Author>
+								<Separator />
 								<CreatedAt title="Data dodania">
 									<FontAwesomeIcon icon="calendar" />
 									&nbsp;
 									{moment(this.state.post.createdAt).format("D.M.YY")}
 								</CreatedAt>
+								<Separator />
 								<IconContainer>
 									<div title="Udostępnij na Twitterze">
 										<FontAwesomeIcon icon={["fab", "twitter"]} />
