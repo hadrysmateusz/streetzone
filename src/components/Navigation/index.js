@@ -6,13 +6,16 @@ import { compose } from "recompose"
 
 import { withAuthentication } from "../UserSession"
 import SignOutButton from "../SignOut"
-import { ROUTES, CONST, CSS } from "../../constants"
+import { ROUTES, CSS } from "../../constants"
 
 let CustomNavLink = ({ exact = true, ...rest }) => (
 	<NavLink exact={exact} activeStyle={{ color: CSS.COLOR_ACCENT }} {...rest} />
 )
 
 CustomNavLink = styled(CustomNavLink)`
+	* {
+		user-select: none !important;
+	}
 	background: none;
 	border: none;
 	outline: none;
@@ -93,18 +96,8 @@ const Navigation = ({ authUser, ...rest }) => (
 				<CustomNavLink to={ROUTES.SIGN_IN}>Zaloguj się</CustomNavLink>
 			</NavItem>
 		)}
-		{/* <NavItem className={styles.burgerMenuButton}>
-				<FontAwesomeIcon icon="bars" />
-			</NavItem> */}
 	</Nav>
 )
-
-// .brand {
-// 	font-size: 1.45rem;
-// 	color: darken($primary, 5%);
-// 	flex-grow: 1;
-// 	text-align: left;
-// }
 
 export default compose(
 	withRouter,

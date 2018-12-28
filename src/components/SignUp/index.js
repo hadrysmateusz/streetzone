@@ -52,7 +52,15 @@ class SignUpFormBase extends Component {
 			// Create user in db
 			await this.props.firebase
 				.user(authUser.user.uid)
-				.set({ name, email, items: [] })
+				.set({
+					name,
+					email,
+					items: [],
+					profileImageRef: "",
+					profileImageURL: "",
+					permissions: [],
+					roles: []
+				})
 
 			// Redirect
 			this.props.history.push(ROUTES.HOME)
@@ -103,7 +111,7 @@ class SignUpFormBase extends Component {
 				<Form
 					onSubmit={this.onSubmit}
 					validate={this.validate}
-					render={({ handleSubmit, submitting, pristine }) => (
+					render={({ handleSubmit, submitting, pristine, values }) => (
 						<form onSubmit={handleSubmit}>
 							{/* Imię */}
 							<FieldRow>
@@ -162,24 +170,26 @@ class SignUpFormBase extends Component {
 							</FieldRow>
 
 							{/* Powtórz Hasło */}
-							<FieldRow>
-								<Field name="passwordConfirm">
-									{({ input, meta }) => (
-										<>
-											<FieldLabel>Potwierdź Hasło</FieldLabel>
-											<StyledInput
-												{...input}
-												type="password"
-												placeholder="Potwierdź Hasło"
-											/>
-											<Error
-												message={meta.error}
-												showIf={meta.error && meta.touched}
-											/>
-										</>
-									)}
-								</Field>
-							</FieldRow>
+							{values.password && (
+								<FieldRow>
+									<Field name="passwordConfirm">
+										{({ input, meta }) => (
+											<>
+												<FieldLabel>Potwierdź Hasło</FieldLabel>
+												<StyledInput
+													{...input}
+													type="password"
+													placeholder="Potwierdź Hasło"
+												/>
+												<Error
+													message={meta.error}
+													showIf={meta.error && meta.touched}
+												/>
+											</>
+										)}
+									</Field>
+								</FieldRow>
+							)}
 
 							<LoaderButton
 								text="Utwórz konto"

@@ -4,7 +4,7 @@ import { compose } from "recompose"
 import uuidv1 from "uuid/v1"
 import styled from "styled-components"
 
-import { LoaderButton } from "../Button"
+import Button, { LoaderButton } from "../Button"
 import { FileHandlerSingle, CustomFile } from "../FileHandler"
 import { withRouter } from "react-router-dom"
 import { withFirebase } from "../Firebase"
@@ -12,6 +12,15 @@ import { withFirebase } from "../Firebase"
 const Container = styled.div`
 	max-width: 460px;
 	margin: 0 auto;
+`
+
+const ButtonContainer = styled.div`
+	margin: 8px 0;
+	display: flex;
+	justify-content: stretch;
+	* {
+		flex: 1 1 0;
+	}
 `
 
 class AvatarChangeForm extends React.Component {
@@ -34,7 +43,9 @@ class AvatarChangeForm extends React.Component {
 		const currentUserData = (await currentUser.get()).data()
 
 		if (currentUserData.profilePictureRef) {
-			let ref = this.props.firebase.storageRef.child(currentUserData.profilePictureRef)
+			let ref = this.props.firebase.storageRef.child(
+				currentUserData.profilePictureRef
+			)
 
 			try {
 				const imageURL = await ref.getDownloadURL()
@@ -74,7 +85,9 @@ class AvatarChangeForm extends React.Component {
 				// Upload the new file and return its ref
 				const name = uuidv1()
 				const userId = currentUser.id
-				const ref = firebase.storageRef.child(`profile-pictures/${userId}/${name}`)
+				const ref = firebase.storageRef.child(
+					`profile-pictures/${userId}/${name}`
+				)
 				const snapshot = await ref.put(file.data)
 				newFileRef = snapshot.ref.fullPath
 			}
@@ -102,36 +115,52 @@ class AvatarChangeForm extends React.Component {
 	}
 
 	render() {
+		const { file, isLoading } = this.state
+
 		return (
 			<Container width={500}>
 				<Form
 					onSubmit={this.onSubmit}
 					validate={this.validate}
-					initialValues={{ file: this.state.file }}
-					render={({ handleSubmit, submitting, values, invalid, pristine, active }) => {
+					initialValues={{ file }}
+					render={({
+						handleSubmit,
+						submitting,
+						values,
+						invalid,
+						pristine,
+						active,
+						form
+					}) => {
+						console.log("form:", form)
 						return (
 							<form onSubmit={handleSubmit}>
 								{/* Files (handled by separate component) */}
-								<div>
-									<Field
-										name="file"
-										isLoading={this.state.isLoading}
-										component={FileHandlerSingle}
-									/>
-								</div>
 
-								<div className="buttons">
+								<Field
+									name="file"
+									isLoading={isLoading}
+									component={FileHandlerSingle}
+								/>
+
+								<ButtonContainer>
 									<LoaderButton
 										text="Gotowe"
 										type="submit"
-										fullWidth
 										isLoading={submitting}
-										disabled={submitting || pristine || this.state.isLoading}
+										disabled={submitting || pristine || isLoading}
 									/>
-								</div>
+									<Button
+										type="button"
+										disabled={submitting || pristine || isLoading}
+										onClick={() => form.reset()}
+									>
+										Anuluj
+									</Button>
+								</ButtonContainer>
 								{/* {process.env.NODE_ENV === "development" && (
-								<pre>{JSON.stringify(values, 0, 2)}</pre>
-							)} */}
+									<pre>{JSON.stringify(values, 0, 2)}</pre>
+								)} */}
 							</form>
 						)
 					}}

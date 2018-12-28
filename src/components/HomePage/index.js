@@ -4,7 +4,7 @@ import styled from "styled-components"
 import { withFirebase } from "../Firebase"
 import ItemsView from "../ItemsView"
 import FilterForm from "../Filters"
-import { BREAKPOINTS } from "../../constants/const"
+import { BREAKPOINTS, ITEM_STATUS } from "../../constants/const"
 
 const getItemsPerPage = () => {
 	const height = window.innerHeight
@@ -37,18 +37,18 @@ const MainGrid = styled.div`
 		"content"
 		"load-more";
 
-	@media (min-width: ${BREAKPOINTS[2]}px) {
-		max-width: 860px;
+	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
+		max-width: 850px;
 		grid-template-columns: 200px 1fr;
 		grid-template-areas:
 			"filters content"
 			"filters load-more";
 	}
-	@media (min-width: ${BREAKPOINTS[3]}px) {
-		min-width: ${BREAKPOINTS[3]}px;
+	@media (min-width: ${(p) => p.theme.breakpoints[3]}px) {
+		max-width: ${(p) => p.theme.breakpoints[3]}px;
 	}
-	@media (min-width: ${BREAKPOINTS[5]}px) {
-		min-width: ${BREAKPOINTS[5]}px;
+	@media (min-width: ${(p) => p.theme.breakpoints[5]}px) {
+		max-width: ${(p) => p.theme.breakpoints[5]}px;
 	}
 `
 
@@ -101,8 +101,6 @@ class HomePage extends Component {
 	}
 
 	clearFilterForm = (form) => {
-		console.log("resetting form...")
-		form.initialize({ sort: "createdAt-desc" })
 		const fields = form.getRegisteredFields()
 		form.batch(() => {
 			for (let field of fields) {
@@ -113,7 +111,7 @@ class HomePage extends Component {
 				}
 			}
 		})
-		// this.props.history.push("?")
+		this.props.history.push("?")
 	}
 
 	filterItems = async (searchString) => {
@@ -152,20 +150,19 @@ class HomePage extends Component {
 			filters
 		}
 
-		console.log(filterData)
-
 		await this.setState({ filterData })
 		this.getItems()
 	}
 
 	getItems = async () => {
-		console.log("getting more...")
 		const t1 = Date.now()
 		try {
 			const { sortBy, sortDirection, filters = {} } = this.state.filterData
 
 			// Create the base query
 			let query = this.props.firebase.items()
+
+			query = query.where("status", "==", ITEM_STATUS.available)
 
 			// apply filters
 			if (filters) {

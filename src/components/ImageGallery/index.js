@@ -4,14 +4,16 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 import { withFirebase } from "../Firebase"
 import { MiniButton } from "../Basics"
-// import { CSS } from "../../constants"
-import { BREAKPOINTS } from "../../constants/const"
 
 const CurrentImage = styled.div`
 	/* cursor: zoom-in; */
 	position: relative;
 	width: 100%;
-	height: 50vh;
+	height: 75vw;
+
+	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
+		height: 50vh;
+	}
 
 	background: white;
 	border: 1px solid #c6c6c6;
@@ -31,7 +33,7 @@ const Container = styled.div`
 	user-select: none;
 	min-width: 0;
 	margin-bottom: 20px;
-	@media (min-width: ${BREAKPOINTS[2]}px) {
+	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
 		margin-bottom: 0;
 	}
 `
@@ -51,7 +53,7 @@ const ThumbnailsContainer = styled.ul`
 
 	/* remove this if it proves to be too difficult to implement a scrolling indicator */
 	overflow-x: auto;
-	@media (min-width: ${BREAKPOINTS[2]}px) {
+	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
 		overflow-x: visible;
 		grid-template-columns: repeat(auto-fill, minmax(75px, 1fr));
 	}
@@ -116,7 +118,9 @@ export class ImageGallery extends Component {
 
 	componentDidMount = async () => {
 		// Get item attachments' refs and urls for previews
-		const imageURLs = await this.props.firebase.getImageURLs(this.props.item.attachments)
+		const imageURLs = await this.props.firebase.getImageURLs(
+			this.props.item.attachments
+		)
 
 		this.setState({ imageURLs, isLoading: false })
 	}

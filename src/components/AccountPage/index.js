@@ -8,9 +8,10 @@ import LoadingSpinner from "../LoadingSpinner"
 import { Separator } from "../Basics"
 import AvatarChangeForm from "../AvatarChange"
 import LoginManagement from "../LoginManagement"
-import { CSS } from "../../constants"
+import { CSS, EMPTY_STATES } from "../../constants"
 import { BREAKPOINTS } from "../../constants/const"
 import ItemsView from "../ItemsView"
+import EmptyState from "../EmptyState"
 
 const UserSettings = ({ onAvatarSubmit, authUser }) => (
 	<div>
@@ -61,10 +62,10 @@ const MainGrid = styled.div`
 			"tabs-nav tabs-content";
 	}
 	@media (min-width: ${BREAKPOINTS[3]}px) {
-		min-width: ${BREAKPOINTS[3]}px;
+		max-width: ${BREAKPOINTS[3]}px;
 	}
 	@media (min-width: ${BREAKPOINTS[5]}px) {
-		min-width: ${BREAKPOINTS[5]}px;
+		max-width: ${BREAKPOINTS[5]}px;
 	}
 `
 
@@ -129,14 +130,18 @@ class AccountPage extends Component {
 			const authUser = this.props.firebase.authUser()
 			// Check if this is the page of the current user
 			const userIsOwner = authUser && userId === authUser.uid
+			console.log(user)
 
 			// Throw an error if user isn't found
 			if (!user) throw new Error("Couldn't find the user")
 
-			// Get profile image url of the user
-			const profileImageURL = await this.props.firebase.storageRef
-				.child(user.profilePictureRef)
-				.getDownloadURL()
+			let profileImageURL = ""
+			if (user.profilePictureRef) {
+				// Get profile image url of the user
+				profileImageURL = await this.props.firebase.storageRef
+					.child(user.profilePictureRef)
+					.getDownloadURL()
+			}
 
 			return this.setState({ user, userIsOwner, profileImageURL })
 		} catch (error) {
@@ -252,6 +257,7 @@ class AccountPage extends Component {
 			<MainGrid>
 				{!isLoading && user ? (
 					<>
+						{/* Main Info */}
 						<MainInfoContainer>
 							<ProfilePicture size="100px" url={profileImageURL} />
 							<div>
@@ -259,9 +265,11 @@ class AccountPage extends Component {
 								<p>Email: {user.email}</p>
 							</div>
 						</MainInfoContainer>
+						{/* Tabs navigation */}
 						<TabsNav>
-							{Object.values(TABS).map(({ name, displayName }) => (
+							{Object.values(TABS).map(({ name, displayName }, i) => (
 								<Tab
+									key={i}
 									onClick={this.switchTab}
 									data-tab={name}
 									isCurrent={name === currentTab}
@@ -270,17 +278,25 @@ class AccountPage extends Component {
 								</Tab>
 							))}
 						</TabsNav>
+						{/* Tabs content */}
 						<TabsContent>
-							{currentTab === TABS.items.name && (
-								<ItemsView items={Object.values(items)} />
-							)}
+							{/* Items */}
+							{currentTab === TABS.items.name &&
+								(items.length > 0 ? (
+									<ItemsView items={Object.values(items)} />
+								) : (
+									<EmptyState state={EMPTY_STATES.UserNoItems} />
+								))}
+							{/* Settings */}
 							{currentTab === TABS.settings.name && userIsOwner && (
 								<UserSettings
 									authUser={this.props.authUser}
 									onAvatarSubmit={this.onAvatarSubmit}
 								/>
 							)}
+							{/* Feedback */}
 							{currentTab === TABS.feedback.name && <UserFeedback />}
+							{/* Transactions */}
 							{currentTab === TABS.transactions.name && <UserTransactions />}
 						</TabsContent>
 					</>

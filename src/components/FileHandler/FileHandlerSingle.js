@@ -16,30 +16,16 @@ const PreviewContainer = styled.div`
 	margin: 5px auto 20px;
 `
 
-const ButtonContainer = styled.div`
-	margin: 8px 0;
-	display: flex;
-	justify-content: stretch;
-	* {
-		flex: 1 1 0;
-	}
-`
-
 const PreviewOverlay = styled.div`
-	opacity: 0;
-	transition: opacity 0.15s linear;
 	width: ${size};
 	height: ${size};
-	background: rgba(0, 0, 0, 0.38);
+	background: rgba(0, 0, 0, 0.32);
 	border-radius: 50%;
 	position: absolute;
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	font-size: 2.1rem;
-	&:hover {
-		opacity: 1;
-	}
+	font-size: 1.95rem;
 `
 
 const OverlayButton = styled.div`
@@ -49,6 +35,14 @@ const OverlayButton = styled.div`
 	&:hover {
 		color: white;
 		transform: scale(1.13);
+	}
+	::after {
+		content: attr(title);
+		font-size: 0.7rem;
+		display: block;
+		text-align: center;
+		padding-top: 4px;
+		text-shadow: 1px 1px solid black;
 	}
 `
 
@@ -135,7 +129,7 @@ class FileHandlerSingle extends Component {
 										<FontAwesomeIcon icon="plus" />
 									</OverlayButton>
 								</PreviewOverlay>
-								<EmptyPreview>Brak</EmptyPreview>
+								<EmptyPreview />
 							</>
 						)}
 					</PreviewContainer>
@@ -148,22 +142,6 @@ class FileHandlerSingle extends Component {
 					hidden
 					ref={this.fileInput}
 				/>
-				<ButtonContainer>
-					<Button
-						type="button"
-						onClick={this.clickFileInput}
-						disabled={meta.submitting || isLoading}
-					>
-						Wybierz plik
-					</Button>
-					<Button
-						type="button"
-						disabled={meta.submitting || meta.pristine || isLoading}
-						onClick={this.reset}
-					>
-						Anuluj
-					</Button>
-				</ButtonContainer>
 			</div>
 		)
 	}

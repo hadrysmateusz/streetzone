@@ -61,6 +61,10 @@ const Image = styled.img`
 `
 
 const LinkContainer = styled.div`
+	display: none;
+	@media (min-width: ${(p) => p.theme.breakpoints[0]}px) {
+		display: block;
+	}
 	color: #2f2f2f;
 	font-weight: 500;
 	padding: 20px;
