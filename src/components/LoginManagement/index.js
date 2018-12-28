@@ -170,7 +170,9 @@ const SocialLoginToggle = ({
 				onClick={() => onUnlink(signInMethod.id)}
 				disabled={onlyOneLeft}
 				title={
-					onlyOneLeft && "Nie można dezaktywować ostatniej metody logowania"
+					onlyOneLeft
+						? "Nie można dezaktywować ostatniej metody logowania"
+						: undefined
 				}
 				fullWidth
 			>{`Dezaktywuj ${signInMethod.name}`}</SocialButton>

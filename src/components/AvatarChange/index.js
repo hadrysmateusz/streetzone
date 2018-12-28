@@ -105,6 +105,7 @@ class AvatarChangeForm extends React.Component {
 				await firebase.storageRef.child(oldFileRef).delete()
 			}
 
+			// TODO: reset form  and update this page instead of redirecting
 			// Redirect to home page
 			history.push("/")
 			return
@@ -132,7 +133,6 @@ class AvatarChangeForm extends React.Component {
 						active,
 						form
 					}) => {
-						console.log("form:", form)
 						return (
 							<form onSubmit={handleSubmit}>
 								{/* Files (handled by separate component) */}

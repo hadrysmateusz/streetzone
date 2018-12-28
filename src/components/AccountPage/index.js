@@ -9,7 +9,7 @@ import { Separator } from "../Basics"
 import AvatarChangeForm from "../AvatarChange"
 import LoginManagement from "../LoginManagement"
 import { CSS, EMPTY_STATES } from "../../constants"
-import { BREAKPOINTS } from "../../constants/const"
+import { BREAKPOINTS, ITEM_STATUS } from "../../constants/const"
 import ItemsView from "../ItemsView"
 import EmptyState from "../EmptyState"
 
@@ -21,17 +21,26 @@ const UserSettings = ({ onAvatarSubmit, authUser }) => (
 	</div>
 )
 
-const UserFeedback = () => (
+const UserFeedback = ({ feedback }) => (
 	<div>
-		<h3>Opinie</h3>
+		{feedback && feedback.length > 0 ? (
+			<h3>Opinie</h3>
+		) : (
+			<EmptyState state={EMPTY_STATES.UserNoFeedback} />
+		)}
 	</div>
 )
 
-const UserTransactions = () => (
+const UserTransactions = ({ soldItems }) => (
 	<div>
-		<h3>Historia transakcji</h3>
-		<h4>Sprzedane przedmioty</h4>
-		<h4>Kupione przedmioty</h4>
+		{soldItems && soldItems.length > 0 ? (
+			<>
+				<h3>Sprzedane przedmioty</h3>
+				<ItemsView items={soldItems} />
+			</>
+		) : (
+			<EmptyState state={EMPTY_STATES.UserNoSoldItems} />
+		)}
 	</div>
 )
 
@@ -45,6 +54,7 @@ const ProfilePicture = styled.div`
 `
 
 const MainGrid = styled.div`
+	height: 100%;
 	display: grid;
 	margin: 0 auto;
 	grid-gap: 20px;
@@ -53,10 +63,13 @@ const MainGrid = styled.div`
 		"info"
 		"tabs-nav"
 		"tabs-content";
+	grid-template-columns: 1fr;
+	grid-template-rows: min-content min-content 1fr;
 
 	@media (min-width: ${BREAKPOINTS[2]}px) {
 		max-width: 860px;
-		grid-template-columns: 200px 1fr;
+		grid-template-columns: min-content 1fr;
+		grid-template-rows: min-content 1fr;
 		grid-template-areas:
 			"info info"
 			"tabs-nav tabs-content";
@@ -81,10 +94,10 @@ const TabsContent = styled.div`
 `
 
 const TabsNav = styled.nav`
+	padding: 10px;
 	grid-area: tabs-nav;
 	background: white;
 	border: 1px solid#c6c6c6;
-	padding: 10px 0;
 	white-space: nowrap;
 	text-align: center;
 	display: grid;
@@ -127,10 +140,13 @@ class AccountPage extends Component {
 			// Get user data from db based on id
 			const user = (await this.props.firebase.user(userId).get()).data()
 			// Get the current authenticated user
-			const authUser = this.props.firebase.authUser()
+			const authUser = this.props.authUser
 			// Check if this is the page of the current user
 			const userIsOwner = authUser && userId === authUser.uid
-			console.log(user)
+
+			console.log("fetched user", user)
+			console.log("auth user", authUser)
+			console.log("is owner: ", userIsOwner)
 
 			// Throw an error if user isn't found
 			if (!user) throw new Error("Couldn't find the user")
@@ -151,58 +167,34 @@ class AccountPage extends Component {
 
 	getItems = async () => {
 		try {
+			this.setState({ isFetchingItems: true })
 			// If the user is missing refetch it
 			if (!this.state.user) {
 				await this.getUser()
 			}
 
-			const items = this.state.user.items
-			if (!items) throw new Error("This user has no items")
+			const itemIDs = this.state.user.items
+			if (!itemIDs) throw new Error("This user has no items")
 
-			// Register new listeners for all items
-			for (let itemId of items) {
-				this.registerItemListener(itemId)
+			const items = await Promise.all(
+				itemIDs.map((itemID) => this.props.firebase.getItem(itemID))
+			)
+
+			let availableItems = []
+			let soldItems = []
+
+			for (let item of items) {
+				if (item.status === ITEM_STATUS.available) {
+					availableItems.push(item)
+				} else if (item.status === ITEM_STATUS.sold) {
+					soldItems.push(item)
+				}
 			}
+
+			this.setState({ isFetchingItems: false, availableItems, soldItems })
 		} catch (error) {
 			console.log(error)
 		}
-	}
-
-	registerItemListener = async (itemId) => {
-		// If a listener for this item is already registered, de-register
-		if (this.itemListeners[itemId]) {
-			this.itemListeners[itemId]()
-		}
-
-		// Register a new listener
-		this.itemListeners[itemId] = this.props.firebase
-			.item(itemId)
-			.onSnapshot((snapshot) => {
-				// Update item with corresponding id to contain the new data
-				this.setState({
-					items: {
-						...this.state.items,
-						[itemId]: { itemId, ...snapshot.data() }
-					}
-				})
-			})
-	}
-
-	registerItemsListener = async () => {
-		const userId = this.props.match.params.id
-
-		// If a listener is already registered, de-register
-		if (this.itemsListener) {
-			this.itemsListener()
-		}
-
-		// Register a new listener
-		this.itemsListener = this.props.firebase
-			.user(userId)
-			.onSnapshot(async () => {
-				await this.getUser()
-				this.getItems()
-			})
 	}
 
 	componentDidMount = async () => {
@@ -211,8 +203,8 @@ class AccountPage extends Component {
 		// Get user's data
 		await this.getUser()
 
-		// Subscribe to user's items
-		this.registerItemsListener()
+		// Get items
+		await this.getItems()
 
 		// If logged-in user changes check if they are owner again
 		this.authListener = this.props.firebase.auth.onAuthStateChanged(
@@ -228,6 +220,7 @@ class AccountPage extends Component {
 		const userId = this.props.match.params.id
 
 		// If userId in url changed get the new user's data
+		// getUser() also checks ownership
 		if (prevProps.match.params.id !== userId) {
 			this.getUser()
 		}
@@ -236,7 +229,6 @@ class AccountPage extends Component {
 	componentWillUnmount = () => {
 		// De-register listeners
 		this.authListener()
-		this.itemsListener()
 	}
 
 	switchTab = (e) => {
@@ -247,12 +239,15 @@ class AccountPage extends Component {
 	render() {
 		const {
 			isLoading,
+			isFetchingItems,
 			user,
 			userIsOwner,
-			items,
+			availableItems,
+			soldItems,
 			currentTab,
 			profileImageURL
 		} = this.state
+
 		return (
 			<MainGrid>
 				{!isLoading && user ? (
@@ -267,23 +262,27 @@ class AccountPage extends Component {
 						</MainInfoContainer>
 						{/* Tabs navigation */}
 						<TabsNav>
-							{Object.values(TABS).map(({ name, displayName }, i) => (
-								<Tab
-									key={i}
-									onClick={this.switchTab}
-									data-tab={name}
-									isCurrent={name === currentTab}
-								>
-									{displayName}
-								</Tab>
-							))}
+							{Object.values(TABS).map(({ name, displayName }, i) =>
+								!(name === TABS.settings.name && !userIsOwner) ? (
+									<Tab
+										key={i}
+										onClick={this.switchTab}
+										data-tab={name}
+										isCurrent={name === currentTab}
+									>
+										{displayName}
+									</Tab>
+								) : null
+							)}
 						</TabsNav>
 						{/* Tabs content */}
 						<TabsContent>
 							{/* Items */}
 							{currentTab === TABS.items.name &&
-								(items.length > 0 ? (
-									<ItemsView items={Object.values(items)} />
+								(isFetchingItems ? (
+									<LoadingSpinner />
+								) : availableItems.length > 0 ? (
+									<ItemsView items={availableItems} />
 								) : (
 									<EmptyState state={EMPTY_STATES.UserNoItems} />
 								))}
@@ -295,9 +294,13 @@ class AccountPage extends Component {
 								/>
 							)}
 							{/* Feedback */}
-							{currentTab === TABS.feedback.name && <UserFeedback />}
+							{currentTab === TABS.feedback.name && (
+								<UserFeedback feedback={user.feedback} />
+							)}
 							{/* Transactions */}
-							{currentTab === TABS.transactions.name && <UserTransactions />}
+							{currentTab === TABS.transactions.name && (
+								<UserTransactions soldItems={soldItems} />
+							)}
 						</TabsContent>
 					</>
 				) : (

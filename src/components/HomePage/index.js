@@ -155,7 +155,6 @@ class HomePage extends Component {
 	}
 
 	getItems = async () => {
-		const t1 = Date.now()
 		try {
 			const { sortBy, sortDirection, filters = {} } = this.state.filterData
 
@@ -217,7 +216,6 @@ class HomePage extends Component {
 			// Get last fetched document and set it as the new cursor
 			const newCursor = snapshot.docs[snapshot.docs.length - 1]
 
-			console.log(`took: ${Date.now() - t1}ms`)
 			return this.setState({ items, cursor: newCursor, isLoading: false })
 		} catch (e) {
 			console.log(e)

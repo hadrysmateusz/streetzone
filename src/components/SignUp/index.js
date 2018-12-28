@@ -50,17 +50,17 @@ class SignUpFormBase extends Component {
 			})
 
 			// Create user in db
-			await this.props.firebase
-				.user(authUser.user.uid)
-				.set({
-					name,
-					email,
-					items: [],
-					profileImageRef: "",
-					profileImageURL: "",
-					permissions: [],
-					roles: []
-				})
+			await this.props.firebase.user(authUser.user.uid).set({
+				name,
+				email,
+				items: [],
+				profileImageRef: "",
+				profileImageURL: "",
+				permissions: [],
+				roles: [],
+				feedback: [],
+				badges: []
+			})
 
 			// Redirect
 			this.props.history.push(ROUTES.HOME)
