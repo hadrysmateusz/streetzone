@@ -183,7 +183,7 @@ class ItemCard extends Component {
 							<Name title={name}>{name}</Name>
 							<SecondaryContainer>
 								<Condition title={conditionObj.tooltip}>
-									{conditionObj.displayValue}
+									Stan {conditionObj.displayValue}
 								</Condition>
 								<Size title="Rozmiar">{size}</Size>
 							</SecondaryContainer>
