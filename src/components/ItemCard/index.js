@@ -7,7 +7,7 @@ import { withFirebase } from "../Firebase"
 import { CSS } from "../../constants"
 
 const Container = styled.div`
-	height: 365px;
+	height: 345px;
 	overflow: hidden;
 	min-width: 0;
 	min-height: 0;
@@ -109,6 +109,7 @@ const SecondaryContainer = styled.div`
 const Condition = styled.div`
 	font-weight: 500;
 	text-align: center;
+	color: #666;
 `
 
 const Size = styled.div`
