@@ -95,7 +95,8 @@ const routes = [
 	},
 	{
 		path: ROUTES.ACCOUNT,
-		component: AccountPage
+		component: AccountPage,
+		exact: false
 	},
 	{
 		path: ROUTES.NEW_ITEM,

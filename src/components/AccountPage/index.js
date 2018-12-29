@@ -1,6 +1,7 @@
 import React, { Component } from "react"
 import { compose } from "recompose"
 import styled from "styled-components"
+import { NavLink, Route } from "react-router-dom"
 
 import { withFirebase } from "../Firebase"
 import { withAuthorization, withAuthentication } from "../UserSession"
@@ -8,7 +9,7 @@ import LoadingSpinner from "../LoadingSpinner"
 import { Separator } from "../Basics"
 import AvatarChangeForm from "../AvatarChange"
 import LoginManagement from "../LoginManagement"
-import { CSS, EMPTY_STATES } from "../../constants"
+import { CSS, EMPTY_STATES, ROUTES } from "../../constants"
 import { BREAKPOINTS, ITEM_STATUS } from "../../constants/const"
 import ItemsView from "../ItemsView"
 import EmptyState from "../EmptyState"
@@ -89,7 +90,7 @@ const MainInfoContainer = styled.div`
 	grid-template-rows: 120px;
 `
 
-const TabsContent = styled.div`
+const TabsContentContainer = styled.div`
 	grid-area: tabs-content;
 `
 
@@ -106,20 +107,29 @@ const TabsNav = styled.nav`
 	gap: 12px;
 `
 
-const Tab = styled.div`
-	padding: 0 15px;
-	color: ${(p) => (p.isCurrent ? CSS.COLOR_ACCENT : "#555")};
-	:hover {
+const CustomNavLink = ({ exact = true, ...rest }) => (
+	<NavLink exact={exact} activeStyle={{ color: CSS.COLOR_ACCENT }} {...rest} />
+)
+
+const Tab = styled(CustomNavLink)`
+	* {
+		user-select: none !important;
+	}
+	background: none;
+	border: none;
+	outline: none;
+	padding: 0;
+	color: #292929;
+	&:hover {
 		color: ${CSS.COLOR_ACCENT};
 	}
-	cursor: pointer;
 `
 
 const TABS = {
-	items: { name: "ITEMS", displayName: "Przedmioty na sprzedaż" },
-	settings: { name: "SETTINGS", displayName: "Opcje / Edytuj Profil" },
-	feedback: { name: "FEEDBACK", displayName: "Opinie" },
-	transactions: { name: "TRANSACTIONS", displayName: "Historia Transakcji" }
+	items: { name: "items", displayName: "Przedmioty na sprzedaż" },
+	settings: { name: "settings", displayName: "Opcje / Edytuj Profil" },
+	feedback: { name: "feedback", displayName: "Opinie" },
+	transactions: { name: "transactions", displayName: "Historia Transakcji" }
 }
 
 class AccountPage extends Component {
@@ -231,11 +241,6 @@ class AccountPage extends Component {
 		this.authListener()
 	}
 
-	switchTab = (e) => {
-		const currentTab = e.currentTarget.dataset.tab
-		this.setState({ currentTab })
-	}
-
 	render() {
 		const {
 			isLoading,
@@ -244,7 +249,6 @@ class AccountPage extends Component {
 			userIsOwner,
 			availableItems,
 			soldItems,
-			currentTab,
 			profileImageURL
 		} = this.state
 
@@ -264,44 +268,50 @@ class AccountPage extends Component {
 						<TabsNav>
 							{Object.values(TABS).map(({ name, displayName }, i) =>
 								!(name === TABS.settings.name && !userIsOwner) ? (
-									<Tab
-										key={i}
-										onClick={this.switchTab}
-										data-tab={name}
-										isCurrent={name === currentTab}
-									>
+									<Tab key={i} to={this.props.match.url + "/" + name}>
 										{displayName}
 									</Tab>
 								) : null
 							)}
 						</TabsNav>
 						{/* Tabs content */}
-						<TabsContent>
-							{/* Items */}
-							{currentTab === TABS.items.name &&
-								(isFetchingItems ? (
-									<LoadingSpinner />
-								) : availableItems.length > 0 ? (
-									<ItemsView items={availableItems} />
+						<Route
+							path={ROUTES.ACCOUNT_TAB}
+							children={({ match }) =>
+								match ? (
+									<TabsContentContainer>
+										{/* Items */}
+										{match.params.tab === TABS.items.name &&
+											(isFetchingItems ? (
+												<LoadingSpinner />
+											) : availableItems.length > 0 ? (
+												<ItemsView items={availableItems} />
+											) : (
+												<EmptyState state={EMPTY_STATES.UserNoItems} />
+											))}
+										{/* Settings */}
+										{match.params.tab === TABS.settings.name && userIsOwner && (
+											<UserSettings
+												authUser={this.props.authUser}
+												onAvatarSubmit={this.onAvatarSubmit}
+											/>
+										)}
+										{/* Feedback */}
+										{match.params.tab === TABS.feedback.name && (
+											<UserFeedback feedback={user.feedback} />
+										)}
+										{/* Transactions */}
+										{match.params.tab === TABS.transactions.name && (
+											<UserTransactions soldItems={soldItems} />
+										)}
+									</TabsContentContainer>
 								) : (
-									<EmptyState state={EMPTY_STATES.UserNoItems} />
-								))}
-							{/* Settings */}
-							{currentTab === TABS.settings.name && userIsOwner && (
-								<UserSettings
-									authUser={this.props.authUser}
-									onAvatarSubmit={this.onAvatarSubmit}
-								/>
-							)}
-							{/* Feedback */}
-							{currentTab === TABS.feedback.name && (
-								<UserFeedback feedback={user.feedback} />
-							)}
-							{/* Transactions */}
-							{currentTab === TABS.transactions.name && (
-								<UserTransactions soldItems={soldItems} />
-							)}
-						</TabsContent>
+									<TabsContentContainer>
+										<EmptyState state={EMPTY_STATES.Generic} />
+									</TabsContentContainer>
+								)
+							}
+						/>
 					</>
 				) : (
 					<LoadingSpinner />
