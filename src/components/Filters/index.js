@@ -32,13 +32,32 @@ const validate = (values) => {
 	return errors
 }
 
+const Condition = ({ when, is, children }) =>
+	Array.isArray(is) ? (
+		<Field name={when} subscription={{ value: true }}>
+			{({ input: { value } }) => (is.includes(value) ? children : null)}
+		</Field>
+	) : (
+		<Field name={when} subscription={{ value: true }}>
+			{({ input: { value } }) => (value === is ? children : null)}
+		</Field>
+	)
+
 const FilterForm = (props) => (
 	<Form
 		onSubmit={props.onSubmit}
 		className={props.className}
 		initialValues={props.initialValues}
 		validate={validate}
-		render={({ form, handleSubmit, submitting, invalid, errors, values, ...rest }) => {
+		render={({
+			form,
+			handleSubmit,
+			submitting,
+			invalid,
+			errors,
+			values,
+			...rest
+		}) => {
 			return (
 				<form onSubmit={handleSubmit}>
 					<div className="outer-container">
@@ -89,7 +108,9 @@ const FilterForm = (props) => (
 							<Field name="designer" type="select">
 								{({ input, meta }) => (
 									<>
-										<FieldLabel htmlFor="designer-input">Projektant / Marka</FieldLabel>
+										<FieldLabel htmlFor="designer-input">
+											Projektant / Marka
+										</FieldLabel>
 										<SelectAdapter
 											id="designer-input"
 											placeholder={"Marka"}
@@ -103,6 +124,138 @@ const FilterForm = (props) => (
 									</>
 								)}
 							</Field>
+						</FieldRow>
+
+						{/* Min Condition */}
+						<FieldRow>
+							<Field name="condition">
+								{({ input, meta }) => (
+									<>
+										<FieldLabel htmlFor="condition-input">
+											Minimalny stan
+										</FieldLabel>
+										<StyledInput
+											{...input}
+											type="number"
+											min="0"
+											step="1"
+											max="12"
+											placeholder="Minimalny stan"
+										/>
+										<Error meta={meta} />
+									</>
+								)}
+							</Field>
+						</FieldRow>
+
+						{/* Size */}
+						<FieldRow>
+							<FieldLabel as="div">Rozmiar</FieldLabel>
+							{/* <label for="size-35">
+								<Field
+									id="size-35"
+									component="input"
+									type="radio"
+									name="size"
+									value="35"
+								/>
+							</label> */}
+
+							{/* TODO: clear the field when switching categories */}
+							<Condition when="category" is={["Tee", "Longsleeve"]}>
+								{["XS", "S", "M", "L", "XL", "XXL", "3XL", "4XL"].map(
+									(size) => (
+										<>
+											<label for={`size-${size}`} style={{ padding: "5px" }}>
+												<span>{size}</span>
+												<Field
+													id={`size-${size}`}
+													component="input"
+													type="radio"
+													name="size"
+													value={size}
+												/>
+											</label>
+											<br />
+										</>
+									)
+								)}
+							</Condition>
+							<Condition when="category" is="Spodnie">
+								{[
+									26,
+									27,
+									28,
+									29,
+									30,
+									31,
+									32,
+									33,
+									34,
+									35,
+									36,
+									37,
+									38,
+									39,
+									40,
+									41,
+									42,
+									43,
+									44
+								].map((size) => (
+									<>
+										<label for={`size-${size}`}>
+											<span>{size}</span>
+											<Field
+												id={`size-${size}`}
+												component="input"
+												type="radio"
+												name="size"
+												value={size}
+											/>
+										</label>
+										<br />
+									</>
+								))}
+							</Condition>
+							<Condition when="category" is="Buty">
+								{[
+									32,
+									33,
+									34,
+									35,
+									36,
+									37,
+									38,
+									39,
+									40,
+									41,
+									42,
+									43,
+									44,
+									45,
+									46,
+									47,
+									48,
+									49,
+									50,
+									51
+								].map((size) => (
+									<>
+										<label for={`size-${size}`}>
+											<span>{size}</span>
+											<Field
+												id={`size-${size}`}
+												component="input"
+												type="radio"
+												name="size"
+												value={size}
+											/>
+										</label>
+										<br />
+									</>
+								))}
+							</Condition>
 						</FieldRow>
 
 						{/* Price */}
@@ -156,9 +309,9 @@ const FilterForm = (props) => (
 					>
 						Wyczyść filtry
 					</Button>
-					{/* {process.env.NODE_ENV === "development" && (
+					{process.env.NODE_ENV === "development" && (
 						<pre>{JSON.stringify(values, 0, 2)}</pre>
-					)} */}
+					)}
 				</form>
 			)
 		}}
