@@ -93,6 +93,7 @@ class HomePage extends Component {
 
 		if (values.sort) searchParams.set("sort", values.sort)
 		if (values.category) searchParams.set("category", values.category)
+		if (values.size) searchParams.set("size", values.size)
 		if (values.designer) searchParams.set("designer", values.designer)
 		if (values.price_min) searchParams.set("price_min", values.price_min)
 		if (values.price_max) searchParams.set("price_max", values.price_max)
@@ -135,14 +136,11 @@ class HomePage extends Component {
 		// Create new object as to not overwrite the FilterForm data
 		let filters = {}
 
-		if (searchParams.get("category"))
-			filters.category = searchParams.get("category")
-		if (searchParams.get("designer"))
-			filters.designer = searchParams.get("designer")
-		if (searchParams.get("price_min"))
-			filters.price_min = searchParams.get("price_min")
-		if (searchParams.get("price_max"))
-			filters.price_max = searchParams.get("price_max")
+		if (searchParams.get("category")) filters.category = searchParams.get("category")
+		if (searchParams.get("size")) filters.size = searchParams.get("size")
+		if (searchParams.get("designer")) filters.designer = searchParams.get("designer")
+		if (searchParams.get("price_min")) filters.price_min = searchParams.get("price_min")
+		if (searchParams.get("price_max")) filters.price_max = searchParams.get("price_max")
 
 		let filterData = {
 			sortBy,
@@ -165,11 +163,11 @@ class HomePage extends Component {
 
 			// apply filters
 			if (filters) {
-				const { category, designer, price_min, price_max } = filters
+				const { category, designer, price_min, price_max, size } = filters
 
 				if (category) query = query.where("category", "==", category)
-				if (designer)
-					query = query.where("designers", "array-contains", designer)
+				if (designer) query = query.where("designers", "array-contains", designer)
+				if (size) query = query.where("size", "==", size)
 				if (price_min) query = query.where("price", ">=", +price_min)
 				if (price_max) query = query.where("price", "<=", +price_max)
 				// When using range comparison operators
@@ -242,7 +240,6 @@ class HomePage extends Component {
 			initialValues.price_min = searchParams.get("price_min")
 		if (searchParams.get("price_max"))
 			initialValues.price_max = searchParams.get("price_max")
-		console.log("initialValues", initialValues)
 		this.setState({ initialValues })
 
 		this.removeLocationListener = this.props.history.listen((location) => {
@@ -255,7 +252,6 @@ class HomePage extends Component {
 	}
 
 	render() {
-		console.log("rendering...")
 		const { items, isLoading, initialValues, noMoreItems } = this.state
 		return (
 			<MainGrid>

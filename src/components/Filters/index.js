@@ -1,6 +1,7 @@
 import React from "react"
 import { Form, Field } from "react-final-form"
 import styled from "styled-components"
+import { OnChange } from "react-final-form-listeners"
 
 import Button, { LoaderButton } from "../Button"
 import { FieldLabel, FieldRow, StyledInput } from "../Basics"
@@ -32,16 +33,16 @@ const validate = (values) => {
 	return errors
 }
 
-const Condition = ({ when, is, children }) =>
-	Array.isArray(is) ? (
-		<Field name={when} subscription={{ value: true }}>
-			{({ input: { value } }) => (is.includes(value) ? children : null)}
-		</Field>
-	) : (
-		<Field name={when} subscription={{ value: true }}>
-			{({ input: { value } }) => (value === is ? children : null)}
-		</Field>
-	)
+// const Condition = ({ when, is, children }) =>
+// 	Array.isArray(is) ? (
+// 		<Field name={when} subscription={{ value: true }}>
+// 			{({ input: { value } }) => (is.includes(value) ? children : null)}
+// 		</Field>
+// 	) : (
+// 		<Field name={when} subscription={{ value: true }}>
+// 			{({ input: { value } }) => (value === is ? children : null)}
+// 		</Field>
+// 	)
 
 const FilterForm = (props) => (
 	<Form
@@ -49,15 +50,7 @@ const FilterForm = (props) => (
 		className={props.className}
 		initialValues={props.initialValues}
 		validate={validate}
-		render={({
-			form,
-			handleSubmit,
-			submitting,
-			invalid,
-			errors,
-			values,
-			...rest
-		}) => {
+		render={({ form, handleSubmit, submitting, invalid, errors, values, ...rest }) => {
 			return (
 				<form onSubmit={handleSubmit}>
 					<div className="outer-container">
@@ -103,14 +96,43 @@ const FilterForm = (props) => (
 							</Field>
 						</FieldRow>
 
+						{/* Size */}
+						<FieldRow>
+							<Field name="size">
+								{({ input, meta }) => {
+									const options = ITEM_SCHEMA.sizeOptions(values.category)
+									return (
+										<>
+											<OnChange name="category">
+												{(value, previous) => {
+													if (value !== previous) {
+														input.onChange(undefined)
+													}
+												}}
+											</OnChange>
+											<FieldLabel htmlFor="size-input">Rozmiar</FieldLabel>
+											<SelectAdapter
+												id="size-input"
+												placeholder={"Rozmiar"}
+												options={options}
+												isClearable={true}
+												isSearchable={true}
+												{...meta}
+												{...input}
+											/>
+											<Error meta={meta} />
+										</>
+									)
+								}}
+							</Field>
+						</FieldRow>
+
 						{/* Designer */}
 						<FieldRow>
 							<Field name="designer" type="select">
 								{({ input, meta }) => (
 									<>
-										<FieldLabel htmlFor="designer-input">
-											Projektant / Marka
-										</FieldLabel>
+										<FieldLabel htmlFor="designer-input">Projektant / Marka</FieldLabel>
 										<SelectAdapter
 											id="designer-input"
 											placeholder={"Marka"}
@@ -126,137 +148,29 @@ const FilterForm = (props) => (
 							</Field>
 						</FieldRow>
 
+						{/* MULTIPLE RANGE FILTERS REQUIRE QUERY MERGING :C */}
 						{/* Min Condition */}
-						<FieldRow>
+						{/* <FieldRow>
 							<Field name="condition">
 								{({ input, meta }) => (
 									<>
 										<FieldLabel htmlFor="condition-input">
 											Minimalny stan
 										</FieldLabel>
-										<StyledInput
+										<SelectAdapter
+											id="condition-input"
+											placeholder={"Stan"}
+											options={ITEM_SCHEMA.conditionOptions}
+											isClearable={true}
+											isSearchable={true}
+											{...meta}
 											{...input}
-											type="number"
-											min="0"
-											step="1"
-											max="12"
-											placeholder="Minimalny stan"
 										/>
 										<Error meta={meta} />
 									</>
 								)}
 							</Field>
-						</FieldRow>
-
-						{/* Size */}
-						<FieldRow>
-							<FieldLabel as="div">Rozmiar</FieldLabel>
-							{/* <label for="size-35">
-								<Field
-									id="size-35"
-									component="input"
-									type="radio"
-									name="size"
-									value="35"
-								/>
-							</label> */}
-
-							{/* TODO: clear the field when switching categories */}
-							<Condition when="category" is={["Tee", "Longsleeve"]}>
-								{["XS", "S", "M", "L", "XL", "XXL", "3XL", "4XL"].map(
-									(size) => (
-										<>
-											<label for={`size-${size}`} style={{ padding: "5px" }}>
-												<span>{size}</span>
-												<Field
-													id={`size-${size}`}
-													component="input"
-													type="radio"
-													name="size"
-													value={size}
-												/>
-											</label>
-											<br />
-										</>
-									)
-								)}
-							</Condition>
-							<Condition when="category" is="Spodnie">
-								{[
-									26,
-									27,
-									28,
-									29,
-									30,
-									31,
-									32,
-									33,
-									34,
-									35,
-									36,
-									37,
-									38,
-									39,
-									40,
-									41,
-									42,
-									43,
-									44
-								].map((size) => (
-									<>
-										<label for={`size-${size}`}>
-											<span>{size}</span>
-											<Field
-												id={`size-${size}`}
-												component="input"
-												type="radio"
-												name="size"
-												value={size}
-											/>
-										</label>
-										<br />
-									</>
-								))}
-							</Condition>
-							<Condition when="category" is="Buty">
-								{[
-									32,
-									33,
-									34,
-									35,
-									36,
-									37,
-									38,
-									39,
-									40,
-									41,
-									42,
-									43,
-									44,
-									45,
-									46,
-									47,
-									48,
-									49,
-									50,
-									51
-								].map((size) => (
-									<>
-										<label for={`size-${size}`}>
-											<span>{size}</span>
-											<Field
-												id={`size-${size}`}
-												component="input"
-												type="radio"
-												name="size"
-												value={size}
-											/>
-										</label>
-										<br />
-									</>
-								))}
-							</Condition>
-						</FieldRow>
+						</FieldRow> */}
 
 						{/* Price */}
 						<FieldRow>
@@ -309,9 +223,9 @@ const FilterForm = (props) => (
 					>
 						Wyczyść filtry
 					</Button>
-					{process.env.NODE_ENV === "development" && (
+					{/* {process.env.NODE_ENV === "development" && (
 						<pre>{JSON.stringify(values, 0, 2)}</pre>
-					)}
+					)} */}
 				</form>
 			)
 		}}
