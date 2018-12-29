@@ -90,6 +90,40 @@ const Designers = styled.div`
 	word-spacing: 0.35ch;
 `
 
+const SecondaryContainer = styled.div`
+	padding-top: 3px;
+	font-size: 0.83rem;
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: space-between;
+	white-space: nowrap;
+`
+
+const Condition = styled.div`
+	font-weight: 500;
+`
+
+const Size = styled.div``
+
+const translateCondition = (conditionValue) => {
+	if (conditionValue === 12) {
+		return {
+			displayValue: "DS",
+			tooltip: "Stan: Nowy - Oryginalne"
+		}
+	} else if (conditionValue === 11) {
+		return {
+			displayValue: "VNDS",
+			tooltip: "Stan: Prawie Nowy - Bez śladów użytkowania"
+		}
+	} else if (conditionValue <= 10 && conditionValue >= 0) {
+		return {
+			displayValue: `${conditionValue}/10`,
+			tooltip: `Stan: ${conditionValue}/10`
+		}
+	}
+}
+
 class ItemCard extends Component {
 	state = { imageURL: "" }
 
@@ -105,7 +139,9 @@ class ItemCard extends Component {
 	}
 
 	loadImage = async () => {
-		let ref = this.props.firebase.storageRef.child(this.props.item.attachments[0])
+		let ref = this.props.firebase.storageRef.child(
+			this.props.item.attachments[0]
+		)
 
 		try {
 			const imageURL = await ref.getDownloadURL()
@@ -116,7 +152,18 @@ class ItemCard extends Component {
 	}
 
 	render() {
-		const { itemId, name, price, designers = [], createdAt } = this.props.item
+		const {
+			itemId,
+			name,
+			price,
+			designers = [],
+			createdAt,
+			condition,
+			size
+		} = this.props.item
+
+		let conditionObj = translateCondition(condition)
+
 		return (
 			<Container className={this.props.className}>
 				<Link to={`/i/${itemId}`}>
@@ -134,6 +181,12 @@ class ItemCard extends Component {
 								<Price>{price}zł</Price>
 							</InnerContainer>
 							<Name title={name}>{name}</Name>
+							<SecondaryContainer>
+								<Condition title={conditionObj.tooltip}>
+									{conditionObj.displayValue}
+								</Condition>
+								<Size title="Rozmiar">{size}</Size>
+							</SecondaryContainer>
 						</TopContainer>
 						<BottomContainer>
 							Dodano {moment(createdAt).format("D.M.YY o HH:mm")}
