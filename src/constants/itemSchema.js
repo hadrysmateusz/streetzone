@@ -172,4 +172,12 @@ const sizeOptions = (category) => {
 	}
 }
 
-export { schema, categoryOptions, designerOptions, conditionOptions, sizeOptions }
+export {
+	schema,
+	categories,
+	designers,
+	categoryOptions,
+	designerOptions,
+	conditionOptions,
+	sizeOptions
+}

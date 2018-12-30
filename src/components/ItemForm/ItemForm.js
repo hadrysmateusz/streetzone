@@ -1,5 +1,6 @@
 import React from "react"
 import { Form, Field } from "react-final-form"
+import { OnChange } from "react-final-form-listeners"
 
 import Button, { LoaderButton } from "../Button"
 import { FieldRow, FieldLabel, StyledInput, StyledTextarea } from "../Basics"
@@ -88,7 +89,7 @@ const ItemForm = ({ initialValues, onSubmit, history, isLoading }) => {
 			onSubmit={onSubmit}
 			validate={validate}
 			initialValues={initialValues}
-			render={({ handleSubmit, submitting, pristine, ...rest }) => {
+			render={({ form, handleSubmit, submitting, pristine, values, ...rest }) => {
 				return (
 					<form onSubmit={handleSubmit}>
 						{/* Name */}
@@ -169,13 +170,38 @@ const ItemForm = ({ initialValues, onSubmit, history, isLoading }) => {
 						{/* Size */}
 						<FieldRow>
 							<Field name="size">
-								{({ input, meta }) => (
-									<>
-										<FieldLabel>Rozmiar </FieldLabel>
-										<StyledInput {...input} type="text" placeholder="Rozmiar" />
-										<Error message={meta.error} showIf={meta.error && meta.touched} />
-									</>
-								)}
+								{({ input, meta }) => {
+									const options = ITEM_SCHEMA.sizeOptions(values.category)
+									return (
+										<>
+											<OnChange name="category">
+												{(value, previous) => {
+													if (value !== previous) {
+														// prevent leaving focus on a disabled field
+														form.blur("size")
+														// reset the field
+														input.onChange(undefined)
+													}
+												}}
+											</OnChange>
+											<FieldLabel htmlFor="size-input">Rozmiar</FieldLabel>
+											<SelectAdapter
+												id="size-input"
+												placeholder={"Rozmiar"}
+												options={options}
+												isClearable={true}
+												isSearchable={true}
+												isDisabled={
+													!values.category ||
+													values.category === ITEM_SCHEMA.categories.akcesoria
+												}
+												{...meta}
+												{...input}
+											/>
+											<Error meta={meta} />
+										</>
+									)
+								}}
 							</Field>
 						</FieldRow>
 
@@ -214,9 +240,9 @@ const ItemForm = ({ initialValues, onSubmit, history, isLoading }) => {
 								Anuluj
 							</Button>
 						</div>
-						{/* {process.env.NODE_ENV === "development" && (
-							<pre>{JSON.stringify(rest.values, 0, 2)}</pre>
-						)} */}
+						{process.env.NODE_ENV === "development" && (
+							<pre>{JSON.stringify(values, 0, 2)}</pre>
+						)}
 					</form>
 				)
 			}}

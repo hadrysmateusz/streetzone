@@ -106,6 +106,9 @@ const FilterForm = (props) => (
 											<OnChange name="category">
 												{(value, previous) => {
 													if (value !== previous) {
+														// prevent leaving focus on a disabled field
+														form.blur("size")
+														// reset the field
 														input.onChange(undefined)
 													}
 												}}
