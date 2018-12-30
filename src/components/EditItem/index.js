@@ -6,7 +6,7 @@ import { withFirebase } from "../Firebase"
 import { withAuthorization } from "../UserSession"
 import LoadingSpinner from "../LoadingSpinner"
 import EmptyState from "../EmptyState"
-import { ItemForm } from "../ItemForm"
+import { ItemEditForm } from "../ItemForm"
 import { CustomFile } from "../FileHandler"
 import { formData, dbData } from "../../utils/formatItemData"
 import { Container, Header } from "../Basics"
@@ -122,7 +122,7 @@ class EditItemPage extends Component {
 					</h4>
 				)}
 				{(this.state.data || this.state.isLoading) && (
-					<ItemForm
+					<ItemEditForm
 						initialValues={this.state.data}
 						isLoading={this.state.isLoading}
 						onSubmit={this.onSubmit}

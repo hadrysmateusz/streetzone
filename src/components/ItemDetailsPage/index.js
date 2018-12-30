@@ -11,7 +11,8 @@ import LoadingSpinner from "../LoadingSpinner"
 import Button, { LoaderButton, AccentButton } from "../Button"
 import EmptyState from "../EmptyState"
 import UserPreview from "../UserPreview"
-import { BREAKPOINTS } from "../../constants/const"
+import { CSS } from "../../constants"
+import { BREAKPOINTS, ITEM_STATUS } from "../../constants/const"
 
 const MainContainer = styled.main`
 	display: flex;
@@ -72,6 +73,33 @@ const Designers = styled.h3`
 	font-weight: bold;
 `
 
+const Sold = styled.div`
+	font-size: 2.1rem;
+	color: ${CSS.COLOR_DANGER};
+	margin-bottom: 12px;
+	font-weight: 500;
+`
+
+// TODO: extract this function as it's used in more than one place
+const translateCondition = (conditionValue) => {
+	if (conditionValue === 12) {
+		return {
+			displayValue: "DS",
+			tooltip: "Nowy - Oryginalne"
+		}
+	} else if (conditionValue === 11) {
+		return {
+			displayValue: "VNDS",
+			tooltip: "Prawie Nowy - Bez śladów użytkowania"
+		}
+	} else if (conditionValue <= 10 && conditionValue >= 0) {
+		return {
+			displayValue: `${conditionValue}/10`,
+			tooltip: `${conditionValue}/10`
+		}
+	}
+}
+
 class ItemDetailsPage extends Component {
 	state = {
 		isLoading: true,
@@ -127,20 +155,30 @@ class ItemDetailsPage extends Component {
 			userIsOwner = authUserId && ownerId === authUserId
 		}
 
+		let conditionObj
+		if (item && !isLoading) {
+			conditionObj = translateCondition(item.condition)
+		}
+
 		return item && !isLoading ? (
 			<MainContainer>
 				<ItemContainer>
 					<ImageGallery item={item} />
 					<InfoContainer>
 						<div>
+							{item.status === ITEM_STATUS.sold && <Sold>SPRZEDANE</Sold>}
 							<MainInfo>
 								{item.designers && (
 									<Designers>{item.designers.join(" & ") + " "}</Designers>
 								)}
 								{item.name}
 							</MainInfo>
-							<div>{`Cena: ${item.price}zł`}</div>
 							<div>Dodano: {moment(item.createdAt).format("D.M.YY o HH:mm")}</div>
+							<br />
+							<div>{`Cena: ${item.price}zł`}</div>
+							<div title={conditionObj.tooltip}>{`Stan: ${
+								conditionObj.displayValue
+							}`}</div>
 						</div>
 						<ButtonsContainer>
 							{userIsOwner ? (

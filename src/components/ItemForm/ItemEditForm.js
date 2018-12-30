@@ -1,15 +1,15 @@
 import React from "react"
 import { Form, Field } from "react-final-form"
-import { OnChange } from "react-final-form-listeners"
+// import { OnChange } from "react-final-form-listeners"
 
 import Button, { LoaderButton } from "../Button"
 import { FieldRow, FieldLabel, StyledInput, StyledTextarea } from "../Basics"
-import SelectAdapter from "../SelectAdapter"
+// import SelectAdapter from "../SelectAdapter"
 import Error from "./Error"
 import { FileHandler } from "../FileHandler"
 import { withRouter } from "react-router-dom"
 
-import { ITEM_SCHEMA, ROUTES, FORM_ERR, CONST } from "../../constants"
+import { /* ITEM_SCHEMA,  */ ROUTES, FORM_ERR, CONST } from "../../constants"
 
 const validate = (values) => {
 	const { name, designers, price, category, size, description, files } = values
@@ -73,7 +73,7 @@ const validate = (values) => {
 	return errors
 }
 
-const ItemForm = ({ initialValues, onSubmit, history, isLoading }) => {
+const ItemEditForm = ({ initialValues, onSubmit, history, isLoading }) => {
 	if (!initialValues) {
 		initialValues = {
 			name: "",
@@ -92,41 +92,6 @@ const ItemForm = ({ initialValues, onSubmit, history, isLoading }) => {
 			render={({ form, handleSubmit, submitting, pristine, values, ...rest }) => {
 				return (
 					<form onSubmit={handleSubmit}>
-						{/* Name */}
-						<FieldRow>
-							<Field name="name">
-								{({ input, meta }) => (
-									<>
-										<FieldLabel>Nazwa</FieldLabel>
-										<StyledInput {...input} type="text" placeholder="Nazwa" />
-										<Error message={meta.error} showIf={meta.error && meta.touched} />
-									</>
-								)}
-							</Field>
-						</FieldRow>
-
-						{/* Designer */}
-						<FieldRow>
-							<Field name="designers" type="select">
-								{({ input, meta }) => (
-									<>
-										<FieldLabel htmlFor="designer-input">Projektanci</FieldLabel>
-										<SelectAdapter
-											id="designer-input"
-											placeholder={"Projektanci"}
-											options={ITEM_SCHEMA.designerOptions}
-											isClearable={true}
-											isSearchable={true}
-											isMulti={true}
-											{...meta}
-											{...input}
-										/>
-										<Error message={meta.error} showIf={meta.error && meta.touched} />
-									</>
-								)}
-							</Field>
-						</FieldRow>
-
 						{/* Price */}
 						<FieldRow>
 							<Field name="price">
@@ -143,65 +108,6 @@ const ItemForm = ({ initialValues, onSubmit, history, isLoading }) => {
 										<Error message={meta.error} showIf={meta.error && meta.touched} />
 									</>
 								)}
-							</Field>
-						</FieldRow>
-
-						{/* Category */}
-						<FieldRow>
-							<Field name="category" type="select">
-								{({ input, meta }) => (
-									<>
-										<FieldLabel htmlFor="category-input">Kategoria</FieldLabel>
-										<SelectAdapter
-											id="category-input"
-											placeholder={"Kategoria"}
-											options={ITEM_SCHEMA.categoryOptions}
-											isClearable={true}
-											isSearchable={true}
-											{...meta}
-											{...input}
-										/>
-										<Error message={meta.error} showIf={meta.error && meta.touched} />
-									</>
-								)}
-							</Field>
-						</FieldRow>
-
-						{/* Size */}
-						<FieldRow>
-							<Field name="size">
-								{({ input, meta }) => {
-									const options = ITEM_SCHEMA.sizeOptions(values.category)
-									return (
-										<>
-											<OnChange name="category">
-												{(value, previous) => {
-													if (value !== previous) {
-														// prevent leaving focus on a disabled field
-														form.blur("size")
-														// reset the field
-														input.onChange(undefined)
-													}
-												}}
-											</OnChange>
-											<FieldLabel htmlFor="size-input">Rozmiar</FieldLabel>
-											<SelectAdapter
-												id="size-input"
-												placeholder={"Rozmiar"}
-												options={options}
-												isClearable={true}
-												isSearchable={true}
-												isDisabled={
-													!values.category ||
-													values.category === ITEM_SCHEMA.categories.akcesoria
-												}
-												{...meta}
-												{...input}
-											/>
-											<Error meta={meta} />
-										</>
-									)
-								}}
 							</Field>
 						</FieldRow>
 
@@ -250,4 +156,4 @@ const ItemForm = ({ initialValues, onSubmit, history, isLoading }) => {
 	)
 }
 
-export default withRouter(ItemForm)
+export default withRouter(ItemEditForm)

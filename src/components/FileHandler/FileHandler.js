@@ -73,7 +73,9 @@ class FileHandlerUnstyled extends Component {
 					<Button
 						type="button"
 						onClick={this.clear}
-						disabled={meta.submitting || isLoading}
+						disabled={
+							meta.submitting || isLoading || !input.value || input.value.length === 0
+						}
 					>
 						Usuń wszystkie
 					</Button>

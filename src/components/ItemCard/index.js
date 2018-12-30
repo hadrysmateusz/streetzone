@@ -121,17 +121,17 @@ const translateCondition = (conditionValue) => {
 	if (conditionValue === 12) {
 		return {
 			displayValue: "DS",
-			tooltip: "Stan: Nowy - Oryginalne"
+			tooltip: "Nowy - Oryginalne"
 		}
 	} else if (conditionValue === 11) {
 		return {
 			displayValue: "VNDS",
-			tooltip: "Stan: Prawie Nowy - Bez śladów użytkowania"
+			tooltip: "Prawie Nowy - Bez śladów użytkowania"
 		}
 	} else if (conditionValue <= 10 && conditionValue >= 0) {
 		return {
 			displayValue: `${conditionValue}/10`,
-			tooltip: `Stan: ${conditionValue}/10`
+			tooltip: `${conditionValue}/10`
 		}
 	}
 }
@@ -185,7 +185,7 @@ class ItemCard extends Component {
 						</TopContainer>
 						<SecondaryContainer>
 							<Price title={`Cena: ${price}`}>{price}zł</Price>
-							<Condition title={conditionObj.tooltip}>
+							<Condition title={`Stan: ${conditionObj.tooltip}`}>
 								{conditionObj.displayValue}
 							</Condition>
 							<Size title={`Rozmiar: ${size}`}>{size}</Size>
