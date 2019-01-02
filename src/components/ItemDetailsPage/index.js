@@ -12,12 +12,13 @@ import Button, { LoaderButton, AccentButton } from "../Button"
 import EmptyState from "../EmptyState"
 import UserPreview from "../UserPreview"
 import { CSS } from "../../constants"
-import { BREAKPOINTS, ITEM_STATUS } from "../../constants/const"
+import { ITEM_STATUS } from "../../constants/const"
+import { translateCondition } from "../../constants/item_schema"
 
 const MainContainer = styled.main`
 	display: flex;
 	flex-direction: column;
-	max-width: ${BREAKPOINTS[4]}px;
+	max-width: ${(p) => p.theme.breakpoints[4]}px;
 	margin: 0 auto;
 	height: 100%;
 	padding: 0 20px;
@@ -28,19 +29,19 @@ const ItemContainer = styled.div`
 	flex-direction: column;
 	max-width: 100%;
 	height: 100%;
-	@media (min-width: ${BREAKPOINTS[2]}px) {
+	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
 		flex-direction: row;
 	}
 `
 
 const InfoContainer = styled.div`
 	flex: 0 0 100%;
-	@media (min-width: ${BREAKPOINTS[2]}px) {
+	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
 		padding-left: 20px;
 		padding-top: 10px;
 		max-width: 330px;
 	}
-	@media (min-width: ${BREAKPOINTS[3]}px) {
+	@media (min-width: ${(p) => p.theme.breakpoints[3]}px) {
 		max-width: 380px;
 		padding-left: 30px;
 		padding-top: 15px;
@@ -80,26 +81,6 @@ const Sold = styled.div`
 	font-weight: 500;
 `
 
-// TODO: extract this function as it's used in more than one place
-const translateCondition = (conditionValue) => {
-	if (conditionValue === 12) {
-		return {
-			displayValue: "DS",
-			tooltip: "Nowy - Oryginalne"
-		}
-	} else if (conditionValue === 11) {
-		return {
-			displayValue: "VNDS",
-			tooltip: "Prawie Nowy - Bez śladów użytkowania"
-		}
-	} else if (conditionValue <= 10 && conditionValue >= 0) {
-		return {
-			displayValue: `${conditionValue}/10`,
-			tooltip: `${conditionValue}/10`
-		}
-	}
-}
-
 class ItemDetailsPage extends Component {
 	state = {
 		isLoading: true,
@@ -109,7 +90,7 @@ class ItemDetailsPage extends Component {
 
 	componentDidMount = async () => {
 		// Get item from database
-		const item = await this.props.firebase.getItem(this.props.match.params.id)
+		const item = await this.props.firebase.getItemData(this.props.match.params.id)
 
 		this.setState({ item, isLoading: false })
 	}
@@ -175,10 +156,12 @@ class ItemDetailsPage extends Component {
 							</MainInfo>
 							<div>Dodano: {moment(item.createdAt).format("D.M.YY o HH:mm")}</div>
 							<br />
-							<div>{`Cena: ${item.price}zł`}</div>
-							<div title={conditionObj.tooltip}>{`Stan: ${
-								conditionObj.displayValue
-							}`}</div>
+							<div>
+								Cena: <strong>{item.price}</strong>
+							</div>
+							<div title={conditionObj.tooltip}>
+								Stan: <strong>{conditionObj.displayValue}</strong>
+							</div>
 						</div>
 						<ButtonsContainer>
 							{userIsOwner ? (

@@ -25,7 +25,7 @@ const IconContainer = styled.div`
 	gap: 15px;
 	& > * {
 		&:hover {
-			color: ${CSS.COLOR_ACCENT};
+			color: ${(p) => p.theme.colors.accent};
 		}
 	}
 `
@@ -36,7 +36,7 @@ const Item = styled(Link)`
 	flex: 0 1;
 	:not(${IconContainer}) {
 		:hover {
-			color: ${CSS.COLOR_ACCENT};
+			color: ${(p) => p.theme.colors.accent};
 			cursor: pointer;
 		}
 	}

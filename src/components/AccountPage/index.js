@@ -1,16 +1,16 @@
 import React, { Component } from "react"
 import { compose } from "recompose"
 import styled from "styled-components"
-import { NavLink, Route } from "react-router-dom"
+import { Route } from "react-router-dom"
 
 import { withFirebase } from "../Firebase"
 import { withAuthorization, withAuthentication } from "../UserSession"
 import LoadingSpinner from "../LoadingSpinner"
-import { Separator } from "../Basics"
+import { Separator, CustomNavLink } from "../Basics"
 import AvatarChangeForm from "../AvatarChange"
 import LoginManagement from "../LoginManagement"
-import { CSS, EMPTY_STATES, ROUTES } from "../../constants"
-import { BREAKPOINTS, ITEM_STATUS } from "../../constants/const"
+import { EMPTY_STATES, ROUTES } from "../../constants"
+import { ITEM_STATUS } from "../../constants/const"
 import ItemsView from "../ItemsView"
 import EmptyState from "../EmptyState"
 
@@ -67,7 +67,7 @@ const MainGrid = styled.div`
 	grid-template-columns: 1fr;
 	grid-template-rows: min-content min-content 1fr;
 
-	@media (min-width: ${BREAKPOINTS[2]}px) {
+	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
 		max-width: 860px;
 		grid-template-columns: min-content 1fr;
 		grid-template-rows: min-content 1fr;
@@ -75,11 +75,11 @@ const MainGrid = styled.div`
 			"info info"
 			"tabs-nav tabs-content";
 	}
-	@media (min-width: ${BREAKPOINTS[3]}px) {
-		max-width: ${BREAKPOINTS[3]}px;
+	@media (min-width: ${(p) => p.theme.breakpoints[3]}px) {
+		max-width: ${(p) => p.theme.breakpoints[3]}px;
 	}
-	@media (min-width: ${BREAKPOINTS[5]}px) {
-		max-width: ${BREAKPOINTS[5]}px;
+	@media (min-width: ${(p) => p.theme.breakpoints[5]}px) {
+		max-width: ${(p) => p.theme.breakpoints[5]}px;
 	}
 `
 
@@ -107,10 +107,6 @@ const TabsNav = styled.nav`
 	gap: 12px;
 `
 
-const CustomNavLink = ({ exact = true, ...rest }) => (
-	<NavLink exact={exact} activeStyle={{ color: CSS.COLOR_ACCENT }} {...rest} />
-)
-
 const Tab = styled(CustomNavLink)`
 	* {
 		user-select: none !important;
@@ -121,7 +117,7 @@ const Tab = styled(CustomNavLink)`
 	padding: 0;
 	color: #292929;
 	&:hover {
-		color: ${CSS.COLOR_ACCENT};
+		color: ${(p) => p.theme.colors.accent};
 	}
 `
 
@@ -217,11 +213,9 @@ class AccountPage extends Component {
 		await this.getItems()
 
 		// If logged-in user changes check if they are owner again
-		this.authListener = this.props.firebase.auth.onAuthStateChanged(
-			(authUser) => {
-				this.setState({ userIsOwner: userId === authUser.uid })
-			}
-		)
+		this.authListener = this.props.firebase.auth.onAuthStateChanged((authUser) => {
+			this.setState({ userIsOwner: userId === authUser.uid })
+		})
 
 		this.setState({ isLoading: false })
 	}

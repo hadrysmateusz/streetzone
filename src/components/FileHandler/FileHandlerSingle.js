@@ -62,9 +62,9 @@ const EmptyPreview = styled.div`
 	width: ${size};
 	height: ${size};
 	border-radius: 50%;
-	border: 2px dashed ${CSS.COLOR_BLACK};
+	border: 2px dashed ${(p) => p.theme.colors[50]};
 	font-size: 1.45rem;
-	color: ${CSS.COLOR_BLACK};
+	color: ${(p) => p.theme.colors[50]};
 `
 
 class FileHandlerSingle extends Component {

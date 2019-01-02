@@ -3,7 +3,7 @@ import { Form, Field } from "react-final-form"
 
 import { StyledInput, FieldRow, FieldLabel } from "../Basics"
 import { LoaderButton } from "../Button"
-import { Error } from "../ItemForm"
+import { FormError } from "../FormElements"
 import { FORM_ERR } from "../../constants"
 
 class PasswordChangeForm extends Component {
@@ -57,15 +57,8 @@ class PasswordChangeForm extends Component {
 								{({ input, meta }) => (
 									<>
 										<FieldLabel>Nowe Hasło</FieldLabel>
-										<StyledInput
-											{...input}
-											type="password"
-											placeholder="Nowe Hasło"
-										/>
-										<Error
-											message={meta.error}
-											showIf={meta.error && meta.touched}
-										/>
+										<StyledInput {...input} type="password" placeholder="Nowe Hasło" />
+										<FormError message={meta.error} show={meta.error && meta.touched} />
 									</>
 								)}
 							</Field>
@@ -83,10 +76,7 @@ class PasswordChangeForm extends Component {
 												type="password"
 												placeholder="Potwierdź Nowe Hasło"
 											/>
-											<Error
-												message={meta.error}
-												showIf={meta.error && meta.touched}
-											/>
+											<FormError message={meta.error} show={meta.error && meta.touched} />
 										</>
 									)}
 								</Field>
@@ -100,7 +90,7 @@ class PasswordChangeForm extends Component {
 							disabled={submitting || pristine}
 							fullWidth
 						/>
-						{error && <Error message={error.message} showIf={error} />}
+						{error && <FormError message={error.message} show={error} />}
 					</form>
 				)}
 			/>

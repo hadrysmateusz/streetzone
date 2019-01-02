@@ -6,7 +6,6 @@ import styled from "styled-components"
 import removeMarkdown from "remove-markdown"
 
 import { withFirebase } from "../Firebase"
-import { Header } from "../Basics"
 import { ROUTES } from "../../constants"
 
 const Container = styled.div`

@@ -43,9 +43,7 @@ class AvatarChangeForm extends React.Component {
 		const currentUserData = (await currentUser.get()).data()
 
 		if (currentUserData.profilePictureRef) {
-			let ref = this.props.firebase.storageRef.child(
-				currentUserData.profilePictureRef
-			)
+			let ref = this.props.firebase.storageRef.child(currentUserData.profilePictureRef)
 
 			try {
 				const imageURL = await ref.getDownloadURL()
@@ -85,9 +83,7 @@ class AvatarChangeForm extends React.Component {
 				// Upload the new file and return its ref
 				const name = uuidv1()
 				const userId = currentUser.id
-				const ref = firebase.storageRef.child(
-					`profile-pictures/${userId}/${name}`
-				)
+				const ref = firebase.storageRef.child(`profile-pictures/${userId}/${name}`)
 				const snapshot = await ref.put(file.data)
 				newFileRef = snapshot.ref.fullPath
 			}
@@ -137,11 +133,7 @@ class AvatarChangeForm extends React.Component {
 							<form onSubmit={handleSubmit}>
 								{/* Files (handled by separate component) */}
 
-								<Field
-									name="file"
-									isLoading={isLoading}
-									component={FileHandlerSingle}
-								/>
+								<Field name="file" isLoading={isLoading} component={FileHandlerSingle} />
 
 								<ButtonContainer>
 									<LoaderButton

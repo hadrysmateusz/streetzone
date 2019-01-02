@@ -4,7 +4,7 @@ import styled from "styled-components"
 import { withFirebase } from "../Firebase"
 import ItemsView from "../ItemsView"
 import FilterForm from "../Filters"
-import { BREAKPOINTS, ITEM_STATUS } from "../../constants/const"
+import { THEME, ITEM_SCHEMA } from "../../constants"
 
 const getItemsPerPage = () => {
 	const height = window.innerHeight
@@ -13,19 +13,17 @@ const getItemsPerPage = () => {
 	let rows = Math.floor(height / 333)
 	let cols = 1
 
-	if (width < BREAKPOINTS[1]) {
+	if (width < THEME.breakpoints[1]) {
 		cols = 1
-	} else if (width < BREAKPOINTS[3]) {
+	} else if (width < THEME.breakpoints[3]) {
 		cols = 2
-	} else if (width < BREAKPOINTS[5]) {
+	} else if (width < THEME.breakpoints[5]) {
 		cols = 3
-	} else if (width >= BREAKPOINTS[5]) {
+	} else if (width >= THEME.breakpoints[5]) {
 		cols = 4
 	}
 	return Math.max(3, rows * cols)
 }
-
-// #region styled-components
 
 const MainGrid = styled.div`
 	display: grid;
@@ -70,13 +68,10 @@ const LoadMore = styled.div`
 	margin-bottom: 20px;
 `
 
-// #endregion
-
 const INITIAL_STATE = {
 	items: [],
 	isLoading: true,
-	isRefreshing: false,
-	isFiltering: false,
+	isFetching: false,
 	cursor: null,
 	noMoreItems: false,
 	filterData: {
@@ -118,7 +113,7 @@ class HomePage extends Component {
 	filterItems = async (searchString) => {
 		// Reset the cursor when changing the filters
 		this.setState({
-			isFiltering: true,
+			isFetching: true,
 			cursor: null,
 			items: [],
 			noMoreItems: false
@@ -154,20 +149,21 @@ class HomePage extends Component {
 
 	getItems = async () => {
 		try {
+			console.log("gettingItems:", this.state.filterData)
 			const { sortBy, sortDirection, filters = {} } = this.state.filterData
 
 			// Create the base query
 			let query = this.props.firebase.items()
 
-			query = query.where("status", "==", ITEM_STATUS.available)
+			// Find only available items
+			query = query.where("status", "==", ITEM_SCHEMA.status.available)
 
 			// apply filters
 			if (filters) {
-				const { category, designer, price_min, price_max, size } = filters
+				const { category, designer, price_min, price_max } = filters
 
 				if (category) query = query.where("category", "==", category)
 				if (designer) query = query.where("designers", "array-contains", designer)
-				if (size) query = query.where("size", "==", size)
 				if (price_min) query = query.where("price", ">=", +price_min)
 				if (price_max) query = query.where("price", "<=", +price_max)
 				// When using range comparison operators
@@ -198,7 +194,7 @@ class HomePage extends Component {
 
 			// If there weren't any items returned, return early and set noMoreItems flag
 			if (items.length === 0) {
-				return this.setState({ isLoading: false, noMoreItems: true })
+				return this.setState({ isLoading: false, isFetching: false, noMoreItems: true })
 			}
 
 			// If there were less items found than the limit, set noMoreItems flag
@@ -214,7 +210,12 @@ class HomePage extends Component {
 			// Get last fetched document and set it as the new cursor
 			const newCursor = snapshot.docs[snapshot.docs.length - 1]
 
-			return this.setState({ items, cursor: newCursor, isLoading: false })
+			return this.setState({
+				items,
+				cursor: newCursor,
+				isLoading: false,
+				isFetching: false
+			})
 		} catch (e) {
 			console.log(e)
 		}
@@ -260,6 +261,7 @@ class HomePage extends Component {
 						onSubmit={this.updateURL}
 						onReset={this.clearFilterForm}
 						initialValues={initialValues}
+						isLoading={isLoading || this.state.isRefreshing || this.state.isFetching}
 					/>
 				</Filters>
 				<Content>

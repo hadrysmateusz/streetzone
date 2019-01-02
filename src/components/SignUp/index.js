@@ -5,15 +5,9 @@ import { compose } from "recompose"
 import styled from "styled-components"
 
 import { withFirebase } from "../Firebase"
-import {
-	StyledLink,
-	FieldRow,
-	FieldLabel,
-	StyledInput,
-	Header
-} from "../Basics"
+import { StyledLink, FieldRow, FieldLabel, StyledInput, Header } from "../Basics"
 import { LoaderButton } from "../Button"
-import { Error } from "../ItemForm"
+import { FormError } from "../FormElements"
 import { ROUTES, FORM_ERR, AUTH_ERR, REGEX } from "../../constants"
 
 const Container = styled.div`
@@ -39,10 +33,7 @@ class SignUpFormBase extends Component {
 
 		try {
 			// Create user for auth
-			const authUser = await this.props.firebase.signUpWithEmail(
-				email,
-				password
-			)
+			const authUser = await this.props.firebase.signUpWithEmail(email, password)
 
 			// Add the name to the auth user
 			await authUser.user.updateProfile({
@@ -120,10 +111,7 @@ class SignUpFormBase extends Component {
 										<>
 											<FieldLabel>Imię</FieldLabel>
 											<StyledInput {...input} type="text" placeholder="Imię" />
-											<Error
-												message={meta.error}
-												showIf={meta.error && meta.touched}
-											/>
+											<FormError message={meta.error} show={meta.error && meta.touched} />
 										</>
 									)}
 								</Field>
@@ -135,15 +123,8 @@ class SignUpFormBase extends Component {
 									{({ input, meta }) => (
 										<>
 											<FieldLabel>E-mail</FieldLabel>
-											<StyledInput
-												{...input}
-												type="text"
-												placeholder="E-mail"
-											/>
-											<Error
-												message={meta.error}
-												showIf={meta.error && meta.touched}
-											/>
+											<StyledInput {...input} type="text" placeholder="E-mail" />
+											<FormError message={meta.error} show={meta.error && meta.touched} />
 										</>
 									)}
 								</Field>
@@ -155,15 +136,8 @@ class SignUpFormBase extends Component {
 									{({ input, meta }) => (
 										<>
 											<FieldLabel>Hasło</FieldLabel>
-											<StyledInput
-												{...input}
-												type="password"
-												placeholder="Hasło"
-											/>
-											<Error
-												message={meta.error}
-												showIf={meta.error && meta.touched}
-											/>
+											<StyledInput {...input} type="password" placeholder="Hasło" />
+											<FormError message={meta.error} show={meta.error && meta.touched} />
 										</>
 									)}
 								</Field>
@@ -181,9 +155,9 @@ class SignUpFormBase extends Component {
 													type="password"
 													placeholder="Potwierdź Hasło"
 												/>
-												<Error
+												<FormError
 													message={meta.error}
-													showIf={meta.error && meta.touched}
+													show={meta.error && meta.touched}
 												/>
 											</>
 										)}
@@ -198,7 +172,7 @@ class SignUpFormBase extends Component {
 								disabled={submitting || pristine}
 								fullWidth
 							/>
-							{error && <Error message={error.message} showIf={error} />}
+							{error && <FormError message={error.message} show={error} />}
 						</form>
 					)}
 				/>

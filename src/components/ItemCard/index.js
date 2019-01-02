@@ -1,9 +1,9 @@
 import React, { Component } from "react"
 import { Link } from "react-router-dom"
 import styled from "styled-components"
-// import moment from "moment"
 import { withFirebase } from "../Firebase"
 
+import { translateCondition } from "../../constants/item_schema"
 import { CSS } from "../../constants"
 
 const Container = styled.div`
@@ -57,16 +57,6 @@ const Name = styled.div`
 	line-height: 1.15rem;
 `
 
-// const BottomContainer = styled.div`
-// 	font-size: 0.83rem;
-// 	color: #888;
-// 	padding: 9px 9px 11px;
-// 	border-top: 1px solid #e0e0e0;
-// 	white-space: nowrap;
-// 	overflow: hidden;
-// 	text-overflow: ellipsis;
-// `
-
 const InnerContainer = styled.div`
 	display: flex;
 	justify-content: space-between;
@@ -76,7 +66,7 @@ const InnerContainer = styled.div`
 `
 
 const Price = styled.div`
-	color: ${CSS.COLOR_ACCENT};
+	color: ${(p) => p.theme.colors.accent};
 	font-size: 0.89rem;
 	text-align: left;
 	font-weight: 500;
@@ -94,15 +84,10 @@ const Designers = styled.div`
 
 const SecondaryContainer = styled.div`
 	border-top: 1px solid #ddd;
-	/* margin-top: 8px; */
 	padding: 10px 12px;
 	font-size: 0.83rem;
 	display: grid;
 	grid-template-columns: repeat(3, 1fr);
-
-	/* display: flex;
-	flex-flow: row nowrap;
-	justify-content: space-between; */
 	white-space: nowrap;
 `
 
@@ -116,25 +101,6 @@ const Size = styled.div`
 	font-weight: 500;
 	text-align: right;
 `
-
-const translateCondition = (conditionValue) => {
-	if (conditionValue === 12) {
-		return {
-			displayValue: "DS",
-			tooltip: "Nowy - Oryginalne"
-		}
-	} else if (conditionValue === 11) {
-		return {
-			displayValue: "VNDS",
-			tooltip: "Prawie Nowy - Bez śladów użytkowania"
-		}
-	} else if (conditionValue <= 10 && conditionValue >= 0) {
-		return {
-			displayValue: `${conditionValue}/10`,
-			tooltip: `${conditionValue}/10`
-		}
-	}
-}
 
 class ItemCard extends Component {
 	state = { imageURL: "" }
@@ -188,11 +154,8 @@ class ItemCard extends Component {
 							<Condition title={`Stan: ${conditionObj.tooltip}`}>
 								{conditionObj.displayValue}
 							</Condition>
-							<Size title={`Rozmiar: ${size}`}>{size}</Size>
+							<Size title={size ? `Rozmiar: ${size}` : undefined}>{size}</Size>
 						</SecondaryContainer>
-						{/* <BottomContainer>
-							Dodano {moment(createdAt).format("D.M.YY o HH:mm")}
-						</BottomContainer> */}
 					</InfoContainer>
 				</Link>
 			</Container>

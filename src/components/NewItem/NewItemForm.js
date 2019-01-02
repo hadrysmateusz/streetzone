@@ -5,75 +5,14 @@ import { OnChange } from "react-final-form-listeners"
 import Button, { LoaderButton } from "../Button"
 import { FieldRow, FieldLabel, StyledInput, StyledTextarea } from "../Basics"
 import SelectAdapter from "../SelectAdapter"
-import Error from "./Error"
+import { FormError } from "../FormElements"
 import { FileHandler } from "../FileHandler"
 import { withRouter } from "react-router-dom"
+import validate from "./validate"
 
-import { ITEM_SCHEMA, ROUTES, FORM_ERR, CONST } from "../../constants"
+import { ITEM_SCHEMA, ROUTES } from "../../constants"
 
-const validate = (values) => {
-	const { name, designers, price, category, size, description, files } = values
-	const errors = {}
-
-	// Name
-	if (!name) {
-		errors.name = FORM_ERR.IS_REQUIRED
-	}
-
-	// Designers
-	if (!designers || designers.length === 0) {
-		errors.designers = FORM_ERR.IS_REQUIRED
-	}
-
-	// Price
-	if (!price) {
-		errors.price = FORM_ERR.IS_REQUIRED
-	}
-
-	// Category
-	if (!category) {
-		errors.category = FORM_ERR.IS_REQUIRED
-	}
-
-	// Size
-	if (!size) {
-		errors.size = FORM_ERR.IS_REQUIRED
-	}
-
-	// Description
-	if (description && description.length > CONST.DESC_MAX_CHARACTERS) {
-		errors.description = FORM_ERR.DESC_TOO_LONG
-	}
-
-	// Files
-	errors.files = (() => {
-		let main
-		let specific = []
-
-		if (!files || files.length === 0) {
-			// Empty field
-			main = FORM_ERR.FILES_REQUIRED
-		} else {
-			// Too many files
-			if (files.length > CONST.ATTACHMENTS_MAX_COUNT) {
-				main = FORM_ERR.TOO_MANY_FILES
-			}
-			// Attachment too big
-			files.forEach((file, i) => {
-				if (file.data.size > CONST.ATTACHMENTS_MAX_SIZE) {
-					specific[i] = FORM_ERR.FILE_TOO_BIG
-				}
-			})
-		}
-		let errObj = { main, specific }
-		return errObj
-	})()
-
-	console.log(errors)
-	return errors
-}
-
-const ItemForm = ({ initialValues, onSubmit, history, isLoading }) => {
+const NewItemForm = ({ initialValues, onSubmit, history, isLoading }) => {
 	if (!initialValues) {
 		initialValues = {
 			name: "",
@@ -99,7 +38,7 @@ const ItemForm = ({ initialValues, onSubmit, history, isLoading }) => {
 									<>
 										<FieldLabel>Nazwa</FieldLabel>
 										<StyledInput {...input} type="text" placeholder="Nazwa" />
-										<Error message={meta.error} showIf={meta.error && meta.touched} />
+										<FormError message={meta.error} show={meta.error && meta.touched} />
 									</>
 								)}
 							</Field>
@@ -121,7 +60,7 @@ const ItemForm = ({ initialValues, onSubmit, history, isLoading }) => {
 											{...meta}
 											{...input}
 										/>
-										<Error message={meta.error} showIf={meta.error && meta.touched} />
+										<FormError message={meta.error} show={meta.error && meta.touched} />
 									</>
 								)}
 							</Field>
@@ -140,7 +79,7 @@ const ItemForm = ({ initialValues, onSubmit, history, isLoading }) => {
 											step="1"
 											placeholder="Cena"
 										/>
-										<Error message={meta.error} showIf={meta.error && meta.touched} />
+										<FormError message={meta.error} show={meta.error && meta.touched} />
 									</>
 								)}
 							</Field>
@@ -161,7 +100,7 @@ const ItemForm = ({ initialValues, onSubmit, history, isLoading }) => {
 											{...meta}
 											{...input}
 										/>
-										<Error message={meta.error} showIf={meta.error && meta.touched} />
+										<FormError message={meta.error} show={meta.error && meta.touched} />
 									</>
 								)}
 							</Field>
@@ -198,10 +137,31 @@ const ItemForm = ({ initialValues, onSubmit, history, isLoading }) => {
 												{...meta}
 												{...input}
 											/>
-											<Error meta={meta} />
+											<FormError meta={meta} />
 										</>
 									)
 								}}
+							</Field>
+						</FieldRow>
+
+						{/* Condition */}
+						<FieldRow>
+							<Field name="condition">
+								{({ input, meta }) => (
+									<>
+										<FieldLabel htmlFor="condition-input">Stan</FieldLabel>
+										<SelectAdapter
+											id="condition-input"
+											placeholder={"Stan"}
+											options={ITEM_SCHEMA.conditionOptions}
+											isClearable={true}
+											isSearchable={true}
+											{...meta}
+											{...input}
+										/>
+										<FormError meta={meta} />
+									</>
+								)}
 							</Field>
 						</FieldRow>
 
@@ -212,7 +172,7 @@ const ItemForm = ({ initialValues, onSubmit, history, isLoading }) => {
 									<>
 										<FieldLabel>Opis </FieldLabel>
 										<StyledTextarea {...input} placeholder="Dodatkowe informacje" />
-										<Error message={meta.error} showIf={meta.error && meta.touched} />
+										<FormError message={meta.error} show={meta.error && meta.touched} />
 									</>
 								)}
 							</Field>
@@ -250,4 +210,4 @@ const ItemForm = ({ initialValues, onSubmit, history, isLoading }) => {
 	)
 }
 
-export default withRouter(ItemForm)
+export default withRouter(NewItemForm)

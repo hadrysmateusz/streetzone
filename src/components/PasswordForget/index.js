@@ -6,7 +6,7 @@ import styled from "styled-components"
 import { withFirebase } from "../Firebase"
 import { StyledLink, FieldRow, FieldLabel, StyledInput, Header } from "../Basics"
 import { LoaderButton } from "../Button"
-import { Error } from "../ItemForm"
+import { FormError } from "../FormElements"
 import { ROUTES, FORM_ERR, REGEX } from "../../constants"
 
 const Container = styled.div`
@@ -71,7 +71,7 @@ class PasswordForgetFormBase extends Component {
 									<>
 										<FieldLabel>E-mail</FieldLabel>
 										<StyledInput {...input} type="text" placeholder="E-mail" />
-										<Error message={meta.error} showIf={meta.error && meta.touched} />
+										<FormError message={meta.error} show={meta.error && meta.touched} />
 									</>
 								)}
 							</Field>
@@ -84,7 +84,7 @@ class PasswordForgetFormBase extends Component {
 							disabled={submitting || pristine}
 							fullWidth
 						/>
-						{error && <Error message={error.message} showIf={error} />}
+						{error && <FormError message={error.message} show={error} />}
 					</form>
 				)}
 			/>

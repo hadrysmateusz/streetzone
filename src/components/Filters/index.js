@@ -6,14 +6,15 @@ import { OnChange } from "react-final-form-listeners"
 import Button, { LoaderButton } from "../Button"
 import { FieldLabel, FieldRow, StyledInput } from "../Basics"
 import SelectAdapter from "../SelectAdapter"
-import { Error } from "../ItemForm"
+import { FormError } from "../FormElements"
 
 import { ITEM_SCHEMA, FORM_ERR } from "../../constants"
 
 const sortOptions = [
 	{ value: "createdAt-desc", label: "Najnowsze" },
 	{ value: "price-asc", label: "Cena Rosnąco" },
-	{ value: "price-desc", label: "Cena Malejąco" }
+	{ value: "price-desc", label: "Cena Malejąco" },
+	{ value: "name_folded-asc", label: "A-Z" }
 ]
 
 const PriceInputContainer = styled.div`
@@ -32,17 +33,6 @@ const validate = (values) => {
 
 	return errors
 }
-
-// const Condition = ({ when, is, children }) =>
-// 	Array.isArray(is) ? (
-// 		<Field name={when} subscription={{ value: true }}>
-// 			{({ input: { value } }) => (is.includes(value) ? children : null)}
-// 		</Field>
-// 	) : (
-// 		<Field name={when} subscription={{ value: true }}>
-// 			{({ input: { value } }) => (value === is ? children : null)}
-// 		</Field>
-// 	)
 
 const FilterForm = (props) => (
 	<Form
@@ -69,7 +59,7 @@ const FilterForm = (props) => (
 											{...meta}
 											{...input}
 										/>
-										<Error meta={meta} />
+										<FormError meta={meta} />
 									</>
 								)}
 							</Field>
@@ -90,7 +80,7 @@ const FilterForm = (props) => (
 											{...meta}
 											{...input}
 										/>
-										<Error meta={meta} />
+										<FormError meta={meta} />
 									</>
 								)}
 							</Field>
@@ -123,7 +113,7 @@ const FilterForm = (props) => (
 												{...meta}
 												{...input}
 											/>
-											<Error meta={meta} />
+											<FormError meta={meta} />
 										</>
 									)
 								}}
@@ -145,7 +135,7 @@ const FilterForm = (props) => (
 											{...meta}
 											{...input}
 										/>
-										<Error meta={meta} />
+										<FormError meta={meta} />
 									</>
 								)}
 							</Field>
@@ -169,7 +159,7 @@ const FilterForm = (props) => (
 											{...meta}
 											{...input}
 										/>
-										<Error meta={meta} />
+										<FormError meta={meta} />
 									</>
 								)}
 							</Field>
@@ -207,20 +197,20 @@ const FilterForm = (props) => (
 									)}
 								</Field>
 							</PriceInputContainer>
-							<Error message={errors.price} showIf={!!errors.price} />
+							<FormError message={errors.price} show={!!errors.price} />
 						</FieldRow>
 					</div>
 					<LoaderButton
 						isLoading={submitting}
 						type="submit"
 						text="Filtruj"
-						disabled={submitting || invalid}
+						disabled={submitting || invalid || props.isLoading}
 						fullWidth
 					/>
 
 					<Button
 						type="button"
-						disabled={false}
+						disabled={props.isLoading}
 						onClick={() => props.onReset(form)}
 						fullWidth
 					>

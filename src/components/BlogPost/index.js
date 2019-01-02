@@ -5,69 +5,56 @@ import { compose } from "recompose"
 import { withRouter, Link } from "react-router-dom"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import styled from "styled-components"
+import { Box, Text, Flex } from "rebass"
 
 import { withFirebase } from "../Firebase"
 import LoadingSpinner from "../LoadingSpinner"
-import { ROUTES, CSS } from "../../constants"
-// import { Separator } from "../Basics"
+import { ROUTES } from "../../constants"
+import { PageContainer } from "../Base"
+import { minWidth, maxWidth } from "../../style-utils"
 
-const Container = styled.div`
-	max-width: ${(p) => p.theme.breakpoints[5]}px;
-	margin: 0 auto;
-`
-
-const Content = styled.div`
+const Content = styled(Box).attrs({ p: 3, as: "article" })`
 	position: relative;
-	border: 1px solid #dcdcdc;
 	background: white;
-	padding: 20px;
 	box-shadow: 0 2px 6px -1px rgba(0, 0, 0, 0.14);
-	margin-bottom: 20px;
-	width: 100%;
-	max-width: ${(p) => p.theme.breakpoints[5]}px;
+	border: 1px solid ${(p) => p.theme.colors.gray[75]};
 
-	@media (max-width: ${(p) => p.theme.breakpoints[2]}px) {
-		border-left: none;
+	${maxWidth[2]`
+		border-left: none; 
 		border-right: none;
-	}
+	`}
 `
 
-const Text = styled.div`
+const TextContainer = styled(Text).attrs({
+	mx: "auto",
+	my: 0,
+	fontFamily: "serif",
+	color: "black.75"
+})`
+	max-width: 65ch;
+	width: 100%;
+	font-size: calc(0.95rem + 0.16vw);
+	${minWidth[5]`font-size: 1.2rem;`}
 	line-height: 1.55em;
-	font-size: calc(1rem + 0.12vw);
-	@media (min-width: ${(p) => p.theme.breakpoints[5]}px) {
-		font-size: 1.15rem;
-	}
-	padding: 0;
-	word-spacing: 2px;
-	height: 100%;
-	width: 70ch;
-	max-width: 100%;
-	color: #333;
-	margin: 0 auto;
-	font-family: serif;
+
 	img {
 		max-width: 100%;
 	}
 `
 
 const Image = styled.img`
+	display: block;
 	max-width: 100%;
 	width: auto;
 	height: auto;
 	max-height: 45vh;
-	display: block;
 	margin: 0 auto;
 `
 
-const LinkContainer = styled.div`
-	display: none;
-	@media (min-width: ${(p) => p.theme.breakpoints[0]}px) {
-		display: block;
-	}
-	color: #2f2f2f;
-	font-weight: 500;
-	padding: 20px;
+const LinkContainer = styled(Box).attrs({ p: 3 })`
+	${maxWidth[0]`display: none;`}
+	color: ${(p) => p.theme.colors.black[25]};
+	font-weight: ${(p) => p.theme.fontWeights[1]};
 	background: rgba(255, 255, 255, 0.8);
 	text-align: center;
 	position: absolute;
@@ -75,7 +62,7 @@ const LinkContainer = styled.div`
 	left: 0;
 	a {
 		:hover {
-			color: ${CSS.COLOR_ACCENT};
+			color: ${(p) => p.theme.colors.accent};
 		}
 		text-decoration: none !important;
 	}
@@ -84,63 +71,47 @@ const LinkContainer = styled.div`
 	}
 `
 
-const Author = styled.div`
-	margin: 6px 0;
-	padding: 0 25px;
+const Info = styled(Box).attrs({ my: 2, px: 4 })`
 	cursor: default;
 `
 
-const CreatedAt = styled.div`
-	margin: 6px 0;
-	padding: 0 25px;
-	cursor: default;
-`
-
-const IconContainer = styled.div`
+const IconContainer = styled(Info)`
 	display: grid;
 	grid-template-columns: repeat(3, auto);
 	grid-template-rows: 100%;
 	gap: 15px;
-	margin: 6px 0;
-	padding: 0 25px;
+
 	& > div {
 		cursor: pointer;
 	}
 	& > div:hover svg {
-		color: #222;
+		color: ${(p) => p.theme.colors.black[25]};
 	}
 `
 
-const Title = styled.h2`
-	font-family: "Playfair Display SC", serif;
-	text-align: center;
-	margin: 30px 0;
-	font-size: 1.6rem;
-	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
-		font-size: 2.6rem;
-	}
-`
+const Title = styled(Text).attrs({
+	as: "h2",
+	fontFamily: "display",
+	textAlign: "center",
+	fontSize: [5, 6, 7],
+	my: 4,
+	px: [0, null, 3, 5]
+})``
 
-const Info = styled.div`
-	white-space: nowrap;
-	svg {
-		color: #a8a8a8;
-		margin-right: 3px;
-	}
-	color: #6f6f6f;
-	font-size: 0.85rem;
-
+const InfoContainer = styled(Flex).attrs({ fontSize: 0, color: "gray.0", my: 4, py: 2 })`
 	display: flex;
-	flex-flow: column;
-	@media (min-width: ${(p) => p.theme.breakpoints[0]}px) {
-		flex-flow: row nowrap;
-	}
+	flex-direction: column;
+	${minWidth[0]`flex-direction: row`}
 	justify-content: center;
 	align-items: center;
-	margin: 30px 0;
+
+	white-space: nowrap;
 	border-top: 1px solid #e6e6e6;
 	border-bottom: 1px solid #e6e6e6;
-	padding: 10px 0;
+	svg {
+		color: ${(p) => p.theme.colors.gray[25]};
+		margin-right: 3px;
+	}
 `
 
 const Separator = styled.div`
@@ -149,10 +120,10 @@ const Separator = styled.div`
 
 	height: 1px;
 	width: 2.5rem;
-	@media (min-width: ${(p) => p.theme.breakpoints[0]}px) {
+	${minWidth[0]`
 		height: 1rem;
 		width: 1px;
-	}
+	`}
 `
 
 const ReactMarkdown = Loadable({
@@ -185,7 +156,7 @@ export class BlogPost extends Component {
 
 	render() {
 		return (
-			<Container>
+			<PageContainer maxWidth={5}>
 				{this.state.post && (
 					<>
 						<Content>
@@ -197,17 +168,17 @@ export class BlogPost extends Component {
 							</LinkContainer>
 							<Image src={this.state.post.photo_url} />
 							<Title>{this.state.post.title}</Title>
-							<Info>
-								<Author title="Autor">
+							<InfoContainer>
+								<Info title="Autor">
 									<FontAwesomeIcon icon="user" />
 									&nbsp;{this.state.post.author}
-								</Author>
+								</Info>
 								<Separator />
-								<CreatedAt title="Data dodania">
+								<Info title="Data dodania">
 									<FontAwesomeIcon icon="calendar" />
 									&nbsp;
 									{moment(this.state.post.createdAt).format("D.M.YY")}
-								</CreatedAt>
+								</Info>
 								<Separator />
 								<IconContainer>
 									<div title="Udostępnij na Twitterze">
@@ -220,14 +191,14 @@ export class BlogPost extends Component {
 										<FontAwesomeIcon icon={["fab", "instagram"]} />
 									</div>
 								</IconContainer>
-							</Info>
-							<Text>
+							</InfoContainer>
+							<TextContainer>
 								<ReactMarkdown source={this.state.post.content} />
-							</Text>
+							</TextContainer>
 						</Content>
 					</>
 				)}
-			</Container>
+			</PageContainer>
 		)
 	}
 }

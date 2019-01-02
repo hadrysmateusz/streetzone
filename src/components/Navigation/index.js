@@ -1,30 +1,13 @@
 import React from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { NavLink, withRouter } from "react-router-dom"
+import { withRouter } from "react-router-dom"
 import styled from "styled-components"
 import { compose } from "recompose"
 
 import { withAuthentication } from "../UserSession"
 import SignOutButton from "../SignOut"
-import { ROUTES, CSS } from "../../constants"
-
-let CustomNavLink = ({ exact = true, ...rest }) => (
-	<NavLink exact={exact} activeStyle={{ color: CSS.COLOR_ACCENT }} {...rest} />
-)
-
-CustomNavLink = styled(CustomNavLink)`
-	* {
-		user-select: none !important;
-	}
-	background: none;
-	border: none;
-	outline: none;
-	padding: 0;
-	color: #292929;
-	&:hover {
-		color: ${CSS.COLOR_ACCENT};
-	}
-`
+import { ROUTES } from "../../constants"
+import { CustomNavLink } from "../Basics"
 
 const Nav = styled.ul`
 	position: sticky;
@@ -49,7 +32,21 @@ const Nav = styled.ul`
 	}
 `
 
-const NavItem = styled.div`
+const StyledNavLink = styled(CustomNavLink)`
+	* {
+		user-select: none !important;
+	}
+	background: none;
+	border: none;
+	outline: none;
+	padding: 0;
+	color: #292929;
+	&:hover {
+		color: ${(p) => p.theme.colors.accent};
+	}
+`
+
+const NavItem = styled.li`
 	list-style-type: none;
 	padding: 0 16px;
 	height: 100%;
@@ -67,33 +64,33 @@ const NavItem = styled.div`
 const Navigation = ({ authUser, ...rest }) => (
 	<Nav {...rest}>
 		<NavItem>
-			<CustomNavLink to={ROUTES.BLOG_HOME} exact={false}>
+			<StyledNavLink to={ROUTES.BLOG_HOME} exact={false}>
 				Blog
-			</CustomNavLink>
+			</StyledNavLink>
 		</NavItem>
 		<NavItem>
-			<CustomNavLink to={ROUTES.HOME}>Tablica</CustomNavLink>
+			<StyledNavLink to={ROUTES.HOME}>Tablica</StyledNavLink>
 		</NavItem>
 		{authUser && (
 			<>
 				<NavItem>
-					<CustomNavLink to={ROUTES.NEW_ITEM}>Wystaw Przedmiot</CustomNavLink>
+					<StyledNavLink to={ROUTES.NEW_ITEM}>Wystaw Przedmiot</StyledNavLink>
 				</NavItem>
 				<NavItem>
-					<CustomNavLink to={ROUTES.ACCOUNT.replace(":id", authUser.uid)}>
+					<StyledNavLink to={ROUTES.ACCOUNT.replace(":id", authUser.uid)}>
 						<FontAwesomeIcon className="icon" icon="user" />
 						{/* <img src={authUser.profilePictureURL} alt="Zdjęcie profilowe"/> */}
 						{authUser.name ? authUser.name : "Profil"}
-					</CustomNavLink>{" "}
+					</StyledNavLink>{" "}
 				</NavItem>
 				<NavItem>
-					<CustomNavLink as={SignOutButton} />
+					<StyledNavLink as={SignOutButton} />
 				</NavItem>
 			</>
 		)}
 		{!authUser && (
 			<NavItem>
-				<CustomNavLink to={ROUTES.SIGN_IN}>Zaloguj się</CustomNavLink>
+				<StyledNavLink to={ROUTES.SIGN_IN}>Zaloguj się</StyledNavLink>
 			</NavItem>
 		)}
 	</Nav>

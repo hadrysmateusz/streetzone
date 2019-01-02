@@ -12,12 +12,12 @@ const LoadingSpinnerUnstyled = (props) => (
 )
 
 const LoadingSpinner = styled(LoadingSpinnerUnstyled)`
-	width: ${(props) => props.width || "100%"};
-	height: ${(props) => props.height || "100%"};
+	width: ${(p) => p.width || "100%"};
+	height: ${(p) => p.height || "100%"};
 
-	${(props) => !props.inline && "font-size: 3rem"};
+	${(p) => !p.inline && "font-size: 3rem"};
 
-	color: ${CSS.COLOR_BLACK};
+	color: ${(p) => p.theme.colors.black[50]};
 	display: flex;
 	justify-content: center;
 	align-items: center;

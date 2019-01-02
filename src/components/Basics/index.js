@@ -1,6 +1,9 @@
-import { Link } from "react-router-dom"
+import React from "react"
+import { Link, NavLink } from "react-router-dom"
 import { Field } from "react-final-form"
 import styled, { css } from "styled-components"
+
+import Textarea from "react-textarea-autosize"
 
 import { CSS } from "../../constants"
 
@@ -13,6 +16,10 @@ const Header = styled.h2`
 	margin-top: 0px;
 	font-family: "Playfair Display SC", serif;
 `
+
+const CustomNavLink = ({ exact = true, ...rest }) => (
+	<NavLink exact={exact} activeStyle={{ color: CSS.COLOR_ACCENT }} {...rest} />
+)
 
 // TODO: modify global styles to not overwrite the text-decoration
 // and remove the !important
@@ -88,13 +95,12 @@ const StyledInput = styled.input`
 	${(props) => props.type === "number" && StyledInputNumberSpecific}
 `
 
-const StyledTextarea = styled.textarea`
+const StyledTextarea = styled(Textarea)`
 	${StyledFieldCommon}
 	line-height: 1.45em;
 	padding: 6px 10px;
 	resize: vertical;
 	min-height: calc(4 * 1.45em + 0.7em);
-	height: calc(6 * 1.45em + 0.7em);
 `
 
 const FieldLabel = styled.div`
@@ -178,5 +184,6 @@ export {
 	FieldLabel,
 	FieldRow,
 	MiniButton,
-	Header
+	Header,
+	CustomNavLink
 }

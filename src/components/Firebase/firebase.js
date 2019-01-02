@@ -1,7 +1,10 @@
+import uuidv1 from "uuid/v1"
 import app from "firebase/app"
 import "firebase/auth"
 import "firebase/storage"
 import "firebase/firestore"
+
+import { NotFoundError } from "../../errors"
 
 const config = {
 	apiKey: process.env.REACT_APP_API_KEY,
@@ -66,30 +69,14 @@ class Firebase {
 
 	item = (id) => this.db.collection("items").doc(id)
 	items = () => this.db.collection("items")
-	getItem = async (itemId) => {
-		try {
-			// Get data from database
-			let item = await this.item(itemId).get()
-			item = { itemId: item.id, ...item.data() }
 
-			return item
-		} catch (e) {
-			console.log(e)
-		}
-	}
-
-	getImageURLs = async (attachments) => {
-		try {
-			// Map storage refs to image urls
-			const imageURLs = await Promise.all(
-				attachments.map(async (attachment, i) => {
-					let ref = this.storageRef.child(attachment)
-					return await ref.getDownloadURL()
-				})
-			)
-			return imageURLs
-		} catch (error) {
-			console.log(error)
+	/* Gets item data, throws if item isn't found */
+	getItemData = async (itemId) => {
+		const itemDoc = await this.item(itemId).get()
+		if (!itemDoc.exists) {
+			throw new NotFoundError("Nie znaleziono przedmiotu")
+		} else {
+			return itemDoc.data()
 		}
 	}
 
@@ -97,6 +84,32 @@ class Firebase {
 
 	post = (id) => this.db.collection("posts").doc(id)
 	posts = () => this.db.collection("posts")
+
+	// Storage API
+
+	file = (ref) => this.storageRef.child(ref)
+
+	uploadFile = async (bucket, file) => {
+		const name = uuidv1()
+		const ref = this.file(`${bucket}/${name}`)
+		return ref.put(file)
+	}
+
+	removeFile = async (ref) => {
+		return this.file(ref).delete()
+	}
+
+	batchRemoveFiles = async (refs) => {
+		return Promise.all(refs.map((ref) => this.removeFile(ref)))
+	}
+
+	getImageURL = async (ref) => {
+		return this.file(ref).getDownloadURL()
+	}
+
+	batchGetImageURLs = async (refs) => {
+		return Promise.all(refs.map((ref) => this.getImageURL(ref)))
+	}
 
 	// Marge Auth and DB User API
 

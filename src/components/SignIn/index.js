@@ -5,7 +5,7 @@ import { compose } from "recompose"
 import styled from "styled-components"
 
 import { FieldRow, FieldLabel, StyledInput, Header, Separator } from "../Basics"
-import { Error } from "../ItemForm"
+import { FormError } from "../FormElements"
 import { FacebookButton, GoogleButton, LoaderButton } from "../Button"
 import { PasswordForgetLink } from "../PasswordForget"
 import { SignUpLink } from "../SignUp"
@@ -87,7 +87,7 @@ class SignInFormBase extends Component {
 									<>
 										<FieldLabel>E-mail</FieldLabel>
 										<StyledInput {...input} type="text" placeholder="E-mail" />
-										<Error message={meta.error} showIf={meta.error && meta.touched} />
+										<FormError message={meta.error} show={meta.error && meta.touched} />
 									</>
 								)}
 							</Field>
@@ -100,7 +100,7 @@ class SignInFormBase extends Component {
 									<>
 										<FieldLabel>Hasło</FieldLabel>
 										<StyledInput {...input} type="password" placeholder="Hasło" />
-										<Error message={meta.error} showIf={meta.error && meta.touched} />
+										<FormError message={meta.error} show={meta.error && meta.touched} />
 									</>
 								)}
 							</Field>
@@ -113,7 +113,7 @@ class SignInFormBase extends Component {
 							disabled={submitting}
 							fullWidth
 						/>
-						{error && <Error message={error.message} showIf={error} />}
+						{error && <FormError message={error.message} show={error} />}
 					</form>
 				)}
 			/>

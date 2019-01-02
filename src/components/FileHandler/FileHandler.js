@@ -4,7 +4,7 @@ import styled from "styled-components"
 import Button from "../Button"
 import FileItem from "./FileItem"
 import CustomFile from "./CustomFile"
-import { Error } from "../ItemForm"
+import { FormError } from "../FormElements"
 
 class FileHandlerUnstyled extends Component {
 	fileInput = React.createRef()
@@ -101,9 +101,9 @@ class FileHandlerUnstyled extends Component {
 					)}
 				</div>
 
-				<Error
+				<FormError
 					message={meta.error.main}
-					showIf={meta.error && (meta.dirty || meta.submitFailed) && meta.error.main}
+					show={meta.error && (meta.dirty || meta.submitFailed) && meta.error.main}
 				/>
 			</div>
 		)

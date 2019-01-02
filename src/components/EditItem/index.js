@@ -1,137 +1,119 @@
 import React, { Component } from "react"
 import { compose } from "recompose"
-import uuidv1 from "uuid/v1"
 
 import { withFirebase } from "../Firebase"
-import { withAuthorization } from "../UserSession"
+import { withAuthorization, withAuthentication } from "../UserSession"
 import LoadingSpinner from "../LoadingSpinner"
 import EmptyState from "../EmptyState"
-import { ItemEditForm } from "../ItemForm"
+import EditItemForm from "./EditItemForm"
 import { CustomFile } from "../FileHandler"
-import { formData, dbData } from "../../utils/formatItemData"
-import { Container, Header } from "../Basics"
+import { Header } from "../Basics"
+import { PageContainer } from "../Base"
+import { NotFoundError } from "../../errors"
 
 class EditItemPage extends Component {
 	state = {
+		error: null,
 		isLoading: true,
-		data: null
+		initialData: null
 	}
 
 	componentDidMount = async () => {
 		try {
 			// Get item from database
-			const item = await this.props.firebase.getItem(this.props.match.params.id)
+			let item = await this.props.firebase.getItemData(this.props.match.params.id)
 
 			// Get item attachments' refs and urls for previews
-			const imageURLs = await this.props.firebase.getImageURLs(item.attachments)
+			const imageURLs = await this.props.firebase.batchGetImageURLs(item.attachments)
 			const files = item.attachments.map((attachment, i) => {
 				return new CustomFile({ ref: attachment, previewUrl: imageURLs[i] })
 			})
 
 			// Format data for the form
-			const data = formData({ ...item, files })
+			const initialData = {
+				price: Number.parseInt(item.price),
+				description: item.description || "",
+				files: files,
+				modifiedAt: Date.now()
+			}
 
-			this.setState({ data, isLoading: false })
+			this.setState({ initialData })
 		} catch (error) {
-			console.log(error)
+			if (error instanceof NotFoundError) {
+				this.setState({ error })
+			} else {
+				throw error
+			}
+		} finally {
 			this.setState({ isLoading: false })
 		}
 	}
 
 	onSubmit = async (values) => {
 		try {
-			const { firebase, history } = this.props
-			const files = values.files || []
-
-			// Get additional data
-			const userId = firebase.authUser().uid
-
-			// Fetch current user's items from database
-			const currentUserSnapshot = await firebase.user(userId).get()
-			const oldItems = currentUserSnapshot.data().items
-
-			// If oldItems wasn't found throw to prevent overwriting data
-			if (!oldItems) {
-				throw new Error("couldn't find user data")
-			}
+			const { firebase, history, match } = this.props
+			const files = values.files
 
 			// Upload NEW files and get ALL refs
-			const attachments = await Promise.all(
+			const newRefs = await Promise.all(
 				files.map(async (file) => {
 					// If file already has a ref, return it
 					if (file.ref) return file.ref
 
 					// Upload the new files and return promise containing ref
-					const name = uuidv1()
-					const ref = firebase.storageRef.child(`attachments/${name}`)
-					const snapshot = await ref.put(file.data)
+					const snapshot = await firebase.uploadFile("attachments", file.data)
 					return snapshot.ref.fullPath
 				})
 			)
 
-			// Get just the old refs
-			let oldRefs = this.state.data.files.map((file) => file.ref)
-
-			// Old refs no longer present in new refs are marked for deletion
-			let refsToDelete = oldRefs.filter((oldRef) => !attachments.includes(oldRef))
-
-			// Update modifiedAt
-			const time = { modifiedAt: Date.now() }
-
-			// Make sure only the required values are passed
-			const data = dbData(values, time, userId, attachments)
-
-			// Check if all data is present
-			for (let [key, value] of Object.entries(data)) {
-				const err = new Error("missing data: " + key)
-				if (!value && key !== "description") {
-					throw err
-				}
-				if (Array.isArray(value) && value.length === 0) {
-					throw err
-				}
+			// Format the data
+			const data = {
+				modifiedAt: Date.now(),
+				price: Number.parseInt(values.price),
+				description: values.description || "",
+				attachments: newRefs
 			}
 
+			// TODO: add a check against an external schema to make sure all values are present
+
 			// Update item
-			await firebase.item(this.props.match.params.id).update(data)
+			await firebase.item(match.params.id).update(data)
+
+			// Get just the old refs
+			let oldRefs = this.state.initialData.files.map((file) => file.ref)
+
+			// Old refs no longer present in new refs are marked for deletion
+			let refsToDelete = oldRefs.filter((oldRef) => !newRefs.includes(oldRef))
 
 			// Remove files associated with the marked refs
-			await Promise.all(
-				refsToDelete.map((ref) => {
-					return firebase.storageRef.child(ref).delete()
-				})
-			)
+			await firebase.batchRemoveFiles(refsToDelete)
 
 			// Redirect to home page
 			history.push("/")
 			return
 		} catch (error) {
-			alert("Wystąpił problem podczas wystawiania przedmiotu")
+			alert("Wystąpił problem podczas edytowania przedmiotu")
 			console.log(error)
 		}
 	}
 
 	render() {
+		const { isLoading, error, initialData } = this.state
 		return (
-			<Container width={620}>
+			<PageContainer maxWidth={1}>
 				<Header>Edytuj</Header>
-				{this.state.isLoading && (
-					<h4>
-						Ładowanie...&nbsp;
-						<LoadingSpinner inline />
-					</h4>
-				)}
-				{(this.state.data || this.state.isLoading) && (
-					<ItemEditForm
-						initialValues={this.state.data}
-						isLoading={this.state.isLoading}
+				{error ? (
+					<EmptyState text={error.message} />
+				) : isLoading ? (
+					<LoadingSpinner />
+				) : (
+					<EditItemForm
+						initialValues={initialData}
+						isLoading={isLoading}
 						onSubmit={this.onSubmit}
 					/>
 				)}
-				{!this.state.data && !this.state.isLoading && (
-					<EmptyState text="Nie znaleziono przedmiotu" />
-				)}
-			</Container>
+			</PageContainer>
 		)
 	}
 }
@@ -140,5 +122,6 @@ const condition = (authUser) => !!authUser
 
 export default compose(
 	withFirebase,
+	withAuthentication,
 	withAuthorization(condition)
 )(EditItemPage)

@@ -4,7 +4,7 @@ import { FORM_ERR } from "../../constants"
 import styled from "styled-components"
 
 import { FieldRow, FieldLabel, StyledInput, Separator } from "../Basics"
-import { Error } from "../ItemForm"
+import { FormError } from "../FormElements"
 import { SocialButton, LoaderButton } from "../Button"
 import { withFirebase } from "../Firebase"
 import { PasswordChangeForm } from "../PasswordChange"
@@ -170,9 +170,7 @@ const SocialLoginToggle = ({
 				onClick={() => onUnlink(signInMethod.id)}
 				disabled={onlyOneLeft}
 				title={
-					onlyOneLeft
-						? "Nie można dezaktywować ostatniej metody logowania"
-						: undefined
+					onlyOneLeft ? "Nie można dezaktywować ostatniej metody logowania" : undefined
 				}
 				fullWidth
 			>{`Dezaktywuj ${signInMethod.name}`}</SocialButton>
@@ -231,15 +229,8 @@ class DefaultLoginToggle extends Component {
 								{({ input, meta }) => (
 									<>
 										<FieldLabel>Hasło</FieldLabel>
-										<StyledInput
-											{...input}
-											type="password"
-											placeholder="Hasło"
-										/>
-										<Error
-											message={meta.error}
-											showIf={meta.error && meta.touched}
-										/>
+										<StyledInput {...input} type="password" placeholder="Hasło" />
+										<FormError message={meta.error} show={meta.error && meta.touched} />
 									</>
 								)}
 							</Field>
@@ -257,10 +248,7 @@ class DefaultLoginToggle extends Component {
 												type="password"
 												placeholder="Potwierdź Hasło"
 											/>
-											<Error
-												message={meta.error}
-												showIf={meta.error && meta.touched}
-											/>
+											<FormError message={meta.error} show={meta.error && meta.touched} />
 										</>
 									)}
 								</Field>
