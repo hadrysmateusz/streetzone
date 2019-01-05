@@ -1,6 +1,6 @@
 {
 	"name": "streetwear-app",
-	"version": "0.1.16",
+	"version": "0.1.17",
 	"private": true,
 	"dependencies": {
 		"@fortawesome/fontawesome-svg-core": "^1.2.12",
