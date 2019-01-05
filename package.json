@@ -1,6 +1,6 @@
 {
 	"name": "streetwear-app",
-	"version": "0.1.13",
+	"version": "0.1.14",
 	"private": true,
 	"dependencies": {
 		"@fortawesome/fontawesome-svg-core": "^1.2.12",
@@ -40,11 +40,12 @@
 	},
 	"scripts": {
 		"start": "react-scripts start",
-		"build": "react-scripts build && yarn version --patch",
+		"build": "react-scripts build",
 		"test": "react-scripts test",
 		"eject": "react-scripts eject",
-		"deploy": "firebase deploy --only hosting",
-		"deploy-new": "yarn build && yarn deploy"
+		"deploy-patch": "yarn build && yarn version --patch && firebase deploy --only hosting",
+		"deploy-minor": "yarn build && yarn version --minor && firebase deploy --only hosting",
+		"deploy-major": "yarn build && yarn version --major && firebase deploy --only hosting"
 	},
 	"eslintConfig": {
 		"extends": "react-app"
