@@ -1,5 +1,6 @@
 import React from "react"
 import styled from "styled-components"
+import { width } from "styled-system"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 import { CSS } from "../../constants"
@@ -11,6 +12,7 @@ const Button = styled.button`
 	color: ${(props) => (props.primary ? CSS.COLOR_WHITE : "#3e3e3e")};
 	${(props) => props.disabled && `color: #c3c3c3;`}
 	width: ${(props) => (props.fullWidth ? "100%" : "auto")};
+	${width}
 	${(props) => props.fullWidth && "margin: 4px 0;"}
 	padding: 0.8rem 1.85rem;
 	text-align: center;
@@ -20,9 +22,9 @@ const Button = styled.button`
 	${(props) => props.disabled && `font-weight: normal;`}
 	line-height: 0.79rem;
 
-	:not(:last-child) {
+	/* :not(:last-child) {
 		margin-right: 8px;
-	}
+	} */
 
 	:not([disabled]) {
 		cursor: pointer;

@@ -4,15 +4,14 @@ import styled from "styled-components"
 import { withFirebase } from "../Firebase"
 
 import { translateCondition } from "../../constants/item_schema"
-import { CSS } from "../../constants"
 
 const Container = styled.div`
 	height: 345px;
 	overflow: hidden;
 	min-width: 0;
 	min-height: 0;
-	border: 1px solid #c6c6c6;
-	box-shadow: 0 3px 6px -2px rgba(0, 0, 0, 0.13);
+	border: 1px solid ${(p) => p.theme.colors.gray[50]};
+	box-shadow: 0 3px 6px -2px rgba(0, 0, 0, 0.12);
 	transition: transform 0.18s ease;
 	background: white;
 
@@ -40,7 +39,7 @@ const ThumbnailContainer = styled.div`
 const InfoContainer = styled.div`
 	padding: 0 9px;
 	background: white;
-	border-top: 1px solid #eaeaea;
+	border-top: 1px solid ${(p) => p.theme.colors.gray[100]};
 `
 
 const TopContainer = styled.div`
@@ -83,7 +82,7 @@ const Designers = styled.div`
 `
 
 const SecondaryContainer = styled.div`
-	border-top: 1px solid #ddd;
+	border-top: 1px solid ${(p) => p.theme.colors.gray[100]};
 	padding: 10px 12px;
 	font-size: 0.83rem;
 	display: grid;
@@ -102,7 +101,7 @@ const Size = styled.div`
 	text-align: right;
 `
 
-class ItemCard extends Component {
+class ItemCardBase extends Component {
 	state = { imageURL: "" }
 
 	componentDidMount = () => {
@@ -163,4 +162,9 @@ class ItemCard extends Component {
 	}
 }
 
-export default withFirebase(ItemCard)
+const ItemCard = withFirebase(ItemCardBase)
+
+const AlgoliaItemCard = ({ hit, ...props }) => <ItemCard item={hit} {...props} />
+
+export default ItemCard
+export { AlgoliaItemCard }

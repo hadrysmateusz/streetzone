@@ -11,8 +11,7 @@ import LoadingSpinner from "../LoadingSpinner"
 import Button, { LoaderButton, AccentButton } from "../Button"
 import EmptyState from "../EmptyState"
 import UserPreview from "../UserPreview"
-import { CSS } from "../../constants"
-import { ITEM_STATUS } from "../../constants/const"
+import { CSS, ITEM_SCHEMA } from "../../constants"
 import { translateCondition } from "../../constants/item_schema"
 
 const MainContainer = styled.main`
@@ -147,7 +146,7 @@ class ItemDetailsPage extends Component {
 					<ImageGallery item={item} />
 					<InfoContainer>
 						<div>
-							{item.status === ITEM_STATUS.sold && <Sold>SPRZEDANE</Sold>}
+							{item.status === ITEM_SCHEMA.status.sold && <Sold>SPRZEDANE</Sold>}
 							<MainInfo>
 								{item.designers && (
 									<Designers>{item.designers.join(" & ") + " "}</Designers>

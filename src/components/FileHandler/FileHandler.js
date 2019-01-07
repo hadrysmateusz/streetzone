@@ -53,16 +53,16 @@ class FileHandlerUnstyled extends Component {
 
 		return (
 			<div {...rest}>
-				<div>
-					<input
-						{...rest}
-						type="file"
-						accept="image/*"
-						onChange={this.onChange}
-						style={{ display: "none" }}
-						ref={this.fileInput}
-						multiple
-					/>
+				<input
+					{...rest}
+					type="file"
+					accept="image/*"
+					onChange={this.onChange}
+					style={{ display: "none" }}
+					ref={this.fileInput}
+					multiple
+				/>
+				<div className="buttonContainer">
 					<Button
 						type="button"
 						onClick={this.clickFileInput}
@@ -134,6 +134,12 @@ const FileHandler = styled(FileHandlerUnstyled)`
 			justify-content: center;
 			align-items: center;
 		}
+	}
+
+	.buttonContainer {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 10px;
 	}
 
 	.main-error-container {

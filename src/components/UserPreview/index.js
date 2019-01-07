@@ -1,8 +1,11 @@
 import React, { Component } from "react"
 import styled from "styled-components"
-
-import { withFirebase } from "../Firebase"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { withRouter } from "react-router-dom"
+import { compose } from "recompose"
+
+import { ProfilePicture } from "../Basics"
+import { withFirebase } from "../Firebase"
 import LoadingSpinner from "../LoadingSpinner"
 
 import { ROUTES } from "../../constants"
@@ -44,8 +47,14 @@ export class UserPreview extends Component {
 			return (
 				<Container>
 					<div>
-						{/* TODO: replace the icon with avatar */}
-						<FontAwesomeIcon icon="user-circle" size="2x" />
+						{user.profilePictureURL ? (
+							<ProfilePicture size="80px" url={user.profilePictureURL} inline />
+						) : (
+							<FontAwesomeIcon
+								icon="user-circle"
+								style={{ width: "80px", height: "80px", color: "#cacaca" }}
+							/>
+						)}
 					</div>
 					<Name>
 						<a href={ROUTES.ACCOUNT.replace(":id", this.props.id)}>{user.name}</a>
@@ -58,4 +67,7 @@ export class UserPreview extends Component {
 	}
 }
 
-export default withFirebase(UserPreview)
+export default compose(
+	withRouter,
+	withFirebase
+)(UserPreview)

@@ -7,92 +7,118 @@ import removeMarkdown from "remove-markdown"
 
 import { withFirebase } from "../Firebase"
 import { ROUTES } from "../../constants"
-
-const Container = styled.div`
-	width: 100%;
-	max-width: ${(p) => p.theme.breakpoints[5]}px;
-	margin: 0 auto;
-`
+import { minWidth } from "../../style-utils"
+import { BlogPageContainer } from "../Base"
 
 const PostsContainer = styled.div`
 	display: grid;
-	gap: 10px;
+	${minWidth[5]`gap: 20px;`}
 `
 
 const Post = styled.div`
 	a {
 		display: grid;
-		grid-template-columns: 150px 1fr;
-		grid-template-rows: 150px;
+		grid-template-columns: 100px 1fr;
+		grid-template-rows: auto;
+		gap: 20px;
+		overflow: hidden;
+		padding: 15px;
+
+		background: white;
+		border: 1px solid ${(p) => p.theme.colors.gray[75]};
+		box-shadow: 0 0px 5px -1px rgba(0, 0, 0, 0.05);
+
 		@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
+			grid-template-columns: 200px 1fr;
+			grid-template-rows: 200px;
+		}
+		@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
 			grid-template-columns: 300px 1fr;
 			grid-template-rows: 300px;
+			gap: 30px;
 		}
-		gap: 10px;
-		background: white;
-		border: 1px solid #dcdcdc;
-		@media (max-width: ${(p) => p.theme.breakpoints[5]}px) {
+		@media (max-width: ${(p) => p.theme.breakpoints[5] - 1}px) {
 			border-left: none;
 			border-right: none;
 		}
 	}
+	:not(:last-child) a {
+		@media (max-width: ${(p) => p.theme.breakpoints[5] - 1}px) {
+			border-bottom: none;
+		}
+	}
 `
 
-const Image = styled.div`
+const ImageContainer = styled.div`
 	max-width: 100%;
 	max-height: 100%;
-	display: block;
 
 	width: 100%;
 	height: 100%;
 
 	cursor: pointer;
 
-	/* required for image centering */
 	display: flex;
 	justify-content: center;
-	align-items: center;
+	align-items: flex-start;
 
-	img {
-		max-height: 100%;
-		max-width: 100%;
+	/* padding-top: 20px;
+	padding-left: 20px; */
+	@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
+		align-items: center;
+		/* padding: 0; */
 	}
+`
+
+const Image = styled.div`
+	width: 100%;
+	height: 0;
+	padding-bottom: 100%;
+	background-image: url("${(p) => p.url}");
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: center;
+
 `
 
 const Info = styled.div`
-	padding: 25px 15px;
-	overflow: hidden;
+	/* padding: 15px 0; */
 `
 
-const Author = styled.div`
+const DetailsContainer = styled.div`
+	display: grid;
+	grid-auto-columns: max-content;
+	grid-auto-flow: column;
+	gap: 10px;
 	margin: 10px 0;
-	svg {
-		color: #a8a8a8;
-		margin-right: 3px;
+	@media (min-width: ${(p) => p.theme.breakpoints[0]}px) {
+		grid-auto-flow: row;
 	}
-	color: #6f6f6f;
-	font-size: 0.85rem;
 `
 
-const CreatedAt = styled.div`
-	margin: 10px 0;
+const InfoItem = styled.div`
 	svg {
-		color: #a8a8a8;
+		color: ${(p) => p.theme.colors.gray[25]};
 		margin-right: 3px;
 	}
-	color: #6f6f6f;
+	color: ${(p) => p.theme.colors.gray[0]};
 	font-size: 0.85rem;
 `
 
 const Title = styled.h2`
-	margin: 0 0 10px 0;
+	margin: 0;
 	font-size: 1.4rem;
+	line-height: 1.6rem;
+	max-height: 3.2rem;
+	overflow: hidden;
+	text-overflow: ellipsis;
 	color: #333;
 `
 
 const Excerpt = styled.p`
 	white-space: pre-wrap;
 	max-width: 400px;
+	margin: 0 0 5px 0;
 
 	line-height: 1.5em;
 	font-size: 1.04rem;
@@ -116,31 +142,32 @@ export class BlogHomePage extends Component {
 
 	render() {
 		return (
-			<Container>
-				{/* <Header>Blog</Header> */}
+			<BlogPageContainer maxWidth={5}>
 				<PostsContainer>
 					{this.state.posts.map((post) => {
 						let excerpt = removeMarkdown(post.content, { gfm: true })
 						excerpt = excerpt.replace(/\\n/g, "\n")
-						const length = 100
+						const length = 85
 						excerpt = excerpt.length < length ? excerpt : excerpt.substring(0, length)
 						excerpt += "..."
 
 						return (
 							<Post>
 								<Link to={ROUTES.BLOG_POST.replace(":id", post.postId)}>
-									<Image>
-										<img src={post.photo_url} alt="" />
-									</Image>
+									<ImageContainer>
+										<Image url={post.photo_url} />
+									</ImageContainer>
 									<Info>
 										<Title as="h3">{post.title}</Title>
-										<Author>
-											<FontAwesomeIcon icon="user" /> {post.author}
-										</Author>
-										<CreatedAt>
-											<FontAwesomeIcon icon="calendar" />{" "}
-											{moment(post.createdAt).format("D.M.YY")}
-										</CreatedAt>
+										<DetailsContainer>
+											<InfoItem>
+												<FontAwesomeIcon icon="user" /> {post.author}
+											</InfoItem>
+											<InfoItem>
+												<FontAwesomeIcon icon="calendar" />{" "}
+												{moment(post.createdAt).format("D.M.YY")}
+											</InfoItem>
+										</DetailsContainer>
 										<Excerpt>{excerpt}</Excerpt>
 									</Info>
 								</Link>
@@ -148,7 +175,7 @@ export class BlogHomePage extends Component {
 						)
 					})}
 				</PostsContainer>
-			</Container>
+			</BlogPageContainer>
 		)
 	}
 }

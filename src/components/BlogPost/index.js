@@ -10,7 +10,7 @@ import { Box, Text, Flex } from "rebass"
 import { withFirebase } from "../Firebase"
 import LoadingSpinner from "../LoadingSpinner"
 import { ROUTES } from "../../constants"
-import { PageContainer } from "../Base"
+import { BlogPageContainer } from "../Base"
 import { minWidth, maxWidth } from "../../style-utils"
 
 const Content = styled(Box).attrs({ p: 3, as: "article" })`
@@ -156,7 +156,7 @@ export class BlogPost extends Component {
 
 	render() {
 		return (
-			<PageContainer maxWidth={5}>
+			<BlogPageContainer maxWidth={5}>
 				{this.state.post && (
 					<>
 						<Content>
@@ -198,7 +198,7 @@ export class BlogPost extends Component {
 						</Content>
 					</>
 				)}
-			</PageContainer>
+			</BlogPageContainer>
 		)
 	}
 }

@@ -2,10 +2,8 @@ import React, { Component } from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import styled from "styled-components"
 
-import Button from "../Button"
 import CustomFile from "./CustomFile"
 import LoadingSpinner from "../LoadingSpinner"
-import { CSS } from "../../constants"
 
 const size = "160px"
 
@@ -37,7 +35,7 @@ const OverlayButton = styled.div`
 		transform: scale(1.13);
 	}
 	::after {
-		content: attr(title);
+		content: "${(p) => p.text}";
 		font-size: 0.7rem;
 		display: block;
 		text-align: center;
@@ -52,6 +50,7 @@ const Preview = styled.div`
 	border-radius: 50%;
 	background-repeat: no-repeat;
 	background-size: cover;
+	background-position: center;
 	background-image: ${(props) => `url(${props.url})`};
 `
 
@@ -102,17 +101,17 @@ class FileHandlerSingle extends Component {
 	render() {
 		const { input, meta, isLoading, ...rest } = this.props
 
-		const hasContent = input.value
+		const hasContent = !!input.value
 
 		return (
 			<div>
 				{hasContent ? (
 					<PreviewContainer>
 						<PreviewOverlay>
-							<OverlayButton title="Zmień" onClick={this.clickFileInput}>
+							<OverlayButton text="Zmień" onClick={this.clickFileInput}>
 								<FontAwesomeIcon icon="plus" />
 							</OverlayButton>
-							<OverlayButton title="Usuń" onClick={this.deleteFile}>
+							<OverlayButton text="Usuń" onClick={this.deleteFile}>
 								<FontAwesomeIcon icon="trash" />
 							</OverlayButton>
 						</PreviewOverlay>
@@ -121,11 +120,11 @@ class FileHandlerSingle extends Component {
 				) : (
 					<PreviewContainer>
 						{isLoading ? (
-							<LoadingSpinner width="160px" height="160px" />
+							<LoadingSpinner width={size} height={size} />
 						) : (
 							<>
 								<PreviewOverlay onClick={this.clickFileInput}>
-									<OverlayButton title="Dodaj">
+									<OverlayButton text="Dodaj">
 										<FontAwesomeIcon icon="plus" />
 									</OverlayButton>
 								</PreviewOverlay>

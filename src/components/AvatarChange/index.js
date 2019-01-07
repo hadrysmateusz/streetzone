@@ -1,13 +1,14 @@
 import React from "react"
 import { Form, Field } from "react-final-form"
+import { withRouter } from "react-router-dom"
 import { compose } from "recompose"
-import uuidv1 from "uuid/v1"
 import styled from "styled-components"
 
 import Button, { LoaderButton } from "../Button"
 import { FileHandlerSingle, CustomFile } from "../FileHandler"
-import { withRouter } from "react-router-dom"
 import { withFirebase } from "../Firebase"
+import { withAuthentication } from "../UserSession"
+import { FORM_ERR } from "../../constants"
 
 const Container = styled.div`
 	max-width: 460px;
@@ -30,25 +31,20 @@ class AvatarChangeForm extends React.Component {
 	}
 
 	componentDidMount = () => {
-		this.loadImage()
+		this.loadImageFile()
 	}
 
-	validate = (values) => {
-		const errors = {}
-		return errors
-	}
+	loadImageFile = async () => {
+		const { authUser } = this.props
+		const { profilePictureRef, profilePictureURL } = authUser
 
-	loadImage = async () => {
-		const currentUser = this.props.firebase.currentUser()
-		const currentUserData = (await currentUser.get()).data()
-
-		if (currentUserData.profilePictureRef) {
-			let ref = this.props.firebase.storageRef.child(currentUserData.profilePictureRef)
-
+		// TODO: this won't work for social signin photos as they don't have a ref
+		if (authUser.profilePictureRef) {
 			try {
-				const imageURL = await ref.getDownloadURL()
-
-				const file = new CustomFile({ ref: ref, previewUrl: imageURL })
+				const file = new CustomFile({
+					ref: profilePictureRef,
+					previewUrl: profilePictureURL
+				})
 
 				this.setState({ file })
 			} catch (error) {
@@ -58,81 +54,68 @@ class AvatarChangeForm extends React.Component {
 		this.setState({ isLoading: false })
 	}
 
-	onSubmit = async (values) => {
+	onSubmit = async ({ file }, actions) => {
 		try {
-			const { firebase, history } = this.props
-			const file = values.file
+			const { firebase, authUser } = this.props
 
 			// If file already has a ref there were no changes
 			if (file && file.ref) return
 
-			const currentUser = firebase.currentUser()
-			const currentUserData = (await currentUser.get()).data()
-			let oldFileRef, newFileRef
-
-			// If there is no file, check if user has a picture
-			// If so, mark it for deletion, otherwise throw error
-			if (!file) {
-				if (currentUserData.profilePictureRef) {
-					// Create a new empty ref
-					newFileRef = null
-				} else {
-					throw new Error("No new file was provided")
-				}
-			} else {
+			// If there is no file, create empty ref
+			// otherwise upload the new file and use its ref
+			let newFileRef = null
+			if (file) {
 				// Upload the new file and return its ref
-				const name = uuidv1()
-				const userId = currentUser.id
-				const ref = firebase.storageRef.child(`profile-pictures/${userId}/${name}`)
-				const snapshot = await ref.put(file.data)
+				const snapshot = await firebase.uploadFile(
+					`profile-pictures/${authUser.uid}`,
+					file.data
+				)
 				newFileRef = snapshot.ref.fullPath
 			}
 
 			// Get ref of current profile picture
-			if (currentUserData.profilePictureRef) {
-				oldFileRef = currentUserData.profilePictureRef
-			}
+			const oldFileRef = authUser.profilePictureRef || null
 
-			// Update (or clear) profilePictureRef in database
-			await currentUser.update({ profilePictureRef: newFileRef })
+			// Get profile image url for the new file
+			const newURL = newFileRef ? await firebase.getImageURL(newFileRef) : null
+
+			// Update (or clear) profile picture ref and url in database
+			await firebase.currentUser().update({
+				profilePictureRef: newFileRef,
+				profilePictureURL: newURL
+			})
 
 			// Remove old file
 			if (oldFileRef) {
-				await firebase.storageRef.child(oldFileRef).delete()
+				await firebase.file(oldFileRef).delete()
 			}
 
-			// TODO: reset form  and update this page instead of redirecting
-			// Redirect to home page
-			history.push("/")
-			return
+			// Reset form
+			actions.reset()
 		} catch (error) {
 			alert("Wystąpił problem")
 			console.log(error)
 		}
 	}
 
+	validate = ({ file }) => {
+		const errors = {}
+		return errors
+	}
+
 	render() {
 		const { file, isLoading } = this.state
 
 		return (
-			<Container width={500}>
+			<Container>
 				<Form
 					onSubmit={this.onSubmit}
 					validate={this.validate}
 					initialValues={{ file }}
-					render={({
-						handleSubmit,
-						submitting,
-						values,
-						invalid,
-						pristine,
-						active,
-						form
-					}) => {
+					render={({ handleSubmit, submitting, pristine, form, values }) => {
 						return (
 							<form onSubmit={handleSubmit}>
 								{/* Files (handled by separate component) */}
-
 								<Field name="file" isLoading={isLoading} component={FileHandlerSingle} />
 
 								<ButtonContainer>
@@ -164,5 +147,6 @@ class AvatarChangeForm extends React.Component {
 
 export default compose(
 	withRouter,
-	withFirebase
+	withFirebase,
+	withAuthentication
 )(AvatarChangeForm)

@@ -3,7 +3,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import styled, { css } from "styled-components"
 
 import { MiniButton } from "../Basics"
-import { CSS } from "../../constants"
 
 const ContainerError = css`
 	border: 4px solid rgb(216, 16, 16);
@@ -11,14 +10,14 @@ const ContainerError = css`
 const Container = styled.div`
 	box-sizing: content-box;
 	user-select: none;
-	border: 1px solid ${CSS.COLOR_BLACK_LIGHTER};
+	border: 1px solid ${(p) => p.theme.colors.black[100]};
 	height: 177px;
 	position: relative;
 	${(props) => props.error && ContainerError}
 `
 
 const Thumbnail = styled.div`
-	background: ${CSS.COLOR_THUMBNAIL_BG};
+	background: ${(p) => p.theme.colors.gray[100]};
 	display: flex;
 	height: 100%;
 	width: 100%;
