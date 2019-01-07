@@ -1,6 +1,8 @@
 import React from "react"
 import { Form, Field } from "react-final-form"
 import { OnChange } from "react-final-form-listeners"
+import AsyncCreatable from "react-select/lib/AsyncCreatable"
+import styled from "styled-components"
 
 import Button, { LoaderButton } from "../Button"
 import { FieldRow, FieldLabel, StyledInput, StyledTextarea } from "../Basics"
@@ -11,6 +13,30 @@ import { withRouter } from "react-router-dom"
 import validate from "./validate"
 
 import { ITEM_SCHEMA, ROUTES } from "../../constants"
+
+const StyledForm = styled.form`
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 10px;
+	grid-template-areas:
+		"name name"
+		"designers designers"
+		"category category"
+		"size size"
+		"price price"
+		"condition condition"
+		"description description"
+		"files files";
+	@media (min-width: ${(p) => p.theme.breakpoints[0]}px) {
+		grid-template-areas:
+			"name name"
+			"designers designers"
+			"category size"
+			"price condition"
+			"description description"
+			"files files";
+	}
+`
 
 const NewItemForm = ({ initialValues, onSubmit, history, isLoading }) => {
 	if (!initialValues) {
@@ -30,9 +56,9 @@ const NewItemForm = ({ initialValues, onSubmit, history, isLoading }) => {
 			initialValues={initialValues}
 			render={({ form, handleSubmit, submitting, pristine, values, ...rest }) => {
 				return (
-					<form onSubmit={handleSubmit}>
+					<StyledForm onSubmit={handleSubmit}>
 						{/* Name */}
-						<FieldRow>
+						<FieldRow gridArea="name">
 							<Field name="name">
 								{({ input, meta }) => (
 									<>
@@ -44,8 +70,8 @@ const NewItemForm = ({ initialValues, onSubmit, history, isLoading }) => {
 							</Field>
 						</FieldRow>
 
-						{/* Designer */}
-						<FieldRow>
+						{/* Designers */}
+						<FieldRow gridArea="designers">
 							<Field name="designers" type="select">
 								{({ input, meta }) => (
 									<>
@@ -66,27 +92,8 @@ const NewItemForm = ({ initialValues, onSubmit, history, isLoading }) => {
 							</Field>
 						</FieldRow>
 
-						{/* Price */}
-						<FieldRow>
-							<Field name="price">
-								{({ input, meta }) => (
-									<>
-										<FieldLabel>Cena </FieldLabel>
-										<StyledInput
-											{...input}
-											type="number"
-											min="0"
-											step="1"
-											placeholder="Cena"
-										/>
-										<FormError message={meta.error} show={meta.error && meta.touched} />
-									</>
-								)}
-							</Field>
-						</FieldRow>
-
 						{/* Category */}
-						<FieldRow>
+						<FieldRow gridArea="category">
 							<Field name="category" type="select">
 								{({ input, meta }) => (
 									<>
@@ -107,7 +114,7 @@ const NewItemForm = ({ initialValues, onSubmit, history, isLoading }) => {
 						</FieldRow>
 
 						{/* Size */}
-						<FieldRow>
+						<FieldRow gridArea="size">
 							<Field name="size">
 								{({ input, meta }) => {
 									const options = ITEM_SCHEMA.sizeOptions(values.category)
@@ -144,8 +151,27 @@ const NewItemForm = ({ initialValues, onSubmit, history, isLoading }) => {
 							</Field>
 						</FieldRow>
 
+						{/* Price */}
+						<FieldRow gridArea="price">
+							<Field name="price">
+								{({ input, meta }) => (
+									<>
+										<FieldLabel>Cena </FieldLabel>
+										<StyledInput
+											{...input}
+											type="number"
+											min="0"
+											step="1"
+											placeholder="Cena"
+										/>
+										<FormError message={meta.error} show={meta.error && meta.touched} />
+									</>
+								)}
+							</Field>
+						</FieldRow>
+
 						{/* Condition */}
-						<FieldRow>
+						<FieldRow gridArea="condition">
 							<Field name="condition">
 								{({ input, meta }) => (
 									<>
@@ -166,7 +192,7 @@ const NewItemForm = ({ initialValues, onSubmit, history, isLoading }) => {
 						</FieldRow>
 
 						{/* Description */}
-						<FieldRow>
+						<FieldRow gridArea="description">
 							<Field name="description">
 								{({ input, meta }) => (
 									<>
@@ -179,31 +205,29 @@ const NewItemForm = ({ initialValues, onSubmit, history, isLoading }) => {
 						</FieldRow>
 
 						{/* Files (handled by separate component) */}
-						<FieldRow>
+						<FieldRow gridArea="files">
 							<FieldLabel>Zdjęcia </FieldLabel>
 							<Field name="files" isLoading={isLoading} component={FileHandler} />
 						</FieldRow>
 
-						<div className="buttons">
-							<LoaderButton
-								text="Gotowe"
-								type="submit"
-								isLoading={submitting}
-								disabled={submitting || pristine}
-							/>
-							<Button
-								text="Anuluj"
-								type="button"
-								disabled={submitting}
-								onClick={() => history.push(ROUTES.HOME)}
-							>
-								Anuluj
-							</Button>
-						</div>
+						<LoaderButton
+							text="Gotowe"
+							type="submit"
+							isLoading={submitting}
+							disabled={submitting || pristine}
+						/>
+						<Button
+							text="Anuluj"
+							type="button"
+							disabled={submitting}
+							onClick={() => history.push(ROUTES.HOME)}
+						>
+							Anuluj
+						</Button>
 						{/* {process.env.NODE_ENV === "development" && (
 							<pre>{JSON.stringify(values, 0, 2)}</pre>
 						)} */}
-					</form>
+					</StyledForm>
 				)
 			}}
 		/>

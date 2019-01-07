@@ -1,5 +1,6 @@
 import React from "react"
 import { Form, Field } from "react-final-form"
+import styled from "styled-components"
 
 import Button, { LoaderButton } from "../Button"
 import { FieldRow, FieldLabel, StyledInput, StyledTextarea } from "../Basics"
@@ -10,6 +11,16 @@ import validate from "./validate"
 
 import { ROUTES } from "../../constants"
 
+const StyledForm = styled.form`
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 10px;
+	grid-template-areas:
+		"price price"
+		"description description"
+		"files files";
+`
+
 const EditItemForm = ({ initialValues, onSubmit, history, isLoading }) => (
 	<Form
 		onSubmit={onSubmit}
@@ -17,9 +28,9 @@ const EditItemForm = ({ initialValues, onSubmit, history, isLoading }) => (
 		initialValues={initialValues ? initialValues : undefined}
 		render={({ form, handleSubmit, submitting, pristine, values, ...rest }) => {
 			return (
-				<form onSubmit={handleSubmit}>
+				<StyledForm onSubmit={handleSubmit}>
 					{/* Price */}
-					<FieldRow>
+					<FieldRow gridArea="price">
 						<Field name="price">
 							{({ input, meta }) => (
 								<>
@@ -38,7 +49,7 @@ const EditItemForm = ({ initialValues, onSubmit, history, isLoading }) => (
 					</FieldRow>
 
 					{/* Description */}
-					<FieldRow>
+					<FieldRow gridArea="description">
 						<Field name="description">
 							{({ input, meta }) => (
 								<>
@@ -56,31 +67,29 @@ const EditItemForm = ({ initialValues, onSubmit, history, isLoading }) => (
 					</FieldRow>
 
 					{/* Files (handled by separate component) */}
-					<FieldRow>
+					<FieldRow gridArea="files">
 						<FieldLabel>Zdjęcia </FieldLabel>
 						<Field name="files" isLoading={isLoading} component={FileHandler} />
 					</FieldRow>
 
-					<div className="buttons">
-						<LoaderButton
-							text="Gotowe"
-							type="submit"
-							isLoading={submitting}
-							disabled={submitting || pristine}
-						/>
-						<Button
-							text="Anuluj"
-							type="button"
-							disabled={submitting}
-							onClick={() => history.push(ROUTES.HOME)}
-						>
-							Anuluj
-						</Button>
-					</div>
+					<LoaderButton
+						text="Gotowe"
+						type="submit"
+						isLoading={submitting}
+						disabled={submitting || pristine}
+					/>
+					<Button
+						text="Anuluj"
+						type="button"
+						disabled={submitting}
+						onClick={() => history.push(ROUTES.HOME)}
+					>
+						Anuluj
+					</Button>
 					{/* {process.env.NODE_ENV === "development" && (
 							<pre>{JSON.stringify(values, 0, 2)}</pre>
 						)} */}
-				</form>
+				</StyledForm>
 			)
 		}}
 	/>

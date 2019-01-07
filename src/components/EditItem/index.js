@@ -101,7 +101,6 @@ class EditItemPage extends Component {
 		const { isLoading, error, initialData } = this.state
 		return (
 			<PageContainer maxWidth={1}>
-				<Header>Edytuj</Header>
 				{error ? (
 					<EmptyState text={error.message} />
 				) : isLoading ? (

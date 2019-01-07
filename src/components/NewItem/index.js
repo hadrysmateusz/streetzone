@@ -6,7 +6,8 @@ import shortid from "shortid"
 import { withAuthorization, withAuthentication } from "../UserSession"
 import { withFirebase } from "../Firebase"
 import NewItemForm from "./NewItemForm"
-import { Container, Header } from "../Basics"
+import { PageContainer } from "../Base"
+// import { Container, Header } from "../Basics"
 import { ITEM_SCHEMA } from "../../constants"
 
 class NewItemPage extends Component {
@@ -68,10 +69,10 @@ class NewItemPage extends Component {
 
 	render() {
 		return (
-			<Container width={620}>
-				<Header>Nowy</Header>
+			<PageContainer maxWidth={1}>
+				{/* <Header>Nowy</Header> */}
 				<NewItemForm onSubmit={this.onSubmit} />
-			</Container>
+			</PageContainer>
 		)
 	}
 }
