@@ -22,7 +22,8 @@ const ItemsGrid = styled.div`
 	}
 `
 
-const ItemsView = ({ items }) => {
+const ItemsViewBase = ({ items }) => {
+	console.log(items)
 	return (
 		<ItemsGrid>
 			{items.map((item, i) => (
@@ -32,4 +33,13 @@ const ItemsView = ({ items }) => {
 	)
 }
 
-export default withLoader(ItemsView)
+const ItemsView = withLoader(ItemsViewBase)
+
+const AlgoliaItemsView = ({ hits, ...props }) => {
+	console.log(hits, props)
+	return <ItemsView items={hits} {...props} />
+}
+
+export default ItemsView
+
+export { AlgoliaItemsView }
