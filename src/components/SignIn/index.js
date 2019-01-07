@@ -10,7 +10,8 @@ import { FacebookButton, GoogleButton, LoaderButton } from "../Button"
 import { PasswordForgetLink } from "../PasswordForget"
 import { SignUpLink } from "../SignUp"
 import { withFirebase } from "../Firebase"
-import { ROUTES, FORM_ERR, AUTH_ERR, REGEX } from "../../constants"
+import validate from "./validate"
+import { ROUTES, AUTH_ERR } from "../../constants"
 
 const Container = styled.div`
 	width: 100%;
@@ -40,6 +41,7 @@ class SignInFormBase extends Component {
 		const { email, password } = values
 
 		try {
+			// Attempt signIn
 			await this.props.firebase.signInWithEmail(email, password)
 			// Reset form
 			actions.reset()
@@ -52,33 +54,14 @@ class SignInFormBase extends Component {
 		}
 	}
 
-	validate = (values) => {
-		const { email, password } = values
-		const errors = {}
-
-		// E-mail
-		if (!email) {
-			errors.email = FORM_ERR.IS_REQUIRED
-		} else if (!REGEX.EMAIL.test(email)) {
-			errors.email = FORM_ERR.EMAIL_INVALID
-		}
-
-		// Hasło
-		if (!password) {
-			errors.password = FORM_ERR.IS_REQUIRED
-		}
-
-		return errors
-	}
-
 	render() {
 		const { error } = this.state
 
 		return (
 			<Form
 				onSubmit={this.onSubmit}
-				validate={this.validate}
-				render={({ handleSubmit, submitting, pristine }) => (
+				validate={validate}
+				render={({ handleSubmit, submitting }) => (
 					<form onSubmit={handleSubmit}>
 						{/* E-mail */}
 						<FieldRow>
@@ -137,7 +120,7 @@ class SignInGoogleBase extends Component {
 					roles: [],
 					permission: [],
 					profilePictureRef: null,
-					profilePictureURL: socialAuthUser.picture || ""
+					profilePictureURL: socialAuthUser.picture || null
 				})
 			}
 			this.setState({ error: null })
@@ -180,7 +163,7 @@ class SignInFacebookBase extends Component {
 					roles: [],
 					permission: [],
 					profilePictureRef: null,
-					profilePictureURL: socialAuthUser.picture || ""
+					profilePictureURL: socialAuthUser.picture || null
 				})
 			}
 			this.setState({ error: null })

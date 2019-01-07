@@ -8,7 +8,9 @@ import { withFirebase } from "../Firebase"
 import { StyledLink, FieldRow, FieldLabel, StyledInput, Header } from "../Basics"
 import { LoaderButton } from "../Button"
 import { FormError } from "../FormElements"
-import { ROUTES, FORM_ERR, AUTH_ERR, REGEX } from "../../constants"
+import { ROUTES, AUTH_ERR } from "../../constants"
+import { ACCOUNT_TABS } from "../../constants/const"
+import validate from "./validate"
 
 const Container = styled.div`
 	width: 100%;
@@ -28,12 +30,15 @@ const SignUpPage = () => {
 class SignUpFormBase extends Component {
 	state = { error: null }
 
-	onSubmit = async (values, actions) => {
-		const { name, email, password } = values
+	onSubmit = async ({ name, email, password }, actions) => {
+		const { firebase, history } = this.props
 
 		try {
 			// Create user for auth
-			const authUser = await this.props.firebase.signUpWithEmail(email, password)
+			const authUser = await firebase.signUpWithEmail(email, password)
+
+			const userId = authUser.user.uid
+			console.log("userId", userId)
 
 			// Add the name to the auth user
 			await authUser.user.updateProfile({
@@ -41,57 +46,32 @@ class SignUpFormBase extends Component {
 			})
 
 			// Create user in db
-			await this.props.firebase.user(authUser.user.uid).set({
+			await firebase.user(userId).set({
 				name,
 				email,
 				items: [],
-				profileImageRef: "",
-				profileImageURL: "",
+				profilePictureRef: null,
+				profilePictureURL: null,
 				permissions: [],
 				roles: [],
 				feedback: [],
 				badges: []
 			})
 
+			// Reset form
+			actions.reset()
+			// Reset component
+			await this.setState({ error: null })
 			// Redirect
-			this.props.history.push(ROUTES.HOME)
+			history.push(
+				ROUTES.ACCOUNT.replace(":id", userId).replace(":tab", ACCOUNT_TABS.settings)
+			)
 		} catch (error) {
 			if (error.code === AUTH_ERR.CODE_SOCIAL_ACCOUNT_EXISTS) {
 				error.message = AUTH_ERR.MSG_SOCIAL_ACCOUNT_EXISTS
 			}
 			this.setState({ error })
 		}
-	}
-
-	validate = (values) => {
-		const { email, name, password, passwordConfirm } = values
-		const errors = {}
-
-		// E-mail
-		if (!email) {
-			errors.email = FORM_ERR.IS_REQUIRED
-		} else if (!REGEX.EMAIL.test(email)) {
-			errors.email = FORM_ERR.EMAIL_INVALID
-		}
-
-		// Name
-		if (!name) {
-			errors.name = FORM_ERR.IS_REQUIRED
-		}
-
-		// Password
-		if (!password) {
-			errors.password = FORM_ERR.IS_REQUIRED
-		}
-
-		// Password Confirm
-		if (!passwordConfirm) {
-			errors.passwordConfirm = FORM_ERR.IS_REQUIRED
-		} else if (password !== passwordConfirm) {
-			errors.passwordConfirm = FORM_ERR.PASSWORDS_NOT_MATCHING
-		}
-
-		return errors
 	}
 
 	render() {
@@ -101,7 +81,7 @@ class SignUpFormBase extends Component {
 			<Container>
 				<Form
 					onSubmit={this.onSubmit}
-					validate={this.validate}
+					validate={validate}
 					render={({ handleSubmit, submitting, pristine, values }) => (
 						<form onSubmit={handleSubmit}>
 							{/* Imię */}
