@@ -1,16 +1,16 @@
 import React, { Component } from "react"
 import { compose } from "recompose"
 import styled from "styled-components"
-import { Route } from "react-router-dom"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 import { withFirebase } from "../Firebase"
 import { withAuthorization, withAuthentication } from "../UserSession"
 import LoadingSpinner from "../LoadingSpinner"
-import { Separator, CustomNavLink } from "../Basics"
+import { Separator, ProfilePicture, CustomNavLink } from "../Basics"
 import AvatarChangeForm from "../AvatarChange"
 import LoginManagement from "../LoginManagement"
-import { EMPTY_STATES, ROUTES } from "../../constants"
-import { ITEM_STATUS } from "../../constants/const"
+import { ACCOUNT_TABS } from "../../constants/const"
+import { EMPTY_STATES, ITEM_SCHEMA } from "../../constants"
 import ItemsView from "../ItemsView"
 import EmptyState from "../EmptyState"
 
@@ -45,13 +45,17 @@ const UserTransactions = ({ soldItems }) => (
 	</div>
 )
 
-const ProfilePicture = styled.div`
-	width: ${(p) => p.size};
-	height: ${(p) => p.size};
-	border-radius: 50%;
-	background-repeat: no-repeat;
-	background-size: cover;
-	background-image: ${(p) => `url(${p.url})`};
+const TabsNav = styled.nav`
+	padding: 10px;
+	grid-area: tabs-nav;
+	background: white;
+	border: 1px solid#c6c6c6;
+	white-space: nowrap;
+	text-align: center;
+	display: grid;
+	grid-template-columns: 1fr;
+	grid-auto-rows: min-content;
+	gap: 12px;
 `
 
 const MainGrid = styled.div`
@@ -90,44 +94,6 @@ const MainInfoContainer = styled.div`
 	grid-template-rows: 120px;
 `
 
-const TabsContentContainer = styled.div`
-	grid-area: tabs-content;
-`
-
-const TabsNav = styled.nav`
-	padding: 10px;
-	grid-area: tabs-nav;
-	background: white;
-	border: 1px solid#c6c6c6;
-	white-space: nowrap;
-	text-align: center;
-	display: grid;
-	grid-template-columns: 1fr;
-	grid-auto-rows: min-content;
-	gap: 12px;
-`
-
-const Tab = styled(CustomNavLink)`
-	* {
-		user-select: none !important;
-	}
-	background: none;
-	border: none;
-	outline: none;
-	padding: 0;
-	color: #292929;
-	&:hover {
-		color: ${(p) => p.theme.colors.accent};
-	}
-`
-
-const TABS = {
-	items: { name: "items", displayName: "Przedmioty na sprzedaż" },
-	settings: { name: "settings", displayName: "Opcje / Edytuj Profil" },
-	feedback: { name: "feedback", displayName: "Opinie" },
-	transactions: { name: "transactions", displayName: "Historia Transakcji" }
-}
-
 class AccountPage extends Component {
 	itemListeners = []
 
@@ -135,37 +101,27 @@ class AccountPage extends Component {
 		isLoading: true,
 		user: null,
 		userIsOwner: false,
-		items: {},
-		currentTab: TABS.items.name
+		items: {}
 	}
 
 	getUser = async () => {
 		try {
 			// Get id from url
 			const userId = this.props.match.params.id
-			// Get user data from db based on id
-			const user = (await this.props.firebase.user(userId).get()).data()
 			// Get the current authenticated user
 			const authUser = this.props.authUser
 			// Check if this is the page of the current user
 			const userIsOwner = authUser && userId === authUser.uid
-
-			console.log("fetched user", user)
-			console.log("auth user", authUser)
-			console.log("is owner: ", userIsOwner)
+			// Get user data from db based on id or use the auth user
+			const user = userIsOwner
+				? authUser
+				: (await this.props.firebase.user(userId).get()).data()
 
 			// Throw an error if user isn't found
 			if (!user) throw new Error("Couldn't find the user")
 
-			let profileImageURL = ""
-			if (user.profilePictureRef) {
-				// Get profile image url of the user
-				profileImageURL = await this.props.firebase.storageRef
-					.child(user.profilePictureRef)
-					.getDownloadURL()
-			}
-
-			return this.setState({ user, userIsOwner, profileImageURL })
+			console.log(user, userIsOwner)
+			return this.setState({ user, userIsOwner })
 		} catch (error) {
 			console.log(error)
 		}
@@ -175,31 +131,30 @@ class AccountPage extends Component {
 		try {
 			this.setState({ isFetchingItems: true })
 			// If the user is missing refetch it
-			if (!this.state.user) {
-				await this.getUser()
-			}
+			if (!this.state.user) throw new Error("Missing user data")
 
-			const itemIDs = this.state.user.items
-			if (!itemIDs) throw new Error("This user has no items")
+			const itemIDs = this.state.user.items || []
 
 			const items = await Promise.all(
-				itemIDs.map((itemID) => this.props.firebase.getItem(itemID))
+				itemIDs.map((itemID) => this.props.firebase.getItemData(itemID))
 			)
 
 			let availableItems = []
 			let soldItems = []
 
 			for (let item of items) {
-				if (item.status === ITEM_STATUS.available) {
+				if (item.status === ITEM_SCHEMA.status.available) {
 					availableItems.push(item)
-				} else if (item.status === ITEM_STATUS.sold) {
+				} else if (item.status === ITEM_SCHEMA.status.sold) {
 					soldItems.push(item)
 				}
 			}
 
-			this.setState({ isFetchingItems: false, availableItems, soldItems })
+			this.setState({ availableItems, soldItems })
 		} catch (error) {
 			console.log(error)
+		} finally {
+			this.setState({ isFetchingItems: false })
 		}
 	}
 
@@ -242,9 +197,12 @@ class AccountPage extends Component {
 			user,
 			userIsOwner,
 			availableItems,
-			soldItems,
-			profileImageURL
+			soldItems
 		} = this.state
+
+		const userId = this.props.match.params.id
+		const baseUrl = this.props.match.path.replace(":id", userId)
+		const currentTab = this.props.match.params.tab
 
 		return (
 			<MainGrid>
@@ -252,60 +210,65 @@ class AccountPage extends Component {
 					<>
 						{/* Main Info */}
 						<MainInfoContainer>
-							<ProfilePicture size="100px" url={profileImageURL} />
+							{user.profilePictureURL ? (
+								<ProfilePicture size="100px" url={user.profilePictureURL} inline />
+							) : (
+								<FontAwesomeIcon
+									icon="user-circle"
+									style={{ width: "100px", height: "100px", color: "#cacaca" }}
+								/>
+							)}
 							<div>
 								<h2>Imię: {user.name}</h2>
 								<p>Email: {user.email}</p>
 							</div>
 						</MainInfoContainer>
-						{/* Tabs navigation */}
 						<TabsNav>
-							{Object.values(TABS).map(({ name, displayName }, i) =>
-								!(name === TABS.settings.name && !userIsOwner) ? (
-									<Tab key={i} to={this.props.match.url + "/" + name}>
-										{displayName}
-									</Tab>
-								) : null
+							<CustomNavLink to={baseUrl.replace(":tab", ACCOUNT_TABS.items)}>
+								Przedmioty na sprzedaż
+							</CustomNavLink>
+
+							{!(currentTab === ACCOUNT_TABS.settings && !userIsOwner) && (
+								<CustomNavLink to={baseUrl.replace(":tab", ACCOUNT_TABS.settings)}>
+									Ustawienia / Edytuj profil
+								</CustomNavLink>
 							)}
+
+							<CustomNavLink to={baseUrl.replace(":tab", ACCOUNT_TABS.feedback)}>
+								Opinie i komentarze
+							</CustomNavLink>
+
+							<CustomNavLink to={baseUrl.replace(":tab", ACCOUNT_TABS.transactions)}>
+								Historia transakcji
+							</CustomNavLink>
 						</TabsNav>
-						{/* Tabs content */}
-						<Route
-							path={ROUTES.ACCOUNT_TAB}
-							children={({ match }) =>
-								match ? (
-									<TabsContentContainer>
-										{/* Items */}
-										{match.params.tab === TABS.items.name &&
-											(isFetchingItems ? (
-												<LoadingSpinner />
-											) : availableItems.length > 0 ? (
-												<ItemsView items={availableItems} />
-											) : (
-												<EmptyState state={EMPTY_STATES.UserNoItems} />
-											))}
-										{/* Settings */}
-										{match.params.tab === TABS.settings.name && userIsOwner && (
-											<UserSettings
-												authUser={this.props.authUser}
-												onAvatarSubmit={this.onAvatarSubmit}
-											/>
-										)}
-										{/* Feedback */}
-										{match.params.tab === TABS.feedback.name && (
-											<UserFeedback feedback={user.feedback} />
-										)}
-										{/* Transactions */}
-										{match.params.tab === TABS.transactions.name && (
-											<UserTransactions soldItems={soldItems} />
-										)}
-									</TabsContentContainer>
+						<div>
+							{/* Items */}
+							{currentTab === ACCOUNT_TABS.items &&
+								(isFetchingItems ? (
+									<LoadingSpinner />
+								) : availableItems.length > 0 ? (
+									<ItemsView items={availableItems} />
 								) : (
-									<TabsContentContainer>
-										<EmptyState state={EMPTY_STATES.Generic} />
-									</TabsContentContainer>
-								)
-							}
-						/>
+									<EmptyState state={EMPTY_STATES.UserNoItems} />
+								))}
+							{/* Settings */}
+							{currentTab === ACCOUNT_TABS.settings && userIsOwner && (
+								<UserSettings
+									authUser={this.props.authUser}
+									onAvatarSubmit={this.onAvatarSubmit}
+								/>
+							)}
+							{/* Feedback */}
+							{currentTab === ACCOUNT_TABS.feedback && (
+								<UserFeedback feedback={user.feedback} />
+							)}
+							{/* Transactions */}
+							{currentTab === ACCOUNT_TABS.transactions && (
+								<UserTransactions soldItems={soldItems} />
+							)}
+						</div>
+						{/* <EmptyState state={EMPTY_STATES.Generic} /> */}
 					</>
 				) : (
 					<LoadingSpinner />
