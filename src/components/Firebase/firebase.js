@@ -70,11 +70,11 @@ class Firebase {
 	item = (id) => this.db.collection("items").doc(id)
 	items = () => this.db.collection("items")
 
-	/* Gets item data, throws if item isn't found */
 	getItemData = async (itemId) => {
 		const itemDoc = await this.item(itemId).get()
 		if (!itemDoc.exists) {
-			throw new NotFoundError("Nie znaleziono przedmiotu")
+			console.warn(`Item with id ${itemId} wasn't found`)
+			return {}
 		} else {
 			return itemDoc.data()
 		}
@@ -120,15 +120,10 @@ class Firebase {
 				const snapshot = await this.user(authUser.uid).get()
 				const dbUser = snapshot.data()
 
-				// default empty roles
-				if (!dbUser.roles) {
-					dbUser.roles = []
-				}
-
 				// merge auth and db user
 				authUser = {
 					uid: authUser.uid,
-					email: authUser.email,
+					emailVerified: authUser.emailVerified,
 					...dbUser
 				}
 
