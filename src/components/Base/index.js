@@ -14,4 +14,12 @@ const PageContainer = styled.main`
 	padding: 0 20px;
 `
 
-export { PageContainer }
+const BlogPageContainer = styled.main`
+	${pageContainerWidth}
+	margin: 0 auto;
+	@media (min-width: ${pageContainerWidth}) {
+		padding: 0 20px;
+	}
+`
+
+export { PageContainer, BlogPageContainer }
