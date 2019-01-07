@@ -10,17 +10,21 @@ import Routes from "../Routes"
 import Footer from "../Footer"
 import { CONST } from "../../constants"
 
-const Header = styled.div`
-	color: #333;
-	height: 59px;
-	box-sizing: border-box;
-	margin: 0;
+const HEADER_HEIGHT = "66px"
 
-	text-align: center;
-	font-size: 2.1rem;
+const Header = styled.div`
+	color: ${(p) => p.theme.colors.black[25]};
 	background: white;
-	border-bottom: 1px solid #ddd;
-	padding: 10px 0;
+
+	height: ${HEADER_HEIGHT};
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	text-shadow: 1px 1px 1px ${(p) => p.theme.colors.gray[50]};
+
+	font-size: 2.4rem;
 	font-family: "Playfair Display SC", serif;
 `
 
@@ -28,14 +32,16 @@ const Container = styled.div`
 	display: grid;
 	grid-template-columns: 100%;
 	grid-template-rows: auto 1fr minmax(60px, auto);
-	min-height: calc(100% - 59px);
+	min-height: calc(100% - ${HEADER_HEIGHT});
 	gap: 20px;
 `
 
 const App = () => (
 	<Router>
 		<>
-			<Header>{CONST.BRAND_NAME}</Header>
+			<Header>
+				<span>{CONST.BRAND_NAME}</span>
+			</Header>
 			<Container>
 				<Navigation />
 				<div>
