@@ -1,11 +1,22 @@
 import React from "react"
 import { Link, NavLink } from "react-router-dom"
-import { Field } from "react-final-form"
 import styled, { css } from "styled-components"
+import { gridArea } from "styled-system"
 
 import Textarea from "react-textarea-autosize"
 
 import { CSS } from "../../constants"
+
+const ProfilePicture = styled.div`
+	width: ${(p) => p.size};
+	height: ${(p) => p.size};
+	border-radius: 50%;
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-position: center;
+	background-image: ${(p) => `url(${p.url})`};
+	display: ${(p) => (p.inline ? "inline-block" : "block")};
+`
 
 const Header = styled.h2`
 	text-align: center;
@@ -29,33 +40,12 @@ const StyledLink = styled(Link)`
 		color: ${CSS.COLOR_ACCENT};
 	}
 `
-// TODO: replace with StyledInput and FieldLabel
-const StyledField = styled(Field)`
-	margin-bottom: 15px;
-	label {
-		font-size: 0.92rem;
-		font-weight: bold;
-		display: block;
-		padding-bottom: 4px;
-		margin-left: 1px;
-	}
-	input {
-		padding: 0 8px;
-		line-height: 2.1rem;
-		width: 100%;
-		min-height: 35px; /* ie compatibility */
-		:focus {
-			outline: none;
-			border: 2px solid ${CSS.COLOR_ACCENT};
-		}
-	}
-`
 
 const StyledFieldCommon = css`
 	width: 100%;
 	font-size: 1rem;
 
-	border: 1px solid ${CSS.COLOR_GRAY};
+	border: 1px solid ${(p) => p.theme.colors.gray[50]};
 	color: ${CSS.COLOR_BLACK_LIGHTER};
 
 	&::placeholder {
@@ -108,13 +98,20 @@ const FieldLabel = styled.div`
 	font-weight: bold;
 	display: block;
 	color: #3f3f3f;
-	padding-bottom: 2px;
+	padding-bottom: 5px;
 	margin-left: 2px;
 	text-transform: uppercase;
+	text-align: center;
+
+	text-transform: uppercase;
+	letter-spacing: 0.9px;
+	/* font-size: 0.8rem; */
+	font-weight: normal;
 `
 
 const FieldRow = styled.div`
 	margin-bottom: 10px;
+	${gridArea}
 `
 
 const SeparatorTextContent = css`
@@ -167,7 +164,7 @@ const MiniButton = styled.div`
 	font-size: 12px;
 	border-radius: 50%;
 	position: absolute;
-	box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
+	/* box-shadow: 0 0 3px rgba(0, 0, 0, 0.5); */
 	:hover {
 		/* background: ${(p) => (p.error ? CSS.COLOR_DANGER_LIGHTER : "black")}; */
 		opacity: 1;
@@ -176,8 +173,8 @@ const MiniButton = styled.div`
 
 export {
 	StyledLink,
-	StyledField,
 	StyledInput,
+	StyledFieldCommon,
 	StyledTextarea,
 	Separator,
 	Container,
@@ -185,5 +182,6 @@ export {
 	FieldRow,
 	MiniButton,
 	Header,
-	CustomNavLink
+	CustomNavLink,
+	ProfilePicture
 }
