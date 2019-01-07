@@ -3,17 +3,21 @@ import styled from "styled-components"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { Link } from "react-router-dom"
 
-import { CONST, CSS, ROUTES } from "../../constants"
+import { CONST, ROUTES } from "../../constants"
 
 const OuterContainer = styled.div`
 	display: flex;
-	flex-flow: row wrap;
-	justify-content: space-between;
+	flex-flow: column nowrap;
+	@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
+		flex-flow: row wrap;
+	}
 	align-items: center;
+	align-content: center;
+	justify-content: space-between;
 	padding: 10px;
-	border-top: 1px solid rgb(221, 221, 221);
+	border-top: 1px solid ${(p) => p.theme.colors.gray[75]};
+	color: ${(p) => p.theme.colors.black[0]};
 	background: white;
-	color: #292929;
 	font-size: 1.03rem;
 	/* box-shadow: 0 -3px 5px -1px rgba(0, 0, 0, 0.05); */
 `
@@ -44,6 +48,10 @@ const Item = styled(Link)`
 
 const InnerContainer = styled.div`
 	display: flex;
+	align-content: center;
+	align-items: center;
+	justify-content: center;
+
 	flex-flow: row wrap;
 
 	& > * {
