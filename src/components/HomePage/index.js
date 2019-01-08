@@ -1,5 +1,5 @@
 import React, { Component } from "react"
-import styled from "styled-components"
+import styled, { css } from "styled-components"
 import {
 	InstantSearch,
 	InfiniteHits,
@@ -17,9 +17,25 @@ import {
 
 import { AlgoliaItemCard } from "../ItemCard"
 import { withFirebase } from "../Firebase"
-import { StyledFieldCommon, Separator } from "../Basics"
+import Separator from "../Separator"
 import { THEME, ITEM_SCHEMA } from "../../constants"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import Foldable from "../Foldable"
+
+const sortingOptions = [
+	{
+		value: "dev_items",
+		label: "Proponowane"
+	},
+	{
+		value: "dev_items_createdAt_desc",
+		label: "Najnowsze"
+	},
+	{
+		value: "dev_items_price_asc",
+		label: "Cena rosnąco"
+	}
+]
 
 const getItemsPerPage = () => {
 	const height = window.innerHeight
@@ -40,21 +56,35 @@ const getItemsPerPage = () => {
 	return Math.max(3, Math.min(16, rows * cols))
 }
 
+const BORDER_RADIUS = "3px"
+
+const InputCommon = css`
+	color: ${(p) => p.theme.colors.black[75]};
+	border: 1px solid ${(p) => p.theme.colors.gray[50]};
+	:hover {
+		border: 1px solid ${(p) => p.theme.colors.gray[25]};
+	}
+	background: white;
+	padding: 0 14px;
+	height: 38px;
+	min-width: 0;
+`
+
 const MainGrid = styled.div`
+	position: relative;
 	display: grid;
-	margin: 0 auto;
-	padding: 0 20px;
+	margin: 20px auto 0;
+	box-sizing: content-box;
+	row-gap: 20px;
 	grid-template-areas:
-		"topbar"
 		"filters"
 		"content";
+	grid-template-columns: 100%;
 
 	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
 		max-width: 850px;
 		grid-template-columns: min-content 1fr;
-		grid-template-areas:
-			"topbar topbar"
-			"filters content";
+		grid-template-areas: "filters content";
 	}
 	@media (min-width: ${(p) => p.theme.breakpoints[3]}px) {
 		max-width: ${(p) => p.theme.breakpoints[3]}px;
@@ -68,6 +98,7 @@ const StyledInfiniteHits = styled(InfiniteHits)`
 	.ais-InfiniteHits-list {
 		list-style-type: none;
 		padding: 0;
+		margin: 0;
 
 		display: grid;
 		grid-gap: 10px;
@@ -90,99 +121,73 @@ const StyledInfiniteHits = styled(InfiniteHits)`
 const StyledSortBy = styled(SortBy)``
 
 const StyledRefinementList = styled(RefinementList)`
-	min-width: 200px;
 	.ais-RefinementList-list {
 		list-style: none;
 		padding: 0;
 	}
-
-	.ais-SearchBox {
-		flex: 1 1 100%;
+	.ais-RefinementList-searchBox {
 		width: 100%;
-		outline: none;
-		:focus,
-		:active {
-			outline: none !important;
-		}
 	}
 	.ais-SearchBox-form {
 		display: flex;
-		outline: none;
-		:focus,
-		:active {
-			outline: none !important;
-		}
 	}
-
 	.ais-SearchBox-input {
-		min-width: 0;
-		${StyledFieldCommon}
-		flex: 1 1 0;
-		padding: 0 14px;
-		border-right: none;
-		height: 38px;
-		outline: none;
-		border-radius: 3px 0 0 3px;
-		:focus,
-		:active {
-			outline: none !important;
-		}
+		${InputCommon}
+		flex: 1 1;
+		border-radius: ${BORDER_RADIUS} 0 0 ${BORDER_RADIUS};
 	}
 	.ais-SearchBox-submit {
 		border: 1px solid ${(p) => p.theme.colors.gray[50]};
+		background: ${(p) => p.theme.colors.gray[100]};
 		width: 38px;
-		border-radius: 0 3px 3px 0;
+		border-radius: 0 ${BORDER_RADIUS} ${BORDER_RADIUS} 0;
 		padding: 0;
+		border-left: 0;
 		svg {
 			width: 12px;
 			height: 12px;
 		}
-		background: ${(p) => p.theme.colors.gray[100]};
 		cursor: pointer;
 	}
 `
 
-const Topbar = styled.div`
-	grid-area: topbar;
-	display: flex;
+const TopbarInnerContainer = styled.div`
+	max-width: ${(p) => p.theme.breakpoints[5]}px;
+	margin: 0 auto;
+
+	display: grid;
+	gap: 10px;
+
+	grid-template-columns: auto 1fr max-content;
+	grid-template-areas: "sidebar-toggle search sort";
+
 	.ais-SearchBox {
-		flex: 1 1 100%;
-		width: 100%;
+		grid-area: search;
 		outline: none;
-		:focus,
-		:active {
-			outline: none !important;
+		min-width: 0;
+		* {
+			min-width: 0;
 		}
 	}
 	.ais-SearchBox-form {
 		display: flex;
-		outline: none;
-		:focus,
-		:active {
-			outline: none !important;
-		}
+		min-width: 0;
 	}
 	.ais-SearchBox-input {
-		${StyledFieldCommon}
+		${InputCommon}
+		flex: 1 1 100%;
 		min-width: 0;
-		flex: 1 1 0;
-		padding: 0 14px;
 		border-radius: 20px 0 0 20px;
-		border-right: none;
-		height: 40px;
-		outline: none;
-		:focus,
-		:active {
-			outline: none !important;
-		}
 	}
 	.ais-SearchBox-submitIcon path {
 		fill: white;
 	}
 	.ais-SearchBox-submit {
+		border-left: 0;
+
 		border-radius: 0 20px 20px 0;
 		border: none;
-		width: 40px;
+		width: 44px;
 		@media (min-width: ${(p) => p.theme.breakpoints[0]}px) {
 			width: 80px;
 		}
@@ -195,39 +200,44 @@ const Topbar = styled.div`
 	}
 
 	.ais-SortBy {
-		flex: 1 1 200px;
+		grid-area: sort;
 		width: auto;
 		min-width: 0;
-		margin-left: 10px;
 	}
-
 	.ais-SortBy-select {
-		${StyledFieldCommon}
-		background: white;
-		padding: 0 14px;
-		height: 40px;
-		min-width: 0;
+		color: ${(p) => p.theme.colors.black[75]};
+		${InputCommon}
+		width: 100%;
 		border-radius: 20px;
-	}
-	.ais-SortBy-option {
-		padding: 0 14px;
 	}
 `
 
+const Topbar = styled.div`
+	border-top: 1px solid;
+	border-bottom: 1px solid;
+	border-color: ${(p) => p.theme.colors.gray[75]};
+	position: sticky;
+	z-index: 9800;
+	top: 44px;
+	background: white;
+	padding: 20px 20px;
+	grid-area: topbar;
+`
+
 const FiltersToggle = styled.div`
+	grid-area: sidebar-toggle;
 	border: 1px solid ${(p) => p.theme.colors.gray[75]};
 	border-radius: 20px;
-	height: 40px;
+	height: 38px;
+	width: 38px;
 	color: ${(p) => p.theme.colors.gray[50]};
-	margin-right: 10px;
-	flex: 0 0 40px;
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	cursor: pointer;
 `
 
-const Content = styled.div`
+const Content = styled.main`
 	grid-area: content;
 `
 
@@ -236,22 +246,28 @@ const SizeRefinementList = styled(StyledRefinementList)`
 		list-style: none;
 		padding: 0;
 		display: grid;
-		grid-template-columns: 1fr 1fr 1fr 1fr;
+		grid-template-columns: repeat(4, 1fr);
 	}
 	.ais-RefinementList-count {
 		display: none;
 	}
 `
 
-const Filters = styled.div`
+const Sidebar = styled.aside`
+	/* position: sticky;
+	top: 0; */
 	grid-area: filters;
+	max-width: 100%;
+
 	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
-		margin-right: 20px;
+		width: 210px;
+		padding-right: 20px;
 	}
 
 	&.hidden {
 		display: none;
 	}
+
 	.ais-RefinementList-labelText {
 		color: ${(p) => p.theme.colors.black[75]};
 		text-transform: uppercase;
@@ -261,84 +277,46 @@ const Filters = styled.div`
 	.ais-RefinementList-count {
 		background: ${(p) => p.theme.colors.gray[100]};
 		border-radius: 4px;
-		padding: 0 3px;
+		padding: 0 4px;
 		font-size: 0.76rem;
 	}
 	.ais-RefinementList-item {
 		margin: 3px 0;
 	}
 
-	.ais-CurrentRefinements-item {
-		display: flex;
-		flex-flow: row wrap;
-		background: ${(p) => p.theme.colors.gray[100]};
-		border: 1px solid ${(p) => p.theme.colors.gray[50]};
-	}
-
-	.ais-CurrentRefinements-label {
-	}
-
-	.ais-CurrentRefinements-list {
-		list-style: none;
-		padding: 0;
-	}
-	.ais-CurrentRefinements-category {
-		display: flex;
-		margin: 2px 0;
-	}
-	.ais-CurrentRefinements-categoryLabel {
-	}
-	.ais-CurrentRefinements-delete {
+	.ais-RangeInput {
+		min-width: 0;
+		width: 100%;
 	}
 
 	.ais-RangeInput-form {
 		display: flex;
+		min-width: 0;
 	}
 	.ais-RangeInput-separator {
 		display: none;
 	}
-
 	.ais-RangeInput-submit {
 		background: ${(p) => p.theme.colors.gray[100]};
 		color: ${(p) => p.theme.colors.black[75]};
+		flex: 0 0 38px;
 		text-transform: uppercase;
 		font-size: 0.84rem;
-		border-radius: 3px;
+		border-radius: ${BORDER_RADIUS};
 		border: 1px solid ${(p) => p.theme.colors.gray[50]};
 	}
-
 	.ais-RangeInput-input {
-		${StyledFieldCommon}
-		width: 100%;
-		font-size: 1rem;
-		min-width: 0;
-		min-height: 36px;
-		padding-left: 10px;
-		line-height: 100%;
-		border-radius: 3px;
+		${InputCommon}
+		padding: 0 4px 0 8px;
 		margin-right: 6px;
-
-		border: 1px solid ${(p) => p.theme.colors.gray[50]};
+		border-radius: ${BORDER_RADIUS};
+		flex: 1 1 0;
 		color: ${(p) => p.theme.colors.black[75]};
-
 		&::placeholder {
-			color: #808080;
-		}
-
-		&:not([disabled]) {
-			&:focus {
-				border: 1px solid ${(p) => p.theme.colors.accent};
-				outline: 1px solid ${(p) => p.theme.colors.accent};
-			}
-			&:not(:focus) {
-				&:hover {
-					border-color: #adadad;
-				}
-			}
+			color: ${(p) => p.theme.colors.gray[50]};
 		}
 
 		-moz-appearance: textfield;
-
 		:hover,
 		:focus {
 			-moz-appearance: number-input;
@@ -346,21 +324,15 @@ const Filters = styled.div`
 	}
 
 	.ais-MenuSelect-select {
-		${StyledFieldCommon}
-		background: white;
-		padding: 0 10px;
-		height: 36px;
-		min-width: 0;
+		${InputCommon}
 		border-radius: 3px;
-	}
-	.ais-MenuSelect-option {
-		padding: 0 14px;
+		width: 100%;
 	}
 
 	.ais-ClearRefinements-button {
 		width: 100%;
 		margin-top: 16px;
-		height: 36px;
+		height: 38px;
 		border-radius: 3px;
 		background: white;
 		border: 1px solid ${(p) => p.theme.colors.gray[50]};
@@ -563,46 +535,33 @@ class HomePage extends Component {
 				indexName="dev_items"
 			>
 				<Configure hitsPerPage={getItemsPerPage()} />
-				<MainGrid>
-					<Topbar>
+
+				<Topbar>
+					<TopbarInnerContainer>
 						<FiltersToggle
 							onClick={() => this.filtersRef.current.classList.toggle("hidden")}
 						>
 							<FontAwesomeIcon icon="filter" />
 						</FiltersToggle>
 						<SearchBox />
-						<StyledSortBy
-							defaultRefinement="dev_items"
-							items={[
-								{
-									value: "dev_items",
-									label: "Proponowane"
-								},
-								{
-									value: "dev_items_createdAt_desc",
-									label: "Najnowsze"
-								},
-								{
-									value: "dev_items_price_asc",
-									label: "Cena rosnąco"
-								}
-							]}
-						/>
-					</Topbar>
-					<Filters ref={this.filtersRef}>
-						<ClearRefinements />
-						{/* <CurrentRefinements /> */}
-						<Separator text="Projektanci" />
-						<StyledRefinementList attribute="designers" searchable />
-						<Separator text="Kategoria" />
-						<StyledRefinementList attribute="category" searchable />
-						<Separator text="Rozmiar" />
-						<SizeRefinementList attribute="size" />
-						<Separator text="Cena" />
-						<RangeInput attribute="price" min={0} />
-						<Separator text="Stan" />
-						<MenuSelect attribute="condition" />
-					</Filters>
+						<StyledSortBy defaultRefinement="dev_items" items={sortingOptions} />
+					</TopbarInnerContainer>
+				</Topbar>
+				<MainGrid>
+					<Sidebar ref={this.filtersRef}>
+						<Foldable title="Kategoria">
+							<StyledRefinementList attribute="category" searchable />
+						</Foldable>
+						<Foldable title="Projektanci">
+							<StyledRefinementList attribute="designers" searchable />
+						</Foldable>
+						<Foldable title="Rozmiar" startFolded>
+							<SizeRefinementList attribute="size" />
+						</Foldable>
+						<Foldable title="Cena" startFolded>
+							<RangeInput attribute="price" min={0} />
+						</Foldable>
+					</Sidebar>
 					<Content>
 						<StyledInfiniteHits hitComponent={AlgoliaItemCard} />
 					</Content>

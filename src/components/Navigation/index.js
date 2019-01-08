@@ -21,14 +21,14 @@ const Nav = styled.ul`
 	position: sticky;
 	top: 0;
 	background: white;
-	z-index: 9990;
+	z-index: 9900;
 
 	display: flex;
 	align-items: center;
 	margin: 0;
 	padding: 0 11px;
 	border-bottom: 1px solid #ddd;
-	box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.05);
+	/* box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.05); */
 	overflow: auto;
 	justify-content: flex-start;
 

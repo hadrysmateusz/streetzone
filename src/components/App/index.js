@@ -31,8 +31,8 @@ const Header = styled.div`
 const Container = styled.div`
 	display: grid;
 	grid-template-columns: 100%;
-	grid-template-rows: auto 1fr minmax(60px, auto);
-	min-height: calc(100% - ${HEADER_HEIGHT});
+	grid-template-rows: auto 1fr auto;
+	height: calc(100% - ${HEADER_HEIGHT});
 	gap: 20px;
 `
 
