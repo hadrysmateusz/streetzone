@@ -70,15 +70,19 @@ const MainGrid = styled.div`
 	display: grid;
 	margin: 20px auto 0;
 	box-sizing: content-box;
-	padding: 0 20px;
+	padding: 0 10px;
 	row-gap: 20px;
 	grid-template-areas:
 		"filters"
 		"content";
 	grid-template-columns: 100%;
 
+	@media (min-width: ${(p) => p.theme.breakpoints[0]}px) {
+		padding: 0 20px;
+	}
 	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
 		max-width: 850px;
+
 		grid-template-columns: min-content 1fr;
 		grid-template-areas: "filters content";
 	}
@@ -118,6 +122,7 @@ const StyledRefinementList = styled(RefinementList)`
 	.ais-RefinementList-list {
 		list-style: none;
 		padding: 0;
+		margin: 6px 0;
 	}
 	.ais-RefinementList-searchBox {
 		width: 100%;
@@ -127,14 +132,15 @@ const StyledRefinementList = styled(RefinementList)`
 	}
 	.ais-SearchBox-input {
 		${InputCommon}
+		height: 34px;
 		flex: 1 1;
-		border-radius: ${BORDER_RADIUS} 0 0 ${BORDER_RADIUS};
+		/* border-radius: ${BORDER_RADIUS} 0 0 ${BORDER_RADIUS}; */
 	}
 	.ais-SearchBox-submit {
 		border: 1px solid ${(p) => p.theme.colors.gray[50]};
 		background: ${(p) => p.theme.colors.gray[100]};
 		width: 38px;
-		border-radius: 0 ${BORDER_RADIUS} ${BORDER_RADIUS} 0;
+		/* border-radius: 0 ${BORDER_RADIUS} ${BORDER_RADIUS} 0; */
 		padding: 0;
 		border-left: 0;
 		svg {
@@ -162,21 +168,18 @@ const TopbarInnerContainer = styled.div`
 		* {
 			min-width: 0;
 		}
-
-		
 	}
 	.ais-SearchBox-form {
 		display: flex;
 		min-width: 0;
-		
 	}
 	.ais-SearchBox-input {
 		${InputCommon}
 		flex: 1 1 100%;
 		min-width: 0;
 		padding: 0 12px;
-	height: 34px;
-	font-size: 0.92rem;
+		height: 34px;
+		font-size: 0.92rem;
 		/* border-radius: 20px 0 0 20px; */
 		/* border-radius: 20px; */
 	}
@@ -185,22 +188,17 @@ const TopbarInnerContainer = styled.div`
 	}
 	.ais-SearchBox-submit {
 		display: none;
-		/* border-left: 0;
-
-		border-radius: 0 20px 20px 0;
-		border: none;
-		width: 44px;
-		@media (min-width: ${(p) => p.theme.breakpoints[0]}px) {
-			width: 80px;
-		}
-		background: ${(p) => p.theme.colors.accent};
-		cursor: pointer;
-		svg {
-			width: 13px;
-			height: 13px;
-		} */
 	}
 
+	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
+		max-width: 850px;
+	}
+	@media (min-width: ${(p) => p.theme.breakpoints[3]}px) {
+		max-width: ${(p) => p.theme.breakpoints[3]}px;
+	}
+	@media (min-width: ${(p) => p.theme.breakpoints[5]}px) {
+		max-width: ${(p) => p.theme.breakpoints[5]}px;
+	}
 `
 
 const Topbar = styled.div`
@@ -209,10 +207,18 @@ const Topbar = styled.div`
 	border-color: ${(p) => p.theme.colors.gray[75]};
 	position: sticky;
 	z-index: 9800;
-	top: 44px;
-	background: white;
+	top: 50px;
+	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
+		top: 44px;
+	}
 	padding: 13px 10px;
+	@media (min-width: ${(p) => p.theme.breakpoints[0]}px) {
+		padding: 13px 20px;
+	}
+	background: white;
 	grid-area: topbar;
+
+	box-sizing: content-box;
 `
 
 const FiltersToggle = styled.div`
@@ -243,11 +249,19 @@ const SizeRefinementList = styled(StyledRefinementList)`
 		list-style: none;
 		padding: 0;
 		display: grid;
-		grid-template-columns: repeat(4, 1fr);
+		grid-template-columns: repeat(3, 1fr);
 	}
 	.ais-RefinementList-count {
 		display: none;
 	}
+`
+
+const SidebarInner = styled.div`
+	position: sticky;
+	top: 127px;
+	background: white;
+	border: 1px solid ${(p) => p.theme.colors.gray[75]};
+	padding: 10px 20px;
 `
 
 const Sidebar = styled.aside`
@@ -257,8 +271,8 @@ const Sidebar = styled.aside`
 	max-width: 100%;
 
 	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
-		width: 210px;
-		padding-right: 20px;
+		width: 220px;
+		margin-right: 20px;
 	}
 
 	&.hidden {
@@ -278,7 +292,11 @@ const Sidebar = styled.aside`
 		font-size: 0.76rem;
 	}
 	.ais-RefinementList-item {
-		margin: 3px 0;
+		padding: 3px 6px;
+	}
+	.ais-RefinementList-label {
+		display: flex;
+		align-items: center;
 	}
 
 	.ais-RangeInput {
@@ -573,18 +591,20 @@ class HomePage extends Component {
 				</Topbar>
 				<MainGrid>
 					<Sidebar ref={this.filtersRef}>
-						<Foldable title="Kategoria">
-							<StyledRefinementList attribute="category" />
-						</Foldable>
-						<Foldable title="Projektanci">
-							<StyledRefinementList attribute="designers" searchable />
-						</Foldable>
-						<Foldable title="Rozmiar" startFolded>
-							<SizeRefinementList attribute="size" />
-						</Foldable>
-						<Foldable title="Cena" startFolded>
-							<RangeInput attribute="price" min={0} />
-						</Foldable>
+						<SidebarInner>
+							<Foldable title="Kategoria">
+								<StyledRefinementList attribute="category" />
+							</Foldable>
+							<Foldable title="Projektanci">
+								<StyledRefinementList attribute="designers" searchable />
+							</Foldable>
+							<Foldable title="Rozmiar" startFolded>
+								<SizeRefinementList attribute="size" />
+							</Foldable>
+							<Foldable title="Cena" startFolded>
+								<RangeInput attribute="price" min={0} />
+							</Foldable>
+						</SidebarInner>
 					</Sidebar>
 					<Content>
 						<StyledInfiniteHits hitComponent={AlgoliaItemCard} />

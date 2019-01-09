@@ -3,15 +3,16 @@ import styled from "styled-components"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 const Header = styled.div`
-	padding-bottom: 4px;
-	margin-bottom: 10px;
-	color: ${(p) => p.theme.colors.black[100]};
+	padding: 6px;
+	/* margin-bottom: 10px; */
+	color: ${(p) => p.theme.colors.black[50]};
 	text-transform: uppercase;
-	font-size: 0.85rem;
-	border-bottom: 1px solid ${(p) => p.theme.colors.black[100]};
-	span {
-		padding-right: 6px;
-	}
+	font-size: 0.8rem;
+	font-weight: 600;
+	/* border-bottom: 1px solid ${(p) => p.theme.colors.black[75]}; */
+	cursor: pointer;
+	display: flex;
+	justify-content: space-between;
 `
 
 class Foldable extends React.Component {
@@ -32,7 +33,7 @@ class Foldable extends React.Component {
 	render() {
 		return (
 			<div>
-				<Header onClick={this.toggle} style={{ cursor: "pointer" }}>
+				<Header onClick={this.toggle}>
 					<span>{this.props.title}</span>
 					<FontAwesomeIcon icon={this.state.isFolded ? "caret-down" : "caret-up"} />
 				</Header>
