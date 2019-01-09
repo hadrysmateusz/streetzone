@@ -1,6 +1,6 @@
 {
 	"name": "streetwear-app",
-	"version": "0.2.9",
+	"version": "0.2.10",
 	"private": true,
 	"dependencies": {
 		"@fortawesome/fontawesome-svg-core": "^1.2.12",
@@ -17,6 +17,7 @@
 		"moment": "^2.23.0",
 		"react": "^16.7.0",
 		"react-app-polyfill": "^0.2.0",
+		"react-breakpoints": "^3.0.3",
 		"react-dom": "^16.7.0",
 		"react-final-form": "^4.0.2",
 		"react-final-form-listeners": "^1.0.1",
