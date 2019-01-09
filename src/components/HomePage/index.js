@@ -4,20 +4,15 @@ import {
 	InstantSearch,
 	InfiniteHits,
 	SearchBox,
-	Highlight,
 	RefinementList,
-	Pagination,
-	MenuSelect,
 	RangeInput,
-	SortBy,
-	Configure,
-	CurrentRefinements,
-	ClearRefinements
+	Configure
 } from "react-instantsearch-dom"
+import { Media } from "react-breakpoints"
 
 import { AlgoliaItemCard } from "../ItemCard"
+import { AlgoliaSelectAdapter, SelectMobile } from "../SelectAdapter"
 import { withFirebase } from "../Firebase"
-import Separator from "../Separator"
 import { THEME, ITEM_SCHEMA } from "../../constants"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import Foldable from "../Foldable"
@@ -75,6 +70,7 @@ const MainGrid = styled.div`
 	display: grid;
 	margin: 20px auto 0;
 	box-sizing: content-box;
+	padding: 0 20px;
 	row-gap: 20px;
 	grid-template-areas:
 		"filters"
@@ -118,8 +114,6 @@ const StyledInfiniteHits = styled(InfiniteHits)`
 	}
 `
 
-const StyledSortBy = styled(SortBy)``
-
 const StyledRefinementList = styled(RefinementList)`
 	.ais-RefinementList-list {
 		list-style: none;
@@ -158,7 +152,7 @@ const TopbarInnerContainer = styled.div`
 	display: grid;
 	gap: 10px;
 
-	grid-template-columns: auto 1fr max-content;
+	grid-template-columns: auto 1fr auto;
 	grid-template-areas: "sidebar-toggle search sort";
 
 	.ais-SearchBox {
@@ -168,22 +162,30 @@ const TopbarInnerContainer = styled.div`
 		* {
 			min-width: 0;
 		}
+
+		
 	}
 	.ais-SearchBox-form {
 		display: flex;
 		min-width: 0;
+		
 	}
 	.ais-SearchBox-input {
 		${InputCommon}
 		flex: 1 1 100%;
 		min-width: 0;
-		border-radius: 20px 0 0 20px;
+		padding: 0 12px;
+	height: 34px;
+	font-size: 0.92rem;
+		/* border-radius: 20px 0 0 20px; */
+		/* border-radius: 20px; */
 	}
 	.ais-SearchBox-submitIcon path {
 		fill: white;
 	}
 	.ais-SearchBox-submit {
-		border-left: 0;
+		display: none;
+		/* border-left: 0;
 
 		border-radius: 0 20px 20px 0;
 		border: none;
@@ -196,20 +198,9 @@ const TopbarInnerContainer = styled.div`
 		svg {
 			width: 13px;
 			height: 13px;
-		}
+		} */
 	}
 
-	.ais-SortBy {
-		grid-area: sort;
-		width: auto;
-		min-width: 0;
-	}
-	.ais-SortBy-select {
-		color: ${(p) => p.theme.colors.black[75]};
-		${InputCommon}
-		width: 100%;
-		border-radius: 20px;
-	}
 `
 
 const Topbar = styled.div`
@@ -220,21 +211,27 @@ const Topbar = styled.div`
 	z-index: 9800;
 	top: 44px;
 	background: white;
-	padding: 20px 20px;
+	padding: 13px 10px;
 	grid-area: topbar;
 `
 
 const FiltersToggle = styled.div`
+	${InputCommon}
 	grid-area: sidebar-toggle;
-	border: 1px solid ${(p) => p.theme.colors.gray[75]};
-	border-radius: 20px;
+	padding: 0 14px;
 	height: 38px;
-	width: 38px;
-	color: ${(p) => p.theme.colors.gray[50]};
+	color: ${(p) => p.theme.colors.black[100]};
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	cursor: pointer;
+	svg {
+		margin-right: 5px;
+	}
+
+	padding: 0 12px;
+	height: 34px;
+	font-size: 0.92rem;
 `
 
 const Content = styled.main`
@@ -527,7 +524,6 @@ class HomePage extends Component {
 	}
 	// #endregion
 	render() {
-		const { items, isLoading, initialValues, noMoreItems } = this.state
 		return (
 			<InstantSearch
 				appId="ESTLFV2FMH"
@@ -542,15 +538,43 @@ class HomePage extends Component {
 							onClick={() => this.filtersRef.current.classList.toggle("hidden")}
 						>
 							<FontAwesomeIcon icon="filter" />
+							<span>Filtry</span>
 						</FiltersToggle>
 						<SearchBox />
-						<StyledSortBy defaultRefinement="dev_items" items={sortingOptions} />
+						{/* <StyledSortBy defaultRefinement="dev_items" items={sortingOptions} /> */}
+						<Media>
+							{({ breakpoints, currentBreakpoint }) => {
+								if (currentBreakpoint > 0) {
+									return (
+										<AlgoliaSelectAdapter
+											defaultRefinement="dev_items"
+											items={sortingOptions}
+											styles={{
+												control: (provided) => ({
+													...provided,
+													minWidth: "180px",
+													minHeight: "0",
+													fontSize: "0.92rem"
+												})
+											}}
+										/>
+									)
+								} else {
+									return (
+										<SelectMobile defaultRefinement="dev_items" items={sortingOptions}>
+											<FontAwesomeIcon icon="sort" />
+											Sortuj
+										</SelectMobile>
+									)
+								}
+							}}
+						</Media>
 					</TopbarInnerContainer>
 				</Topbar>
 				<MainGrid>
 					<Sidebar ref={this.filtersRef}>
 						<Foldable title="Kategoria">
-							<StyledRefinementList attribute="category" searchable />
+							<StyledRefinementList attribute="category" />
 						</Foldable>
 						<Foldable title="Projektanci">
 							<StyledRefinementList attribute="designers" searchable />

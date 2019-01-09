@@ -2,6 +2,7 @@ import "react-app-polyfill/ie11"
 import React from "react"
 import ReactDOM from "react-dom"
 import { ThemeProvider } from "styled-components"
+import ReactBreakpoints from "react-breakpoints"
 
 import * as serviceWorker from "./serviceWorker"
 import "./config/fontAwesomeConfig"
@@ -15,7 +16,9 @@ import { Firebase, FirebaseContext } from "./components/Firebase"
 ReactDOM.render(
 	<FirebaseContext.Provider value={new Firebase()}>
 		<ThemeProvider theme={THEME}>
-			<App />
+			<ReactBreakpoints breakpoints={{ ...THEME.breakpoints }}>
+				<App />
+			</ReactBreakpoints>
 		</ThemeProvider>
 	</FirebaseContext.Provider>,
 	document.getElementById("root")
