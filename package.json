@@ -1,6 +1,6 @@
 {
 	"name": "streetwear-app",
-	"version": "0.2.15",
+	"version": "0.2.16",
 	"private": true,
 	"dependencies": {
 		"@fortawesome/fontawesome-svg-core": "^1.2.12",
@@ -45,6 +45,7 @@
 		"build": "react-scripts build",
 		"test": "react-scripts test",
 		"eject": "react-scripts eject",
+		"deploy-test": "yarn build && firebase deploy --only hosting",
 		"deploy-patch": "yarn build && yarn version --patch && firebase deploy --only hosting",
 		"deploy-minor": "yarn build && yarn version --minor && firebase deploy --only hosting",
 		"deploy-major": "yarn build && yarn version --major && firebase deploy --only hosting",
