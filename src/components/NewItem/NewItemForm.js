@@ -21,21 +21,10 @@ const StyledForm = styled.form`
 	grid-template-areas:
 		"name name"
 		"designers designers"
-		"category category"
-		"size size"
-		"price price"
-		"condition condition"
+		"category size"
+		"price condition"
 		"description description"
 		"files files";
-	@media (min-width: ${(p) => p.theme.breakpoints[0]}px) {
-		grid-template-areas:
-			"name name"
-			"designers designers"
-			"category size"
-			"price condition"
-			"description description"
-			"files files";
-	}
 `
 
 const NewItemForm = ({ initialValues, onSubmit, history, isLoading }) => {
