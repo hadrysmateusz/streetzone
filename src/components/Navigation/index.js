@@ -92,6 +92,7 @@ const NavItem = styled.li`
 	white-space: nowrap;
 	color: ${(p) => p.theme.colors.black[75]};
 	display: block;
+	order: 1;
 
 	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
 		height: ${NAV_ITEM_HEIGHT};
@@ -104,7 +105,7 @@ const NavItem = styled.li`
 	}
 	> :first-child {
 		height: 100%;
-		padding: 0 15px;
+		padding: 0 14px;
 	}
 	span {
 		margin-left: 8px;
@@ -126,16 +127,15 @@ const Navigation = ({ authUser, ...rest }) => {
 			{authUser && (
 				<>
 					<NavItem>
-						<StyledNavLink to={ROUTES.NEW_ITEM}>Wystaw Przedmiot</StyledNavLink>
-					</NavItem>
-					<NavItem>
 						<StyledNavLink to={accountURL.replace(":tab", ACCOUNT_TABS.default)}>
 							{authUser.profilePictureURL ? (
 								<ProfilePicture size="30px" url={authUser.profilePictureURL} inline />
 							) : (
 								<FontAwesomeIcon icon="user" />
 							)}
-							<span>{authUser.name ? authUser.name : "Profil"}</span>
+							{/* Keep it this way until you have some other way of indicating that the menu is scrollable as a constant width allows me to make it obvious */}
+							{/* <span>{authUser.name ? authUser.name : "Profil"}</span> */}
+							<span>Profil</span>
 						</StyledNavLink>{" "}
 						<Submenu>
 							<NavItem>
@@ -162,6 +162,9 @@ const Navigation = ({ authUser, ...rest }) => {
 								<StyledNavLink as={SignOutButton} />
 							</NavItem>
 						</Submenu>
+					</NavItem>
+					<NavItem>
+						<StyledNavLink to={ROUTES.NEW_ITEM}>Wystaw Przedmiot</StyledNavLink>
 					</NavItem>
 				</>
 			)}
