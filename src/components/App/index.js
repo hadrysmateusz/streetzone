@@ -2,6 +2,7 @@ import React from "react"
 import { BrowserRouter as Router } from "react-router-dom"
 import { compose } from "recompose"
 import styled from "styled-components"
+import { Helmet } from "react-helmet"
 
 import { withAuthenticationProvider } from "../UserSession"
 import { withFirebase } from "../Firebase"
@@ -40,6 +41,9 @@ const Container = styled.div`
 const App = () => (
 	<Router>
 		<>
+			<Helmet>
+				<title>{CONST.BRAND_NAME}</title>
+			</Helmet>
 			<Header>
 				<span>{CONST.BRAND_NAME}</span>
 			</Header>

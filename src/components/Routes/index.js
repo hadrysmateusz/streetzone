@@ -1,8 +1,9 @@
 import React from "react"
 import { Route, Switch } from "react-router-dom"
 import Loadable from "react-loadable"
+import { Helmet } from "react-helmet"
 
-import { ROUTES } from "../../constants"
+import { ROUTES, CONST } from "../../constants"
 
 import LoadingSpinner from "../LoadingSpinner"
 import NotFound from "../NotFound"
@@ -79,15 +80,18 @@ const routes = [
 	},
 	{
 		path: ROUTES.SIGN_UP,
-		component: SignUpPage
+		component: SignUpPage,
+		title: `Utwórz konto`
 	},
 	{
 		path: ROUTES.SIGN_IN,
-		component: SignInPage
+		component: SignInPage,
+		title: `Zaloguj Się`
 	},
 	{
 		path: ROUTES.PASSWORD_FORGET,
-		component: PasswordForgetPage
+		component: PasswordForgetPage,
+		title: `Zresetuj hasło`
 	},
 	{
 		path: ROUTES.HOME,
@@ -100,7 +104,8 @@ const routes = [
 	},
 	{
 		path: ROUTES.NEW_ITEM,
-		component: NewItemPage
+		component: NewItemPage,
+		title: `Wystaw przedmiot`
 	},
 	{
 		path: ROUTES.ITEM_DETAILS,
@@ -108,41 +113,53 @@ const routes = [
 	},
 	{
 		path: ROUTES.EDIT_ITEM,
-		component: EditItemPage
+		component: EditItemPage,
+		title: `Edytuj przedmiot`
 	},
 	{
 		path: ROUTES.BLOG_HOME,
-		component: BlogHomePage
+		component: BlogHomePage,
+		title: `Blog`
 	},
 	{
 		path: ROUTES.FAQ,
-		component: FAQPage
+		component: FAQPage,
+		title: `FAQ`
 	},
 	{
 		path: ROUTES.PRIVACY_POLICY,
-		component: PrivacyPolicyPage
+		component: PrivacyPolicyPage,
+		title: "Polityka Prywatności"
 	},
 	{
 		path: ROUTES.ABOUT,
-		component: AboutPage
+		component: AboutPage,
+		title: "O nas"
 	}
 ]
 
 const Routes = () => {
 	return (
-		<>
-			<Switch>
-				{routes.map((route, i) => (
-					<Route
-						key={i}
-						exact={route.exact === false ? false : true}
-						path={route.path}
-						component={route.component}
-					/>
-				))}
-				<Route path="*" component={NotFound} />
-			</Switch>
-		</>
+		<Switch>
+			{routes.map((route, i) => (
+				<Route
+					key={i}
+					exact={route.exact === false ? false : true}
+					path={route.path}
+					render={(props) => (
+						<>
+							{route.title && (
+								<Helmet>
+									<title>{`${route.title} - ${CONST.BRAND_NAME}`}</title>
+								</Helmet>
+							)}
+							<route.component {...props} />
+						</>
+					)}
+				/>
+			))}
+			<Route path="*" component={NotFound} />
+		</Switch>
 	)
 }
 
