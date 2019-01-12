@@ -1,7 +1,6 @@
 import React from "react"
 import Select from "react-select"
 import { connectSortBy } from "react-instantsearch-dom"
-import styled from "styled-components"
 
 const SelectAdapter = ({ onChange, value, initial, options, isMulti, ...rest }) => {
 	// Find the matching value based on the isMulti prop
@@ -77,48 +76,5 @@ const AlgoliaSelectAdapter = connectSortBy(
 	}
 )
 
-const StyledSelect = styled.select`
-	position: absolute;
-	top: 0;
-	left: 0;
-	height: 100%;
-	width: 100%;
-	opacity: 0;
-`
-
-const Container = styled.label`
-	position: relative;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-
-	color: ${(p) => p.theme.colors.black[75]};
-	border: 1px solid ${(p) => p.theme.colors.gray[50]};
-	:hover {
-		border: 1px solid ${(p) => p.theme.colors.gray[25]};
-	}
-	min-width: 0;
-	background: white;
-	padding: 0 12px;
-	height: 34px;
-	font-size: 0.92rem;
-	svg {
-		margin-right: 6px;
-	}
-`
-
-const SelectMobile = connectSortBy(
-	({ children, refine, items, currentRefinement, ...rest }) => (
-		<Container {...rest}>
-			<label htmlFor="filter-select">{children}</label>
-			<StyledSelect id="filter-select" onChange={(e) => refine(e.currentTarget.value)}>
-				{items.map((item) => (
-					<option value={item.value}>{item.label}</option>
-				))}
-			</StyledSelect>
-		</Container>
-	)
-)
-
 export default SelectAdapter
-export { AlgoliaSelectAdapter, SelectMobile }
+export { AlgoliaSelectAdapter }

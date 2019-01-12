@@ -7,17 +7,6 @@ import Textarea from "react-textarea-autosize"
 
 import { CSS } from "../../constants"
 
-const ProfilePicture = styled.div`
-	width: ${(p) => p.size};
-	height: ${(p) => p.size};
-	border-radius: 50%;
-	background-repeat: no-repeat;
-	background-size: cover;
-	background-position: center;
-	background-image: ${(p) => `url(${p.url})`};
-	display: ${(p) => (p.inline ? "inline-block" : "block")};
-`
-
 const Header = styled.h2`
 	text-align: center;
 	color: #2f2f2f;
@@ -182,6 +171,5 @@ export {
 	FieldRow,
 	MiniButton,
 	Header,
-	CustomNavLink,
-	ProfilePicture
+	CustomNavLink
 }

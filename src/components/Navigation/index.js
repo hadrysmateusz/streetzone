@@ -2,13 +2,12 @@ import React from "react"
 import { withRouter } from "react-router-dom"
 import { compose } from "recompose"
 import styled from "styled-components"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 import { withAuthentication } from "../UserSession"
 import SignOutButton from "../SignOut"
-import { CustomNavLink, ProfilePicture } from "../Basics"
+import { CustomNavLink } from "../Basics"
+import ProfilePicture from "../ProfilePicture"
 import { ROUTES } from "../../constants"
-import { ACCOUNT_TABS } from "../../constants/const"
 
 const NAV_ITEM_HEIGHT = "44px"
 const NAV_ITEM_HEIGHT_MOBILE = " 50px"
@@ -28,7 +27,6 @@ const Nav = styled.ul`
 	margin: 0;
 	padding: 0 11px;
 	border-bottom: 1px solid #ddd;
-	/* box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.05); */
 	overflow: auto;
 	justify-content: flex-start;
 
@@ -113,7 +111,6 @@ const NavItem = styled.li`
 `
 
 const Navigation = ({ authUser, ...rest }) => {
-	const accountURL = authUser ? ROUTES.ACCOUNT.replace(":id", authUser.uid) : null
 	return (
 		<Nav {...rest}>
 			<NavItem>
@@ -127,34 +124,33 @@ const Navigation = ({ authUser, ...rest }) => {
 			{authUser && (
 				<>
 					<NavItem>
-						<StyledNavLink to={accountURL.replace(":tab", ACCOUNT_TABS.default)}>
-							{authUser.profilePictureURL ? (
-								<ProfilePicture size="30px" url={authUser.profilePictureURL} inline />
-							) : (
-								<FontAwesomeIcon icon="user" />
-							)}
-							{/* Keep it this way until you have some other way of indicating that the menu is scrollable as a constant width allows me to make it obvious */}
+						<StyledNavLink to={ROUTES.ACCOUNT_ITEMS.replace(":id", authUser.uid)}>
+							<ProfilePicture size="30px" url={authUser.profilePictureURL} inline />
+							{/* Keep it this way until you have some other way of indicating that 
+							the menu is scrollable as a constant width allows me to make it obvious */}
 							{/* <span>{authUser.name ? authUser.name : "Profil"}</span> */}
 							<span>Profil</span>
 						</StyledNavLink>{" "}
 						<Submenu>
 							<NavItem>
-								<StyledNavLink to={accountURL.replace(":tab", ACCOUNT_TABS.items)}>
+								<StyledNavLink to={ROUTES.ACCOUNT_ITEMS.replace(":id", authUser.uid)}>
 									Twoje przedmioty
 								</StyledNavLink>
 							</NavItem>
 							<NavItem>
-								<StyledNavLink to={accountURL.replace(":tab", ACCOUNT_TABS.settings)}>
+								<StyledNavLink to={ROUTES.ACCOUNT_SETTINGS.replace(":id", authUser.uid)}>
 									Ustawienia / Edytuj profil
 								</StyledNavLink>
 							</NavItem>
 							<NavItem>
-								<StyledNavLink to={accountURL.replace(":tab", ACCOUNT_TABS.feedback)}>
+								<StyledNavLink to={ROUTES.ACCOUNT_FEEDBACK.replace(":id", authUser.uid)}>
 									Opinie i komentarze
 								</StyledNavLink>
 							</NavItem>
 							<NavItem>
-								<StyledNavLink to={accountURL.replace(":tab", ACCOUNT_TABS.transactions)}>
+								<StyledNavLink
+									to={ROUTES.ACCOUNT_TRANSACTIONS.replace(":id", authUser.uid)}
+								>
 									Historia transakcji
 								</StyledNavLink>
 							</NavItem>

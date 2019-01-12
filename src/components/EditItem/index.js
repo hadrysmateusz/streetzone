@@ -8,7 +8,7 @@ import EmptyState from "../EmptyState"
 import EditItemForm from "./EditItemForm"
 import { CustomFile } from "../FileHandler"
 import { Header } from "../Basics"
-import { PageContainer } from "../Base"
+import { PageContainer } from "../Containers"
 import { NotFoundError } from "../../errors"
 
 class EditItemPage extends Component {

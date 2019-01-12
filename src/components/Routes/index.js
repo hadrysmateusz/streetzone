@@ -7,6 +7,11 @@ import { ROUTES, CONST } from "../../constants"
 
 import LoadingSpinner from "../LoadingSpinner"
 import NotFound from "../NotFound"
+import UserSettings from "../AccountPage/UserSettings"
+import UserFeedback from "../AccountPage/UserFeedback"
+import UserItems from "../AccountPage/UserItems"
+import UserTransactions from "../AccountPage/UserTransactions"
+import ErrorBoundary from "../ErrorBoundary"
 
 const BlogPostPage = Loadable({
 	loader: () => import("../BlogPost"),
@@ -98,9 +103,31 @@ const routes = [
 		component: HomePage
 	},
 	{
-		path: ROUTES.ACCOUNT,
+		path: ROUTES.ACCOUNT_BASE,
 		component: AccountPage,
-		exact: false
+		exact: false,
+		routes: {
+			items: {
+				label: "Przedmioty na sprzedaż",
+				path: ROUTES.ACCOUNT_ITEMS,
+				component: UserItems
+			},
+			settings: {
+				label: "Opcje / Edytuj profil",
+				path: ROUTES.ACCOUNT_SETTINGS,
+				component: UserSettings
+			},
+			feedback: {
+				label: "Opinie i komentarze",
+				path: ROUTES.ACCOUNT_FEEDBACK,
+				component: UserFeedback
+			},
+			transactions: {
+				label: "Historia transakcji",
+				path: ROUTES.ACCOUNT_TRANSACTIONS,
+				component: UserTransactions
+			}
+		}
 	},
 	{
 		path: ROUTES.NEW_ITEM,
@@ -138,6 +165,17 @@ const routes = [
 	}
 ]
 
+const ErrorComponent = ({ error, errorInfo }) => (
+	<div>
+		<h2>Wystąpił problem</h2>
+		<details style={{ whiteSpace: "pre-wrap" }}>
+			{error && error.toString()}
+			<br />
+			{errorInfo.componentStack}
+		</details>
+	</div>
+)
+
 const Routes = () => {
 	return (
 		<Switch>
@@ -147,14 +185,14 @@ const Routes = () => {
 					exact={route.exact === false ? false : true}
 					path={route.path}
 					render={(props) => (
-						<>
+						<ErrorBoundary ErrorComponent={ErrorComponent}>
 							{route.title && (
 								<Helmet>
 									<title>{`${route.title} - ${CONST.BRAND_NAME}`}</title>
 								</Helmet>
 							)}
-							<route.component {...props} />
-						</>
+							<route.component {...props} routes={route.routes} />
+						</ErrorBoundary>
 					)}
 				/>
 			))}

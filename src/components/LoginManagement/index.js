@@ -2,12 +2,14 @@ import React, { Component } from "react"
 import { Form, Field } from "react-final-form"
 import { FORM_ERR } from "../../constants"
 import styled from "styled-components"
+import { compose } from "recompose"
 
 import { FieldRow, FieldLabel, StyledInput, Separator } from "../Basics"
 import { FormError } from "../FormElements"
 import { SocialButton, LoaderButton } from "../Button"
 import { withFirebase } from "../Firebase"
 import { PasswordChangeForm } from "../PasswordChange"
+import { withAuthentication } from "../UserSession"
 
 const EnabledIndicator = styled.span`
 	padding-left: 10px;
@@ -269,10 +271,12 @@ class DefaultLoginToggle extends Component {
 	}
 }
 
-const LoginManagementUnstyled = withFirebase(LoginManagementBase)
+const LoginManagementUnstyled = compose(
+	withFirebase,
+	withAuthentication
+)(LoginManagementBase)
 
 const LoginManagement = styled(LoginManagementUnstyled)`
-	/* max-width: 460px; */
 	margin: 35px auto 50px;
 	.provider-container {
 		margin: 15px 0;

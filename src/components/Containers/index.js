@@ -11,12 +11,14 @@ const pageContainerWidth = style({
 const PageContainer = styled.main`
 	${pageContainerWidth}
 	margin: 0 auto;
+	width: 100%;
 	padding: 0 20px;
 `
 
 const BlogPageContainer = styled.main`
 	${pageContainerWidth}
 	margin: 0 auto;
+	width: 100%;
 	@media (min-width: ${pageContainerWidth}) {
 		padding: 0 20px;
 	}

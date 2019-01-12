@@ -4,7 +4,7 @@ import "firebase/auth"
 import "firebase/storage"
 import "firebase/firestore"
 
-import { NotFoundError } from "../../errors"
+import { ITEM_SCHEMA } from "../../constants"
 
 const config = {
 	apiKey: process.env.REACT_APP_API_KEY,
@@ -63,7 +63,59 @@ class Firebase {
 
 	users = () => this.db.collection("users")
 	user = (uid) => this.db.collection("users").doc(uid)
-	currentUser = () => this.db.collection("users").doc(this.auth.currentUser.uid)
+
+	currentUser = () => {
+		return this.authUser() ? this.db.collection("users").doc(this.authUser().uid) : null
+	}
+
+	getUserData = async (userId) => {
+		let res = {
+			user: null,
+			error: null
+		}
+		try {
+			// Look for the document with correct id
+			console.log("userId", userId)
+			const userSnap = await this.user(userId).get()
+			// If the user isn't found throw an error
+			if (!userSnap.exists) throw new Error("Nie znaleziono użytkownika")
+			// Get user data
+			const userData = userSnap.data()
+			res.user = userData
+		} catch (error) {
+			res.error = error
+		} finally {
+			return res
+		}
+	}
+
+	getUserItems = async (user) => {
+		let res = {
+			availableItems: [],
+			soldItems: [],
+			error: null
+		}
+
+		try {
+			// map user's itemIds to data fetched from firestore
+			const items = await Promise.all(
+				user.items.map((itemId) => this.getItemData(itemId))
+			)
+
+			// separate the results into available and sold
+			for (let item of items) {
+				if (item.status === ITEM_SCHEMA.status.available) {
+					res.availableItems.push(item)
+				} else if (item.status === ITEM_SCHEMA.status.sold) {
+					res.soldItems.push(item)
+				}
+			}
+		} catch (error) {
+			res.error = error
+		} finally {
+			return res
+		}
+	}
 
 	// Item API
 
@@ -71,6 +123,7 @@ class Firebase {
 	items = () => this.db.collection("items")
 
 	getItemData = async (itemId) => {
+		console.log("itemId", itemId)
 		const itemDoc = await this.item(itemId).get()
 		if (!itemDoc.exists) {
 			console.warn(`Item with id ${itemId} wasn't found`)
@@ -111,7 +164,7 @@ class Firebase {
 		return Promise.all(refs.map((ref) => this.getImageURL(ref)))
 	}
 
-	// Marge Auth and DB User API
+	// Marge Auth and DB Users
 
 	onAuthUserListener = (next, fallback) =>
 		this.auth.onAuthStateChanged(async (authUser) => {

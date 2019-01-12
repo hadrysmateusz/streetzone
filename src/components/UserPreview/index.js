@@ -1,10 +1,9 @@
 import React, { Component } from "react"
 import styled from "styled-components"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { withRouter } from "react-router-dom"
 import { compose } from "recompose"
 
-import { ProfilePicture } from "../Basics"
+import ProfilePicture from "../ProfilePicture"
 import { withFirebase } from "../Firebase"
 import LoadingSpinner from "../LoadingSpinner"
 
@@ -46,18 +45,9 @@ export class UserPreview extends Component {
 		if (!isLoading && user) {
 			return (
 				<Container>
-					<div>
-						{user.profilePictureURL ? (
-							<ProfilePicture size="80px" url={user.profilePictureURL} inline />
-						) : (
-							<FontAwesomeIcon
-								icon="user-circle"
-								style={{ width: "80px", height: "80px", color: "#cacaca" }}
-							/>
-						)}
-					</div>
+					<ProfilePicture size="80px" url={user.profilePictureURL} inline />
 					<Name>
-						<a href={ROUTES.ACCOUNT.replace(":id", this.props.id)}>{user.name}</a>
+						<a href={ROUTES.ACCOUNT_ITEMS.replace(":id", this.props.id)}>{user.name}</a>
 					</Name>
 				</Container>
 			)

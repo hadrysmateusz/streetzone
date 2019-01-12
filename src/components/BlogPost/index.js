@@ -10,7 +10,7 @@ import { Box, Text, Flex } from "rebass"
 import { withFirebase } from "../Firebase"
 import LoadingSpinner from "../LoadingSpinner"
 import { ROUTES } from "../../constants"
-import { BlogPageContainer } from "../Base"
+import { BlogPageContainer } from "../Containers"
 import { minWidth, maxWidth } from "../../style-utils"
 
 const Content = styled(Box).attrs({ p: 3, as: "article" })`

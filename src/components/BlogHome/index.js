@@ -8,7 +8,7 @@ import removeMarkdown from "remove-markdown"
 import { withFirebase } from "../Firebase"
 import { ROUTES } from "../../constants"
 import { minWidth } from "../../style-utils"
-import { BlogPageContainer } from "../Base"
+import { BlogPageContainer } from "../Containers"
 
 const PostsContainer = styled.div`
 	display: grid;

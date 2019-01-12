@@ -9,7 +9,6 @@ import { StyledLink, FieldRow, FieldLabel, StyledInput, Header } from "../Basics
 import { LoaderButton } from "../Button"
 import { FormError } from "../FormElements"
 import { ROUTES, AUTH_ERR } from "../../constants"
-import { ACCOUNT_TABS } from "../../constants/const"
 import validate from "./validate"
 
 const Container = styled.div`
@@ -63,9 +62,7 @@ class SignUpFormBase extends Component {
 			// Reset component
 			await this.setState({ error: null })
 			// Redirect
-			history.push(
-				ROUTES.ACCOUNT.replace(":id", userId).replace(":tab", ACCOUNT_TABS.settings)
-			)
+			history.push(ROUTES.ACCOUNT_SETTINGS.replace(":id", userId))
 		} catch (error) {
 			if (error.code === AUTH_ERR.CODE_SOCIAL_ACCOUNT_EXISTS) {
 				error.message = AUTH_ERR.MSG_SOCIAL_ACCOUNT_EXISTS
