@@ -33,14 +33,19 @@ const Container = styled.div`
 	display: grid;
 	grid-template-columns: 100%;
 	grid-template-rows: max-content 1fr auto;
-	/* grid-template-rows: auto 1fr minmax(60px, auto); */
-	min-height: calc(100% - ${HEADER_HEIGHT}); /* changing this to height causes issues */
+	min-height: calc(100% - ${HEADER_HEIGHT}); /* changing this to "height" causes issues */
 	gap: 20px;
+`
+
+const BaseContainer = styled.div`
+	height: 100vh;
+	min-height: 100vh;
+	overflow-y: scroll;
 `
 
 const App = () => (
 	<Router>
-		<>
+		<BaseContainer>
 			<Helmet>
 				<title>{CONST.BRAND_NAME}</title>
 			</Helmet>
@@ -49,12 +54,10 @@ const App = () => (
 			</Header>
 			<Container>
 				<Navigation />
-				<div>
-					<Routes />
-				</div>
+				<Routes />
 				<Footer />
 			</Container>
-		</>
+		</BaseContainer>
 	</Router>
 )
 
