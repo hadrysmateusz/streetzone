@@ -24,6 +24,7 @@
 .env.production.local
 /.vscode
 /.firebase
+functions/firebase-admin-key.json
 
 npm-debug.log*
 yarn-debug.log*
