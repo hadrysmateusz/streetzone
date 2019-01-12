@@ -4,7 +4,7 @@ import { withFirebase } from "../Firebase"
 
 const SignOutButton = ({ firebase, ...rest }) => {
 	return (
-		<button {...rest} type="button" onClick={firebase.signOut}>
+		<button {...rest} type="button" style={{ width: "100%" }} onClick={firebase.signOut}>
 			Wyloguj
 		</button>
 	)
