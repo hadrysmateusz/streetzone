@@ -13,7 +13,6 @@ const StyledSelect = styled.select`
 	height: 100%;
 	width: 100%;
 	opacity: 0;
-	border: 2px solid red;
 `
 
 const Container = styled.label`
@@ -21,15 +20,13 @@ const Container = styled.label`
 	display: flex;
 	justify-content: center;
 	align-items: center;
-
-	color: ${(p) => p.theme.colors.black[75]};
-	border: 1px solid red;
-	:hover {
-		border: 1px solid ${(p) => p.theme.colors.gray[25]};
-	}
 	min-width: 0;
 	background: white;
 	padding: 0 12px;
+	border: 1px solid ${(p) => p.theme.colors.gray[75]};
+	:hover {
+		border: 1px solid ${(p) => p.theme.colors.gray[25]};
+	}
 	height: 34px;
 	font-size: 0.92rem;
 	svg {
