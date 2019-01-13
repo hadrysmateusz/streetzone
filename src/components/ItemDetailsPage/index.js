@@ -13,6 +13,7 @@ import EmptyState from "../EmptyState"
 import UserPreview from "../UserPreview"
 import { CSS, ITEM_SCHEMA } from "../../constants"
 import { translateCondition } from "../../constants/item_schema"
+import { PageContainer } from "../Containers"
 
 const MainContainer = styled.main`
 	display: flex;
@@ -140,60 +141,68 @@ class ItemDetailsPage extends Component {
 			conditionObj = translateCondition(item.condition)
 		}
 
-		return item && !isLoading ? (
-			<MainContainer>
-				<ItemContainer>
-					<ImageGallery item={item} />
-					<InfoContainer>
-						<div>
-							{item.status === ITEM_SCHEMA.status.sold && <Sold>SPRZEDANE</Sold>}
-							<MainInfo>
-								{item.designers && (
-									<Designers>{item.designers.join(" & ") + " "}</Designers>
+		console.log(item)
+
+		return (
+			<PageContainer maxWidth={5}>
+				{item && !isLoading ? (
+					<MainContainer>
+						<ItemContainer>
+							<ImageGallery item={item} />
+							<InfoContainer>
+								<div>
+									{item.status === ITEM_SCHEMA.status.sold && <Sold>SPRZEDANE</Sold>}
+									<MainInfo>
+										{item.designers && (
+											<Designers>{item.designers.join(" & ") + " "}</Designers>
+										)}
+										{item.name}
+									</MainInfo>
+									<div>Dodano: {moment(item.createdAt).format("D.M.YY o HH:mm")}</div>
+									<br />
+									<div>
+										Cena: <strong>{item.price}</strong>
+									</div>
+									{conditionObj && (
+										<div title={conditionObj.tooltip}>
+											Stan: <strong>{conditionObj.displayValue}</strong>
+										</div>
+									)}
+								</div>
+								<ButtonsContainer>
+									{userIsOwner ? (
+										<>
+											<Button as={Link} to={`/e/${item.itemId}`}>
+												Edytuj
+											</Button>
+											<LoaderButton
+												isLoading={isDeleting}
+												text="Usuń"
+												loadingText="Usuwanie..."
+												onClick={this.deleteItem}
+											/>
+										</>
+									) : (
+										<AccentButton primary>Kup</AccentButton>
+									)}
+								</ButtonsContainer>
+								<Description>{item.description}</Description>
+								{!userIsOwner && (
+									<UserInfoContainer>
+										<strong>Sprzedawca:</strong>
+										<UserPreview id={item.userId} />
+									</UserInfoContainer>
 								)}
-								{item.name}
-							</MainInfo>
-							<div>Dodano: {moment(item.createdAt).format("D.M.YY o HH:mm")}</div>
-							<br />
-							<div>
-								Cena: <strong>{item.price}</strong>
-							</div>
-							<div title={conditionObj.tooltip}>
-								Stan: <strong>{conditionObj.displayValue}</strong>
-							</div>
-						</div>
-						<ButtonsContainer>
-							{userIsOwner ? (
-								<>
-									<Button as={Link} to={`/e/${item.itemId}`}>
-										Edytuj
-									</Button>
-									<LoaderButton
-										isLoading={isDeleting}
-										text="Usuń"
-										loadingText="Usuwanie..."
-										onClick={this.deleteItem}
-									/>
-								</>
-							) : (
-								<AccentButton primary>Kup</AccentButton>
-							)}
-						</ButtonsContainer>
-						<Description>{item.description}</Description>
-						{!userIsOwner && (
-							<UserInfoContainer>
-								<strong>Sprzedawca:</strong>
-								<UserPreview id={item.userId} />
-							</UserInfoContainer>
-						)}
-					</InfoContainer>
-				</ItemContainer>
-				<div className="recommendedContainer" />
-			</MainContainer>
-		) : isLoading ? (
-			<LoadingSpinner />
-		) : (
-			<EmptyState text="Nie znaleziono przedmiotu, być może został usunięty." />
+							</InfoContainer>
+						</ItemContainer>
+						<div className="recommendedContainer" />
+					</MainContainer>
+				) : isLoading ? (
+					<LoadingSpinner />
+				) : (
+					<EmptyState text="Nie znaleziono przedmiotu, być może został usunięty." />
+				)}
+			</PageContainer>
 		)
 	}
 }
