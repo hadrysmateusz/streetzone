@@ -30,6 +30,8 @@ class NewItemPage extends Component {
 			// Generate unique id
 			const itemId = shortid.generate()
 
+			console.log("incoming data", values)
+
 			// Format the data
 			const data = {
 				name: values.name,
@@ -39,7 +41,7 @@ class NewItemPage extends Component {
 				category: values.category,
 				size: values.size || null,
 				description: values.description || "",
-				condition: Number.parseInt(values.condition),
+				condition: Number.parseFloat(values.condition),
 				status: ITEM_SCHEMA.status.available,
 				createdAt: Date.now(),
 				modifiedAt: null,
@@ -47,6 +49,8 @@ class NewItemPage extends Component {
 				userId,
 				attachments
 			}
+
+			console.log("formatted data", data)
 
 			// TODO: add a check against an external schema to make sure all values are present
 
