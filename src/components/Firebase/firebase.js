@@ -6,6 +6,9 @@ import "firebase/firestore"
 
 import { ITEM_SCHEMA } from "../../constants"
 
+const S_THUMB_POSTFIX = "_THUMB_S"
+const L_THUMB_POSTFIX = "_THUMB_L"
+
 const config = {
 	apiKey: process.env.REACT_APP_API_KEY,
 	authDomain: process.env.REACT_APP_AUTH_DOMAIN,
@@ -155,12 +158,17 @@ class Firebase {
 		return Promise.all(refs.map((ref) => this.removeFile(ref)))
 	}
 
-	getImageURL = async (ref) => {
+	getImageURL = async (ref, size) => {
+		if (size === "S") {
+			ref += S_THUMB_POSTFIX
+		} else if (size === "L") {
+			ref += L_THUMB_POSTFIX
+		}
 		return this.file(ref).getDownloadURL()
 	}
 
-	batchGetImageURLs = async (refs) => {
-		return Promise.all(refs.map((ref) => this.getImageURL(ref)))
+	batchGetImageURLs = async (refs, size) => {
+		return Promise.all(refs.map((ref) => this.getImageURL(ref, size)))
 	}
 
 	// Marge Auth and DB Users

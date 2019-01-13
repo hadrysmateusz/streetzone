@@ -116,10 +116,10 @@ class ItemCardBase extends Component {
 	}
 
 	loadImage = async () => {
-		let ref = this.props.firebase.storageRef.child(this.props.item.attachments[0])
+		const { item, firebase } = this.props
 
 		try {
-			const imageURL = await ref.getDownloadURL()
+			const imageURL = await firebase.getImageURL(item.attachments[0], "L")
 			this.setState({ imageURL })
 		} catch (error) {
 			console.log(error)

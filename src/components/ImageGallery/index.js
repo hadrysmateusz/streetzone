@@ -118,9 +118,10 @@ export class ImageGallery extends Component {
 
 	componentDidMount = async () => {
 		// Get item attachments' refs and urls for previews
-		const imageURLs = await this.props.firebase.batchGetImageURLs(
-			this.props.item.attachments
-		)
+
+		const { item, firebase } = this.props
+
+		const imageURLs = await firebase.batchGetImageURLs(item.attachments, "S")
 
 		this.setState({ imageURLs, isLoading: false })
 	}
