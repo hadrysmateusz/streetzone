@@ -45,7 +45,7 @@ const BaseContainer = styled.div`
 
 const App = () => (
 	<Router>
-		<BaseContainer>
+		<BaseContainer id="base-scroll-container">
 			<Helmet>
 				<title>{CONST.BRAND_NAME}</title>
 			</Helmet>

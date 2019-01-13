@@ -40,21 +40,23 @@ const AlgoliaSortByMobile = connectSortBy(
 		<Container {...rest}>
 			<label htmlFor="filter-select">{children}</label>
 			<StyledSelect id="filter-select" onChange={(e) => refine(e.currentTarget.value)}>
-				{items.map((item) => (
-					<option value={item.value}>{item.label}</option>
+				{items.map((item, i) => (
+					<option key={i} value={item.value}>
+						{item.label}
+					</option>
 				))}
 			</StyledSelect>
 		</Container>
 	)
 )
 
-const AlgoliaSortBy = ({ options }) => (
+const AlgoliaSortBy = ({ options, defaultOption }) => (
 	<Media>
 		{({ currentBreakpoint }) => {
 			if (currentBreakpoint > 0) {
 				return (
 					<AlgoliaSelectAdapter
-						defaultRefinement="dev_items"
+						defaultRefinement={defaultOption}
 						items={options}
 						styles={{
 							control: (provided) => ({
@@ -68,7 +70,7 @@ const AlgoliaSortBy = ({ options }) => (
 				)
 			} else {
 				return (
-					<AlgoliaSortByMobile defaultRefinement="dev_items" items={options}>
+					<AlgoliaSortByMobile defaultRefinement={defaultOption} items={options}>
 						<FontAwesomeIcon icon="sort" />
 						Sortuj
 					</AlgoliaSortByMobile>

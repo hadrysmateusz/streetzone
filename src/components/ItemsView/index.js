@@ -23,7 +23,6 @@ const ItemsGrid = styled.div`
 `
 
 const ItemsViewBase = ({ items }) => {
-	console.log(items)
 	return (
 		<ItemsGrid>
 			{items.map((item, i) => (
@@ -36,7 +35,6 @@ const ItemsViewBase = ({ items }) => {
 const ItemsView = withLoader(ItemsViewBase)
 
 const AlgoliaItemsView = ({ hits, ...props }) => {
-	console.log(hits, props)
 	return <ItemsView items={hits} {...props} />
 }
 

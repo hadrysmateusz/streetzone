@@ -75,7 +75,6 @@ class Firebase {
 		}
 		try {
 			// Look for the document with correct id
-			console.log("userId", userId)
 			const userSnap = await this.user(userId).get()
 			// If the user isn't found throw an error
 			if (!userSnap.exists) throw new Error("Nie znaleziono użytkownika")

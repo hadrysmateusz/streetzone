@@ -17,12 +17,11 @@ export const MainGrid = styled.div`
 	display: grid;
 	margin: 0 auto;
 	grid-gap: 20px;
-	padding: 0 20px;
 	grid-template-areas:
 		"info"
 		"tabs-nav"
 		"tabs-content";
-	grid-template-columns: 1fr;
+	grid-template-columns: 100%;
 	grid-template-rows: min-content min-content 1fr;
 
 	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {

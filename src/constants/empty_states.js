@@ -13,6 +13,11 @@ export const UserNoSoldItems = {
 	image: process.env.PUBLIC_URL + "/img/SadFace.png"
 }
 
+export const NoMoreItems = {
+	text: "To już wszystko",
+	image: process.env.PUBLIC_URL + "/img/SadFace.png"
+}
+
 export const Generic = {
 	text: "Coś poszło nie tak",
 	image: process.env.PUBLIC_URL + "/img/SadFace.png"

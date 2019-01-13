@@ -9,7 +9,8 @@ import {
 	Configure
 } from "react-instantsearch-dom"
 
-import { AlgoliaItemCard } from "../ItemCard"
+// import { AlgoliaItemCard } from "../ItemCard"
+import AlgoliaInfiniteHits from "../Algolia/AlgoliaInfiniteHits"
 import { withFirebase } from "../Firebase"
 import { THEME } from "../../constants"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
@@ -17,10 +18,6 @@ import Foldable from "../Foldable"
 import AlgoliaSortBy from "../Algolia/AlgoliaSortBy"
 
 const sortingOptions = [
-	{
-		value: "dev_items",
-		label: "Proponowane"
-	},
 	{
 		value: "dev_items_createdAt_desc",
 		label: "Najnowsze"
@@ -372,7 +369,10 @@ class HomePage extends Component {
 							<span>Filtry</span>
 						</FiltersToggle>
 						<SearchBox />
-						<AlgoliaSortBy options={sortingOptions} />
+						<AlgoliaSortBy
+							options={sortingOptions}
+							defaultOption="dev_items_createdAt_desc"
+						/>
 					</TopbarInnerContainer>
 				</Topbar>
 				<MainGrid>
@@ -393,7 +393,7 @@ class HomePage extends Component {
 						</SidebarInner>
 					</Sidebar>
 					<Content>
-						<StyledInfiniteHits hitComponent={AlgoliaItemCard} />
+						<AlgoliaInfiniteHits />
 					</Content>
 				</MainGrid>
 			</InstantSearch>

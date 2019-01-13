@@ -48,7 +48,6 @@ const SelectAdapter = ({ onChange, value, initial, options, isMulti, ...rest }) 
 
 const AlgoliaSelectAdapter = connectSortBy(
 	({ refine, items, currentRefinement, ...rest }) => {
-		console.log(items, currentRefinement, rest)
 		const value = items.find((option) => option.value === value)
 		return (
 			<Select

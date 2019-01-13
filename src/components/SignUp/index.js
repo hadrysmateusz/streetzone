@@ -37,7 +37,6 @@ class SignUpFormBase extends Component {
 			const authUser = await firebase.signUpWithEmail(email, password)
 
 			const userId = authUser.user.uid
-			console.log("userId", userId)
 
 			// Add the name to the auth user
 			await authUser.user.updateProfile({

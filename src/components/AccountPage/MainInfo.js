@@ -10,6 +10,7 @@ const MainInfoContainer = styled.div`
 	background: white;
 	padding: 20px;
 	border: 1px solid ${(p) => p.theme.colors.gray[75]};
+	overflow: hidden;
 `
 
 const MainInfo = ({ user }) => (
