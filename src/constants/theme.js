@@ -12,10 +12,10 @@ export default {
 			100: "#f39494"
 		},
 		gray: {
-			0: "#6f6f6f",
-			25: "#a8a8a8",
+			0: "#8f8f8f",
+			25: "#afafaf",
 			50: "#c6c6c6",
-			75: "#dcdcdc",
+			75: "#dadada",
 			100: "#eaeaea"
 		},
 		black: {

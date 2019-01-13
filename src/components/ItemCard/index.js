@@ -10,7 +10,7 @@ const Container = styled.div`
 	overflow: hidden;
 	min-width: 0;
 	min-height: 0;
-	border: 1px solid ${(p) => p.theme.colors.gray[50]};
+	border: 1px solid ${(p) => p.theme.colors.gray[75]};
 	box-shadow: 0 3px 6px -2px rgba(0, 0, 0, 0.12);
 	transition: transform 0.18s ease;
 	background: white;

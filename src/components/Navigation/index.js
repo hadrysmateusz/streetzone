@@ -26,7 +26,7 @@ const Nav = styled.ul`
 	align-items: center;
 	margin: 0;
 	padding: 0 11px;
-	border-bottom: 1px solid #ddd;
+	border-bottom: 1px solid ${(p) => p.theme.colors.gray[75]};
 	overflow: auto;
 	justify-content: flex-start;
 

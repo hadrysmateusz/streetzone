@@ -4,6 +4,7 @@ import { Media } from "react-breakpoints"
 import { AlgoliaSelectAdapter } from "../SelectAdapter"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { connectSortBy } from "react-instantsearch-dom"
+import { THEME } from "../../constants"
 
 const StyledSelect = styled.select`
 	position: absolute;
@@ -12,6 +13,7 @@ const StyledSelect = styled.select`
 	height: 100%;
 	width: 100%;
 	opacity: 0;
+	border: 2px solid red;
 `
 
 const Container = styled.label`
@@ -21,7 +23,7 @@ const Container = styled.label`
 	align-items: center;
 
 	color: ${(p) => p.theme.colors.black[75]};
-	border: 1px solid ${(p) => p.theme.colors.gray[50]};
+	border: 1px solid red;
 	:hover {
 		border: 1px solid ${(p) => p.theme.colors.gray[25]};
 	}
@@ -59,11 +61,15 @@ const AlgoliaSortBy = ({ options, defaultOption }) => (
 						defaultRefinement={defaultOption}
 						items={options}
 						styles={{
-							control: (provided) => ({
+							control: (provided, state) => ({
 								...provided,
 								minWidth: "180px",
 								minHeight: "0",
-								fontSize: "0.92rem"
+								fontSize: "0.92rem",
+								border: `1px solid ${THEME.colors.gray[75]}`,
+								"&:hover": {
+									borderColor: THEME.colors.gray[25]
+								}
 							})
 						}}
 					/>

@@ -49,7 +49,7 @@ const getItemsPerPage = () => {
 
 const InputCommon = css`
 	color: ${(p) => p.theme.colors.black[75]};
-	border: 1px solid ${(p) => p.theme.colors.gray[50]};
+	border: 1px solid ${(p) => p.theme.colors.gray[75]};
 	:hover {
 		border: 1px solid ${(p) => p.theme.colors.gray[25]};
 	}
@@ -218,7 +218,7 @@ const FiltersToggle = styled.div`
 	grid-area: sidebar-toggle;
 	padding: 0 14px;
 	height: 38px;
-	color: ${(p) => p.theme.colors.black[100]};
+	color: ${(p) => p.theme.colors.black[75]};
 	display: flex;
 	justify-content: center;
 	align-items: center;
