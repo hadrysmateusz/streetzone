@@ -1,7 +1,7 @@
 import React from "react"
 import { Form, Field } from "react-final-form"
 import { OnChange } from "react-final-form-listeners"
-import AsyncCreatable from "react-select/lib/AsyncCreatable"
+// import AsyncCreatable from "react-select/lib/AsyncCreatable"
 import styled from "styled-components"
 
 import Button, { LoaderButton } from "../Button"
@@ -185,7 +185,7 @@ const NewItemForm = ({ initialValues, onSubmit, history, isLoading }) => {
 							<Field name="description">
 								{({ input, meta }) => (
 									<>
-										<FieldLabel>Opis </FieldLabel>
+										<FieldLabel>Opis</FieldLabel>
 										<StyledTextarea {...input} placeholder="Dodatkowe informacje" />
 										<FormError message={meta.error} show={meta.error && meta.touched} />
 									</>
@@ -195,7 +195,7 @@ const NewItemForm = ({ initialValues, onSubmit, history, isLoading }) => {
 
 						{/* Files (handled by separate component) */}
 						<FieldRow gridArea="files">
-							<FieldLabel>Zdjęcia </FieldLabel>
+							<FieldLabel>Zdjęcia</FieldLabel>
 							<Field name="files" isLoading={isLoading} component={FileHandler} />
 						</FieldRow>
 

@@ -29,22 +29,17 @@ const sortingOptions = [
 ]
 
 const getItemsPerPage = () => {
-	const height = window.innerHeight
 	const width = window.innerWidth
 
-	let rows = Math.floor(height / 333)
-	let cols = 1
-
 	if (width < THEME.breakpoints[1]) {
-		cols = 1
+		return 2
 	} else if (width < THEME.breakpoints[3]) {
-		cols = 2
+		return 4
 	} else if (width < THEME.breakpoints[5]) {
-		cols = 3
+		return 3
 	} else if (width >= THEME.breakpoints[5]) {
-		cols = 4
+		return 4
 	}
-	return Math.max(3, Math.min(16, rows * cols))
 }
 
 const InputCommon = css`

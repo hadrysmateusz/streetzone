@@ -9,6 +9,7 @@ import EmptyState from "../EmptyState"
 const Container = styled.div`
 	display: grid;
 	grid-gap: 10px;
+	grid-auto-rows: minmax(345px, auto);
 
 	@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
 		grid-template-columns: 1fr 1fr;
@@ -39,13 +40,13 @@ const AlgoliaInfiniteHits = ({ hits, hasMore, refine }) => {
 			<InfiniteScroll
 				element={Container}
 				useWindow={false}
-				threshold={0}
+				threshold={50}
 				getScrollParent={() => document.getElementById("base-scroll-container")}
 				hasMore={hasMore}
 				loader={<div key={1}>Loading...</div>}
 				loadMore={() => {
-					console.log("loading more", hits.length)
 					refine()
+					console.log("loaded more", hits.length)
 				}}
 			>
 				{hits.map((hit) => (
