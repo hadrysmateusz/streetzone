@@ -24,6 +24,10 @@ const ALGOLIA_ADMIN_KEY = functions.config().algolia.api_key
 const ALGOLIA_INDEX_NAME = "dev_items"
 const client = algoliasearch(ALGOLIA_ID, ALGOLIA_ADMIN_KEY)
 
+// ------------------------------------
+// ---------- Items handling ----------
+// ------------------------------------
+
 exports.onItemCreated = functions.firestore
 	.document(`items/{itemId}`)
 	.onCreate((snap, context) => {
@@ -70,6 +74,10 @@ exports.onItemDeleted = functions.firestore
 // 		console.log("snap data", snap.data())
 // 	})
 
+// ------------------------------------
+// ---------- User handling -----------
+// ------------------------------------
+
 exports.removeUserItems = functions.firestore
 	.document(`users/{userId}`)
 	.onDelete((snap, context) => {
@@ -108,6 +116,10 @@ exports.userDbCleanup = functions.auth.user().onDelete((user, ...rest) => {
 exports.onUserCreated = functions.auth.user().onCreate((...args) => {
 	console.log("args", args)
 })
+
+// ------------------------------------
+// ---------- Image handling ----------
+// ------------------------------------
 
 exports.imageToJPG = functions.storage.object().onFinalize((object) => {
 	// Creates a client
