@@ -7,25 +7,32 @@ const path = require("path")
 const os = require("os")
 const fs = require("fs")
 const { Storage } = require("@google-cloud/storage")
-
-var serviceAccount = require("./firebase-admin-key.json")
+const serviceAccount = require("./firebase-admin-key.json")
 
 const JPEG_EXTENSION = ".jpg"
 const S_THUMB_POSTFIX = "_THUMB_S"
+const M_THUMB_POSTFIX = "_THUMB_M"
 const L_THUMB_POSTFIX = "_THUMB_L"
 
-admin.initializeApp({
-	credential: admin.credential.cert(serviceAccount),
-	databaseURL: "https://streetwear-app.firebaseio.com"
-})
+const GCP_STORAGE_BUCKET = "streetwear-app.appspot.com"
+const DATABASE_URL = "https://streetwear-app.firebaseio.com"
 
 const ALGOLIA_ID = functions.config().algolia.app_id
 const ALGOLIA_ADMIN_KEY = functions.config().algolia.api_key
 const ALGOLIA_INDEX_NAME = "dev_items"
+
 const client = algoliasearch(ALGOLIA_ID, ALGOLIA_ADMIN_KEY)
 
+admin.initializeApp({
+	credential: admin.credential.cert(serviceAccount),
+	databaseURL: DATABASE_URL,
+	storageBucket: GCP_STORAGE_BUCKET
+})
+
+const bucket = admin.storage().bucket()
+
 // ------------------------------------
-// ---------- Items handling ----------
+// -------- Algolia Index Sync --------
 // ------------------------------------
 
 exports.onItemCreated = functions.firestore
@@ -67,26 +74,64 @@ exports.onItemDeleted = functions.firestore
 		return index.deleteObject(objectID)
 	})
 
-// exports.removeItemImages = functions.firestore
-// 	.document(`items/{itemId}`)
-// 	.onDelete((snap, context) => {
-// 		console.log("snap", snap)
-// 		console.log("snap data", snap.data())
-// 	})
+// ------------------------------------
+// ---------- Items handling ----------
+// ------------------------------------
+
+const logDeleteError = (err, name) => {
+	console.error(
+		`there was a problem while deleting ${name} it might not have been deleted`,
+		err
+	)
+}
+
+const logDeleteTime = (startTime, name) => {
+	console.log(`Deleted ${name} in ${Date.now() - startTime}ms`)
+}
+
+// When an item is removed from db remove its images from storage
+exports.removeItemImages = functions.firestore
+	.document(`items/{itemId}`)
+	.onDelete(async (snap) => {
+		const data = snap.data()
+		let successCount = 0
+		let failureCount = 0
+
+		const removeFile = async (name) => {
+			try {
+				const t = Date.now()
+				await bucket.file(name).delete()
+				logDeleteTime(t, name)
+				successCount++
+			} catch (err) {
+				logDeleteError(err, name)
+				failureCount++
+			}
+		}
+
+		const res = await Promise.all(
+			data.attachments.map(async (ref) => {
+				await removeFile(ref)
+				await removeFile(ref + S_THUMB_POSTFIX)
+				await removeFile(ref + M_THUMB_POSTFIX)
+				await removeFile(ref + L_THUMB_POSTFIX)
+			})
+		)
+
+		console.log(`Success: ${successCount}, Failure: ${failureCount}`)
+		return res
+	})
 
 // ------------------------------------
 // ---------- User handling -----------
 // ------------------------------------
 
+// When a user is deleted from db their items are removed from the db
 exports.removeUserItems = functions.firestore
 	.document(`users/{userId}`)
 	.onDelete((snap, context) => {
-		console.log("snap", snap)
-		console.log("context", context)
 		const db = admin.firestore()
 		const data = snap.data()
-		console.log("data", data)
-		console.log("items", data.items)
 		data.items.forEach((item) => {
 			db.collection("items")
 				.doc(item)
@@ -98,12 +143,10 @@ exports.removeUserItems = functions.firestore
 		})
 	})
 
+// When an authUser is deleted the corresponding user is removed from db
 exports.userDbCleanup = functions.auth.user().onDelete((user, ...rest) => {
-	console.log("user", user)
-	console.log("rest", ...rest)
 	const userId = user.uid
 	const db = admin.firestore()
-	console.log("userSnap", db.collection("users").doc(userId))
 	db.collection("users")
 		.doc(userId)
 		.delete()
@@ -113,6 +156,7 @@ exports.userDbCleanup = functions.auth.user().onDelete((user, ...rest) => {
 		.catch((err) => console.log(err))
 })
 
+// TODO: When an authUser is created create a corresponding user in db
 exports.onUserCreated = functions.auth.user().onCreate((...args) => {
 	console.log("args", args)
 })
@@ -121,6 +165,8 @@ exports.onUserCreated = functions.auth.user().onCreate((...args) => {
 // ---------- Image handling ----------
 // ------------------------------------
 
+// On image upload create convert image to JPEG and create thumbnails
+// to save on bandwith and improve performance
 exports.imageToJPG = functions.storage.object().onFinalize((object) => {
 	// Creates a client
 	const storage = new Storage()
@@ -147,6 +193,12 @@ exports.imageToJPG = functions.storage.object().onFinalize((object) => {
 	)
 	const tempLocalThumbSFile = path.join(os.tmpdir(), thumbSPath)
 
+	// Temp Medium Thumbnail
+	const thumbMPath = path.normalize(
+		path.format({ dir: fileDir, name: baseFileName + M_THUMB_POSTFIX })
+	)
+	const tempLocalThumbMFile = path.join(os.tmpdir(), thumbMPath)
+
 	// Temp Large Thumbnail
 	const thumbLPath = path.normalize(
 		path.format({ dir: fileDir, name: baseFileName + L_THUMB_POSTFIX })
@@ -159,14 +211,17 @@ exports.imageToJPG = functions.storage.object().onFinalize((object) => {
 		return null
 	}
 
-	// Exit if the image is already a JPEG.
-	if (object.contentType.startsWith("image/jpeg")) {
-		console.log("Already a JPEG.")
-		return null
-	}
+	// // Exit if the image is already a JPEG.
+	// if (object.contentType.startsWith("image/jpeg")) {
+	// 	console.log("Already a JPEG.")
+	// 	return null
+	// }
 
 	// Get the reference to the image's bucket
 	const bucket = storage.bucket(object.bucket)
+	console.log("object bucket", object.bucket)
+	console.log("bucket", bucket)
+	console.log("filepath", filePath)
 
 	// Create the temp directory where the storage file will be downloaded.
 	return mkdirp(tempLocalDir)
@@ -176,11 +231,21 @@ exports.imageToJPG = functions.storage.object().onFinalize((object) => {
 		})
 		.then(() => {
 			console.log("The file has been downloaded to", tempLocalFile)
+			// Skip if the image is already a JPEG.
+			if (object.contentType.startsWith("image/jpeg")) {
+				console.log("Already a JPEG.")
+				return null
+			}
 			// Convert the image to JPEG using ImageMagick.
 			return spawn("convert", [tempLocalFile, tempLocalJPEGFile])
 		})
 		.then(() => {
 			console.log("JPEG image created at", tempLocalJPEGFile)
+			// Skip if the image is already a JPEG.
+			if (object.contentType.startsWith("image/jpeg")) {
+				console.log("Already a JPEG.")
+				return null
+			}
 			// Removing the original file
 			return bucket.file(filePath).delete()
 		})
@@ -210,15 +275,31 @@ exports.imageToJPG = functions.storage.object().onFinalize((object) => {
 			})
 		})
 		.then(() => {
-			// Generate a large thumbnail using ImageMagick.
+			// Generate a medium thumbnail using ImageMagick.
 			return spawn(
 				"convert",
-				[tempLocalJPEGFile, "-thumbnail", `250x250`, tempLocalThumbLFile],
+				[tempLocalJPEGFile, "-thumbnail", `250x250`, tempLocalThumbMFile],
 				{ capture: ["stdout", "stderr"] }
 			)
 		})
 		.then(() => {
-			console.log("Large thumbnail generated at", thumbSPath)
+			console.log("Medium thumbnail generated at", thumbMPath)
+			// Uploading the medium thumbnail.
+			return bucket.upload(tempLocalThumbMFile, {
+				destination: thumbMPath,
+				metadata: metadata
+			})
+		})
+		.then(() => {
+			// Generate a large thumbnail using ImageMagick.
+			return spawn(
+				"convert",
+				[tempLocalJPEGFile, "-thumbnail", `600x600`, tempLocalThumbLFile],
+				{ capture: ["stdout", "stderr"] }
+			)
+		})
+		.then(() => {
+			console.log("Large thumbnail generated at", thumbLPath)
 			// Uploading the large thumbnail.
 			return bucket.upload(tempLocalThumbLFile, {
 				destination: thumbLPath,
