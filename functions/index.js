@@ -78,17 +78,6 @@ exports.onItemDeleted = functions.firestore
 // ---------- Items handling ----------
 // ------------------------------------
 
-const logDeleteError = (err, name) => {
-	console.error(
-		`there was a problem while deleting ${name} it might not have been deleted`,
-		err
-	)
-}
-
-const logDeleteTime = (startTime, name) => {
-	console.log(`Deleted ${name} in ${Date.now() - startTime}ms`)
-}
-
 // When an item is removed from db remove its images from storage
 exports.removeItemImages = functions.firestore
 	.document(`items/{itemId}`)
@@ -101,10 +90,13 @@ exports.removeItemImages = functions.firestore
 			try {
 				const t = Date.now()
 				await bucket.file(name).delete()
-				logDeleteTime(t, name)
+				console.log(`Deleted ${name} in ${Date.now() - t}ms`)
 				successCount++
 			} catch (err) {
-				logDeleteError(err, name)
+				console.error(
+					`There was a problem with deleting ${name} it might not have been deleted`,
+					err
+				)
 				failureCount++
 			}
 		}
