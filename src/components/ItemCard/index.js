@@ -119,7 +119,7 @@ class ItemCardBase extends Component {
 		const { item, firebase } = this.props
 
 		try {
-			const imageURL = await firebase.getImageURL(item.attachments[0], "L")
+			const imageURL = await firebase.getImageURL(item.attachments[0], "M")
 			this.setState({ imageURL })
 		} catch (error) {
 			console.log(error)

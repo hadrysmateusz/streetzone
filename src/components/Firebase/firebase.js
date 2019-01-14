@@ -7,6 +7,7 @@ import "firebase/firestore"
 import { ITEM_SCHEMA } from "../../constants"
 
 const S_THUMB_POSTFIX = "_THUMB_S"
+const M_THUMB_POSTFIX = "_THUMB_M"
 const L_THUMB_POSTFIX = "_THUMB_L"
 
 const config = {
@@ -161,6 +162,8 @@ class Firebase {
 	getImageURL = async (ref, size) => {
 		if (size === "S") {
 			ref += S_THUMB_POSTFIX
+		} else if (size === "M") {
+			ref += M_THUMB_POSTFIX
 		} else if (size === "L") {
 			ref += L_THUMB_POSTFIX
 		}

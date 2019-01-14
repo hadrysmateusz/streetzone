@@ -112,6 +112,7 @@ const overlay = css`
 export class ImageGallery extends Component {
 	state = {
 		isLoading: true,
+		thumbnailURLs: [],
 		imageURLs: [],
 		currentImageIndex: 0
 	}
@@ -121,13 +122,13 @@ export class ImageGallery extends Component {
 
 		const { item, firebase } = this.props
 
-		const imageURLs = await firebase.batchGetImageURLs(item.attachments, "S")
+		const thumbnailURLs = await firebase.batchGetImageURLs(item.attachments, "S")
 
-		this.setState({ imageURLs, isLoading: false })
+		this.setState({ thumbnailURLs, isLoading: false })
 	}
 
 	changeCurrentImage = (e) => {
-		let lastIndex = this.state.imageURLs.length - 1
+		let lastIndex = this.state.thumbnailURLs.length - 1
 		let newImageIndex = e.currentTarget.dataset.index
 
 		if (newImageIndex > lastIndex) {
@@ -140,11 +141,11 @@ export class ImageGallery extends Component {
 	}
 
 	render() {
-		const { imageURLs, currentImageIndex } = this.state
+		const { thumbnailURLs, currentImageIndex } = this.state
 		return (
 			<Container>
 				<CurrentImage>
-					{imageURLs.length > 1 && (
+					{thumbnailURLs.length > 1 && (
 						<MiniButton
 							position={{ top: "calc(50% - 25px)", left: "20px" }}
 							size={42}
@@ -155,8 +156,8 @@ export class ImageGallery extends Component {
 							<FontAwesomeIcon icon="angle-left" size="2x" />
 						</MiniButton>
 					)}
-					<img src={imageURLs[currentImageIndex]} alt="" />
-					{imageURLs.length > 1 && (
+					<img src={thumbnailURLs[currentImageIndex]} alt="" />
+					{thumbnailURLs.length > 1 && (
 						<MiniButton
 							position={{ top: "calc(50% - 25px)", right: "20px" }}
 							size={42}
@@ -169,7 +170,7 @@ export class ImageGallery extends Component {
 					)}
 				</CurrentImage>
 				<ThumbnailsContainer>
-					{imageURLs.map((url, i) => (
+					{thumbnailURLs.map((url, i) => (
 						<li key={i}>
 							<Thumbnail
 								data-index={i}
