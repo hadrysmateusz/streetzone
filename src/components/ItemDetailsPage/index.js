@@ -21,7 +21,6 @@ const MainContainer = styled.main`
 	max-width: ${(p) => p.theme.breakpoints[4]}px;
 	margin: 0 auto;
 	height: 100%;
-	padding: 0 20px;
 `
 
 const ItemContainer = styled.div`

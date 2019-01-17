@@ -10,6 +10,7 @@ const CurrentImage = styled.div`
 	position: relative;
 	width: 100%;
 	height: 75vw;
+	max-height: 600px;
 
 	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
 		height: 50vh;

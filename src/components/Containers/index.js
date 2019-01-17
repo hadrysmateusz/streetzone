@@ -12,7 +12,10 @@ const PageContainer = styled.main`
 	${pageContainerWidth}
 	margin: 0 auto;
 	width: 100%;
-	padding: 0 20px;
+	padding: 10px;
+	@media (min-width: ${(p) => p.theme.breakpoints[0]}px) {
+		padding: 20px;
+	}
 `
 
 const BlogPageContainer = styled.main`
@@ -20,7 +23,7 @@ const BlogPageContainer = styled.main`
 	margin: 0 auto;
 	width: 100%;
 	@media (min-width: ${pageContainerWidth}) {
-		padding: 0 20px;
+		padding: 20px;
 	}
 `
 

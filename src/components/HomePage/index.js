@@ -57,14 +57,14 @@ const InputCommon = css`
 const MainGrid = styled.div`
 	position: relative;
 	display: grid;
-	margin: 20px auto 0;
+	margin: 0 auto;
 	box-sizing: content-box;
-	padding: 0 10px;
-	row-gap: 20px;
+	padding: 0 10px 10px;
 	grid-template-areas:
 		"filters"
 		"content";
 	grid-template-columns: 100%;
+	margin-top: 10px;
 
 	@media (min-width: ${(p) => p.theme.breakpoints[0]}px) {
 		padding: 0 20px;
