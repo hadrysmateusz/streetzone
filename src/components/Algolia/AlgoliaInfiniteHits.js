@@ -32,6 +32,7 @@ const EndCard = styled.div`
 	font-size: 0.84rem;
 	font-weight: 500;
 	padding: 30px 0;
+	box-shadow: 0 3px 6px -2px rgba(0, 0, 0, 0.12);
 `
 
 const AlgoliaInfiniteHits = ({ hits, hasMore, refine }) => {
