@@ -1,6 +1,7 @@
 import React from "react"
 import styled from "styled-components"
 import ProfilePicture from "../ProfilePicture"
+import getProfilePictureURL from "../../utils/getProfilePictureURL"
 
 const MainInfoContainer = styled.div`
 	grid-area: info;
@@ -15,7 +16,7 @@ const MainInfoContainer = styled.div`
 
 const MainInfo = ({ user }) => (
 	<MainInfoContainer>
-		<ProfilePicture url={user.profilePictureURL} />
+		<ProfilePicture url={getProfilePictureURL(user, "M")} />
 		<div>
 			<h2>Imię: {user.name}</h2>
 			<p>Email: {user.email}</p>

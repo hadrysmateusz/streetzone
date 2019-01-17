@@ -117,10 +117,12 @@ class SignInGoogleBase extends Component {
 					name: socialAuthUser.user.displayName,
 					email: socialAuthUser.user.email,
 					items: [],
-					roles: [],
-					permission: [],
 					profilePictureRef: null,
-					profilePictureURL: socialAuthUser.picture || null
+					profilePictureURLs: socialAuthUser.picture ? [socialAuthUser.picture] : null,
+					permissions: [],
+					roles: [],
+					feedback: [],
+					badges: {}
 				})
 			}
 			this.setState({ error: null })
@@ -160,10 +162,12 @@ class SignInFacebookBase extends Component {
 					name: socialAuthUser.additionalUserInfo.profile.name,
 					email: socialAuthUser.additionalUserInfo.profile.email,
 					items: [],
-					roles: [],
-					permission: [],
 					profilePictureRef: null,
-					profilePictureURL: socialAuthUser.picture || null
+					profilePictureURLs: [socialAuthUser.picture] || null,
+					permissions: [],
+					roles: [],
+					feedback: [],
+					badges: {}
 				})
 			}
 			this.setState({ error: null })

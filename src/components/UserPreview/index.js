@@ -6,6 +6,7 @@ import { compose } from "recompose"
 import ProfilePicture from "../ProfilePicture"
 import { withFirebase } from "../Firebase"
 import LoadingSpinner from "../LoadingSpinner"
+import getProfilePictureURL from "../../utils/getProfilePictureURL"
 
 import { ROUTES } from "../../constants"
 
@@ -45,7 +46,7 @@ export class UserPreview extends Component {
 		if (!isLoading && user) {
 			return (
 				<Container>
-					<ProfilePicture size="80px" url={user.profilePictureURL} inline />
+					<ProfilePicture size="80px" url={getProfilePictureURL(user, "M")} inline />
 					<Name>
 						<a href={ROUTES.ACCOUNT_ITEMS.replace(":id", this.props.id)}>{user.name}</a>
 					</Name>

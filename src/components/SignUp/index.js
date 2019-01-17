@@ -49,11 +49,11 @@ class SignUpFormBase extends Component {
 				email,
 				items: [],
 				profilePictureRef: null,
-				profilePictureURL: null,
+				profilePictureURLs: null,
 				permissions: [],
 				roles: [],
 				feedback: [],
-				badges: []
+				badges: {}
 			})
 
 			// Reset form

@@ -123,8 +123,27 @@ export class ImageGallery extends Component {
 		const { item, firebase } = this.props
 
 		const thumbnailURLs = await firebase.batchGetImageURLs(item.attachments, "S")
+		const imageURLs = Array(thumbnailURLs.length).fill(null)
+		this.getBigThumbnail(0)
 
-		this.setState({ thumbnailURLs, isLoading: false })
+		this.setState({ thumbnailURLs, imageURLs, isLoading: false })
+	}
+
+	getBigThumbnail = async (index) => {
+		const { item, firebase } = this.props
+
+		try {
+			const imageURL = await firebase.getImageURL(item.attachments[index], "L")
+
+			await this.setState((state) => {
+				let imageURLs = state.imageURLs
+				imageURLs[index] = imageURL
+				return { imageURLs }
+			})
+			console.log("imageURLs: ", this.state.imageURLs)
+		} catch (error) {
+			console.log(error)
+		}
 	}
 
 	changeCurrentImage = (e) => {
@@ -137,11 +156,15 @@ export class ImageGallery extends Component {
 			newImageIndex = lastIndex
 		}
 
+		if (!this.state.imageURLs[newImageIndex]) {
+			this.getBigThumbnail(newImageIndex)
+		}
+
 		this.setState({ currentImageIndex: newImageIndex })
 	}
 
 	render() {
-		const { thumbnailURLs, currentImageIndex } = this.state
+		const { thumbnailURLs, imageURLs, currentImageIndex } = this.state
 		return (
 			<Container>
 				<CurrentImage>
@@ -156,7 +179,7 @@ export class ImageGallery extends Component {
 							<FontAwesomeIcon icon="angle-left" size="2x" />
 						</MiniButton>
 					)}
-					<img src={thumbnailURLs[currentImageIndex]} alt="" />
+					<img src={imageURLs[currentImageIndex]} alt="" />
 					{thumbnailURLs.length > 1 && (
 						<MiniButton
 							position={{ top: "calc(50% - 25px)", right: "20px" }}

@@ -6,9 +6,9 @@ import "firebase/firestore"
 
 import { ITEM_SCHEMA } from "../../constants"
 
-const S_THUMB_POSTFIX = "_THUMB_S"
-const M_THUMB_POSTFIX = "_THUMB_M"
-const L_THUMB_POSTFIX = "_THUMB_L"
+const S_THUMB_POSTFIX = "_S_THUMB"
+const M_THUMB_POSTFIX = "_M_THUMB"
+const L_THUMB_POSTFIX = "_L_THUMB"
 
 const config = {
 	apiKey: process.env.REACT_APP_API_KEY,

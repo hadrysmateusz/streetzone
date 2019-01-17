@@ -7,7 +7,6 @@ import LoadingSpinner from "../LoadingSpinner"
 import EmptyState from "../EmptyState"
 import EditItemForm from "./EditItemForm"
 import { CustomFile } from "../FileHandler"
-import { Header } from "../Basics"
 import { PageContainer } from "../Containers"
 import { NotFoundError } from "../../errors"
 
@@ -26,7 +25,11 @@ class EditItemPage extends Component {
 			// Get item attachments' refs and urls for previews
 			const imageURLs = await this.props.firebase.batchGetImageURLs(item.attachments)
 			const files = item.attachments.map((attachment, i) => {
-				return new CustomFile({ ref: attachment, previewUrl: imageURLs[i] })
+				return new CustomFile({
+					ref: attachment,
+					previewUrl: imageURLs[i],
+					isUploaded: true
+				})
 			})
 
 			// Format data for the form

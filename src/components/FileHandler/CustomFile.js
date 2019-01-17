@@ -5,5 +5,6 @@ export default class CustomFile {
 		this.ref = params.ref || ""
 		this.previewUrl = params.previewUrl || ""
 		this.data = params.data || {}
+		this.isUploaded = params.isUploaded || false
 	}
 }

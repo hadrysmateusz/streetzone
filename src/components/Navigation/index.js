@@ -8,9 +8,9 @@ import SignOutButton from "../SignOut"
 import { CustomNavLink } from "../Basics"
 import ProfilePicture from "../ProfilePicture"
 import { ROUTES } from "../../constants"
+import getProfilePictureURL from "../../utils/getProfilePictureURL"
 
-const NAV_ITEM_HEIGHT = "44px"
-const NAV_ITEM_HEIGHT_MOBILE = " 50px"
+const NAV_ITEM_HEIGHT = "46px"
 
 const Nav = styled.ul`
 	text-transform: uppercase;
@@ -86,14 +86,13 @@ const Submenu = styled.ul`
 const NavItem = styled.li`
 	position: relative;
 	list-style-type: none;
-	height: ${NAV_ITEM_HEIGHT_MOBILE};
+	height: ${NAV_ITEM_HEIGHT};
 	white-space: nowrap;
 	color: ${(p) => p.theme.colors.black[75]};
 	display: block;
 	order: 1;
 
 	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
-		height: ${NAV_ITEM_HEIGHT};
 		:hover > ${Submenu} {
 			display: block;
 		}
@@ -125,7 +124,11 @@ const Navigation = ({ authUser, ...rest }) => {
 				<>
 					<NavItem>
 						<StyledNavLink to={ROUTES.ACCOUNT_ITEMS.replace(":id", authUser.uid)}>
-							<ProfilePicture size="30px" url={authUser.profilePictureURL} inline />
+							<ProfilePicture
+								size="30px"
+								url={getProfilePictureURL(authUser, "S")}
+								inline
+							/>
 							{/* Keep it this way until you have some other way of indicating that 
 							the menu is scrollable as a constant width allows me to make it obvious */}
 							{/* <span>{authUser.name ? authUser.name : "Profil"}</span> */}
