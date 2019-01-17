@@ -3,11 +3,12 @@ import React from "react"
 import ReactDOM from "react-dom"
 import { ThemeProvider } from "styled-components"
 import ReactBreakpoints from "react-breakpoints"
+import "react-image-lightbox/style.css"
 
 import * as serviceWorker from "./serviceWorker"
+import "./normalize.css"
 import "./config/fontAwesomeConfig"
 import "./index.css"
-import "./normalize.css"
 
 import { THEME } from "./constants"
 import App from "./components/App"

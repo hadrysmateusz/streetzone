@@ -1,6 +1,7 @@
 import React, { Component } from "react"
 import styled, { css } from "styled-components"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import Lightbox from "react-image-lightbox"
 
 import { withFirebase } from "../Firebase"
 import { MiniButton } from "../Basics"
@@ -115,7 +116,8 @@ export class ImageGallery extends Component {
 		isLoading: true,
 		thumbnailURLs: [],
 		imageURLs: [],
-		currentImageIndex: 0
+		currentImageIndex: 0,
+		isOpen: false
 	}
 
 	componentDidMount = async () => {
@@ -164,11 +166,30 @@ export class ImageGallery extends Component {
 		this.setState({ currentImageIndex: newImageIndex })
 	}
 
+	openLightbox = async () => {
+		this.setState(async (state) => {
+			const imageURLs = await Promise.all(
+				state.imageURLs.map((url, i) => this.getBigThumbnail(i))
+			)
+			return { imageURLs }
+		})
+		this.setState({ isOpen: true })
+	}
+
 	render() {
-		const { thumbnailURLs, imageURLs, currentImageIndex } = this.state
+		const { thumbnailURLs, imageURLs, currentImageIndex, isOpen } = this.state
+
+		const mainSrc = imageURLs[currentImageIndex] || undefined
+		const nextSrc = imageURLs[(currentImageIndex + 1) % imageURLs.length] || undefined
+		const prevSrc =
+			imageURLs[(currentImageIndex + imageURLs.length - 1) % imageURLs.length] ||
+			undefined
+
+		console.log(mainSrc, nextSrc, prevSrc)
+
 		return (
 			<Container>
-				<CurrentImage>
+				<CurrentImage onClick={this.openLightbox}>
 					{thumbnailURLs.length > 1 && (
 						<MiniButton
 							position={{ top: "calc(50% - 25px)", left: "20px" }}
@@ -206,6 +227,25 @@ export class ImageGallery extends Component {
 						</li>
 					))}
 				</ThumbnailsContainer>
+				{isOpen && (
+					<Lightbox
+						mainSrc={mainSrc}
+						nextSrc={nextSrc}
+						prevSrc={prevSrc}
+						onCloseRequest={() => this.setState({ isOpen: false })}
+						onMovePrevRequest={() =>
+							this.setState({
+								currentImageIndex:
+									(currentImageIndex + imageURLs.length - 1) % imageURLs.length
+							})
+						}
+						onMoveNextRequest={() =>
+							this.setState({
+								currentImageIndex: (currentImageIndex + 1) % imageURLs.length
+							})
+						}
+					/>
+				)}
 			</Container>
 		)
 	}

@@ -185,7 +185,7 @@ const Topbar = styled.div`
 	border-bottom: 1px solid;
 	border-color: ${(p) => p.theme.colors.gray[75]};
 	position: sticky;
-	z-index: 9800;
+	z-index: 890;
 	top: 46px;
 	background: white;
 	/* box-sizing: content-box; */
@@ -253,7 +253,7 @@ const Sidebar = styled.aside`
 	/* border-color: ${(p) => p.theme.colors.gray[75]}; */
 	/* border-bottom: 1px solid; */
 	/* position: sticky; */
-	z-index: 9800;
+	z-index: 890;
 	border-top: 10px solid white;
 	/* top: 104px; */
 	background: white;
