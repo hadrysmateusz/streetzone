@@ -95,22 +95,26 @@ const StyledRefinementList = styled(RefinementList)`
 	.ais-SearchBox-form {
 		display: flex;
 	}
+	.ais-SearchBox-reset {
+		display: none;
+	}
+
 	.ais-SearchBox-input {
 		${InputCommon}
 		height: 34px;
 		flex: 1 1;
 	}
 	.ais-SearchBox-submit {
-		border: 1px solid ${(p) => p.theme.colors.gray[50]};
+		border: 1px solid ${(p) => p.theme.colors.gray[75]};
 		background: ${(p) => p.theme.colors.gray[100]};
 		width: 38px;
 		padding: 0;
 		border-left: 0;
+		outline: none !important;
 		svg {
 			width: 12px;
 			height: 12px;
 		}
-		cursor: pointer;
 	}
 `
 
@@ -143,14 +147,27 @@ const TopbarInnerContainer = styled.div`
 		padding: 0 12px;
 		height: 34px;
 		font-size: 0.92rem;
-		/* border-radius: 20px 0 0 20px; */
-		/* border-radius: 20px; */
 	}
 	.ais-SearchBox-submitIcon path {
-		fill: white;
+		fill: #1f1f1f;
+	}
+	/* .ais-SearchBox-submit {
+		display: none;
+	} */
+	.ais-SearchBox-reset {
+		display: none;
 	}
 	.ais-SearchBox-submit {
-		display: none;
+		border: 1px solid ${(p) => p.theme.colors.gray[75]};
+		background: ${(p) => p.theme.colors.gray[100]};
+		width: 38px;
+		padding: 0;
+		border-left: 0;
+		outline: none !important;
+		svg {
+			width: 12px;
+			height: 12px;
+		}
 	}
 
 	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
