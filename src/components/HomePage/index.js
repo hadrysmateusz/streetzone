@@ -2,7 +2,6 @@ import React, { Component } from "react"
 import styled, { css } from "styled-components"
 import {
 	InstantSearch,
-	InfiniteHits,
 	SearchBox,
 	RefinementList,
 	RangeInput,
@@ -187,18 +186,20 @@ const Topbar = styled.div`
 	border-color: ${(p) => p.theme.colors.gray[75]};
 	position: sticky;
 	z-index: 9800;
-	top: 50px;
+	top: 46px;
+	background: white;
+	/* box-sizing: content-box; */
+	padding: 10px;
+	/* height: 54px; */
+	margin: 10px 0;
+
+	@media (min-width: ${(p) => p.theme.breakpoints[0]}px) {
+		margin: 20px 0;
+		padding: 13px 20px;
+	}
 	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
 		top: 44px;
 	}
-	padding: 13px 10px;
-	@media (min-width: ${(p) => p.theme.breakpoints[0]}px) {
-		padding: 13px 20px;
-	}
-	background: white;
-	grid-area: topbar;
-
-	box-sizing: content-box;
 `
 
 const FiltersToggle = styled.div`
@@ -237,24 +238,59 @@ const SizeRefinementList = styled(StyledRefinementList)`
 `
 
 const SidebarInner = styled.div`
-	position: sticky;
-	top: 127px;
+	/* position: sticky; */
+	/* top: 127px; */
 	background: white;
-	border: 1px solid ${(p) => p.theme.colors.gray[75]};
-	padding: 10px 20px;
+	/* border: 1px solid ${(p) => p.theme.colors.gray[75]}; */
+	/* padding: 10px 20px; */
+	/* border-bottom: 10px solid white; */
+
+
 `
 
 const Sidebar = styled.aside`
+	/* border-top: 1px solid; */
+	/* border-color: ${(p) => p.theme.colors.gray[75]}; */
+	/* border-bottom: 1px solid; */
+	/* position: sticky; */
+	z-index: 9800;
+	border-top: 10px solid white;
+	/* top: 104px; */
+	background: white;
+	box-sizing: content-box;
+	/* padding: 0 10px; */
+	/* margin: 10px 0; */
+	overflow-y: scroll;
+	margin: 0;
+	max-height: 40vh;
+	/* box-shadow: 0 3px 4px -2px rgba(0, 0, 0, 0.2); */
+
+	@media (min-width: ${(p) => p.theme.breakpoints[0]}px) {
+		margin: 20px 0;
+		padding: 13px 20px;
+	}
+	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
+		top: 44px;
+	}
+
 	grid-area: filters;
 	max-width: 100%;
+	/* margin-bottom: 10px; */
 
 	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
 		width: 220px;
-		margin-right: 20px;
+		/* margin-right: 20px; */
 	}
 
 	&.hidden {
 		display: none;
+	}
+
+	.ais-RefinementList-list {
+		list-style: none;
+		padding: 0;
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
 	}
 
 	.ais-RefinementList-labelText {
@@ -362,9 +398,7 @@ class HomePage extends Component {
 							defaultOption="dev_items_createdAt_desc"
 						/>
 					</TopbarInnerContainer>
-				</Topbar>
-				<MainGrid>
-					<Sidebar ref={this.filtersRef}>
+					<Sidebar onScroll={(e) => e.stopPropagation()} ref={this.filtersRef}>
 						<SidebarInner>
 							<Foldable title="Kategoria">
 								<StyledRefinementList attribute="category" />
@@ -380,6 +414,8 @@ class HomePage extends Component {
 							</Foldable>
 						</SidebarInner>
 					</Sidebar>
+				</Topbar>
+				<MainGrid>
 					<Content>
 						<AlgoliaInfiniteHits />
 					</Content>
