@@ -83,30 +83,6 @@ const MainGrid = styled.div`
 	}
 `
 
-const StyledInfiniteHits = styled(InfiniteHits)`
-	.ais-InfiniteHits-list {
-		list-style-type: none;
-		padding: 0;
-		margin: 0;
-
-		display: grid;
-		grid-gap: 10px;
-
-		@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
-			grid-template-columns: 1fr 1fr;
-		}
-		@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
-			grid-template-columns: 1fr 1fr;
-		}
-		@media (min-width: ${(p) => p.theme.breakpoints[3]}px) {
-			grid-template-columns: 1fr 1fr 1fr;
-		}
-		@media (min-width: ${(p) => p.theme.breakpoints[5]}px) {
-			grid-template-columns: 1fr 1fr 1fr 1fr;
-		}
-	}
-`
-
 const StyledRefinementList = styled(RefinementList)`
 	.ais-RefinementList-list {
 		list-style: none;
