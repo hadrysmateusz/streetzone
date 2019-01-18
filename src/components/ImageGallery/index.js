@@ -189,7 +189,7 @@ export class ImageGallery extends Component {
 
 		return (
 			<Container>
-				<CurrentImage onClick={this.openLightbox}>
+				<CurrentImage>
 					{thumbnailURLs.length > 1 && (
 						<MiniButton
 							position={{ top: "calc(50% - 25px)", left: "20px" }}
@@ -201,7 +201,7 @@ export class ImageGallery extends Component {
 							<FontAwesomeIcon icon="angle-left" size="2x" />
 						</MiniButton>
 					)}
-					<img src={imageURLs[currentImageIndex]} alt="" />
+					<img src={imageURLs[currentImageIndex]} alt="" onClick={this.openLightbox} />
 					{thumbnailURLs.length > 1 && (
 						<MiniButton
 							position={{ top: "calc(50% - 25px)", right: "20px" }}
@@ -243,6 +243,12 @@ export class ImageGallery extends Component {
 							this.setState({
 								currentImageIndex: (currentImageIndex + 1) % imageURLs.length
 							})
+						}
+						imageTitle={
+							<>
+								<strong>{this.props.item.designers.join(" x ")}</strong> -{" "}
+								{this.props.item.name}
+							</>
 						}
 					/>
 				)}
