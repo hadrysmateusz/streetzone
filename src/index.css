@@ -1,4 +1,5 @@
 body {
+	overflow-y: scroll;
 	background: #fdfdfd;
 	padding: 0;
 	margin: 0;
@@ -25,4 +26,10 @@ a:hover {
 *::before,
 *::after {
 	box-sizing: border-box;
+}
+
+@media (max-width: 767px) {
+	body.noScroll {
+		overflow: hidden;
+	}
 }

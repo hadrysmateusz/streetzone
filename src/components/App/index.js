@@ -2,12 +2,11 @@ import React from "react"
 import { BrowserRouter as Router } from "react-router-dom"
 import { compose } from "recompose"
 import styled from "styled-components"
-import { Helmet } from "react-helmet"
 
 import { withAuthenticationProvider } from "../UserSession"
 import { withFirebase } from "../Firebase"
 import Navigation from "../Navigation"
-import Routes from "../Routes"
+import { Routes, Meta } from "../Routes"
 import Footer from "../Footer"
 import { CONST } from "../../constants"
 
@@ -27,36 +26,35 @@ const Header = styled.div`
 
 	font-size: 2.4rem;
 	font-family: "Playfair Display SC", serif;
+
+	animation: transform 1s ease;
 `
 
-const Container = styled.div`
-	display: grid;
-	grid-template-columns: 100%;
-	grid-template-rows: max-content 1fr auto;
-	min-height: calc(100% - ${HEADER_HEIGHT}); /* changing this to "height" causes issues */
+const ContentContainer = styled.div`
+	flex: 1;
 `
 
-const BaseContainer = styled.div`
-	height: 100vh;
+const AppContainer = styled.div`
+	position: relative;
+	z-index: 0;
+	display: flex;
+	flex-direction: column;
 	min-height: 100vh;
-	overflow-y: scroll;
 `
 
 const App = () => (
 	<Router>
-		<BaseContainer id="base-scroll-container">
-			<Helmet>
-				<title>{CONST.BRAND_NAME}</title>
-			</Helmet>
-			<Header>
-				<span>{CONST.BRAND_NAME}</span>
-			</Header>
-			<Container>
+		<>
+			<Meta />
+			<AppContainer>
+				<Header>{CONST.BRAND_NAME}</Header>
 				<Navigation />
-				<Routes />
+				<ContentContainer>
+					<Routes />
+				</ContentContainer>
 				<Footer />
-			</Container>
-		</BaseContainer>
+			</AppContainer>
+		</>
 	</Router>
 )
 

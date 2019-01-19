@@ -43,6 +43,11 @@ const HomePage = Loadable({
 	loading: LoadingSpinner
 })
 
+const BlogHomePage = Loadable({
+	loader: () => import("../BlogHome"),
+	loading: LoadingSpinner
+})
+
 const AccountPage = Loadable({
 	loader: () => import("../AccountPage"),
 	loading: LoadingSpinner
@@ -55,11 +60,6 @@ const EditItemPage = Loadable({
 
 const ItemDetailsPage = Loadable({
 	loader: () => import("../ItemDetailsPage"),
-	loading: LoadingSpinner
-})
-
-const BlogHomePage = Loadable({
-	loader: () => import("../BlogHome"),
 	loading: LoadingSpinner
 })
 
@@ -186,11 +186,6 @@ const Routes = () => {
 					path={route.path}
 					render={(props) => (
 						<ErrorBoundary ErrorComponent={ErrorComponent}>
-							{route.title && (
-								<Helmet>
-									<title>{`${route.title} - ${CONST.BRAND_NAME}`}</title>
-								</Helmet>
-							)}
 							<route.component {...props} routes={route.routes} />
 						</ErrorBoundary>
 					)}
@@ -201,4 +196,29 @@ const Routes = () => {
 	)
 }
 
-export default Routes
+const Meta = () => {
+	return (
+		<Switch>
+			{routes.map((route, i) => (
+				<Route
+					key={i}
+					exact={route.exact === false ? false : true}
+					path={route.path}
+					render={() =>
+						route.title ? (
+							<Helmet>
+								<title>{`${route.title} - ${CONST.BRAND_NAME}`}</title>
+							</Helmet>
+						) : (
+							<Helmet>
+								<title>{CONST.BRAND_NAME}</title>
+							</Helmet>
+						)
+					}
+				/>
+			))}
+		</Switch>
+	)
+}
+
+export { Routes, Meta }

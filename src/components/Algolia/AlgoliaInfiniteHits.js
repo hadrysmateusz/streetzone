@@ -1,10 +1,11 @@
 import React from "react"
 import styled from "styled-components"
-import { connectInfiniteHits } from "react-instantsearch-dom"
+import { connectInfiniteHits, connectHits } from "react-instantsearch-dom"
 import ItemCard from "../ItemCard"
 import InfiniteScroll from "react-infinite-scroller"
 import { EMPTY_STATES } from "../../constants"
 import EmptyState from "../EmptyState"
+import { AlgoliaItemCard } from "../ItemCard"
 
 const Container = styled.div`
 	display: grid;
@@ -40,9 +41,7 @@ const AlgoliaInfiniteHits = ({ hits, hasMore, refine }) => {
 		<>
 			<InfiniteScroll
 				element={Container}
-				useWindow={false}
-				threshold={50}
-				getScrollParent={() => document.getElementById("base-scroll-container")}
+				threshold={80}
 				hasMore={hasMore}
 				loader={<div key={1}>Loading...</div>}
 				loadMore={() => {
@@ -62,5 +61,13 @@ const AlgoliaInfiniteHits = ({ hits, hasMore, refine }) => {
 		</>
 	)
 }
+
+export const AlgoliaHits = connectHits(({ hits }) => (
+	<Container>
+		{hits.map((hit) => (
+			<ItemCard key={hit.objectID} item={hit} />
+		))}
+	</Container>
+))
 
 export default connectInfiniteHits(AlgoliaInfiniteHits)

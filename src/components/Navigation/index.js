@@ -17,22 +17,27 @@ const Nav = styled.ul`
 	letter-spacing: 0.9px;
 	font-size: 0.85rem;
 	font-weight: normal;
+
 	position: sticky;
 	top: 0;
-	background: white;
 	z-index: 900;
+
+	background: white;
+	border-bottom: 1px solid ${(p) => p.theme.colors.gray[75]};
 
 	display: flex;
 	align-items: center;
+	justify-content: flex-start;
+
 	margin: 0;
 	padding: 0 11px;
-	border-bottom: 1px solid ${(p) => p.theme.colors.gray[75]};
+
 	overflow: auto;
-	justify-content: flex-start;
 
 	* {
 		margin: auto;
 	}
+
 	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
 		justify-content: center;
 		overflow: visible;

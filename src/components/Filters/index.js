@@ -36,9 +36,8 @@ const validate = (values) => {
 
 const FilterForm = (props) => (
 	<Form
-		onSubmit={props.onSubmit}
+		onSubmit={(values) => console.log(values)}
 		className={props.className}
-		initialValues={props.initialValues}
 		validate={validate}
 		render={({ form, handleSubmit, submitting, invalid, errors, values, ...rest }) => {
 			return (
