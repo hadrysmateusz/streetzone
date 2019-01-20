@@ -60,10 +60,10 @@
 		"build": "react-scripts build",
 		"test": "react-scripts test",
 		"eject": "react-scripts eject",
-		"deploy-test": "GENERATE_SOURCEMAP=false yarn build && firebase deploy --only hosting",
-		"deploy-patch": "GENERATE_SOURCEMAP=false yarn build && yarn version --patch && firebase deploy --only hosting",
-		"deploy-minor": "GENERATE_SOURCEMAP=false yarn build && yarn version --minor && firebase deploy --only hosting",
-		"deploy-major": "GENERATE_SOURCEMAP=false yarn build && yarn version --major && firebase deploy --only hosting",
+		"deploy-test": "yarn build && firebase deploy --only hosting",
+		"deploy-patch": "yarn build && yarn version --patch && firebase deploy --only hosting",
+		"deploy-minor": "yarn build && yarn version --minor && firebase deploy --only hosting",
+		"deploy-major": "yarn build && yarn version --major && firebase deploy --only hosting",
 		"deploy-functions": "firebase deploy --only functions"
 	},
 	"eslintConfig": {
