@@ -289,7 +289,7 @@ exports.processImage = functions.storage.object().onFinalize(async (file) => {
 		return await processImage(file, ["110x110", "290x290", "600x600"])
 	} else if (file.name.includes("profile-pictures/")) {
 		console.log("Processing a profile picture...")
-		const urls = await processImage(file, ["40x40", "110x110", "230x230"])
+		const urls = await processImage(file, ["70x70", "110x110", "230x230"])
 		console.log("urls: ", urls)
 		if (urls) {
 			const userId = file.name.split("/")[1]
