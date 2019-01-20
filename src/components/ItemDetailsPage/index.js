@@ -2,7 +2,7 @@ import React, { Component } from "react"
 import { Link } from "react-router-dom"
 import { compose } from "recompose"
 import moment from "moment"
-import styled from "styled-components"
+import { InstantSearch, Configure, connectMenu } from "react-instantsearch-dom"
 
 import ImageGallery from "../ImageGallery"
 import { withFirebase } from "../Firebase"
@@ -11,74 +11,24 @@ import LoadingSpinner from "../LoadingSpinner"
 import Button, { LoaderButton, AccentButton } from "../Button"
 import EmptyState from "../EmptyState"
 import UserPreview from "../UserPreview"
-import { CSS, ITEM_SCHEMA } from "../../constants"
+import { ITEM_SCHEMA } from "../../constants"
 import { translateCondition } from "../../constants/item_schema"
 import { PageContainer } from "../Containers"
+import { AlgoliaHits } from "../Algolia/AlgoliaInfiniteHits"
+import {
+	MainContainer,
+	ItemContainer,
+	InfoContainer,
+	UserInfoContainer,
+	Description,
+	ButtonsContainer,
+	MainInfo,
+	Designers,
+	Sold
+} from "./StyledComponents"
 
-const MainContainer = styled.main`
-	display: flex;
-	flex-direction: column;
-	max-width: ${(p) => p.theme.breakpoints[4]}px;
-	margin: 0 auto;
-	height: 100%;
-`
-
-const ItemContainer = styled.div`
-	display: flex;
-	flex-direction: column;
-	max-width: 100%;
-	height: 100%;
-	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
-		flex-direction: row;
-	}
-`
-
-const InfoContainer = styled.div`
-	flex: 0 0 100%;
-	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
-		padding-left: 20px;
-		padding-top: 10px;
-		max-width: 330px;
-	}
-	@media (min-width: ${(p) => p.theme.breakpoints[3]}px) {
-		max-width: 380px;
-		padding-left: 30px;
-		padding-top: 15px;
-	}
-`
-
-const UserInfoContainer = styled.div`
-	margin-top: 10px;
-`
-
-const Description = styled.div`
-	margin-top: 10px;
-	color: #3d3d3d;
-`
-
-const ButtonsContainer = styled.div`
-	margin-top: 10px;
-	display: flex;
-	align-content: flex-start;
-`
-
-const MainInfo = styled.div`
-	margin: 0 0 15px;
-	font-size: 1.5rem;
-`
-
-const Designers = styled.h3`
-	display: inline;
-	font-size: 1.8rem;
-	font-weight: bold;
-`
-
-const Sold = styled.div`
-	font-size: 2.1rem;
-	color: ${CSS.COLOR_DANGER};
-	margin-bottom: 12px;
-	font-weight: 500;
-`
+const VirtualMenu = connectMenu(() => null)
+const Hoodies = () => <VirtualMenu attribute="clothes" defaultRefinement="hoodies" />
 
 class ItemDetailsPage extends Component {
 	state = {
@@ -194,7 +144,16 @@ class ItemDetailsPage extends Component {
 								)}
 							</InfoContainer>
 						</ItemContainer>
-						<div className="recommendedContainer" />
+						<div className="recommendedContainer">
+							<InstantSearch
+								appId={process.env.REACT_APP_APP_ID}
+								apiKey={process.env.REACT_APP_ALGOLIA_API_KEY}
+								indexName="dev_items"
+							>
+								<Configure hitsPerPage={4} />
+								<AlgoliaHits />
+							</InstantSearch>
+						</div>
 					</MainContainer>
 				) : isLoading ? (
 					<LoadingSpinner />
