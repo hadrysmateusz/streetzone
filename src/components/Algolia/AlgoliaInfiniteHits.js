@@ -38,27 +38,25 @@ const EndCard = styled.div`
 
 const AlgoliaInfiniteHits = ({ hits, hasMore, refine }) => {
 	return (
-		<>
-			<InfiniteScroll
-				element={Container}
-				threshold={80}
-				hasMore={hasMore}
-				loader={<div key={1}>Loading...</div>}
-				loadMore={() => {
-					refine()
-					console.log("loaded more", hits.length)
-				}}
-			>
-				{hits.map((hit) => (
-					<ItemCard key={hit.objectID} item={hit} />
-				))}
-				{!hasMore && (
-					<EndCard key={0}>
-						<EmptyState state={EMPTY_STATES.NoMoreItems} />
-					</EndCard>
-				)}
-			</InfiniteScroll>
-		</>
+		<InfiniteScroll
+			element={Container}
+			threshold={80}
+			hasMore={hasMore}
+			loader={<div key={1}>Loading...</div>}
+			loadMore={() => {
+				refine()
+				console.log("loaded more", hits.length)
+			}}
+		>
+			{hits.map((hit) => (
+				<ItemCard key={hit.objectID} item={hit} />
+			))}
+			{!hasMore && (
+				<EndCard key={0}>
+					<EmptyState state={EMPTY_STATES.NoMoreItems} />
+				</EndCard>
+			)}
+		</InfiniteScroll>
 	)
 }
 

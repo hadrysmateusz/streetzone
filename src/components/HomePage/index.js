@@ -3,20 +3,15 @@ import {
 	InstantSearch,
 	SearchBox,
 	ClearRefinements,
-	RefinementList,
-	RangeInput,
-	Pagination,
-	HitsPerPage,
 	Configure
 } from "react-instantsearch-dom"
 import { withBreakpoints } from "react-breakpoints"
 import { compose } from "recompose"
 import { Portal } from "react-portal"
-import BlockUi from "react-block-ui"
 import qs from "qs"
-import shortid from "shortid"
 import lzString from "lz-string"
 
+import getItemsPerPage from "../../utils/getItemsPerPage"
 import sortingOptions from "./sortingOptions"
 import AlgoliaInfiniteHits, { AlgoliaHits } from "../Algolia/AlgoliaInfiniteHits"
 import { withFirebase } from "../Firebase"
@@ -35,9 +30,6 @@ import {
 	StyledPagination
 } from "./StyledComponents"
 import Filters from "./Filters"
-import getItemsPerPage from "../../utils/getItemsPerPage"
-
-console.log(lzString)
 
 const updateAfter = 700
 
@@ -85,6 +77,9 @@ class HomePage extends Component {
 		const { areFiltersOpen, searchState } = this.state
 		const { currentBreakpoint } = this.props
 
+		const filterText =
+			currentBreakpoint < 1 ? "Filtry" : areFiltersOpen ? "Ukryj filtry" : "Pokaż filtry"
+
 		return (
 			<InstantSearch
 				appId="ESTLFV2FMH"
@@ -94,13 +89,13 @@ class HomePage extends Component {
 				onSearchStateChange={this.onSearchStateChange}
 				createURL={createURL}
 			>
-				<Configure hitsPerPage={4} />
+				<Configure hitsPerPage={getItemsPerPage()} />
 
 				<Topbar>
 					<TopbarInnerContainer>
 						<FiltersToggle onClick={this.toggleFilters}>
 							<FontAwesomeIcon icon="filter" />
-							<span>Filtry</span>
+							<span>{filterText}</span>
 						</FiltersToggle>
 						<SearchBox />
 						<StyledPagination />
@@ -111,29 +106,26 @@ class HomePage extends Component {
 					</TopbarInnerContainer>
 				</Topbar>
 
-				{currentBreakpoint <= 1 && areFiltersOpen && (
-					<Portal>
-						<FullscreenFilters>
-							<FiltersHeader>
-								<div className="buttons">
-									<ClearRefinements />
-								</div>
-								<div className="closeButton" onClick={this.toggleFilters}>
-									<FontAwesomeIcon icon="times" />
-								</div>
-							</FiltersHeader>
-							<Filters />
-						</FullscreenFilters>
-					</Portal>
-				)}
+				<Portal>
+					<FullscreenFilters hidden={currentBreakpoint > 1 || !areFiltersOpen}>
+						<FiltersHeader>
+							<div className="buttons">
+								<ClearRefinements />
+							</div>
+							<div className="closeButton" onClick={this.toggleFilters}>
+								<FontAwesomeIcon icon="times" />
+							</div>
+						</FiltersHeader>
+						<Filters />
+					</FullscreenFilters>
+				</Portal>
+
 				<MainGrid>
-					{areFiltersOpen && (
-						<Sidebar>
-							<SidebarInner>
-								<Filters />
-							</SidebarInner>
-						</Sidebar>
-					)}
+					<Sidebar hidden={currentBreakpoint <= 1 || !areFiltersOpen}>
+						<SidebarInner>
+							<Filters />
+						</SidebarInner>
+					</Sidebar>
 
 					<Content>
 						{/* <AlgoliaInfiniteHits /> */}

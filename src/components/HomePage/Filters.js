@@ -7,7 +7,7 @@ import { StyledRefinementList, SizeRefinementList } from "./StyledComponents"
 export class Filters extends Component {
 	render() {
 		return (
-			<div>
+			<div {...this.props}>
 				<Foldable title="Kategoria">
 					<StyledRefinementList attribute="category" />
 				</Foldable>
