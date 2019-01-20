@@ -10,7 +10,9 @@ export const TabsNav = styled.nav`
 	grid-template-columns: 100%;
 	grid-auto-rows: min-content;
 	gap: 12px;
-	text-align: center;
+	@media (max-width: ${(p) => p.theme.breakpoints[1] - 1}px) {
+		text-align: center;
+	}
 `
 
 export const MainGrid = styled.div`
