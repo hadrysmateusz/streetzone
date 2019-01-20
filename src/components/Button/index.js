@@ -12,7 +12,6 @@ const Button = styled.button`
 	color: ${(props) => (props.primary ? CSS.COLOR_WHITE : "#3e3e3e")};
 	${(props) => props.disabled && `color: #c3c3c3;`}
 	width: ${(props) => (props.fullWidth ? "100%" : "auto")};
-	${width}
 	${(props) => props.fullWidth && "margin: 4px 0;"}
 	padding: 0.8rem 1.85rem;
 	text-align: center;
@@ -35,7 +34,8 @@ const Button = styled.button`
 		}		
 		:focus {
 			border: 1px solid ${CSS.COLOR_ACCENT};
-			outline: 1px solid ${CSS.COLOR_ACCENT};
+			outline: none;
+
 		}
 	}
 `
@@ -43,17 +43,14 @@ const Button = styled.button`
 const AccentButton = styled(Button)`
 	text-shadow: 1px 1px ${CSS.COLOR_ACCENT};
 	border-color: ${(props) => (props.disabled ? CSS.COLOR_DISABLED : CSS.COLOR_ACCENT)};
-	background: ${(props) =>
-		props.disabled
-			? CSS.COLOR_DISABLED
-			: `linear-gradient(to bottom right, ${CSS.COLOR_ACCENT}, rgb(186, 234, 230))`};
+	background: ${(props) => (props.disabled ? CSS.COLOR_DISABLED : CSS.COLOR_ACCENT)};
 	color: ${CSS.COLOR_WHITE};
 	${(props) => props.disabled && `color: ${CSS.COLOR_DISABLED_DARKER}`}
 	font-weight: bold;
 
 	:not([disabled]) {
 		:hover {
-			background: ${CSS.COLOR_ACCENT};
+			background: rgb(76, 220, 184);
 			border-color: ${CSS.COLOR_ACCENT};
 			color: ${CSS.COLOR_WHITE};
 		}
