@@ -24,15 +24,17 @@ const MainInfoContainer = styled.div`
 		margin: 0 auto;
 	}
 
+	@media(max-width: ${(p) => p.theme.breakpoints[0] - 1}px) {
+		text-align: center;
+	}
 
 	.info-container {
 		> div {
-
 			display: grid;
 			gap: 4px 8px;
 			@media(min-width: ${(p) => p.theme.breakpoints[0]}px) {
 				grid-template-columns: max-content max-content;
-	}
+			}
 		}
 	}
 
