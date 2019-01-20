@@ -21,6 +21,7 @@ const Separator = styled(SeparatorBase)`
 		background: ${(p) => p.theme.colors.gray[50]};
 	}
 	.children {
+		white-space: nowrap;
 		display: grid;
 		grid-auto-flow: column;
 		align-items: center;
