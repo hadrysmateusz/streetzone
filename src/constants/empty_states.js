@@ -8,6 +8,16 @@ export const UserNoFeedback = {
 	image: process.env.PUBLIC_URL + "/img/SadFace.png"
 }
 
+export const UserNoFollowing = {
+	text: "Nie obserwujesz jeszcze nikogo",
+	image: process.env.PUBLIC_URL + "/img/SadFace.png"
+}
+
+export const UserNoLiked = {
+	text: "Nie zapisałeś jeszcze żadnego przedmiotu",
+	image: process.env.PUBLIC_URL + "/img/SadFace.png"
+}
+
 export const UserNoSoldItems = {
 	text: "Ten użytkownik nie sprzedał jeszcze żadnego przedmiotu",
 	image: process.env.PUBLIC_URL + "/img/SadFace.png"

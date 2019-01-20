@@ -72,6 +72,14 @@ class AccountPage extends Component {
 							<CustomNavLink to={routes.transactions.path.replace(":id", userId)}>
 								{routes.transactions.label}
 							</CustomNavLink>
+
+							<CustomNavLink to={routes.liked.path.replace(":id", userId)}>
+								{routes.liked.label}
+							</CustomNavLink>
+
+							<CustomNavLink to={routes.following.path.replace(":id", userId)}>
+								{routes.following.label}
+							</CustomNavLink>
 						</TabsNav>
 
 						<Switch>
@@ -104,6 +112,16 @@ class AccountPage extends Component {
 										isLoading={isFetchingItems}
 									/>
 								)}
+							/>
+							<Route
+								exact
+								path={routes.following.path}
+								render={() => <routes.following.component />}
+							/>
+							<Route
+								exact
+								path={routes.liked.path}
+								render={() => <routes.liked.component />}
 							/>
 							<Route
 								path={baseUrl}

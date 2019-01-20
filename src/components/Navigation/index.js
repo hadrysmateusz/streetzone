@@ -125,7 +125,7 @@ const Navigation = ({ authUser, ...rest }) => {
 			<NavItem>
 				<StyledNavLink to={ROUTES.HOME}>Tablica</StyledNavLink>
 			</NavItem>
-			{authUser && (
+			{authUser ? (
 				<>
 					<NavItem>
 						<StyledNavLink to={ROUTES.ACCOUNT_ITEMS.replace(":id", authUser.uid)}>
@@ -171,8 +171,7 @@ const Navigation = ({ authUser, ...rest }) => {
 						<StyledNavLink to={ROUTES.NEW_ITEM}>Wystaw Przedmiot</StyledNavLink>
 					</NavItem>
 				</>
-			)}
-			{!authUser && (
+			) : (
 				<NavItem>
 					<StyledNavLink to={ROUTES.SIGN_IN}>Zaloguj się</StyledNavLink>
 				</NavItem>

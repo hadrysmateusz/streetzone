@@ -11,6 +11,8 @@ import UserSettings from "../AccountPage/UserSettings"
 import UserFeedback from "../AccountPage/UserFeedback"
 import UserItems from "../AccountPage/UserItems"
 import UserTransactions from "../AccountPage/UserTransactions"
+import UserFollowing from "../AccountPage/UserFollowing"
+import UserLiked from "../AccountPage/UserLiked"
 import ErrorBoundary from "../ErrorBoundary"
 
 const BlogPostPage = Loadable({
@@ -126,6 +128,16 @@ const routes = [
 				label: "Historia transakcji",
 				path: ROUTES.ACCOUNT_TRANSACTIONS,
 				component: UserTransactions
+			},
+			liked: {
+				label: "Zapisane przedmioty",
+				path: ROUTES.ACCOUNT_LIKED,
+				component: UserLiked
+			},
+			following: {
+				label: "Obserwowani użytkownicy",
+				path: ROUTES.ACCOUNT_FOLLOWING,
+				component: UserFollowing
 			}
 		}
 	},
