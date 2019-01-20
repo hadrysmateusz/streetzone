@@ -1,7 +1,7 @@
 import { FORM_ERR, CONST } from "../../constants"
 
 export default (values) => {
-	const { name, designers, price, category, description, files } = values
+	const { name, designers, price, category, condition, description, files } = values
 	const errors = {}
 
 	// Name
@@ -22,6 +22,11 @@ export default (values) => {
 	// Category
 	if (!category) {
 		errors.category = FORM_ERR.IS_REQUIRED
+	}
+
+	// Condition
+	if (!condition) {
+		errors.condition = FORM_ERR.IS_REQUIRED
 	}
 
 	// Description

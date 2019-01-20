@@ -174,7 +174,7 @@ const NewItemForm = ({ initialValues, onSubmit, history, isLoading }) => {
 											{...meta}
 											{...input}
 										/>
-										<FormError meta={meta} />
+										<FormError message={meta.error} show={meta.error && meta.touched} />
 									</>
 								)}
 							</Field>
