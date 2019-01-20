@@ -53,7 +53,9 @@ class SignUpFormBase extends Component {
 				permissions: [],
 				roles: [],
 				feedback: [],
-				badges: {}
+				badges: {},
+				userSince: Date.now(),
+				city: null
 			})
 
 			// Reset form

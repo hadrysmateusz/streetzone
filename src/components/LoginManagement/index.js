@@ -4,12 +4,13 @@ import { FORM_ERR } from "../../constants"
 import styled from "styled-components"
 import { compose } from "recompose"
 
-import { FieldRow, FieldLabel, StyledInput, Separator } from "../Basics"
+import { FieldRow, FieldLabel, StyledInput } from "../Basics"
 import { FormError } from "../FormElements"
 import { SocialButton, LoaderButton } from "../Button"
 import { withFirebase } from "../Firebase"
 import { PasswordChangeForm } from "../PasswordChange"
 import { withAuthentication } from "../UserSession"
+import Separator from "../Separator"
 
 const EnabledIndicator = styled.span`
 	padding-left: 10px;
@@ -98,11 +99,11 @@ export class LoginManagementBase extends Component {
 			<div className={this.props.className}>
 				{activeSignInMethods.includes("password") && (
 					<>
-						<Separator text="Zmień hasło" />
+						<Separator>Zmień hasło</Separator>
 						<PasswordChangeForm />
 					</>
 				)}
-				<Separator text="Metody logowania" />
+				<Separator>Metody logowania</Separator>
 
 				{/* <div>
 					{SIGN_IN_METHODS.map((signInMethod) => {
