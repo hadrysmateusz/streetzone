@@ -140,9 +140,9 @@ class ItemDetailsPage extends Component {
 										</div>
 									</MainInfo>
 
-									<InfoItem>
+									{/* <InfoItem>
 										Dodano: <span>{moment(item.createdAt).format("D.M.YY o HH:mm")}</span>
-									</InfoItem>
+									</InfoItem> */}
 									<InfoItem>
 										Cena: <span>{item.price}zł</span>
 									</InfoItem>
