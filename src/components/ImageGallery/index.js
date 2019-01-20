@@ -10,8 +10,8 @@ const CurrentImage = styled.div`
 	/* cursor: zoom-in; */
 	position: relative;
 	width: 100%;
-	height: 75vw;
-	max-height: 600px;
+	max-height: 85vh;
+	height: 600px;
 
 	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
 		height: 50vh;
