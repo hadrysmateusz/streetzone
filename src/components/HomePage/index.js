@@ -128,7 +128,6 @@ class HomePage extends Component {
 					</Sidebar>
 
 					<Content>
-						{/* <AlgoliaInfiniteHits /> */}
 						<AlgoliaHits />
 					</Content>
 				</MainGrid>

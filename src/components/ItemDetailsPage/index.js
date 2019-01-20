@@ -2,7 +2,12 @@ import React, { Component } from "react"
 import { Link } from "react-router-dom"
 import { compose } from "recompose"
 import moment from "moment"
-import { InstantSearch, Configure, connectRefinementList } from "react-instantsearch-dom"
+import {
+	InstantSearch,
+	Configure,
+	connectRefinementList,
+	connectMenu
+} from "react-instantsearch-dom"
 
 import ImageGallery from "../ImageGallery"
 import { withFirebase } from "../Firebase"
@@ -28,6 +33,7 @@ import {
 } from "./StyledComponents"
 
 const VirtualRefinementList = connectRefinementList(() => null)
+const VirtualMenu = connectMenu(() => null)
 
 class ItemDetailsPage extends Component {
 	state = {
@@ -159,7 +165,7 @@ class ItemDetailsPage extends Component {
 							</InfoContainer>
 						</ItemContainer>
 						<div className="recommendedContainer">
-							<h3>Więcej przedmiotów tej marki</h3>
+							<h3>Podobne przedmioty</h3>
 							<InstantSearch
 								appId={process.env.REACT_APP_APP_ID}
 								apiKey={process.env.REACT_APP_ALGOLIA_API_KEY}
@@ -170,6 +176,7 @@ class ItemDetailsPage extends Component {
 									attribute="designers"
 									defaultRefinement={item.designers}
 								/>
+								<VirtualMenu attribute="category" defaultRefinement={item.category} />
 								<AlgoliaHits />
 							</InstantSearch>
 						</div>
