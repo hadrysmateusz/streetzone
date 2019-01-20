@@ -10,7 +10,10 @@ const CurrentImage = styled.div`
 	/* cursor: zoom-in; */
 	position: relative;
 	width: 100%;
-	max-height: 85vh;
+	max-height: 45vh;
+	@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
+		max-height: 85vh;
+	}
 	height: 600px;
 
 	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
@@ -18,7 +21,8 @@ const CurrentImage = styled.div`
 	}
 
 	background: white;
-	border: 1px solid #c6c6c6;
+	border: 1px solid ${(p) => p.theme.colors.gray[75]};
+
 	text-align: center;
 	display: flex;
 	justify-content: center;
@@ -34,7 +38,7 @@ const Container = styled.div`
 	flex: 0 1 100%;
 	user-select: none;
 	min-width: 0;
-	margin-bottom: 20px;
+	margin-bottom: 10px;
 	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
 		margin-bottom: 0;
 	}
@@ -86,7 +90,7 @@ const Thumbnail = styled.div`
 	cursor: pointer;
 
 	background: white;
-	border: 1px solid #c6c6c6;
+	border: 1px solid ${(p) => p.theme.colors.gray[75]};
 
 	/* required for image centering */
 	display: flex;
