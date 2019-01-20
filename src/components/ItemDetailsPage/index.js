@@ -8,6 +8,7 @@ import {
 	connectRefinementList,
 	connectMenu
 } from "react-instantsearch-dom"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 import ImageGallery from "../ImageGallery"
 import { withFirebase } from "../Firebase"
@@ -27,10 +28,14 @@ import {
 	UserInfoContainer,
 	Description,
 	ButtonsContainer,
-	MainInfo,
+	Name,
 	Designers,
-	Sold
+	Sold,
+	ButtonGrid,
+	InfoItem,
+	MainInfo
 } from "./StyledComponents"
+import Separator from "../Separator"
 
 const VirtualRefinementList = connectRefinementList(() => null)
 const VirtualMenu = connectMenu(() => null)
@@ -120,28 +125,37 @@ class ItemDetailsPage extends Component {
 							<ImageGallery item={item} />
 							<InfoContainer>
 								<div>
-									{item.status === ITEM_SCHEMA.status.sold && <Sold>SPRZEDANE</Sold>}
 									<MainInfo>
-										{item.designers && (
-											<Designers>{item.designers.join(" & ") + " "}</Designers>
-										)}
-										{item.name}
-									</MainInfo>
-									<div>Dodano: {moment(item.createdAt).format("D.M.YY o HH:mm")}</div>
-									<br />
-									<div>
-										Cena: <strong>{item.price}</strong>
-									</div>
-									{conditionObj && (
-										<div title={conditionObj.tooltip}>
-											Stan: <strong>{conditionObj.displayValue}</strong>
+										<div>
+											{item.status === ITEM_SCHEMA.status.sold && <Sold>SPRZEDANE</Sold>}
+											<Designers>
+												{item.designers && (
+													<Designers>{item.designers.join(" & ") + " "}</Designers>
+												)}
+											</Designers>
+											<Name>{item.name}</Name>
 										</div>
+										<div>
+											<FontAwesomeIcon icon={["far", "heart"]} />
+										</div>
+									</MainInfo>
+
+									<InfoItem>
+										Dodano: <span>{moment(item.createdAt).format("D.M.YY o HH:mm")}</span>
+									</InfoItem>
+									<InfoItem>
+										Cena: <span>{item.price}zł</span>
+									</InfoItem>
+									{conditionObj && (
+										<InfoItem title={conditionObj.tooltip}>
+											Stan: <span>{conditionObj.displayValue}</span>
+										</InfoItem>
 									)}
 								</div>
 								<ButtonsContainer>
 									{userIsOwner ? (
-										<>
-											<Button as={Link} to={`/e/${item.itemId}`}>
+										<ButtonGrid>
+											<Button as={Link} to={`/e/${item.itemId}`} fullWidth>
 												Edytuj
 											</Button>
 											<LoaderButton
@@ -149,19 +163,24 @@ class ItemDetailsPage extends Component {
 												text="Usuń"
 												loadingText="Usuwanie..."
 												onClick={this.deleteItem}
+												fullWidth
 											/>
-										</>
+										</ButtonGrid>
 									) : (
-										<AccentButton primary>Kup</AccentButton>
+										<AccentButton primary fullWidth>
+											Kup
+										</AccentButton>
 									)}
 								</ButtonsContainer>
-								<Description>{item.description}</Description>
+
 								{!userIsOwner && (
 									<UserInfoContainer>
-										<strong>Sprzedawca:</strong>
+										<Separator spacing="0px">Informacje o sprzedawcy</Separator>
 										<UserPreview id={item.userId} />
 									</UserInfoContainer>
 								)}
+								<Separator spacing="0px">Opis</Separator>
+								<Description>{item.description}</Description>
 							</InfoContainer>
 						</ItemContainer>
 						<div className="recommendedContainer">
@@ -177,6 +196,16 @@ class ItemDetailsPage extends Component {
 									defaultRefinement={item.designers}
 								/>
 								<VirtualMenu attribute="category" defaultRefinement={item.category} />
+								<AlgoliaHits />
+							</InstantSearch>
+							<h3>Inne przedmioty sprzedającego</h3>
+							<InstantSearch
+								appId={process.env.REACT_APP_APP_ID}
+								apiKey={process.env.REACT_APP_ALGOLIA_API_KEY}
+								indexName="dev_items"
+							>
+								<Configure hitsPerPage={4} />
+								<VirtualMenu attribute="userId" defaultRefinement={item.userId} />
 								<AlgoliaHits />
 							</InstantSearch>
 						</div>

@@ -21,9 +21,12 @@ import {
 	faCaretDown,
 	faCaretUp,
 	faAngleUp,
-	faAngleDown
+	faAngleDown,
+	faHeart
 } from "@fortawesome/free-solid-svg-icons"
-// import { faSquare, faCheckSquare } from "@fortawesome/free-regular-svg-icons"
+import {
+	faHeart as farHeart /* , faSquare, faCheckSquare */
+} from "@fortawesome/free-regular-svg-icons"
 import { fab } from "@fortawesome/free-brands-svg-icons"
 
 library.add(
@@ -51,5 +54,7 @@ library.add(
 	faCaretDown,
 	faCaretUp,
 	faAngleUp,
-	faAngleDown
+	faAngleDown,
+	faHeart,
+	farHeart
 )

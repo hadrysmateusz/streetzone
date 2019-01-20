@@ -20,15 +20,16 @@ export const ItemContainer = styled.div`
 
 export const InfoContainer = styled.div`
 	flex: 0 0 100%;
+	border: 1px solid ${(p) => p.theme.colors.gray[75]};
+	background: white;
+	padding: 20px;
 	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
-		padding-left: 20px;
-		padding-top: 10px;
+		margin-left: 10px;
 		max-width: 330px;
 	}
 	@media (min-width: ${(p) => p.theme.breakpoints[3]}px) {
 		max-width: 380px;
-		padding-left: 30px;
-		padding-top: 15px;
+		margin-left: 10px;
 	}
 `
 
@@ -42,20 +43,41 @@ export const Description = styled.div`
 `
 
 export const ButtonsContainer = styled.div`
-	margin-top: 10px;
+	margin: 10px 0;
 	display: flex;
 	align-content: flex-start;
 `
 
-export const MainInfo = styled.div`
-	margin: 0 0 15px;
-	font-size: 1.5rem;
+export const Name = styled.div`
+	font-size: 1.2rem;
+	color: ${(p) => p.theme.colors.black[75]};
+	margin-bottom: 15px;
 `
 
 export const Designers = styled.h3`
-	display: inline;
-	font-size: 1.8rem;
+	margin: 0;
+	margin-bottom: 5px;
+	font-size: 1.4rem;
 	font-weight: bold;
+`
+
+export const MainInfo = styled.div`
+	display: flex;
+	> :last-child {
+		padding: 8px 20px 0;
+		font-size: 1.6rem;
+	}
+	> :first-child {
+		flex: 1;
+	}
+`
+
+export const InfoItem = styled.div`
+	text-transform: uppercase;
+	font-size: 0.9rem;
+	font-weight: 500;
+	color: #444;
+	padding: 1px 0;
 `
 
 export const Sold = styled.div`
@@ -63,4 +85,11 @@ export const Sold = styled.div`
 	color: ${(p) => p.theme.colors.danger[50]};
 	margin-bottom: 12px;
 	font-weight: 500;
+`
+
+export const ButtonGrid = styled.div`
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 10px;
+	width: 100%;
 `
