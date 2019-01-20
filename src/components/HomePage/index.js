@@ -98,7 +98,7 @@ class HomePage extends Component {
 							<span>{filterText}</span>
 						</FiltersToggle>
 						<SearchBox />
-						<StyledPagination />
+						<StyledPagination isHidden={currentBreakpoint <= 2} />
 						<AlgoliaSortBy
 							options={sortingOptions}
 							defaultOption="dev_items_createdAt_desc"
@@ -128,7 +128,9 @@ class HomePage extends Component {
 					</Sidebar>
 
 					<Content>
+						<StyledPagination isHidden={currentBreakpoint > 2} />
 						<AlgoliaHits />
+						<StyledPagination isHidden={currentBreakpoint > 2} />
 					</Content>
 				</MainGrid>
 			</InstantSearch>

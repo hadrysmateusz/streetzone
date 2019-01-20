@@ -35,17 +35,58 @@ export const MainGrid = styled.div`
 	}
 `
 
-export const StyledPagination = styled(Pagination)`
+export const StyledPagination = styled(Pagination).attrs({
+	showLast: true,
+	showPrevious: false,
+	showNext: false,
+	padding: 2
+})`
 	grid-area: pagination;
+	@media (max-width: ${(p) => p.theme.breakpoints[3] - 1}px) {
+		:last-child {
+			margin-top: 10px;
+		}
+		:not(:last-child) {
+			margin-bottom: 10px;
+		}
+	}
+
+	${(p) => p.isHidden && "display: none;"}
+
 	.ais-Pagination-list {
+		justify-content: center;
 		list-style: none;
 		padding: 0;
 		margin: 0;
 		display: flex;
 	}
 
+	.ais-Pagination-link {
+		justify-content: center;
+		align-items: center;
+		display: flex;
+		width: 32px;
+		height: 32px;
+	}
+
 	.ais-Pagination-item {
-		padding: 8px;
+		box-sizing: border-box;
+		background: ${(p) => p.theme.colors.gray[100]};
+		border: 1px solid ${(p) => p.theme.colors.gray[75]};
+		:not(:last-child) {
+			margin-right: 5px;
+		}
+		color: #3f3f3f;
+	}
+	.ais-Pagination-item--firstPage,
+	.ais-Pagination-item--lastPage,
+	.ais-Pagination-item--previousPage,
+	.ais-Pagination-item--nextPage {
+		background: white;
+	}
+	.ais-Pagination-item--selected {
+		background: white;
+		border: 1px solid ${(p) => p.theme.colors.gray[25]};
 	}
 `
 
@@ -283,6 +324,7 @@ export const Sidebar = styled.aside`
 	.ais-RangeInput-form {
 		display: flex;
 		min-width: 0;
+		height: 34px;
 	}
 	.ais-RangeInput-separator {
 		display: none;
@@ -300,6 +342,7 @@ export const Sidebar = styled.aside`
 		padding: 0 4px 0 8px;
 		margin-right: 6px;
 		flex: 1 1 0;
+		height: 34px;
 		color: ${(p) => p.theme.colors.black[75]};
 		&::placeholder {
 			color: ${(p) => p.theme.colors.gray[50]};
