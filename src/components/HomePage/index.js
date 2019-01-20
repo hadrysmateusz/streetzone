@@ -82,8 +82,8 @@ class HomePage extends Component {
 
 		return (
 			<InstantSearch
-				appId="ESTLFV2FMH"
-				apiKey="a112a10276d1d2919b9207df6d9bbccf"
+				appId={process.env.REACT_APP_APP_ID}
+				apiKey={process.env.REACT_APP_ALGOLIA_API_KEY}
 				indexName="dev_items"
 				searchState={searchState}
 				onSearchStateChange={this.onSearchStateChange}
