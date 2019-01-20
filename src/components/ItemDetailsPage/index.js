@@ -2,7 +2,7 @@ import React, { Component } from "react"
 import { Link } from "react-router-dom"
 import { compose } from "recompose"
 import moment from "moment"
-import { InstantSearch, Configure, connectMenu } from "react-instantsearch-dom"
+import { InstantSearch, Configure, connectRefinementList } from "react-instantsearch-dom"
 
 import ImageGallery from "../ImageGallery"
 import { withFirebase } from "../Firebase"
@@ -27,8 +27,7 @@ import {
 	Sold
 } from "./StyledComponents"
 
-const VirtualMenu = connectMenu(() => null)
-const Hoodies = () => <VirtualMenu attribute="clothes" defaultRefinement="hoodies" />
+const VirtualRefinementList = connectRefinementList(() => null)
 
 class ItemDetailsPage extends Component {
 	state = {
@@ -37,9 +36,24 @@ class ItemDetailsPage extends Component {
 		isDeleting: false
 	}
 
+	componentDidUpdate = async (prevProps, prevState) => {
+		if (this.props.location !== prevProps.location) {
+			this.setState({ isLoading: true })
+
+			// Get item from database
+			const item = await this.getItem()
+
+			this.setState({ item, isLoading: false })
+		}
+	}
+
+	getItem = () => {
+		return this.props.firebase.getItemData(this.props.match.params.id)
+	}
+
 	componentDidMount = async () => {
 		// Get item from database
-		const item = await this.props.firebase.getItemData(this.props.match.params.id)
+		const item = await this.getItem()
 
 		this.setState({ item, isLoading: false })
 	}
@@ -145,12 +159,17 @@ class ItemDetailsPage extends Component {
 							</InfoContainer>
 						</ItemContainer>
 						<div className="recommendedContainer">
+							<h3>Więcej przedmiotów tej marki</h3>
 							<InstantSearch
 								appId={process.env.REACT_APP_APP_ID}
 								apiKey={process.env.REACT_APP_ALGOLIA_API_KEY}
 								indexName="dev_items"
 							>
 								<Configure hitsPerPage={4} />
+								<VirtualRefinementList
+									attribute="designers"
+									defaultRefinement={item.designers}
+								/>
 								<AlgoliaHits />
 							</InstantSearch>
 						</div>
