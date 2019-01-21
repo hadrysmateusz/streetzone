@@ -1,14 +1,9 @@
 import React, { Component } from "react"
 import { Link } from "react-router-dom"
 import { compose } from "recompose"
-// import moment from "moment"
-import {
-	InstantSearch,
-	Configure,
-	connectRefinementList,
-	connectMenu
-} from "react-instantsearch-dom"
+import { InstantSearch, Configure } from "react-instantsearch-dom"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+// import moment from "moment"
 
 import ImageGallery from "../ImageGallery"
 import { withFirebase } from "../Firebase"
@@ -20,7 +15,9 @@ import UserPreview from "../UserPreview"
 import { ITEM_SCHEMA } from "../../constants"
 import { translateCondition } from "../../constants/item_schema"
 import { PageContainer } from "../Containers"
-import { AlgoliaMiniHits } from "../Algolia/AlgoliaInfiniteHits"
+import { AlgoliaMiniHits } from "../Algolia/AlgoliaHits"
+import Separator from "../Separator"
+import { VirtualMenu, VirtualRefinementList } from "../Algolia/Virtual"
 import {
 	MainContainer,
 	ItemContainer,
@@ -35,10 +32,6 @@ import {
 	InfoItem,
 	MainInfo
 } from "./StyledComponents"
-import Separator from "../Separator"
-
-const VirtualRefinementList = connectRefinementList(() => null)
-const VirtualMenu = connectMenu(() => null)
 
 class ItemDetailsPage extends Component {
 	state = {
