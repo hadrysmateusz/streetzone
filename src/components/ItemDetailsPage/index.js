@@ -1,7 +1,7 @@
 import React, { Component } from "react"
 import { Link } from "react-router-dom"
 import { compose } from "recompose"
-import moment from "moment"
+// import moment from "moment"
 import {
 	InstantSearch,
 	Configure,
@@ -20,7 +20,7 @@ import UserPreview from "../UserPreview"
 import { ITEM_SCHEMA } from "../../constants"
 import { translateCondition } from "../../constants/item_schema"
 import { PageContainer } from "../Containers"
-import { AlgoliaHits } from "../Algolia/AlgoliaInfiniteHits"
+import { AlgoliaMiniHits } from "../Algolia/AlgoliaInfiniteHits"
 import {
 	MainContainer,
 	ItemContainer,
@@ -47,7 +47,7 @@ class ItemDetailsPage extends Component {
 		isDeleting: false
 	}
 
-	componentDidUpdate = async (prevProps, prevState) => {
+	componentDidUpdate = async (prevProps) => {
 		if (this.props.location !== prevProps.location) {
 			this.setState({ isLoading: true })
 
@@ -190,13 +190,13 @@ class ItemDetailsPage extends Component {
 								apiKey={process.env.REACT_APP_ALGOLIA_API_KEY}
 								indexName="dev_items"
 							>
-								<Configure hitsPerPage={4} />
+								<Configure hitsPerPage={6} />
 								<VirtualRefinementList
 									attribute="designers"
 									defaultRefinement={item.designers}
 								/>
 								<VirtualMenu attribute="category" defaultRefinement={item.category} />
-								<AlgoliaHits />
+								<AlgoliaMiniHits />
 							</InstantSearch>
 							<h3>Inne przedmioty sprzedającego</h3>
 							<InstantSearch
@@ -204,9 +204,9 @@ class ItemDetailsPage extends Component {
 								apiKey={process.env.REACT_APP_ALGOLIA_API_KEY}
 								indexName="dev_items"
 							>
-								<Configure hitsPerPage={4} />
+								<Configure hitsPerPage={6} />
 								<VirtualMenu attribute="userId" defaultRefinement={item.userId} />
-								<AlgoliaHits />
+								<AlgoliaMiniHits />
 							</InstantSearch>
 						</div>
 					</MainContainer>

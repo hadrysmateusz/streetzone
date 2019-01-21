@@ -1,11 +1,11 @@
 import React from "react"
 import styled from "styled-components"
 import { connectInfiniteHits, connectHits } from "react-instantsearch-dom"
-import ItemCard from "../ItemCard"
+import ItemCard, { ItemCardMini } from "../ItemCard"
 import InfiniteScroll from "react-infinite-scroller"
 import { EMPTY_STATES } from "../../constants"
 import EmptyState from "../EmptyState"
-import { AlgoliaItemCard } from "../ItemCard"
+// import { AlgoliaItemCard } from "../ItemCard"
 
 const Container = styled.div`
 	display: grid;
@@ -20,6 +20,32 @@ const Container = styled.div`
 	}
 	@media (min-width: ${(p) => p.theme.breakpoints[5]}px) {
 		grid-template-columns: 1fr 1fr 1fr 1fr;
+	}
+`
+
+const MiniContainer = styled.div`
+	display: grid;
+	overflow: auto;
+	/* width: calc(100vw * 1.5); */
+	grid-auto-rows: minmax(240px, auto);
+	grid-template-columns: repeat(6, 45%);
+	grid-gap: 4px;
+
+	@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
+		grid-gap: 10px;
+		grid-template-columns: repeat(6, 30%);
+	}
+	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
+		grid-template-columns: repeat(6, 23%);
+	}
+	@media (min-width: ${(p) => p.theme.breakpoints[3]}px) {
+		grid-template-columns: repeat(6, 22%);
+	}
+	@media (min-width: ${(p) => p.theme.breakpoints[4]}px) {
+		grid-template-columns: 1fr 1fr 1fr;
+	}
+	@media (min-width: ${(p) => p.theme.breakpoints[5]}px) {
+		grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
 	}
 `
 
@@ -66,6 +92,14 @@ export const AlgoliaHits = connectHits(({ hits }) => (
 			<ItemCard key={hit.objectID} item={hit} />
 		))}
 	</Container>
+))
+
+export const AlgoliaMiniHits = connectHits(({ hits }) => (
+	<MiniContainer>
+		{hits.map((hit) => (
+			<ItemCardMini key={hit.objectID} item={hit} />
+		))}
+	</MiniContainer>
 ))
 
 export default connectInfiniteHits(AlgoliaInfiniteHits)
