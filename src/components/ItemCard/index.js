@@ -28,6 +28,8 @@ const Container = styled.div`
 const ThumbnailContainer = styled.div`
 	min-height: 0; /* prevent content from overflowing container */
 	flex: 1 1 100%;
+	max-width: 320px;
+	margin: 0 auto;
 
 	img {
 		object-fit: contain;
