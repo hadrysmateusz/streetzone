@@ -80,6 +80,16 @@ const AboutPage = Loadable({
 	loading: LoadingSpinner
 })
 
+const ContactPage = Loadable({
+	loader: () => import("../ContactPage"),
+	loading: LoadingSpinner
+})
+
+const TermsPage = Loadable({
+	loader: () => import("../TermsPage"),
+	loading: LoadingSpinner
+})
+
 const routes = [
 	{
 		path: ROUTES.BLOG_POST,
@@ -174,6 +184,16 @@ const routes = [
 		path: ROUTES.ABOUT,
 		component: AboutPage,
 		title: "O nas"
+	},
+	{
+		path: ROUTES.CONTACT,
+		component: ContactPage,
+		title: "Kontakt"
+	},
+	{
+		path: ROUTES.TERMS,
+		component: TermsPage,
+		title: "Regulamin"
 	}
 ]
 

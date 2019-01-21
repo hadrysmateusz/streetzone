@@ -63,8 +63,12 @@ const Footer = () => {
 	return (
 		<OuterContainer>
 			<InnerContainer>
-				<Item to={ROUTES.FAQ}>FAQ</Item>
+				<Item to={ROUTES.TERMS}>Regulamin</Item>
 				<Item to={ROUTES.PRIVACY_POLICY}>Polityka Prywatności</Item>
+				<Item to={ROUTES.FAQ}>FAQ</Item>
+				<Item to={ROUTES.ABOUT}>O nas</Item>
+				<Item to={ROUTES.CONTACT}>Kontakt</Item>
+
 				<IconContainer>
 					<Item to={ROUTES.TWITTER_PROFILE}>
 						<FontAwesomeIcon icon={["fab", "twitter"]} />

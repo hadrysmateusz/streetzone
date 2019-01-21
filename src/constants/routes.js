@@ -17,6 +17,8 @@ export const BLOG_POST = "/blog/:id"
 export const FAQ = "/faq"
 export const PRIVACY_POLICY = "/polityka-prywatnosci"
 export const ABOUT = "/o-nas"
+export const CONTACT = "/kontakt"
+export const TERMS = "/regulamin"
 
 // External
 // TODO: create social media pages and add addresses
