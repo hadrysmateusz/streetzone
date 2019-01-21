@@ -37,28 +37,17 @@ export const UserInfoContainer = styled.div`
 	margin-top: 10px;
 `
 
-export const Description = styled.div`
-	margin-top: 10px;
-	color: #3d3d3d;
-`
-
 export const ButtonsContainer = styled.div`
 	margin: 10px 0;
 	display: flex;
 	align-content: flex-start;
 `
 
-export const Name = styled.div`
-	font-size: 1.2rem;
-	color: ${(p) => p.theme.colors.black[75]};
-	margin-bottom: 15px;
-`
-
-export const Designers = styled.h3`
-	margin: 0;
-	margin-bottom: 5px;
-	font-size: 1.4rem;
-	font-weight: bold;
+export const ButtonGrid = styled.div`
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 10px;
+	width: 100%;
 `
 
 export const MainInfo = styled.div`
@@ -80,6 +69,11 @@ export const InfoItem = styled.div`
 	padding: 1px 0;
 `
 
+export const Description = styled.div`
+	margin-top: 10px;
+	color: #3d3d3d;
+`
+
 export const Sold = styled.div`
 	font-size: 2.1rem;
 	color: ${(p) => p.theme.colors.danger[50]};
@@ -87,9 +81,15 @@ export const Sold = styled.div`
 	font-weight: 500;
 `
 
-export const ButtonGrid = styled.div`
-	display: grid;
-	grid-template-columns: 1fr 1fr;
-	gap: 10px;
-	width: 100%;
+export const Name = styled.div`
+	font-size: 1.15rem;
+	color: ${(p) => p.theme.colors.black[75]};
+	margin-bottom: 15px;
+`
+
+export const Designers = styled.h3`
+	margin: 0;
+	margin-bottom: 5px;
+	font-size: 1.4rem;
+	font-weight: bold;
 `
