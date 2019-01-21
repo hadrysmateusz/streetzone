@@ -138,7 +138,4 @@ class ItemCardMiniBase extends Component {
 const ItemCard = withFirebase(ItemCardBase)
 const ItemCardMini = withFirebase(ItemCardMiniBase)
 
-const AlgoliaItemCard = ({ hit, ...props }) => <ItemCard item={hit} {...props} />
-
-export default ItemCard
-export { AlgoliaItemCard, ItemCardMini }
+export { ItemCard, ItemCardMini }

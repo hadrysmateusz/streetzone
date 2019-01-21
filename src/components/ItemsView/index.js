@@ -1,8 +1,7 @@
 import React from "react"
 import styled from "styled-components"
 
-import ItemCard from "../ItemCard"
-import withLoader from "../withLoader"
+import { ItemCard } from "../ItemCard"
 
 const ItemsGrid = styled.div`
 	display: grid;
@@ -22,7 +21,7 @@ const ItemsGrid = styled.div`
 	}
 `
 
-const ItemsViewBase = ({ items }) => {
+const ItemsView = ({ items }) => {
 	return (
 		<ItemsGrid>
 			{items.map((item, i) => (
@@ -31,8 +30,6 @@ const ItemsViewBase = ({ items }) => {
 		</ItemsGrid>
 	)
 }
-
-const ItemsView = withLoader(ItemsViewBase)
 
 const AlgoliaItemsView = ({ hits, ...props }) => {
 	return <ItemsView items={hits} {...props} />

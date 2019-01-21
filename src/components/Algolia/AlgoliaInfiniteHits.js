@@ -1,11 +1,10 @@
 import React from "react"
 import styled from "styled-components"
 import { connectInfiniteHits, connectHits } from "react-instantsearch-dom"
-import ItemCard, { ItemCardMini } from "../ItemCard"
+import { ItemCard, ItemCardMini } from "../ItemCard"
 import InfiniteScroll from "react-infinite-scroller"
 import { EMPTY_STATES } from "../../constants"
 import EmptyState from "../EmptyState"
-// import { AlgoliaItemCard } from "../ItemCard"
 
 const Container = styled.div`
 	display: grid;
