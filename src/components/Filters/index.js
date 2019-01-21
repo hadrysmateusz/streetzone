@@ -13,8 +13,7 @@ import { ITEM_SCHEMA, FORM_ERR } from "../../constants"
 const sortOptions = [
 	{ value: "createdAt-desc", label: "Najnowsze" },
 	{ value: "price-asc", label: "Cena Rosnąco" },
-	{ value: "price-desc", label: "Cena Malejąco" },
-	{ value: "name_folded-asc", label: "A-Z" }
+	{ value: "price-desc", label: "Cena Malejąco" }
 ]
 
 const PriceInputContainer = styled.div`

@@ -1,5 +1,3 @@
-import foldCase from "fold-case"
-
 // Data to be passed to final-form
 export const formatItemDataForForm = (data) => ({
 	name: data.name,
@@ -15,7 +13,6 @@ export const formatItemDataForForm = (data) => ({
 export const dbData = (data, time, userId, attachments) => {
 	let formattedData = {
 		name: data.name,
-		name_folded: foldCase(data.name),
 		designers: data.designers,
 		price: Number.parseInt(data.price),
 		category: data.category,

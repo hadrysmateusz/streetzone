@@ -14,7 +14,6 @@
 		"firebase": "^5.7.1",
 		"firebase-admin": "^6.5.0",
 		"firebaseui": "^3.5.1",
-		"fold-case": "^1.0.0",
 		"loaders.css": "^0.1.2",
 		"lz-string": "^1.4.4",
 		"moment": "^2.23.0",

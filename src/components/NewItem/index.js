@@ -1,6 +1,5 @@
 import React, { Component } from "react"
 import { compose } from "recompose"
-import foldCase from "fold-case"
 import shortid from "shortid"
 
 import { withAuthorization, withAuthentication } from "../UserSession"
@@ -35,7 +34,6 @@ class NewItemPage extends Component {
 			// Format the data
 			const data = {
 				name: values.name,
-				name_folded: foldCase(values.name),
 				designers: values.designers,
 				price: Number.parseInt(values.price),
 				category: values.category,
