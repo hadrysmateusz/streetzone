@@ -286,7 +286,7 @@ const writeUrlsToDb = async (userId, urls) => {
 exports.processImage = functions.storage.object().onFinalize(async (file) => {
 	if (file.name.includes("attachments/")) {
 		console.log("Processing an attachment...")
-		return await processImage(file, ["110x110", "380x380", "650x650"])
+		return await processImage(file, ["110x110", "320x320", "650x650"])
 	} else if (file.name.includes("profile-pictures/")) {
 		console.log("Processing a profile picture...")
 		const urls = await processImage(file, ["60x60", "110x110", "230x230"])
