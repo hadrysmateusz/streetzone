@@ -170,6 +170,8 @@ const translateCondition = (conditionValue) => {
 			displayValue: `${conditionValue}/10`,
 			tooltip: `${conditionValue}/10`
 		}
+	} else {
+		return {}
 	}
 }
 

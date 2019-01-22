@@ -26,7 +26,8 @@ import {
 	Content,
 	FullscreenFilters,
 	FiltersHeader,
-	StyledPagination
+	StyledPagination,
+	RefreshButton
 } from "./StyledComponents"
 import Filters from "./Filters"
 
@@ -42,7 +43,14 @@ class HomePage extends Component {
 	state = {
 		noMoreItems: false,
 		areFiltersOpen: this.props.currentBreakpoint > 1,
-		searchState: urlToSearchState(this.props.location)
+		searchState: urlToSearchState(this.props.location),
+		refreshAlgolia: false
+	}
+
+	refreshAlgolia = () => {
+		this.setState({ refreshAlgolia: true }, () => {
+			this.setState({ refreshAlgolia: false })
+		})
 	}
 
 	componentDidUpdate(prevProps) {
@@ -87,6 +95,7 @@ class HomePage extends Component {
 				searchState={searchState}
 				onSearchStateChange={this.onSearchStateChange}
 				createURL={createURL}
+				refresh={this.state.refreshAlgolia}
 			>
 				<Configure hitsPerPage={getItemsPerPage()} />
 
@@ -96,8 +105,19 @@ class HomePage extends Component {
 							<FontAwesomeIcon icon="filter" />
 							<span>{filterText}</span>
 						</FiltersToggle>
+						<RefreshButton
+							title="Odśwież"
+							onClick={(e) => {
+								const target = e.currentTarget
+								target.classList.remove("spin")
+								target.classList.add("spin")
+								this.refreshAlgolia()
+								setTimeout(() => target.classList.remove("spin"), 1500)
+							}}
+						>
+							<FontAwesomeIcon icon="sync-alt" />
+						</RefreshButton>
 						<SearchBox />
-						<StyledPagination isHidden={currentBreakpoint <= 2} />
 						<AlgoliaSortBy
 							options={sortingOptions}
 							defaultOption="dev_items_createdAt_desc"
@@ -119,6 +139,7 @@ class HomePage extends Component {
 					</FullscreenFilters>
 				</Portal>
 
+				<StyledPagination />
 				<MainGrid>
 					<Sidebar hidden={currentBreakpoint <= 1 || !areFiltersOpen}>
 						<SidebarInner>
@@ -127,11 +148,10 @@ class HomePage extends Component {
 					</Sidebar>
 
 					<Content>
-						<StyledPagination isHidden={currentBreakpoint > 2} />
 						<AlgoliaHits />
-						<StyledPagination isHidden={currentBreakpoint > 2} />
 					</Content>
 				</MainGrid>
+				<StyledPagination />
 			</InstantSearch>
 		)
 	}

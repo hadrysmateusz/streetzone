@@ -1,5 +1,29 @@
 import styled, { css } from "styled-components"
 
+export const SaveButton = styled.div`
+	font-size: 1.15rem;
+	background: rgba(255, 255, 255, 1);
+	padding: 5px;
+	color: ${(p) => p.theme.colors.black[0]};
+	/* cursor: pointer; */
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	.filled {
+		color: ${(p) => p.theme.colors.accent};
+		display: none;
+	}
+	:hover {
+		.filled {
+			display: block;
+		}
+		.outline {
+			display: none;
+		}
+	}
+`
+
 const ContainerCommon = css`
 	overflow: hidden;
 	min-width: 0;
@@ -22,7 +46,11 @@ const ContainerCommon = css`
 
 export const Container = styled.div`
 	${ContainerCommon}
+	position: relative;
 	height: 345px;
+	:hover .save-button {
+		display: block;
+	}
 `
 
 export const MiniContainer = styled.div`
@@ -52,15 +80,17 @@ export const InfoContainer = styled.div`
 `
 
 export const TopContainer = styled.div`
-	padding: 12px 9px 9px;
+	padding: 12px 0 9px 9px;
 	font-size: 0.89rem;
+	display: flex;
+	max-width: 100%;
 `
 
 export const SecondaryContainer = styled.div`
 	border-top: 1px solid ${(p) => p.theme.colors.gray[100]};
-	padding: 8px 10px;
+	padding: 8px 9px;
 	@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
-		padding: 10px 12px;
+		padding: 10px 9px;
 	}
 	font-size: 0.85rem;
 	display: flex;
@@ -68,10 +98,13 @@ export const SecondaryContainer = styled.div`
 `
 
 export const InnerContainer = styled.div`
-	display: flex;
-	justify-content: space-between;
+	flex: 1;
+	min-width: 0;
 	line-height: 0.89rem;
-	margin-bottom: 4px;
+
+	> :first-child {
+		margin-bottom: 4px;
+	}
 `
 
 const ItemProperty = styled.div`
@@ -86,15 +119,15 @@ export const Name = styled(ItemProperty)`
 	font-weight: normal;
 `
 
-export const Price = styled(ItemProperty)`
-	color: ${(p) => p.theme.colors.accent};
-`
-
 export const Designers = styled(ItemProperty)`
 	font-weight: bold;
 	text-transform: uppercase;
 	padding-right: 8px;
 	word-spacing: 0.35ch;
+`
+
+export const Price = styled(ItemProperty)`
+	color: ${(p) => p.theme.colors.accent};
 `
 
 export const Condition = styled(ItemProperty)`

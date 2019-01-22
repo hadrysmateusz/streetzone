@@ -1,5 +1,6 @@
 import styled, { css } from "styled-components"
 import { RefinementList, Pagination } from "react-instantsearch-dom"
+import { CSS } from "../../constants"
 
 const InputCommon = css`
 	color: ${(p) => p.theme.colors.black[75]};
@@ -42,14 +43,6 @@ export const StyledPagination = styled(Pagination).attrs({
 	padding: 2
 })`
 	grid-area: pagination;
-	@media (max-width: ${(p) => p.theme.breakpoints[3] - 1}px) {
-		:last-child {
-			margin-top: 10px;
-		}
-		:not(:last-child) {
-			margin-bottom: 10px;
-		}
-	}
 
 	${(p) => p.isHidden && "display: none;"}
 
@@ -60,6 +53,8 @@ export const StyledPagination = styled(Pagination).attrs({
 		margin: 0;
 		display: flex;
 	}
+
+	margin: 10px 0;
 
 	.ais-Pagination-link {
 		justify-content: center;
@@ -132,8 +127,8 @@ export const TopbarInnerContainer = styled.div`
 	display: grid;
 	gap: 10px;
 
-	grid-template-columns: auto 1fr auto auto;
-	grid-template-areas: "sidebar-toggle search pagination sort";
+	grid-template-columns: auto auto 1fr auto auto;
+	grid-template-areas: "sidebar-toggle refresh search pagination sort";
 
 	.ais-SearchBox {
 		grid-area: search;
@@ -196,13 +191,11 @@ export const Topbar = styled.div`
 	z-index: 890;
 	top: 46px;
 	background: white;
-	/* box-sizing: content-box; */
 	padding: 10px;
-	/* height: 54px; */
 	margin: 10px 0;
 
 	@media (min-width: ${(p) => p.theme.breakpoints[0]}px) {
-		margin: 20px 0;
+		margin: 20px 0 0;
 		padding: 13px 20px;
 	}
 	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
@@ -210,11 +203,28 @@ export const Topbar = styled.div`
 	}
 `
 
+export const RefreshButton = styled.div`
+	width: 34px;
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	grid-area: refresh;
+	color: ${(p) => p.theme.colors.black[75]};
+	background: white;
+	border: 1px solid ${(p) => p.theme.colors.gray[75]};
+	cursor: pointer;
+	&.spin {
+		svg {
+			animation: 1.5s 1 ${CSS.KEYFRAMES_SPIN};
+		}
+	}
+`
+
 export const FiltersToggle = styled.div`
 	${InputCommon}
 	grid-area: sidebar-toggle;
 	padding: 0 14px;
-	height: 38px;
 	color: ${(p) => p.theme.colors.black[75]};
 	display: flex;
 	justify-content: center;

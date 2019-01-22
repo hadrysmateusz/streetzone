@@ -4,7 +4,7 @@ export default () => {
 	const width = window.innerWidth
 	const height = window.innerHeight
 
-	const rows = Math.ceil(height / 350)
+	const rows = Math.ceil(height / 450)
 	let cols = 1
 
 	if (width < THEME.breakpoints[3]) {
@@ -15,7 +15,5 @@ export default () => {
 		cols = 4
 	}
 
-	console.log("rows", rows)
-	console.log("cols", cols)
 	return rows * cols
 }

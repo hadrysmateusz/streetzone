@@ -1,6 +1,7 @@
 import React, { Component } from "react"
 import { Link } from "react-router-dom"
 import { withFirebase } from "../Firebase"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 import { translateCondition } from "../../constants/item_schema"
 import {
@@ -15,14 +16,21 @@ import {
 	SecondaryContainer,
 	Price,
 	Condition,
-	Size
+	Size,
+	SaveButton
 } from "./StyledComponents"
 
 class ItemCardBase extends Component {
-	state = { imageURL: "" }
+	state = { imageURL: "", userIsOwner: false }
+
+	checkOwnership = () => {
+		const userIsOwner = this.props.authUserId === this.props.item.userId
+		this.setState({ userIsOwner })
+	}
 
 	componentDidMount = () => {
 		this.loadImage()
+		this.checkOwnership()
 	}
 
 	// Make sure if component's props change the images get updated
@@ -44,7 +52,15 @@ class ItemCardBase extends Component {
 	}
 
 	render() {
-		const { itemId, name, price, designers = [], condition, size } = this.props.item
+		const {
+			itemId,
+			name,
+			price,
+			designers = [],
+			condition,
+			size = "--",
+			userIsOwner
+		} = this.props.item
 
 		let conditionObj = translateCondition(condition)
 
@@ -62,14 +78,22 @@ class ItemCardBase extends Component {
 										{designers.join(" X ").toUpperCase()}
 									</Designers>
 								)}
+								<Name title={name}>{name}</Name>
 							</InnerContainer>
-							<Name title={name}>{name}</Name>
+							<SaveButton active={userIsOwner}>
+								<div className="fa-layers fa-fw save-button">
+									<FontAwesomeIcon className="outline" icon={["far", "heart"]} />
+									<FontAwesomeIcon className="filled" icon="heart" />
+								</div>
+							</SaveButton>
 						</TopContainer>
 						<SecondaryContainer>
 							<Price title={`Cena: ${price}`}>{price}zł</Price>
-							<Condition title={`Stan: ${conditionObj.tooltip}`}>
-								{conditionObj.displayValue}
-							</Condition>
+							{condition && (
+								<Condition title={`Stan: ${conditionObj.tooltip}`}>
+									{conditionObj.displayValue}
+								</Condition>
+							)}
 							<Size title={size ? `Rozmiar: ${size}` : undefined}>{size}</Size>
 						</SecondaryContainer>
 					</InfoContainer>
@@ -121,8 +145,8 @@ class ItemCardMiniBase extends Component {
 										{designers.join(" X ").toUpperCase()}
 									</Designers>
 								)}
+								<Name title={name}>{name}</Name>
 							</InnerContainer>
-							<Name title={name}>{name}</Name>
 						</TopContainer>
 						<SecondaryContainer>
 							<Price title={`Cena: ${price}`}>{price}zł</Price>

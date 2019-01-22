@@ -13,6 +13,10 @@ const Header = styled.div`
 	cursor: pointer;
 	display: flex;
 	justify-content: space-between;
+	svg {
+		transition: transform 0.32s ease;
+		${(p) => p.isFolded && "transform: rotate(-180deg);"}
+	}
 `
 
 class Foldable extends React.Component {
@@ -25,7 +29,6 @@ class Foldable extends React.Component {
 	}
 
 	toggle = () => {
-		console.log("toggling")
 		const isFolded = !this.state.isFolded
 		this.setState({ isFolded })
 	}
@@ -33,9 +36,9 @@ class Foldable extends React.Component {
 	render() {
 		return (
 			<div>
-				<Header onClick={this.toggle}>
+				<Header onClick={this.toggle} isFolded={this.state.isFolded}>
 					<span>{this.props.title}</span>
-					<FontAwesomeIcon icon={this.state.isFolded ? "caret-down" : "caret-up"} />
+					<FontAwesomeIcon icon={"caret-up"} />
 				</Header>
 				{!this.state.isFolded && <div>{this.props.children}</div>}
 			</div>
