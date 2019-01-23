@@ -126,7 +126,7 @@ class HomePage extends Component {
 				</Topbar>
 
 				<Portal>
-					<FullscreenFilters hidden={currentBreakpoint > 1 || !areFiltersOpen}>
+					<FullscreenFilters hidden={currentBreakpoint >= 1 || !areFiltersOpen}>
 						<FiltersHeader>
 							<div className="buttons">
 								<ClearRefinements />
@@ -141,7 +141,7 @@ class HomePage extends Component {
 
 				<StyledPagination />
 				<MainGrid>
-					<Sidebar hidden={currentBreakpoint <= 1 || !areFiltersOpen}>
+					<Sidebar hidden={currentBreakpoint < 1 || !areFiltersOpen}>
 						<SidebarInner>
 							<Filters />
 						</SidebarInner>

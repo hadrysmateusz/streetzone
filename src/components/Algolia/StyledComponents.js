@@ -1,32 +1,10 @@
 import styled from "styled-components"
 
-export const Container = styled.div`
-	display: grid;
-	grid-auto-rows: minmax(240px, auto);
-
-		grid-template-columns: 1fr 1fr;
-	grid-gap: 3px;
-
-	@media (min-width: ${(p) => p.theme.breakpoints[0]}px) {
-	grid-auto-rows: minmax(345px, auto);
-	grid-gap: 10px;
-	}
-	/* @media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
-		grid-template-columns: 1fr 1fr;
-	} */
-	@media (min-width: ${(p) => p.theme.breakpoints[3]}px) {
-		grid-template-columns: 1fr 1fr 1fr;
-	}
-	@media (min-width: ${(p) => p.theme.breakpoints[5]}px) {
-		grid-template-columns: 1fr 1fr 1fr 1fr;
-	}
-`
-
 export const MiniContainer = styled.div`
 	display: grid;
 	overflow: auto;
-	grid-auto-rows: minmax(240px, auto);
-	grid-template-columns: repeat(6, 45%);
+	grid-auto-rows: auto;
+	grid-template-columns: repeat(6, 46%);
 	grid-gap: 4px;
 
 	@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {

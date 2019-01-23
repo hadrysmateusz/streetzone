@@ -1,16 +1,18 @@
 import React from "react"
 import { connectInfiniteHits, connectHits } from "react-instantsearch-dom"
 import InfiniteScroll from "react-infinite-scroller"
+import ContainerDimensions from "react-container-dimensions"
 
 import { EMPTY_STATES } from "../../constants"
 import { ItemCard, ItemCardMini } from "../ItemCard"
 import EmptyState from "../EmptyState"
-import { Container, MiniContainer, EndCard } from "./StyledComponents"
+import { MiniContainer, EndCard } from "./StyledComponents"
+import ItemsView, { ItemsContainer } from "../ItemsView"
 
 const AlgoliaInfiniteHits = connectInfiniteHits(({ hits, hasMore, refine }) => {
 	return (
 		<InfiniteScroll
-			element={Container}
+			element={ItemsContainer}
 			threshold={80}
 			hasMore={hasMore}
 			loader={<div key={1}>Loading...</div>}
@@ -31,20 +33,18 @@ const AlgoliaInfiniteHits = connectInfiniteHits(({ hits, hasMore, refine }) => {
 	)
 })
 
-const AlgoliaHits = connectHits(({ hits }) => (
-	<Container>
-		{hits.map((hit) => (
-			<ItemCard key={hit.objectID} item={hit} />
-		))}
-	</Container>
-))
+const AlgoliaHits = connectHits(({ hits }) => <ItemsView items={hits} />)
 
 const AlgoliaMiniHits = connectHits(({ hits }) => (
-	<MiniContainer>
-		{hits.map((hit) => (
-			<ItemCardMini key={hit.objectID} item={hit} />
-		))}
-	</MiniContainer>
+	<ContainerDimensions>
+		{({ width }) => (
+			<MiniContainer containerWidth={width}>
+				{hits.map((hit) => (
+					<ItemCardMini key={hit.objectID} item={hit} />
+				))}
+			</MiniContainer>
+		)}
+	</ContainerDimensions>
 ))
 
 export { AlgoliaInfiniteHits, AlgoliaHits, AlgoliaMiniHits }

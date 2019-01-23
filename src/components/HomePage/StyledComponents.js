@@ -274,17 +274,6 @@ export const SidebarInner = styled.div`
 	background: white;
 	border: 1px solid ${(p) => p.theme.colors.gray[75]};
 	padding: 10px 20px;
-	/* @media (max-width: ${(p) => p.theme.breakpoints[2] - 1}px) {
-		position: fixed;
-		top: 0;
-		left: 0;
-		right: 0;
-		bottom: 0;
-		z-index: 1500;
-		height: 100vh;
-		background: white;
-		padding: 20px;
-	} */
 `
 
 export const Sidebar = styled.aside`
@@ -293,11 +282,9 @@ export const Sidebar = styled.aside`
 
 	max-width: 100%;
 
-	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
-		top: 44px;
-		width: 220px;
-		margin-right: 20px;
-	}
+	top: 44px;
+	width: 220px;
+	margin-right: 20px;
 
 	.ais-RefinementList-list {
 		list-style: none;

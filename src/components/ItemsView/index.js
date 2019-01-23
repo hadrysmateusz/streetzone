@@ -1,40 +1,37 @@
 import React from "react"
 import styled from "styled-components"
+import ContainerDimensions from "react-container-dimensions"
 
 import { ItemCard } from "../ItemCard"
 
-const ItemsGrid = styled.div`
+const ItemsContainer = styled.div`
 	display: grid;
-	grid-gap: 14px;
+	grid-gap: 3px;
 
-	@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
-		grid-template-columns: 1fr 1fr;
-	}
-	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
-		grid-template-columns: 1fr 1fr;
-	}
-	@media (min-width: ${(p) => p.theme.breakpoints[3]}px) {
-		grid-template-columns: 1fr 1fr 1fr;
-	}
-	@media (min-width: ${(p) => p.theme.breakpoints[5]}px) {
-		grid-template-columns: 1fr 1fr 1fr 1fr;
+	${(p) => {
+		const cols = Math.min(Math.ceil(p.containerWidth / 280), 4)
+		return `grid-template-columns: repeat(${cols}, 1fr);`
+	}}
+
+	@media (min-width: ${(p) => p.theme.breakpoints[0]}px) {
+		grid-gap: 10px;
 	}
 `
 
 const ItemsView = ({ items }) => {
 	return (
-		<ItemsGrid>
-			{items.map((item, i) => (
-				<ItemCard key={i} item={item} />
-			))}
-		</ItemsGrid>
+		<ContainerDimensions>
+			{({ width }) => (
+				<ItemsContainer containerWidth={width}>
+					{items.map((item) => (
+						<ItemCard key={item.objectID} item={item} />
+					))}
+				</ItemsContainer>
+			)}
+		</ContainerDimensions>
 	)
-}
-
-const AlgoliaItemsView = ({ hits, ...props }) => {
-	return <ItemsView items={hits} {...props} />
 }
 
 export default ItemsView
 
-export { AlgoliaItemsView }
+export { ItemsContainer }
