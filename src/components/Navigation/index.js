@@ -145,16 +145,19 @@ const Navigation = ({ authUser, ...rest }) => {
 									Twoje przedmioty
 								</StyledNavLink>
 							</NavItem>
+
 							<NavItem>
-								<StyledNavLink to={ROUTES.ACCOUNT_SETTINGS.replace(":id", authUser.uid)}>
-									Ustawienia / Edytuj profil
+								<StyledNavLink to={ROUTES.ACCOUNT_LIKED.replace(":id", authUser.uid)}>
+									Zapisane przedmioty
 								</StyledNavLink>
 							</NavItem>
+
 							<NavItem>
-								<StyledNavLink to={ROUTES.ACCOUNT_FEEDBACK.replace(":id", authUser.uid)}>
-									Opinie i komentarze
+								<StyledNavLink to={ROUTES.ACCOUNT_FOLLOWING.replace(":id", authUser.uid)}>
+									Obserwowani użytkownicy
 								</StyledNavLink>
 							</NavItem>
+
 							<NavItem>
 								<StyledNavLink
 									to={ROUTES.ACCOUNT_TRANSACTIONS.replace(":id", authUser.uid)}
@@ -162,6 +165,19 @@ const Navigation = ({ authUser, ...rest }) => {
 									Historia transakcji
 								</StyledNavLink>
 							</NavItem>
+
+							<NavItem>
+								<StyledNavLink to={ROUTES.ACCOUNT_FEEDBACK.replace(":id", authUser.uid)}>
+									Opinie i komentarze
+								</StyledNavLink>
+							</NavItem>
+
+							<NavItem>
+								<StyledNavLink to={ROUTES.ACCOUNT_SETTINGS.replace(":id", authUser.uid)}>
+									Ustawienia / Edytuj profil
+								</StyledNavLink>
+							</NavItem>
+
 							<NavItem>
 								<StyledNavLink as={SignOutButton} />
 							</NavItem>

@@ -61,8 +61,12 @@ class AccountPage extends Component {
 								{routes.items.label}
 							</CustomNavLink>
 
-							<CustomNavLink to={routes.settings.path.replace(":id", userId)}>
-								{routes.settings.label}
+							<CustomNavLink to={routes.liked.path.replace(":id", userId)}>
+								{routes.liked.label}
+							</CustomNavLink>
+
+							<CustomNavLink to={routes.following.path.replace(":id", userId)}>
+								{routes.following.label}
 							</CustomNavLink>
 
 							<CustomNavLink to={routes.feedback.path.replace(":id", userId)}>
@@ -73,12 +77,8 @@ class AccountPage extends Component {
 								{routes.transactions.label}
 							</CustomNavLink>
 
-							<CustomNavLink to={routes.liked.path.replace(":id", userId)}>
-								{routes.liked.label}
-							</CustomNavLink>
-
-							<CustomNavLink to={routes.following.path.replace(":id", userId)}>
-								{routes.following.label}
+							<CustomNavLink to={routes.settings.path.replace(":id", userId)}>
+								{routes.settings.label}
 							</CustomNavLink>
 						</TabsNav>
 
