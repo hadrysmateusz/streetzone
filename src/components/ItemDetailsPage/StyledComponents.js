@@ -9,6 +9,7 @@ export const MainContainer = styled.main`
 `
 
 export const ItemContainer = styled.div`
+	position: relative;
 	display: flex;
 	flex-direction: column;
 	max-width: 100%;
@@ -92,4 +93,15 @@ export const Designers = styled.h3`
 	margin-bottom: 5px;
 	font-size: 1.4rem;
 	font-weight: bold;
+`
+
+export const MoreInfo = styled.div`
+	position: absolute;
+	bottom: 0;
+	padding-bottom: 20px;
+	line-height: 1.08rem;
+	font-size: 0.72rem;
+	text-transform: uppercase;
+	font-weight: 500;
+	color: ${(p) => p.theme.colors.gray[50]};
 `

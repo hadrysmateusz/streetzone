@@ -3,7 +3,7 @@ import { Link } from "react-router-dom"
 import { compose } from "recompose"
 import { InstantSearch, Configure } from "react-instantsearch-dom"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-// import moment from "moment"
+import moment from "moment"
 
 import ImageGallery from "../ImageGallery"
 import { withFirebase } from "../Firebase"
@@ -30,7 +30,8 @@ import {
 	Sold,
 	ButtonGrid,
 	InfoItem,
-	MainInfo
+	MainInfo,
+	MoreInfo
 } from "./StyledComponents"
 
 class ItemDetailsPage extends Component {
@@ -133,9 +134,6 @@ class ItemDetailsPage extends Component {
 										</div>
 									</MainInfo>
 
-									{/* <InfoItem>
-										Dodano: <span>{moment(item.createdAt).format("D.M.YY o HH:mm")}</span>
-									</InfoItem> */}
 									<InfoItem>
 										Cena: <span>{item.price}zł</span>
 									</InfoItem>
@@ -174,6 +172,15 @@ class ItemDetailsPage extends Component {
 								)}
 								<Separator spacing="0px">Opis</Separator>
 								<Description>{item.description}</Description>
+								<MoreInfo>
+									<div>
+										Dodano: <span>{moment(item.createdAt).format("D.M.YY o HH:mm")}</span>
+									</div>
+									<div>
+										Edytowano:{" "}
+										<span>{moment(item.createdAt).format("D.M.YY o HH:mm")}</span>
+									</div>
+								</MoreInfo>
 							</InfoContainer>
 						</ItemContainer>
 						<div className="recommendedContainer">
