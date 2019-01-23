@@ -19,7 +19,7 @@ export const MainGrid = styled.div`
 	display: flex;
 	margin: 0 auto;
 	box-sizing: content-box;
-	padding: 0 10px 10px;
+	padding: 0 3px 10px;
 	margin-top: 10px;
 
 	@media (min-width: ${(p) => p.theme.breakpoints[0]}px) {

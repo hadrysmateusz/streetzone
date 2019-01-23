@@ -23,7 +23,12 @@ const ContainerCommon = css`
 export const Container = styled.div`
 	${ContainerCommon}
 	position: relative;
-	height: 345px;
+	height: 240px;
+	font-size: 0.9rem;
+	@media (min-width: ${(p) => p.theme.breakpoints[0]}px) {
+		height: 345px;
+		font-size: 1rem;
+	}
 `
 
 export const MiniContainer = styled.div`
@@ -54,7 +59,7 @@ export const InfoContainer = styled.div`
 
 export const TopContainer = styled.div`
 	padding: 12px 0 9px 9px;
-	font-size: 0.89rem;
+	font-size: 0.89em;
 	display: flex;
 	max-width: 100%;
 `
@@ -65,7 +70,7 @@ export const SecondaryContainer = styled.div`
 	@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
 		padding: 10px 9px;
 	}
-	font-size: 0.85rem;
+	font-size: 0.85em;
 	display: flex;
 	justify-content: space-between;
 `

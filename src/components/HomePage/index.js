@@ -97,7 +97,7 @@ class HomePage extends Component {
 				createURL={createURL}
 				refresh={this.state.refreshAlgolia}
 			>
-				<Configure hitsPerPage={getItemsPerPage()} />
+				<Configure hitsPerPage={12} />
 
 				<Topbar>
 					<TopbarInnerContainer>
