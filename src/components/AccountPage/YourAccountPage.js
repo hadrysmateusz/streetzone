@@ -121,7 +121,7 @@ class AccountPage extends Component {
 							<Route
 								exact
 								path={routes.liked.path}
-								render={() => <routes.liked.component />}
+								render={() => <routes.liked.component authUser={authUser} />}
 							/>
 							<Route
 								path={baseUrl}

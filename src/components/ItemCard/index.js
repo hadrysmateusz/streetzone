@@ -1,7 +1,6 @@
 import React, { Component } from "react"
 import { Link } from "react-router-dom"
 import { withFirebase } from "../Firebase"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { compose } from "recompose"
 import { withAuthentication } from "../UserSession"
 

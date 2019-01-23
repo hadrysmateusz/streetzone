@@ -1,15 +1,63 @@
-import React from "react"
+import React, { Component } from "react"
 import EmptyState from "../EmptyState"
 import { EMPTY_STATES } from "../../constants"
+import ItemsView from "../ItemsView"
+import LoadingSpinner from "../LoadingSpinner"
+import { withAuthentication } from "../UserSession"
+import { withFirebase } from "../Firebase"
+import { compose } from "recompose"
 
-const UserLiked = ({ liked }) => (
-	<div>
-		{liked && liked.length > 0 ? (
-			<h3>Zapisane</h3>
+export class UserLiked extends Component {
+	state = {
+		isLoading: true,
+		isFetchingItems: false,
+		items: [],
+		error: null
+	}
+
+	getUserItems = async (user) => {
+		this.setState({ isFetchingItems: true })
+
+		// get savedItems' data from firestore
+		let items = await Promise.all(
+			user.savedItems.map((itemId) => this.props.firebase.getItemData(itemId))
+		)
+
+		// put available items first
+		items = items.sort((item) => item.available)
+		console.log("ordered items", items)
+
+		this.setState({ items, isFetchingItems: false })
+	}
+
+	componentDidMount = async () => {
+		try {
+			this.getUserItems(this.props.authUser)
+		} catch (error) {
+			this.setState({ error })
+		} finally {
+			this.setState({ isLoading: false })
+		}
+	}
+
+	render() {
+		if (this.state.error) throw this.state.error
+		const { isLoading, isFetchingItems, items } = this.state
+
+		return isLoading || isFetchingItems ? (
+			<LoadingSpinner />
+		) : items.length > 0 ? (
+			<div>
+				<h3>Zapisane</h3>
+				<ItemsView items={items} />
+			</div>
 		) : (
 			<EmptyState state={EMPTY_STATES.UserNoLiked} />
-		)}
-	</div>
-)
+		)
+	}
+}
 
-export default UserLiked
+export default compose(
+	withFirebase,
+	withAuthentication
+)(UserLiked)

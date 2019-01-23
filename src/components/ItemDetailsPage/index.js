@@ -33,6 +33,7 @@ import {
 	MainInfo,
 	MoreInfo
 } from "./StyledComponents"
+import { HeartButton } from "../SaveButton"
 
 class ItemDetailsPage extends Component {
 	state = {
@@ -109,8 +110,6 @@ class ItemDetailsPage extends Component {
 			conditionObj = translateCondition(item.condition)
 		}
 
-		console.log(item)
-
 		return (
 			<PageContainer maxWidth={5}>
 				{item && !isLoading ? (
@@ -129,9 +128,7 @@ class ItemDetailsPage extends Component {
 											</Designers>
 											<Name>{item.name}</Name>
 										</div>
-										<div>
-											<FontAwesomeIcon icon={["far", "heart"]} />
-										</div>
+										<HeartButton itemId={item.itemId} />
 									</MainInfo>
 
 									<InfoItem>

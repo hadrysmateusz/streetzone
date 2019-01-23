@@ -54,7 +54,8 @@ export const ButtonGrid = styled.div`
 export const MainInfo = styled.div`
 	display: flex;
 	> :last-child {
-		padding: 8px 20px 0;
+		padding: 0 5px;
+		margin-right: 15px;
 		font-size: 1.6rem;
 	}
 	> :first-child {

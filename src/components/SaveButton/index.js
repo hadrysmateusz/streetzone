@@ -19,6 +19,7 @@ const HeartButtonContainer = styled.div`
 	padding: 5px;
 	color: ${(p) => p.theme.colors.black[0]};
 	display: flex;
+	cursor: pointer;
 	justify-content: center;
 	align-items: center;
 
