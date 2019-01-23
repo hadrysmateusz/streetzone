@@ -3,6 +3,7 @@ import { Link } from "react-router-dom"
 import { withFirebase } from "../Firebase"
 import { compose } from "recompose"
 import { withAuthentication } from "../UserSession"
+import Ratio from "react-ratio"
 
 import { translateCondition } from "../../constants/item_schema"
 import {
@@ -65,39 +66,41 @@ class ItemCardBase extends Component {
 		let conditionObj = translateCondition(condition)
 
 		return (
-			<Container className={this.props.className}>
-				<Link to={`/i/${itemId}`}>
-					<ThumbnailContainer>
-						{this.state.error && this.state.error === ERR_NO_IMAGE ? (
-							"No image"
-						) : (
-							<img src={this.state.imageURL} alt="" />
-						)}
-					</ThumbnailContainer>
-					<InfoContainer>
-						<TopContainer>
-							<InnerContainer>
-								{designers && (
-									<Designers title={designers.join(" X ")}>
-										{designers.join(" X ").toUpperCase()}
-									</Designers>
-								)}
-								<Name title={name}>{name}</Name>
-							</InnerContainer>
-							<HeartButton itemId={itemId} />
-						</TopContainer>
-						<SecondaryContainer>
-							<Price title={`Cena: ${price}`}>{price}zł</Price>
-							{condition && (
-								<Condition title={`Stan: ${conditionObj.tooltip}`}>
-									{conditionObj.displayValue}
-								</Condition>
+			<Ratio ratio={2 / 3}>
+				<Container className={this.props.className}>
+					<Link to={`/i/${itemId}`}>
+						<ThumbnailContainer>
+							{this.state.error && this.state.error === ERR_NO_IMAGE ? (
+								"No image"
+							) : (
+								<img src={this.state.imageURL} alt="" />
 							)}
-							<Size title={size ? `Rozmiar: ${size}` : undefined}>{size}</Size>
-						</SecondaryContainer>
-					</InfoContainer>
-				</Link>
-			</Container>
+						</ThumbnailContainer>
+						<InfoContainer>
+							<TopContainer>
+								<InnerContainer>
+									{designers && (
+										<Designers title={designers.join(" X ")}>
+											{designers.join(" X ").toUpperCase()}
+										</Designers>
+									)}
+									<Name title={name}>{name}</Name>
+								</InnerContainer>
+								<HeartButton itemId={itemId} />
+							</TopContainer>
+							<SecondaryContainer>
+								<Price title={`Cena: ${price}`}>{price}zł</Price>
+								{condition && (
+									<Condition title={`Stan: ${conditionObj.tooltip}`}>
+										{conditionObj.displayValue}
+									</Condition>
+								)}
+								<Size title={size ? `Rozmiar: ${size}` : undefined}>{size}</Size>
+							</SecondaryContainer>
+						</InfoContainer>
+					</Link>
+				</Container>
+			</Ratio>
 		)
 	}
 }

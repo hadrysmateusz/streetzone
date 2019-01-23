@@ -23,11 +23,10 @@ const ContainerCommon = css`
 export const Container = styled.div`
 	${ContainerCommon}
 	position: relative;
-	height: 240px;
-	font-size: 0.9rem;
+	font-size: 0.8rem;
+	height: 100%;
 	@media (min-width: ${(p) => p.theme.breakpoints[0]}px) {
-		height: 345px;
-		font-size: 1rem;
+		font-size: 0.89rem;
 	}
 `
 
@@ -59,7 +58,6 @@ export const InfoContainer = styled.div`
 
 export const TopContainer = styled.div`
 	padding: 12px 0 9px 9px;
-	font-size: 0.89em;
 	display: flex;
 	max-width: 100%;
 `
@@ -70,9 +68,10 @@ export const SecondaryContainer = styled.div`
 	@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
 		padding: 10px 9px;
 	}
-	font-size: 0.85em;
-	display: flex;
-	justify-content: space-between;
+	font-size: 0.95em;
+	display: grid;
+	grid-auto-columns: minmax(min-content, 1fr);
+	grid-auto-flow: column;
 `
 
 export const InnerContainer = styled.div`
@@ -106,10 +105,14 @@ export const Designers = styled(ItemProperty)`
 
 export const Price = styled(ItemProperty)`
 	color: ${(p) => p.theme.colors.accent};
+	text-align: left;
 `
 
 export const Condition = styled(ItemProperty)`
 	color: ${(p) => p.theme.colors.black[100]};
+	text-align: center;
 `
 
-export const Size = styled(ItemProperty)``
+export const Size = styled(ItemProperty)`
+	text-align: right;
+`
