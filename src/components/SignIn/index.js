@@ -124,7 +124,8 @@ class SignInGoogleBase extends Component {
 					feedback: [],
 					badges: {},
 					userSince: Date.now(),
-					city: null
+					city: null,
+					savedItems: []
 				})
 			}
 			this.setState({ error: null })
@@ -171,7 +172,8 @@ class SignInFacebookBase extends Component {
 					feedback: [],
 					badges: {},
 					userSince: Date.now(),
-					city: null
+					city: null,
+					savedItems: []
 				})
 			}
 			this.setState({ error: null })

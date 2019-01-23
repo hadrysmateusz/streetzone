@@ -1,29 +1,5 @@
 import styled, { css } from "styled-components"
 
-export const SaveButton = styled.div`
-	font-size: 1.15rem;
-	background: rgba(255, 255, 255, 1);
-	padding: 5px;
-	color: ${(p) => p.theme.colors.black[0]};
-	/* cursor: pointer; */
-	display: flex;
-	justify-content: center;
-	align-items: center;
-
-	.filled {
-		color: ${(p) => p.theme.colors.accent};
-		display: none;
-	}
-	:hover {
-		.filled {
-			display: block;
-		}
-		.outline {
-			display: none;
-		}
-	}
-`
-
 const ContainerCommon = css`
 	overflow: hidden;
 	min-width: 0;
@@ -48,9 +24,6 @@ export const Container = styled.div`
 	${ContainerCommon}
 	position: relative;
 	height: 345px;
-	:hover .save-button {
-		display: block;
-	}
 `
 
 export const MiniContainer = styled.div`

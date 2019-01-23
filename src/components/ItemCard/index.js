@@ -2,6 +2,8 @@ import React, { Component } from "react"
 import { Link } from "react-router-dom"
 import { withFirebase } from "../Firebase"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { compose } from "recompose"
+import { withAuthentication } from "../UserSession"
 
 import { translateCondition } from "../../constants/item_schema"
 import {
@@ -16,21 +18,20 @@ import {
 	SecondaryContainer,
 	Price,
 	Condition,
-	Size,
-	SaveButton
+	Size
 } from "./StyledComponents"
+import { HeartButton } from "../SaveButton"
+
+const ERR_NO_IMAGE = "NO_IMAGE"
 
 class ItemCardBase extends Component {
-	state = { imageURL: "", userIsOwner: false }
-
-	checkOwnership = () => {
-		const userIsOwner = this.props.authUserId === this.props.item.userId
-		this.setState({ userIsOwner })
+	state = {
+		imageURL: "",
+		error: null
 	}
 
 	componentDidMount = () => {
 		this.loadImage()
-		this.checkOwnership()
 	}
 
 	// Make sure if component's props change the images get updated
@@ -47,6 +48,7 @@ class ItemCardBase extends Component {
 			const imageURL = await firebase.getImageURL(item.attachments[0], "M")
 			this.setState({ imageURL })
 		} catch (error) {
+			this.setState({ error: ERR_NO_IMAGE })
 			console.log(error)
 		}
 	}
@@ -58,8 +60,7 @@ class ItemCardBase extends Component {
 			price,
 			designers = [],
 			condition,
-			size = "--",
-			userIsOwner
+			size = "--"
 		} = this.props.item
 
 		let conditionObj = translateCondition(condition)
@@ -68,7 +69,11 @@ class ItemCardBase extends Component {
 			<Container className={this.props.className}>
 				<Link to={`/i/${itemId}`}>
 					<ThumbnailContainer>
-						<img src={this.state.imageURL} alt="" />
+						{this.state.error && this.state.error === ERR_NO_IMAGE ? (
+							"No image"
+						) : (
+							<img src={this.state.imageURL} alt="" />
+						)}
 					</ThumbnailContainer>
 					<InfoContainer>
 						<TopContainer>
@@ -80,12 +85,7 @@ class ItemCardBase extends Component {
 								)}
 								<Name title={name}>{name}</Name>
 							</InnerContainer>
-							<SaveButton active={userIsOwner}>
-								<div className="fa-layers fa-fw save-button">
-									<FontAwesomeIcon className="outline" icon={["far", "heart"]} />
-									<FontAwesomeIcon className="filled" icon="heart" />
-								</div>
-							</SaveButton>
+							<HeartButton itemId={itemId} />
 						</TopContainer>
 						<SecondaryContainer>
 							<Price title={`Cena: ${price}`}>{price}zł</Price>
@@ -159,7 +159,13 @@ class ItemCardMiniBase extends Component {
 	}
 }
 
-const ItemCard = withFirebase(ItemCardBase)
-const ItemCardMini = withFirebase(ItemCardMiniBase)
+const ItemCard = compose(
+	withAuthentication,
+	withFirebase
+)(ItemCardBase)
+const ItemCardMini = compose(
+	withAuthentication,
+	withFirebase
+)(ItemCardMiniBase)
 
 export { ItemCard, ItemCardMini }

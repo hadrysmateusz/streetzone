@@ -55,7 +55,8 @@ class SignUpFormBase extends Component {
 				feedback: [],
 				badges: {},
 				userSince: Date.now(),
-				city: null
+				city: null,
+				savedItems: []
 			})
 
 			// Reset form
