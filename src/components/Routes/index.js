@@ -15,6 +15,11 @@ import UserFollowing from "../AccountPage/UserFollowing"
 import UserLiked from "../AccountPage/UserLiked"
 import ErrorBoundary from "../ErrorBoundary"
 
+const DesignerPage = Loadable({
+	loader: () => import("../DesignerPage"),
+	loading: LoadingSpinner
+})
+
 const BlogPostPage = Loadable({
 	loader: () => import("../BlogPost"),
 	loading: LoadingSpinner
@@ -91,6 +96,10 @@ const TermsPage = Loadable({
 })
 
 const routes = [
+	{
+		path: ROUTES.DESIGNER,
+		component: DesignerPage
+	},
 	{
 		path: ROUTES.BLOG_POST,
 		component: BlogPostPage
