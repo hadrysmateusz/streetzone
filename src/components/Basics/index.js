@@ -14,7 +14,7 @@ const Header = styled.h2`
 	font-family: "Playfair Display SC", serif;
 `
 
-const StyledNavLink = styled(NavLink).attrs({ activeClassName: "asdfasdf" })`
+const StyledNavLink = styled(NavLink)`
 	font-size: 0.85rem;
 	display: flex;
 	align-items: center;
@@ -30,7 +30,7 @@ const StyledNavLink = styled(NavLink).attrs({ activeClassName: "asdfasdf" })`
 		color: black;
 	}
 
-	.active {
+	&.active {
 		color: ${(p) => p.theme.colors.accent};
 	}
 `

@@ -99,17 +99,17 @@ const Navigation = ({ authUser, ...rest }) => {
 	return (
 		<Nav {...rest}>
 			<NavItem>
-				<StyledNavLink to={ROUTES.BLOG_HOME} exact={false}>
-					Blog
-				</StyledNavLink>
+				<StyledNavLink to={ROUTES.BLOG_HOME}>Blog</StyledNavLink>
 			</NavItem>
 			<NavItem>
-				<StyledNavLink to={ROUTES.HOME}>Tablica</StyledNavLink>
+				<StyledNavLink to={ROUTES.HOME} exact={true}>
+					Tablica
+				</StyledNavLink>
 			</NavItem>
 			{authUser ? (
 				<>
 					<NavItem>
-						<StyledNavLink to={ROUTES.ACCOUNT_ITEMS.replace(":id", authUser.uid)}>
+						<StyledNavLink to={ROUTES.ACCOUNT_BASE.replace(":id", authUser.uid)}>
 							<ProfilePicture
 								size="30px"
 								url={getProfilePictureURL(authUser, "S")}
@@ -119,7 +119,7 @@ const Navigation = ({ authUser, ...rest }) => {
 							the menu is scrollable as a constant width allows me to make it obvious */}
 							{/* <span>{authUser.name ? authUser.name : "Profil"}</span> */}
 							<span>Profil</span>
-						</StyledNavLink>{" "}
+						</StyledNavLink>
 						<Submenu>
 							<NavItem>
 								<StyledNavLink to={ROUTES.ACCOUNT_ITEMS.replace(":id", authUser.uid)}>
