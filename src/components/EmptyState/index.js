@@ -1,6 +1,8 @@
 import React from "react"
 import styled from "styled-components"
 
+const PATH = process.env.PUBLIC_URL + "/img/empty_states/"
+
 const imageSize = 100
 
 const Image = styled.img`
@@ -17,8 +19,13 @@ const Container = styled.div`
 	justify-content: flex-start;
 `
 
-const EmptyState = ({ text, state }) => {
-	return state ? (
+const EmptyState = ({ text, state, children, src }) => {
+	return children ? (
+		<Container>
+			<Image src={PATH + src} alt="" />
+			{children}
+		</Container>
+	) : state ? (
 		<Container>
 			<Image src={state.image} alt="" />
 			<p>{state.text}</p>
@@ -29,3 +36,38 @@ const EmptyState = ({ text, state }) => {
 }
 
 export default EmptyState
+
+export const UserNoItems = {
+	text: "Ten użytkownik nie ma aktualnie żadnych przedmiotów na sprzedaż",
+	image: PATH + "SadFace.png"
+}
+
+export const UserNoFeedback = {
+	text: "Ten użytkownik nie ma jeszcze żadnych opinii",
+	image: PATH + "SadFace.png"
+}
+
+export const UserNoFollowing = {
+	text: "Nie obserwujesz jeszcze nikogo",
+	image: PATH + "SadFace.png"
+}
+
+export const UserNoLiked = {
+	text: "Nie zapisałeś jeszcze żadnego przedmiotu",
+	image: PATH + "SadFace.png"
+}
+
+export const UserNoSoldItems = {
+	text: "Ten użytkownik nie sprzedał jeszcze żadnego przedmiotu",
+	image: PATH + "SadFace.png"
+}
+
+export const NoMoreItems = {
+	text: "To już wszystko",
+	image: PATH + "SadFace.png"
+}
+
+export const Generic = {
+	text: "Coś poszło nie tak",
+	image: PATH + "SadFace.png"
+}

@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import styled from "styled-components"
 import removeMarkdown from "remove-markdown"
 
+import LoadingSpinner from "../LoadingSpinner"
 import { withFirebase } from "../Firebase"
 import { ROUTES } from "../../constants"
 import { minWidth } from "../../style-utils"
@@ -127,13 +128,14 @@ const Excerpt = styled.p`
 `
 
 export class BlogHomePage extends Component {
-	state = { posts: [] }
+	state = { posts: [], isLoading: true }
 
 	getPosts = async (sortBy = "createdAt", sortDirection = "desc") => {
+		this.setState({ isLoading: true })
 		let query = this.props.firebase.posts().orderBy(sortBy, sortDirection)
 		const snapshot = await query.get()
 		let posts = snapshot.docs.map((doc) => ({ ...doc.data(), postId: doc.id }))
-		await this.setState({ posts })
+		await this.setState({ posts, isLoading: false })
 	}
 
 	componentDidMount = () => {
@@ -141,40 +143,45 @@ export class BlogHomePage extends Component {
 	}
 
 	render() {
+		const { isLoading, posts } = this.state
 		return (
 			<BlogPageContainer maxWidth={5}>
-				<PostsContainer>
-					{this.state.posts.map((post) => {
-						let excerpt = removeMarkdown(post.content, { gfm: true })
-						excerpt = excerpt.replace(/\\n/g, "\n")
-						const length = 85
-						excerpt = excerpt.length < length ? excerpt : excerpt.substring(0, length)
-						excerpt += "..."
+				{isLoading ? (
+					<LoadingSpinner />
+				) : (
+					<PostsContainer>
+						{posts.map((post) => {
+							let excerpt = removeMarkdown(post.content, { gfm: true })
+							excerpt = excerpt.replace(/\\n/g, "\n")
+							const length = 85
+							excerpt = excerpt.length < length ? excerpt : excerpt.substring(0, length)
+							excerpt += "..."
 
-						return (
-							<Post>
-								<Link to={ROUTES.BLOG_POST.replace(":id", post.postId)}>
-									<ImageContainer>
-										<Image url={post.photo_url} />
-									</ImageContainer>
-									<Info>
-										<Title as="h3">{post.title}</Title>
-										<DetailsContainer>
-											<InfoItem>
-												<FontAwesomeIcon icon="user" /> {post.author}
-											</InfoItem>
-											<InfoItem>
-												<FontAwesomeIcon icon="calendar" />{" "}
-												{moment(post.createdAt).format("D.M.YY")}
-											</InfoItem>
-										</DetailsContainer>
-										<Excerpt>{excerpt}</Excerpt>
-									</Info>
-								</Link>
-							</Post>
-						)
-					})}
-				</PostsContainer>
+							return (
+								<Post>
+									<Link to={ROUTES.BLOG_POST.replace(":id", post.postId)}>
+										<ImageContainer>
+											<Image url={post.photo_url} />
+										</ImageContainer>
+										<Info>
+											<Title as="h3">{post.title}</Title>
+											<DetailsContainer>
+												<InfoItem>
+													<FontAwesomeIcon icon="user" /> {post.author}
+												</InfoItem>
+												<InfoItem>
+													<FontAwesomeIcon icon="calendar" />{" "}
+													{moment(post.createdAt).format("D.M.YY")}
+												</InfoItem>
+											</DetailsContainer>
+											<Excerpt>{excerpt}</Excerpt>
+										</Info>
+									</Link>
+								</Post>
+							)
+						})}
+					</PostsContainer>
+				)}
 			</BlogPageContainer>
 		)
 	}

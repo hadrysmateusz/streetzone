@@ -5,10 +5,10 @@ import styled from "styled-components"
 
 import { withAuthentication } from "../UserSession"
 import SignOutButton from "../SignOut"
-import { CustomNavLink } from "../Basics"
 import ProfilePicture from "../ProfilePicture"
 import { ROUTES } from "../../constants"
 import getProfilePictureURL from "../../utils/getProfilePictureURL"
+import { StyledNavLink } from "../Basics"
 
 const NAV_ITEM_HEIGHT = "46px"
 
@@ -44,25 +44,6 @@ const Nav = styled.ul`
 		* {
 			margin: initial;
 		}
-	}
-`
-
-const StyledNavLink = styled(CustomNavLink)`
-	* {
-		user-select: none !important;
-	}
-	display: flex;
-	align-items: center;
-	background: none;
-	border: none;
-	outline: none;
-	padding: 0;
-	color: ${(p) => p.theme.colors.black[75]};
-	cursor: pointer;
-	text-transform: uppercase;
-
-	&:hover {
-		color: black;
 	}
 `
 

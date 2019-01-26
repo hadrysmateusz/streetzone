@@ -1,6 +1,5 @@
 import React, { Component } from "react"
-import EmptyState from "../EmptyState"
-import { EMPTY_STATES } from "../../constants"
+import EmptyState, { UserNoLiked } from "../EmptyState"
 import ItemsView from "../ItemsView"
 import LoadingSpinner from "../LoadingSpinner"
 import { withAuthentication } from "../UserSession"
@@ -52,7 +51,7 @@ export class UserLiked extends Component {
 				<ItemsView items={items} />
 			</div>
 		) : (
-			<EmptyState state={EMPTY_STATES.UserNoLiked} />
+			<EmptyState state={UserNoLiked} />
 		)
 	}
 }

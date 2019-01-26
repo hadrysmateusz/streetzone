@@ -1,11 +1,8 @@
-import React from "react"
 import { Link, NavLink } from "react-router-dom"
 import styled, { css } from "styled-components"
 import { gridArea } from "styled-system"
 
 import Textarea from "react-textarea-autosize"
-
-import { CSS } from "../../constants"
 
 const Header = styled.h2`
 	text-align: center;
@@ -17,9 +14,26 @@ const Header = styled.h2`
 	font-family: "Playfair Display SC", serif;
 `
 
-const CustomNavLink = ({ exact = true, ...rest }) => (
-	<NavLink exact={exact} activeStyle={{ color: CSS.COLOR_ACCENT }} {...rest} />
-)
+const StyledNavLink = styled(NavLink).attrs({ activeClassName: "asdfasdf" })`
+	font-size: 0.85rem;
+	display: flex;
+	align-items: center;
+	background: none;
+	border: none;
+	outline: none;
+	padding: 0;
+	color: ${(p) => p.theme.colors.black[75]};
+	cursor: pointer;
+	text-transform: uppercase;
+
+	&:hover {
+		color: black;
+	}
+
+	.active {
+		color: ${(p) => p.theme.colors.accent};
+	}
+`
 
 // TODO: modify global styles to not overwrite the text-decoration
 // and remove the !important
@@ -171,5 +185,5 @@ export {
 	FieldRow,
 	MiniButton,
 	Header,
-	CustomNavLink
+	StyledNavLink
 }

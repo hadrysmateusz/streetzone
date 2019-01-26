@@ -3,7 +3,7 @@ import { Route, Switch, Redirect } from "react-router-dom"
 
 import LoadingSpinner from "../LoadingSpinner"
 import { withFirebase } from "../Firebase"
-import { CustomNavLink } from "../Basics"
+import { StyledNavLink } from "../Basics"
 import { TabsNav, MainGrid } from "./StyledComponents"
 import MainInfo from "./MainInfo"
 // import getUserItems from "./getUserItems"
@@ -64,17 +64,17 @@ class OtherAccountPage extends Component {
 						<MainInfo user={user} />
 
 						<TabsNav>
-							<CustomNavLink to={routes.items.path.replace(":id", userId)}>
+							<StyledNavLink to={routes.items.path.replace(":id", userId)}>
 								{routes.items.label}
-							</CustomNavLink>
+							</StyledNavLink>
 
-							<CustomNavLink to={routes.feedback.path.replace(":id", userId)}>
+							<StyledNavLink to={routes.feedback.path.replace(":id", userId)}>
 								{routes.feedback.label}
-							</CustomNavLink>
+							</StyledNavLink>
 
-							<CustomNavLink to={routes.transactions.path.replace(":id", userId)}>
+							<StyledNavLink to={routes.transactions.path.replace(":id", userId)}>
 								{routes.transactions.label}
-							</CustomNavLink>
+							</StyledNavLink>
 						</TabsNav>
 
 						<Switch>

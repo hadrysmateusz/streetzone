@@ -23,6 +23,7 @@
 		"react-breakpoints": "^3.0.3",
 		"react-component-queries": "^2.3.0",
 		"react-container-dimensions": "^1.4.1",
+		"react-css-loaders": "^0.0.5",
 		"react-dom": "^16.7.0",
 		"react-final-form": "^4.0.2",
 		"react-final-form-listeners": "^1.0.1",

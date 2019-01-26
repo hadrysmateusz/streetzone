@@ -5,203 +5,125 @@ import { Helmet } from "react-helmet"
 
 import { ROUTES, CONST } from "../../constants"
 
-import LoadingSpinner from "../LoadingSpinner"
+import { LoadableComponentSpinner } from "../LoadingSpinner"
 import NotFound from "../NotFound"
-import UserSettings from "../AccountPage/UserSettings"
-import UserFeedback from "../AccountPage/UserFeedback"
-import UserItems from "../AccountPage/UserItems"
-import UserTransactions from "../AccountPage/UserTransactions"
-import UserFollowing from "../AccountPage/UserFollowing"
-import UserLiked from "../AccountPage/UserLiked"
 import ErrorBoundary from "../ErrorBoundary"
 
-const DesignerPage = Loadable({
-	loader: () => import("../DesignerPage"),
-	loading: LoadingSpinner
-})
-
-const BlogPostPage = Loadable({
-	loader: () => import("../BlogPost"),
-	loading: LoadingSpinner
-})
-
-const NewItemPage = Loadable({
-	loader: () => import("../NewItem"),
-	loading: LoadingSpinner
-})
-
-const SignUpPage = Loadable({
-	loader: () => import("../SignUp"),
-	loading: LoadingSpinner
-})
-
-const SignInPage = Loadable({
-	loader: () => import("../SignIn"),
-	loading: LoadingSpinner
-})
-
-const PasswordForgetPage = Loadable({
-	loader: () => import("../PasswordForget"),
-	loading: LoadingSpinner
-})
-
-const HomePage = Loadable({
-	loader: () => import("../HomePage"),
-	loading: LoadingSpinner
-})
-
-const BlogHomePage = Loadable({
-	loader: () => import("../BlogHome"),
-	loading: LoadingSpinner
-})
-
-const AccountPage = Loadable({
-	loader: () => import("../AccountPage"),
-	loading: LoadingSpinner
-})
-
-const EditItemPage = Loadable({
-	loader: () => import("../EditItem"),
-	loading: LoadingSpinner
-})
-
-const ItemDetailsPage = Loadable({
-	loader: () => import("../ItemDetailsPage"),
-	loading: LoadingSpinner
-})
-
-const FAQPage = Loadable({
-	loader: () => import("../FAQPage"),
-	loading: LoadingSpinner
-})
-
-const PrivacyPolicyPage = Loadable({
-	loader: () => import("../PrivacyPolicyPage"),
-	loading: LoadingSpinner
-})
-
-const AboutPage = Loadable({
-	loader: () => import("../AboutPage"),
-	loading: LoadingSpinner
-})
-
-const ContactPage = Loadable({
-	loader: () => import("../ContactPage"),
-	loading: LoadingSpinner
-})
-
-const TermsPage = Loadable({
-	loader: () => import("../TermsPage"),
-	loading: LoadingSpinner
-})
+const makeLoadable = (modPath) =>
+	Loadable({
+		loader: () => import("../" + modPath),
+		loading: LoadableComponentSpinner,
+		timeout: 2000
+	})
 
 const routes = [
 	{
 		path: ROUTES.DESIGNER,
-		component: DesignerPage
+		component: makeLoadable("DesignerPage")
 	},
 	{
 		path: ROUTES.BLOG_POST,
-		component: BlogPostPage
+		component: makeLoadable("BlogPostPage")
 	},
 	{
 		path: ROUTES.SIGN_UP,
-		component: SignUpPage,
+		component: makeLoadable("SignUp"),
 		title: `Utwórz konto`
 	},
 	{
 		path: ROUTES.SIGN_IN,
-		component: SignInPage,
+		component: makeLoadable("SignIn"),
 		title: `Zaloguj Się`
 	},
 	{
 		path: ROUTES.PASSWORD_FORGET,
-		component: PasswordForgetPage,
+		component: makeLoadable("PasswordForgetPage"),
 		title: `Zresetuj hasło`
 	},
 	{
 		path: ROUTES.HOME,
-		component: HomePage
+		component: makeLoadable("HomePage")
 	},
+
 	{
 		path: ROUTES.ACCOUNT_BASE,
-		component: AccountPage,
+		component: makeLoadable("AccountPage"),
 		exact: false,
 		routes: {
 			items: {
 				label: "Przedmioty na sprzedaż",
 				path: ROUTES.ACCOUNT_ITEMS,
-				component: UserItems
+				component: makeLoadable("AccountPage/UserItems")
 			},
 			settings: {
 				label: "Opcje / Edytuj profil",
 				path: ROUTES.ACCOUNT_SETTINGS,
-				component: UserSettings
+				component: makeLoadable("AccountPage/UserSettings")
 			},
 			feedback: {
 				label: "Opinie i komentarze",
 				path: ROUTES.ACCOUNT_FEEDBACK,
-				component: UserFeedback
+				component: makeLoadable("AccountPage/UserFeedback")
 			},
 			transactions: {
 				label: "Historia transakcji",
 				path: ROUTES.ACCOUNT_TRANSACTIONS,
-				component: UserTransactions
+				component: makeLoadable("AccountPage/UserTransactions")
 			},
 			liked: {
 				label: "Zapisane przedmioty",
 				path: ROUTES.ACCOUNT_LIKED,
-				component: UserLiked
+				component: makeLoadable("AccountPage/UserLiked")
 			},
 			following: {
 				label: "Obserwowani użytkownicy",
 				path: ROUTES.ACCOUNT_FOLLOWING,
-				component: UserFollowing
+				component: makeLoadable("AccountPage/UserFollowing")
 			}
 		}
 	},
 	{
 		path: ROUTES.NEW_ITEM,
-		component: NewItemPage,
+		component: makeLoadable("NewItem"),
 		title: `Wystaw przedmiot`
 	},
 	{
 		path: ROUTES.ITEM_DETAILS,
-		component: ItemDetailsPage
+		component: makeLoadable("ItemDetailsPage")
 	},
 	{
 		path: ROUTES.EDIT_ITEM,
-		component: EditItemPage,
+		component: makeLoadable("EditItem"),
 		title: `Edytuj przedmiot`
 	},
 	{
 		path: ROUTES.BLOG_HOME,
-		component: BlogHomePage,
+		component: makeLoadable("BlogHomePage"),
 		title: `Blog`
 	},
 	{
 		path: ROUTES.FAQ,
-		component: FAQPage,
+		component: makeLoadable("FAQPage"),
 		title: `FAQ`
 	},
 	{
 		path: ROUTES.PRIVACY_POLICY,
-		component: PrivacyPolicyPage,
+		component: makeLoadable("PrivacyPolicyPage"),
 		title: "Polityka Prywatności"
 	},
 	{
 		path: ROUTES.ABOUT,
-		component: AboutPage,
+		component: makeLoadable("AboutPage"),
 		title: "O nas"
 	},
 	{
 		path: ROUTES.CONTACT,
-		component: ContactPage,
+		component: makeLoadable("ContactPage"),
 		title: "Kontakt"
 	},
 	{
 		path: ROUTES.TERMS,
-		component: TermsPage,
+		component: makeLoadable("TermsPage"),
 		title: "Regulamin"
 	}
 ]
@@ -248,7 +170,7 @@ const Meta = () => {
 					render={() =>
 						route.title ? (
 							<Helmet>
-								<title>{`${route.title} - ${CONST.BRAND_NAME}`}</title>
+								<title>{`${route.title} | ${CONST.BRAND_NAME}`}</title>
 							</Helmet>
 						) : (
 							<Helmet>

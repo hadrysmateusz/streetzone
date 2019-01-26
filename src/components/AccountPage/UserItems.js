@@ -1,8 +1,7 @@
 import React from "react"
 import ItemsView from "../ItemsView"
-import EmptyState from "../EmptyState"
+import EmptyState, { UserNoItems } from "../EmptyState"
 import LoadingSpinner from "../LoadingSpinner"
-import { EMPTY_STATES } from "../../constants"
 
 const UserItems = ({ items, isLoading }) =>
 	isLoading ? (
@@ -10,7 +9,7 @@ const UserItems = ({ items, isLoading }) =>
 	) : items && items.length > 0 ? (
 		<ItemsView items={items} />
 	) : (
-		<EmptyState state={EMPTY_STATES.UserNoItems} />
+		<EmptyState state={UserNoItems} />
 	)
 
 export default UserItems

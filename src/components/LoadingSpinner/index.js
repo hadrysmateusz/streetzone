@@ -1,30 +1,29 @@
 import React from "react"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import styled from "styled-components"
-import { Box } from "rebass"
+import { RotateSpinLoader } from "react-css-loaders"
 
-import { CSS } from "../../constants"
+import EmptyState from "../EmptyState"
 
-const LoadingSpinnerUnstyled = (props) => (
-	<Box {...props}>
-		<FontAwesomeIcon icon="spinner" className="spinner" />
-	</Box>
-)
+const LoadingSpinner = () => <RotateSpinLoader size={9} />
 
-const LoadingSpinner = styled(LoadingSpinnerUnstyled)`
-	width: ${(p) => p.width || "100%"};
-	height: ${(p) => p.height || "100%"};
-
-	${(p) => !p.inline && "font-size: 3rem"};
-
-	color: ${(p) => p.theme.colors.black[50]};
-	display: flex;
-	justify-content: center;
-	align-items: center;
-
-	.spinner {
-		animation: ${CSS.KEYFRAMES_SPIN} 1.3s linear infinite;
+const LoadableComponentSpinner = ({ error, pastDelay, timedOut }) => {
+	if (error) {
+		return (
+			<EmptyState src="SadFace.png">
+				Coś poszło nie tak, odśwież stronę lub spróbuj później
+			</EmptyState>
+		)
+	} else if (timedOut) {
+		return (
+			<EmptyState src="SadFace.png">
+				Serwer długo nie odpowiada, odśwież stronę lub spróbuj później
+			</EmptyState>
+		)
+	} else if (pastDelay) {
+		return <LoadingSpinner />
+	} else {
+		return null
 	}
-`
+}
 
 export default LoadingSpinner
+export { LoadableComponentSpinner }

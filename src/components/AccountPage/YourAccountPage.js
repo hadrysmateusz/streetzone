@@ -5,7 +5,7 @@ import { Route, Switch, Redirect } from "react-router-dom"
 import { withFirebase } from "../Firebase"
 import { withAuthorization } from "../UserSession"
 import LoadingSpinner from "../LoadingSpinner"
-import { CustomNavLink } from "../Basics"
+import { StyledNavLink } from "../Basics"
 import MainInfo from "./MainInfo"
 import { TabsNav, MainGrid } from "./StyledComponents"
 
@@ -57,29 +57,29 @@ class AccountPage extends Component {
 						<MainInfo user={authUser} />
 
 						<TabsNav>
-							<CustomNavLink to={routes.items.path.replace(":id", userId)}>
+							<StyledNavLink to={routes.items.path.replace(":id", userId)}>
 								{routes.items.label}
-							</CustomNavLink>
+							</StyledNavLink>
 
-							<CustomNavLink to={routes.liked.path.replace(":id", userId)}>
+							<StyledNavLink to={routes.liked.path.replace(":id", userId)}>
 								{routes.liked.label}
-							</CustomNavLink>
+							</StyledNavLink>
 
-							<CustomNavLink to={routes.following.path.replace(":id", userId)}>
+							<StyledNavLink to={routes.following.path.replace(":id", userId)}>
 								{routes.following.label}
-							</CustomNavLink>
+							</StyledNavLink>
 
-							<CustomNavLink to={routes.feedback.path.replace(":id", userId)}>
+							<StyledNavLink to={routes.feedback.path.replace(":id", userId)}>
 								{routes.feedback.label}
-							</CustomNavLink>
+							</StyledNavLink>
 
-							<CustomNavLink to={routes.transactions.path.replace(":id", userId)}>
+							<StyledNavLink to={routes.transactions.path.replace(":id", userId)}>
 								{routes.transactions.label}
-							</CustomNavLink>
+							</StyledNavLink>
 
-							<CustomNavLink to={routes.settings.path.replace(":id", userId)}>
+							<StyledNavLink to={routes.settings.path.replace(":id", userId)}>
 								{routes.settings.label}
-							</CustomNavLink>
+							</StyledNavLink>
 						</TabsNav>
 
 						<Switch>

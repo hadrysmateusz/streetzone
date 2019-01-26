@@ -1,6 +1,7 @@
 import styled from "styled-components"
 
 export const TabsNav = styled.nav`
+	min-height: 100%;
 	padding: 20px;
 	grid-area: tabs-nav;
 	background: white;
@@ -17,6 +18,8 @@ export const TabsNav = styled.nav`
 
 export const MainGrid = styled.div`
 	height: 100%;
+	width: 100%;
+	flex: 1;
 	display: grid;
 	margin: 0 auto;
 	grid-gap: 20px;

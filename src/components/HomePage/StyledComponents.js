@@ -1,6 +1,6 @@
 import styled, { css } from "styled-components"
 import { RefinementList, Pagination } from "react-instantsearch-dom"
-import { CSS } from "../../constants"
+import { SPIN } from "../../style-utils/keyframes"
 
 const InputCommon = css`
 	color: ${(p) => p.theme.colors.black[75]};
@@ -216,7 +216,7 @@ export const RefreshButton = styled.div`
 	cursor: pointer;
 	&.spin {
 		svg {
-			animation: 1.5s 1 ${CSS.KEYFRAMES_SPIN};
+			animation: 1.5s 1 ${SPIN};
 		}
 	}
 `

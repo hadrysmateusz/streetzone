@@ -32,6 +32,8 @@ const Header = styled.div`
 
 const ContentContainer = styled.div`
 	flex: 1;
+	display: flex;
+	flex-direction: column;
 `
 
 const AppContainer = styled.div`

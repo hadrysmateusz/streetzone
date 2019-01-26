@@ -1,7 +1,6 @@
 import React from "react"
 import ItemsView from "../ItemsView"
-import EmptyState from "../EmptyState"
-import { EMPTY_STATES } from "../../constants"
+import EmptyState, { UserNoSoldItems } from "../EmptyState"
 
 const UserTransactions = ({ soldItems }) => (
 	<div>
@@ -11,7 +10,7 @@ const UserTransactions = ({ soldItems }) => (
 				<ItemsView items={soldItems} />
 			</>
 		) : (
-			<EmptyState state={EMPTY_STATES.UserNoSoldItems} />
+			<EmptyState state={UserNoSoldItems} />
 		)}
 	</div>
 )
