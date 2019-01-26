@@ -13,7 +13,7 @@ const makeLoadable = (modPath) =>
 	Loadable({
 		loader: () => import("../" + modPath),
 		loading: LoadableComponentSpinner,
-		timeout: 2000
+		timeout: 18000
 	})
 
 const routes = [

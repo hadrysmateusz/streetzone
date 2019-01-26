@@ -17,12 +17,12 @@ const InputCommon = css`
 export const MainGrid = styled.div`
 	position: relative;
 	display: flex;
-	margin: 0 auto;
+	margin: 10px auto;
 	box-sizing: content-box;
 	padding: 0 3px 10px;
-	margin-top: 10px;
 
 	@media (min-width: ${(p) => p.theme.breakpoints[0]}px) {
+		margin: 20px auto;
 		padding: 0 20px;
 	}
 	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {

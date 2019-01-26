@@ -1,5 +1,34 @@
 import styled from "styled-components"
 
+export const FilterItem = styled.div`
+	padding: 3px 6px;
+	display: flex;
+	align-items: center;
+
+	* {
+		cursor: pointer;
+	}
+
+	input {
+	}
+
+	span {
+		padding-left: 6px;
+	}
+
+	label {
+		color: ${(p) => p.theme.colors.black[75]};
+		text-transform: uppercase;
+		/* padding: 0 4px 0 8px; */
+		font-size: 0.84rem;
+		cursor: pointer;
+		width: 100%;
+	}
+
+	/* display: grid;
+		grid-template-columns: repeat(2, 1fr); */
+`
+
 export const MiniContainer = styled.div`
 	display: grid;
 	overflow: auto;

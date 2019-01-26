@@ -70,6 +70,7 @@ const Submenu = styled.ul`
 `
 
 const NavItem = styled.li`
+	user-select: none;
 	position: relative;
 	list-style-type: none;
 	height: ${NAV_ITEM_HEIGHT};
