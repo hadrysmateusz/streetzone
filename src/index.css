@@ -28,7 +28,8 @@ a:hover {
 	box-sizing: border-box;
 }
 
-@media (max-width: 767px) {
+/* TODO: make sure this breakpoint is correct before going into production */
+@media (max-width: 774px) {
 	body.noScroll {
 		overflow: hidden;
 	}
