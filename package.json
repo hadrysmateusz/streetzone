@@ -13,6 +13,7 @@
 		"firebase": "^5.7.1",
 		"firebase-admin": "^6.5.0",
 		"firebaseui": "^3.5.1",
+		"json-url": "^2.3.4",
 		"loaders.css": "^0.1.2",
 		"moment": "^2.23.0",
 		"qs": "^6.6.0",

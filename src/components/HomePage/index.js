@@ -7,14 +7,14 @@ import {
 } from "react-instantsearch-dom"
 import { withBreakpoints } from "react-breakpoints"
 import { compose } from "recompose"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { Portal } from "react-portal"
 import qs from "qs"
 
 import getItemsPerPage from "../../utils/getItemsPerPage"
 import sortingOptions from "./sortingOptions"
-import { AlgoliaHits } from "../Algolia/AlgoliaHits"
+import { AlgoliaInfiniteHits } from "../Algolia/AlgoliaHits"
 import { withFirebase } from "../Firebase"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import AlgoliaSortBy from "../Algolia/AlgoliaSortBy"
 import {
 	Topbar,
@@ -43,7 +43,7 @@ class HomePage extends Component {
 	state = {
 		noMoreItems: false,
 		areFiltersOpen: this.props.currentBreakpoint > 1,
-		searchState: urlToSearchState(this.props.location),
+		searchState: { ...urlToSearchState(this.props.location), page: 1 },
 		refreshAlgolia: false
 	}
 
@@ -60,6 +60,7 @@ class HomePage extends Component {
 	}
 
 	onSearchStateChange = (searchState) => {
+		console.log(searchStateToUrl(this.props, searchState))
 		clearTimeout(this.debouncedSetState)
 		this.debouncedSetState = setTimeout(() => {
 			this.props.history.push(searchStateToUrl(this.props, searchState), searchState)
@@ -139,7 +140,7 @@ class HomePage extends Component {
 					</FullscreenFilters>
 				</Portal>
 
-				<StyledPagination />
+				{/* <StyledPagination /> */}
 				<MainGrid>
 					<Sidebar hidden={currentBreakpoint < 1 || !areFiltersOpen}>
 						<SidebarInner>
@@ -148,10 +149,10 @@ class HomePage extends Component {
 					</Sidebar>
 
 					<Content>
-						<AlgoliaHits />
+						<AlgoliaInfiniteHits />
 					</Content>
 				</MainGrid>
-				<StyledPagination />
+				{/* <StyledPagination /> */}
 			</InstantSearch>
 		)
 	}
