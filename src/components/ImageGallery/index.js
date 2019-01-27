@@ -15,11 +15,11 @@ const CurrentImage = styled.div`
 	@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
 		max-height: 85vh;
 	}
-	height: 600px;
+	height: 640px;
 
-	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
+	/* @media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
 		height: 50vh;
-	}
+	} */
 
 	background: white;
 	border: 1px solid ${(p) => p.theme.colors.gray[75]};
@@ -36,6 +36,8 @@ const CurrentImage = styled.div`
 `
 
 const Container = styled.div`
+	width: 100%;
+	max-width: 100%;
 	flex: 0 1 100%;
 	user-select: none;
 	min-width: 0;

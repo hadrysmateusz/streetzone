@@ -2,7 +2,6 @@ import React, { Component } from "react"
 import { Link } from "react-router-dom"
 import { compose } from "recompose"
 import { InstantSearch, Configure } from "react-instantsearch-dom"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import moment from "moment"
 
 import ImageGallery from "../ImageGallery"

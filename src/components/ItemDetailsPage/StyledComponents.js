@@ -6,6 +6,9 @@ export const MainContainer = styled.main`
 	max-width: ${(p) => p.theme.breakpoints[4]}px;
 	margin: 0 auto;
 	height: 100%;
+	width: 100%;
+	max-width: 100%;
+	overflow-x: auto;
 `
 
 export const ItemContainer = styled.div`
@@ -24,6 +27,7 @@ export const InfoContainer = styled.div`
 	border: 1px solid ${(p) => p.theme.colors.gray[75]};
 	background: white;
 	padding: 20px;
+	padding-bottom: 70px;
 	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
 		margin-left: 10px;
 		max-width: 330px;
