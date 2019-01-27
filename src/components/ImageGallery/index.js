@@ -188,7 +188,7 @@ export class ImageGallery extends Component {
 	}
 
 	render() {
-		const { thumbnailURLs, imageURLs, currentImageIndex, isOpen } = this.state
+		const { thumbnailURLs = [], imageURLs, currentImageIndex, isOpen } = this.state
 
 		const mainSrc = imageURLs[currentImageIndex] || undefined
 		const nextSrc = imageURLs[(currentImageIndex + 1) % imageURLs.length] || undefined
@@ -225,19 +225,21 @@ export class ImageGallery extends Component {
 						</MiniButton>
 					)}
 				</CurrentImage>
-				<ThumbnailsContainer>
-					{thumbnailURLs.map((url, i) => (
-						<li key={i}>
-							<Thumbnail
-								data-index={i}
-								isCurrent={i === +currentImageIndex}
-								onClick={this.changeCurrentImage}
-							>
-								<img src={url} alt="" />
-							</Thumbnail>
-						</li>
-					))}
-				</ThumbnailsContainer>
+				{thumbnailURLs.length > 1 && (
+					<ThumbnailsContainer>
+						{thumbnailURLs.map((url, i) => (
+							<li key={i}>
+								<Thumbnail
+									data-index={i}
+									isCurrent={i === +currentImageIndex}
+									onClick={this.changeCurrentImage}
+								>
+									<img src={url} alt="" />
+								</Thumbnail>
+							</li>
+						))}
+					</ThumbnailsContainer>
+				)}
 				{isOpen && (
 					<Lightbox
 						mainSrc={mainSrc}
