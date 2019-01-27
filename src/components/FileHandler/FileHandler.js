@@ -11,13 +11,18 @@ const FilesContainer = styled.div`
 	position: relative;
 	display: grid;
 	grid-gap: 10px;
-	grid-template-columns: 1fr 1fr 1fr;
+	grid-template-columns: 1fr 1fr;
+
+	min-height: 144px;
+
+	@media (min-width: ${(p) => p.theme.breakpoints[0]}px) {
+		grid-template-columns: 1fr 1fr 1fr;
+	}
 
 	user-select: none;
 	outline: none;
 	margin: 10px 0 0 0;
 	padding: 10px;
-	min-height: 201px;
 	border: 1px solid #c6c6c6;
 	background: white;
 	.empty-state {
@@ -108,7 +113,12 @@ class FileHandlerUnstyled extends Component {
 						Usuń wszystkie
 					</Button>
 				</div>
-				<Dropzone onDrop={this.onDrop} disableClick={hasContent} ref={this.dropzone}>
+				<Dropzone
+					onDrop={this.onDrop}
+					accept={"image/jpeg,image/png"}
+					disableClick={hasContent}
+					ref={this.dropzone}
+				>
 					{({ getRootProps, getInputProps, isDragActive }) => {
 						return (
 							<FilesContainer {...getRootProps()}>

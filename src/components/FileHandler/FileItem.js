@@ -1,17 +1,19 @@
 import React from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import styled, { css } from "styled-components"
+import Ratio from "react-ratio"
 
 import { MiniButton } from "../Basics"
 
 const ContainerError = css`
-	border: 4px solid rgb(216, 16, 16);
+	border: 2px solid ${(p) => p.theme.colors.danger[50]};
 `
 const Container = styled.div`
 	box-sizing: content-box;
 	user-select: none;
-	border: 1px solid ${(p) => p.theme.colors.black[100]};
-	height: 177px;
+	border: 1px solid ${(p) => p.theme.colors.gray[0]};
+	width: 100%;
+	height: 100%;
 	position: relative;
 	${(props) => props.error && ContainerError}
 `
@@ -23,36 +25,41 @@ const Thumbnail = styled.div`
 	width: 100%;
 	justify-content: center;
 	align-items: center;
+	overflow: hidden;
+
 	img {
-		max-height: 100%;
-		max-width: 100%;
+		object-fit: cover;
+		width: 100%;
+		height: 100%;
 	}
 `
 
 const FileItem = (props) => (
-	<Container error={props.error}>
-		<Thumbnail>
-			<img src={props.fileItem.previewUrl} alt="" />
-		</Thumbnail>
-		<MiniButton
-			title="Usuń zdjęcie"
-			size={36}
-			position={{ top: "7px", right: "7px" }}
-			onClick={() => props.onDelete(props.fileItem.id)}
-		>
-			<FontAwesomeIcon icon="times" />
-		</MiniButton>
-		{props.error && (
+	<Ratio ratio={1 / 1}>
+		<Container error={props.error}>
+			<Thumbnail>
+				<img src={props.fileItem.previewUrl} alt="" />
+			</Thumbnail>
 			<MiniButton
-				title={props.error}
+				title="Usuń zdjęcie"
 				size={36}
-				position={{ top: "47px", right: "7px" }}
-				error
+				position={{ top: "7px", right: "7px" }}
+				onClick={() => props.onDelete(props.fileItem.id)}
 			>
-				<FontAwesomeIcon icon="exclamation" />
+				<FontAwesomeIcon icon="times" />
 			</MiniButton>
-		)}
-	</Container>
+			{props.error && (
+				<MiniButton
+					title={props.error}
+					size={36}
+					position={{ top: "47px", right: "7px" }}
+					error
+				>
+					<FontAwesomeIcon icon="exclamation" />
+				</MiniButton>
+			)}
+		</Container>
+	</Ratio>
 )
 
 export default FileItem
