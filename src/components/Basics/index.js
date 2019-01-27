@@ -170,6 +170,7 @@ const MiniButton = styled.div`
 	:hover {
 		opacity: 1;
 	}
+	cursor: ${(p) => (p.error ? "default" : "pointer")};
 `
 
 export {
