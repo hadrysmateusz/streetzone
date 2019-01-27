@@ -2,6 +2,8 @@ import styled, { css } from "styled-components"
 import { RefinementList, Pagination } from "react-instantsearch-dom"
 import { SPIN } from "../../style-utils/keyframes"
 
+const BUTTONS_CONTAINER_HEIGHT = "85px"
+
 const InputCommon = css`
 	color: ${(p) => p.theme.colors.black[75]};
 	border: 1px solid ${(p) => p.theme.colors.gray[75]};
@@ -218,6 +220,28 @@ export const FullscreenFilters = styled.div`
 	height: 100vh;
 	background: white;
 	padding: 20px;
+	padding-bottom: ${BUTTONS_CONTAINER_HEIGHT};
+`
+
+export const ButtonsContainer = styled.div`
+	width: 100%;
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	grid-auto-rows: min-content;
+	gap: 10px;
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	background: white;
+	height: ${BUTTONS_CONTAINER_HEIGHT};
+	padding: 20px;
+	& > * {
+		height: 100%;
+		width: auto;
+		height: auto;
+		white-space: nowrap;
+		min-width: 0;
+	}
 `
 
 export const SidebarInner = styled.div`
@@ -237,94 +261,4 @@ export const Sidebar = styled.aside`
 	top: 44px;
 	width: 220px;
 	margin-right: 20px;
-
-	.ais-RefinementList-list {
-		list-style: none;
-		padding: 0;
-		/* display: grid;
-		grid-template-columns: repeat(2, 1fr); */
-	}
-
-	.ais-RefinementList-labelText {
-		color: ${(p) => p.theme.colors.black[75]};
-		text-transform: uppercase;
-		padding: 0 4px 0 8px;
-		font-size: 0.84rem;
-	}
-	.ais-RefinementList-count {
-		background: ${(p) => p.theme.colors.gray[100]};
-		border-radius: 4px;
-		padding: 0 4px;
-		font-size: 0.76rem;
-	}
-	.ais-RefinementList-item {
-		padding: 3px 6px;
-	}
-	.ais-RefinementList-label {
-		display: flex;
-		align-items: center;
-	}
-
-	.ais-RangeInput {
-		min-width: 0;
-		width: 100%;
-	}
-
-	.ais-RangeInput-form {
-		display: flex;
-		min-width: 0;
-		height: 34px;
-	}
-	.ais-RangeInput-separator {
-		display: none;
-	}
-	.ais-RangeInput-submit {
-		background: ${(p) => p.theme.colors.gray[100]};
-		color: ${(p) => p.theme.colors.black[75]};
-		flex: 0 0 38px;
-		text-transform: uppercase;
-		font-size: 0.84rem;
-		border: 1px solid ${(p) => p.theme.colors.gray[50]};
-	}
-	.ais-RangeInput-input {
-		${InputCommon}
-		padding: 0 4px 0 8px;
-		margin-right: 6px;
-		flex: 1 1 0;
-		height: 34px;
-		color: ${(p) => p.theme.colors.black[75]};
-		&::placeholder {
-			color: ${(p) => p.theme.colors.gray[50]};
-		}
-
-		-moz-appearance: textfield;
-		:hover,
-		:focus {
-			-moz-appearance: number-input;
-		}
-	}
-
-	.ais-MenuSelect-select {
-		${InputCommon}
-		border-radius: 3px;
-		width: 100%;
-	}
-
-	.ais-ClearRefinements-button {
-		width: 100%;
-		margin-top: 16px;
-		height: 38px;
-		border-radius: 3px;
-		background: white;
-		border: 1px solid ${(p) => p.theme.colors.gray[50]};
-		color: ${(p) => p.theme.colors.black[75]};
-		cursor: pointer;
-	}
-`
-
-export const FiltersHeader = styled.header`
-	display: flex;
-	.buttons {
-		flex: 1;
-	}
 `

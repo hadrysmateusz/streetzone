@@ -15,9 +15,11 @@ import getItemsPerPage from "../../utils/getItemsPerPage"
 import { withFirebase } from "../Firebase"
 import sortingOptions from "./sortingOptions"
 import Filters from "./Filters"
+import Button from "../Button"
 import { AlgoliaInfiniteHits } from "../Algolia/AlgoliaHits"
 import AlgoliaSortBy from "../Algolia/AlgoliaSortBy"
 import AlgoliaSearchBox from "../Algolia/AlgoliaSearchBox"
+import AlgoliaClearRefinements from "../Algolia/AlgoliaClearRefinements"
 import {
 	Topbar,
 	TopbarInnerContainer,
@@ -29,6 +31,7 @@ import {
 	FullscreenFilters,
 	FiltersHeader,
 	StyledPagination,
+	ButtonsContainer,
 	RefreshButton
 } from "./StyledComponents"
 
@@ -128,15 +131,14 @@ class HomePage extends Component {
 
 				<Portal>
 					<FullscreenFilters hidden={currentBreakpoint >= 1 || !areFiltersOpen}>
-						<FiltersHeader>
-							<div className="buttons">
-								<ClearRefinements />
-							</div>
-							<div className="closeButton" onClick={this.toggleFilters}>
-								<FontAwesomeIcon icon="times" />
-							</div>
-						</FiltersHeader>
 						<Filters />
+						<ButtonsContainer>
+							<Button onClick={this.toggleFilters}>Gotowe</Button>
+							<AlgoliaClearRefinements />
+							{/* <div className="closeButton" onClick={this.toggleFilters}>
+								<FontAwesomeIcon icon="times" />
+							</div> */}
+						</ButtonsContainer>
 					</FullscreenFilters>
 				</Portal>
 
