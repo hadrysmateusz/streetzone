@@ -39,10 +39,14 @@ export const ThumbnailContainer = styled.div`
 	min-height: 0; /* prevent content from overflowing container */
 	flex: 1 1 100%;
 	max-width: 320px;
-	margin: 0 auto;
+	/* margin: 0 auto; */
+	overflow: hidden;
+	justify-content: center;
+	align-items: center;
+	display: flex;
 
 	img {
-		object-fit: contain;
+		object-fit: cover;
 		width: 100%;
 		height: 100%;
 	}

@@ -161,10 +161,20 @@ exports.onUserCreated = functions.auth.user().onCreate((...args) => {
 // ---------- Image handling ----------
 // ------------------------------------
 
-const generateThumbnail = (size, pathFrom, pathTo) => {
-	return spawn("convert", [pathFrom, "-thumbnail", size, pathTo], {
-		capture: ["stdout", "stderr"]
-	})
+const generateThumbnail = ({ size, mode }, pathFrom, pathTo) => {
+	if (mode === "cover") {
+		return spawn(
+			"convert",
+			[pathFrom, "-thumbnail", size + "^", "-gravity", "center", "-extent", size, pathTo],
+			{
+				capture: ["stdout", "stderr"]
+			}
+		)
+	} else if (mode === "contain") {
+		return spawn("convert", [pathFrom, "-thumbnail", size, pathTo], {
+			capture: ["stdout", "stderr"]
+		})
+	}
 }
 
 const uploadThumbnail = async (file, path) => {
@@ -286,14 +296,20 @@ const writeUrlsToDb = async (userId, urls) => {
 exports.processImage = functions.storage.object().onFinalize(async (file) => {
 	if (file.name.includes("attachments/")) {
 		console.log("Processing an attachment...")
-		return await processImage(file, ["110x110", "320x320", "650x650"])
+		return await processImage(file, [
+			{ size: "110x110", mode: "cover" },
+			{ size: "300x440", mode: "cover" },
+			{ size: "640x640", mode: "contain" }
+		])
 	} else if (file.name.includes("profile-pictures/")) {
 		console.log("Processing a profile picture...")
-		const urls = await processImage(file, ["60x60", "110x110", "230x230"])
-		console.log("urls: ", urls)
+		const urls = await processImage(file, [
+			{ size: "60x60", mode: "cover" },
+			{ size: "130x130", mode: "cover" },
+			{ size: "230x230", mode: "cover" }
+		])
 		if (urls) {
 			const userId = file.name.split("/")[1]
-			console.log("userId", userId)
 			await writeUrlsToDb(userId, urls)
 		}
 		return
