@@ -4,6 +4,7 @@ import { RangeInput } from "react-instantsearch-dom"
 import Foldable from "../Foldable"
 import { StyledRefinementList, SizeRefinementList } from "./StyledComponents"
 import AlgoliaRefinementList from "../Algolia/AlgoliaRefinementList"
+import AlgoliaRange from "../Algolia/AlgoliaRange"
 
 export class Filters extends Component {
 	render() {
@@ -18,8 +19,8 @@ export class Filters extends Component {
 				<Foldable title="Rozmiar" startFolded>
 					<SizeRefinementList attribute="size" />
 				</Foldable>
-				<Foldable title="Cena" startFolded>
-					<RangeInput attribute="price" min={0} />
+				<Foldable title="Cena">
+					<AlgoliaRange attribute="price" />
 				</Foldable>
 			</div>
 		)

@@ -1,5 +1,25 @@
 import styled, { css } from "styled-components"
 
+export const RangeContainer = styled.div`
+	width: 100%;
+	max-width: 100%;
+	height: 34px;
+	display: grid;
+	gap: 10px;
+	grid-template-columns: 1fr 1fr;
+	input {
+		border: 1px solid ${(p) => p.theme.colors.gray[75]};
+		:hover {
+			border: 1px solid ${(p) => p.theme.colors.gray[25]};
+		}
+		color: ${(p) => p.theme.colors.black[75]};
+		padding: 0 10px;
+		height: 100%;
+		min-width: 0;
+		min-height: 0;
+	}
+`
+
 export const SearchBox = styled.div`
 	flex: 1;
 	border: 1px solid ${(p) => p.theme.colors.gray[75]};

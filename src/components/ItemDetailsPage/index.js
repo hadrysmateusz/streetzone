@@ -59,6 +59,7 @@ class ItemDetailsPage extends Component {
 	componentDidMount = async () => {
 		// Get item from database
 		const item = await this.getItem()
+		console.log(item)
 
 		this.setState({ item, isLoading: false })
 	}
