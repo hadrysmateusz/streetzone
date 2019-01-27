@@ -1,4 +1,29 @@
-import styled from "styled-components"
+import styled, { css } from "styled-components"
+
+export const SearchBox = styled.div`
+	flex: 1;
+	border: 1px solid ${(p) => p.theme.colors.gray[75]};
+	:hover {
+		border: 1px solid ${(p) => p.theme.colors.gray[25]};
+	}
+	display: flex;
+	color: ${(p) => p.theme.colors.black[75]};
+
+	.icon-container {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		width: 34px;
+	}
+
+	input {
+		border: none;
+		flex: 1;
+		background: white;
+		min-width: 0;
+		width: 100%;
+	}
+`
 
 export const FilterItem = styled.div`
 	padding: 3px 6px;

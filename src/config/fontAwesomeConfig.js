@@ -23,7 +23,8 @@ import {
 	faAngleUp,
 	faAngleDown,
 	faHeart,
-	faSyncAlt
+	faSyncAlt,
+	faSearch
 } from "@fortawesome/free-solid-svg-icons"
 import {
 	faHeart as farHeart,
@@ -60,5 +61,6 @@ library.add(
 	faHeart,
 	farHeart,
 	farEnvelope,
-	faSyncAlt
+	faSyncAlt,
+	faSearch
 )

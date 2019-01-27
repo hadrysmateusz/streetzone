@@ -118,7 +118,6 @@ class HomePage extends Component {
 						>
 							<FontAwesomeIcon icon="sync-alt" />
 						</RefreshButton>
-						{/* <SearchBox /> */}
 						<AlgoliaSearchBox />
 						<AlgoliaSortBy
 							options={sortingOptions}

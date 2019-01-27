@@ -123,63 +123,14 @@ export const StyledRefinementList = styled(RefinementList)`
 export const TopbarInnerContainer = styled.div`
 	max-width: ${(p) => p.theme.breakpoints[5]}px;
 	margin: 0 auto;
+	height: 34px;
+	display: flex;
 
-	display: grid;
-	gap: 10px;
-
-	grid-template-columns: auto auto 1fr auto auto;
-	grid-template-areas: "sidebar-toggle refresh search pagination sort";
-
-	.ais-SearchBox {
-		grid-area: search;
-		outline: none;
-		min-width: 0;
-		* {
-			min-width: 0;
+	> * {
+		height: 100%;
+		&:not(:last-child) {
+			margin-right: 10px;
 		}
-	}
-	.ais-SearchBox-form {
-		display: flex;
-		min-width: 0;
-	}
-	.ais-SearchBox-input {
-		${InputCommon}
-		flex: 1 1 100%;
-		min-width: 0;
-		padding: 0 12px;
-		height: 34px;
-		font-size: 0.92rem;
-	}
-	.ais-SearchBox-submitIcon path {
-		fill: #1f1f1f;
-	}
-	/* .ais-SearchBox-submit {
-		display: none;
-	} */
-	.ais-SearchBox-reset {
-		display: none;
-	}
-	.ais-SearchBox-submit {
-		border: 1px solid ${(p) => p.theme.colors.gray[75]};
-		background: ${(p) => p.theme.colors.gray[100]};
-		width: 38px;
-		padding: 0;
-		border-left: 0;
-		outline: none !important;
-		svg {
-			width: 12px;
-			height: 12px;
-		}
-	}
-
-	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
-		max-width: 850px;
-	}
-	@media (min-width: ${(p) => p.theme.breakpoints[3]}px) {
-		max-width: ${(p) => p.theme.breakpoints[3]}px;
-	}
-	@media (min-width: ${(p) => p.theme.breakpoints[5]}px) {
-		max-width: ${(p) => p.theme.breakpoints[5]}px;
 	}
 `
 
@@ -205,14 +156,15 @@ export const Topbar = styled.div`
 
 export const RefreshButton = styled.div`
 	width: 34px;
-	height: 100%;
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	grid-area: refresh;
 	color: ${(p) => p.theme.colors.black[75]};
 	background: white;
 	border: 1px solid ${(p) => p.theme.colors.gray[75]};
+	:hover {
+		border: 1px solid ${(p) => p.theme.colors.gray[25]};
+	}
 	cursor: pointer;
 	&.spin {
 		svg {
@@ -223,12 +175,12 @@ export const RefreshButton = styled.div`
 
 export const FiltersToggle = styled.div`
 	${InputCommon}
-	grid-area: sidebar-toggle;
 	padding: 0 14px;
 	color: ${(p) => p.theme.colors.black[75]};
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	min-width: 0;
 	cursor: pointer;
 	svg {
 		margin-right: 5px;
