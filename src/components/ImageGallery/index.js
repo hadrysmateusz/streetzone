@@ -5,6 +5,7 @@ import Lightbox from "react-image-lightbox"
 
 import { withFirebase } from "../Firebase"
 import { MiniButton } from "../Basics"
+import { CONST } from "../../constants"
 
 const CurrentImage = styled.div`
 	/* cursor: zoom-in; */
@@ -52,16 +53,22 @@ const ThumbnailsContainer = styled.ul`
 
 	/* grid setup */
 	display: grid;
-	grid-template-columns: repeat(6, minmax(70px, 1fr));
+	grid-template-columns: repeat(
+		${CONST.ATTACHMENTS_MAX_COUNT},
+		minmax(calc(100vw / 5.5), 1fr)
+	);
 	gap: 10px;
 
 	position: relative;
 
 	/* remove this if it proves to be too difficult to implement a scrolling indicator */
 	overflow-x: auto;
+
+	@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
+		grid-template-columns: repeat(auto-fill, minmax(75px, 1fr));
+	}
 	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
 		overflow-x: visible;
-		grid-template-columns: repeat(auto-fill, minmax(75px, 1fr));
 	}
 
 	margin-top: 10px;
