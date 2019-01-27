@@ -293,25 +293,28 @@ const writeUrlsToDb = async (userId, urls) => {
 
 // On image upload create convert image to JPEG and create thumbnails
 // to save on bandwith and improve performance
-exports.processImage = functions.storage.object().onFinalize(async (file) => {
-	if (file.name.includes("attachments/")) {
-		console.log("Processing an attachment...")
-		return await processImage(file, [
-			{ size: "110x110", mode: "cover" },
-			{ size: "300x440", mode: "cover" },
-			{ size: "640x640", mode: "contain" }
-		])
-	} else if (file.name.includes("profile-pictures/")) {
-		console.log("Processing a profile picture...")
-		const urls = await processImage(file, [
-			{ size: "60x60", mode: "cover" },
-			{ size: "130x130", mode: "cover" },
-			{ size: "230x230", mode: "cover" }
-		])
-		if (urls) {
-			const userId = file.name.split("/")[1]
-			await writeUrlsToDb(userId, urls)
+exports.processImage = functions
+	.runWith({ memory: "512MB" })
+	.storage.object()
+	.onFinalize(async (file) => {
+		if (file.name.includes("attachments/")) {
+			console.log("Processing an attachment...")
+			return await processImage(file, [
+				{ size: "110x110", mode: "cover" },
+				{ size: "300x440", mode: "cover" },
+				{ size: "640x640", mode: "contain" }
+			])
+		} else if (file.name.includes("profile-pictures/")) {
+			console.log("Processing a profile picture...")
+			const urls = await processImage(file, [
+				{ size: "60x60", mode: "cover" },
+				{ size: "130x130", mode: "cover" },
+				{ size: "230x230", mode: "cover" }
+			])
+			if (urls) {
+				const userId = file.name.split("/")[1]
+				await writeUrlsToDb(userId, urls)
+			}
+			return
 		}
-		return
-	}
-})
+	})
