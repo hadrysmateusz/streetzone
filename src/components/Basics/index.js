@@ -40,7 +40,7 @@ const StyledNavLink = styled(NavLink)`
 const StyledLink = styled(Link)`
 	text-decoration: underline !important;
 	:hover {
-		color: ${CSS.COLOR_ACCENT};
+		color: ${(p) => p.theme.colors.accent};
 	}
 `
 
@@ -49,7 +49,7 @@ const StyledFieldCommon = css`
 	font-size: 1rem;
 
 	border: 1px solid ${(p) => p.theme.colors.gray[50]};
-	color: ${CSS.COLOR_BLACK_LIGHTER};
+	color: ${(p) => p.theme.colors.black[50]};
 
 	&::placeholder {
 		color: #808080;
@@ -57,8 +57,8 @@ const StyledFieldCommon = css`
 
 	&:not([disabled]) {
 		&:focus {
-			border: 1px solid ${CSS.COLOR_ACCENT};
-			outline: 1px solid ${CSS.COLOR_ACCENT};
+			border: 1px solid ${(p) => p.theme.colors.accent};
+			outline: 1px solid ${(p) => p.theme.colors.accent};
 		}
 		&:not(:focus) {
 			&:hover {
@@ -152,8 +152,8 @@ const MiniButton = styled.div`
 	outline: none;
 	opacity: 0.84;
 	transition: all 0.2s;
-	background: ${(p) => (p.error ? CSS.COLOR_DANGER : CSS.COLOR_BLACK_DARKER)};
-	color: ${CSS.COLOR_WHITE};
+	background: ${(p) => (p.error ? p.theme.colors.danger[50] : p.theme.colors.black[25])};
+	color: white;
 	font-size: 15px;
 	width: ${(p) => p.size}px;
 	height: ${(p) => p.size}px;
@@ -167,9 +167,7 @@ const MiniButton = styled.div`
 	font-size: 12px;
 	border-radius: 50%;
 	position: absolute;
-	/* box-shadow: 0 0 3px rgba(0, 0, 0, 0.5); */
 	:hover {
-		/* background: ${(p) => (p.error ? CSS.COLOR_DANGER_LIGHTER : "black")}; */
 		opacity: 1;
 	}
 `
