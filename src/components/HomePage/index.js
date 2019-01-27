@@ -12,10 +12,12 @@ import { Portal } from "react-portal"
 import qs from "qs"
 
 import getItemsPerPage from "../../utils/getItemsPerPage"
-import sortingOptions from "./sortingOptions"
-import { AlgoliaInfiniteHits } from "../Algolia/AlgoliaHits"
 import { withFirebase } from "../Firebase"
+import sortingOptions from "./sortingOptions"
+import Filters from "./Filters"
+import { AlgoliaInfiniteHits } from "../Algolia/AlgoliaHits"
 import AlgoliaSortBy from "../Algolia/AlgoliaSortBy"
+import AlgoliaSearchBox from "../Algolia/AlgoliaSearchBox"
 import {
 	Topbar,
 	TopbarInnerContainer,
@@ -29,7 +31,6 @@ import {
 	StyledPagination,
 	RefreshButton
 } from "./StyledComponents"
-import Filters from "./Filters"
 
 const updateAfter = 700
 
@@ -60,7 +61,6 @@ class HomePage extends Component {
 	}
 
 	onSearchStateChange = (searchState) => {
-		console.log(searchStateToUrl(this.props, searchState))
 		clearTimeout(this.debouncedSetState)
 		this.debouncedSetState = setTimeout(() => {
 			this.props.history.push(searchStateToUrl(this.props, searchState), searchState)
@@ -118,7 +118,8 @@ class HomePage extends Component {
 						>
 							<FontAwesomeIcon icon="sync-alt" />
 						</RefreshButton>
-						<SearchBox />
+						{/* <SearchBox /> */}
+						<AlgoliaSearchBox />
 						<AlgoliaSortBy
 							options={sortingOptions}
 							defaultOption="dev_items_createdAt_desc"
