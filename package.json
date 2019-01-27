@@ -25,6 +25,7 @@
 		"react-container-dimensions": "^1.4.1",
 		"react-css-loaders": "^0.0.5",
 		"react-dom": "^16.7.0",
+		"react-dropzone": "^8.0.3",
 		"react-final-form": "^4.0.2",
 		"react-final-form-listeners": "^1.0.1",
 		"react-headroom": "^2.2.4",

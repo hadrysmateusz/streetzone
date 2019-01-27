@@ -1,27 +1,64 @@
 import React, { Component } from "react"
 import styled from "styled-components"
+import Dropzone from "react-dropzone"
 
 import Button from "../Button"
 import FileItem from "./FileItem"
 import CustomFile from "./CustomFile"
 import { FormError } from "../FormElements"
 
-class FileHandlerUnstyled extends Component {
-	fileInput = React.createRef()
+const FilesContainer = styled.div`
+	position: relative;
+	display: grid;
+	grid-gap: 10px;
+	grid-template-columns: 1fr 1fr 1fr;
 
-	clickFileInput = () => {
-		this.fileInput.current.click()
+	user-select: none;
+	outline: none;
+	margin: 10px 0 0 0;
+	padding: 10px;
+	min-height: 201px;
+	border: 1px solid #c6c6c6;
+	background: white;
+	.empty-state {
+		position: absolute;
+		color: ${(p) => p.theme.colors.gray[25]};
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		font-size: 1.2rem;
+	}
+	.overlay {
+		position: absolute;
+		top: 0;
+		left: 0;
+		z-index: 9999;
+		background: rgba(0, 0, 0, 0.32);
+		color: white;
+		text-shadow: 1px 1px rgba(0, 0, 0, 0.2);
+	}
+`
+
+class FileHandlerUnstyled extends Component {
+	dropzone = React.createRef()
+
+	clickDropzone = () => {
+		this.dropzone.current.open()
 	}
 
-	onChange = async (event) => {
+	onDrop = (acceptedFiles, rejectedFiles) => {
 		// Get old files from final-form
 		const oldFiles = this.props.input.value || []
 
 		// Convert FileList into an array
-		const newFiles = [...event.target.files]
+		const newFiles = acceptedFiles
 
 		// Reset the file input to prevent bugs
-		event.target.value = null
+		this.dropzone.current.value = null
 
 		// Map files to custom files with previews
 		const files = oldFiles.concat(
@@ -53,19 +90,10 @@ class FileHandlerUnstyled extends Component {
 
 		return (
 			<div {...rest}>
-				<input
-					{...rest}
-					type="file"
-					accept="image/*"
-					onChange={this.onChange}
-					style={{ display: "none" }}
-					ref={this.fileInput}
-					multiple
-				/>
 				<div className="buttonContainer">
 					<Button
 						type="button"
-						onClick={this.clickFileInput}
+						onClick={this.clickDropzone}
 						disabled={meta.submitting || isLoading}
 					>
 						{hasContent ? "Dodaj pliki" : "Wybierz pliki"}
@@ -80,26 +108,34 @@ class FileHandlerUnstyled extends Component {
 						Usuń wszystkie
 					</Button>
 				</div>
+				<Dropzone onDrop={this.onDrop} disableClick={hasContent} ref={this.dropzone}>
+					{({ getRootProps, getInputProps, isDragActive }) => {
+						return (
+							<FilesContainer {...getRootProps()}>
+								<input {...getInputProps()} />
+								{isDragActive && (
+									<div className="empty-state overlay">Upuść pliki tutaj aby dodać</div>
+								)}
 
-				<div className="file-list-container">
-					{hasContent ? (
-						input.value.map((file, i) => {
-							const error = meta.error && meta.error.specific[i]
-							return (
-								<FileItem
-									key={i}
-									onDelete={this.deleteFileItem}
-									fileItem={file}
-									error={error}
-								/>
-							)
-						})
-					) : (
-						<div className="empty-state" onClick={this.clickFileInput}>
-							Wybierz lub przeciągnij pliki
-						</div>
-					)}
-				</div>
+								{hasContent
+									? input.value.map((file, i) => {
+											const error = meta.error && meta.error.specific[i]
+											return (
+												<FileItem
+													key={i}
+													onDelete={this.deleteFileItem}
+													fileItem={file}
+													error={error}
+												/>
+											)
+									  })
+									: !isDragActive && (
+											<div className="empty-state">Wybierz lub przeciągnij pliki</div>
+									  )}
+							</FilesContainer>
+						)
+					}}
+				</Dropzone>
 
 				<FormError
 					message={meta.error.main}
@@ -111,49 +147,10 @@ class FileHandlerUnstyled extends Component {
 }
 
 const FileHandler = styled(FileHandlerUnstyled)`
-	.file-list-container {
-		position: relative;
-		display: grid;
-		grid-gap: 10px;
-		grid-template-columns: 1fr 1fr 1fr;
-
-		margin: 10px 0 0 0;
-		padding: 10px;
-		min-height: 201px;
-		border: 1px solid #c6c6c6;
-		background: white;
-		.empty-state {
-			position: absolute;
-			color: #7f7f7f;
-			top: 0;
-			left: 0;
-			width: 100%;
-			height: 100%;
-			/* font-size: 1.1rem; */
-			display: flex;
-			justify-content: center;
-			align-items: center;
-		}
-	}
-
 	.buttonContainer {
 		display: grid;
 		grid-template-columns: 1fr 1fr;
 		gap: 10px;
-	}
-
-	.main-error-container {
-		&:not(:empty) {
-			background: rgb(243, 148, 148);
-			border: 2px solid rgb(133, 5, 5);
-			padding: 12px 18px;
-			margin-top: 10px;
-		}
-		color: rgb(112, 11, 11);
-	}
-
-	.main-error-text {
-		margin-left: 7px;
 	}
 `
 
