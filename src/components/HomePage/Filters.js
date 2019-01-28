@@ -1,15 +1,20 @@
 import React, { Component } from "react"
-import { RangeInput } from "react-instantsearch-dom"
 
 import Foldable from "../Foldable"
-import { StyledRefinementList, SizeRefinementList } from "./StyledComponents"
+import {
+	SizeRefinementList,
+	ButtonsContainer,
+	FiltersContainer
+} from "./StyledComponents"
 import AlgoliaRefinementList from "../Algolia/AlgoliaRefinementList"
+import Button from "../Button"
+import AlgoliaClearRefinements from "../Algolia/AlgoliaClearRefinements"
 import AlgoliaRange from "../Algolia/AlgoliaRange"
 
 export class Filters extends Component {
 	render() {
 		return (
-			<div {...this.props}>
+			<FiltersContainer {...this.props}>
 				<Foldable title="Kategoria">
 					<AlgoliaRefinementList attribute="category" />
 				</Foldable>
@@ -19,10 +24,14 @@ export class Filters extends Component {
 				<Foldable title="Rozmiar" startFolded>
 					<SizeRefinementList attribute="size" />
 				</Foldable>
-				<Foldable title="Cena">
+				<Foldable title="Cena" startFolded>
 					<AlgoliaRange attribute="price" />
 				</Foldable>
-			</div>
+				<ButtonsContainer>
+					<Button onClick={this.props.toggleFilters}>Gotowe</Button>
+					<AlgoliaClearRefinements />
+				</ButtonsContainer>
+			</FiltersContainer>
 		)
 	}
 }

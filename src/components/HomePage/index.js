@@ -1,25 +1,17 @@
 import React, { Component } from "react"
-import {
-	InstantSearch,
-	SearchBox,
-	ClearRefinements,
-	Configure
-} from "react-instantsearch-dom"
+import { InstantSearch, Configure } from "react-instantsearch-dom"
 import { withBreakpoints } from "react-breakpoints"
 import { compose } from "recompose"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { Portal } from "react-portal"
 import qs from "qs"
 
 import getItemsPerPage from "../../utils/getItemsPerPage"
 import { withFirebase } from "../Firebase"
 import sortingOptions from "./sortingOptions"
 import Filters from "./Filters"
-import Button from "../Button"
 import { AlgoliaInfiniteHits } from "../Algolia/AlgoliaHits"
 import AlgoliaSortBy from "../Algolia/AlgoliaSortBy"
 import AlgoliaSearchBox from "../Algolia/AlgoliaSearchBox"
-import AlgoliaClearRefinements from "../Algolia/AlgoliaClearRefinements"
 import {
 	Topbar,
 	TopbarInnerContainer,
@@ -28,10 +20,6 @@ import {
 	Sidebar,
 	SidebarInner,
 	Content,
-	FullscreenFilters,
-	FiltersHeader,
-	StyledPagination,
-	ButtonsContainer,
 	RefreshButton
 } from "./StyledComponents"
 
@@ -129,24 +117,10 @@ class HomePage extends Component {
 					</TopbarInnerContainer>
 				</Topbar>
 
-				<Portal>
-					<FullscreenFilters hidden={currentBreakpoint >= 1 || !areFiltersOpen}>
-						<Filters />
-						<ButtonsContainer>
-							<Button onClick={this.toggleFilters}>Gotowe</Button>
-							<AlgoliaClearRefinements />
-							{/* <div className="closeButton" onClick={this.toggleFilters}>
-								<FontAwesomeIcon icon="times" />
-							</div> */}
-						</ButtonsContainer>
-					</FullscreenFilters>
-				</Portal>
-
-				{/* <StyledPagination /> */}
 				<MainGrid>
-					<Sidebar hidden={currentBreakpoint < 1 || !areFiltersOpen}>
+					<Sidebar hidden={!areFiltersOpen}>
 						<SidebarInner>
-							<Filters />
+							<Filters toggleFilters={this.toggleFilters} />
 						</SidebarInner>
 					</Sidebar>
 
@@ -154,7 +128,6 @@ class HomePage extends Component {
 						<AlgoliaInfiniteHits />
 					</Content>
 				</MainGrid>
-				{/* <StyledPagination /> */}
 			</InstantSearch>
 		)
 	}

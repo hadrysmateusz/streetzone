@@ -198,6 +198,26 @@ export const Content = styled.main`
 	flex: 1;
 `
 
+export const SidebarInner = styled.div`
+	position: sticky;
+	z-index: 9999;
+	top: 127px;
+	background: white;
+	border: 1px solid ${(p) => p.theme.colors.gray[75]};
+	padding: 10px 20px;
+`
+
+export const Sidebar = styled.aside`
+	grid-area: filters;
+	box-sizing: content-box;
+
+	max-width: 100%;
+
+	top: 44px;
+	width: 220px;
+	margin-right: 20px;
+`
+
 export const SizeRefinementList = styled(StyledRefinementList)`
 	.ais-RefinementList-list {
 		list-style: none;
@@ -223,7 +243,24 @@ export const FullscreenFilters = styled.div`
 	padding-bottom: ${BUTTONS_CONTAINER_HEIGHT};
 `
 
+export const FiltersContainer = styled.div`
+	@media (max-width: ${(p) => p.theme.breakpoints[1] - 1}px) {
+		position: fixed;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		height: 100vh;
+		background: white;
+		padding: 20px;
+		padding-bottom: ${BUTTONS_CONTAINER_HEIGHT};
+	}
+`
+
 export const ButtonsContainer = styled.div`
+	@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
+		display: none;
+	}
 	width: 100%;
 	display: grid;
 	grid-template-columns: 1fr 1fr;
@@ -242,23 +279,4 @@ export const ButtonsContainer = styled.div`
 		white-space: nowrap;
 		min-width: 0;
 	}
-`
-
-export const SidebarInner = styled.div`
-	position: sticky;
-	top: 127px;
-	background: white;
-	border: 1px solid ${(p) => p.theme.colors.gray[75]};
-	padding: 10px 20px;
-`
-
-export const Sidebar = styled.aside`
-	grid-area: filters;
-	box-sizing: content-box;
-
-	max-width: 100%;
-
-	top: 44px;
-	width: 220px;
-	margin-right: 20px;
 `
