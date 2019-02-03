@@ -21,7 +21,6 @@ const AlgoliaInfiniteHits = connectInfiniteHits(({ hits, hasMore, refine }) => {
 			initialLoad={false}
 			loadMore={() => {
 				refine()
-				console.log("loaded more", hits.length)
 			}}
 		>
 			<ContainerDimensions>

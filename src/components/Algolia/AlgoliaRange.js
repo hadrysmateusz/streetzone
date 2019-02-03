@@ -24,7 +24,6 @@ class AlgoliaRange extends React.Component {
 		// the timeout makes it so the query only gets updated when you stop typing
 		clearTimeout(this.rateLimitedRefine)
 		this.rateLimitedRefine = setTimeout(() => {
-			console.log(this.state, this.props)
 			this.props.refine({
 				min: Math.max(this.state.min, this.props.min) || this.props.min,
 				max: Math.min(this.state.max, this.props.max) || this.props.max
