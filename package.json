@@ -1,6 +1,6 @@
 {
 	"name": "streetwear-app",
-	"version": "0.2.26",
+	"version": "0.2.27",
 	"private": true,
 	"dependencies": {
 		"@fortawesome/fontawesome-svg-core": "^1.2.12",
@@ -8,6 +8,7 @@
 		"@fortawesome/free-regular-svg-icons": "^5.6.3",
 		"@fortawesome/free-solid-svg-icons": "^5.6.3",
 		"@fortawesome/react-fontawesome": "^0.1.3",
+		"body-scroll-lock": "^2.6.1",
 		"filesize": "^3.6.1",
 		"final-form": "^4.11.0",
 		"firebase": "^5.7.1",
@@ -37,6 +38,7 @@
 		"react-loadable": "^5.5.0",
 		"react-loaders": "^3.0.1",
 		"react-markdown": "^4.0.4",
+		"react-modal": "^3.8.1",
 		"react-portal": "^4.2.0",
 		"react-ratio": "^0.1.5",
 		"react-router-dom": "^4.3.1",
