@@ -20,7 +20,8 @@ import {
 	Sidebar,
 	SidebarInner,
 	Content,
-	RefreshButton
+	RefreshButton,
+	ScrollToTop
 } from "./StyledComponents"
 
 const updateAfter = 700
@@ -47,6 +48,7 @@ class HomePage extends Component {
 
 	componentDidUpdate(prevProps) {
 		if (prevProps.location !== this.props.location) {
+			document.getElementById("App-Element").scrollIntoView(true)
 			this.setState({ searchState: urlToSearchState(this.props.location) })
 		}
 	}
@@ -104,6 +106,7 @@ class HomePage extends Component {
 								target.classList.remove("spin")
 								target.classList.add("spin")
 								this.refreshAlgolia()
+								document.getElementById("App-Element").scrollIntoView(true)
 								setTimeout(() => target.classList.remove("spin"), 1500)
 							}}
 						>
@@ -128,6 +131,13 @@ class HomePage extends Component {
 						<AlgoliaInfiniteHits />
 					</Content>
 				</MainGrid>
+				<ScrollToTop
+					onClick={() =>
+						document && document.getElementById("App-Element").scrollIntoView(true)
+					}
+				>
+					UP
+				</ScrollToTop>
 			</InstantSearch>
 		)
 	}

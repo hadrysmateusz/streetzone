@@ -4,6 +4,19 @@ import { SPIN } from "../../style-utils/keyframes"
 
 const BUTTONS_CONTAINER_HEIGHT = "85px"
 
+export const ScrollToTop = styled.button`
+	background: #333;
+	color: white;
+	border: none;
+	outline: none;
+	border-radius: 50%;
+	position: fixed;
+	bottom: 30px;
+	right: 30px;
+	width: 70px;
+	height: 70px;
+`
+
 const InputCommon = css`
 	color: ${(p) => p.theme.colors.black[75]};
 	border: 1px solid ${(p) => p.theme.colors.gray[75]};
