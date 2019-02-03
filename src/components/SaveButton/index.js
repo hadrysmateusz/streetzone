@@ -4,6 +4,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { withFirebase } from "../Firebase"
 import { withAuthentication } from "../UserSession"
 import { compose } from "recompose"
+import { ROUTES } from "../../constants"
+import Modal from "../Modal"
+import { withGlobalContext } from "../GlobalContext"
 
 const activeSaveButton = css`
 	.filled {
@@ -37,7 +40,8 @@ const HeartButtonContainer = styled.div`
 
 export class SaveButtonBase extends Component {
 	state = {
-		isSaved: false
+		isSaved: false,
+		isLoginModalVisible: false
 	}
 
 	componentDidMount = () => {
@@ -57,8 +61,17 @@ export class SaveButtonBase extends Component {
 		this.setState({ isSaved })
 	}
 
-	toggleSaved = async (e) => {
+	onClick = (e) => {
 		e.preventDefault()
+
+		if (this.props.authUser) {
+			this.toggleSaved()
+		} else {
+			this.props.globalContext.openModal(ROUTES.SIGN_UP)
+		}
+	}
+
+	toggleSaved = async () => {
 		const { itemId, authUser, firebase } = this.props
 		if (authUser) {
 			const wasSaved = this.state.isSaved
@@ -84,17 +97,20 @@ export class SaveButtonBase extends Component {
 		}
 	}
 
-	render() {
+	render = () => {
 		return (
 			<HeartButtonContainer
 				className={this.props.className}
 				active={this.state.isSaved}
-				onClick={this.toggleSaved}
+				onClick={this.onClick}
 			>
 				<div className="fa-layers fa-fw">
 					<FontAwesomeIcon className="outline" icon={["far", "heart"]} />
 					<FontAwesomeIcon className="filled" icon="heart" />
 				</div>
+				<Modal>
+					<h2>Zaloguj się</h2>
+				</Modal>
 			</HeartButtonContainer>
 		)
 	}
@@ -102,7 +118,8 @@ export class SaveButtonBase extends Component {
 
 const HeartButton = compose(
 	withAuthentication,
-	withFirebase
+	withFirebase,
+	withGlobalContext
 )(SaveButtonBase)
 
 export { HeartButton }

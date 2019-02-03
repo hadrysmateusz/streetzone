@@ -4,7 +4,14 @@ import { Form, Field } from "react-final-form"
 import { compose } from "recompose"
 import styled from "styled-components"
 
-import { FieldRow, FieldLabel, StyledInput, Header, Separator } from "../Basics"
+import {
+	StyledLink,
+	FieldRow,
+	FieldLabel,
+	StyledInput,
+	Header,
+	Separator
+} from "../Basics"
 import { FormError } from "../FormElements"
 import { FacebookButton, GoogleButton, LoaderButton } from "../Button"
 import { PasswordForgetLink } from "../PasswordForget"
@@ -12,6 +19,7 @@ import { SignUpLink } from "../SignUp"
 import { withFirebase } from "../Firebase"
 import validate from "./validate"
 import { ROUTES, AUTH_ERR } from "../../constants"
+import { withGlobalContext } from "../GlobalContext"
 
 const Container = styled.div`
 	width: 100%;
@@ -39,16 +47,21 @@ class SignInFormBase extends Component {
 
 	onSubmit = async (values, actions) => {
 		const { email, password } = values
+		const { globalContext, firebase, history } = this.props
 
 		try {
 			// Attempt signIn
-			await this.props.firebase.signInWithEmail(email, password)
+			await firebase.signInWithEmail(email, password)
 			// Reset form
 			actions.reset()
 			// Reset component
 			await this.setState({ error: null })
+			// Close modal if applicable
+			if (globalContext.isLoginModalVisible) {
+				globalContext.closeModal()
+			}
 			// Redirect
-			this.props.history.push(ROUTES.HOME)
+			history.push(ROUTES.HOME)
 		} catch (error) {
 			this.setState({ error })
 		}
@@ -109,8 +122,9 @@ class SignInGoogleBase extends Component {
 
 	onSubmit = async (event) => {
 		event.preventDefault()
+		const { globalContext, history, firebase } = this.props
 		try {
-			const socialAuthUser = await this.props.firebase.signInWithGoogle()
+			const socialAuthUser = await firebase.signInWithGoogle()
 			// If this is the first time this user signs up, create a user in db
 			if (socialAuthUser.additionalUserInfo.isNewUser) {
 				await this.props.firebase.user(socialAuthUser.user.uid).set({
@@ -129,7 +143,11 @@ class SignInGoogleBase extends Component {
 				})
 			}
 			this.setState({ error: null })
-			this.props.history.push(ROUTES.HOME)
+			// Close modal if applicable
+			if (globalContext.isLoginModalVisible) {
+				globalContext.closeModal()
+			}
+			history.push(ROUTES.HOME)
 		} catch (error) {
 			if (error.code === AUTH_ERR.CODE_EMAIL_ACCOUNT_EXISTS) {
 				error.message = AUTH_ERR.MSG_EMAIL_ACCOUNT_EXISTS
@@ -157,8 +175,9 @@ class SignInFacebookBase extends Component {
 
 	onSubmit = async (event) => {
 		event.preventDefault()
+		const { globalContext, history, firebase } = this.props
 		try {
-			const socialAuthUser = await this.props.firebase.signInWithFacebook()
+			const socialAuthUser = await firebase.signInWithFacebook()
 			// If this is the first time this user signs up, create a user in db
 			if (socialAuthUser.additionalUserInfo.isNewUser) {
 				await this.props.firebase.user(socialAuthUser.user.uid).set({
@@ -177,7 +196,11 @@ class SignInFacebookBase extends Component {
 				})
 			}
 			this.setState({ error: null })
-			this.props.history.push(ROUTES.HOME)
+			// Close modal if applicable
+			if (globalContext.isLoginModalVisible) {
+				globalContext.closeModal()
+			}
+			history.push(ROUTES.HOME)
 		} catch (error) {
 			if (error.code === AUTH_ERR.CODE_EMAIL_ACCOUNT_EXISTS) {
 				error.message = AUTH_ERR.MSG_EMAIL_ACCOUNT_EXISTS
@@ -203,18 +226,38 @@ class SignInFacebookBase extends Component {
 
 const SignInForm = compose(
 	withRouter,
-	withFirebase
+	withFirebase,
+	withGlobalContext
 )(SignInFormBase)
 
 const SignInGoogle = compose(
 	withRouter,
-	withFirebase
+	withFirebase,
+	withGlobalContext
 )(SignInGoogleBase)
 
 const SignInFacebook = compose(
 	withRouter,
-	withFirebase
+	withFirebase,
+	withGlobalContext
 )(SignInFacebookBase)
 
+const SignInLink = withGlobalContext(({ globalContext, ...rest }) => {
+	return (
+		<p {...rest}>
+			Masz już konto?{" "}
+			{globalContext.isLoginModalVisible ? (
+				<button onClick={() => globalContext.openModal(ROUTES.SIGN_IN)}>
+					Zaloguj się
+				</button>
+			) : (
+				<StyledLink to={ROUTES.SIGN_UP} className="link">
+					Zaloguj się
+				</StyledLink>
+			)}
+		</p>
+	)
+})
+
 export default SignInPage
-export { SignInForm, SignInGoogle, SignInFacebook }
+export { SignInForm, SignInGoogle, SignInFacebook, SignInLink }

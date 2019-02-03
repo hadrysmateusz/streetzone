@@ -10,6 +10,8 @@ import { LoaderButton } from "../Button"
 import { FormError } from "../FormElements"
 import { ROUTES, AUTH_ERR } from "../../constants"
 import validate from "./validate"
+import { SignInLink } from "../SignIn"
+import { withGlobalContext } from "../GlobalContext"
 
 const Container = styled.div`
 	width: 100%;
@@ -22,6 +24,7 @@ const SignUpPage = () => {
 		<div>
 			<Header>Utwórz konto</Header>
 			<SignUpForm />
+			<SignInLink />
 		</div>
 	)
 }
@@ -30,7 +33,7 @@ class SignUpFormBase extends Component {
 	state = { error: null }
 
 	onSubmit = async ({ name, email, password }, actions) => {
-		const { firebase, history } = this.props
+		const { firebase, history, globalContext } = this.props
 
 		try {
 			// Create user for auth
@@ -63,6 +66,10 @@ class SignUpFormBase extends Component {
 			actions.reset()
 			// Reset component
 			await this.setState({ error: null })
+			// Close modal if applicable
+			if (globalContext.isLoginModalVisible) {
+				globalContext.closeModal()
+			}
 			// Redirect
 			history.push(ROUTES.ACCOUNT_SETTINGS.replace(":id", userId))
 		} catch (error) {
@@ -160,19 +167,27 @@ class SignUpFormBase extends Component {
 	}
 }
 
-const SignUpForm = compose(
+export const SignUpForm = compose(
 	withRouter,
-	withFirebase
+	withFirebase,
+	withGlobalContext
 )(SignUpFormBase)
 
-const SignUpLink = (props) => (
-	<p {...props}>
-		Nie masz jeszcze konta?{" "}
-		<StyledLink to={ROUTES.SIGN_UP} className="link">
-			Utwórz konto
-		</StyledLink>
-	</p>
-)
+export const SignUpLink = withGlobalContext(({ globalContext, ...rest }) => {
+	return (
+		<p {...rest}>
+			Nie masz jeszcze konta?
+			{globalContext.isLoginModalVisible ? (
+				<button onClick={() => globalContext.openModal(ROUTES.SIGN_UP)}>
+					Utwórz konto
+				</button>
+			) : (
+				<StyledLink to={ROUTES.SIGN_UP} className="link">
+					Utwórz konto
+				</StyledLink>
+			)}
+		</p>
+	)
+})
 
 export default SignUpPage
-export { SignUpForm, SignUpLink }
