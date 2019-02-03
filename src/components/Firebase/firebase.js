@@ -126,7 +126,6 @@ class Firebase {
 	items = () => this.db.collection("items")
 
 	getItemData = async (itemId) => {
-		console.log("itemId", itemId)
 		const itemDoc = await this.item(itemId).get()
 		if (!itemDoc.exists) {
 			console.warn(`Item with id ${itemId} wasn't found`)

@@ -156,7 +156,6 @@ export class ImageGallery extends Component {
 				imageURLs[index] = imageURL
 				return { imageURLs }
 			})
-			console.log("imageURLs: ", this.state.imageURLs)
 		} catch (error) {
 			console.log(error)
 		}
