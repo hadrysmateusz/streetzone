@@ -7,7 +7,7 @@ import { withAuthorization } from "../UserSession"
 import LoadingSpinner from "../LoadingSpinner"
 import { StyledNavLink } from "../Basics"
 import MainInfo from "./MainInfo"
-import { TabsNav, MainGrid } from "./StyledComponents"
+import { TabsNav, TabsNavItem, TabsNavContainer, MainGrid } from "./StyledComponents"
 
 class AccountPage extends Component {
 	state = {
@@ -56,31 +56,45 @@ class AccountPage extends Component {
 					<>
 						<MainInfo user={authUser} />
 
-						<TabsNav>
-							<StyledNavLink to={routes.items.path.replace(":id", userId)}>
-								{routes.items.label}
-							</StyledNavLink>
+						<TabsNavContainer>
+							<TabsNav>
+								<TabsNavItem>
+									<StyledNavLink to={routes.items.path.replace(":id", userId)}>
+										{routes.items.label}
+									</StyledNavLink>
+								</TabsNavItem>
 
-							<StyledNavLink to={routes.liked.path.replace(":id", userId)}>
-								{routes.liked.label}
-							</StyledNavLink>
+								<TabsNavItem>
+									<StyledNavLink to={routes.liked.path.replace(":id", userId)}>
+										{routes.liked.label}
+									</StyledNavLink>
+								</TabsNavItem>
 
-							<StyledNavLink to={routes.following.path.replace(":id", userId)}>
-								{routes.following.label}
-							</StyledNavLink>
+								<TabsNavItem>
+									<StyledNavLink to={routes.following.path.replace(":id", userId)}>
+										{routes.following.label}
+									</StyledNavLink>
+								</TabsNavItem>
 
-							<StyledNavLink to={routes.feedback.path.replace(":id", userId)}>
-								{routes.feedback.label}
-							</StyledNavLink>
+								<TabsNavItem>
+									<StyledNavLink to={routes.feedback.path.replace(":id", userId)}>
+										{routes.feedback.label}
+									</StyledNavLink>
+								</TabsNavItem>
 
-							<StyledNavLink to={routes.transactions.path.replace(":id", userId)}>
-								{routes.transactions.label}
-							</StyledNavLink>
+								<TabsNavItem>
+									<StyledNavLink to={routes.transactions.path.replace(":id", userId)}>
+										{routes.transactions.label}
+									</StyledNavLink>
+								</TabsNavItem>
 
-							<StyledNavLink to={routes.settings.path.replace(":id", userId)}>
-								{routes.settings.label}
-							</StyledNavLink>
-						</TabsNav>
+								<TabsNavItem>
+									<StyledNavLink to={routes.settings.path.replace(":id", userId)}>
+										{routes.settings.label}
+									</StyledNavLink>
+								</TabsNavItem>
+							</TabsNav>
+						</TabsNavContainer>
 
 						<Switch>
 							<Route

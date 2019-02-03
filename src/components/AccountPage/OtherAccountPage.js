@@ -4,7 +4,7 @@ import { Route, Switch, Redirect } from "react-router-dom"
 import LoadingSpinner from "../LoadingSpinner"
 import { withFirebase } from "../Firebase"
 import { StyledNavLink } from "../Basics"
-import { TabsNav, MainGrid } from "./StyledComponents"
+import { TabsNav, TabsNavItem, TabsNavContainer, MainGrid } from "./StyledComponents"
 import MainInfo from "./MainInfo"
 // import getUserItems from "./getUserItems"
 
@@ -63,19 +63,27 @@ class OtherAccountPage extends Component {
 					<>
 						<MainInfo user={user} />
 
-						<TabsNav>
-							<StyledNavLink to={routes.items.path.replace(":id", userId)}>
-								{routes.items.label}
-							</StyledNavLink>
+						<TabsNavContainer>
+							<TabsNav>
+								<TabsNavItem>
+									<StyledNavLink to={routes.items.path.replace(":id", userId)}>
+										{routes.items.label}
+									</StyledNavLink>
+								</TabsNavItem>
 
-							<StyledNavLink to={routes.feedback.path.replace(":id", userId)}>
-								{routes.feedback.label}
-							</StyledNavLink>
+								<TabsNavItem>
+									<StyledNavLink to={routes.feedback.path.replace(":id", userId)}>
+										{routes.feedback.label}
+									</StyledNavLink>
+								</TabsNavItem>
 
-							<StyledNavLink to={routes.transactions.path.replace(":id", userId)}>
-								{routes.transactions.label}
-							</StyledNavLink>
-						</TabsNav>
+								<TabsNavItem>
+									<StyledNavLink to={routes.transactions.path.replace(":id", userId)}>
+										{routes.transactions.label}
+									</StyledNavLink>
+								</TabsNavItem>
+							</TabsNav>
+						</TabsNavContainer>
 
 						<Switch>
 							<Route

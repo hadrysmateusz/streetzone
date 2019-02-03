@@ -1,18 +1,52 @@
 import styled from "styled-components"
 
-export const TabsNav = styled.nav`
-	min-height: 100%;
-	padding: 20px;
+export const TabsNavContainer = styled.div`
 	grid-area: tabs-nav;
+	min-height: 100%;
+`
+
+export const TabsNav = styled.nav`
 	background: white;
 	border: 1px solid ${(p) => p.theme.colors.gray[75]};
 	white-space: nowrap;
-	display: grid;
-	grid-template-columns: 100%;
-	grid-auto-rows: min-content;
-	gap: 12px;
+
 	@media (max-width: ${(p) => p.theme.breakpoints[1] - 1}px) {
 		text-align: center;
+	}
+
+	background: white;
+
+	display: flex;
+	flex-flow: column nowrap;
+	margin: 0;
+	padding: 10px 0;
+
+	text-transform: uppercase;
+	letter-spacing: 0.9px;
+	font-size: 0.8rem;
+	font-weight: normal;
+`
+
+export const TabsNavItem = styled.li`
+	user-select: none;
+	position: relative;
+	list-style-type: none;
+	white-space: nowrap;
+	color: ${(p) => p.theme.colors.black[75]};
+	display: block;
+	order: 1;
+	padding: 0 4px;
+	height: 41px;
+
+	:hover {
+		background: #f8f8f8;
+	}
+	> :first-child {
+		height: 100%;
+		padding: 0 14px;
+	}
+	span {
+		margin-left: 8px;
 	}
 `
 

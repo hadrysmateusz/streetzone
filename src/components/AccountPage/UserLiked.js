@@ -24,7 +24,6 @@ export class UserLiked extends Component {
 
 		// put available items first
 		items = items.sort((item) => item.available)
-		console.log("ordered items", items)
 
 		this.setState({ items, isFetchingItems: false })
 	}
