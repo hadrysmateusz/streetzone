@@ -9,6 +9,8 @@ import Navigation from "../Navigation"
 import { Routes, Meta } from "../Routes"
 import Footer from "../Footer"
 import { CONST } from "../../constants"
+import { withGlobalContextProvider } from "../GlobalContext"
+import AuthModal from "../AuthModal"
 
 const HEADER_HEIGHT = "66px"
 
@@ -44,23 +46,29 @@ const AppContainer = styled.div`
 	min-height: 100vh;
 `
 
-const App = () => (
-	<Router>
-		<>
-			<Meta />
-			<AppContainer>
-				<Header>{CONST.BRAND_NAME}</Header>
-				<Navigation />
-				<ContentContainer>
-					<Routes />
-				</ContentContainer>
-				<Footer />
-			</AppContainer>
-		</>
-	</Router>
-)
+class App extends React.Component {
+	render = () => {
+		return (
+			<Router>
+				<div id="App-Element">
+					<Meta />
+					<AppContainer>
+						<Header>{CONST.BRAND_NAME}</Header>
+						<Navigation />
+						<ContentContainer>
+							<Routes />
+						</ContentContainer>
+						<Footer />
+					</AppContainer>
+					<AuthModal />
+				</div>
+			</Router>
+		)
+	}
+}
 
 export default compose(
 	withFirebase,
-	withAuthenticationProvider
+	withAuthenticationProvider,
+	withGlobalContextProvider
 )(App)

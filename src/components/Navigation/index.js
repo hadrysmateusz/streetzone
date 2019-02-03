@@ -20,7 +20,7 @@ const Nav = styled.ul`
 
 	position: sticky;
 	top: 0;
-	z-index: 900;
+	z-index: 80;
 
 	background: white;
 	border-bottom: 1px solid ${(p) => p.theme.colors.gray[75]};
@@ -56,7 +56,7 @@ const Submenu = styled.ul`
 	border: 1px solid ${(p) => p.theme.colors.gray[75]};
 	border-top: none;
 
-	z-index: 910;
+	z-index: 81;
 
 	display: flex;
 	flex-flow: column nowrap;

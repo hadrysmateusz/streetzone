@@ -41,7 +41,7 @@ const FilesContainer = styled.div`
 		position: absolute;
 		top: 0;
 		left: 0;
-		z-index: 9999;
+		z-index: 89;
 		background: rgba(0, 0, 0, 0.32);
 		color: white;
 		text-shadow: 1px 1px rgba(0, 0, 0, 0.2);

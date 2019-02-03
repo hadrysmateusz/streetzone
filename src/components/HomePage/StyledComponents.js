@@ -141,7 +141,7 @@ export const Topbar = styled.div`
 	border-bottom: 1px solid;
 	border-color: ${(p) => p.theme.colors.gray[75]};
 	position: sticky;
-	z-index: 890;
+	z-index: 79;
 	top: 46px;
 	background: white;
 	padding: 10px;
@@ -200,7 +200,7 @@ export const Content = styled.main`
 
 export const SidebarInner = styled.div`
 	position: sticky;
-	z-index: 9999;
+	z-index: 89;
 	top: 127px;
 	background: white;
 	border: 1px solid ${(p) => p.theme.colors.gray[75]};
@@ -236,7 +236,7 @@ export const FullscreenFilters = styled.div`
 	left: 0;
 	right: 0;
 	bottom: 0;
-	z-index: 1500;
+	z-index: 5;
 	height: 100vh;
 	background: white;
 	padding: 20px;

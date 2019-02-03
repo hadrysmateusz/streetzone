@@ -14,7 +14,7 @@ const ProfilePictureContainer = styled.div`
 const ImageContainer = styled.div`
 	height: 100%;
 	position: relative;
-	z-index: 800;
+	z-index: 70;
 	background-repeat: no-repeat;
 	background-size: cover;
 	background-position: center;
@@ -24,7 +24,7 @@ const ImageContainer = styled.div`
 const PlaceholderIcon = styled(FontAwesomeIcon)`
 	height: 100%;
 	position: absolute;
-	z-index: 700;
+	z-index: 60;
 	top: 0;
 	left: 0;
 	color: ${(p) => p.theme.colors.gray[75]};
