@@ -1,9 +1,10 @@
 import React, { Component } from "react"
-import { InstantSearch, Configure } from "react-instantsearch-dom"
+import { /* InstantSearch, */ Configure } from "react-instantsearch-dom"
 import { withBreakpoints } from "react-breakpoints"
 import { compose } from "recompose"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import qs from "qs"
+import equal from "deep-equal"
 
 import getItemsPerPage from "../../utils/getItemsPerPage"
 import { withFirebase } from "../Firebase"
@@ -21,8 +22,9 @@ import {
 	SidebarInner,
 	Content,
 	RefreshButton,
-	ScrollToTop
+	StyledInstantSearch
 } from "./StyledComponents"
+import ScrollToTop from "../ScrollToTop"
 
 const updateAfter = 700
 
@@ -48,14 +50,23 @@ class HomePage extends Component {
 
 	componentDidUpdate(prevProps) {
 		if (prevProps.location !== this.props.location) {
-			document.getElementById("App-Element").scrollIntoView(true)
 			this.setState({ searchState: urlToSearchState(this.props.location) })
 		}
 	}
 
 	onSearchStateChange = (searchState) => {
+		// get copies of current and prev states and compare all values except for page
+		// to determine whether the component should scroll back to the top
+		let _oldState = { ...this.state.searchState, page: null }
+		let _newState = { ...searchState, page: null }
+		const areEqual = equal(_newState, _oldState)
+		if (!areEqual) {
+			console.log("should scroll")
+			document.getElementById("App-Element").scrollIntoView(true)
+		}
+
 		clearTimeout(this.debouncedSetState)
-		this.debouncedSetState = setTimeout(() => {
+		this.debouncedSetState = setTimeout(async () => {
 			this.props.history.push(searchStateToUrl(this.props, searchState), searchState)
 		}, updateAfter)
 		this.setState({ searchState })
@@ -64,12 +75,6 @@ class HomePage extends Component {
 	toggleFilters = () => {
 		this.setState((state) => {
 			const { areFiltersOpen } = state
-
-			if (areFiltersOpen) {
-				document.body.classList.remove("noScroll")
-			} else {
-				document.body.classList.add("noScroll")
-			}
 			return { areFiltersOpen: !areFiltersOpen }
 		})
 	}
@@ -82,7 +87,7 @@ class HomePage extends Component {
 			currentBreakpoint < 1 ? "Filtry" : areFiltersOpen ? "Ukryj filtry" : "Pokaż filtry"
 
 		return (
-			<InstantSearch
+			<StyledInstantSearch
 				appId={process.env.REACT_APP_APP_ID}
 				apiKey={process.env.REACT_APP_ALGOLIA_API_KEY}
 				indexName="dev_items"
@@ -131,14 +136,8 @@ class HomePage extends Component {
 						<AlgoliaInfiniteHits />
 					</Content>
 				</MainGrid>
-				<ScrollToTop
-					onClick={() =>
-						document && document.getElementById("App-Element").scrollIntoView(true)
-					}
-				>
-					UP
-				</ScrollToTop>
-			</InstantSearch>
+				<ScrollToTop>↑</ScrollToTop>
+			</StyledInstantSearch>
 		)
 	}
 }

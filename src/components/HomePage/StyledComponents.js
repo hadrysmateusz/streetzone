@@ -1,20 +1,18 @@
 import styled, { css } from "styled-components"
 import { RefinementList, Pagination } from "react-instantsearch-dom"
 import { SPIN } from "../../style-utils/keyframes"
+import InstantSearch from "react-instantsearch-dom/dist/cjs/widgets/InstantSearch"
 
 const BUTTONS_CONTAINER_HEIGHT = "85px"
 
-export const ScrollToTop = styled.button`
-	background: #333;
-	color: white;
-	border: none;
-	outline: none;
-	border-radius: 50%;
-	position: fixed;
-	bottom: 30px;
-	right: 30px;
-	width: 70px;
-	height: 70px;
+export const StyledInstantSearch = styled(InstantSearch)`
+	height: 100%;
+	> {
+		height: 100%;
+	}
+	/* .ais-InstantSearch__root {
+		height: 100%;
+	} */
 `
 
 const InputCommon = css`
