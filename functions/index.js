@@ -301,8 +301,8 @@ exports.processImage = functions
 			console.log("Processing an attachment...")
 			return await processImage(file, [
 				{ size: "110x110", mode: "cover" },
-				{ size: "300x440", mode: "cover" },
-				{ size: "640x640", mode: "contain" }
+				{ size: "260x335", mode: "cover" },
+				{ size: "770x640", mode: "contain" }
 			])
 		} else if (file.name.includes("profile-pictures/")) {
 			console.log("Processing a profile picture...")
