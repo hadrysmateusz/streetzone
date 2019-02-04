@@ -3,7 +3,7 @@ import styled, { css } from "styled-components"
 import { gridArea } from "styled-system"
 import Textarea from "react-textarea-autosize"
 
-const resetButtonStyles = css`
+export const resetButtonStyles = css`
 	background: none;
 	border: none;
 	box-shadow: none;
@@ -21,7 +21,7 @@ export const More = styled.button`
 	margin: 3px 0;
 `
 
-const Header = styled.h2`
+export const Header = styled.h2`
 	text-align: center;
 	color: #2f2f2f;
 	font-size: 1.95rem;
@@ -31,7 +31,7 @@ const Header = styled.h2`
 	font-family: "Playfair Display SC", serif;
 `
 
-const StyledNavLink = styled(NavLink)`
+export const StyledNavLink = styled(NavLink)`
 	font-size: 0.85rem;
 	display: flex;
 	align-items: center;
@@ -54,14 +54,14 @@ const StyledNavLink = styled(NavLink)`
 
 // TODO: modify global styles to not overwrite the text-decoration
 // and remove the !important
-const StyledLink = styled(Link)`
+export const StyledLink = styled(Link)`
 	text-decoration: underline !important;
 	:hover {
 		color: ${(p) => p.theme.colors.accent};
 	}
 `
 
-const StyledFieldCommon = css`
+export const StyledFieldCommon = css`
 	width: 100%;
 	font-size: 1rem;
 
@@ -85,7 +85,7 @@ const StyledFieldCommon = css`
 	}
 `
 
-const StyledInputNumberSpecific = css`
+export const StyledInputNumberSpecific = css`
 	/* only show arrows on hover in firefox */
 	&[type="number"] {
 		-moz-appearance: textfield;
@@ -95,7 +95,7 @@ const StyledInputNumberSpecific = css`
 		-moz-appearance: number-input;
 	}
 `
-const StyledInput = styled.input`
+export const StyledInput = styled.input`
 	${StyledFieldCommon}
 	min-width: 0;
 	min-height: 38px; /* ie compatibility */
@@ -105,7 +105,7 @@ const StyledInput = styled.input`
 	${(props) => props.type === "number" && StyledInputNumberSpecific}
 `
 
-const StyledTextarea = styled(Textarea)`
+export const StyledTextarea = styled(Textarea)`
 	${StyledFieldCommon}
 	line-height: 1.45em;
 	padding: 6px 10px;
@@ -113,7 +113,7 @@ const StyledTextarea = styled(Textarea)`
 	min-height: calc(4 * 1.45em + 0.7em);
 `
 
-const FieldLabel = styled.div`
+export const FieldLabel = styled.div`
 	font-size: 0.75rem;
 	font-weight: bold;
 	display: block;
@@ -125,37 +125,15 @@ const FieldLabel = styled.div`
 
 	text-transform: uppercase;
 	letter-spacing: 0.9px;
-	/* font-size: 0.8rem; */
 	font-weight: normal;
 `
 
-const FieldRow = styled.div`
+export const FieldRow = styled.div`
 	margin-bottom: 10px;
 	${gridArea}
 `
 
-const SeparatorTextContent = css`
-	&::after {
-		color: #888;
-		content: "${(props) => props.text}";
-		background: #fbfbfb;
-		padding: 0 4px;
-		transform: translateY(-0.6rem)
-	}
-`
-
-const Separator = styled.p`
-	border-top: 1px solid #ccc;
-	position: relative;
-	display: flex;
-	justify-content: center;
-	height: 1rem;
-	${(props) =>
-		props.text ? `margin-top: 1.5rem; margin-bottom: 0.5rem;` : `height: 0; margin: 0;`};
-	${(props) => props.text && SeparatorTextContent}
-`
-
-const Container = styled.div`
+export const Container = styled.div`
 	display: flex;
 	align-items: stretch;
 	align-content: stretch;
@@ -165,7 +143,7 @@ const Container = styled.div`
 	margin: 0 auto;
 `
 
-const MiniButton = styled.div`
+export const MiniButton = styled.div`
 	outline: none;
 	opacity: 0.84;
 	transition: all 0.2s;
@@ -190,16 +168,23 @@ const MiniButton = styled.div`
 	cursor: ${(p) => (p.error ? "default" : "pointer")};
 `
 
-export {
-	StyledLink,
-	StyledInput,
-	StyledFieldCommon,
-	StyledTextarea,
-	Separator,
-	Container,
-	FieldLabel,
-	FieldRow,
-	MiniButton,
-	Header,
-	StyledNavLink
-}
+const SeparatorTextContent = css`
+	&::after {
+		color: #888;
+		content: "${(props) => props.text}";
+		background: #fbfbfb;
+		padding: 0 4px;
+		transform: translateY(-0.6rem)
+	}
+`
+
+export const Separator = styled.p`
+	border-top: 1px solid #ccc;
+	position: relative;
+	display: flex;
+	justify-content: center;
+	height: 1rem;
+	${(props) =>
+		props.text ? `margin-top: 1.5rem; margin-bottom: 0.5rem;` : `height: 0; margin: 0;`};
+	${(props) => props.text && SeparatorTextContent}
+`

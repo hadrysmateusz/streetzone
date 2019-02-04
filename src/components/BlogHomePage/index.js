@@ -63,11 +63,8 @@ const ImageContainer = styled.div`
 	justify-content: center;
 	align-items: flex-start;
 
-	/* padding-top: 20px;
-	padding-left: 20px; */
 	@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
 		align-items: center;
-		/* padding: 0; */
 	}
 `
 
@@ -80,10 +77,6 @@ const Image = styled.div`
 	background-repeat: no-repeat;
 	background-position: center;
 
-`
-
-const Info = styled.div`
-	/* padding: 15px 0; */
 `
 
 const DetailsContainer = styled.div`
@@ -163,7 +156,7 @@ export class BlogHomePage extends Component {
 										<ImageContainer>
 											<Image url={post.photo_url} />
 										</ImageContainer>
-										<Info>
+										<div>
 											<Title as="h3">{post.title}</Title>
 											<DetailsContainer>
 												<InfoItem>
@@ -175,7 +168,7 @@ export class BlogHomePage extends Component {
 												</InfoItem>
 											</DetailsContainer>
 											<Excerpt>{excerpt}</Excerpt>
-										</Info>
+										</div>
 									</Link>
 								</Post>
 							)

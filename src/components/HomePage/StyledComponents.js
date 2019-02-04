@@ -1,5 +1,4 @@
 import styled, { css } from "styled-components"
-import { RefinementList, Pagination } from "react-instantsearch-dom"
 import { SPIN } from "../../style-utils/keyframes"
 import InstantSearch from "react-instantsearch-dom/dist/cjs/widgets/InstantSearch"
 
@@ -10,20 +9,6 @@ export const StyledInstantSearch = styled(InstantSearch)`
 	> {
 		height: 100%;
 	}
-	/* .ais-InstantSearch__root {
-		height: 100%;
-	} */
-`
-
-const InputCommon = css`
-	color: ${(p) => p.theme.colors.black[75]};
-	border: 1px solid ${(p) => p.theme.colors.gray[75]};
-	:hover {
-		border: 1px solid ${(p) => p.theme.colors.gray[25]};
-	}
-	background: white;
-	padding: 0 14px;
-	min-width: 0;
 `
 
 export const MainGrid = styled.div`
@@ -110,7 +95,11 @@ export const RefreshButton = styled.div`
 `
 
 export const FiltersToggle = styled.div`
-	${InputCommon}
+	border: 1px solid ${(p) => p.theme.colors.gray[75]};
+	:hover {
+		border: 1px solid ${(p) => p.theme.colors.gray[25]};
+	}
+	background: white;
 	grid-area: filter;
 	padding: 0 14px;
 	color: ${(p) => p.theme.colors.black[75]};

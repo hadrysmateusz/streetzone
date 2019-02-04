@@ -12,12 +12,6 @@ const ContainerCommon = css`
 		flex-direction: column;
 		height: 100%;
 	}
-
-	/* box-shadow: 0 3px 6px -2px rgba(0, 0, 0, 0.12); */
-	/* transition: transform 0.18s ease;
-	&:hover {
-		transform: translateY(-3px);
-	} */
 `
 
 export const Container = styled.div`
@@ -39,7 +33,6 @@ export const ThumbnailContainer = styled.div`
 	min-height: 0; /* prevent content from overflowing container */
 	flex: 1 1 100%;
 	max-width: 320px;
-	/* margin: 0 auto; */
 	overflow: hidden;
 	justify-content: center;
 	align-items: center;

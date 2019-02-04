@@ -12,6 +12,7 @@ import LoadingSpinner from "../LoadingSpinner"
 import { ROUTES } from "../../constants"
 import { BlogPageContainer } from "../Containers"
 import { minWidth, maxWidth } from "../../style-utils"
+import { Separator } from "../Basics"
 
 const Content = styled(Box).attrs({ p: 3, as: "article" })`
 	position: relative;
@@ -112,18 +113,6 @@ const InfoContainer = styled(Flex).attrs({ fontSize: 0, color: "gray.0", my: 4, 
 		color: ${(p) => p.theme.colors.gray[25]};
 		margin-right: 3px;
 	}
-`
-
-const Separator = styled.div`
-	margin: 6px 0;
-	background: #d3d3d3;
-
-	height: 1px;
-	width: 2.5rem;
-	${minWidth[0]`
-		height: 1rem;
-		width: 1px;
-	`}
 `
 
 const ReactMarkdown = Loadable({

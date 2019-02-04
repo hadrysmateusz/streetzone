@@ -1,7 +1,14 @@
 import React from "react"
 import { Box } from "rebass"
-import Icon from "../Base/Icon"
 import styled from "styled-components"
+import { space, color, fontSize } from "styled-system"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+
+const Icon = styled(FontAwesomeIcon)`
+  ${fontSize}
+	${space}
+  ${color}
+`
 
 const ErrorContainer = styled(Box).attrs({
 	px: 2,
