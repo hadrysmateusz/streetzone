@@ -1,4 +1,35 @@
-import styled, { css } from "styled-components"
+import styled from "styled-components"
+
+export const FilterMenu = styled.div`
+	--width: 350px;
+
+	width: var(--width);
+	min-height: 100%;
+	padding: 20px;
+
+	position: absolute;
+	top: 0;
+	right: calc(0px - (var(--width) + 30px));
+	z-index: 995;
+
+	background: white;
+	box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.25);
+`
+
+export const FilterItemsContainer = styled.div`
+	margin-top: 10px;
+`
+
+export const OptionsContainer = styled.div`
+	${(p) =>
+		p.multiColumn &&
+		`display: grid;
+		grid-template-columns: repeat(3, 1fr);`}
+`
+
+export const FilterContainer = styled.div`
+	position: relative;
+`
 
 export const RangeContainer = styled.div`
 	width: 100%;
@@ -21,6 +52,9 @@ export const RangeContainer = styled.div`
 `
 
 export const SearchBox = styled.div`
+	width: 100%;
+	height: 34px;
+	grid-area: search;
 	flex: 1;
 	border: 1px solid ${(p) => p.theme.colors.gray[75]};
 	:hover {
@@ -42,13 +76,20 @@ export const SearchBox = styled.div`
 		background: white;
 		min-width: 0;
 		width: 100%;
+		padding: 0 5px;
 	}
 `
 
 export const FilterItem = styled.div`
-	padding: 3px 6px;
 	display: flex;
 	align-items: center;
+
+	font-size: 0.88rem;
+	padding: 6px 6px;
+	@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
+		padding: 4px 6px;
+		font-size: 0.84rem;
+	}
 
 	* {
 		cursor: pointer;
@@ -65,7 +106,6 @@ export const FilterItem = styled.div`
 		color: ${(p) => p.theme.colors.black[75]};
 		text-transform: uppercase;
 		/* padding: 0 4px 0 8px; */
-		font-size: 0.84rem;
 		cursor: pointer;
 		width: 100%;
 	}
