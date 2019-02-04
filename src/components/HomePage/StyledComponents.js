@@ -23,7 +23,6 @@ const InputCommon = css`
 	}
 	background: white;
 	padding: 0 14px;
-	height: 38px;
 	min-width: 0;
 `
 
@@ -38,112 +37,33 @@ export const MainGrid = styled.div`
 		margin: 20px auto;
 		padding: 0 20px;
 	}
-	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
-		max-width: 850px;
-	}
-	@media (min-width: ${(p) => p.theme.breakpoints[3]}px) {
-		max-width: ${(p) => p.theme.breakpoints[3]}px;
-	}
 	@media (min-width: ${(p) => p.theme.breakpoints[5]}px) {
 		max-width: ${(p) => p.theme.breakpoints[5]}px;
-	}
-`
-
-export const StyledPagination = styled(Pagination).attrs({
-	showLast: true,
-	showPrevious: false,
-	showNext: false,
-	padding: 2
-})`
-	grid-area: pagination;
-
-	${(p) => p.isHidden && "display: none;"}
-
-	.ais-Pagination-list {
-		justify-content: center;
-		list-style: none;
-		padding: 0;
-		margin: 0;
-		display: flex;
-	}
-
-	margin: 10px 0;
-
-	.ais-Pagination-link {
-		justify-content: center;
-		align-items: center;
-		display: flex;
-		width: 32px;
-		height: 32px;
-	}
-
-	.ais-Pagination-item {
-		box-sizing: border-box;
-		background: ${(p) => p.theme.colors.gray[100]};
-		border: 1px solid ${(p) => p.theme.colors.gray[75]};
-		:not(:last-child) {
-			margin-right: 5px;
-		}
-		color: #3f3f3f;
-	}
-	.ais-Pagination-item--firstPage,
-	.ais-Pagination-item--lastPage,
-	.ais-Pagination-item--previousPage,
-	.ais-Pagination-item--nextPage {
-		background: white;
-	}
-	.ais-Pagination-item--selected {
-		background: white;
-		border: 1px solid ${(p) => p.theme.colors.gray[25]};
-	}
-`
-
-export const StyledRefinementList = styled(RefinementList)`
-	.ais-RefinementList-list {
-		list-style: none;
-		padding: 0;
-		margin: 6px 0;
-	}
-	.ais-RefinementList-searchBox {
-		width: 100%;
-	}
-	.ais-SearchBox-form {
-		display: flex;
-	}
-	.ais-SearchBox-reset {
-		display: none;
-	}
-
-	.ais-SearchBox-input {
-		${InputCommon}
-		height: 34px;
-		flex: 1 1;
-	}
-	.ais-SearchBox-submit {
-		border: 1px solid ${(p) => p.theme.colors.gray[75]};
-		background: ${(p) => p.theme.colors.gray[100]};
-		width: 38px;
-		padding: 0;
-		border-left: 0;
-		outline: none !important;
-		svg {
-			width: 12px;
-			height: 12px;
-		}
 	}
 `
 
 export const TopbarInnerContainer = styled.div`
 	max-width: ${(p) => p.theme.breakpoints[5]}px;
 	margin: 0 auto;
-	height: 34px;
-	display: flex;
-
+	display: grid;
+	grid-template-columns: max-content auto 1fr max-content;
+	grid-template-areas: "filter refresh search sort";
+	gap: 4px;
 	> * {
-		height: 100%;
-		&:not(:last-child) {
-			margin-right: 10px;
+		height: 42px;
+	}
+	@media (min-width: ${(p) => p.theme.breakpoints[0]}px) {
+		gap: 10px;
+		> * {
+			height: 34px;
 		}
+	}
+	@media (max-width: ${(p) => p.theme.breakpoints[1] - 1}px) {
+		grid-template-columns: none;
+		grid-auto-columns: 1fr 1fr;
+		grid-template-areas:
+			"filter sort"
+			"search search";
 	}
 `
 
@@ -155,7 +75,7 @@ export const Topbar = styled.div`
 	z-index: 79;
 	top: 46px;
 	background: white;
-	padding: 10px;
+	padding: 4px;
 	margin: 10px 0;
 
 	@media (min-width: ${(p) => p.theme.breakpoints[0]}px) {
@@ -168,6 +88,9 @@ export const Topbar = styled.div`
 `
 
 export const RefreshButton = styled.div`
+	@media (max-width: ${(p) => p.theme.breakpoints[1] - 1}px) {
+		display: none;
+	}
 	width: 34px;
 	display: flex;
 	justify-content: center;
@@ -188,6 +111,7 @@ export const RefreshButton = styled.div`
 
 export const FiltersToggle = styled.div`
 	${InputCommon}
+	grid-area: filter;
 	padding: 0 14px;
 	color: ${(p) => p.theme.colors.black[75]};
 	display: flex;
@@ -200,13 +124,14 @@ export const FiltersToggle = styled.div`
 	}
 
 	padding: 0 12px;
-	height: 34px;
 	font-size: 0.92rem;
 `
 
 export const Content = styled.main`
 	grid-area: content;
 	flex: 1;
+	max-width: 1080px;
+	margin: 0 auto;
 `
 
 export const SidebarInner = styled.div`
@@ -227,31 +152,6 @@ export const Sidebar = styled.aside`
 	top: 44px;
 	width: 220px;
 	margin-right: 20px;
-`
-
-export const SizeRefinementList = styled(StyledRefinementList)`
-	.ais-RefinementList-list {
-		list-style: none;
-		padding: 0;
-		display: grid;
-		grid-template-columns: repeat(3, 1fr);
-	}
-	.ais-RefinementList-count {
-		display: none;
-	}
-`
-
-export const FullscreenFilters = styled.div`
-	position: fixed;
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	z-index: 5;
-	height: 100vh;
-	background: white;
-	padding: 20px;
-	padding-bottom: ${BUTTONS_CONTAINER_HEIGHT};
 `
 
 export const FiltersContainer = styled.div`

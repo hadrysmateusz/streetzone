@@ -1,11 +1,7 @@
 import React, { Component } from "react"
 
 import Foldable from "../Foldable"
-import {
-	SizeRefinementList,
-	ButtonsContainer,
-	FiltersContainer
-} from "./StyledComponents"
+import { ButtonsContainer, FiltersContainer } from "./StyledComponents"
 import AlgoliaRefinementList from "../Algolia/AlgoliaRefinementList"
 import Button from "../Button"
 import AlgoliaClearRefinements from "../Algolia/AlgoliaClearRefinements"
@@ -22,7 +18,7 @@ export class Filters extends Component {
 					<AlgoliaRefinementList attribute="designers" searchable />
 				</Foldable>
 				<Foldable title="Rozmiar" startFolded>
-					<SizeRefinementList attribute="size" />
+					<AlgoliaRefinementList attribute="size" multiColumn />
 				</Foldable>
 				<Foldable title="Cena" startFolded>
 					<AlgoliaRange attribute="price" />

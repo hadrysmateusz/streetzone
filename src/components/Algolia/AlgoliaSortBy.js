@@ -27,7 +27,6 @@ const Container = styled.label`
 	:hover {
 		border: 1px solid ${(p) => p.theme.colors.gray[25]};
 	}
-	height: 34px;
 	font-size: 0.92rem;
 	svg {
 		margin-right: 6px;
@@ -73,7 +72,11 @@ const AlgoliaSortBy = ({ options, defaultOption }) => (
 				)
 			} else {
 				return (
-					<AlgoliaSortByMobile defaultRefinement={defaultOption} items={options}>
+					<AlgoliaSortByMobile
+						defaultRefinement={defaultOption}
+						items={options}
+						style={{ gridArea: "sort" }}
+					>
 						<FontAwesomeIcon icon="sort" />
 						Sortuj
 					</AlgoliaSortByMobile>
