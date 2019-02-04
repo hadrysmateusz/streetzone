@@ -25,11 +25,7 @@ class AlgoliaSearchBox extends React.Component {
 	clearField = () => {
 		this.setState({ inputValue: "" })
 
-		// the timeout makes it so the query only gets updated when you stop typing
-		clearTimeout(this.rateLimitedRefine)
-		this.rateLimitedRefine = setTimeout(() => {
-			this.props.refine()
-		}, this.delay)
+		this.props.refine()
 	}
 
 	render() {
