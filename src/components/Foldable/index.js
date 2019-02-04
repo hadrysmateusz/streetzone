@@ -4,12 +4,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 const Header = styled.div`
 	padding: 6px;
-	/* margin-bottom: 10px; */
-	color: ${(p) => p.theme.colors.black[50]};
+	color: ${(p) => p.theme.colors.black[0]};
 	text-transform: uppercase;
-	font-size: 0.8rem;
+	font-size: 0.85rem;
 	font-weight: 600;
-	/* border-bottom: 1px solid ${(p) => p.theme.colors.black[75]}; */
 	cursor: pointer;
 	display: flex;
 	justify-content: space-between;
