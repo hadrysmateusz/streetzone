@@ -3,7 +3,6 @@ import { connectRefinementList, Configure } from "react-instantsearch-dom"
 import {
 	FilterItem,
 	FilterMenu,
-	FilterContainer,
 	SearchBox,
 	FilterItemsContainer,
 	OptionsContainer
@@ -14,9 +13,18 @@ import { More } from "../Basics"
 
 class AlgoliaRefinementList extends React.Component {
 	state = { isMenuOpen: false, inputValue: "" }
-	delay = 350
 
-	toggleMenu = () => this.setState((state) => ({ isMenuOpen: !state.isMenuOpen }))
+	searchBox = React.createRef()
+
+	toggleMenu = async () => {
+		await this.setState((state) => ({ isMenuOpen: !state.isMenuOpen }))
+		const isOpen = this.state.isMenuOpen
+		console.log(isOpen)
+		if (isOpen) {
+			console.dir(this.searchBox.current)
+			this.searchBox.current.focus()
+		}
+	}
 
 	onChange = (e) => {
 		// get the currentTarget from the synthetic event before its inaccessible
@@ -24,11 +32,7 @@ class AlgoliaRefinementList extends React.Component {
 		// update the internal state
 		this.setState({ inputValue: currentTarget.value })
 
-		// the timeout makes it so the query only gets updated when you stop typing
-		clearTimeout(this.rateLimitedRefine)
-		this.rateLimitedRefine = setTimeout(() => {
-			this.props.searchForItems(currentTarget.value)
-		}, this.delay)
+		this.props.searchForItems(currentTarget.value)
 	}
 
 	clearField = () => {
@@ -39,7 +43,7 @@ class AlgoliaRefinementList extends React.Component {
 	render() {
 		const { items, refine, attribute, searchable, multiColumn } = this.props
 		return (
-			<FilterContainer>
+			<>
 				<OptionsContainer multiColumn={multiColumn}>
 					{items.slice(0, 4).map((item) => {
 						return (
@@ -72,7 +76,8 @@ class AlgoliaRefinementList extends React.Component {
 									type="text"
 									onChange={this.onChange}
 									value={this.state.inputValue}
-									placeholder="Szukaj po nazwie, marce, kategorii itd."
+									placeholder="Szukaj"
+									ref={this.searchBox}
 								/>
 								{this.state.inputValue && (
 									<div className="icon-container" onClick={this.clearField}>
@@ -93,7 +98,7 @@ class AlgoliaRefinementList extends React.Component {
 													name={item.label}
 													onChange={() => refine(item.value)}
 												/>
-												<span>{item.label}</span>
+												<span>{item.label}</span> <em>({item.count})</em>
 											</label>
 										</FilterItem>
 									)
@@ -102,7 +107,7 @@ class AlgoliaRefinementList extends React.Component {
 						</FilterMenu>
 					</>
 				)}
-			</FilterContainer>
+			</>
 		)
 	}
 }

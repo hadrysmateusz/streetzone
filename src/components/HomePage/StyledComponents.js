@@ -144,6 +144,7 @@ export const Sidebar = styled.aside`
 `
 
 export const FiltersContainer = styled.div`
+	position: relative;
 	@media (max-width: ${(p) => p.theme.breakpoints[1] - 1}px) {
 		position: fixed;
 		top: 0;

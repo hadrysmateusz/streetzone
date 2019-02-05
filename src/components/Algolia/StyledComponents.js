@@ -4,8 +4,9 @@ export const FilterMenu = styled.div`
 	--width: 350px;
 
 	width: var(--width);
-	min-height: 100%;
+	max-height: 75vh;
 	padding: 20px;
+	padding-bottom: 10px;
 
 	position: absolute;
 	top: 0;
@@ -13,11 +14,16 @@ export const FilterMenu = styled.div`
 	z-index: 995;
 
 	background: white;
-	box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.25);
+	box-shadow: 0 1px 12px 0 rgba(0, 0, 0, 0.13);
+	border: 1px solid ${(p) => p.theme.colors.gray[75]};
 `
 
 export const FilterItemsContainer = styled.div`
+	display: grid;
 	margin-top: 10px;
+	padding-bottom: 10px;
+	grid-template-columns: 1fr 1fr;
+	overflow: auto;
 `
 
 export const OptionsContainer = styled.div`
@@ -25,10 +31,6 @@ export const OptionsContainer = styled.div`
 		p.multiColumn &&
 		`display: grid;
 		grid-template-columns: repeat(3, 1fr);`}
-`
-
-export const FilterContainer = styled.div`
-	position: relative;
 `
 
 export const FilterItem = styled.div`
