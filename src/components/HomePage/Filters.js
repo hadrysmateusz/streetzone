@@ -6,6 +6,7 @@ import AlgoliaRefinementList from "../Algolia/AlgoliaRefinementList"
 import Button from "../Button"
 import AlgoliaClearRefinements from "../Algolia/AlgoliaClearRefinements"
 import AlgoliaRange from "../Algolia/AlgoliaRange"
+import { withBreakpoints } from "react-breakpoints"
 
 export class Filters extends Component {
 	render() {
@@ -23,13 +24,17 @@ export class Filters extends Component {
 				<Foldable title="Cena" startFolded>
 					<AlgoliaRange attribute="price" />
 				</Foldable>
-				<ButtonsContainer>
-					<Button onClick={this.props.toggleFilters}>Gotowe</Button>
+				{this.props.currentBreakpoint > 0 ? (
 					<AlgoliaClearRefinements />
-				</ButtonsContainer>
+				) : (
+					<ButtonsContainer>
+						<Button onClick={this.props.toggleFilters}>Gotowe</Button>
+						<AlgoliaClearRefinements />
+					</ButtonsContainer>
+				)}
 			</FiltersContainer>
 		)
 	}
 }
 
-export default Filters
+export default withBreakpoints(Filters)

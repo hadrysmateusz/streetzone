@@ -159,9 +159,9 @@ export const FiltersContainer = styled.div`
 `
 
 export const ButtonsContainer = styled.div`
-	@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
+	/* @media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
 		display: none;
-	}
+	} */
 	width: 100%;
 	display: grid;
 	grid-template-columns: 1fr 1fr;

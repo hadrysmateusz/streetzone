@@ -1,12 +1,9 @@
 import React, { Component } from "react"
-import { /* InstantSearch, */ Configure } from "react-instantsearch-dom"
 import { withBreakpoints } from "react-breakpoints"
 import { compose } from "recompose"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import qs from "qs"
 import equal from "deep-equal"
 
-import getItemsPerPage from "../../utils/getItemsPerPage"
 import { withFirebase } from "../Firebase"
 import sortingOptions from "./sortingOptions"
 import Filters from "./Filters"
@@ -40,19 +37,11 @@ const updateAfter = 700
 
 const createURL = (state) => `?search=${btoa(JSON.stringify(state))}`
 
-const searchStateToUrl = (props, searchState) =>
-	searchState ? `${props.location.pathname}${createURL(searchState)}` : ""
-const urlToSearchState = (location) => qs.parse(location.search.slice(1))
-
 class HomePage extends Component {
 	state = {
 		noMoreItems: false,
 		areFiltersOpen: this.props.currentBreakpoint > 1,
-		searchState: {
-			...DEFAULT_SEARCH_STATE,
-			...urlToSearchState(this.props.location),
-			page: 1
-		},
+		searchState: DEFAULT_SEARCH_STATE,
 		refreshAlgolia: false
 	}
 
@@ -88,7 +77,9 @@ class HomePage extends Component {
 				searchState = DEFAULT_SEARCH_STATE
 			}
 
-			this.setState({ searchState }, () => console.log(this.state.searchState))
+			this.setState({ searchState }, () =>
+				console.log("postUpdate search", this.state.searchState)
+			)
 		}
 	}
 
@@ -131,6 +122,15 @@ class HomePage extends Component {
 		})
 	}
 
+	refresh = (e) => {
+		const target = e.currentTarget
+		target.classList.remove("spin")
+		target.classList.add("spin")
+		this.refreshAlgolia()
+		document.getElementById("App-Element").scrollIntoView(true)
+		setTimeout(() => target.classList.remove("spin"), 1500)
+	}
+
 	render() {
 		const { areFiltersOpen, searchState } = this.state
 		const { currentBreakpoint } = this.props
@@ -154,17 +154,7 @@ class HomePage extends Component {
 							<FontAwesomeIcon icon="filter" />
 							<span>{filterText}</span>
 						</FiltersToggle>
-						<RefreshButton
-							title="Odśwież"
-							onClick={(e) => {
-								const target = e.currentTarget
-								target.classList.remove("spin")
-								target.classList.add("spin")
-								this.refreshAlgolia()
-								document.getElementById("App-Element").scrollIntoView(true)
-								setTimeout(() => target.classList.remove("spin"), 1500)
-							}}
-						>
+						<RefreshButton title="Odśwież" onClick={this.refresh}>
 							<FontAwesomeIcon icon="sync-alt" />
 						</RefreshButton>
 						<AlgoliaSearchBox />
