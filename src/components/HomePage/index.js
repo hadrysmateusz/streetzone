@@ -39,7 +39,6 @@ const createURL = (state) => `?search=${btoa(JSON.stringify(state))}`
 
 class HomePage extends Component {
 	state = {
-		noMoreItems: false,
 		areFiltersOpen: this.props.currentBreakpoint > 1,
 		searchState: DEFAULT_SEARCH_STATE,
 		refreshAlgolia: false
