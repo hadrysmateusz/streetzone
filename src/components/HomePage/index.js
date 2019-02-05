@@ -26,9 +26,19 @@ import {
 } from "./StyledComponents"
 import ScrollToTop from "../ScrollToTop"
 
+const DEFAULT_SORTING = "dev_items_createdAt_desc"
+const DEFAULT_SEARCH_STATE = {
+	range: {},
+	refinementList: {},
+	hitsPerPage: 12,
+	sortBy: DEFAULT_SORTING,
+	query: "",
+	page: 1
+}
+
 const updateAfter = 700
 
-const createURL = (state) => `?${qs.stringify(state)}`
+const createURL = (state) => `?search=${btoa(JSON.stringify(state))}`
 
 const searchStateToUrl = (props, searchState) =>
 	searchState ? `${props.location.pathname}${createURL(searchState)}` : ""
@@ -38,7 +48,11 @@ class HomePage extends Component {
 	state = {
 		noMoreItems: false,
 		areFiltersOpen: this.props.currentBreakpoint > 1,
-		searchState: { ...urlToSearchState(this.props.location), page: 1 },
+		searchState: {
+			...DEFAULT_SEARCH_STATE,
+			...urlToSearchState(this.props.location),
+			page: 1
+		},
 		refreshAlgolia: false
 	}
 
@@ -50,7 +64,31 @@ class HomePage extends Component {
 
 	componentDidUpdate(prevProps) {
 		if (prevProps.location !== this.props.location) {
-			this.setState({ searchState: urlToSearchState(this.props.location) })
+			let searchState = DEFAULT_SEARCH_STATE
+
+			try {
+				var searchParams = new URLSearchParams(this.props.location.search)
+				const search = searchParams.get("search")
+				console.log("search: ", search)
+				const convertedSearch = atob(search)
+				console.log("convertedSearch: ", convertedSearch)
+				const parsedSearch = JSON.parse(convertedSearch)
+				console.log("parsedSearch: ", parsedSearch)
+
+				const { category, designers, size, price, sortBy, query, page } = parsedSearch
+
+				if (category) searchState.refinementList.category = category
+				if (designers) searchState.refinementList.designers = designers
+				if (size) searchState.refinementList.size = size
+				if (price) searchState.range.price = price
+				if (sortBy) searchState.sortBy = sortBy
+				if (query) searchState.query = query
+				if (page) searchState.page = page
+			} catch (e) {
+				searchState = DEFAULT_SEARCH_STATE
+			}
+
+			this.setState({ searchState }, () => console.log(this.state.searchState))
 		}
 	}
 
@@ -60,14 +98,28 @@ class HomePage extends Component {
 		let _oldState = { ...this.state.searchState, page: null }
 		let _newState = { ...searchState, page: null }
 		const areEqual = equal(_newState, _oldState)
+		console.log(_oldState, _newState, areEqual)
 		if (!areEqual) {
 			console.log("should scroll")
 			document.getElementById("App-Element").scrollIntoView(true)
 		}
 
+		// format the state to keep the url relatively short
+		const { refinementList, query, range, sortBy, page } = searchState
+		let formattedState = {}
+		if (refinementList) {
+			if (refinementList.category) formattedState.category = refinementList.category
+			if (refinementList.designers) formattedState.designers = refinementList.designers
+			if (refinementList.size) formattedState.size = refinementList.size
+		}
+		if (page) formattedState.page = page
+		if (query) formattedState.query = query
+		if (sortBy) formattedState.sortBy = sortBy
+		if (range && range.price) formattedState.price = range.price
+
 		clearTimeout(this.debouncedSetState)
 		this.debouncedSetState = setTimeout(async () => {
-			this.props.history.push(searchStateToUrl(this.props, searchState), searchState)
+			this.props.history.push(createURL(formattedState))
 		}, updateAfter)
 		this.setState({ searchState })
 	}
@@ -96,8 +148,6 @@ class HomePage extends Component {
 				createURL={createURL}
 				refresh={this.state.refreshAlgolia}
 			>
-				<Configure hitsPerPage={12} />
-
 				<Topbar>
 					<TopbarInnerContainer>
 						<FiltersToggle onClick={this.toggleFilters}>
