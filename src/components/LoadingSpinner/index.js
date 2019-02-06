@@ -7,6 +7,7 @@ const LoadingSpinner = () => <RotateSpinLoader size={9} />
 
 const LoadableComponentSpinner = ({ error, pastDelay, timedOut }) => {
 	if (error) {
+		console.log(error)
 		return (
 			<EmptyState src="SadFace.png">
 				Coś poszło nie tak, odśwież stronę lub spróbuj później
