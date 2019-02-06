@@ -22,7 +22,13 @@ export class Filters extends Component {
 						<AlgoliaRefinementList attribute="category" />
 					</Foldable>
 					<Foldable title="Projektanci" onlyVisual>
-						<AlgoliaRefinementList attribute="designers" searchable show={8} />
+						{/* showMore is required by algolia to display a full list */}
+						<AlgoliaRefinementList
+							attribute="designers"
+							searchable
+							show={8}
+							showMore={true}
+						/>
 					</Foldable>
 					<Foldable title="Rozmiar" onlyVisual>
 						<AlgoliaRefinementList attribute="size" multiColumn />
