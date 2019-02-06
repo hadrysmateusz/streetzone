@@ -13,6 +13,7 @@ const ScrollToTop = styled.button.attrs((p) => ({
 	box-shadow: none;
 	border-radius: 50%;
 	position: sticky;
+	box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.48);
 	cursor: pointer;
 	:hover {
 		background: black;
