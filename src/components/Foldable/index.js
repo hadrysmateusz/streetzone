@@ -38,7 +38,11 @@ class Foldable extends React.Component {
 					<span>{this.props.title}</span>
 					<FontAwesomeIcon icon={"caret-up"} />
 				</Header>
-				{!this.state.isFolded && <div>{this.props.children}</div>}
+				{this.props.onlyVisual ? (
+					<div hidden={this.state.isFolded}>{this.props.children}</div>
+				) : (
+					!this.state.isFolded && <div>{this.props.children}</div>
+				)}
 			</div>
 		)
 	}

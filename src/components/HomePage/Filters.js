@@ -1,7 +1,12 @@
 import React, { Component } from "react"
 
 import Foldable from "../Foldable"
-import { ButtonsContainer, FiltersContainer } from "./StyledComponents"
+import {
+	ButtonsContainer,
+	FiltersContainer,
+	FilterInnerContainer,
+	ButtonContainer
+} from "./StyledComponents"
 import AlgoliaRefinementList from "../Algolia/AlgoliaRefinementList"
 import Button from "../Button"
 import AlgoliaClearRefinements from "../Algolia/AlgoliaClearRefinements"
@@ -12,20 +17,24 @@ export class Filters extends Component {
 	render() {
 		return (
 			<FiltersContainer {...this.props}>
-				<Foldable title="Kategoria">
-					<AlgoliaRefinementList attribute="category" />
-				</Foldable>
-				<Foldable title="Projektanci">
-					<AlgoliaRefinementList attribute="designers" searchable />
-				</Foldable>
-				<Foldable title="Rozmiar" startFolded>
-					<AlgoliaRefinementList attribute="size" multiColumn />
-				</Foldable>
-				<Foldable title="Cena" startFolded>
-					<AlgoliaRange attribute="price" />
-				</Foldable>
+				<FilterInnerContainer>
+					<Foldable title="Kategoria" onlyVisual>
+						<AlgoliaRefinementList attribute="category" />
+					</Foldable>
+					<Foldable title="Projektanci" onlyVisual>
+						<AlgoliaRefinementList attribute="designers" searchable show={8} />
+					</Foldable>
+					<Foldable title="Rozmiar" onlyVisual>
+						<AlgoliaRefinementList attribute="size" multiColumn />
+					</Foldable>
+					<Foldable title="Cena" onlyVisual>
+						<AlgoliaRange attribute="price" />
+					</Foldable>
+				</FilterInnerContainer>
 				{this.props.currentBreakpoint > 0 ? (
-					<AlgoliaClearRefinements />
+					<ButtonContainer>
+						<AlgoliaClearRefinements />
+					</ButtonContainer>
 				) : (
 					<ButtonsContainer>
 						<Button onClick={this.props.toggleFilters}>Gotowe</Button>

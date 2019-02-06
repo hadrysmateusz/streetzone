@@ -6,8 +6,8 @@ class AlgoliaRange extends React.Component {
 	delay = 350
 
 	state = {
-		min: this.props.currentRefinement.min,
-		max: this.props.currentRefinement.max
+		min: this.props.currentRefinement.min || "",
+		max: this.props.currentRefinement.max || ""
 	}
 
 	componentDidMount() {
@@ -58,5 +58,42 @@ class AlgoliaRange extends React.Component {
 		)
 	}
 }
+
+// const AlgoliaRange = ({ refine, min, max, currentRefinement }) => {
+// 	return (
+// 		<RangeContainer>
+// 			<input
+// 				type="number"
+// 				placeholder="Od"
+// 				name="min"
+// 				step={1}
+// 				min={0}
+// 				max={99999}
+// 				onChange={(e) => {
+// 					refine({
+// 						...currentRefinement,
+// 						min: Math.max(e.value, min) || min
+// 					})
+// 				}}
+// 				value={currentRefinement.min}
+// 			/>
+// 			<input
+// 				type="number"
+// 				placeholder="Do"
+// 				name="max"
+// 				step={1}
+// 				min={0}
+// 				max={99999}
+// 				onChange={(e) => {
+// 					refine({
+// 						...currentRefinement,
+// 						max: Math.max(e.value, max) || max
+// 					})
+// 				}}
+// 				value={currentRefinement.max}
+// 			/>
+// 		</RangeContainer>
+// 	)
+// }
 
 export default connectRange(AlgoliaRange)

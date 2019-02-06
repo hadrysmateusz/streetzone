@@ -1,6 +1,8 @@
 import React from "react"
 import { connectSearchBox } from "react-instantsearch-dom"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { withRouter } from "react-router-dom"
+import { compose } from "recompose"
 
 import { SearchBox } from "./StyledComponents"
 
@@ -8,6 +10,23 @@ class AlgoliaSearchBox extends React.Component {
 	delay = 350
 
 	state = { inputValue: this.props.currentRefinement }
+
+	componentDidMount() {
+		try {
+			// get the encoded search parameter from URL
+			var searchParams = new URLSearchParams(this.props.location.search)
+			const search = searchParams.get("search")
+
+			// decode and parse the search paramter
+			const convertedSearch = atob(search)
+			const parsedSearch = JSON.parse(convertedSearch)
+
+			this.setState({ inputValue: parsedSearch.query })
+		} catch (e) {
+			// if there was a problem while parsing, empty the field
+			this.setState({ inputValue: "" })
+		}
+	}
 
 	onChange = (e) => {
 		// get the currentTarget from the synthetic event before its inaccessible
@@ -26,6 +45,25 @@ class AlgoliaSearchBox extends React.Component {
 		this.setState({ inputValue: "" })
 
 		this.props.refine()
+	}
+
+	componentDidUpdate(prevProps) {
+		if (prevProps.location !== this.props.location) {
+			try {
+				// get the encoded search parameter from URL
+				var searchParams = new URLSearchParams(this.props.location.search)
+				const search = searchParams.get("search")
+
+				// decode and parse the search paramter
+				const convertedSearch = atob(search)
+				const parsedSearch = JSON.parse(convertedSearch)
+
+				this.setState({ inputValue: parsedSearch.query })
+			} catch (e) {
+				// if there was a problem while parsing, empty the field
+				this.setState({ inputValue: "" })
+			}
+		}
 	}
 
 	render() {
@@ -50,4 +88,7 @@ class AlgoliaSearchBox extends React.Component {
 	}
 }
 
-export default connectSearchBox(AlgoliaSearchBox)
+export default compose(
+	withRouter,
+	connectSearchBox
+)(AlgoliaSearchBox)

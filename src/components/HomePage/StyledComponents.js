@@ -123,45 +123,7 @@ export const Content = styled.main`
 	margin: 0 auto;
 `
 
-export const SidebarInner = styled.div`
-	position: sticky;
-	z-index: 89;
-	top: 127px;
-	background: white;
-	border: 1px solid ${(p) => p.theme.colors.gray[75]};
-	padding: 10px 20px;
-`
-
-export const Sidebar = styled.aside`
-	grid-area: filters;
-	box-sizing: content-box;
-
-	max-width: 100%;
-
-	top: 44px;
-	width: 220px;
-	margin-right: 20px;
-`
-
-export const FiltersContainer = styled.div`
-	position: relative;
-	@media (max-width: ${(p) => p.theme.breakpoints[1] - 1}px) {
-		position: fixed;
-		top: 0;
-		left: 0;
-		right: 0;
-		bottom: 0;
-		height: 100vh;
-		background: white;
-		padding: 20px;
-		padding-bottom: ${BUTTONS_CONTAINER_HEIGHT};
-	}
-`
-
 export const ButtonsContainer = styled.div`
-	/* @media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
-		display: none;
-	} */
 	width: 100%;
 	display: grid;
 	grid-template-columns: 1fr 1fr;
@@ -179,5 +141,64 @@ export const ButtonsContainer = styled.div`
 		height: auto;
 		white-space: nowrap;
 		min-width: 0;
+	}
+`
+
+export const ButtonContainer = styled.div`
+	margin-top: 10px;
+	margin-bottom: 5px;
+	width: 100%;
+`
+
+export const Sidebar = styled.aside`
+	grid-area: filters;
+	box-sizing: content-box;
+
+	max-width: 100%;
+
+	top: 44px;
+	width: 220px;
+	margin-right: 20px;
+`
+
+export const SidebarInner = styled.div`
+	position: sticky;
+	z-index: 89;
+	top: 127px;
+	background: white;
+	border: 1px solid ${(p) => p.theme.colors.gray[75]};
+	padding: 10px 20px;
+`
+
+export const FiltersContainer = styled.div`
+	/* desktop */
+	@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
+		position: relative;
+	}
+
+	/* mobile */
+	@media (max-width: ${(p) => p.theme.breakpoints[1] - 1}px) {
+		position: fixed;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		height: 100vh;
+		background: white;
+		padding: 20px;
+		padding-bottom: ${BUTTONS_CONTAINER_HEIGHT};
+	}
+`
+
+export const FilterInnerContainer = styled.div`
+	/* desktop */
+	@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
+		max-height: calc(100vh - 300px);
+		overflow-y: auto;
+		margin-bottom: 5px;
+	}
+
+	> * {
+		padding: 5px 0;
 	}
 `

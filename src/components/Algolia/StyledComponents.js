@@ -9,8 +9,8 @@ export const FilterMenu = styled.div`
 	padding-bottom: 10px;
 
 	position: absolute;
-	top: 0;
-	right: calc(0px - (var(--width) + 30px));
+	top: 10px;
+	right: calc(0px - (var(--width) + 10px));
 	z-index: 995;
 
 	background: white;
@@ -24,6 +24,13 @@ export const FilterItemsContainer = styled.div`
 	padding-bottom: 10px;
 	grid-template-columns: 1fr 1fr;
 	overflow: auto;
+`
+
+export const NoResults = styled.div`
+	font-size: 0.76rem;
+
+	text-align: center;
+	margin: 6px 0;
 `
 
 export const OptionsContainer = styled.div`
@@ -78,6 +85,7 @@ export const RangeContainer = styled.div`
 		height: 100%;
 		min-width: 0;
 		min-height: 0;
+		width: 100%;
 	}
 `
 
