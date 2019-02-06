@@ -1,15 +1,56 @@
 import React from "react"
-import { connectRefinementList, Configure } from "react-instantsearch-dom"
+import { connectRefinementList } from "react-instantsearch-dom"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { Portal } from "react-portal"
+
 import {
 	FilterItem,
 	FilterMenu,
-	SearchBox,
+	SearchBox as SearchBoxContainer,
 	FilterItemsContainer,
-	OptionsContainer
+	OptionsContainer,
+	NoResults
 } from "./StyledComponents"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import Overlay from "../Overlay"
 import { More } from "../Basics"
+
+const FilterItems = ({ items, refine, showCount }) => {
+	return items && items.length > 0 ? (
+		items.map((item) => {
+			return (
+				<FilterItem key={item.value}>
+					<label htmlFor={`filter-value-${item.label}`}>
+						<input
+							id={`filter-value-${item.label}`}
+							type="checkbox"
+							checked={item.isRefined}
+							value={item.value}
+							name={item.label}
+							onChange={() => refine(item.value)}
+						/>
+						<span>{item.label}</span> {showCount && <em>({item.count})</em>}
+					</label>
+				</FilterItem>
+			)
+		})
+	) : (
+		<NoResults>Brak</NoResults>
+	)
+}
+
+const SearchBox = React.forwardRef(({ value, onChange, clear }, ref) => (
+	<SearchBoxContainer>
+		<div className="icon-container">
+			<FontAwesomeIcon icon="search" />
+		</div>
+		<input type="text" placeholder="Szukaj" onChange={onChange} value={value} ref={ref} />
+		{value && (
+			<div className="icon-container" onClick={clear}>
+				<FontAwesomeIcon icon="times" />
+			</div>
+		)}
+	</SearchBoxContainer>
+))
 
 class AlgoliaRefinementList extends React.Component {
 	state = { isMenuOpen: false, inputValue: "" }
@@ -18,93 +59,55 @@ class AlgoliaRefinementList extends React.Component {
 
 	toggleMenu = async () => {
 		await this.setState((state) => ({ isMenuOpen: !state.isMenuOpen }))
+		// focus the input upon opening the menu
 		const isOpen = this.state.isMenuOpen
-		console.log(isOpen)
 		if (isOpen) {
-			console.dir(this.searchBox.current)
 			this.searchBox.current.focus()
 		}
 	}
 
-	onChange = (e) => {
-		// get the currentTarget from the synthetic event before its inaccessible
+	onInputChange = (e) => {
+		// get the currentTarget from the synthetic event before it's inaccessible
 		const currentTarget = e.currentTarget
 		// update the internal state
 		this.setState({ inputValue: currentTarget.value })
-
+		// trigger algolia's search
 		this.props.searchForItems(currentTarget.value)
 	}
 
-	clearField = () => {
+	clearInput = () => {
 		this.setState({ inputValue: "" })
-
 		this.props.searchForItems("")
 	}
+
 	render() {
-		const { items, refine, attribute, searchable, multiColumn } = this.props
+		const { items, refine, searchable, multiColumn, show } = this.props
+		const limitedItems = show ? items.slice(0, show) : items
+
 		return (
 			<>
 				<OptionsContainer multiColumn={multiColumn}>
-					{items.slice(0, 4).map((item) => {
-						return (
-							<FilterItem key={item.value}>
-								<label htmlFor={`filter-value-${item.label}`}>
-									<input
-										id={`filter-value-${item.label}`}
-										type="checkbox"
-										checked={item.isRefined}
-										value={item.value}
-										name={item.label}
-										onChange={() => refine(item.value)}
-									/>
-									<span>{item.label}</span>
-								</label>
-							</FilterItem>
-						)
-					})}
-					{searchable && <More onClick={this.toggleMenu}>Więcej...</More>}
+					<FilterItems items={limitedItems} refine={refine} />
 				</OptionsContainer>
+				{searchable && items && items.length > 0 && (
+					<More onClick={this.toggleMenu}>Więcej...</More>
+				)}
 				{this.state.isMenuOpen && (
 					<>
-						<Overlay onClick={this.toggleMenu} />
-						<FilterMenu>
-							<SearchBox>
-								<div className="icon-container">
-									<FontAwesomeIcon icon="search" />
-								</div>
-								<input
-									type="text"
-									onChange={this.onChange}
+						<Portal node={document && document.getElementById("filters-container")}>
+							<Overlay onClick={this.toggleMenu} />
+							<FilterMenu>
+								<SearchBox
 									value={this.state.inputValue}
-									placeholder="Szukaj"
+									onChange={this.onInputChange}
+									clear={this.clearInput}
 									ref={this.searchBox}
 								/>
-								{this.state.inputValue && (
-									<div className="icon-container" onClick={this.clearField}>
-										<FontAwesomeIcon icon="times" />
-									</div>
-								)}
-							</SearchBox>
-							<FilterItemsContainer>
-								{items.map((item) => {
-									return (
-										<FilterItem key={item.value}>
-											<label htmlFor={`filter-value-${item.label}`}>
-												<input
-													id={`filter-value-${item.label}`}
-													type="checkbox"
-													checked={item.isRefined}
-													value={item.value}
-													name={item.label}
-													onChange={() => refine(item.value)}
-												/>
-												<span>{item.label}</span> <em>({item.count})</em>
-											</label>
-										</FilterItem>
-									)
-								})}
-							</FilterItemsContainer>
-						</FilterMenu>
+								<FilterItemsContainer>
+									<FilterItems items={items} refine={refine} showCount />
+								</FilterItemsContainer>
+							</FilterMenu>
+						</Portal>
 					</>
 				)}
 			</>
