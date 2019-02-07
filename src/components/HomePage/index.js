@@ -83,7 +83,7 @@ class HomePage extends Component {
 			searchState.sortBy = sortBy || DEFAULT_SORTING
 			searchState.query = query || ""
 			searchState.page = page || 1
-			debugger
+			// debugger
 		} catch (e) {
 			console.log(e)
 			// if there was a problem while parsing, use default state instead
@@ -102,17 +102,17 @@ class HomePage extends Component {
 	shouldScroll = (oldState, newState) => {
 		/* get copies of current and prev states and compare all values except for page
 		to determine whether the component should scroll back to the top */
-		oldState.page = null
-		newState.page = null
-		const areEqual = equal(newState, oldState)
+		const _oldState = { ...oldState, page: null }
+		const _newState = { ...newState, page: null }
+		const areEqual = equal(_newState, _oldState)
 		if (!areEqual) {
 			console.log("should scroll")
 			document.getElementById("App-Element").scrollIntoView(true)
 		}
 	}
 
-	onSearchStateChange = (searchState) => {
-		const _searchState = cloneDeep(searchState)
+	onSearchStateChange = async (searchState) => {
+		const _searchState = await cloneDeep(searchState)
 
 		this.shouldScroll(cloneDeep(this.state.searchState), _searchState)
 
@@ -130,6 +130,8 @@ class HomePage extends Component {
 		if (query !== undefined) formattedState.query = query
 		if (sortBy !== undefined) formattedState.sortBy = sortBy
 		if (range && range.price !== undefined) formattedState.price = range.price
+
+		debugger
 
 		this.props.history.push(createURL(formattedState))
 
