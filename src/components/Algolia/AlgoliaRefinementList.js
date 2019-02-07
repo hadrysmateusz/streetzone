@@ -81,11 +81,12 @@ class AlgoliaRefinementList extends React.Component {
 	}
 
 	render() {
-		const { items, refine, searchable, multiColumn, show } = this.props
+		const { items, refine, searchable, multiColumn, show, currentRefinement } = this.props
 		const limitedItems = show ? items.slice(0, show) : items
 
 		return (
 			<>
+				{currentRefinement && currentRefinement.length !== 0 && <div>CLEAR</div>}
 				<OptionsContainer multiColumn={multiColumn}>
 					<FilterItems items={limitedItems} refine={refine} />
 				</OptionsContainer>
