@@ -3,7 +3,22 @@ import { RotateSpinLoader } from "react-css-loaders"
 
 import EmptyState from "../EmptyState"
 
-const LoadingSpinner = () => <RotateSpinLoader size={9} />
+class LoadingSpinner extends React.Component {
+	state = { isVisible: false }
+
+	componentDidMount() {
+		this.showAfterId = setTimeout(
+			() => this.setState({ isVisible: true }),
+			this.props.delay || 200
+		)
+	}
+	componentWillUnmount() {
+		clearTimeout(this.showAfterId)
+	}
+	render() {
+		return this.state.isVisible ? <RotateSpinLoader size={9} /> : null
+	}
+}
 
 const LoadableComponentSpinner = ({ error, pastDelay, timedOut }) => {
 	if (error) {
