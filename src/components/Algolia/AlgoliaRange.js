@@ -3,15 +3,19 @@ import { connectRange } from "react-instantsearch-dom"
 import { RangeContainer } from "./StyledComponents"
 
 class AlgoliaRange extends React.Component {
-	delay = 350
+	delay = 400
 
 	state = {
 		min: this.props.currentRefinement.min || "",
 		max: this.props.currentRefinement.max || ""
 	}
 
-	componentDidMount() {
-		this.setState(this.props.currentRefinement)
+	componentDidUpdate = async (prevProps, prevState) => {
+		if (this.props.forceClear.value) {
+			debugger
+			this.props.forceClear.update(false)
+			this.setState({ min: "", max: "" }, () => console.log(this.state))
+		}
 	}
 
 	onChange = (e) => {

@@ -1,4 +1,7 @@
 import React, { Component } from "react"
+import { withBreakpoints } from "react-breakpoints"
+import { withRouter } from "react-router-dom"
+import { compose } from "recompose"
 
 import Foldable from "../Foldable"
 import {
@@ -11,7 +14,7 @@ import AlgoliaRefinementList from "../Algolia/AlgoliaRefinementList"
 import Button from "../Button"
 import AlgoliaClearRefinements from "../Algolia/AlgoliaClearRefinements"
 import AlgoliaRange from "../Algolia/AlgoliaRange"
-import { withBreakpoints } from "react-breakpoints"
+import { ROUTES } from "../../constants"
 
 export class Filters extends Component {
 	render() {
@@ -34,17 +37,33 @@ export class Filters extends Component {
 						<AlgoliaRefinementList attribute="size" multiColumn />
 					</Foldable>
 					<Foldable title="Cena" onlyVisual>
-						<AlgoliaRange attribute="price" />
+						<AlgoliaRange attribute="price" forceClear={this.props.forceClear} />
 					</Foldable>
 				</FilterInnerContainer>
 				{this.props.currentBreakpoint > 0 ? (
 					<ButtonContainer>
-						<AlgoliaClearRefinements />
+						<Button
+							onClick={() => {
+								this.props.history.push(ROUTES.HOME)
+								this.props.forceClear.update(true)
+							}}
+							fullWidth
+						>
+							Wyczyść filtry
+						</Button>
 					</ButtonContainer>
 				) : (
 					<ButtonsContainer>
 						<Button onClick={this.props.toggleFilters}>Gotowe</Button>
-						<AlgoliaClearRefinements />
+						<Button
+							onClick={() => {
+								this.props.history.push(ROUTES.HOME)
+								this.props.forceClear.update(true)
+							}}
+							fullWidth
+						>
+							Wyczyść filtry
+						</Button>
 					</ButtonsContainer>
 				)}
 			</FiltersContainer>
@@ -52,4 +71,7 @@ export class Filters extends Component {
 	}
 }
 
-export default withBreakpoints(Filters)
+export default compose(
+	withRouter,
+	withBreakpoints
+)(Filters)

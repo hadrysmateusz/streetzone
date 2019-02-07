@@ -25,13 +25,13 @@ import {
 import ScrollToTop from "../ScrollToTop"
 
 const DEFAULT_SORTING = "dev_items_createdAt_desc"
-const DEFAULT_SEARCH_STATE = {
+const DEFAULT_SEARCH_STATE = Object.freeze({
 	refinementList: {},
 	hitsPerPage: 12,
 	sortBy: DEFAULT_SORTING,
 	query: "",
 	page: 1
-}
+})
 
 const updateAfter = 700
 
@@ -42,7 +42,12 @@ class HomePage extends Component {
 		areFiltersOpen: this.props.currentBreakpoint > 1,
 		searchState: null,
 		isLoading: true,
-		refreshAlgolia: false
+		refreshAlgolia: false,
+		clearFilters: false
+	}
+
+	setClearFiltersFlag = (to) => {
+		return this.setState({ clearFilters: to })
 	}
 
 	componentDidMount() {
@@ -57,7 +62,7 @@ class HomePage extends Component {
 	}
 
 	urlToState = () => {
-		let searchState = DEFAULT_SEARCH_STATE
+		let searchState = cloneDeep(DEFAULT_SEARCH_STATE)
 
 		try {
 			// get the encoded search parameter from URL
@@ -83,11 +88,10 @@ class HomePage extends Component {
 			searchState.sortBy = sortBy || DEFAULT_SORTING
 			searchState.query = query || ""
 			searchState.page = page || 1
-			// debugger
 		} catch (e) {
 			console.log(e)
 			// if there was a problem while parsing, use default state instead
-			searchState = DEFAULT_SEARCH_STATE
+			return DEFAULT_SEARCH_STATE
 		}
 		return searchState
 	}
@@ -130,8 +134,6 @@ class HomePage extends Component {
 		if (query !== undefined) formattedState.query = query
 		if (sortBy !== undefined) formattedState.sortBy = sortBy
 		if (range && range.price !== undefined) formattedState.price = range.price
-
-		debugger
 
 		this.props.history.push(createURL(formattedState))
 
@@ -192,7 +194,13 @@ class HomePage extends Component {
 				<MainGrid>
 					<Sidebar hidden={!areFiltersOpen}>
 						<SidebarInner id="filters-container">
-							<Filters toggleFilters={this.toggleFilters} />
+							<Filters
+								toggleFilters={this.toggleFilters}
+								forceClear={{
+									value: this.state.clearFilters,
+									update: this.setClearFiltersFlag
+								}}
+							/>
 						</SidebarInner>
 					</Sidebar>
 
