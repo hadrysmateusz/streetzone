@@ -146,11 +146,18 @@ class HomePage extends Component {
 	}
 
 	refresh = (e) => {
+		// Start the button animation
 		const target = e.currentTarget
 		target.classList.remove("spin")
 		target.classList.add("spin")
+
+		// Refresh Algolia cache
 		this.refreshAlgolia()
+
+		// Scroll to top
 		document.getElementById("App-Element").scrollIntoView(true)
+
+		// End the animation
 		setTimeout(() => target.classList.remove("spin"), 1500)
 	}
 
