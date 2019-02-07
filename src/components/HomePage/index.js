@@ -51,7 +51,10 @@ class HomePage extends Component {
 	}
 
 	componentDidMount() {
-		const searchState = this.urlToState()
+		/* this is required in order for the component to not get stuck on a later
+		page without the ability to navigate back other than clearing all filters */
+		let searchState = { ...this.urlToState(), page: 1 }
+
 		this.setState({ searchState, isLoading: false })
 	}
 
@@ -110,7 +113,6 @@ class HomePage extends Component {
 		const _newState = { ...newState, page: null }
 		const areEqual = equal(_newState, _oldState)
 		if (!areEqual) {
-			console.log("should scroll")
 			document.getElementById("App-Element").scrollIntoView(true)
 		}
 	}

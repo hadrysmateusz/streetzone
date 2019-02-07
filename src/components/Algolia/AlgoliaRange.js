@@ -14,7 +14,7 @@ class AlgoliaRange extends React.Component {
 		if (this.props.forceClear.value) {
 			debugger
 			this.props.forceClear.update(false)
-			this.setState({ min: "", max: "" }, () => console.log(this.state))
+			this.setState({ min: "", max: "" })
 		}
 	}
 

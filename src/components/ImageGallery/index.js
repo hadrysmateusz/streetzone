@@ -197,7 +197,7 @@ export class ImageGallery extends Component {
 			imageURLs[(currentImageIndex + imageURLs.length - 1) % imageURLs.length] ||
 			undefined
 
-		console.log(mainSrc, nextSrc, prevSrc)
+		// console.log(mainSrc, nextSrc, prevSrc)
 
 		return (
 			<Container>

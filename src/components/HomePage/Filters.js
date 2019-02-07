@@ -12,7 +12,6 @@ import {
 } from "./StyledComponents"
 import AlgoliaRefinementList from "../Algolia/AlgoliaRefinementList"
 import Button from "../Button"
-import AlgoliaClearRefinements from "../Algolia/AlgoliaClearRefinements"
 import AlgoliaRange from "../Algolia/AlgoliaRange"
 import { ROUTES } from "../../constants"
 
