@@ -1,28 +1,22 @@
 import React, { Component } from "react"
 import { withBreakpoints } from "react-breakpoints"
 import { compose } from "recompose"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import equal from "deep-equal"
 import cloneDeep from "clone-deep"
 
 import { withFirebase } from "../Firebase"
-import sortingOptions from "./sortingOptions"
 import Filters from "./Filters"
 import { AlgoliaInfiniteHits } from "../Algolia/AlgoliaHits"
-import AlgoliaSortBy from "../Algolia/AlgoliaSortBy"
-import AlgoliaSearchBox from "../Algolia/AlgoliaSearchBox"
 import {
-	Topbar,
-	TopbarInnerContainer,
-	FiltersToggle,
 	MainGrid,
 	Sidebar,
 	SidebarInner,
 	Content,
-	RefreshButton,
 	StyledInstantSearch
 } from "./StyledComponents"
 import ScrollToTop from "../ScrollToTop"
+import LoadingSpinner from "../LoadingSpinner"
+import Topbar from "../Topbar"
 
 const DEFAULT_SORTING = "dev_items_createdAt_desc"
 const DEFAULT_SEARCH_STATE = Object.freeze({
@@ -33,7 +27,7 @@ const DEFAULT_SEARCH_STATE = Object.freeze({
 	page: 1
 })
 
-const updateAfter = 700
+// const updateAfter = 700
 
 const createURL = (state) => `?search=${btoa(JSON.stringify(state))}`
 
@@ -163,10 +157,9 @@ class HomePage extends Component {
 		const { areFiltersOpen, searchState } = this.state
 		const { currentBreakpoint } = this.props
 
-		const filterText =
-			currentBreakpoint < 1 ? "Filtry" : areFiltersOpen ? "Ukryj filtry" : "Pokaż filtry"
-
-		return this.state.isLoading ? null : (
+		return this.state.isLoading ? (
+			<LoadingSpinner />
+		) : (
 			<StyledInstantSearch
 				appId={process.env.REACT_APP_APP_ID}
 				apiKey={process.env.REACT_APP_ALGOLIA_API_KEY}
@@ -176,22 +169,12 @@ class HomePage extends Component {
 				createURL={createURL}
 				refresh={this.state.refreshAlgolia}
 			>
-				<Topbar>
-					<TopbarInnerContainer>
-						<FiltersToggle onClick={this.toggleFilters}>
-							<FontAwesomeIcon icon="filter" />
-							<span>{filterText}</span>
-						</FiltersToggle>
-						<RefreshButton title="Odśwież" onClick={this.refresh}>
-							<FontAwesomeIcon icon="sync-alt" />
-						</RefreshButton>
-						<AlgoliaSearchBox />
-						<AlgoliaSortBy
-							options={sortingOptions}
-							defaultOption="dev_items_createdAt_desc"
-						/>
-					</TopbarInnerContainer>
-				</Topbar>
+				<Topbar
+					currentBreakpoint={currentBreakpoint}
+					areFiltersOpen={areFiltersOpen}
+					toggleFilters={this.toggleFilters}
+					refresh={this.refresh}
+				/>
 
 				<MainGrid>
 					<Sidebar hidden={!areFiltersOpen}>
