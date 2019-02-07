@@ -19,10 +19,11 @@ import LoadingSpinner from "../LoadingSpinner"
 import Topbar from "../Topbar"
 
 const DEFAULT_SORTING = "dev_items_createdAt_desc"
+const DEFAULT_HITS_PER_PAGE = 12
 const DEFAULT_SEARCH_STATE = Object.freeze({
-	refinementList: {},
-	hitsPerPage: 12,
+	hitsPerPage: DEFAULT_HITS_PER_PAGE,
 	sortBy: DEFAULT_SORTING,
+	refinementList: {},
 	query: "",
 	page: 1
 })
