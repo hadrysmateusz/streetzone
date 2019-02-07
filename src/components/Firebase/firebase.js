@@ -170,7 +170,9 @@ class Firebase {
 	}
 
 	batchGetImageURLs = async (refs, size) => {
-		return Promise.all(refs.map((ref) => this.getImageURL(ref, size)))
+		return refs && Array.isArray(refs)
+			? Promise.all(refs.map((ref) => this.getImageURL(ref, size)))
+			: []
 	}
 
 	// Marge Auth and DB Users
