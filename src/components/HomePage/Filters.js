@@ -16,6 +16,18 @@ import AlgoliaClearRefinements from "../Algolia/AlgoliaClearRefinements"
 import AlgoliaRange from "../Algolia/AlgoliaRange"
 import { ROUTES } from "../../constants"
 
+const ClearAllFiltersButton = ({ history, onClick }) => (
+	<Button
+		onClick={() => {
+			history.push(ROUTES.HOME)
+			onClick(true)
+		}}
+		fullWidth
+	>
+		Wyczyść filtry
+	</Button>
+)
+
 export class Filters extends Component {
 	render() {
 		return (
@@ -42,28 +54,18 @@ export class Filters extends Component {
 				</FilterInnerContainer>
 				{this.props.currentBreakpoint > 0 ? (
 					<ButtonContainer>
-						<Button
-							onClick={() => {
-								this.props.history.push(ROUTES.HOME)
-								this.props.forceClear.update(true)
-							}}
-							fullWidth
-						>
-							Wyczyść filtry
-						</Button>
+						<ClearAllFiltersButton
+							history={this.props.history}
+							onClick={this.props.forceClear.update}
+						/>
 					</ButtonContainer>
 				) : (
 					<ButtonsContainer>
 						<Button onClick={this.props.toggleFilters}>Gotowe</Button>
-						<Button
-							onClick={() => {
-								this.props.history.push(ROUTES.HOME)
-								this.props.forceClear.update(true)
-							}}
-							fullWidth
-						>
-							Wyczyść filtry
-						</Button>
+						<ClearAllFiltersButton
+							history={this.props.history}
+							onClick={this.props.forceClear.update}
+						/>
 					</ButtonsContainer>
 				)}
 			</FiltersContainer>
