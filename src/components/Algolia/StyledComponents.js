@@ -142,3 +142,7 @@ export const MiniContainer = styled.div`
 		grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
 	}
 `
+
+export const ItemsLoaderContainer = styled.div`
+	text-align: center;
+`

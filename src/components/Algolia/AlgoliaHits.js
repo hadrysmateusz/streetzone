@@ -5,23 +5,24 @@ import ContainerDimensions from "react-container-dimensions"
 
 import LoadingSpinner from "../LoadingSpinner"
 import { ItemCard, ItemCardMini } from "../ItemCard"
-import { MiniContainer } from "./StyledComponents"
-import ItemsView, { ItemsContainer } from "../ItemsView"
+import { MiniContainer, ItemsLoaderContainer } from "./StyledComponents"
+import { ItemsContainer } from "../ItemsView"
+import Button from "../Button"
+
+const ItemsLoader = ({ refine }) => (
+	<ItemsLoaderContainer>
+		<LoadingSpinner />
+		<Button onClick={refine}>Wczytaj więcej</Button>
+	</ItemsLoaderContainer>
+)
 
 const AlgoliaInfiniteHits = connectInfiniteHits(({ hits, hasMore, refine }) => {
 	return (
 		<InfiniteScroll
 			hasMore={hasMore}
-			loader={
-				<div key={1}>
-					<LoadingSpinner />
-					<button onClick={refine}>Wczytaj więcej</button>
-				</div>
-			}
+			loader={<ItemsLoader refine={refine} />}
 			initialLoad={false}
-			loadMore={() => {
-				refine()
-			}}
+			loadMore={refine}
 		>
 			<ContainerDimensions>
 				{({ width }) =>
@@ -38,8 +39,6 @@ const AlgoliaInfiniteHits = connectInfiniteHits(({ hits, hasMore, refine }) => {
 	)
 })
 
-const AlgoliaHits = connectHits(({ hits }) => <ItemsView items={hits} />)
-
 const AlgoliaMiniHits = connectHits(({ hits }) => (
 	<ContainerDimensions>
 		{({ width }) => (
@@ -52,4 +51,4 @@ const AlgoliaMiniHits = connectHits(({ hits }) => (
 	</ContainerDimensions>
 ))
 
-export { AlgoliaInfiniteHits, AlgoliaHits, AlgoliaMiniHits }
+export { AlgoliaInfiniteHits, AlgoliaMiniHits, ItemsLoader }
