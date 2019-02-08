@@ -1,4 +1,5 @@
 import styled from "styled-components"
+import { resetButtonStyles } from "../Basics"
 
 export const FilterMenu = styled.div`
 	--width: 350px;
@@ -145,4 +146,11 @@ export const MiniContainer = styled.div`
 
 export const ItemsLoaderContainer = styled.div`
 	text-align: center;
+`
+
+export const ClearButton = styled.button`
+	${resetButtonStyles}
+	color: ${(p) => p.theme.colors.danger[50]};
+	font-size: 0.78rem;
+	padding: 3px 6px;
 `

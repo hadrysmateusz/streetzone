@@ -1,5 +1,5 @@
 import React from "react"
-import { connectRefinementList } from "react-instantsearch-dom"
+import { connectRefinementList, connectCurrentRefinements } from "react-instantsearch-dom"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { Portal } from "react-portal"
 
@@ -9,10 +9,26 @@ import {
 	SearchBox as SearchBoxContainer,
 	FilterItemsContainer,
 	OptionsContainer,
-	NoResults
+	NoResults,
+	ClearButton
 } from "./StyledComponents"
 import Overlay from "../Overlay"
 import { More } from "../Basics"
+
+const Clear = connectCurrentRefinements(({ items, refine, attribute }) => {
+	console.log(items)
+	return (
+		<ClearButton
+			onClick={() => {
+				const itemToClear = items.find((item) => item.attribute === attribute)
+				console.log(itemToClear)
+				refine(itemToClear.value)
+			}}
+		>
+			{/* 	<FontAwesomeIcon icon="times" />  */}Wyczyść
+		</ClearButton>
+	)
+})
 
 const FilterItems = ({ items, refine, showCount }) => {
 	return items && items.length > 0 ? (
@@ -81,12 +97,22 @@ class AlgoliaRefinementList extends React.Component {
 	}
 
 	render() {
-		const { items, refine, searchable, multiColumn, show, currentRefinement } = this.props
+		const {
+			items,
+			refine,
+			searchable,
+			multiColumn,
+			show,
+			currentRefinement,
+			attribute
+		} = this.props
 		const limitedItems = show ? items.slice(0, show) : items
 
 		return (
 			<>
-				{currentRefinement && currentRefinement.length !== 0 && <div>CLEAR</div>}
+				{currentRefinement && currentRefinement.length !== 0 && (
+					<Clear attribute={attribute} />
+				)}
 				<OptionsContainer multiColumn={multiColumn}>
 					<FilterItems items={limitedItems} refine={refine} />
 				</OptionsContainer>
