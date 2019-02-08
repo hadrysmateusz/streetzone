@@ -1,5 +1,5 @@
 import React from "react"
-import { connectRefinementList, connectCurrentRefinements } from "react-instantsearch-dom"
+import { connectRefinementList } from "react-instantsearch-dom"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { Portal } from "react-portal"
 
@@ -9,26 +9,11 @@ import {
 	SearchBox as SearchBoxContainer,
 	FilterItemsContainer,
 	OptionsContainer,
-	NoResults,
-	ClearButton
+	NoResults
 } from "./StyledComponents"
 import Overlay from "../Overlay"
 import { More } from "../Basics"
-
-const Clear = connectCurrentRefinements(({ items, refine, attribute }) => {
-	console.log(items)
-	return (
-		<ClearButton
-			onClick={() => {
-				const itemToClear = items.find((item) => item.attribute === attribute)
-				console.log(itemToClear)
-				refine(itemToClear.value)
-			}}
-		>
-			{/* 	<FontAwesomeIcon icon="times" />  */}Wyczyść
-		</ClearButton>
-	)
-})
+import Clear from "./ClearCategoryButton"
 
 const FilterItems = ({ items, refine, showCount }) => {
 	return items && items.length > 0 ? (

@@ -48,13 +48,14 @@ const AlgoliaSortByMobile = connectSortBy(
 	)
 )
 
-const AlgoliaSortBy = ({ options, defaultOption }) => (
+const AlgoliaSortBy = ({ options, defaultOption, placeholder }) => (
 	<Media>
 		{({ currentBreakpoint }) => {
 			if (currentBreakpoint > 0) {
 				return (
 					<AlgoliaSelectAdapter
-						defaultRefinement={defaultOption}
+						defaultValue={defaultOption}
+						placeholder={placeholder}
 						items={options}
 						styles={{
 							control: (provided, state) => ({
@@ -73,7 +74,7 @@ const AlgoliaSortBy = ({ options, defaultOption }) => (
 			} else {
 				return (
 					<AlgoliaSortByMobile
-						defaultRefinement={defaultOption}
+						defaultValue={defaultOption}
 						items={options}
 						style={{ gridArea: "sort" }}
 					>

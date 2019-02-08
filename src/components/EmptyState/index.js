@@ -71,3 +71,8 @@ export const Generic = {
 	text: "Coś poszło nie tak",
 	image: PATH + "SadFace.png"
 }
+
+export const QueryNoResults = {
+	text: "Brak wyników",
+	image: PATH + "SadFace.png"
+}

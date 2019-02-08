@@ -154,3 +154,10 @@ export const ClearButton = styled.button`
 	font-size: 0.78rem;
 	padding: 3px 6px;
 `
+
+export const ResultsContainer = styled.main`
+	grid-area: content;
+	flex: 1;
+	max-width: 1080px;
+	margin: 0 auto;
+`

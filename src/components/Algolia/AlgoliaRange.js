@@ -1,6 +1,7 @@
 import React from "react"
 import { connectRange } from "react-instantsearch-dom"
 import { RangeContainer } from "./StyledComponents"
+import { ClearRange as Clear } from "./ClearCategoryButton"
 
 class AlgoliaRange extends React.Component {
 	delay = 400
@@ -10,10 +11,14 @@ class AlgoliaRange extends React.Component {
 		max: this.props.currentRefinement.max || ""
 	}
 
+	resetState = () => {
+		this.setState({ min: "", max: "" })
+	}
+
 	componentDidUpdate = async (prevProps, prevState) => {
 		if (this.props.forceClear.value) {
 			this.props.forceClear.update(false)
-			this.setState({ min: "", max: "" })
+			this.resetState()
 		}
 	}
 
@@ -35,29 +40,36 @@ class AlgoliaRange extends React.Component {
 	}
 
 	render() {
+		const { currentRefinement, attribute, min, max } = this.props
+		console.log(this.props)
 		return (
-			<RangeContainer>
-				<input
-					type="number"
-					placeholder="Od"
-					name="min"
-					step={1}
-					min={0}
-					max={99999}
-					onChange={this.onChange}
-					value={this.state.min}
-				/>
-				<input
-					type="number"
-					placeholder="Do"
-					name="max"
-					step={1}
-					min={0}
-					max={99999}
-					onChange={this.onChange}
-					value={this.state.max}
-				/>
-			</RangeContainer>
+			<>
+				{(this.state.min || this.state.max) && (
+					<Clear attribute={attribute} resetState={this.resetState} />
+				)}
+				<RangeContainer>
+					<input
+						type="number"
+						placeholder="Od"
+						name="min"
+						step={1}
+						min={0}
+						max={99999}
+						onChange={this.onChange}
+						value={this.state.min}
+					/>
+					<input
+						type="number"
+						placeholder="Do"
+						name="max"
+						step={1}
+						min={0}
+						max={99999}
+						onChange={this.onChange}
+						value={this.state.max}
+					/>
+				</RangeContainer>
+			</>
 		)
 	}
 }

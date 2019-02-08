@@ -12,6 +12,7 @@ import {
 } from "./StyledComponents"
 
 export default ({ currentBreakpoint, areFiltersOpen, toggleFilters, refresh }) => {
+	console.log(sortingOptions)
 	const filterText =
 		currentBreakpoint < 1 ? "Filtry" : areFiltersOpen ? "Ukryj filtry" : "Pokaż filtry"
 	return (
@@ -27,7 +28,8 @@ export default ({ currentBreakpoint, areFiltersOpen, toggleFilters, refresh }) =
 				<AlgoliaSearchBox />
 				<AlgoliaSortBy
 					options={sortingOptions}
-					defaultOption="dev_items_createdAt_desc"
+					defaultOption={sortingOptions[0]}
+					placeholder="Sortuj"
 				/>
 			</InnerContainer>
 		</OuterContainer>

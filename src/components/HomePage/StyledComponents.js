@@ -26,13 +26,6 @@ export const MainGrid = styled.div`
 	}
 `
 
-export const Content = styled.main`
-	grid-area: content;
-	flex: 1;
-	max-width: 1080px;
-	margin: 0 auto;
-`
-
 export const ButtonsContainer = styled.div`
 	width: 100%;
 	display: grid;

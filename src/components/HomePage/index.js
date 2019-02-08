@@ -6,14 +6,8 @@ import cloneDeep from "clone-deep"
 
 import { withFirebase } from "../Firebase"
 import Filters from "./Filters"
-import { AlgoliaInfiniteHits } from "../Algolia/AlgoliaHits"
-import {
-	MainGrid,
-	Sidebar,
-	SidebarInner,
-	Content,
-	StyledInstantSearch
-} from "./StyledComponents"
+import AlgoliaResults from "../Algolia/AlgoliaResults"
+import { MainGrid, Sidebar, SidebarInner, StyledInstantSearch } from "./StyledComponents"
 import ScrollToTop from "../ScrollToTop"
 import LoadingSpinner from "../LoadingSpinner"
 import Topbar from "../Topbar"
@@ -27,8 +21,6 @@ const DEFAULT_SEARCH_STATE = Object.freeze({
 	query: "",
 	page: 1
 })
-
-// const updateAfter = 700
 
 const createURL = (state) => `?search=${btoa(JSON.stringify(state))}`
 
@@ -197,9 +189,7 @@ class HomePage extends Component {
 						</SidebarInner>
 					</Sidebar>
 
-					<Content>
-						<AlgoliaInfiniteHits />
-					</Content>
+					<AlgoliaResults />
 				</MainGrid>
 				<ScrollToTop>↑</ScrollToTop>
 			</StyledInstantSearch>
