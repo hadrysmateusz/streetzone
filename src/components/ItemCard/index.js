@@ -18,16 +18,19 @@ import {
 	SecondaryContainer,
 	Price,
 	Condition,
-	Size
+	Size,
+	StyledIcon
 } from "./StyledComponents"
 import { HeartButton } from "../SaveButton"
+import LoadingSpinner from "../LoadingSpinner"
 
 const ERR_NO_IMAGE = "NO_IMAGE"
 
 class ItemCardBase extends Component {
 	state = {
 		imageURL: "",
-		error: null
+		error: null,
+		isLoading: true
 	}
 
 	componentDidMount = () => {
@@ -36,13 +39,18 @@ class ItemCardBase extends Component {
 
 	// Make sure if component's props change the images get updated
 	componentDidUpdate = (prevProps) => {
-		if (prevProps.item.attachments[0] !== this.props.item.attachments[0]) {
+		if (
+			prevProps.item.attachments &&
+			this.props.item.attachments &&
+			prevProps.item.attachments[0] !== this.props.item.attachments[0]
+		) {
 			this.loadImage()
 		}
 	}
 
 	loadImage = async () => {
 		const { item, firebase } = this.props
+		this.setState({ isLoading: true })
 
 		try {
 			const imageURL = await firebase.getImageURL(item.attachments[0], "M")
@@ -50,18 +58,13 @@ class ItemCardBase extends Component {
 		} catch (error) {
 			this.setState({ error: ERR_NO_IMAGE })
 			console.log(error)
+		} finally {
+			this.setState({ isLoading: false })
 		}
 	}
 
 	render() {
-		const {
-			itemId,
-			name,
-			price,
-			designers = [],
-			condition,
-			size = "--"
-		} = this.props.item
+		const { itemId, name, price, designers = [], condition, size } = this.props.item
 
 		let conditionObj = translateCondition(condition)
 
@@ -71,7 +74,9 @@ class ItemCardBase extends Component {
 					<Link to={`/i/${itemId}`}>
 						<ThumbnailContainer>
 							{this.state.error && this.state.error === ERR_NO_IMAGE ? (
-								"No image"
+								<StyledIcon icon="image" />
+							) : this.state.isLoading ? (
+								<LoadingSpinner size={7} delay={500} />
 							) : (
 								<img src={this.state.imageURL} alt="" />
 							)}
@@ -89,13 +94,15 @@ class ItemCardBase extends Component {
 								<HeartButton itemId={itemId} />
 							</TopContainer>
 							<SecondaryContainer>
-								<Price title={`Cena: ${price}`}>{price}zł</Price>
+								<Price title={price ? `Cena: ${price}` : null}>
+									{price ? `${price}zł` : "--"}
+								</Price>
 								{condition && (
 									<Condition title={`Stan: ${conditionObj.tooltip}`}>
 										{conditionObj.displayValue}
 									</Condition>
 								)}
-								<Size title={size ? `Rozmiar: ${size}` : undefined}>{size}</Size>
+								<Size title={size ? `Rozmiar: ${size}` : undefined}>{size || "--"}</Size>
 							</SecondaryContainer>
 						</InfoContainer>
 					</Link>

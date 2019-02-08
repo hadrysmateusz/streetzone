@@ -6,9 +6,10 @@ import Lightbox from "react-image-lightbox"
 import { withFirebase } from "../Firebase"
 import { MiniButton } from "../Basics"
 import { CONST } from "../../constants"
+import LoadingSpinner from "../LoadingSpinner"
 
 const CurrentImage = styled.div`
-	/* cursor: zoom-in; */
+	cursor: zoom-in;
 	position: relative;
 	width: 100%;
 	max-height: 45vh;
@@ -16,10 +17,6 @@ const CurrentImage = styled.div`
 		max-height: 85vh;
 	}
 	height: 640px;
-
-	/* @media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
-		height: 50vh;
-	} */
 
 	background: white;
 	border: 1px solid ${(p) => p.theme.colors.gray[75]};
@@ -32,6 +29,13 @@ const CurrentImage = styled.div`
 	img {
 		max-height: 100%;
 		max-width: 100%;
+	}
+`
+
+export const StyledIcon = styled(FontAwesomeIcon)`
+	font-size: 5rem;
+	path {
+		color: ${(p) => p.theme.colors.gray[100]};
 	}
 `
 
@@ -124,6 +128,8 @@ const overlay = css`
 	}
 `
 
+const ERR_NO_IMAGE = "NO_IMAGE"
+
 export class ImageGallery extends Component {
 	state = {
 		isLoading: true,
@@ -147,6 +153,7 @@ export class ImageGallery extends Component {
 
 	getBigThumbnail = async (index) => {
 		const { item, firebase } = this.props
+		this.setState({ isLoading: true })
 
 		try {
 			const imageURL = await firebase.getImageURL(item.attachments[index], "L")
@@ -157,7 +164,10 @@ export class ImageGallery extends Component {
 				return { imageURLs }
 			})
 		} catch (error) {
+			this.setState({ error: ERR_NO_IMAGE })
 			console.log(error)
+		} finally {
+			this.setState({ isLoading: false })
 		}
 	}
 
@@ -213,7 +223,13 @@ export class ImageGallery extends Component {
 							<FontAwesomeIcon icon="angle-left" size="2x" />
 						</MiniButton>
 					)}
-					<img src={imageURLs[currentImageIndex]} alt="" onClick={this.openLightbox} />
+					{this.state.error ? (
+						<StyledIcon icon="image" />
+					) : this.state.isLoading ? (
+						<LoadingSpinner />
+					) : (
+						<img src={imageURLs[currentImageIndex]} alt="" onClick={this.openLightbox} />
+					)}
 					{thumbnailURLs.length > 1 && (
 						<MiniButton
 							position={{ top: "calc(50% - 25px)", right: "20px" }}

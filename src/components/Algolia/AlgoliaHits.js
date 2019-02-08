@@ -11,7 +11,7 @@ import Button from "../Button"
 
 const ItemsLoader = ({ refine }) => (
 	<ItemsLoaderContainer>
-		<LoadingSpinner />
+		<LoadingSpinner fixedHeight />
 		<Button onClick={refine}>Wczytaj więcej</Button>
 	</ItemsLoaderContainer>
 )

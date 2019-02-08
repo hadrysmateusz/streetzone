@@ -53,7 +53,7 @@ export class UserPreview extends Component {
 				</Container>
 			)
 		} else {
-			return <LoadingSpinner />
+			return <LoadingSpinner fixedHeight />
 		}
 	}
 }

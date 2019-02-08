@@ -1,5 +1,5 @@
 import React from "react"
-import { RotateSpinLoader } from "react-css-loaders"
+import { RotateSpinLoader, BarLoader } from "react-css-loaders"
 
 import EmptyState from "../EmptyState"
 
@@ -16,7 +16,16 @@ class LoadingSpinner extends React.Component {
 		clearTimeout(this.showAfterId)
 	}
 	render() {
-		return this.state.isVisible ? <RotateSpinLoader size={9} /> : null
+		return this.state.isVisible ? (
+			this.props.fixedHeight ? (
+				<RotateSpinLoader
+					size={this.props.size || 9}
+					color={this.props.color || "#999"}
+				/>
+			) : (
+				<BarLoader size={this.props.size || 9} color={this.props.color || "#cfcfcf"} />
+			)
+		) : null
 	}
 }
 

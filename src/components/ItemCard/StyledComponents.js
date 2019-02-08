@@ -1,4 +1,5 @@
 import styled, { css } from "styled-components"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 const ContainerCommon = css`
 	overflow: hidden;
@@ -112,4 +113,11 @@ export const Condition = styled(ItemProperty)`
 
 export const Size = styled(ItemProperty)`
 	text-align: right;
+`
+
+export const StyledIcon = styled(FontAwesomeIcon)`
+	font-size: 5rem;
+	path {
+		color: ${(p) => p.theme.colors.gray[100]};
+	}
 `
