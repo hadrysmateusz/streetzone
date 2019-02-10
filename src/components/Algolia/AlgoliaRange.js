@@ -40,8 +40,7 @@ class AlgoliaRange extends React.Component {
 	}
 
 	render() {
-		const { currentRefinement, attribute, min, max } = this.props
-		console.log(this.props)
+		const { attribute } = this.props
 		return (
 			<>
 				{(this.state.min || this.state.max) && (

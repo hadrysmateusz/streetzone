@@ -12,7 +12,6 @@ import {
 } from "./StyledComponents"
 
 export default ({ currentBreakpoint, areFiltersOpen, toggleFilters, refresh }) => {
-	console.log(sortingOptions)
 	const filterText =
 		currentBreakpoint < 1 ? "Filtry" : areFiltersOpen ? "Ukryj filtry" : "Pokaż filtry"
 	return (

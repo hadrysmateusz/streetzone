@@ -8,7 +8,6 @@ const Clear = connectCurrentRefinements(({ items, refine, attribute }) => {
 		<ClearButton
 			onClick={() => {
 				const itemToClear = items.find((item) => item.attribute === attribute)
-				console.log(itemToClear)
 				refine(itemToClear.value)
 			}}
 		>

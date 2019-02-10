@@ -3,6 +3,11 @@ import { withBreakpoints } from "react-breakpoints"
 import { compose } from "recompose"
 import equal from "deep-equal"
 import cloneDeep from "clone-deep"
+import {
+	disableBodyScroll,
+	enableBodyScroll,
+	clearAllBodyScrollLocks
+} from "body-scroll-lock"
 
 import { withFirebase } from "../Firebase"
 import Filters from "./Filters"
@@ -33,6 +38,8 @@ class HomePage extends Component {
 		clearFilters: false
 	}
 
+	targetElement = null
+
 	setClearFiltersFlag = (to) => {
 		return this.setState({ clearFilters: to })
 	}
@@ -41,6 +48,8 @@ class HomePage extends Component {
 		/* this is required in order for the component to not get stuck on a later
 		page without the ability to navigate back other than clearing all filters */
 		let searchState = { ...this.urlToState(), page: 1 }
+
+		this.targetElement = document.querySelector("#filters-container")
 
 		this.setState({ searchState, isLoading: false })
 	}
@@ -131,6 +140,13 @@ class HomePage extends Component {
 	}
 
 	toggleFilters = () => {
+		const wasOpen = this.state.areFiltersOpen
+		if (wasOpen) {
+			enableBodyScroll(this.targetElement)
+		} else {
+			disableBodyScroll(this.targetElement)
+		}
+
 		this.setState((state) => {
 			const { areFiltersOpen } = state
 			return { areFiltersOpen: !areFiltersOpen }
@@ -151,6 +167,10 @@ class HomePage extends Component {
 
 		// End the animation
 		setTimeout(() => target.classList.remove("spin"), 1500)
+	}
+
+	componentWillUnmount() {
+		clearAllBodyScrollLocks()
 	}
 
 	render() {
