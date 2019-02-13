@@ -1,7 +1,7 @@
 import React from "react"
 import { connectRange } from "react-instantsearch-dom"
 import { RangeContainer } from "./StyledComponents"
-import { ClearRange } from "./ClearCategoryButton"
+import { AdaptiveFoldable } from "../Foldable"
 
 class AlgoliaRange extends React.Component {
 	delay = 400
@@ -40,12 +40,16 @@ class AlgoliaRange extends React.Component {
 	}
 
 	render() {
-		const { attribute } = this.props
+		const { attribute, tab, openTab, toggle } = this.props
 		return (
-			<>
-				{(this.state.min || this.state.max) && (
-					<ClearRange attribute={attribute} resetState={this.resetState} />
-				)}
+			<AdaptiveFoldable
+				tab={tab}
+				openTab={openTab}
+				toggle={toggle}
+				attribute={attribute}
+				showClear={this.state.min || this.state.max}
+				resetState={this.resetState}
+			>
 				<RangeContainer>
 					<input
 						type="number"
@@ -68,46 +72,9 @@ class AlgoliaRange extends React.Component {
 						value={this.state.max}
 					/>
 				</RangeContainer>
-			</>
+			</AdaptiveFoldable>
 		)
 	}
 }
-
-// const AlgoliaRange = ({ refine, min, max, currentRefinement }) => {
-// 	return (
-// 		<RangeContainer>
-// 			<input
-// 				type="number"
-// 				placeholder="Od"
-// 				name="min"
-// 				step={1}
-// 				min={0}
-// 				max={99999}
-// 				onChange={(e) => {
-// 					refine({
-// 						...currentRefinement,
-// 						min: Math.max(e.value, min) || min
-// 					})
-// 				}}
-// 				value={currentRefinement.min}
-// 			/>
-// 			<input
-// 				type="number"
-// 				placeholder="Do"
-// 				name="max"
-// 				step={1}
-// 				min={0}
-// 				max={99999}
-// 				onChange={(e) => {
-// 					refine({
-// 						...currentRefinement,
-// 						max: Math.max(e.value, max) || max
-// 					})
-// 				}}
-// 				value={currentRefinement.max}
-// 			/>
-// 		</RangeContainer>
-// 	)
-// }
 
 export default connectRange(AlgoliaRange)

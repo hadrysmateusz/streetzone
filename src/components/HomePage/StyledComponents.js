@@ -39,7 +39,7 @@ export const Sidebar = styled.aside`
 	max-width: 100%;
 
 	top: 44px;
-	width: 220px;
+	width: 240px;
 	margin-right: 20px;
 
 	/* mobile */
@@ -132,4 +132,12 @@ export const FiltersHeader = styled.h2`
 	background: white;
 	font-size: 1.35rem;
 	text-align: center;
+`
+
+export const CloseIconContainer = styled.span`
+	position: fixed;
+	padding: 20px;
+	right: 15px;
+	top: 15px;
+	font-size: 0.89rem;
 `

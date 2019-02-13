@@ -13,7 +13,7 @@ import {
 } from "./StyledComponents"
 import Overlay from "../Overlay"
 import { More } from "../Basics"
-import Clear from "./ClearCategoryButton"
+import { AdaptiveFoldable } from "../Foldable"
 
 const FilterItems = ({ items, refine, showCount }) => {
 	return items && items.length > 0 ? (
@@ -89,15 +89,21 @@ class AlgoliaRefinementList extends React.Component {
 			multiColumn,
 			show,
 			currentRefinement,
-			attribute
+			attribute,
+			tab,
+			openTab,
+			toggle
 		} = this.props
 		const limitedItems = show ? items.slice(0, show) : items
 
 		return (
-			<>
-				{currentRefinement && currentRefinement.length !== 0 && (
-					<Clear attribute={attribute} />
-				)}
+			<AdaptiveFoldable
+				tab={tab}
+				openTab={openTab}
+				toggle={toggle}
+				attribute={attribute}
+				showClear={currentRefinement && currentRefinement.length !== 0}
+			>
 				<OptionsContainer multiColumn={multiColumn}>
 					<FilterItems items={limitedItems} refine={refine} />
 				</OptionsContainer>
@@ -122,7 +128,7 @@ class AlgoliaRefinementList extends React.Component {
 						</Portal>
 					</>
 				)}
-			</>
+			</AdaptiveFoldable>
 		)
 	}
 }

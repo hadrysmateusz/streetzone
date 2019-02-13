@@ -6,12 +6,13 @@ import { ClearButton } from "./StyledComponents"
 const Clear = connectCurrentRefinements(({ items, refine, attribute }) => {
 	return (
 		<ClearButton
-			onClick={() => {
+			onClick={(e) => {
+				e.stopPropagation()
 				const itemToClear = items.find((item) => item.attribute === attribute)
 				refine(itemToClear.value)
 			}}
 		>
-			Wyczyść
+			(Wyczyść)
 		</ClearButton>
 	)
 })
@@ -20,7 +21,8 @@ export const ClearRange = connectCurrentRefinements(
 	({ items, refine, attribute, resetState }) => {
 		return (
 			<ClearButton
-				onClick={() => {
+				onClick={(e) => {
+					e.stopPropagation()
 					const itemToClear = items.find((item) => item.attribute === attribute)
 					if (itemToClear) {
 						refine(itemToClear.value)
@@ -29,7 +31,7 @@ export const ClearRange = connectCurrentRefinements(
 					resetState()
 				}}
 			>
-				Wyczyść
+				(Wyczyść)
 			</ClearButton>
 		)
 	}

@@ -3,18 +3,19 @@ import { withBreakpoints } from "react-breakpoints"
 import { withRouter } from "react-router-dom"
 import { compose } from "recompose"
 
-import { AdaptiveFoldable } from "../Foldable"
 import {
 	ButtonsContainer,
 	FiltersContainer,
 	FilterInnerContainer,
 	ButtonContainer,
-	FiltersHeader
+	FiltersHeader,
+	CloseIconContainer
 } from "./StyledComponents"
 import AlgoliaRefinementList from "../Algolia/AlgoliaRefinementList"
 import Button from "../Button"
 import AlgoliaRange from "../Algolia/AlgoliaRange"
 import { ROUTES } from "../../constants"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 const TABS = {
 	category: {
@@ -57,42 +58,46 @@ export class Filters extends Component {
 	render() {
 		return (
 			<FiltersContainer {...this.props}>
-				{this.props.currentBreakpoint == 0 && <FiltersHeader>Filtry</FiltersHeader>}
+				{this.props.currentBreakpoint < 1 && (
+					<FiltersHeader>
+						<span>Filtry</span>
+						<CloseIconContainer>
+							<FontAwesomeIcon icon="times" onClick={this.props.toggleFilters} />
+						</CloseIconContainer>
+					</FiltersHeader>
+				)}
 				<FilterInnerContainer>
-					<AdaptiveFoldable
+					<AlgoliaRefinementList
 						tab={TABS.category}
 						openTab={this.state.openTab}
 						toggle={this.toggleTab}
-					>
-						<AlgoliaRefinementList attribute="category" />
-					</AdaptiveFoldable>
-					<AdaptiveFoldable
+						attribute="category"
+					/>
+					{/* showMore is required by algolia to display a full list */}
+					<AlgoliaRefinementList
 						tab={TABS.designers}
 						openTab={this.state.openTab}
 						toggle={this.toggleTab}
-					>
-						{/* showMore is required by algolia to display a full list */}
-						<AlgoliaRefinementList
-							attribute="designers"
-							searchable
-							show={8}
-							showMore={true}
-						/>
-					</AdaptiveFoldable>
-					<AdaptiveFoldable
+						attribute="designers"
+						searchable
+						show={8}
+						showMore={true}
+					/>
+					<AlgoliaRefinementList
+						attribute="size"
+						multiColumn
 						tab={TABS.size}
 						openTab={this.state.openTab}
 						toggle={this.toggleTab}
-					>
-						<AlgoliaRefinementList attribute="size" multiColumn />
-					</AdaptiveFoldable>
-					<AdaptiveFoldable
+					/>
+
+					<AlgoliaRange
+						attribute="price"
+						forceClear={this.props.forceClear}
 						tab={TABS.price}
 						openTab={this.state.openTab}
 						toggle={this.toggleTab}
-					>
-						<AlgoliaRange attribute="price" forceClear={this.props.forceClear} />
-					</AdaptiveFoldable>
+					/>
 				</FilterInnerContainer>
 				{this.props.currentBreakpoint > 0 ? (
 					<ButtonContainer>

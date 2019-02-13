@@ -2,6 +2,7 @@ import React, { Component } from "react"
 import styled from "styled-components"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { withBreakpoints } from "react-breakpoints"
+import Clear, { ClearRange } from "../Algolia/ClearCategoryButton"
 
 const Header = styled.div`
 	padding: 6px;
@@ -40,7 +41,15 @@ export const AdaptiveFoldable = withBreakpoints(
 		}
 
 		render() {
-			const { children, currentBreakpoint, openTab, tab } = this.props
+			const {
+				children,
+				currentBreakpoint,
+				openTab,
+				tab,
+				attribute,
+				showClear,
+				resetState
+			} = this.props
 
 			// Based on current breakpoint choose between local or provided value
 			const isFolded =
@@ -56,7 +65,15 @@ export const AdaptiveFoldable = withBreakpoints(
 			return (
 				<div>
 					<Header onClick={toggleFunction} isFolded={isFolded}>
-						<span>{tab.displayName}</span>
+						<span>
+							{tab.displayName}{" "}
+							{showClear &&
+								(tab.id === "price" ? (
+									<ClearRange attribute={attribute} resetState={resetState} />
+								) : (
+									<Clear attribute={attribute} />
+								))}
+						</span>
 						<FontAwesomeIcon icon={"caret-up"} />
 					</Header>
 					<InnerContainer hidden={isFolded}>{children}</InnerContainer>

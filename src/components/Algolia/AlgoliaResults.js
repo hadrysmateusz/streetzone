@@ -5,7 +5,7 @@ import { AlgoliaInfiniteHits } from "../Algolia/AlgoliaHits"
 import { ResultsContainer } from "./StyledComponents"
 import EmptyState, { QueryNoResults } from "../EmptyState"
 
-const AlgoliaResults = connectStateResults(({ searchResults }) => {
+const AlgoliaResults = connectStateResults(({ searchResults, searching }) => {
 	const hasResults = searchResults && searchResults.nbHits !== 0
 
 	return (
@@ -13,7 +13,7 @@ const AlgoliaResults = connectStateResults(({ searchResults }) => {
 			<div hidden={!hasResults}>
 				<AlgoliaInfiniteHits />
 			</div>
-			<div hidden={hasResults}>
+			<div hidden={hasResults || searching}>
 				<EmptyState state={QueryNoResults} />
 			</div>
 		</ResultsContainer>
