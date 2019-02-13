@@ -24,8 +24,9 @@ export const ClearRange = connectCurrentRefinements(
 					const itemToClear = items.find((item) => item.attribute === attribute)
 					if (itemToClear) {
 						refine(itemToClear.value)
-						resetState()
 					}
+					// resetting state happens separately to clear the value even if it is invalid
+					resetState()
 				}}
 			>
 				Wyczyść

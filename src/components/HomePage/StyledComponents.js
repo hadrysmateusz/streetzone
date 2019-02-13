@@ -26,27 +26,6 @@ export const MainGrid = styled.div`
 	}
 `
 
-export const ButtonsContainer = styled.div`
-	width: 100%;
-	display: grid;
-	grid-template-columns: 1fr 1fr;
-	grid-auto-rows: min-content;
-	gap: 10px;
-	position: fixed;
-	bottom: 0;
-	left: 0;
-	background: white;
-	height: ${BUTTONS_CONTAINER_HEIGHT};
-	padding: 20px;
-	& > * {
-		height: 100%;
-		width: auto;
-		height: auto;
-		white-space: nowrap;
-		min-width: 0;
-	}
-`
-
 export const ButtonContainer = styled.div`
 	margin-top: 10px;
 	margin-bottom: 5px;
@@ -62,6 +41,12 @@ export const Sidebar = styled.aside`
 	top: 44px;
 	width: 220px;
 	margin-right: 20px;
+
+	/* mobile */
+	@media (max-width: ${(p) => p.theme.breakpoints[1] - 1}px) {
+		width: 0;
+		margin: 0;
+	}
 `
 
 export const SidebarInner = styled.div`
@@ -81,6 +66,10 @@ export const FiltersContainer = styled.div`
 
 	/* mobile */
 	@media (max-width: ${(p) => p.theme.breakpoints[1] - 1}px) {
+		/* overflow: hidden; */
+		width: 100%;
+		max-width: 100vw;
+		min-width: 0;
 		position: fixed;
 		top: 0;
 		left: 0;
@@ -89,7 +78,9 @@ export const FiltersContainer = styled.div`
 		height: 100vh;
 		background: white;
 		padding: 20px;
-		padding-bottom: ${BUTTONS_CONTAINER_HEIGHT};
+		/* padding-bottom: ${BUTTONS_CONTAINER_HEIGHT}; */
+		display: flex;
+		flex-flow: column nowrap;
 	}
 `
 
@@ -104,4 +95,41 @@ export const FilterInnerContainer = styled.div`
 	> * {
 		padding: 5px 0;
 	}
+
+	/* mobile */
+	@media (max-width: ${(p) => p.theme.breakpoints[1] - 1}px) {
+		flex: 1 1 100%;
+	}
+`
+
+export const ButtonsContainer = styled.div`
+	min-width: 0;
+	max-width: 100vw;
+	width: 100%;
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	grid-auto-rows: min-content;
+	gap: 10px;
+	background: white;
+	padding: 20px;
+	box-sizing: border-box;
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	& > * {
+		height: 100%;
+		width: auto;
+		height: auto;
+		white-space: nowrap;
+		min-width: 0;
+	}
+`
+
+export const FiltersHeader = styled.h2`
+	padding-top: 10px;
+	padding-bottom: 20px;
+	margin: 0;
+	background: white;
+	font-size: 1.35rem;
+	text-align: center;
 `

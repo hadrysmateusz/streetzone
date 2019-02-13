@@ -20,7 +20,7 @@ const AlgoliaInfiniteHits = connectInfiniteHits(({ hits, hasMore, refine }) => {
 	return (
 		<InfiniteScroll
 			hasMore={hasMore}
-			loader={<ItemsLoader refine={refine} />}
+			loader={<ItemsLoader refine={refine} key="loader-component" />}
 			initialLoad={false}
 			loadMore={refine}
 		>

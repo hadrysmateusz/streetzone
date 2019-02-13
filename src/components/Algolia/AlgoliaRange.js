@@ -1,7 +1,7 @@
 import React from "react"
 import { connectRange } from "react-instantsearch-dom"
 import { RangeContainer } from "./StyledComponents"
-import { ClearRange as Clear } from "./ClearCategoryButton"
+import { ClearRange } from "./ClearCategoryButton"
 
 class AlgoliaRange extends React.Component {
 	delay = 400
@@ -44,7 +44,7 @@ class AlgoliaRange extends React.Component {
 		return (
 			<>
 				{(this.state.min || this.state.max) && (
-					<Clear attribute={attribute} resetState={this.resetState} />
+					<ClearRange attribute={attribute} resetState={this.resetState} />
 				)}
 				<RangeContainer>
 					<input

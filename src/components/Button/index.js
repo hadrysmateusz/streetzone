@@ -37,6 +37,7 @@ const Button = styled.button`
 
 		}
 	}
+	margin: 0;
 `
 
 const AccentButton = styled(Button)`

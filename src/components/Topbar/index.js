@@ -11,7 +11,7 @@ import {
 	RefreshButton
 } from "./StyledComponents"
 
-export default ({ currentBreakpoint, areFiltersOpen, toggleFilters, refresh }) => {
+const Topbar = ({ currentBreakpoint, areFiltersOpen, toggleFilters, refresh }) => {
 	const filterText =
 		currentBreakpoint < 1 ? "Filtry" : areFiltersOpen ? "Ukryj filtry" : "Pokaż filtry"
 	return (
@@ -26,11 +26,13 @@ export default ({ currentBreakpoint, areFiltersOpen, toggleFilters, refresh }) =
 				</RefreshButton>
 				<AlgoliaSearchBox />
 				<AlgoliaSortBy
-					options={sortingOptions}
-					defaultOption={sortingOptions[0]}
+					items={sortingOptions}
+					defaultRefinement={sortingOptions[0]}
 					placeholder="Sortuj"
 				/>
 			</InnerContainer>
 		</OuterContainer>
 	)
 }
+
+export default Topbar
