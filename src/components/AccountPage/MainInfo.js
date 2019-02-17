@@ -5,6 +5,15 @@ import getProfilePictureURL from "../../utils/getProfilePictureURL"
 import moment from "moment"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
+const Flex = styled.div`
+	display: flex;
+	justify-content: center;
+	padding: 2px 0;
+	@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
+		justify-content: flex-start;
+	}
+`
+
 const MainInfoContainer = styled.div`
 	grid-area: info;
 	display: grid;
@@ -28,15 +37,7 @@ const MainInfoContainer = styled.div`
 		text-align: center;
 	}
 
-	.info-container {
-		> div {
-			display: grid;
-			gap: 4px 8px;
-			@media(min-width: ${(p) => p.theme.breakpoints[0]}px) {
-				grid-template-columns: max-content max-content;
-			}
-		}
-	}
+
 
 	.info-header {
 		text-transform: uppercase;
@@ -82,17 +83,21 @@ const MainInfo = ({ user }) => (
 		<div className="info-container">
 			<h2>{user.name}</h2>
 
-			<div>
-				<div className="info-header">Email:</div>
-				<div>{user.email}</div>
+			<div className="info-inner-container">
+				<Flex>
+					<div className="info-header">Email:</div>
+					<div>{user.email}</div>
+				</Flex>
 				{user.city && (
-					<>
+					<Flex>
 						<div className="info-header">Miejscowość:</div>
 						<div>{user.city}</div>
-					</>
+					</Flex>
 				)}
-				<div className="info-header">W serwisie od:</div>
-				<div>{moment(user.userSince).format("D.MM.YYYY")}</div>
+				<Flex>
+					<div className="info-header">W serwisie od:</div>
+					<div>{moment(user.userSince).format("D.MM.YYYY")}</div>
+				</Flex>
 			</div>
 		</div>
 		<div className="icons-container">

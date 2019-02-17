@@ -16,6 +16,7 @@ import { MainGrid, Sidebar, SidebarInner, StyledInstantSearch } from "./StyledCo
 import ScrollToTop from "../ScrollToTop"
 import LoadingSpinner from "../LoadingSpinner"
 import Topbar from "../Topbar"
+import CurrentFiltersView from "./CurrentFiltersView"
 
 const DEFAULT_SORTING = "dev_items_createdAt_desc"
 const DEFAULT_HITS_PER_PAGE = 12
@@ -140,11 +141,15 @@ class HomePage extends Component {
 	}
 
 	toggleFilters = () => {
-		const wasOpen = this.state.areFiltersOpen
-		if (wasOpen) {
+		if (this.props.currentBreakpoint > 0) {
 			enableBodyScroll(this.targetElement)
 		} else {
-			disableBodyScroll(this.targetElement)
+			const wasOpen = this.state.areFiltersOpen
+			if (wasOpen) {
+				enableBodyScroll(this.targetElement)
+			} else {
+				disableBodyScroll(this.targetElement)
+			}
 		}
 
 		this.setState((state) => {
@@ -194,8 +199,13 @@ class HomePage extends Component {
 					areFiltersOpen={areFiltersOpen}
 					toggleFilters={this.toggleFilters}
 					refresh={this.refresh}
+					clearFilters={{
+						value: this.state.clearFilters,
+						update: this.setClearFiltersFlag
+					}}
 				/>
 
+				<CurrentFiltersView />
 				<MainGrid>
 					<Sidebar hidden={!areFiltersOpen}>
 						<SidebarInner id="filters-container">

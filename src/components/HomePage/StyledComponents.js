@@ -112,6 +112,7 @@ export const ButtonsContainer = styled.div`
 	gap: 10px;
 	background: white;
 	padding: 20px;
+	padding-top: 10px;
 	box-sizing: border-box;
 	position: fixed;
 	bottom: 0;
@@ -135,6 +136,7 @@ export const FiltersHeader = styled.h2`
 `
 
 export const CloseIconContainer = styled.span`
+	cursor: pointer;
 	position: fixed;
 	padding: 20px;
 	right: 15px;

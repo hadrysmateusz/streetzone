@@ -14,6 +14,8 @@ import {
 import Overlay from "../Overlay"
 import { More } from "../Basics"
 import { AdaptiveFoldable } from "../Foldable"
+import { withBreakpoints } from "react-breakpoints"
+import { compose } from "recompose"
 
 const FilterItems = ({ items, refine, showCount }) => {
 	return items && items.length > 0 ? (
@@ -92,7 +94,8 @@ class AlgoliaRefinementList extends React.Component {
 			attribute,
 			tab,
 			openTab,
-			toggle
+			toggle,
+			currentBreakpoint
 		} = this.props
 		const limitedItems = show ? items.slice(0, show) : items
 
@@ -104,17 +107,37 @@ class AlgoliaRefinementList extends React.Component {
 				attribute={attribute}
 				showClear={currentRefinement && currentRefinement.length !== 0}
 			>
-				<OptionsContainer multiColumn={multiColumn}>
-					<FilterItems items={limitedItems} refine={refine} />
-				</OptionsContainer>
-				{searchable && items && items.length > 0 && (
+				{searchable && currentBreakpoint < 1 ? (
+					<>
+						<SearchBox
+							value={this.state.inputValue}
+							onChange={this.onInputChange}
+							clear={this.clearInput}
+							ref={this.searchBox}
+						/>
+						<FilterItemsContainer>
+							<FilterItems items={items} refine={refine} />
+						</FilterItemsContainer>
+					</>
+				) : (
+					<OptionsContainer multiColumn={multiColumn}>
+						<FilterItems items={limitedItems} refine={refine} />
+					</OptionsContainer>
+				)}
+				{searchable && items && items.length > 0 && currentBreakpoint > 0 && (
 					<More onClick={this.toggleMenu}>Więcej...</More>
 				)}
 				{this.state.isMenuOpen && (
 					<>
 						<Portal node={document && document.getElementById("filters-container")}>
 							<Overlay onClick={this.toggleMenu} />
-							<FilterMenu>
+							<FilterMenu
+								onKeyDown={(e) => {
+									if (e.key === "Escape") {
+										this.toggleMenu()
+									}
+								}}
+							>
 								<SearchBox
 									value={this.state.inputValue}
 									onChange={this.onInputChange}
@@ -133,4 +156,7 @@ class AlgoliaRefinementList extends React.Component {
 	}
 }
 
-export default connectRefinementList(AlgoliaRefinementList)
+export default compose(
+	withBreakpoints,
+	connectRefinementList
+)(AlgoliaRefinementList)
