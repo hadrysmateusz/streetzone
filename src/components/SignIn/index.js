@@ -20,6 +20,7 @@ import { withFirebase } from "../Firebase"
 import validate from "./validate"
 import { ROUTES, AUTH_ERR } from "../../constants"
 import { withGlobalContext } from "../GlobalContext"
+import formatUserData from "../../utils/formatUserData"
 
 const Container = styled.div`
 	width: 100%;
@@ -127,26 +128,22 @@ class SignInGoogleBase extends Component {
 			const socialAuthUser = await firebase.signInWithGoogle()
 			// If this is the first time this user signs up, create a user in db
 			if (socialAuthUser.additionalUserInfo.isNewUser) {
-				await this.props.firebase.user(socialAuthUser.user.uid).set({
+				const userData = formatUserData({
 					name: socialAuthUser.user.displayName,
 					email: socialAuthUser.user.email,
-					items: [],
-					profilePictureRef: null,
-					profilePictureURLs: socialAuthUser.picture ? [socialAuthUser.picture] : null,
-					permissions: [],
-					roles: [],
-					feedback: [],
-					badges: {},
-					userSince: Date.now(),
-					city: null,
-					savedItems: []
+					picture: socialAuthUser.picture,
+					importedFrom: "google"
 				})
+				await this.props.firebase.user(socialAuthUser.user.uid).set(userData)
 			}
+
 			this.setState({ error: null })
+
 			// Close modal if applicable
 			if (globalContext.isLoginModalVisible) {
 				globalContext.closeModal()
 			}
+
 			history.push(ROUTES.HOME)
 		} catch (error) {
 			if (error.code === AUTH_ERR.CODE_EMAIL_ACCOUNT_EXISTS) {
@@ -180,26 +177,22 @@ class SignInFacebookBase extends Component {
 			const socialAuthUser = await firebase.signInWithFacebook()
 			// If this is the first time this user signs up, create a user in db
 			if (socialAuthUser.additionalUserInfo.isNewUser) {
-				await this.props.firebase.user(socialAuthUser.user.uid).set({
+				const userData = formatUserData({
 					name: socialAuthUser.additionalUserInfo.profile.name,
 					email: socialAuthUser.additionalUserInfo.profile.email,
-					items: [],
-					profilePictureRef: null,
-					profilePictureURLs: socialAuthUser.picture ? [socialAuthUser.picture] : null,
-					permissions: [],
-					roles: [],
-					feedback: [],
-					badges: {},
-					userSince: Date.now(),
-					city: null,
-					savedItems: []
+					picture: socialAuthUser.picture,
+					importedFrom: "facebook"
 				})
+				await this.props.firebase.user(socialAuthUser.user.uid).set(userData)
 			}
+
 			this.setState({ error: null })
+
 			// Close modal if applicable
 			if (globalContext.isLoginModalVisible) {
 				globalContext.closeModal()
 			}
+
 			history.push(ROUTES.HOME)
 		} catch (error) {
 			if (error.code === AUTH_ERR.CODE_EMAIL_ACCOUNT_EXISTS) {

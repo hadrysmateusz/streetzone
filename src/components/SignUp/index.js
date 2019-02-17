@@ -12,6 +12,7 @@ import { ROUTES, AUTH_ERR } from "../../constants"
 import validate from "./validate"
 import { SignInLink } from "../SignIn"
 import { withGlobalContext } from "../GlobalContext"
+import formatUserData from "../../utils/formatUserData"
 
 const Container = styled.div`
 	width: 100%;
@@ -47,20 +48,8 @@ class SignUpFormBase extends Component {
 			})
 
 			// Create user in db
-			await firebase.user(userId).set({
-				name,
-				email,
-				items: [],
-				profilePictureRef: null,
-				profilePictureURLs: null,
-				permissions: [],
-				roles: [],
-				feedback: [],
-				badges: {},
-				userSince: Date.now(),
-				city: null,
-				savedItems: []
-			})
+			const userData = formatUserData({ name, email })
+			await firebase.user(userId).set(userData)
 
 			// Reset form
 			actions.reset()
