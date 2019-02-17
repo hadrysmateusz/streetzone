@@ -22,6 +22,9 @@ export class UserLiked extends Component {
 			user.savedItems.map((itemId) => this.props.firebase.getItemData(itemId))
 		)
 
+		// filter out items that don't exist anymore
+		items = items.filter((item) => Object.keys(item).length)
+
 		// put available items first
 		items = items.sort((item) => item.available)
 
