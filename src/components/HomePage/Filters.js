@@ -61,8 +61,8 @@ export class Filters extends Component {
 				{this.props.currentBreakpoint < 1 && (
 					<FiltersHeader>
 						<span>Filtry</span>
-						<CloseIconContainer>
-							<FontAwesomeIcon icon="times" onClick={this.props.toggleFilters} />
+						<CloseIconContainer onClick={this.props.toggleFilters}>
+							<FontAwesomeIcon icon="times" />
 						</CloseIconContainer>
 					</FiltersHeader>
 				)}
@@ -99,14 +99,7 @@ export class Filters extends Component {
 						toggle={this.toggleTab}
 					/>
 				</FilterInnerContainer>
-				{this.props.currentBreakpoint > 0 ? (
-					<ButtonContainer>
-						<ClearAllFiltersButton
-							history={this.props.history}
-							onClick={this.props.forceClear.update}
-						/>
-					</ButtonContainer>
-				) : (
+				{this.props.currentBreakpoint < 1 && (
 					<ButtonsContainer>
 						<Button onClick={this.props.toggleFilters}>Gotowe</Button>
 						<ClearAllFiltersButton
