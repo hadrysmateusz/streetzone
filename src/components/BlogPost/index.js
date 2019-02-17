@@ -15,6 +15,10 @@ import { minWidth, maxWidth } from "../../style-utils"
 import { Separator } from "../Basics"
 
 const Content = styled(Box).attrs({ p: 3, as: "article" })`
+	margin: 10px 0;
+	@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
+		margin: 30px 0;
+	}
 	position: relative;
 	background: white;
 	box-shadow: 0 2px 6px -1px rgba(0, 0, 0, 0.14);

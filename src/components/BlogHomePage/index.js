@@ -8,12 +8,15 @@ import removeMarkdown from "remove-markdown"
 import LoadingSpinner from "../LoadingSpinner"
 import { withFirebase } from "../Firebase"
 import { ROUTES } from "../../constants"
-import { minWidth } from "../../style-utils"
 import { BlogPageContainer } from "../Containers"
 
 const PostsContainer = styled.div`
 	display: grid;
-	${minWidth[5]`gap: 20px;`}
+	gap: 10px;
+	margin: 10px 0;
+	@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
+		margin: 30px 0;
+	}
 `
 
 const Post = styled.div`
@@ -45,7 +48,7 @@ const Post = styled.div`
 	}
 	:not(:last-child) a {
 		@media (max-width: ${(p) => p.theme.breakpoints[5] - 1}px) {
-			border-bottom: none;
+			/* border-bottom: none; */
 		}
 	}
 `
@@ -107,6 +110,7 @@ const Title = styled.h2`
 	overflow: hidden;
 	text-overflow: ellipsis;
 	color: #333;
+	font-family: ${(p) => p.theme.fonts.display};
 `
 
 const Excerpt = styled.p`
@@ -115,7 +119,11 @@ const Excerpt = styled.p`
 	margin: 0 0 5px 0;
 
 	line-height: 1.5em;
-	font-size: 1.04rem;
+	font-size: 0.92rem;
+	@media (min-width: ${(p) => p.theme.breakpoints[0]}px) {
+		font-size: 1.04rem;
+	}
+
 	color: #333;
 	font-family: serif;
 `
