@@ -53,7 +53,7 @@ class AlgoliaRange extends React.Component {
 				<RangeContainer>
 					<input
 						type="number"
-						placeholder="Od"
+						placeholder={this.props.min}
 						name="min"
 						step={1}
 						min={0}
@@ -63,7 +63,7 @@ class AlgoliaRange extends React.Component {
 					/>
 					<input
 						type="number"
-						placeholder="Do"
+						placeholder={this.props.max}
 						name="max"
 						step={1}
 						min={0}
