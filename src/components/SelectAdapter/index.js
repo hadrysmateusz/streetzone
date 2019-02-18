@@ -3,19 +3,23 @@ import Select from "react-select"
 import { connectSortBy } from "react-instantsearch-dom"
 
 const SelectAdapter = ({ onChange, value, initial, options, isMulti, ...rest }) => {
-	// Find the matching value based on the isMulti prop
-	// and possible values in the options prop
-	if (isMulti) {
-		value = value.map((singleValue) =>
-			options.find((option) => option.value === singleValue)
-		)
-	} else {
-		value = options.find((option) => option.value === value)
-	}
-
 	// only null resets the field so if a value
 	// wasn't found set it to null to clear the field
-	if (value === undefined) value = null
+	if (!value) {
+		value = null
+	} else {
+		console.log(value)
+
+		// Find the matching value based on the isMulti prop
+		// and possible values in the options prop
+		if (isMulti) {
+			value = value.map((singleValue) =>
+				options.find((option) => option.value === singleValue)
+			)
+		} else {
+			value = options.find((option) => option.value === value)
+		}
+	}
 
 	return (
 		<Select
