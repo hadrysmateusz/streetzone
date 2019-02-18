@@ -25,6 +25,7 @@ const HeartButtonContainer = styled.div`
 	cursor: pointer;
 	justify-content: center;
 	align-items: center;
+	transition: transform 0.2s ease;
 
 	.filled {
 		color: ${(p) => p.theme.colors.accent};
@@ -32,7 +33,7 @@ const HeartButtonContainer = styled.div`
 	}
 
 	:hover {
-		${activeSaveButton}
+		transform: scale(1.1);
 	}
 
 	${(p) => p.active && activeSaveButton}
