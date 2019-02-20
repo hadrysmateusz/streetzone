@@ -1,5 +1,6 @@
 import styled from "styled-components"
 import { resetButtonStyles } from "../Basics"
+import { PoweredBy } from "react-instantsearch-dom"
 
 export const FilterMenu = styled.div`
 	--width: 350px;
@@ -93,7 +94,6 @@ export const RangeContainer = styled.div`
 export const SearchBox = styled.div`
 	width: 100%;
 	height: 34px;
-	grid-area: search;
 	flex: 1;
 	border: 1px solid ${(p) => p.theme.colors.gray[75]};
 	:hover {
@@ -107,6 +107,9 @@ export const SearchBox = styled.div`
 		justify-content: center;
 		align-items: center;
 		width: 34px;
+	}
+
+	.powered-by-container {
 	}
 
 	input {
@@ -161,4 +164,61 @@ export const ResultsContainer = styled.main`
 	flex: 1;
 	max-width: 1080px;
 	margin: 0 auto;
+`
+
+export const StyledPoweredBy = styled(PoweredBy)`
+	.ais-PoweredBy {
+		height: 100%;
+	}
+	.ais-PoweredBy-text {
+		font-size: 0.6rem;
+		display: block;
+	}
+	.ais-PoweredBy-logo {
+		height: 22px;
+		margin-left: -8px;
+		margin-right: -7px;
+		font-size: 4px;
+	}
+	.ais-PoweredBy-link {
+		display: block;
+		height: 22px;
+	}
+`
+export const StyledPoweredByMobile = styled(PoweredBy)`
+	.ais-PoweredBy {
+		height: 100%;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+	}
+	.ais-PoweredBy-text {
+		font-size: 0.6rem;
+		display: block;
+	}
+	.ais-PoweredBy-logo {
+		height: 22px;
+
+		margin-left: -8px;
+		margin-right: -7px;
+		font-size: 4px;
+	}
+	.ais-PoweredBy-link {
+		display: block;
+		height: 22px;
+	}
+`
+
+export const OuterSearchContainer = styled.div`
+	grid-area: search;
+	display: flex;
+	> * {
+		height: 100%;
+	}
+	> *:first-child {
+		margin-right: 3px;
+		@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
+			margin-right: 5px;
+		}
+	}
 `

@@ -6,7 +6,7 @@ export const InnerContainer = styled.div`
 	margin: 0 auto;
 	display: grid;
 	grid-template-columns: max-content auto 1fr max-content;
-	grid-template-areas: "filter refresh search sort";
+	grid-template-areas: "filter refresh search poweredby sort";
 	gap: 4px;
 	> * {
 		height: 42px;
