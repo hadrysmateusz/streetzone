@@ -1,101 +1,59 @@
 import React from "react"
-import styled, { css, keyframes } from "styled-components"
+import styled from "styled-components"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 import { SPIN } from "../../style-utils/keyframes"
 
-const ellipsis = css`
-	overflow: hidden;
-	text-overflow: ellipsis;
-`
+const Button = styled.button`
+	border: 1px solid;
+	border-color: ${(p) => (p.disabled ? "#d7d7d7" : "#c6c6c6")};
+	background: ${(p) => (p.primary ? "#282828" : `white`)};
+	color: ${(p) => (p.primary ? "white" : "#3e3e3e")};
+	${(p) => p.disabled && `color: #c3c3c3;`}
+	width: ${(p) => (p.fullWidth ? "100%" : "auto")};
+	${(p) => p.fullWidth && "margin: 4px 0;"}
+	padding: 0.8rem 1.85rem;
+	text-align: center;
+	font-size: 0.79rem;
+	display: inline-block;
+	font-weight: 500;
+	${(p) => p.disabled && `font-weight: normal;`}
+	line-height: 0.79rem;
 
-const primary = css`
-	border-color: ${(p) => p.theme.colors.black[0]};
-	background: ${(p) => p.theme.colors.black[0]};
-	color: white;
+	/* :not(:last-child) {
+		margin-right: 8px;
+	} */
 
-	&:not([disabled]) {
-		&:hover {
-			background: ${(p) => p.theme.colors.black[50]};
-			border-color: ${(p) => p.theme.colors.black[50]};
+	:not([disabled]) {
+		cursor: pointer;
+		:hover {
+			background: "#282828";
+			border-color: "#282828";
+			color: "white";
+		}		
+		:focus {
+			border: 1px solid ${(p) => p.theme.colors.accent};
+			outline: none;
+
 		}
 	}
+	margin: 0;
 `
 
-const accent = css`
-	border-color: ${(p) => p.theme.colors.accent};
-	background: ${(p) => p.theme.colors.accent};
-	color: white;
-
+const AccentButton = styled(Button)`
 	text-shadow: 1px 1px ${(p) => p.theme.colors.accent};
+	border-color: ${(p) => (p.disabled ? p.theme.colors.gray[50] : p.theme.colors.accent)};
+	background: ${(p) => (p.disabled ? p.theme.colors.gray[50] : p.theme.colors.accent)};
+	color: "white";
+	${(p) => p.disabled && `color: ${p.theme.colors.danger[0]}`}
+	font-weight: bold;
 
 	:not([disabled]) {
 		:hover {
 			background: rgb(76, 220, 184);
 			border-color: ${(p) => p.theme.colors.accent};
+			color: "white";
 		}
-	}
-`
-
-const basic = css`
-	border-color: ${(p) => p.theme.colors.gray[75]};
-	background: white;
-	color: ${(p) => p.theme.colors.black[0]};
-
-	&:not([disabled]) {
-		&:hover {
-			background: #fdfdfd;
-			border-color: ${(p) => p.theme.colors.black[50]};
-		}
-	}
-`
-
-const disabled = css`
-	border-color: ${(p) => p.theme.colors.gray[100]};
-	background: transparent;
-	color: ${(p) => p.theme.colors.gray[50]};
-`
-
-const Button = styled.button`
-	display: flex;
-	flex-flow: row nowrap;
-	justify-content: center;
-	align-items: center;
-
-	width: 100%;
-	min-width: 0;
-	padding: 0.95rem 1.2rem;
-	margin: 0;
-	border: 2px solid;
-
-	text-transform: uppercase;
-	font-weight: 700;
-	font-size: 0.8rem;
-
-	/* Add spacing between children */
-	* + * {
-		margin-left: 6px;
-	}
-
-	/* Change cursor if button isn't disabled */
-	&:not([disabled]) {
-		cursor: pointer;
-	}
-
-	/* Prevent text overflow */
-	${ellipsis}
-
-	/* Variant styles */
-	${(p) => (p.accent ? accent : p.primary ? primary : basic)}
-
-	/* Disabled styles */
-	${(p) => p.disabled && disabled}
-`
-
-export const ButtonContainer = styled.div`
-	display: flex;
-	* + * {
-		margin-left: 10px;
 	}
 `
 
@@ -160,4 +118,4 @@ const SocialButton = ({ provider, ...rest }) => {
 }
 
 export default Button
-export { LoaderButton, FacebookButton, GoogleButton, SocialButton }
+export { LoaderButton, FacebookButton, GoogleButton, SocialButton, AccentButton }

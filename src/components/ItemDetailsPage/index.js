@@ -8,7 +8,7 @@ import ImageGallery from "../ImageGallery"
 import { withFirebase } from "../Firebase"
 import { withAuthentication } from "../UserSession"
 import LoadingSpinner from "../LoadingSpinner"
-import Button, { LoaderButton, AccentButton } from "../Button"
+import Button, { LoaderButton } from "../Button"
 import EmptyState from "../EmptyState"
 import UserPreview from "../UserPreview"
 import { ITEM_SCHEMA } from "../../constants"
@@ -155,9 +155,7 @@ class ItemDetailsPage extends Component {
 											/>
 										</ButtonGrid>
 									) : (
-										<AccentButton primary fullWidth>
-											Kup
-										</AccentButton>
+										<Button accent>Kup</Button>
 									)}
 								</ButtonsContainer>
 

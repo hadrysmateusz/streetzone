@@ -4,7 +4,7 @@ import { withRouter } from "react-router-dom"
 import { compose } from "recompose"
 import styled from "styled-components"
 
-import Button, { LoaderButton } from "../Button"
+import Button, { LoaderButton, ButtonContainer } from "../Button"
 import { FileHandlerSingle, CustomFile } from "../FileHandler"
 import { withFirebase } from "../Firebase"
 import { withAuthentication } from "../UserSession"
@@ -13,15 +13,6 @@ import getProfilePictureURL from "../../utils/getProfilePictureURL"
 const Container = styled.div`
 	max-width: 460px;
 	margin: 0 auto;
-`
-
-const ButtonContainer = styled.div`
-	margin: 8px 0;
-	display: flex;
-	justify-content: stretch;
-	* {
-		flex: 1 1 0;
-	}
 `
 
 class AvatarChangeForm extends React.Component {
