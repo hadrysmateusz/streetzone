@@ -18,3 +18,9 @@ export const maxWidth = theme.breakpoints.reduce((acc, val, i) => {
 	`
 	return acc
 }, {})
+
+export const ellipsis = css`
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+`

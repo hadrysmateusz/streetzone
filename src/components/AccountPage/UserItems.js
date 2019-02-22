@@ -1,13 +1,13 @@
 import React from "react"
-import ItemsView from "../ItemsView"
+import { DetailedItemsView } from "../DetailedItemCard"
 import EmptyState, { UserNoItems } from "../EmptyState"
 import LoadingSpinner from "../LoadingSpinner"
 
-const UserItems = ({ items, isLoading }) =>
+const UserItems = ({ items, isLoading, userIsOwner }) =>
 	isLoading ? (
 		<LoadingSpinner />
 	) : items && items.length > 0 ? (
-		<ItemsView items={items} />
+		<DetailedItemsView items={items} userIsOwner={userIsOwner} />
 	) : (
 		<EmptyState state={UserNoItems} />
 	)

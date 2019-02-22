@@ -32,7 +32,6 @@ export const Header = styled.h2`
 `
 
 export const StyledNavLink = styled(NavLink)`
-	font-size: 0.85rem;
 	display: flex;
 	align-items: center;
 	background: none;
@@ -129,7 +128,7 @@ export const FieldLabel = styled.div`
 `
 
 export const FieldRow = styled.div`
-	margin-bottom: 10px;
+	/* margin-bottom: 10px; */
 	${gridArea}
 `
 

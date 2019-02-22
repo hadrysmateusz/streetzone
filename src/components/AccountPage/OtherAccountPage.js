@@ -4,7 +4,13 @@ import { Route, Switch, Redirect } from "react-router-dom"
 import LoadingSpinner from "../LoadingSpinner"
 import { withFirebase } from "../Firebase"
 import { StyledNavLink } from "../Basics"
-import { TabsNav, TabsNavItem, TabsNavContainer, MainGrid } from "./StyledComponents"
+import {
+	TabsNav,
+	TabsNavItem,
+	TabsNavContainer,
+	MainGrid,
+	InnerContainer
+} from "./StyledComponents"
 import MainInfo from "./MainInfo"
 // import getUserItems from "./getUserItems"
 
@@ -63,64 +69,52 @@ class OtherAccountPage extends Component {
 					<>
 						<MainInfo user={user} />
 
-						<TabsNavContainer>
-							<TabsNav>
-								<TabsNavItem>
-									<StyledNavLink to={routes.items.path.replace(":id", userId)}>
-										{routes.items.label}
-									</StyledNavLink>
-								</TabsNavItem>
+						<InnerContainer>
+							<TabsNavContainer>
+								<TabsNav>
+									<TabsNavItem>
+										<StyledNavLink to={routes.items.path.replace(":id", userId)}>
+											{routes.items.label}
+										</StyledNavLink>
+									</TabsNavItem>
 
-								<TabsNavItem>
-									<StyledNavLink to={routes.feedback.path.replace(":id", userId)}>
-										{routes.feedback.label}
-									</StyledNavLink>
-								</TabsNavItem>
+									<TabsNavItem>
+										<StyledNavLink to={routes.feedback.path.replace(":id", userId)}>
+											{routes.feedback.label}
+										</StyledNavLink>
+									</TabsNavItem>
+								</TabsNav>
+							</TabsNavContainer>
 
-								<TabsNavItem>
-									<StyledNavLink to={routes.transactions.path.replace(":id", userId)}>
-										{routes.transactions.label}
-									</StyledNavLink>
-								</TabsNavItem>
-							</TabsNav>
-						</TabsNavContainer>
-
-						<Switch>
-							<Route
-								exact
-								path={routes.items.path}
-								render={() => (
-									<routes.items.component
-										items={availableItems}
-										isLoading={isFetchingItems}
-									/>
-								)}
-							/>
-							<Route
-								exact
-								path={routes.settings.path}
-								render={() => <routes.settings.component />}
-							/>
-							<Route
-								exact
-								path={routes.feedback.path}
-								render={() => <routes.feedback.component />}
-							/>
-							<Route
-								exact
-								path={routes.transactions.path}
-								render={() => (
-									<routes.transactions.component
-										items={soldItems}
-										isLoading={isFetchingItems}
-									/>
-								)}
-							/>
-							<Route
-								path={baseUrl}
-								render={() => <Redirect to={routes.items.path.replace(":id", userId)} />}
-							/>
-						</Switch>
+							<Switch>
+								<Route
+									exact
+									path={routes.items.path}
+									render={() => (
+										<routes.items.component
+											items={availableItems}
+											isLoading={isFetchingItems}
+										/>
+									)}
+								/>
+								<Route
+									exact
+									path={routes.settings.path}
+									render={() => <routes.settings.component />}
+								/>
+								<Route
+									exact
+									path={routes.feedback.path}
+									render={() => <routes.feedback.component />}
+								/>
+								<Route
+									path={baseUrl}
+									render={() => (
+										<Redirect to={routes.items.path.replace(":id", userId)} />
+									)}
+								/>
+							</Switch>
+						</InnerContainer>
 					</>
 				) : (
 					<LoadingSpinner />

@@ -48,13 +48,6 @@ export const ButtonsContainer = styled.div`
 	align-content: flex-start;
 `
 
-export const ButtonGrid = styled.div`
-	display: grid;
-	grid-template-columns: 1fr 1fr;
-	gap: 10px;
-	width: 100%;
-`
-
 export const MainInfo = styled.div`
 	display: flex;
 	> :last-child {

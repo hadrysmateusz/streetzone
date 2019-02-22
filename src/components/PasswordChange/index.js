@@ -5,6 +5,7 @@ import { StyledInput, FieldRow, FieldLabel } from "../Basics"
 import { LoaderButton } from "../Button"
 import { FormError } from "../FormElements"
 import { FORM_ERR } from "../../constants"
+import { Header } from "../AccountPage/StyledComponents"
 
 class PasswordChangeForm extends Component {
 	state = { error: null }
@@ -51,6 +52,8 @@ class PasswordChangeForm extends Component {
 				validate={this.validate}
 				render={({ handleSubmit, submitting, pristine, values }) => (
 					<form onSubmit={handleSubmit}>
+						<Header>Zmień hasło</Header>
+
 						{/* Hasło */}
 						<FieldRow>
 							<Field name="passwordNew">

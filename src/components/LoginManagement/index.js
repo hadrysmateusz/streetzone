@@ -10,19 +10,66 @@ import { SocialButton, LoaderButton } from "../Button"
 import { withFirebase } from "../Firebase"
 import { PasswordChangeForm } from "../PasswordChange"
 import { withAuthentication } from "../UserSession"
-import Separator from "../Separator"
+import { Header } from "../AccountPage/StyledComponents"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
-const EnabledIndicator = styled.span`
-	padding-left: 10px;
-	color: ${(p) => (p.isEnabled ? "green" : "red")};
+const EnabledIndicator = styled.div`
+	height: 28px;
+	width: 28px;
+	background: white;
+	border: 2px solid ${(p) => p.theme.colors.gray[50]};
+	border-radius: 2px;
+	margin-right: 12px;
+
+	color: ${(p) => p.theme.colors.black[75]};
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+`
+
+const OuterContainer = styled.div`
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 15px;
+`
+
+const SocialContainer = styled.div`
+	display: grid;
+	gap: 15px;
+`
+
+const PasswordContainer = styled.div`
+	form {
+		display: grid;
+		gap: 15px;
+	}
+`
+
+const ConfirmPasswordContainer = styled.div`
+	display: flex;
+	* + * {
+		margin-left: 10px;
+	}
+`
+
+const InfoContainer = styled.div`
+	position: relative;
+	font-size: 0.98rem;
+	line-height: 1.4rem;
+	color: ${(p) => p.theme.colors.black[50]};
+	font-weight: 300;
+`
+
+const InfoIndicator = styled.div`
+	position: absolute;
+	top: 0px;
+	left: -25px;
+	font-size: 1.12rem;
+	color: ${(p) => p.theme.colors.black[75]};
 `
 
 const SIGN_IN_METHODS = [
-	{
-		id: "password",
-		name: "Hasło",
-		provider: null
-	},
 	{
 		id: "google.com",
 		name: "Google",
@@ -94,66 +141,57 @@ export class LoginManagementBase extends Component {
 
 	render() {
 		const { activeSignInMethods, error } = this.state
+		const onlyOneLeft = activeSignInMethods.length === 1
 
 		return (
-			<div className={this.props.className}>
-				{activeSignInMethods.includes("password") && (
-					<>
-						<Separator>Zmień hasło</Separator>
-						<PasswordChangeForm />
-					</>
-				)}
-				<Separator>Metody logowania</Separator>
+			<div>
+				<InfoContainer>
+					Powiąż swoje konto na Bumped z jednym lub więcej kontami społecznościowymi, by
+					móc logować się za ich pomocą do serwisu. Jeśli za pierwszym razem zalogowałeś
+					się używając jednego z kont społecznościowych, możesz również dodać hasło by
+					logować się za pomocą e-mailu i hasła.
+					<InfoIndicator>
+						<FontAwesomeIcon icon="info-circle" />
+					</InfoIndicator>
+				</InfoContainer>
 
-				{/* <div>
-					{SIGN_IN_METHODS.map((signInMethod) => {
-						const isEnabled = activeSignInMethods.includes(signInMethod.id)
-						return (
-							<div>
-								{signInMethod.name}
-								<EnabledIndicator isEnabled={isEnabled}>
-									{isEnabled ? "Włączone" : "Wyłączone"}
-								</EnabledIndicator>
-							</div>
-						)
-					})}
-				</div> */}
+				<OuterContainer>
+					<SocialContainer>
+						<Header>Konta Społecznościowe</Header>
+						{SIGN_IN_METHODS.map((signInMethod) => {
+							const isEnabled = activeSignInMethods.includes(signInMethod.id)
+							const commonProps = {
+								onlyOneLeft,
+								isEnabled,
+								signInMethod,
+								onUnlink: this.onUnlink
+							}
 
-				<div className="provider-container">
-					{SIGN_IN_METHODS.map((signInMethod) => {
-						const onlyOneLeft = activeSignInMethods.length === 1
-						const isEnabled = activeSignInMethods.includes(signInMethod.id)
-						const commonProps = {
-							onlyOneLeft,
-							isEnabled,
-							signInMethod,
-							onUnlink: this.onUnlink
-						}
-
-						return (
-							<div className="provider-toggle" key={signInMethod.id}>
-								{signInMethod.name}
-								<EnabledIndicator isEnabled={isEnabled}>
-									{isEnabled ? "Włączone" : "Wyłączone"}
-								</EnabledIndicator>
-								{signInMethod.id === "password" ? (
-									<DefaultLoginToggle
-										{...commonProps}
-										key={signInMethod.id}
-										onLink={this.onDefaultLoginLink}
-									/>
-								) : (
-									<SocialLoginToggle
-										{...commonProps}
-										key={signInMethod.id}
-										onLink={this.onSocialLoginLink}
-									/>
-								)}
-							</div>
-						)
-					})}
-					{error && error.message}
-				</div>
+							return signInMethod.id !== "password" ? (
+								<SocialLoginToggle
+									{...commonProps}
+									key={signInMethod.id}
+									onLink={this.onSocialLoginLink}
+								/>
+							) : null
+						})}
+					</SocialContainer>
+					<PasswordContainer>
+						{activeSignInMethods.includes("password") ? (
+							<>
+								<PasswordChangeForm />
+							</>
+						) : (
+							<>
+								<DefaultLoginToggle
+									isEnabled={activeSignInMethods.includes("password")}
+									onlyOneLeft={onlyOneLeft}
+									onLink={this.onSocialLoginLink}
+								/>
+							</>
+						)}
+					</PasswordContainer>
+				</OuterContainer>
 			</div>
 		)
 	}
@@ -176,7 +214,12 @@ const SocialLoginToggle = ({
 					onlyOneLeft ? "Nie można dezaktywować ostatniej metody logowania" : undefined
 				}
 				fullWidth
-			>{`Dezaktywuj ${signInMethod.name}`}</SocialButton>
+			>
+				<EnabledIndicator>
+					{isEnabled && <FontAwesomeIcon icon="check" />}
+				</EnabledIndicator>
+				{`Dezaktywuj ${signInMethod.name}`}
+			</SocialButton>
 		) : (
 			<SocialButton
 				provider={signInMethod.id}
@@ -212,7 +255,12 @@ class DefaultLoginToggle extends Component {
 	}
 
 	render() {
-		const { onlyOneLeft, isEnabled, signInMethod, onUnlink } = this.props
+		const { onlyOneLeft, isEnabled, onUnlink } = this.props
+		const signInMethod = {
+			id: "password",
+			name: "Hasło",
+			provider: null
+		}
 
 		return isEnabled ? (
 			<SocialButton
@@ -226,12 +274,13 @@ class DefaultLoginToggle extends Component {
 				validate={this.validate}
 				render={({ handleSubmit, submitting, pristine, values, invalid }) => (
 					<form onSubmit={handleSubmit}>
+						<Header>Dodaj hasło</Header>
+
 						{/* Hasło */}
 						<FieldRow>
 							<Field name="password">
 								{({ input, meta }) => (
 									<>
-										<FieldLabel>Hasło</FieldLabel>
 										<StyledInput {...input} type="password" placeholder="Hasło" />
 										<FormError message={meta.error} show={meta.error && meta.touched} />
 									</>
@@ -239,13 +288,12 @@ class DefaultLoginToggle extends Component {
 							</Field>
 						</FieldRow>
 
-						{/* Powtórz Hasło */}
-						{values.password && (
+						<ConfirmPasswordContainer>
+							{/* Powtórz Hasło */}
 							<FieldRow>
 								<Field name="passwordConfirm">
 									{({ input, meta }) => (
 										<>
-											<FieldLabel>Potwierdź Hasło</FieldLabel>
 											<StyledInput
 												{...input}
 												type="password"
@@ -256,15 +304,15 @@ class DefaultLoginToggle extends Component {
 									)}
 								</Field>
 							</FieldRow>
-						)}
 
-						<LoaderButton
-							text={`Powiąż ${signInMethod.name}`}
-							type="submit"
-							isLoading={submitting}
-							disabled={submitting || pristine || invalid}
-							fullWidth
-						/>
+							<LoaderButton
+								text={`Zapisz`}
+								type="submit"
+								isLoading={submitting}
+								disabled={submitting || pristine || invalid}
+								primary
+							/>
+						</ConfirmPasswordContainer>
 					</form>
 				)}
 			/>

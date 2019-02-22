@@ -4,11 +4,17 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 const ProfilePictureContainer = styled.div`
 	display: ${(p) => (p.inline ? "inline-block" : "block")};
-	width: ${(p) => p.size};
-	height: ${(p) => p.size};
 	position: relative;
 	overflow: hidden;
 	border-radius: 50%;
+
+	width: ${(p) => p.size};
+	height: ${(p) => p.size};
+	min-width: ${(p) => p.size};
+	min-height: ${(p) => p.size};
+	max-width: ${(p) => p.size};
+	max-height: ${(p) => p.size};
+	flex: 0 0 ${(p) => p.size};
 `
 
 const ImageContainer = styled.div`

@@ -8,7 +8,7 @@ import ImageGallery from "../ImageGallery"
 import { withFirebase } from "../Firebase"
 import { withAuthentication } from "../UserSession"
 import LoadingSpinner from "../LoadingSpinner"
-import Button, { LoaderButton } from "../Button"
+import Button, { LoaderButton, ButtonContainer } from "../Button"
 import EmptyState from "../EmptyState"
 import UserPreview from "../UserPreview"
 import { ITEM_SCHEMA } from "../../constants"
@@ -23,11 +23,9 @@ import {
 	InfoContainer,
 	UserInfoContainer,
 	Description,
-	ButtonsContainer,
 	Name,
 	Designers,
 	Sold,
-	ButtonGrid,
 	InfoItem,
 	MainInfo,
 	MoreInfo
@@ -140,9 +138,9 @@ class ItemDetailsPage extends Component {
 										</InfoItem>
 									)}
 								</div>
-								<ButtonsContainer>
+								<ButtonContainer>
 									{userIsOwner ? (
-										<ButtonGrid>
+										<>
 											<Button as={Link} to={`/e/${item.itemId}`} fullWidth>
 												Edytuj
 											</Button>
@@ -153,11 +151,13 @@ class ItemDetailsPage extends Component {
 												onClick={this.deleteItem}
 												fullWidth
 											/>
-										</ButtonGrid>
+										</>
 									) : (
-										<Button accent>Kup</Button>
+										<Button accent fullWidth>
+											Kup
+										</Button>
 									)}
-								</ButtonsContainer>
+								</ButtonContainer>
 
 								{!userIsOwner && (
 									<UserInfoContainer>

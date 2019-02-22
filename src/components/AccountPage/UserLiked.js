@@ -1,10 +1,10 @@
 import React, { Component } from "react"
 import EmptyState, { UserNoLiked } from "../EmptyState"
-import ItemsView from "../ItemsView"
 import LoadingSpinner from "../LoadingSpinner"
 import { withAuthentication } from "../UserSession"
 import { withFirebase } from "../Firebase"
 import { compose } from "recompose"
+import { DetailedItemsView } from "../DetailedItemCard"
 
 export class UserLiked extends Component {
 	state = {
@@ -47,11 +47,8 @@ export class UserLiked extends Component {
 
 		return isLoading || isFetchingItems ? (
 			<LoadingSpinner />
-		) : items.length > 0 ? (
-			<div>
-				<h3>Zapisane</h3>
-				<ItemsView items={items} />
-			</div>
+		) : items && items.length > 0 ? (
+			<DetailedItemsView items={items} />
 		) : (
 			<EmptyState state={UserNoLiked} />
 		)

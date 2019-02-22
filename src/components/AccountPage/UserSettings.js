@@ -1,16 +1,28 @@
 import React from "react"
 import AvatarChangeForm from "../AvatarChange"
 import LoginManagement from "../LoginManagement"
-import Separator from "../Separator"
 import SignOutButton from "../SignOut"
+import ProfileEdit from "./ProfileEditForm"
+import { Header, UserSettingsContainer, Section } from "./StyledComponents"
 
 const UserSettings = () => (
-	<div>
-		<Separator>Zdjęcie profilowe</Separator>
-		<AvatarChangeForm />
-		<LoginManagement />
-		<SignOutButton />
-	</div>
+	<UserSettingsContainer>
+		<Section>
+			<Header>Podstawowe informacje</Header>
+			<ProfileEdit />
+		</Section>
+		<Section>
+			<Header>Zdjęcie profilowe</Header>
+			<AvatarChangeForm />
+		</Section>
+		<Section>
+			<Header>Metody logowania</Header>
+			<LoginManagement />
+		</Section>
+		<Section>
+			<SignOutButton />
+		</Section>
+	</UserSettingsContainer>
 )
 
 export default UserSettings

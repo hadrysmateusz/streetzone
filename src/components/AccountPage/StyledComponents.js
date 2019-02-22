@@ -1,13 +1,10 @@
 import styled from "styled-components"
 
 export const TabsNavContainer = styled.div`
-	grid-area: tabs-nav;
 	min-height: 100%;
 `
 
 export const TabsNav = styled.nav`
-	background: white;
-	border: 1px solid ${(p) => p.theme.colors.gray[75]};
 	white-space: nowrap;
 
 	@media (max-width: ${(p) => p.theme.breakpoints[1] - 1}px) {
@@ -19,11 +16,10 @@ export const TabsNav = styled.nav`
 	display: flex;
 	flex-flow: column nowrap;
 	margin: 0;
-	padding: 10px 0;
 
 	text-transform: uppercase;
 	letter-spacing: 0.9px;
-	font-size: 0.8rem;
+	font-size: 0.75rem;
 	font-weight: normal;
 `
 
@@ -35,8 +31,8 @@ export const TabsNavItem = styled.li`
 	color: ${(p) => p.theme.colors.black[75]};
 	display: block;
 	order: 1;
-	padding: 0 4px;
-	height: 41px;
+	padding: 0;
+	height: 38px;
 
 	:hover {
 		background: #f8f8f8;
@@ -54,28 +50,31 @@ export const MainGrid = styled.div`
 	height: 100%;
 	width: 100%;
 	flex: 1;
-	display: grid;
 	margin: 0 auto;
-	grid-gap: 20px;
-	grid-template-areas:
-		"info"
-		"tabs-nav"
-		"tabs-content";
-	grid-template-columns: 100%;
-	grid-template-rows: min-content min-content 1fr;
+	max-width: ${(p) => p.theme.breakpoints[5]}px;
+`
 
-	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
-		max-width: 860px;
+export const Header = styled.h3`
+	text-transform: uppercase;
+	font-size: 0.85rem;
+	text-align: center;
+	margin: 15px 0;
+	font-weight: 300;
+`
+
+export const Section = styled.div`
+	margin-bottom: 60px;
+`
+
+export const UserSettingsContainer = styled.div`
+	margin: 0 auto;
+	max-width: 600px;
+`
+
+export const InnerContainer = styled.div`
+	display: grid;
+
+	@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
 		grid-template-columns: min-content 1fr;
-		grid-template-rows: min-content 1fr;
-		grid-template-areas:
-			"info info"
-			"tabs-nav tabs-content";
-	}
-	@media (min-width: ${(p) => p.theme.breakpoints[3]}px) {
-		max-width: ${(p) => p.theme.breakpoints[3]}px;
-	}
-	@media (min-width: ${(p) => p.theme.breakpoints[5]}px) {
-		max-width: ${(p) => p.theme.breakpoints[5]}px;
 	}
 `

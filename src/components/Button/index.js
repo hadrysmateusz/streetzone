@@ -1,13 +1,9 @@
 import React from "react"
-import styled, { css, keyframes } from "styled-components"
+import styled, { css } from "styled-components"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { ellipsis } from "../../style-utils"
 
 import { SPIN } from "../../style-utils/keyframes"
-
-const ellipsis = css`
-	overflow: hidden;
-	text-overflow: ellipsis;
-`
 
 const primary = css`
 	border-color: ${(p) => p.theme.colors.black[0]};
@@ -62,11 +58,12 @@ const Button = styled.button`
 	justify-content: center;
 	align-items: center;
 
-	width: 100%;
+	height: 46px;
 	min-width: 0;
-	padding: 0.95rem 1.2rem;
+	padding: 0 0.95rem;
 	margin: 0;
 	border: 2px solid;
+	border-radius: 2px;
 
 	text-transform: uppercase;
 	font-weight: 700;
@@ -90,19 +87,39 @@ const Button = styled.button`
 
 	/* Disabled styles */
 	${(p) => p.disabled && disabled}
+
+	/* Full-width styling */
+	${(p) => p.fullWidth && "width: 100%;"}
 `
 
 export const ButtonContainer = styled.div`
+	width: 100%;
 	display: flex;
+	margin: 10px 0;
+	${(p) => p.alignRight && "justify-content: flex-end;"}
+	${(p) => p.centered && "justify-content: center;"}
 	* + * {
 		margin-left: 10px;
 	}
 `
 
+const IconButtonUnstyled = ({ icon, ...rest }) => (
+	<Button {...rest}>
+		<FontAwesomeIcon icon={icon} />
+	</Button>
+)
+
+export const IconButton = styled(IconButtonUnstyled)`
+	height: 34px;
+	width: 34px;
+	${(p) => p.small && "height: 30px; width: 30px; font-size: 13px;"}
+	${(p) => p.large && "height: 40px; width: 40px;"}
+`
+
 const LoaderButtonUnstyled = ({ isLoading, text, loadingText = text, ...rest }) => (
 	<Button {...rest}>
 		<span className="contentContainer">
-			<FontAwesomeIcon className="spinner" icon="spinner" />
+			{isLoading && <FontAwesomeIcon className="spinner" icon={"spinner"} />}
 			<span className="text">{isLoading ? loadingText : text}</span>
 		</span>
 	</Button>
@@ -114,7 +131,6 @@ const LoaderButton = styled(LoaderButtonUnstyled)`
 		width: auto;
 	}
 	.spinner {
-		${(p) => !p.isLoading && "display: none"};
 		margin-right: 8px;
 		position: absolute;
 		top: 0.2rem;
@@ -124,6 +140,7 @@ const LoaderButton = styled(LoaderButtonUnstyled)`
 `
 
 const FacebookButton = styled(Button)`
+	padding-left: 8px;
 	color: white;
 	background-color: ${(p) => (p.disabled ? "#7D8EB2" : "#3b5998")};
 	border-color: ${(p) => (p.disabled ? "#7D8EB2" : "#3b5998")};
@@ -136,6 +153,7 @@ const FacebookButton = styled(Button)`
 `
 
 const GoogleButton = styled(Button)`
+	padding-left: 8px;
 	color: white;
 	background-color: ${(p) => (p.disabled ? "#9FBFF4" : "#4285f4")};
 	border-color: ${(p) => (p.disabled ? "#9FBFF4" : "#4285f4")};
