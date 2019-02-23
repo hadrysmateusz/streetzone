@@ -6,7 +6,7 @@ import { withFirebase } from "../Firebase"
 import { withAuthorization } from "../UserSession"
 import LoadingSpinner from "../LoadingSpinner"
 import { StyledNavLink } from "../Basics"
-import MainInfo from "./MainInfo"
+import MainInfo from "../UserMainInfo"
 import {
 	TabsNav,
 	TabsNavItem,

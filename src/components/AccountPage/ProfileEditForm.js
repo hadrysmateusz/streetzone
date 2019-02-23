@@ -2,12 +2,11 @@ import React from "react"
 import { Form, Field } from "react-final-form"
 import styled from "styled-components"
 import { compose } from "recompose"
-
-import Button, { LoaderButton } from "../Button"
-import { FieldRow, StyledInput, StyledTextarea } from "../Basics"
-import { FormError } from "../FormElements"
 import { withRouter } from "react-router-dom"
 
+import Button, { LoaderButton, ButtonContainer } from "../Button"
+import { FieldRow, StyledInput, StyledTextarea } from "../Basics"
+import { FormError } from "../FormElements"
 import { ROUTES } from "../../constants"
 import { withAuthentication } from "../UserSession"
 import { withFirebase } from "../Firebase"
@@ -27,34 +26,7 @@ const FieldsContainer = styled.div`
 		"misc misc";
 `
 
-const ButtonContainer = styled.div`
-	margin: 10px 0;
-	display: flex;
-	justify-content: center;
-	width: 100%;
-	> * {
-		width: 120px;
-	}
-	* + * {
-		margin-left: 15px;
-	}
-`
-
-export default compose(
-	withAuthentication,
-	withFirebase
-)(() => {
-	return (
-		<ProfileEditForm
-			onSubmit={(data) => {
-				console.log(data)
-			}}
-			initialValues={{}}
-		/>
-	)
-})
-
-const ProfileEditForm = withRouter(({ initialValues, onSubmit, history }) => {
+const ProfileEditForm = ({ initialValues, onSubmit, history }) => {
 	return (
 		<Form
 			onSubmit={onSubmit}
@@ -153,4 +125,10 @@ const ProfileEditForm = withRouter(({ initialValues, onSubmit, history }) => {
 			}}
 		/>
 	)
-})
+}
+
+export default compose(
+	withAuthentication,
+	withFirebase,
+	withRouter
+)(ProfileEditForm)

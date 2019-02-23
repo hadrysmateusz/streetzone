@@ -1,41 +1,15 @@
 import React, { Component } from "react"
-import styled from "styled-components"
 import { withRouter } from "react-router-dom"
 import { compose } from "recompose"
+import moment from "moment"
 
 import ProfilePicture from "../ProfilePicture"
 import { withFirebase } from "../Firebase"
 import LoadingSpinner from "../LoadingSpinner"
 import getProfilePictureURL from "../../utils/getProfilePictureURL"
-import { ellipsis } from "../../style-utils"
-import UserRating from "../AccountPage/UserRating"
-import moment from "moment"
-
+import UserRating from "../UserRating"
 import { ROUTES } from "../../constants"
-
-const Name = styled.div`
-	font-size: ${(p) => (p.nameOnly ? "1.22rem" : "1.1rem")};
-	${ellipsis}
-`
-
-const InfoContainer = styled.div`
-	padding: 2px 0 0 8px;
-	overflow: hidden;
-	${(p) => p.vertical && "text-align: center; padding-top: 8px;"}
-`
-
-const Date = styled.div`
-	font-size: 0.8rem;
-	font-weight: 300;
-`
-
-const Container = styled.div`
-	margin: 10px 0;
-	font-weight: 500;
-	display: flex;
-	flex-direction: ${(p) => (p.vertical ? "column" : "row")};
-	${(p) => p.vertical && "align-items: center;"}
-`
+import { DateContainer, Name, InfoContainer, Container } from "./StyledComponents"
 
 class UserPreview extends Component {
 	state = {
@@ -73,10 +47,9 @@ class UserPreview extends Component {
 						<Name nameOnly={this.props.nameOnly}>{user.name}</Name>
 						{!this.props.nameOnly && (
 							<>
-								<Date>
-									W serwisie od {moment(window.Date.now()).diff(user.userSince, "days")}{" "}
-									dni
-								</Date>
+								<DateContainer>
+									W serwisie od {moment(Date.now()).diff(user.userSince, "days")} dni
+								</DateContainer>
 								<div>
 									<UserRating size="15px" feedback={user.feedback} />
 								</div>

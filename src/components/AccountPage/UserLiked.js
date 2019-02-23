@@ -1,12 +1,13 @@
 import React, { Component } from "react"
+import { compose } from "recompose"
+
 import EmptyState, { UserNoLiked } from "../EmptyState"
 import LoadingSpinner from "../LoadingSpinner"
 import { withAuthentication } from "../UserSession"
 import { withFirebase } from "../Firebase"
-import { compose } from "recompose"
 import { DetailedItemsView } from "../DetailedItemCard"
 
-export class UserLiked extends Component {
+class UserLiked extends Component {
 	state = {
 		isLoading: true,
 		isFetchingItems: false,

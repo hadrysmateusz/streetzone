@@ -4,6 +4,7 @@ import { Route, Switch, Redirect } from "react-router-dom"
 import LoadingSpinner from "../LoadingSpinner"
 import { withFirebase } from "../Firebase"
 import { StyledNavLink } from "../Basics"
+import MainInfo from "../UserMainInfo"
 import {
 	TabsNav,
 	TabsNavItem,
@@ -11,8 +12,6 @@ import {
 	MainGrid,
 	InnerContainer
 } from "./StyledComponents"
-import MainInfo from "./MainInfo"
-// import getUserItems from "./getUserItems"
 
 class OtherAccountPage extends Component {
 	state = {

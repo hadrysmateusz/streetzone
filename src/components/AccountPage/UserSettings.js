@@ -9,7 +9,12 @@ const UserSettings = () => (
 	<UserSettingsContainer>
 		<Section>
 			<Header>Podstawowe informacje</Header>
-			<ProfileEdit />
+			<ProfileEdit
+				onSubmit={(data) => {
+					console.log(data)
+				}}
+				initialValues={{}}
+			/>
 		</Section>
 		<Section>
 			<Header>Zdjęcie profilowe</Header>

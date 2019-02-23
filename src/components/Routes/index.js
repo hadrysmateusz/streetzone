@@ -22,10 +22,6 @@ const UserItems = Loadable({
 	loader: () => import("../AccountPage/UserItems"),
 	loading: LoadableComponentSpinner
 })
-const UserTransactions = Loadable({
-	loader: () => import("../AccountPage/UserTransactions"),
-	loading: LoadableComponentSpinner
-})
 const UserFollowing = Loadable({
 	loader: () => import("../AccountPage/UserFollowing"),
 	loading: LoadableComponentSpinner
@@ -162,11 +158,6 @@ const routes = [
 				label: "Opinie i komentarze",
 				path: ROUTES.ACCOUNT_FEEDBACK,
 				component: UserFeedback
-			},
-			transactions: {
-				label: "Historia transakcji",
-				path: ROUTES.ACCOUNT_TRANSACTIONS,
-				component: UserTransactions
 			},
 			liked: {
 				label: "Zapisane przedmioty",

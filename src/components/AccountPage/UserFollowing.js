@@ -3,11 +3,7 @@ import EmptyState, { UserNoFollowing } from "../EmptyState"
 
 const UserFollowing = ({ following }) => (
 	<div>
-		{following && following.length > 0 ? (
-			<h3>Opinie</h3>
-		) : (
-			<EmptyState state={UserNoFollowing} />
-		)}
+		{following && following.length > 0 ? <div /> : <EmptyState state={UserNoFollowing} />}
 	</div>
 )
 
