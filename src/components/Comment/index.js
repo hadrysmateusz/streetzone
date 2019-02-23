@@ -37,10 +37,10 @@ class Comment extends React.Component {
 						<div>{moment(this.props.item.createdAt).format("D.M.YYYY")}</div>
 					</div>
 					<div className="buttons-container">
-						<IconButton small icon="flag">
+						<IconButton small icon="flag" title="Zgłoś naruszenie">
 							Flag
 						</IconButton>
-						<IconButton small icon="ellipsis-h">
+						<IconButton small icon="ellipsis-h" title="Więcej">
 							More
 						</IconButton>
 					</div>
