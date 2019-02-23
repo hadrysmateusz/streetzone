@@ -74,8 +74,6 @@ export class SaveButtonBase extends Component {
 		const isSaved =
 			authUser && authUser[propertyName] && authUser[propertyName].includes(id)
 
-		debugger
-
 		this.setState({ isSaved })
 	}
 
@@ -105,8 +103,6 @@ export class SaveButtonBase extends Component {
 
 				// either delete or add to the list
 				const newList = wasSaved ? oldList.filter((a) => a !== id) : [...oldList, id]
-
-				debugger
 
 				// update the db
 				await firebase.currentUser().update({ [propertyName]: newList })

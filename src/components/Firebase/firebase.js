@@ -94,25 +94,41 @@ class Firebase {
 
 	getUserItems = async (user) => {
 		let res = {
-			availableItems: [],
-			soldItems: [],
+			items: [],
 			error: null
 		}
 
 		try {
-			// map user's itemIds to data fetched from firestore
-			const items = await Promise.all(
-				user.items.map((itemId) => this.getItemData(itemId))
-			)
-
-			// separate the results into available and sold
-			for (let item of items) {
-				if (item.status === ITEM_SCHEMA.status.available) {
-					res.availableItems.push(item)
-				} else if (item.status === ITEM_SCHEMA.status.sold) {
-					res.soldItems.push(item)
-				}
+			// get data from firestore
+			for (let itemId of user.items) {
+				const item = await this.getItemData(itemId)
+				res.items.push(item)
 			}
+
+			// filter out items that don't exist anymore
+			res.items = res.items.filter((item) => Object.keys(item).length)
+		} catch (error) {
+			res.error = error
+		} finally {
+			return res
+		}
+	}
+
+	getUserSavedItems = async (user) => {
+		let res = {
+			items: [],
+			error: null
+		}
+
+		try {
+			// get data from firestore
+			for (let itemId of user.savedItems) {
+				const item = await this.getItemData(itemId)
+				res.items.push(item)
+			}
+
+			// filter out items that don't exist anymore
+			res.items = res.items.filter((item) => Object.keys(item).length)
 		} catch (error) {
 			res.error = error
 		} finally {

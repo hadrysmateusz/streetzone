@@ -45,8 +45,6 @@ class AlgoliaSortBy extends React.Component {
 			...rest
 		} = this.props
 
-		console.log(items)
-
 		return (
 			<Media>
 				{({ currentBreakpoint }) => {

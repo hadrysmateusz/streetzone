@@ -1,6 +1,6 @@
 import React, { Component } from "react"
 import { compose } from "recompose"
-import { Route, Switch, Redirect } from "react-router-dom"
+import { Route, Switch, Redirect, withRouter } from "react-router-dom"
 
 import { withFirebase } from "../Firebase"
 import { withAuthorization } from "../UserSession"
@@ -19,120 +19,65 @@ class AccountPage extends Component {
 	state = {
 		error: null,
 		isLoading: true,
-		isFetchingItems: false,
-		soldItems: [],
-		availableItems: []
+		user: null
 	}
 
-	getUserItems = async (user) => {
-		this.setState({ isFetchingItems: true })
-		const { soldItems, availableItems, error } = await this.props.firebase.getUserItems(
-			user
-		)
-		this.setState({
-			isFetchingItems: false,
-			soldItems,
-			availableItems,
-			error
-		})
-	}
-
-	componentDidMount = async () => {
-		try {
-			this.getUserItems(this.props.authUser)
-		} catch (error) {
-			this.setState({ error })
-		} finally {
-			this.setState({ isLoading: false })
-		}
+	componentDidMount() {
+		this.setState({ user: this.props.authUser, isLoading: false })
 	}
 
 	render() {
 		if (this.state.error) throw this.state.error
 
-		const { isLoading, isFetchingItems, availableItems } = this.state
-		const { routes, match, authUser } = this.props
+		const { isLoading, user } = this.state
+		const { routes, match } = this.props
 
-		const userId = authUser.uid
-		const baseUrl = match.path.replace(":id", userId)
+		const userId = match.params.id
+		const isUserOwner = true
+
+		const commonProps = { user, userId, isUserOwner }
 
 		return (
 			<MainGrid>
-				{!isLoading ? (
+				{!isLoading && user ? (
 					<>
-						<MainInfo user={authUser} userIsOwner userId={userId} />
+						<MainInfo {...commonProps} />
 						<InnerContainer>
 							<TabsNavContainer>
 								<TabsNav>
-									<TabsNavItem>
-										<StyledNavLink to={routes.items.path.replace(":id", userId)}>
-											{routes.items.label}
-										</StyledNavLink>
-									</TabsNavItem>
-
-									<TabsNavItem>
-										<StyledNavLink to={routes.liked.path.replace(":id", userId)}>
-											{routes.liked.label}
-										</StyledNavLink>
-									</TabsNavItem>
-
-									<TabsNavItem>
-										<StyledNavLink to={routes.following.path.replace(":id", userId)}>
-											{routes.following.label}
-										</StyledNavLink>
-									</TabsNavItem>
-
-									<TabsNavItem>
-										<StyledNavLink to={routes.feedback.path.replace(":id", userId)}>
-											{routes.feedback.label}
-										</StyledNavLink>
-									</TabsNavItem>
-
-									<TabsNavItem>
-										<StyledNavLink to={routes.settings.path.replace(":id", userId)}>
-											{routes.settings.label}
-										</StyledNavLink>
-									</TabsNavItem>
+									{routes.map(
+										(route) =>
+											(isUserOwner || !route.isProtected) && (
+												<TabsNavItem>
+													<StyledNavLink to={route.path.replace(":id", userId)}>
+														{route.label}
+													</StyledNavLink>
+												</TabsNavItem>
+											)
+									)}
 								</TabsNav>
 							</TabsNavContainer>
 
 							<Switch>
+								{routes.map(
+									(route) =>
+										(isUserOwner || !route.isProtected) && (
+											<Route
+												exact
+												path={route.path}
+												render={() => <route.component {...commonProps} />}
+											/>
+										)
+								)}
+								{/* If no route matches redirect to items subroute */}
 								<Route
-									exact
-									path={routes.items.path}
+									path="*"
 									render={() => (
-										<routes.items.component
-											items={availableItems}
-											isLoading={isFetchingItems}
-											userIsOwner
+										<Redirect
+											to={routes
+												.find((r) => r.id === "items")
+												.path.replace(":id", userId)}
 										/>
-									)}
-								/>
-								<Route
-									exact
-									path={routes.settings.path}
-									render={() => <routes.settings.component />}
-								/>
-								<Route
-									exact
-									path={routes.feedback.path}
-									render={() => <routes.feedback.component userIsOwner />}
-								/>
-
-								<Route
-									exact
-									path={routes.following.path}
-									render={() => <routes.following.component authUser={authUser} />}
-								/>
-								<Route
-									exact
-									path={routes.liked.path}
-									render={() => <routes.liked.component authUser={authUser} />}
-								/>
-								<Route
-									path={baseUrl}
-									render={() => (
-										<Redirect to={routes.items.path.replace(":id", userId)} />
 									)}
 								/>
 							</Switch>
@@ -150,5 +95,6 @@ const condition = (authUser) => !!authUser
 
 export default compose(
 	withAuthorization(condition),
-	withFirebase
+	withFirebase,
+	withRouter
 )(AccountPage)

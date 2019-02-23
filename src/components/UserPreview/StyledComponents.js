@@ -3,13 +3,14 @@ import { ellipsis } from "../../style-utils"
 
 export const Name = styled.div`
 	font-size: ${(p) => (p.nameOnly ? "1.22rem" : "1.1rem")};
+	${(p) => p.removed && "color: #b8b8b8; font-weight: 300;"}
 	${ellipsis}
 `
 
 export const InfoContainer = styled.div`
 	padding: 2px 0 0 8px;
 	overflow: hidden;
-	${(p) => p.vertical && "text-align: center; padding-top: 8px;"}
+	${(p) => p.vertical && "text-align: center; padding: 8px 0 0 0;"}
 `
 
 export const DateContainer = styled.div`

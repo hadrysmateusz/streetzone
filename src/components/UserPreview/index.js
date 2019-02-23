@@ -30,7 +30,16 @@ class UserPreview extends Component {
 	render() {
 		const { isLoading, user, error } = this.state
 		if (error) {
-			return null
+			return (
+				<Container vertical={this.props.vertical}>
+					<ProfilePicture size={this.props.pictureSize || "60px"} url="" inline />
+					<InfoContainer vertical={this.props.vertical}>
+						<Name nameOnly={this.props.nameOnly} removed>
+							<em>Nie znaleziono użytkownika</em>
+						</Name>
+					</InfoContainer>
+				</Container>
+			)
 		} else if (!isLoading && user) {
 			return (
 				<Container

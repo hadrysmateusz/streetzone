@@ -5,3 +5,8 @@ export const RatingContainer = styled.div`
 	justify-content: center;
 	margin: 10px 0 15px 0;
 `
+
+export const OuterContainer = styled.div`
+	max-width: 600px;
+	margin: 0 auto;
+`

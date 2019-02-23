@@ -15,26 +15,15 @@ class UserLiked extends Component {
 		error: null
 	}
 
-	getUserItems = async (user) => {
+	getUserItems = async () => {
 		this.setState({ isFetchingItems: true })
-
-		// get savedItems' data from firestore
-		let items = await Promise.all(
-			user.savedItems.map((itemId) => this.props.firebase.getItemData(itemId))
-		)
-
-		// filter out items that don't exist anymore
-		items = items.filter((item) => Object.keys(item).length)
-
-		// put available items first
-		items = items.sort((item) => item.available)
-
-		this.setState({ items, isFetchingItems: false })
+		let { items, error } = await this.props.firebase.getUserSavedItems(this.props.user)
+		this.setState({ items, error, isFetchingItems: false })
 	}
 
 	componentDidMount = async () => {
 		try {
-			this.getUserItems(this.props.authUser)
+			this.getUserItems()
 		} catch (error) {
 			this.setState({ error })
 		} finally {

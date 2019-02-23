@@ -10,6 +10,10 @@ import { LoadableComponentSpinner } from "../LoadingSpinner"
 import NotFound from "../NotFound"
 import ErrorBoundary from "../ErrorBoundary"
 
+const UserInfo = Loadable({
+	loader: () => import("../AccountPage/UserInfo"),
+	loading: LoadableComponentSpinner
+})
 const UserSettings = Loadable({
 	loader: () => import("../AccountPage/UserSettings"),
 	loading: LoadableComponentSpinner
@@ -143,33 +147,50 @@ const routes = [
 		path: ROUTES.ACCOUNT_BASE,
 		component: AccountPage,
 		exact: false,
-		routes: {
-			items: {
+		routes: [
+			{
+				id: "items",
 				label: "Przedmioty na sprzedaż",
 				path: ROUTES.ACCOUNT_ITEMS,
-				component: UserItems
+				component: UserItems,
+				isProtected: false
 			},
-			settings: {
-				label: "Opcje / Edytuj profil",
-				path: ROUTES.ACCOUNT_SETTINGS,
-				component: UserSettings
-			},
-			feedback: {
+			{
+				id: "feedback",
 				label: "Opinie i komentarze",
 				path: ROUTES.ACCOUNT_FEEDBACK,
-				component: UserFeedback
+				component: UserFeedback,
+				isProtected: false
 			},
-			liked: {
+			{
+				id: "info",
+				label: "Informacje",
+				path: ROUTES.ACCOUNT_INFO,
+				component: UserInfo,
+				isProtected: false
+			},
+			{
+				id: "savedItems",
 				label: "Zapisane przedmioty",
 				path: ROUTES.ACCOUNT_LIKED,
-				component: UserLiked
+				component: UserLiked,
+				isProtected: true
 			},
-			following: {
+			{
+				id: "followedUsers",
 				label: "Obserwowani użytkownicy",
 				path: ROUTES.ACCOUNT_FOLLOWING,
-				component: UserFollowing
+				component: UserFollowing,
+				isProtected: true
+			},
+			{
+				id: "settings",
+				label: "Opcje / Edytuj profil",
+				path: ROUTES.ACCOUNT_SETTINGS,
+				component: UserSettings,
+				isProtected: true
 			}
-		}
+		]
 	},
 	{
 		path: ROUTES.NEW_ITEM,

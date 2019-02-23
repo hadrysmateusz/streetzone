@@ -29,7 +29,8 @@ import {
 	faEllipsisH,
 	faCheck,
 	faInfoCircle,
-	faFlag
+	faFlag,
+	faPhone
 } from "@fortawesome/free-solid-svg-icons"
 import {
 	faHeart as farHeart,
@@ -72,5 +73,6 @@ library.add(
 	faEllipsisH,
 	faCheck,
 	faInfoCircle,
-	faFlag
+	faFlag,
+	faPhone
 )

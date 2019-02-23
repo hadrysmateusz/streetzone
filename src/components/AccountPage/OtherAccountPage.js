@@ -17,36 +17,17 @@ class OtherAccountPage extends Component {
 	state = {
 		error: null,
 		isLoading: true,
-		user: null,
-		userIsOwner: false,
-		items: {}
+		user: null
 	}
 
 	getUserData = async (userId) => {
 		const { user, error } = await this.props.firebase.getUserData(userId)
 		this.setState({ user, error })
-		return user
-	}
-
-	getUserItems = async (user) => {
-		this.setState({ isFetchingItems: true })
-
-		const { soldItems, availableItems, error } = await this.props.firebase.getUserItems(
-			user
-		)
-
-		this.setState({
-			error,
-			isFetchingItems: false,
-			soldItems,
-			availableItems
-		})
 	}
 
 	componentDidMount = async () => {
 		try {
-			const user = await this.getUserData(this.props.userId)
-			await this.getUserItems(user)
+			await this.getUserData(this.props.userId)
 		} catch (error) {
 			this.setState({ error })
 		} finally {
@@ -57,54 +38,55 @@ class OtherAccountPage extends Component {
 	render() {
 		if (this.state.error) throw this.state.error
 
-		const { isLoading, isFetchingItems, user, availableItems } = this.state
-		const { routes, match, userId } = this.props
+		const { isLoading, user } = this.state
+		const { routes, match } = this.props
 
-		const baseUrl = match.path.replace(":id", userId)
+		const userId = match.params.id
+		const isUserOwner = false
+
+		const commonProps = { user, userId, isUserOwner }
 
 		return (
 			<MainGrid>
 				{!isLoading && user ? (
 					<>
-						<MainInfo user={user} userId={userId} />
-
+						<MainInfo {...commonProps} />
 						<InnerContainer>
 							<TabsNavContainer>
 								<TabsNav>
-									<TabsNavItem>
-										<StyledNavLink to={routes.items.path.replace(":id", userId)}>
-											{routes.items.label}
-										</StyledNavLink>
-									</TabsNavItem>
-
-									<TabsNavItem>
-										<StyledNavLink to={routes.feedback.path.replace(":id", userId)}>
-											{routes.feedback.label}
-										</StyledNavLink>
-									</TabsNavItem>
+									{routes.map(
+										(route) =>
+											(isUserOwner || !route.isProtected) && (
+												<TabsNavItem>
+													<StyledNavLink to={route.path.replace(":id", userId)}>
+														{route.label}
+													</StyledNavLink>
+												</TabsNavItem>
+											)
+									)}
 								</TabsNav>
 							</TabsNavContainer>
 
 							<Switch>
+								{routes.map(
+									(route) =>
+										(isUserOwner || !route.isProtected) && (
+											<Route
+												exact
+												path={route.path}
+												render={() => <route.component {...commonProps} />}
+											/>
+										)
+								)}
+								{/* If no route matches redirect to items subroute */}
 								<Route
-									exact
-									path={routes.items.path}
+									path="*"
 									render={() => (
-										<routes.items.component
-											items={availableItems}
-											isLoading={isFetchingItems}
+										<Redirect
+											to={routes
+												.find((r) => r.id === "items")
+												.path.replace(":id", userId)}
 										/>
-									)}
-								/>
-								<Route
-									exact
-									path={routes.feedback.path}
-									render={() => <routes.feedback.component />}
-								/>
-								<Route
-									path={baseUrl}
-									render={() => (
-										<Redirect to={routes.items.path.replace(":id", userId)} />
 									)}
 								/>
 							</Switch>

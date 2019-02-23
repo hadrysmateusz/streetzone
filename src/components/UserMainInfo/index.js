@@ -16,8 +16,7 @@ import { HeartButton } from "../SaveButton"
 import { ROUTES } from "../../constants"
 import Link from "react-router-dom/Link"
 
-const MainInfo = ({ user, userIsOwner, userId }) => {
-	console.log(user)
+const MainInfo = ({ user, isUserOwner, userId }) => {
 	return (
 		<MainInfoContainer>
 			<div>
@@ -58,7 +57,7 @@ const MainInfo = ({ user, userIsOwner, userId }) => {
 						<strong>{user.following || 0}</strong> Obserwowanych
 					</span>
 				</SeparatedContainer>
-				{userIsOwner ? (
+				{isUserOwner ? (
 					<ButtonContainer alignRight>
 						<Button as={Link} to={ROUTES.ACCOUNT_SETTINGS.replace(":id", userId)}>
 							<span>Edytuj Profil</span>

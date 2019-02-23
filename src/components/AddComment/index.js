@@ -9,7 +9,7 @@ import { withFirebase } from "../Firebase"
 import { FieldRow, FieldLabel, StyledTextarea } from "../Basics"
 import { FormError } from "../FormElements"
 import { withAuthentication } from "../UserSession"
-import { RatingContainer } from "./StyledComponents"
+import { RatingContainer, OuterContainer } from "./StyledComponents"
 import validate from "./validate"
 
 class AddComment extends React.Component {
@@ -45,7 +45,7 @@ class AddComment extends React.Component {
 	render() {
 		if (this.state.error) throw this.state.error
 		return (
-			<div>
+			<OuterContainer>
 				<Form
 					onSubmit={this.onSubmit}
 					validate={validate}
@@ -110,7 +110,7 @@ class AddComment extends React.Component {
 						)
 					}}
 				/>
-			</div>
+			</OuterContainer>
 		)
 	}
 }

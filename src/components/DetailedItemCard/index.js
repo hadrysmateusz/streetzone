@@ -46,7 +46,7 @@ class DetailedItemCard extends React.Component {
 	}
 
 	render() {
-		const { item, userIsOwner } = this.props
+		const { item, isUserOwner } = this.props
 
 		return (
 			<OuterContainer>
@@ -76,7 +76,7 @@ class DetailedItemCard extends React.Component {
 						</InfoItem>
 					</Section>
 					<Section>
-						{userIsOwner ? (
+						{isUserOwner ? (
 							<div>
 								<ButtonContainer>
 									<Button

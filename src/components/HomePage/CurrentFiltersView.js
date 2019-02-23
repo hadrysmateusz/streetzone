@@ -40,7 +40,6 @@ const CurrentFiltersView = connectCurrentRefinements(({ items }) => {
 		<OuterContainer>
 			<Container>
 				{items.map((item) => {
-					console.log(item)
 					if (item.attribute === "price") {
 						return (
 							<Item>

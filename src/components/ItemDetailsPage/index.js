@@ -95,12 +95,12 @@ class ItemDetailsPage extends Component {
 	render() {
 		const { item, isLoading, isDeleting } = this.state
 		const { authUser } = this.props
-		let userIsOwner
+		let isUserOwner
 
 		if (item && authUser) {
 			const ownerId = item.userId
 			const authUserId = this.props.authUser.uid
-			userIsOwner = authUserId && ownerId === authUserId
+			isUserOwner = authUserId && ownerId === authUserId
 		}
 
 		let conditionObj
@@ -139,7 +139,7 @@ class ItemDetailsPage extends Component {
 									)}
 								</div>
 								<ButtonContainer>
-									{userIsOwner ? (
+									{isUserOwner ? (
 										<>
 											<Button as={Link} to={`/e/${item.itemId}`} fullWidth>
 												Edytuj
@@ -159,7 +159,7 @@ class ItemDetailsPage extends Component {
 									)}
 								</ButtonContainer>
 
-								{!userIsOwner && (
+								{!isUserOwner && (
 									<UserInfoContainer>
 										<Separator spacing="0px">Informacje o sprzedawcy</Separator>
 										<UserPreview id={item.userId} />

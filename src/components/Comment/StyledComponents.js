@@ -30,7 +30,10 @@ export const CommentContainer = styled.div`
 		position: absolute;
 		right: 0;
 		top: 0;
-		padding: 10px;
+		padding: 7px;
+		* + * {
+			margin: 0 7px;
+		}
 	}
 `
 

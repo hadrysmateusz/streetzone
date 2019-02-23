@@ -16,6 +16,14 @@ class UserFeedback extends React.Component {
 		const userId = this.props.match.params.id
 		const { user, error } = await this.props.firebase.getUserData(userId)
 
+		// let feedback = await Promise.all(
+		// 	user.feedback.map(async (a) => {
+		// 		const userSnap = await this.props.firebase.user(a.author).get()
+		// 		return userSnap.exists ? a : null
+		// 	})
+		// )
+		// feedback = feedback.filter((a) => a !== null).reverse()
+
 		this.setState({ feedback: user.feedback.reverse(), error, isLoading: false })
 	}
 
@@ -25,19 +33,19 @@ class UserFeedback extends React.Component {
 
 	render() {
 		const { error, feedback, isLoading } = this.state
-		const { userIsOwner } = this.props
+		const { isUserOwner } = this.props
 		if (error) throw error
 
 		return isLoading ? (
 			<LoadingSpinner />
 		) : (
 			<div>
-				{!userIsOwner && <AddComment refresh={this.getFeedback} />}
+				{!isUserOwner && <AddComment refresh={this.getFeedback} />}
 				<>
 					{feedback && feedback.length > 0 ? (
 						<div>
-							{feedback.map((item) => {
-								return <Comment item={item} />
+							{feedback.map((data) => {
+								return <Comment data={data} />
 							})}
 						</div>
 					) : (

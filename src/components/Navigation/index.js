@@ -157,14 +157,6 @@ const Navigation = ({ authUser, firebase, ...rest }) => {
 							</NavItem>
 
 							<NavItem>
-								<StyledNavLink
-									to={ROUTES.ACCOUNT_TRANSACTIONS.replace(":id", authUser.uid)}
-								>
-									Historia transakcji
-								</StyledNavLink>
-							</NavItem>
-
-							<NavItem>
 								<StyledNavLink to={ROUTES.ACCOUNT_FEEDBACK.replace(":id", authUser.uid)}>
 									Opinie i komentarze
 								</StyledNavLink>
@@ -172,7 +164,7 @@ const Navigation = ({ authUser, firebase, ...rest }) => {
 
 							<NavItem>
 								<StyledNavLink to={ROUTES.ACCOUNT_SETTINGS.replace(":id", authUser.uid)}>
-									Ustawienia / Edytuj profil
+									Opcje / Edytuj profil
 								</StyledNavLink>
 							</NavItem>
 
