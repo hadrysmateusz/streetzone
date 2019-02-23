@@ -8,6 +8,16 @@ import { ROUTES } from "../../constants"
 import Modal from "../Modal"
 import { withGlobalContext } from "../GlobalContext"
 
+function getPropertyName(type) {
+	if (type === "item") {
+		return "savedItems"
+	} else if (type === "user") {
+		return "followedUsers"
+	} else {
+		throw new Error("The SaveButton needs a type")
+	}
+}
+
 const activeSaveButton = css`
 	.filled {
 		display: block;
@@ -56,9 +66,16 @@ export class SaveButtonBase extends Component {
 	}
 
 	checkIfSaved = () => {
-		const { authUser, itemId } = this.props
+		const { authUser, id, type } = this.props
+
+		// Get the property to modify based on type of button
+		const propertyName = getPropertyName(type)
+
 		const isSaved =
-			authUser && authUser.savedItems && authUser.savedItems.includes(itemId)
+			authUser && authUser[propertyName] && authUser[propertyName].includes(id)
+
+		debugger
+
 		this.setState({ isSaved })
 	}
 
@@ -73,22 +90,26 @@ export class SaveButtonBase extends Component {
 	}
 
 	toggleSaved = async () => {
-		const { itemId, authUser, firebase } = this.props
+		const { id, authUser, firebase, type = "item" } = this.props
 		if (authUser) {
 			const wasSaved = this.state.isSaved
 			// Assume the operation will be successful and set state early
 			this.setState({ isSaved: !wasSaved })
 
-			try {
-				const oldSaved = authUser.savedItems || []
+			// Get the property to modify based on type of button
+			const propertyName = getPropertyName(type)
 
-				// either delete or add the item to the list
-				const newSaved = wasSaved
-					? oldSaved.filter((a) => a !== itemId)
-					: [...oldSaved, itemId]
+			try {
+				// get the old list
+				const oldList = authUser[propertyName] || []
+
+				// either delete or add to the list
+				const newList = wasSaved ? oldList.filter((a) => a !== id) : [...oldList, id]
+
+				debugger
 
 				// update the db
-				await firebase.currentUser().update({ savedItems: newSaved })
+				await firebase.currentUser().update({ [propertyName]: newList })
 			} catch (error) {
 				console.log(error)
 			}

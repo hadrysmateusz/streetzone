@@ -91,7 +91,7 @@ class ItemCardBase extends Component {
 									)}
 									<Name title={name}>{name}</Name>
 								</InnerContainer>
-								<HeartButton itemId={itemId} />
+								<HeartButton id={itemId} type="item" />
 							</TopContainer>
 							<SecondaryContainer>
 								<Price title={price ? `Cena: ${price}` : null}>

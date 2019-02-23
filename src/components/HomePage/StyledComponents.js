@@ -39,7 +39,7 @@ export const Sidebar = styled.aside`
 	max-width: 100%;
 
 	top: 44px;
-	width: 240px;
+	width: 250px;
 	margin-right: 20px;
 
 	/* mobile */

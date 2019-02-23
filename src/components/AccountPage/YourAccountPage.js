@@ -60,7 +60,7 @@ class AccountPage extends Component {
 			<MainGrid>
 				{!isLoading ? (
 					<>
-						<MainInfo user={authUser} userIsOwner />
+						<MainInfo user={authUser} userIsOwner userId={userId} />
 						<InnerContainer>
 							<TabsNavContainer>
 								<TabsNav>

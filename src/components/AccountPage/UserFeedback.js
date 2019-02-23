@@ -15,7 +15,8 @@ class UserFeedback extends React.Component {
 		this.setState({ isLoading: true })
 		const userId = this.props.match.params.id
 		const { user, error } = await this.props.firebase.getUserData(userId)
-		this.setState({ feedback: user.feedback, error, isLoading: false })
+
+		this.setState({ feedback: user.feedback.reverse(), error, isLoading: false })
 	}
 
 	componentDidMount = async () => {

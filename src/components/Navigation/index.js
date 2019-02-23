@@ -9,6 +9,7 @@ import ProfilePicture from "../ProfilePicture"
 import { ROUTES } from "../../constants"
 import getProfilePictureURL from "../../utils/getProfilePictureURL"
 import { StyledNavLink } from "../Basics"
+import { withFirebase } from "../Firebase"
 
 const NAV_ITEM_HEIGHT = "46px"
 
@@ -111,7 +112,7 @@ const NavItem = styled.li`
 	}
 `
 
-const Navigation = ({ authUser, ...rest }) => {
+const Navigation = ({ authUser, firebase, ...rest }) => {
 	return (
 		<Nav {...rest}>
 			<NavItem>
@@ -176,7 +177,9 @@ const Navigation = ({ authUser, ...rest }) => {
 							</NavItem>
 
 							<NavItem>
-								<StyledNavLink as={SignOutButton} />
+								<StyledNavLink as="a" onClick={firebase.signOut}>
+									Wyloguj
+								</StyledNavLink>
 							</NavItem>
 						</Submenu>
 					</NavItem>
@@ -195,5 +198,6 @@ const Navigation = ({ authUser, ...rest }) => {
 
 export default compose(
 	withRouter,
-	withAuthentication
+	withAuthentication,
+	withFirebase
 )(Navigation)

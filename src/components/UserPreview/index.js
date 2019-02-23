@@ -22,7 +22,7 @@ class UserPreview extends Component {
 		let { id, firebase } = this.props
 		let { user, error } = await firebase.getUserData(id)
 		if (error) {
-			this.props.onError(error)
+			this.props.onError && this.props.onError(error)
 		}
 		this.setState({ user, error, isLoading: false })
 	}

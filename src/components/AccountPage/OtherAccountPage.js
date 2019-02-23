@@ -66,7 +66,7 @@ class OtherAccountPage extends Component {
 			<MainGrid>
 				{!isLoading && user ? (
 					<>
-						<MainInfo user={user} />
+						<MainInfo user={user} userId={userId} />
 
 						<InnerContainer>
 							<TabsNavContainer>

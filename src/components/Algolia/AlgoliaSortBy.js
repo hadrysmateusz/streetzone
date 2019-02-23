@@ -55,6 +55,7 @@ class AlgoliaSortBy extends React.Component {
 							<Select
 								{...rest}
 								options={items}
+								defaultValue={defaultRefinement}
 								onChange={(data, action) => refine(data.value)}
 								styles={{
 									control: (provided, state) => ({

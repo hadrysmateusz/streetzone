@@ -126,7 +126,7 @@ class ItemDetailsPage extends Component {
 											</Designers>
 											<Name>{item.name}</Name>
 										</div>
-										<HeartButton itemId={item.itemId} />
+										<HeartButton id={item.itemId} type="item" />
 									</MainInfo>
 
 									<InfoItem>

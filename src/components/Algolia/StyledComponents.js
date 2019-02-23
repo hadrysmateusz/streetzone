@@ -157,6 +157,7 @@ export const ClearButton = styled.button`
 	/* font-size: 0.82rem; */
 	/* padding: 3px 6px; */
 	display: inline-block;
+	
 `
 
 export const ResultsContainer = styled.main`
