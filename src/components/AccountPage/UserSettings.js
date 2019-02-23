@@ -3,12 +3,13 @@ import AvatarChangeForm from "../AvatarChange"
 import LoginManagement from "../LoginManagement"
 import SignOutButton from "../SignOut"
 import ProfileEdit from "./ProfileEditForm"
-import { Header, UserSettingsContainer, Section } from "./StyledComponents"
+import { UserSettingsContainer, Section } from "./StyledComponents"
+import { SubHeader } from "../Basics"
 
 const UserSettings = () => (
 	<UserSettingsContainer>
 		<Section>
-			<Header>Podstawowe informacje</Header>
+			<SubHeader>Podstawowe informacje</SubHeader>
 			<ProfileEdit
 				onSubmit={(data) => {
 					console.log(data)
@@ -17,11 +18,11 @@ const UserSettings = () => (
 			/>
 		</Section>
 		<Section>
-			<Header>Zdjęcie profilowe</Header>
+			<SubHeader>Zdjęcie profilowe</SubHeader>
 			<AvatarChangeForm />
 		</Section>
 		<Section>
-			<Header>Metody logowania</Header>
+			<SubHeader>Metody logowania</SubHeader>
 			<LoginManagement />
 		</Section>
 		<Section>

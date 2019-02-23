@@ -1,73 +1,25 @@
 import React, { Component } from "react"
 import { Form, Field } from "react-final-form"
-import { FORM_ERR } from "../../constants"
-import styled from "styled-components"
 import { compose } from "recompose"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
-import { FieldRow, FieldLabel, StyledInput } from "../Basics"
+import { FORM_ERR } from "../../constants"
+import { FieldRow, StyledInput, SubHeader } from "../Basics"
 import { FormError } from "../FormElements"
 import { SocialButton, LoaderButton } from "../Button"
 import { withFirebase } from "../Firebase"
 import { PasswordChangeForm } from "../PasswordChange"
 import { withAuthentication } from "../UserSession"
-import { Header } from "../AccountPage/StyledComponents"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-
-const EnabledIndicator = styled.div`
-	height: 28px;
-	width: 28px;
-	background: white;
-	border: 2px solid ${(p) => p.theme.colors.gray[50]};
-	border-radius: 2px;
-	margin-right: 12px;
-
-	color: ${(p) => p.theme.colors.black[75]};
-
-	display: flex;
-	justify-content: center;
-	align-items: center;
-`
-
-const OuterContainer = styled.div`
-	display: grid;
-	grid-template-columns: 1fr 1fr;
-	gap: 15px;
-`
-
-const SocialContainer = styled.div`
-	display: grid;
-	gap: 15px;
-`
-
-const PasswordContainer = styled.div`
-	form {
-		display: grid;
-		gap: 15px;
-	}
-`
-
-const ConfirmPasswordContainer = styled.div`
-	display: flex;
-	* + * {
-		margin-left: 10px;
-	}
-`
-
-const InfoContainer = styled.div`
-	position: relative;
-	font-size: 0.98rem;
-	line-height: 1.4rem;
-	color: ${(p) => p.theme.colors.black[50]};
-	font-weight: 300;
-`
-
-const InfoIndicator = styled.div`
-	position: absolute;
-	top: 0px;
-	left: -25px;
-	font-size: 1.12rem;
-	color: ${(p) => p.theme.colors.black[75]};
-`
+import {
+	EnabledIndicator,
+	OuterContainer,
+	SocialContainer,
+	PasswordContainer,
+	ConfirmPasswordContainer,
+	InfoContainer,
+	InfoIndicator,
+	LoginManagementContainer
+} from "./StyledComponents"
 
 const SIGN_IN_METHODS = [
 	{
@@ -82,7 +34,7 @@ const SIGN_IN_METHODS = [
 	}
 ]
 
-export class LoginManagementBase extends Component {
+export class LoginManagement extends Component {
 	state = {
 		activeSignInMethods: [],
 		error: null
@@ -140,11 +92,11 @@ export class LoginManagementBase extends Component {
 	}
 
 	render() {
-		const { activeSignInMethods, error } = this.state
+		const { activeSignInMethods } = this.state
 		const onlyOneLeft = activeSignInMethods.length === 1
 
 		return (
-			<div>
+			<LoginManagementContainer>
 				<InfoContainer>
 					Powiąż swoje konto na Bumped z jednym lub więcej kontami społecznościowymi, by
 					móc logować się za ich pomocą do serwisu. Jeśli za pierwszym razem zalogowałeś
@@ -157,7 +109,7 @@ export class LoginManagementBase extends Component {
 
 				<OuterContainer>
 					<SocialContainer>
-						<Header>Konta Społecznościowe</Header>
+						<SubHeader>Konta Społecznościowe</SubHeader>
 						{SIGN_IN_METHODS.map((signInMethod) => {
 							const isEnabled = activeSignInMethods.includes(signInMethod.id)
 							const commonProps = {
@@ -192,7 +144,7 @@ export class LoginManagementBase extends Component {
 						)}
 					</PasswordContainer>
 				</OuterContainer>
-			</div>
+			</LoginManagementContainer>
 		)
 	}
 }
@@ -274,7 +226,7 @@ class DefaultLoginToggle extends Component {
 				validate={this.validate}
 				render={({ handleSubmit, submitting, pristine, values, invalid }) => (
 					<form onSubmit={handleSubmit}>
-						<Header>Dodaj hasło</Header>
+						<SubHeader>Dodaj hasło</SubHeader>
 
 						{/* Hasło */}
 						<FieldRow>
@@ -320,16 +272,7 @@ class DefaultLoginToggle extends Component {
 	}
 }
 
-const LoginManagementUnstyled = compose(
+export default compose(
 	withFirebase,
 	withAuthentication
-)(LoginManagementBase)
-
-const LoginManagement = styled(LoginManagementUnstyled)`
-	margin: 35px auto 50px;
-	.provider-container {
-		margin: 15px 0;
-	}
-`
-
-export default LoginManagement
+)(LoginManagement)

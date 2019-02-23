@@ -1,5 +1,5 @@
 import React from "react"
-import { DetailedItemsView } from "../DetailedItemCard"
+import DetailedItemsView from "../DetailedItemsView"
 import EmptyState, { UserNoItems } from "../EmptyState"
 import LoadingSpinner from "../LoadingSpinner"
 

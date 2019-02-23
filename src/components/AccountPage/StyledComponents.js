@@ -54,14 +54,6 @@ export const MainGrid = styled.div`
 	max-width: ${(p) => p.theme.breakpoints[5]}px;
 `
 
-export const Header = styled.h3`
-	text-transform: uppercase;
-	font-size: 0.85rem;
-	text-align: center;
-	margin: 15px 0;
-	font-weight: 300;
-`
-
 export const Section = styled.div`
 	margin-bottom: 60px;
 `

@@ -57,7 +57,7 @@ class OtherAccountPage extends Component {
 	render() {
 		if (this.state.error) throw this.state.error
 
-		const { isLoading, isFetchingItems, user, availableItems, soldItems } = this.state
+		const { isLoading, isFetchingItems, user, availableItems } = this.state
 		const { routes, match, userId } = this.props
 
 		const baseUrl = match.path.replace(":id", userId)

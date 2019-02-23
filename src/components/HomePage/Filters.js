@@ -2,12 +2,12 @@ import React, { Component } from "react"
 import { withBreakpoints } from "react-breakpoints"
 import { withRouter } from "react-router-dom"
 import { compose } from "recompose"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 import {
 	ButtonsContainer,
 	FiltersContainer,
 	FilterInnerContainer,
-	ButtonContainer,
 	FiltersHeader,
 	CloseIconContainer
 } from "./StyledComponents"
@@ -15,7 +15,6 @@ import AlgoliaRefinementList from "../Algolia/AlgoliaRefinementList"
 import Button from "../Button"
 import AlgoliaRange from "../Algolia/AlgoliaRange"
 import { ROUTES } from "../../constants"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 const TABS = {
 	category: {

@@ -1,11 +1,10 @@
 import React, { Component } from "react"
 import { Form, Field } from "react-final-form"
 
-import { StyledInput, FieldRow, FieldLabel } from "../Basics"
+import { StyledInput, FieldRow, FieldLabel, SubHeader } from "../Basics"
 import { LoaderButton } from "../Button"
 import { FormError } from "../FormElements"
 import { FORM_ERR } from "../../constants"
-import { Header } from "../AccountPage/StyledComponents"
 
 class PasswordChangeForm extends Component {
 	state = { error: null }
@@ -52,14 +51,13 @@ class PasswordChangeForm extends Component {
 				validate={this.validate}
 				render={({ handleSubmit, submitting, pristine, values }) => (
 					<form onSubmit={handleSubmit}>
-						<Header>Zmień hasło</Header>
+						<SubHeader>Zmień hasło</SubHeader>
 
 						{/* Hasło */}
 						<FieldRow>
 							<Field name="passwordNew">
 								{({ input, meta }) => (
 									<>
-										<FieldLabel>Nowe Hasło</FieldLabel>
 										<StyledInput {...input} type="password" placeholder="Nowe Hasło" />
 										<FormError message={meta.error} show={meta.error && meta.touched} />
 									</>

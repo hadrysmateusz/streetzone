@@ -5,7 +5,7 @@ import EmptyState, { UserNoLiked } from "../EmptyState"
 import LoadingSpinner from "../LoadingSpinner"
 import { withAuthentication } from "../UserSession"
 import { withFirebase } from "../Firebase"
-import { DetailedItemsView } from "../DetailedItemCard"
+import DetailedItemsView from "../DetailedItemsView"
 
 class UserLiked extends Component {
 	state = {

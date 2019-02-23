@@ -187,3 +187,11 @@ export const Separator = styled.p`
 		props.text ? `margin-top: 1.5rem; margin-bottom: 0.5rem;` : `height: 0; margin: 0;`};
 	${(props) => props.text && SeparatorTextContent}
 `
+
+export const SubHeader = styled.h3`
+	text-transform: uppercase;
+	font-size: 0.85rem;
+	text-align: center;
+	margin: 15px 0;
+	font-weight: 300;
+`

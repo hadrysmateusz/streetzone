@@ -1,11 +1,11 @@
 import React from "react"
 import styled from "styled-components"
+import Select from "react-select"
 import { Media } from "react-breakpoints"
-import { AlgoliaSelectAdapter } from "../SelectAdapter"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { connectSortBy } from "react-instantsearch-dom"
+
 import { THEME } from "../../constants"
-import Select from "react-select"
 
 const StyledSelect = styled.select`
 	position: absolute;
@@ -33,19 +33,6 @@ const Container = styled.label`
 		margin-right: 6px;
 	}
 `
-
-const SortByMobile = ({ children, refine, items, currentRefinement, ...rest }) => (
-	<Container {...rest}>
-		<label htmlFor="filter-select">{children}</label>
-		<StyledSelect id="filter-select" onChange={(e) => refine(e.currentTarget.value)}>
-			{items.map((item, i) => (
-				<option key={i} value={item.value}>
-					{item.label}
-				</option>
-			))}
-		</StyledSelect>
-	</Container>
-)
 
 class AlgoliaSortBy extends React.Component {
 	render() {
@@ -123,57 +110,5 @@ class AlgoliaSortBy extends React.Component {
 		)
 	}
 }
-
-// const AlgoliaSortBy = connectSortBy(
-// 	({ items, defaultOption, placeholder, refine, currentRefinement }) => {
-// 		console.log("algolia: ", items)
-// 		return (
-// 			<Media>
-// 				{({ currentBreakpoint }) => {
-// 					if (currentBreakpoint > 0) {
-// 						return (
-// 							<AlgoliaSelectAdapter
-// 								defaultValue={defaultOption}
-// 								placeholder={placeholder}
-// 								items={items}
-// 								styles={{
-// 									control: (provided, state) => ({
-// 										...provided,
-// 										minWidth: "180px",
-// 										minHeight: "0",
-// 										fontSize: "0.92rem",
-// 										border: `1px solid ${THEME.colors.gray[75]}`,
-// 										"&:hover": {
-// 											borderColor: THEME.colors.gray[25]
-// 										}
-// 									})
-// 								}}
-// 							/>
-// 						)
-// 					} else {
-// 						return (
-// 							<Container>
-// 								<label htmlFor="filter-select">
-// 									<FontAwesomeIcon icon="sort" />
-// 									Sortuj
-// 								</label>
-// 								<StyledSelect
-// 									id="filter-select"
-// 									onChange={(e) => refine(e.currentTarget.value)}
-// 								>
-// 									{items.map((item, i) => (
-// 										<option key={i} value={item.value}>
-// 											{item.label}
-// 										</option>
-// 									))}
-// 								</StyledSelect>
-// 							</Container>
-// 						)
-// 					}
-// 				}}
-// 			</Media>
-// 		)
-// 	}
-// )
 
 export default connectSortBy(AlgoliaSortBy)
