@@ -79,8 +79,7 @@ const Button = styled.button`
 		cursor: pointer;
 	}
 
-	/* Prevent text overflow */
-	${ellipsis}
+
 
 	/* Variant styles */
 	${(p) => (p.accent ? accent : p.primary ? primary : basic)}
@@ -90,6 +89,9 @@ const Button = styled.button`
 
 	/* Full-width styling */
 	${(p) => p.fullWidth && "width: 100%;"}
+
+	/* Prevent text overflow */
+	${ellipsis}
 `
 
 export const ButtonContainer = styled.div`

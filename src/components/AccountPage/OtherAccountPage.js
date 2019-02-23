@@ -98,11 +98,6 @@ class OtherAccountPage extends Component {
 								/>
 								<Route
 									exact
-									path={routes.settings.path}
-									render={() => <routes.settings.component />}
-								/>
-								<Route
-									exact
 									path={routes.feedback.path}
 									render={() => <routes.feedback.component />}
 								/>

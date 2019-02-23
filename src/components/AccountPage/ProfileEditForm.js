@@ -100,7 +100,7 @@ const ProfileEditForm = ({ initialValues, onSubmit, history }) => {
 							</FieldRow>
 						</FieldsContainer>
 
-						<ButtonContainer>
+						<ButtonContainer centered>
 							<LoaderButton
 								text="Gotowe"
 								type="submit"

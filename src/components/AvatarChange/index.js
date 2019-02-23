@@ -2,31 +2,12 @@ import React from "react"
 import { Form, Field } from "react-final-form"
 import { withRouter } from "react-router-dom"
 import { compose } from "recompose"
-import styled from "styled-components"
 
-import Button, { LoaderButton } from "../Button"
+import Button, { LoaderButton, ButtonContainer } from "../Button"
 import { FileHandlerSingle, CustomFile } from "../FileHandler"
 import { withFirebase } from "../Firebase"
 import { withAuthentication } from "../UserSession"
 import getProfilePictureURL from "../../utils/getProfilePictureURL"
-
-const Container = styled.div`
-	max-width: 460px;
-	margin: 0 auto;
-`
-
-const ButtonContainer = styled.div`
-	margin: 10px 0;
-	display: flex;
-	justify-content: center;
-	width: 100%;
-	> * {
-		width: 120px;
-	}
-	* + * {
-		margin-left: 15px;
-	}
-`
 
 class AvatarChangeForm extends React.Component {
 	state = {
@@ -112,7 +93,7 @@ class AvatarChangeForm extends React.Component {
 		const { file, isLoading } = this.state
 
 		return (
-			<Container>
+			<div>
 				<Form
 					onSubmit={this.onSubmit}
 					validate={this.validate}
@@ -122,7 +103,7 @@ class AvatarChangeForm extends React.Component {
 							<form onSubmit={handleSubmit}>
 								<Field name="file" isLoading={isLoading} component={FileHandlerSingle} />
 
-								<ButtonContainer>
+								<ButtonContainer centered>
 									<LoaderButton
 										text="Gotowe"
 										type="submit"
@@ -145,7 +126,7 @@ class AvatarChangeForm extends React.Component {
 						)
 					}}
 				/>
-			</Container>
+			</div>
 		)
 	}
 }
