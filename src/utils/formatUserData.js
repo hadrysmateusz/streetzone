@@ -11,6 +11,9 @@ export default (input) => {
 		badges: {},
 		userSince: Date.now(),
 		city: null,
+		phone: null,
+		info: null,
+		preferences: {},
 		savedItems: [],
 		followedUsers: [],
 		importedFrom: input.importedFrom || null
