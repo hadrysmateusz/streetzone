@@ -7,6 +7,7 @@ import { withAuthentication } from "../UserSession"
 import ErrorBoundary from "../ErrorBoundary"
 import { PageContainer } from "../Containers"
 
+// TODO: Where the fuck are these props coming from ?!
 const AccountPage = ({ authUser, match, ...rest }) => {
 	return (
 		<PageContainer>

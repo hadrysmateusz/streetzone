@@ -148,7 +148,7 @@ class FileHandlerUnstyled extends Component {
 				</Dropzone>
 
 				<FormError
-					message={meta.error.main}
+					message={meta.error ? meta.error.main : ""}
 					show={meta.error && (meta.dirty || meta.submitFailed) && meta.error.main}
 				/>
 			</div>

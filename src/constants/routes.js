@@ -21,6 +21,7 @@ export const PRIVACY_POLICY = "/polityka-prywatnosci"
 export const ABOUT = "/o-nas"
 export const CONTACT = "/kontakt"
 export const TERMS = "/regulamin"
+export const ADMIN = "/admin"
 
 // External
 // TODO: create social media pages and add addresses
