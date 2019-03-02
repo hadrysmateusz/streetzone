@@ -4,7 +4,7 @@ export default {
 	fontWeights: ["normal", 500, "bold"],
 	space: [0, 4, 8, 16, 32, 64, 128, 256],
 	colors: {
-		accent: "rgb(65, 214, 165)",
+		accent: "#FFD414",
 		white: "#fafafa",
 		danger: {
 			0: "#6a1111",
