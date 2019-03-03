@@ -1,6 +1,6 @@
 body {
 	overflow-y: scroll;
-	background: #fdfdfd;
+	background: white;
 	padding: 0;
 	margin: 0;
 	font-family: "Montserrat", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
@@ -15,9 +15,7 @@ code {
 }
 
 /* Not using :any-link as it causes issues in edge and ie */
-a,
-a:link,
-a:hover {
+a {
 	color: black; /* fallback for ie */
 	color: unset;
 	text-decoration: none;
@@ -28,10 +26,3 @@ a:hover {
 *::after {
 	box-sizing: border-box;
 }
-
-/* TODO: make sure this breakpoint is correct before going into production
-@media (max-width: 774px) {
-	body.noScroll {
-		overflow: hidden;
-	}
-} */

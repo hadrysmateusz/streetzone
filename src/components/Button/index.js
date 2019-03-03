@@ -27,8 +27,8 @@ const accent = css`
 
 	:not([disabled]) {
 		:hover {
-			background: rgb(76, 220, 184);
-			border-color: ${(p) => p.theme.colors.accent};
+			background: #f9c50e;
+			border-color: #f9c50e;
 		}
 	}
 `
@@ -49,6 +49,7 @@ const basic = css`
 const disabled = css`
 	border-color: ${(p) => p.theme.colors.gray[100]};
 	background: transparent;
+	background: #fdfdfd;
 	color: ${(p) => p.theme.colors.gray[50]};
 `
 
@@ -58,12 +59,15 @@ const Button = styled.button`
 	justify-content: center;
 	align-items: center;
 
-	height: 46px;
+	transition-property: background, color, border-color;
+	transition-duration: 0.15s;
+	transition-timing-function: ease;
+
+	height: 40px;
 	min-width: 0;
 	padding: 0 0.95rem;
 	margin: 0;
-	border: 2px solid;
-	border-radius: 2px;
+	border: 1px solid;
 
 	text-transform: uppercase;
 	font-weight: 700;
@@ -75,11 +79,7 @@ const Button = styled.button`
 	}
 
 	/* Change cursor if button isn't disabled */
-	&:not([disabled]) {
-		cursor: pointer;
-	}
-
-
+	${(p) => (p.disabled ? "cursor: default;" : "cursor: pointer;")}
 
 	/* Variant styles */
 	${(p) => (p.accent ? accent : p.primary ? primary : basic)}

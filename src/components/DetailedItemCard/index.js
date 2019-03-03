@@ -46,7 +46,7 @@ class DetailedItemCard extends React.Component {
 	}
 
 	render() {
-		const { item, isUserOwner } = this.props
+		const { item, isUserOwner, history } = this.props
 
 		return (
 			<OuterContainer>
@@ -81,8 +81,10 @@ class DetailedItemCard extends React.Component {
 								<ButtonContainer>
 									<Button
 										fullWidth
-										as={Link}
-										to={ROUTES.EDIT_ITEM.replace(":id", item.itemId)}
+										onClick={() => {
+											/* This is not an a-tag to allow for programmatic disabling */
+											history.push(ROUTES.EDIT_ITEM.replace(":id", item.itemId))
+										}}
 									>
 										Edytuj
 									</Button>
