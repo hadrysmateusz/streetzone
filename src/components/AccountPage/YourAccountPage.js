@@ -1,6 +1,6 @@
 import React, { Component } from "react"
 import { compose } from "recompose"
-import { Route, Switch, Redirect, withRouter } from "react-router-dom"
+import { Route, Switch, Redirect, withRouter, NavLink } from "react-router-dom"
 
 import { withFirebase } from "../Firebase"
 import { withAuthorization } from "../UserSession"
@@ -48,10 +48,8 @@ class AccountPage extends Component {
 									{routes.map(
 										(route) =>
 											(isUserOwner || !route.isProtected) && (
-												<TabsNavItem>
-													<StyledNavLink to={route.path.replace(":id", userId)}>
-														{route.label}
-													</StyledNavLink>
+												<TabsNavItem as={NavLink} to={route.path.replace(":id", userId)}>
+													{route.label}
 												</TabsNavItem>
 											)
 									)}

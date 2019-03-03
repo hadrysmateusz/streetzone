@@ -44,6 +44,25 @@ export const TabsNavItem = styled.li`
 	span {
 		margin-left: 8px;
 	}
+
+	display: flex;
+	align-items: center;
+	background: none;
+	border: none;
+	outline: none;
+	padding: 0 10px;
+	margin: 0 -10px;
+	color: ${(p) => p.theme.colors.black[75]};
+	cursor: pointer;
+	text-transform: uppercase;
+
+	&:hover {
+		color: black;
+	}
+
+	&.active {
+		font-weight: 700;
+	}
 `
 
 export const MainGrid = styled.div`
@@ -65,6 +84,7 @@ export const UserSettingsContainer = styled.div`
 
 export const InnerContainer = styled.div`
 	display: grid;
+	gap: 20px;
 
 	@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
 		grid-template-columns: min-content 1fr;

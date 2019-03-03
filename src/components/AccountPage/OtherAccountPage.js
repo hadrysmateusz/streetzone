@@ -1,5 +1,5 @@
 import React, { Component } from "react"
-import { Route, Switch, Redirect } from "react-router-dom"
+import { NavLink, Route, Switch, Redirect } from "react-router-dom"
 
 import LoadingSpinner from "../LoadingSpinner"
 import { withFirebase } from "../Firebase"
@@ -57,10 +57,8 @@ class OtherAccountPage extends Component {
 									{routes.map(
 										(route) =>
 											(isUserOwner || !route.isProtected) && (
-												<TabsNavItem>
-													<StyledNavLink to={route.path.replace(":id", userId)}>
-														{route.label}
-													</StyledNavLink>
+												<TabsNavItem as={NavLink} to={route.path.replace(":id", userId)}>
+													{route.label}
 												</TabsNavItem>
 											)
 									)}
