@@ -3,7 +3,6 @@ import { NavLink, Route, Switch, Redirect } from "react-router-dom"
 
 import LoadingSpinner from "../LoadingSpinner"
 import { withFirebase } from "../Firebase"
-import { StyledNavLink } from "../Basics"
 import MainInfo from "../UserMainInfo"
 import {
 	TabsNav,

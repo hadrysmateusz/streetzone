@@ -195,3 +195,29 @@ export const SubHeader = styled.h3`
 	margin: 15px 0;
 	font-weight: 300;
 `
+
+export const ImportantText = styled.h3`
+	text-transform: uppercase;
+	font-size: 1rem;
+	font-weight: bold;
+	margin: 0;
+`
+
+export const InfoBlock = styled.div`
+	background: #f2f2f2;
+	margin: 60px 0;
+	padding: 30px;
+	text-align: center;
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+
+	h3 {
+		margin: 0;
+		font-size: 1rem;
+	}
+
+	p {
+		max-width: 550px;
+	}
+`

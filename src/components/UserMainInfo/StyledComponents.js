@@ -7,7 +7,7 @@ export const MainInfoContainer = styled.div`
 		grid-template-columns: max-content 1fr max-content;
 	}
 
-	margin-bottom: 20px;
+	margin-bottom: 40px;
 	padding-bottom: 20px;
 	border-bottom: 1px solid ${(p) => p.theme.colors.gray[75]};
 	gap: 20px;

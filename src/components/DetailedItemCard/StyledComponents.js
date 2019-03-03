@@ -18,13 +18,13 @@ export const Section = styled.div`
 `
 export const InfoItem = styled.div`
 	margin: 10px 5px;
-	font-size: 0.94rem;
+	font-size: 0.95rem;
 	display: flex;
 
 	h4 {
 		flex: 1;
 		margin: 0;
-		font-weight: 300;
+		font-weight: 400;
 	}
 	strike {
 		color: ${(p) => p.theme.colors.gray[50]};

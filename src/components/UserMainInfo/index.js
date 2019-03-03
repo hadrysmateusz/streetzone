@@ -58,7 +58,7 @@ const MainInfo = ({ user, isUserOwner, userId }) => {
 					</span>
 				</SeparatedContainer>
 				{isUserOwner ? (
-					<ButtonContainer alignRight>
+					<ButtonContainer alignRight noMargin>
 						<Button as={Link} to={ROUTES.ACCOUNT_SETTINGS.replace(":id", userId)}>
 							<span>Edytuj Profil</span>
 						</Button>
@@ -67,7 +67,7 @@ const MainInfo = ({ user, isUserOwner, userId }) => {
 						</Button>
 					</ButtonContainer>
 				) : (
-					<ButtonContainer alignRight>
+					<ButtonContainer alignRight noMargin>
 						<Button primary>
 							<FontAwesomeIcon icon={["far", "envelope"]} size="lg" />
 							<span>Wyślij wiadomość</span>

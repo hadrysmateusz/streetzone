@@ -9,6 +9,8 @@ import UserPreview from "../UserPreview"
 import Button, { ButtonContainer, LoaderButton } from "../Button"
 import { ROUTES } from "../../constants"
 import { DetailsContainer, Section, InfoItem, OuterContainer } from "./StyledComponents"
+import { ImportantText } from "../Basics"
+import { translateCondition } from "../../constants/item_schema"
 
 class DetailedItemCard extends React.Component {
 	state = { isDeleting: false }
@@ -48,24 +50,34 @@ class DetailedItemCard extends React.Component {
 	render() {
 		const { item, isUserOwner, history } = this.props
 
+		const conditionObj = translateCondition(item.condition)
+
 		return (
 			<OuterContainer>
 				<ItemCard item={item} />
 				<DetailsContainer>
 					<Section>
 						<InfoItem>
-							<h4>Wyświetlenia</h4>
-							<strong>{item.viewedCount || 0}</strong>
+							<ImportantText>
+								{item.designers && item.designers.join(" x ")}
+							</ImportantText>
 						</InfoItem>
+						<InfoItem>{item.name}</InfoItem>
 					</Section>
 					<Section>
+						<InfoItem>
+							<h4>Stan</h4>
+							<strong title={conditionObj.tooltip}>{conditionObj.displayValue}</strong>
+						</InfoItem>
 						<InfoItem>
 							<h4>Cena</h4>
 							{item.originalPrice && item.price !== item.originalPrice && (
 								<strike>{item.originalPrice}</strike>
 							)}
-							<strong>{item.price}</strong>
+							<strong>{item.price}zł</strong>
 						</InfoItem>
+					</Section>
+					<Section>
 						<InfoItem>
 							<h4>Dodano</h4>
 							<strong>{moment(item.createdAt).format("D.MM.YYYY")}</strong>
@@ -85,6 +97,9 @@ class DetailedItemCard extends React.Component {
 											/* This is not an a-tag to allow for programmatic disabling */
 											history.push(ROUTES.EDIT_ITEM.replace(":id", item.itemId))
 										}}
+										// TODO: make the "Zaczekaj jeszcze show actual remaining time"
+										title="Przedmiot może być edytowany dopiero po 24 godzinach.
+Zaczekaj jeszcze: --"
 									>
 										Edytuj
 									</Button>

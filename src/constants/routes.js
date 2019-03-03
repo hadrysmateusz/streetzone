@@ -22,6 +22,8 @@ export const ABOUT = "/o-nas"
 export const CONTACT = "/kontakt"
 export const TERMS = "/regulamin"
 export const ADMIN = "/admin"
+export const BUMP_INFO = "/promowanie"
+export const BUG_REPORT = "/zglos_problem"
 
 // External
 // TODO: create social media pages and add addresses

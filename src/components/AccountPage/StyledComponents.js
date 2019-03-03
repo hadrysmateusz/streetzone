@@ -29,9 +29,6 @@ export const TabsNavItem = styled.li`
 	list-style-type: none;
 	white-space: nowrap;
 	color: ${(p) => p.theme.colors.black[75]};
-	display: block;
-	order: 1;
-	padding: 0;
 	height: 38px;
 
 	:hover {
@@ -47,7 +44,6 @@ export const TabsNavItem = styled.li`
 
 	display: flex;
 	align-items: center;
-	background: none;
 	border: none;
 	outline: none;
 	padding: 0 10px;
@@ -63,6 +59,8 @@ export const TabsNavItem = styled.li`
 	&.active {
 		font-weight: 700;
 	}
+
+	font-size: 0.74rem;
 `
 
 export const MainGrid = styled.div`

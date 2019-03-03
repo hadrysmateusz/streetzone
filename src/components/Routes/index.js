@@ -10,6 +10,16 @@ import { LoadableComponentSpinner } from "../LoadingSpinner"
 import NotFound from "../NotFound"
 import ErrorBoundary from "../ErrorBoundary"
 
+const BugReportPage = Loadable({
+	loader: () => import("../BugReportPage"),
+	loading: LoadableComponentSpinner
+})
+
+const BumpInfoPage = Loadable({
+	loader: () => import("../BumpInfoPage"),
+	loading: LoadableComponentSpinner
+})
+
 const AdminPage = Loadable({
 	loader: () => import("../AdminPage"),
 	loading: LoadableComponentSpinner
@@ -244,6 +254,16 @@ const routes = [
 		path: ROUTES.TERMS,
 		component: TermsPage,
 		title: "Regulamin"
+	},
+	{
+		path: ROUTES.BUMP_INFO,
+		component: BumpInfoPage,
+		title: "Promowanie"
+	},
+	{
+		path: ROUTES.BUG_REPORT,
+		component: BugReportPage,
+		title: "Zgłoś problem"
 	}
 ]
 

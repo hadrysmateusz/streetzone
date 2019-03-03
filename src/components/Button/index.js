@@ -97,7 +97,7 @@ const Button = styled.button`
 export const ButtonContainer = styled.div`
 	width: 100%;
 	display: flex;
-	margin: 10px 0;
+	${(p) => !p.noMargin && "margin: 10px 0;"}
 	${(p) => p.alignRight && "justify-content: flex-end;"}
 	${(p) => p.centered && "justify-content: center;"}
 	* + * {

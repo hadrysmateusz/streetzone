@@ -5,7 +5,6 @@ const ContainerCommon = css`
 	overflow: hidden;
 	min-width: 0;
 	min-height: 0;
-	border: 1px solid ${(p) => p.theme.colors.gray[75]};
 	background: white;
 
 	a {

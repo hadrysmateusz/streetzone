@@ -5,7 +5,6 @@ import { Route, Switch, Redirect, withRouter, NavLink } from "react-router-dom"
 import { withFirebase } from "../Firebase"
 import { withAuthorization } from "../UserSession"
 import LoadingSpinner from "../LoadingSpinner"
-import { StyledNavLink } from "../Basics"
 import MainInfo from "../UserMainInfo"
 import {
 	TabsNav,
