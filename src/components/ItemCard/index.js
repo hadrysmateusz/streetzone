@@ -66,8 +66,6 @@ class ItemCardBase extends Component {
 	render() {
 		const { itemId, name, price, designers = [], condition, size } = this.props.item
 
-		let conditionObj = translateCondition(condition)
-
 		return (
 			<Ratio ratio={2 / 3}>
 				<Container className={this.props.className}>
@@ -97,11 +95,6 @@ class ItemCardBase extends Component {
 								<Price title={price ? `Cena: ${price}` : null}>
 									{price ? `${price}zł` : "--"}
 								</Price>
-								{condition && (
-									<Condition title={`Stan: ${conditionObj.tooltip}`}>
-										{conditionObj.displayValue}
-									</Condition>
-								)}
 								<Size title={size ? `Rozmiar: ${size}` : undefined}>{size || "--"}</Size>
 							</SecondaryContainer>
 						</InfoContainer>

@@ -9,7 +9,7 @@ const ItemsContainer = styled.div`
 	grid-gap: 3px;
 
 	${(p) => {
-		const cols = Math.min(Math.ceil(p.containerWidth / 280), 4)
+		const cols = Math.min(Math.ceil(p.containerWidth / 280), 3)
 		return `grid-template-columns: repeat(${cols}, 1fr);`
 	}}
 

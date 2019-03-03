@@ -46,25 +46,20 @@ export const ThumbnailContainer = styled.div`
 `
 
 export const InfoContainer = styled.div`
-	padding: 0 5px;
-	@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
-		padding: 0 9px;
-	}
 	border-top: 1px solid ${(p) => p.theme.colors.gray[100]};
 `
 
 export const TopContainer = styled.div`
-	padding: 12px 0 9px 9px;
+	padding: 15px 0 12px 12px;
 	display: flex;
 	max-width: 100%;
+	font-size: 1rem;
 `
 
 export const SecondaryContainer = styled.div`
 	border-top: 1px solid ${(p) => p.theme.colors.gray[100]};
-	padding: 8px 9px;
-	@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
-		padding: 10px 9px;
-	}
+	padding: 12px;
+
 	font-size: 0.95em;
 	display: grid;
 	grid-auto-columns: minmax(min-content, 1fr);
@@ -86,11 +81,12 @@ const ItemProperty = styled.div`
 	text-overflow: ellipsis;
 	font-weight: 500;
 	overflow: hidden;
-	color: ${(p) => p.theme.colors.black[25]};
+	color: black;
 `
 
 export const Name = styled(ItemProperty)`
 	font-weight: normal;
+	padding-top: 3px;
 `
 
 export const Designers = styled(ItemProperty)`
@@ -101,17 +97,15 @@ export const Designers = styled(ItemProperty)`
 `
 
 export const Price = styled(ItemProperty)`
-	color: ${(p) => p.theme.colors.accent};
+	font-weight: bold;
 	text-align: left;
-`
-
-export const Condition = styled(ItemProperty)`
-	color: ${(p) => p.theme.colors.black[100]};
-	text-align: center;
+	font-size: 0.96rem;
 `
 
 export const Size = styled(ItemProperty)`
+	font-weight: bold;
 	text-align: right;
+	font-size: 0.96rem;
 `
 
 export const StyledIcon = styled(FontAwesomeIcon)`
