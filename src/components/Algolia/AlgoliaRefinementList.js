@@ -9,18 +9,37 @@ import {
 	SearchBox as SearchBoxContainer,
 	FilterItemsContainer,
 	OptionsContainer,
-	NoResults
+	NoResults,
+	BoxItem
 } from "./StyledComponents"
 import Overlay from "../Overlay"
 import { More } from "../Basics"
 import { AdaptiveFoldable } from "../Foldable"
 import { withBreakpoints } from "react-breakpoints"
 import { compose } from "recompose"
+import Ratio from "react-ratio/lib/Ratio"
 
-const FilterItems = ({ items, refine, showCount }) => {
+const FilterItems = ({ items, refine, showCount, boxGrid }) => {
 	return items && items.length > 0 ? (
 		items.map((item) => {
-			return (
+			return boxGrid ? (
+				<Ratio ratio={1}>
+					<BoxItem checked={item.isRefined}>
+						<label htmlFor={`filter-value-${item.label}`}>
+							<input
+								id={`filter-value-${item.label}`}
+								type="checkbox"
+								checked={item.isRefined}
+								value={item.value}
+								name={item.label}
+								onChange={() => refine(item.value)}
+								hidden={true}
+							/>
+							<span>{item.label}</span> {showCount && <em>({item.count})</em>}
+						</label>
+					</BoxItem>
+				</Ratio>
+			) : (
 				<FilterItem key={item.value}>
 					<label htmlFor={`filter-value-${item.label}`}>
 						<input
@@ -95,7 +114,8 @@ class AlgoliaRefinementList extends React.Component {
 			tab,
 			openTab,
 			toggle,
-			currentBreakpoint
+			currentBreakpoint,
+			boxGrid
 		} = this.props
 		const limitedItems = show ? items.slice(0, show) : items
 
@@ -120,12 +140,14 @@ class AlgoliaRefinementList extends React.Component {
 						</FilterItemsContainer>
 					</>
 				) : (
-					<OptionsContainer multiColumn={multiColumn}>
-						<FilterItems items={limitedItems} refine={refine} />
+					<OptionsContainer multiColumn={multiColumn} boxGrid={boxGrid}>
+						<FilterItems items={limitedItems} refine={refine} boxGrid={boxGrid} />
 					</OptionsContainer>
 				)}
 				{searchable && items && items.length > 0 && currentBreakpoint > 0 && (
-					<More onClick={this.toggleMenu}>Więcej...</More>
+					<More onClick={this.toggleMenu}>
+						<FontAwesomeIcon icon="plus" size="xs" /> WIĘCEJ
+					</More>
 				)}
 				{this.state.isMenuOpen && (
 					<>

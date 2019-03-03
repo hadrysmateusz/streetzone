@@ -77,7 +77,7 @@ class AlgoliaSearchBox extends React.Component {
 						type="text"
 						onChange={this.onChange}
 						value={this.state.inputValue}
-						placeholder="Szukaj po nazwie, marce, kategorii itd."
+						placeholder="Szukaj po nazwie, marce, itd."
 					/>
 					{this.state.inputValue && (
 						<div className="icon-container" onClick={this.clearField}>

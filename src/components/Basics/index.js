@@ -19,6 +19,7 @@ export const More = styled.button`
 	font-weight: bold;
 	color: ${(p) => p.theme.colors.black[50]};
 	margin: 3px 0;
+	padding: 10px 0 0 0;
 `
 
 export const Header = styled.h2`

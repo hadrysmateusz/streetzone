@@ -10,6 +10,8 @@ export const StyledInstantSearch = styled(InstantSearch)`
 	}
 `
 
+export const SearchContainer = styled.div``
+
 export const MainGrid = styled.div`
 	position: relative;
 	display: flex;
@@ -38,8 +40,7 @@ export const Sidebar = styled.aside`
 
 	max-width: 100%;
 
-	top: 44px;
-	width: 250px;
+	width: 315px;
 	margin-right: 20px;
 
 	/* mobile */
@@ -51,14 +52,15 @@ export const Sidebar = styled.aside`
 
 export const SidebarInner = styled.div`
 	position: sticky;
-	z-index: 89;
-	top: 127px;
+	z-index: 60;
+	top: 90px;
 	background: white;
-	border: 1px solid ${(p) => p.theme.colors.gray[75]};
-	padding: 10px 20px;
 `
 
 export const FiltersContainer = styled.div`
+	border: 1px solid ${(p) => p.theme.colors.gray[75]};
+
+
 	/* desktop */
 	@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
 		position: relative;
@@ -87,9 +89,9 @@ export const FiltersContainer = styled.div`
 export const FilterInnerContainer = styled.div`
 	/* desktop */
 	@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
-		max-height: calc(100vh - 300px);
+		/* 70px(nav width) + 2*20px(margin top & bottom) = 110px */
+		max-height: calc(100vh - 170px);
 		overflow-y: auto;
-		margin-bottom: 5px;
 	}
 
 	> * {
@@ -144,4 +146,11 @@ export const CloseIconContainer = styled.span`
 	right: 15px;
 	top: 15px;
 	font-size: 0.89rem;
+`
+
+export const Group = styled.div`
+	:not(:last-child) {
+		border-bottom: 1px solid ${(p) => p.theme.colors.gray[75]};
+	}
+	padding: 20px;
 `

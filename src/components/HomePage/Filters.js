@@ -9,7 +9,8 @@ import {
 	FiltersContainer,
 	FilterInnerContainer,
 	FiltersHeader,
-	CloseIconContainer
+	CloseIconContainer,
+	Group
 } from "./StyledComponents"
 import AlgoliaRefinementList from "../Algolia/AlgoliaRefinementList"
 import Button from "../Button"
@@ -66,37 +67,47 @@ export class Filters extends Component {
 					</FiltersHeader>
 				)}
 				<FilterInnerContainer>
-					<AlgoliaRefinementList
-						tab={TABS.category}
-						openTab={this.state.openTab}
-						toggle={this.toggleTab}
-						attribute="category"
-					/>
-					{/* showMore is required by algolia to display a full list */}
-					<AlgoliaRefinementList
-						tab={TABS.designers}
-						openTab={this.state.openTab}
-						toggle={this.toggleTab}
-						attribute="designers"
-						searchable
-						show={8}
-						showMore={true}
-					/>
-					<AlgoliaRefinementList
-						attribute="size"
-						multiColumn
-						tab={TABS.size}
-						openTab={this.state.openTab}
-						toggle={this.toggleTab}
-					/>
+					<Group>
+						<AlgoliaRefinementList
+							tab={TABS.category}
+							openTab={this.state.openTab}
+							toggle={this.toggleTab}
+							attribute="category"
+						/>
+					</Group>
 
-					<AlgoliaRange
-						attribute="price"
-						forceClear={this.props.forceClear}
-						tab={TABS.price}
-						openTab={this.state.openTab}
-						toggle={this.toggleTab}
-					/>
+					<Group>
+						{/* showMore is required by algolia to display a full list */}
+						<AlgoliaRefinementList
+							tab={TABS.designers}
+							openTab={this.state.openTab}
+							toggle={this.toggleTab}
+							attribute="designers"
+							searchable
+							show={10}
+							showMore={true}
+							multiColumn
+						/>
+					</Group>
+					<Group>
+						<AlgoliaRefinementList
+							attribute="size"
+							tab={TABS.size}
+							openTab={this.state.openTab}
+							toggle={this.toggleTab}
+							boxGrid
+						/>
+					</Group>
+
+					<Group>
+						<AlgoliaRange
+							attribute="price"
+							forceClear={this.props.forceClear}
+							tab={TABS.price}
+							openTab={this.state.openTab}
+							toggle={this.toggleTab}
+						/>
+					</Group>
 				</FilterInnerContainer>
 				{this.props.currentBreakpoint < 1 && (
 					<ButtonsContainer>

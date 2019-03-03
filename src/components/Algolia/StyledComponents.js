@@ -28,6 +28,22 @@ export const FilterItemsContainer = styled.div`
 	overflow: auto;
 `
 
+export const BoxItem = styled.div`
+	border: 1px solid ${(p) => p.theme.colors.gray[75]};
+
+	font-size: 0.82rem;
+	height: 100%;
+	${(p) => p.checked && `color: white; background: black;`}
+	label {
+		cursor: pointer;
+		width: 100%;
+		height: 100%;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+`
+
 export const NoResults = styled.div`
 	font-size: 0.76rem;
 
@@ -36,23 +52,18 @@ export const NoResults = styled.div`
 `
 
 export const OptionsContainer = styled.div`
-	${(p) =>
-		p.multiColumn &&
-		`display: grid;
-		grid-template-columns: repeat(3, 1fr);`}
+	display: grid;
+	gap: 10px;
+	max-width: 100%;
+	${(p) => p.multiColumn && `grid-template-columns: repeat(2, 1fr);`}
+	${(p) => p.boxGrid && "grid-template-columns: repeat(auto-fill, minmax(35px,1fr))"}
 `
 
 export const FilterItem = styled.div`
 	display: flex;
 	align-items: center;
 
-	font-size: 0.88rem;
-	padding: 6px 6px;
-
-	@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
-		padding: 4px 6px;
-		font-size: 0.84rem;
-	}
+	font-size: 0.86rem;
 
 	* {
 		cursor: pointer;
@@ -64,7 +75,6 @@ export const FilterItem = styled.div`
 
 	label {
 		color: ${(p) => p.theme.colors.black[75]};
-		text-transform: uppercase;
 		cursor: pointer;
 		width: 100%;
 	}
@@ -93,7 +103,7 @@ export const RangeContainer = styled.div`
 
 export const SearchBox = styled.div`
 	width: 100%;
-	height: 34px;
+	height: 40px;
 	flex: 1;
 	border: 1px solid ${(p) => p.theme.colors.gray[75]};
 	:hover {
@@ -101,6 +111,7 @@ export const SearchBox = styled.div`
 	}
 	display: flex;
 	color: ${(p) => p.theme.colors.black[75]};
+	font-size: 0.8rem;
 
 	.icon-container {
 		display: flex;
@@ -110,6 +121,8 @@ export const SearchBox = styled.div`
 	}
 
 	.powered-by-container {
+		transform: scale(0.84);
+		margin-top: 2px;
 	}
 
 	input {
@@ -154,9 +167,11 @@ export const ItemsLoaderContainer = styled.div`
 export const ClearButton = styled.button`
 	${resetButtonStyles}
 	color: ${(p) => p.theme.colors.danger[50]};
-	/* font-size: 0.82rem; */
+	font-size: 0.82rem;
+	font-weight: 500;
 	/* padding: 3px 6px; */
 	display: inline-block;
+
 	
 `
 
@@ -211,15 +226,10 @@ export const StyledPoweredByMobile = styled(PoweredBy)`
 `
 
 export const OuterSearchContainer = styled.div`
-	grid-area: search;
 	display: flex;
+	height: 40px;
+	margin-bottom: 20px;
 	> * {
 		height: 100%;
-	}
-	> *:first-child {
-		margin-right: 3px;
-		@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
-			margin-right: 5px;
-		}
 	}
 `

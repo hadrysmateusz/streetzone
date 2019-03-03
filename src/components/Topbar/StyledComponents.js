@@ -90,24 +90,16 @@ export const FiltersToggle = styled.div`
 `
 
 export const ClearFiltersSubButton = styled.div`
-	--width: 40px;
-	border: 1px solid ${(p) => p.theme.colors.gray[75]};
 	color: ${(p) => p.theme.colors.danger[50]};
 	:hover {
-		border: 1px solid ${(p) => p.theme.colors.danger[50]};
+		text-decoration: underline;
 	}
-	position: relative;
-	left: -1px;
 	cursor: pointer;
-	width: 34px;
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	font-size: 0.8rem;
 	flex: 0 0 var(--width);
-	@media (min-width: ${(p) => p.theme.breakpoints[0]}px) {
-		--width: 34px;
-	}
 `
 
 export const FiltersToggleContainer = styled.div`

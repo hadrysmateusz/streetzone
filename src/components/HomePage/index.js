@@ -12,11 +12,17 @@ import {
 import { withFirebase } from "../Firebase"
 import Filters from "./Filters"
 import AlgoliaResults from "../Algolia/AlgoliaResults"
-import { MainGrid, Sidebar, SidebarInner, StyledInstantSearch } from "./StyledComponents"
+import {
+	MainGrid,
+	Sidebar,
+	SidebarInner,
+	StyledInstantSearch,
+	SearchContainer
+} from "./StyledComponents"
 import ScrollToTop from "../ScrollToTop"
 import LoadingSpinner from "../LoadingSpinner"
 import Topbar from "../Topbar"
-import CurrentFiltersView from "./CurrentFiltersView"
+import AlgoliaSearchBox from "../Algolia/AlgoliaSearchBox"
 
 const DEFAULT_SORTING = "dev_items_createdAt_desc"
 const DEFAULT_HITS_PER_PAGE = 12
@@ -194,7 +200,7 @@ class HomePage extends Component {
 				createURL={createURL}
 				refresh={this.state.refreshAlgolia}
 			>
-				<Topbar
+				{/* <Topbar
 					currentBreakpoint={currentBreakpoint}
 					areFiltersOpen={areFiltersOpen}
 					toggleFilters={this.toggleFilters}
@@ -205,10 +211,14 @@ class HomePage extends Component {
 					}}
 				/>
 
-				<CurrentFiltersView />
+				<CurrentFiltersView /> */}
+
 				<MainGrid>
 					<Sidebar hidden={!areFiltersOpen}>
 						<SidebarInner id="filters-container">
+							<SearchContainer>
+								<AlgoliaSearchBox />
+							</SearchContainer>
 							<Filters
 								toggleFilters={this.toggleFilters}
 								forceClear={{
@@ -218,8 +228,12 @@ class HomePage extends Component {
 							/>
 						</SidebarInner>
 					</Sidebar>
-
-					<AlgoliaResults />
+					<AlgoliaResults
+						clearFilters={{
+							value: this.state.clearFilters,
+							update: this.setClearFiltersFlag
+						}}
+					/>
 				</MainGrid>
 				<ScrollToTop>↑</ScrollToTop>
 			</StyledInstantSearch>

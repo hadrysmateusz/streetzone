@@ -5,11 +5,10 @@ import { withBreakpoints } from "react-breakpoints"
 import Clear, { ClearRange } from "../Algolia/ClearCategoryButton"
 
 const Header = styled.div`
-	padding: 6px;
 	color: ${(p) => p.theme.colors.black[0]};
 	text-transform: uppercase;
-	font-size: 0.85rem;
-	font-weight: 600;
+	font-size: 1rem;
+	font-weight: 700;
 	cursor: pointer;
 	display: flex;
 	justify-content: space-between;
@@ -19,7 +18,13 @@ const Header = styled.div`
 	}
 `
 
+const OuterContainer = styled.div`
+	/* border-bottom: 1px solid ${(p) => p.theme.colors.gray[50]}; */
+`
+
 const InnerContainer = styled.div`
+	margin-top: 10px;
+
 	@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
 	}
 `
@@ -63,9 +68,9 @@ export const AdaptiveFoldable = withBreakpoints(
 					: this.toggle
 
 			return (
-				<div>
+				<OuterContainer>
 					<Header onClick={toggleFunction} isFolded={isFolded}>
-						<span>
+						<div>
 							{tab.displayName}{" "}
 							{showClear &&
 								(tab.id === "price" ? (
@@ -73,11 +78,11 @@ export const AdaptiveFoldable = withBreakpoints(
 								) : (
 									<Clear attribute={attribute} />
 								))}
-						</span>
+						</div>
 						<FontAwesomeIcon icon={"caret-up"} />
 					</Header>
 					<InnerContainer hidden={isFolded}>{children}</InnerContainer>
-				</div>
+				</OuterContainer>
 			)
 		}
 	}

@@ -15,7 +15,6 @@ const OuterContainer = styled.div`
 	align-items: center;
 	align-content: center;
 	justify-content: space-between;
-	padding: 10px;
 	border-top: 1px solid ${(p) => p.theme.colors.gray[75]};
 	color: ${(p) => p.theme.colors.black[0]};
 	background: white;
@@ -42,7 +41,7 @@ const Item = styled(Link)`
 `
 
 const InnerContainer = styled.div`
-	padding: 20px;
+	padding: 20px 0;
 	width: 100%;
 	max-width: ${(p) => p.theme.breakpoints[5]}px;
 	margin: 0 auto;

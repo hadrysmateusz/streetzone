@@ -1,30 +1,35 @@
 import React from "react"
 import { connectCurrentRefinements } from "react-instantsearch-core"
 import styled from "styled-components"
+import { compose } from "recompose"
+import { withRouter } from "react-router-dom"
+import { ClearFiltersSubButton } from "../Topbar/StyledComponents"
+import { ROUTES } from "../../constants"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 const Container = styled.div`
 	display: flex;
 	flex-direction: column;
 	max-width: ${(p) => p.theme.breakpoints[5]}px;
-	margin: 0 auto;
 	@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
 		flex-direction: row;
 	}
 `
 
 const OuterContainer = styled.div`
-	padding: 0 3px;
-	@media (min-width: ${(p) => p.theme.breakpoints[0]}px) {
-		padding: 0 20px;
-		padding-top: 20px;
-	}
+	height: 40px;
+	margin-bottom: 20px;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-end;
 `
 
 const Item = styled.div`
-	padding: 5px 10px;
+	padding: 6px;
 	background: white;
 	border: 1px solid ${(p) => p.theme.colors.gray[75]};
 	margin: 3px 0;
+	font-size: 0.74rem;
 
 	/* desktop */
 	@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
@@ -35,7 +40,7 @@ const Item = styled.div`
 	}
 `
 
-const CurrentFiltersView = connectCurrentRefinements(({ items }) => {
+const CurrentFiltersView = ({ items, history, clearFilters }) => {
 	return items && items.length > 0 ? (
 		<OuterContainer>
 			<Container>
@@ -70,9 +75,23 @@ const CurrentFiltersView = connectCurrentRefinements(({ items }) => {
 						return null
 					}
 				})}
+				{items && items.length > 0 && (
+					<ClearFiltersSubButton
+						onClick={() => {
+							history.push(ROUTES.HOME)
+							clearFilters.update(true)
+						}}
+						title="Wyczyść filtry"
+					>
+						Wyczyść wszystko
+					</ClearFiltersSubButton>
+				)}
 			</Container>
 		</OuterContainer>
 	) : null
-})
+}
 
-export default CurrentFiltersView
+export default compose(
+	connectCurrentRefinements,
+	withRouter
+)(CurrentFiltersView)
