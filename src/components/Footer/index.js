@@ -20,7 +20,6 @@ const OuterContainer = styled.div`
 	color: ${(p) => p.theme.colors.black[0]};
 	background: white;
 	font-size: 1.03rem;
-	/* box-shadow: 0 -3px 5px -1px rgba(0, 0, 0, 0.05); */
 `
 
 const IconContainer = styled.div`

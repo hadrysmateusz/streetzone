@@ -8,29 +8,8 @@ import { withFirebase } from "../Firebase"
 import Navigation from "../Navigation"
 import { Routes, Meta } from "../Routes"
 import Footer from "../Footer"
-import { CONST } from "../../constants"
 import { withGlobalContextProvider } from "../GlobalContext"
 import AuthModal from "../AuthModal"
-
-const HEADER_HEIGHT = "66px"
-
-const Header = styled.div`
-	color: ${(p) => p.theme.colors.black[25]};
-	background: white;
-
-	height: ${HEADER_HEIGHT};
-
-	display: flex;
-	align-items: center;
-	justify-content: center;
-
-	text-shadow: 1px 1px 1px ${(p) => p.theme.colors.gray[50]};
-
-	font-size: 2.4rem;
-	font-family: "Playfair Display SC", serif;
-
-	animation: transform 1s ease;
-`
 
 const ContentContainer = styled.div`
 	flex: 1;
@@ -53,7 +32,6 @@ class App extends React.Component {
 				<div id="App-Element">
 					<Meta />
 					<AppContainer>
-						<Header>{CONST.BRAND_NAME}</Header>
 						<Navigation />
 						<ContentContainer>
 							<Routes />

@@ -47,7 +47,7 @@ export const StyledNavLink = styled(NavLink)`
 	}
 
 	&.active {
-		color: ${(p) => p.theme.colors.accent};
+		font-weight: 600;
 	}
 `
 

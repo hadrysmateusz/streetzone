@@ -4,34 +4,30 @@ import { compose } from "recompose"
 import styled from "styled-components"
 
 import { withAuthentication } from "../UserSession"
-import SignOutButton from "../SignOut"
 import ProfilePicture from "../ProfilePicture"
-import { ROUTES } from "../../constants"
+import { ROUTES, CONST } from "../../constants"
 import getProfilePictureURL from "../../utils/getProfilePictureURL"
 import { StyledNavLink } from "../Basics"
 import { withFirebase } from "../Firebase"
 
-const NAV_ITEM_HEIGHT = "46px"
-
 const Nav = styled.ul`
+	padding: 0;
+	li {
+		list-style: none;
+	}
+
+	width: 100%;
+	max-width: ${(p) => p.theme.breakpoints[5]}px;
+	margin: 0 auto;
+	height: 70px;
 	text-transform: uppercase;
 	letter-spacing: 0.9px;
 	font-size: 0.85rem;
 	font-weight: normal;
 
-	position: sticky;
-	top: 0;
-	z-index: 80;
-
-	background: white;
-	border-bottom: 1px solid ${(p) => p.theme.colors.gray[75]};
-
 	display: flex;
 	align-items: center;
 	justify-content: flex-start;
-
-	margin: 0;
-	padding: 0 11px;
 
 	overflow: auto;
 
@@ -50,7 +46,6 @@ const Nav = styled.ul`
 	--transparent: rgba(255, 255, 255, 0);
 
 	overflow: auto;
-	max-width: 100%;
 	background: linear-gradient(90deg, white 30%, var(--transparent)),
 		linear-gradient(90deg, var(--transparent), white 70%) 0 100%,
 		radial-gradient(farthest-side at 0% 50%, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0)),
@@ -63,10 +58,19 @@ const Nav = styled.ul`
 	background-attachment: local, local, scroll, scroll;
 `
 
+const NavOuter = styled.nav`
+	position: sticky;
+	top: 0;
+	z-index: 80;
+
+	background: white;
+	border-bottom: 1px solid ${(p) => p.theme.colors.gray[75]};
+`
+
 const Submenu = styled.ul`
 	position: absolute;
 	top: 100%;
-	left: 0;
+	right: 0;
 	background: white;
 
 	border: 1px solid ${(p) => p.theme.colors.gray[75]};
@@ -86,10 +90,10 @@ const Submenu = styled.ul`
 `
 
 const NavItem = styled.li`
+	height: 100%;
 	user-select: none;
 	position: relative;
 	list-style-type: none;
-	height: ${NAV_ITEM_HEIGHT};
 	white-space: nowrap;
 	color: ${(p) => p.theme.colors.black[75]};
 	display: block;
@@ -105,86 +109,99 @@ const NavItem = styled.li`
 	}
 	> :first-child {
 		height: 100%;
-		padding: 0 14px;
+		padding: 15px 10px;
+		font-size: 0.84rem;
 	}
 	span {
 		margin-left: 8px;
 	}
 `
 
+const Logo = styled.li`
+	font-size: 1.9rem;
+	font-weight: bold;
+	text-transform: none;
+	flex: 1;
+`
+
 const Navigation = ({ authUser, firebase, ...rest }) => {
 	return (
-		<Nav {...rest}>
-			<NavItem>
-				<StyledNavLink to={ROUTES.BLOG_HOME}>Blog</StyledNavLink>
-			</NavItem>
-			<NavItem>
-				<StyledNavLink to={ROUTES.HOME} exact={true}>
-					Tablica
-				</StyledNavLink>
-			</NavItem>
-			{authUser ? (
-				<>
-					<NavItem>
-						<StyledNavLink to={ROUTES.ACCOUNT_BASE.replace(":id", authUser.uid)}>
-							<ProfilePicture
-								size="30px"
-								url={getProfilePictureURL(authUser, "S")}
-								inline
-							/>
-							{/* Keep it this way until you have some other way of indicating that 
-							the menu is scrollable as a constant width allows me to make it obvious */}
-							{/* <span>{authUser.name ? authUser.name : "Profil"}</span> */}
-							<span>Profil</span>
-						</StyledNavLink>
-						<Submenu>
-							<NavItem>
-								<StyledNavLink to={ROUTES.ACCOUNT_ITEMS.replace(":id", authUser.uid)}>
-									Twoje przedmioty
-								</StyledNavLink>
-							</NavItem>
-
-							<NavItem>
-								<StyledNavLink to={ROUTES.ACCOUNT_LIKED.replace(":id", authUser.uid)}>
-									Zapisane przedmioty
-								</StyledNavLink>
-							</NavItem>
-
-							<NavItem>
-								<StyledNavLink to={ROUTES.ACCOUNT_FOLLOWING.replace(":id", authUser.uid)}>
-									Obserwowani użytkownicy
-								</StyledNavLink>
-							</NavItem>
-
-							<NavItem>
-								<StyledNavLink to={ROUTES.ACCOUNT_FEEDBACK.replace(":id", authUser.uid)}>
-									Opinie i komentarze
-								</StyledNavLink>
-							</NavItem>
-
-							<NavItem>
-								<StyledNavLink to={ROUTES.ACCOUNT_SETTINGS.replace(":id", authUser.uid)}>
-									Opcje / Edytuj profil
-								</StyledNavLink>
-							</NavItem>
-
-							<NavItem>
-								<StyledNavLink as="a" onClick={firebase.signOut}>
-									Wyloguj
-								</StyledNavLink>
-							</NavItem>
-						</Submenu>
-					</NavItem>
-					<NavItem>
-						<StyledNavLink to={ROUTES.NEW_ITEM}>Wystaw Przedmiot</StyledNavLink>
-					</NavItem>
-				</>
-			) : (
+		<NavOuter>
+			<Nav {...rest}>
+				<Logo>{CONST.BRAND_NAME}</Logo>
 				<NavItem>
-					<StyledNavLink to={ROUTES.SIGN_IN}>Zaloguj się</StyledNavLink>
+					<StyledNavLink to={ROUTES.BLOG_HOME}>CZYTAJ</StyledNavLink>
 				</NavItem>
-			)}
-		</Nav>
+				<NavItem>
+					<StyledNavLink to={ROUTES.HOME} exact={true}>
+						KUPUJ
+					</StyledNavLink>
+				</NavItem>
+				{authUser ? (
+					<>
+						<NavItem>
+							<StyledNavLink to={ROUTES.NEW_ITEM}>SPRZEDAWAJ</StyledNavLink>
+						</NavItem>
+						<NavItem>
+							<StyledNavLink to={ROUTES.ACCOUNT_BASE.replace(":id", authUser.uid)}>
+								<ProfilePicture
+									size="44px"
+									url={getProfilePictureURL(authUser, "S")}
+									inline
+								/>
+							</StyledNavLink>
+							<Submenu>
+								<NavItem>
+									<StyledNavLink to={ROUTES.ACCOUNT_ITEMS.replace(":id", authUser.uid)}>
+										Twoje przedmioty
+									</StyledNavLink>
+								</NavItem>
+
+								<NavItem>
+									<StyledNavLink to={ROUTES.ACCOUNT_LIKED.replace(":id", authUser.uid)}>
+										Zapisane przedmioty
+									</StyledNavLink>
+								</NavItem>
+
+								<NavItem>
+									<StyledNavLink
+										to={ROUTES.ACCOUNT_FOLLOWING.replace(":id", authUser.uid)}
+									>
+										Obserwowani użytkownicy
+									</StyledNavLink>
+								</NavItem>
+
+								<NavItem>
+									<StyledNavLink
+										to={ROUTES.ACCOUNT_FEEDBACK.replace(":id", authUser.uid)}
+									>
+										Opinie i komentarze
+									</StyledNavLink>
+								</NavItem>
+
+								<NavItem>
+									<StyledNavLink
+										to={ROUTES.ACCOUNT_SETTINGS.replace(":id", authUser.uid)}
+									>
+										Opcje / Edytuj profil
+									</StyledNavLink>
+								</NavItem>
+
+								<NavItem>
+									<StyledNavLink as="a" onClick={firebase.signOut}>
+										Wyloguj
+									</StyledNavLink>
+								</NavItem>
+							</Submenu>
+						</NavItem>
+					</>
+				) : (
+					<NavItem>
+						<StyledNavLink to={ROUTES.SIGN_IN}>Zaloguj się</StyledNavLink>
+					</NavItem>
+				)}
+			</Nav>
+		</NavOuter>
 	)
 }
 
