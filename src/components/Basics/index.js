@@ -206,7 +206,7 @@ export const ImportantText = styled.h3`
 
 export const InfoBlock = styled.div`
 	background: #f2f2f2;
-	margin: 60px 0;
+	margin: 110px 0;
 	padding: 30px;
 	text-align: center;
 	display: flex;
