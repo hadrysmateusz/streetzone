@@ -10,6 +10,7 @@ import { Routes, Meta } from "../Routes"
 import Footer from "../Footer"
 import { withGlobalContextProvider } from "../GlobalContext"
 import AuthModal from "../AuthModal"
+import GlobalStyles from "./global-styles"
 
 const ContentContainer = styled.div`
 	flex: 1;
@@ -21,27 +22,19 @@ const ContentContainer = styled.div`
 	}
 `
 
-const AppContainer = styled.div`
-	position: relative;
-	z-index: 0;
-	display: flex;
-	flex-direction: column;
-	min-height: 100vh;
-`
-
 class App extends React.Component {
 	render = () => {
 		return (
 			<Router>
 				<div id="App-Element">
 					<Meta />
-					<AppContainer>
+					<GlobalStyles>
 						<Navigation />
 						<ContentContainer>
 							<Routes />
 						</ContentContainer>
 						<Footer />
-					</AppContainer>
+					</GlobalStyles>
 					<AuthModal />
 				</div>
 			</Router>
