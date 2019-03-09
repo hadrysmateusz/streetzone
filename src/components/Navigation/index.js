@@ -65,6 +65,11 @@ const NavOuter = styled.nav`
 
 	background: white;
 	border-bottom: 1px solid ${(p) => p.theme.colors.gray[75]};
+
+	padding: 0 3px;
+	@media (min-width: ${(p) => p.theme.breakpoints[0]}px) {
+		padding: 0 20px;
+	}
 `
 
 const Submenu = styled.ul`
@@ -122,6 +127,7 @@ const Logo = styled.li`
 	font-weight: bold;
 	text-transform: none;
 	flex: 1;
+	font-family: "Playfair Display";
 `
 
 const Navigation = ({ authUser, firebase, ...rest }) => {

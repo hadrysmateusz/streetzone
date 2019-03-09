@@ -21,7 +21,6 @@ export const MainGrid = styled.div`
 
 	@media (min-width: ${(p) => p.theme.breakpoints[0]}px) {
 		margin: 20px auto;
-		padding: 0 20px;
 	}
 	@media (min-width: ${(p) => p.theme.breakpoints[5]}px) {
 		max-width: ${(p) => p.theme.breakpoints[5]}px;
@@ -40,7 +39,7 @@ export const Sidebar = styled.aside`
 
 	max-width: 100%;
 
-	width: 315px;
+	width: 290px;
 	margin-right: 20px;
 
 	/* mobile */

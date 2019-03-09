@@ -3,8 +3,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { connectCurrentRefinements } from "react-instantsearch-core"
 import { withRouter } from "react-router-dom"
 import { compose } from "recompose"
-
 import sortingOptions from "../../constants/sortingOptions"
+
 import AlgoliaSortBy from "../Algolia/AlgoliaSortBy"
 import AlgoliaSearchBox from "../Algolia/AlgoliaSearchBox"
 import {

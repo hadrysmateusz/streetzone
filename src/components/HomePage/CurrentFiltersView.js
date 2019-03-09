@@ -5,7 +5,8 @@ import { compose } from "recompose"
 import { withRouter } from "react-router-dom"
 import { ClearFiltersSubButton } from "../Topbar/StyledComponents"
 import { ROUTES } from "../../constants"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import sortingOptions from "../../constants/sortingOptions"
+import AlgoliaSortBy from "../Algolia/AlgoliaSortBy"
 
 const Container = styled.div`
 	display: flex;
@@ -41,54 +42,62 @@ const Item = styled.div`
 `
 
 const CurrentFiltersView = ({ items, history, clearFilters }) => {
-	return items && items.length > 0 ? (
+	return (
 		<OuterContainer>
-			<Container>
-				{items.map((item) => {
-					if (item.attribute === "price") {
-						return (
-							<Item>
-								<strong>Cena</strong>
-							</Item>
-						)
-					} else if (item.attribute === "category") {
-						return (
-							<Item>
-								<strong>Kategoria: </strong>{" "}
-								<span>{item.currentRefinement.join(", ")}</span>
-							</Item>
-						)
-					} else if (item.attribute === "designers") {
-						return (
-							<Item>
-								<strong>Marka: </strong> <span>{item.currentRefinement.join(", ")}</span>
-							</Item>
-						)
-					} else if (item.attribute === "size") {
-						return (
-							<Item>
-								<strong>Rozmiar: </strong>{" "}
-								<span>{item.currentRefinement.join(", ")}</span>
-							</Item>
-						)
-					} else {
-						return null
-					}
-				})}
-				{items && items.length > 0 && (
-					<ClearFiltersSubButton
-						onClick={() => {
-							history.push(ROUTES.HOME)
-							clearFilters.update(true)
-						}}
-						title="Wyczyść filtry"
-					>
-						Wyczyść wszystko
-					</ClearFiltersSubButton>
-				)}
-			</Container>
+			{items && items.length > 0 ? (
+				<Container>
+					{items.map((item) => {
+						if (item.attribute === "price") {
+							return (
+								<Item>
+									<strong>Cena</strong>
+								</Item>
+							)
+						} else if (item.attribute === "category") {
+							return (
+								<Item>
+									<strong>Kategoria: </strong>{" "}
+									<span>{item.currentRefinement.join(", ")}</span>
+								</Item>
+							)
+						} else if (item.attribute === "designers") {
+							return (
+								<Item>
+									<strong>Marka: </strong>{" "}
+									<span>{item.currentRefinement.join(", ")}</span>
+								</Item>
+							)
+						} else if (item.attribute === "size") {
+							return (
+								<Item>
+									<strong>Rozmiar: </strong>{" "}
+									<span>{item.currentRefinement.join(", ")}</span>
+								</Item>
+							)
+						} else {
+							return null
+						}
+					})}
+					{items && items.length > 0 && (
+						<ClearFiltersSubButton
+							onClick={() => {
+								history.push(ROUTES.HOME)
+								clearFilters.update(true)
+							}}
+							title="Wyczyść filtry"
+						>
+							Wyczyść wszystko
+						</ClearFiltersSubButton>
+					)}
+				</Container>
+			) : null}
+			<AlgoliaSortBy
+				items={sortingOptions}
+				defaultRefinement={sortingOptions[0]}
+				placeholder="Sortuj"
+			/>
 		</OuterContainer>
-	) : null
+	)
 }
 
 export default compose(

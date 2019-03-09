@@ -15,6 +15,10 @@ const ContentContainer = styled.div`
 	flex: 1;
 	display: flex;
 	flex-direction: column;
+	padding: 0 3px;
+	@media (min-width: ${(p) => p.theme.breakpoints[0]}px) {
+		padding: 0 20px;
+	}
 `
 
 const AppContainer = styled.div`
