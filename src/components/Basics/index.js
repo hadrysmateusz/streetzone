@@ -39,16 +39,18 @@ export const StyledNavLink = styled(NavLink)`
 	border: none;
 	outline: none;
 	padding: 0;
-	color: ${(p) => p.theme.colors.black[75]};
+	color: ${(p) => p.theme.colors.gray[0]};
 	cursor: pointer;
-	text-transform: uppercase;
+
+	text-decoration: none;
 
 	&:hover {
 		color: black;
 	}
 
 	&.active {
-		font-weight: 600;
+		color: black;
+		text-decoration: underline;
 	}
 `
 

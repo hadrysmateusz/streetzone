@@ -20,14 +20,15 @@ const headerBase = css`
 `
 
 export const Header1 = styled.h1`
+	${headerBase}
 	font-size: 8.5rem;
-	font-weight: bold;
+	font-weight: 700;
 `
 
 export const Header2 = styled.h2`
 	${headerBase}
 	font-size: 6.2rem;
-	font-weight: bold;
+	font-weight: 700;
 `
 
 export const Header3 = styled.h3`

@@ -7,15 +7,23 @@ export default styled.div`
 	flex-direction: column;
 	min-height: 100vh;
 
-	font-size: 10px;
+	line-height: 1.5;
+
 	font-family: "Open Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
 		"Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
 		sans-serif;
 
-	/* Not using :any-link as it causes issues in edge and ie */
 	a {
-		color: black; /* fallback for ie */
-		color: unset;
-		text-decoration: none;
+		color: inherit;
 	}
+
+	--font-size--xs: 1.1rem;
+	--font-size--s: 1.8rem;
+	--font-size--m: 2.2rem;
+	--font-size--l: 2.6rem;
+
+	--font-size--h4: 2.9rem;
+	--font-size--h3: 3.1rem;
+	--font-size--h2: 3.4rem;
+	--font-size--h1: 4.2rem;
 `

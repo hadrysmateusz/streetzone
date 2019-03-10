@@ -1,7 +1,5 @@
 export default {
 	breakpoints: [480, 575, 768, 960, 1024, 1200],
-	fontSizes: [12, 13, 14, 16, 20, 24, 32, 48, 64],
-	fontWeights: ["normal", 500, "bold"],
 	space: [0, 4, 8, 16, 32, 64, 128, 256],
 	colors: {
 		accent: "#FFD414",
@@ -25,11 +23,5 @@ export default {
 			75: "#323537",
 			100: "#616466"
 		}
-	},
-	fonts: {
-		sans: "system-ui, sans-serif",
-		serif: "",
-		display: '"Playfair Display SC", serif',
-		mono: "monospace"
 	}
 }

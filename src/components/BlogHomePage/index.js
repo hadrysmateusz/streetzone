@@ -110,7 +110,6 @@ const Title = styled.h2`
 	overflow: hidden;
 	text-overflow: ellipsis;
 	color: #333;
-	font-family: ${(p) => p.theme.fonts.display};
 `
 
 const Excerpt = styled.p`
