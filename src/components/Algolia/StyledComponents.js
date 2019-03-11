@@ -1,5 +1,5 @@
 import styled from "styled-components"
-import { resetButtonStyles } from "../Basics"
+import { resetButtonStyles } from "../../style-utils"
 import { PoweredBy } from "react-instantsearch-dom"
 
 export const FilterMenu = styled.div`

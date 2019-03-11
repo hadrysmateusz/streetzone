@@ -17,13 +17,21 @@ export default styled.div`
 		color: inherit;
 	}
 
-	--font-size--xs: 1.1rem;
-	--font-size--s: 1.8rem;
-	--font-size--m: 2.2rem;
-	--font-size--l: 2.6rem;
+	--black-25: #191919;
 
-	--font-size--h4: 2.9rem;
-	--font-size--h3: 3.1rem;
-	--font-size--h2: 3.4rem;
+	--gray0: #8f8f8f;
+	--gray25: #afafaf;
+	--gray50: #c6c6c6;
+	--gray75: #dadada;
+	--gray100: #eaeaea;
+
+	--font-size--xs: 1.1rem;
+	--font-size--s: 1.2rem;
+	--font-size--m: 1.4rem;
+	--font-size--l: 1.6rem;
+
+	--font-size--h4: 1.8rem;
+	--font-size--h3: 2.2rem;
+	--font-size--h2: 3.6rem;
 	--font-size--h1: 4.2rem;
 `

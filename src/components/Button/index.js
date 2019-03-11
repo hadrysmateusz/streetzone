@@ -2,7 +2,7 @@ import React from "react"
 import styled, { css } from "styled-components"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
-import { ellipsis } from "../../style-utils"
+import { ellipsis, resetButtonStyles } from "../../style-utils"
 import { SPIN } from "../../style-utils/keyframes"
 
 const primary = css`
@@ -103,6 +103,10 @@ export const ButtonContainer = styled.div`
 	* + * {
 		margin-left: 10px;
 	}
+`
+
+export const UnstyledButton = styled.button`
+	${resetButtonStyles}
 `
 
 const IconButtonUnstyled = ({ icon, ...rest }) => (

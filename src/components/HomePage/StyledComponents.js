@@ -15,16 +15,6 @@ export const SearchContainer = styled.div``
 export const MainGrid = styled.div`
 	position: relative;
 	display: flex;
-	margin: 10px auto;
-	box-sizing: content-box;
-	padding: 0 3px 10px;
-
-	@media (min-width: ${(p) => p.theme.breakpoints[0]}px) {
-		margin: 20px auto;
-	}
-	@media (min-width: ${(p) => p.theme.breakpoints[5]}px) {
-		max-width: ${(p) => p.theme.breakpoints[5]}px;
-	}
 `
 
 export const ButtonContainer = styled.div`
@@ -49,16 +39,7 @@ export const Sidebar = styled.aside`
 	}
 `
 
-export const SidebarInner = styled.div`
-	position: sticky;
-	z-index: 60;
-	top: 90px;
-	background: white;
-`
-
 export const FiltersContainer = styled.div`
-	border: 1px solid ${(p) => p.theme.colors.gray[75]};
-
 
 	/* desktop */
 	@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
@@ -129,13 +110,13 @@ export const ButtonsContainer = styled.div`
 	}
 `
 
-export const FiltersHeader = styled.h2`
-	padding-top: 10px;
-	padding-bottom: 20px;
-	margin: 0;
+export const FiltersHeader = styled.div`
+	padding: 6px 0;
+	margin: 0 15px;
 	background: white;
 	font-size: 1.35rem;
 	text-align: center;
+	border-bottom: 1px solid var(--gray100);
 `
 
 export const CloseIconContainer = styled.span`
@@ -147,9 +128,9 @@ export const CloseIconContainer = styled.span`
 	font-size: 0.89rem;
 `
 
-export const Group = styled.div`
+export const Section = styled.div`
 	:not(:last-child) {
-		border-bottom: 1px solid ${(p) => p.theme.colors.gray[75]};
+		border-bottom: 1px solid var(--gray100);
 	}
-	padding: 20px;
+	padding: 15px;
 `

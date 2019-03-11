@@ -4,7 +4,7 @@ import { connectStateResults } from "react-instantsearch-dom"
 import { AlgoliaInfiniteHits } from "../Algolia/AlgoliaHits"
 import { ResultsContainer } from "./StyledComponents"
 import EmptyState, { QueryNoResults } from "../EmptyState"
-import CurrentFiltersView from "../HomePage/CurrentFiltersView"
+import CurrentFiltersView from "../CurrentFilters"
 import { InfoBlock } from "../Basics"
 import Button, { ButtonContainer } from "../Button"
 
@@ -14,10 +14,6 @@ const AlgoliaResults = connectStateResults(
 
 		return (
 			<ResultsContainer>
-				<div>
-					<CurrentFiltersView clearFilters={clearFilters} />
-				</div>
-
 				<div hidden={!hasResults}>
 					<AlgoliaInfiniteHits />
 				</div>

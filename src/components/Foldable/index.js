@@ -3,23 +3,17 @@ import styled from "styled-components"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { withBreakpoints } from "react-breakpoints"
 import Clear, { ClearRange } from "../Algolia/ClearCategoryButton"
+import { Header4 } from "../StyledComponents"
 
 const Header = styled.div`
-	color: ${(p) => p.theme.colors.black[0]};
-	text-transform: uppercase;
-	font-size: 1rem;
-	font-weight: 700;
 	cursor: pointer;
 	display: flex;
 	justify-content: space-between;
+	align-items: center;
 	svg {
 		transition: transform 0.32s ease;
 		${(p) => p.isFolded && "transform: rotate(-180deg);"}
 	}
-`
-
-const OuterContainer = styled.div`
-	/* border-bottom: 1px solid ${(p) => p.theme.colors.gray[50]}; */
 `
 
 const InnerContainer = styled.div`
@@ -68,10 +62,12 @@ export const AdaptiveFoldable = withBreakpoints(
 					: this.toggle
 
 			return (
-				<OuterContainer>
+				<div>
 					<Header onClick={toggleFunction} isFolded={isFolded}>
 						<div>
-							{tab.displayName}{" "}
+							<Header4 light uppercase>
+								{tab.displayName}
+							</Header4>
 							{showClear &&
 								(tab.id === "price" ? (
 									<ClearRange attribute={attribute} resetState={resetState} />
@@ -82,7 +78,7 @@ export const AdaptiveFoldable = withBreakpoints(
 						<FontAwesomeIcon icon={"caret-up"} />
 					</Header>
 					<InnerContainer hidden={isFolded}>{children}</InnerContainer>
-				</OuterContainer>
+				</div>
 			)
 		}
 	}

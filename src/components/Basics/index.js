@@ -3,25 +3,6 @@ import styled, { css } from "styled-components"
 import { gridArea } from "styled-system"
 import Textarea from "react-textarea-autosize"
 
-export const resetButtonStyles = css`
-	background: none;
-	border: none;
-	box-shadow: none;
-	display: block;
-	border-radius: 0;
-	outline: none;
-	cursor: pointer;
-`
-
-export const More = styled.button`
-	${resetButtonStyles}
-	font-size: 0.81rem;
-	font-weight: bold;
-	color: ${(p) => p.theme.colors.black[50]};
-	margin: 3px 0;
-	padding: 10px 0 0 0;
-`
-
 export const Header = styled.h2`
 	text-align: center;
 	color: #2f2f2f;

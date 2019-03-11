@@ -10,19 +10,15 @@ import {
 } from "body-scroll-lock"
 
 import { withFirebase } from "../Firebase"
-import Filters from "./Filters"
+import Filters from "../Filters"
 import AlgoliaResults from "../Algolia/AlgoliaResults"
-import {
-	MainGrid,
-	Sidebar,
-	SidebarInner,
-	StyledInstantSearch,
-	SearchContainer
-} from "./StyledComponents"
+import { MainGrid, Sidebar, StyledInstantSearch } from "./StyledComponents"
 import ScrollToTop from "../ScrollToTop"
 import LoadingSpinner from "../LoadingSpinner"
-import Topbar from "../Topbar"
 import AlgoliaSearchBox from "../Algolia/AlgoliaSearchBox"
+import SidebarBox from "../SidebarBox"
+import CurrentFilters from "../CurrentFilters"
+import { PageContainer } from "../Containers"
 
 const DEFAULT_SORTING = "dev_items_createdAt_desc"
 const DEFAULT_HITS_PER_PAGE = 12
@@ -186,7 +182,6 @@ class HomePage extends Component {
 
 	render() {
 		const { areFiltersOpen, searchState } = this.state
-		const { currentBreakpoint } = this.props
 
 		return this.state.isLoading ? (
 			<LoadingSpinner />
@@ -200,41 +195,32 @@ class HomePage extends Component {
 				createURL={createURL}
 				refresh={this.state.refreshAlgolia}
 			>
-				{/* <Topbar
-					currentBreakpoint={currentBreakpoint}
-					areFiltersOpen={areFiltersOpen}
-					toggleFilters={this.toggleFilters}
-					refresh={this.refresh}
-					clearFilters={{
-						value: this.state.clearFilters,
-						update: this.setClearFiltersFlag
-					}}
-				/>
-
-				<CurrentFiltersView /> */}
-
-				<MainGrid>
-					<Sidebar hidden={!areFiltersOpen}>
-						<SidebarInner id="filters-container">
-							<SearchContainer>
-								<AlgoliaSearchBox />
-							</SearchContainer>
-							<Filters
-								toggleFilters={this.toggleFilters}
-								forceClear={{
-									value: this.state.clearFilters,
-									update: this.setClearFiltersFlag
-								}}
-							/>
-						</SidebarInner>
-					</Sidebar>
-					<AlgoliaResults
-						clearFilters={{
-							value: this.state.clearFilters,
-							update: this.setClearFiltersFlag
-						}}
-					/>
-				</MainGrid>
+				<PageContainer>
+					<AlgoliaSearchBox />
+					<MainGrid>
+						<Sidebar hidden={!areFiltersOpen}>
+							<SidebarBox title="Aktywne Filtry">
+								<CurrentFilters />
+							</SidebarBox>
+							<SidebarBox title="Filtry">
+								<Filters
+									toggleFilters={this.toggleFilters}
+									forceClear={{
+										value: this.state.clearFilters,
+										update: this.setClearFiltersFlag
+									}}
+								/>
+							</SidebarBox>
+							<SidebarBox title="Zapisane Filtry" />
+						</Sidebar>
+						<AlgoliaResults
+							clearFilters={{
+								value: this.state.clearFilters,
+								update: this.setClearFiltersFlag
+							}}
+						/>
+					</MainGrid>
+				</PageContainer>
 				<ScrollToTop>↑</ScrollToTop>
 			</StyledInstantSearch>
 		)

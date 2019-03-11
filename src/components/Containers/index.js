@@ -9,15 +9,20 @@ const pageContainerWidth = style({
 })
 
 const PageContainer = styled.main`
+	max-width: ${(p) => p.theme.breakpoints[5]}px; /* default */
 	${pageContainerWidth}
-	margin: 0 auto;
+
+	--margin-y: 10px;
+	--padding-x: 3px;
+
 	width: 100%;
-	padding: 10px;
-	flex: 1;
-	display: flex;
-	flex-direction: column;
+
+	margin: var(--margin-y) auto;
+	padding: 0 var(--padding-x);
+
 	@media (min-width: ${(p) => p.theme.breakpoints[0]}px) {
-		padding: 20px;
+		--margin-y: 20px;
+		--padding-x: 20px;
 	}
 `
 

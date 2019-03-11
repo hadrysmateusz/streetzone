@@ -2,6 +2,7 @@ import React from "react"
 import { connectRefinementList } from "react-instantsearch-dom"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { Portal } from "react-portal"
+import { UnstyledButton } from "../Button"
 
 import {
 	FilterItem,
@@ -13,11 +14,11 @@ import {
 	BoxItem
 } from "./StyledComponents"
 import Overlay from "../Overlay"
-import { More } from "../Basics"
 import { AdaptiveFoldable } from "../Foldable"
 import { withBreakpoints } from "react-breakpoints"
 import { compose } from "recompose"
 import Ratio from "react-ratio/lib/Ratio"
+import { Text } from "../StyledComponents"
 
 const FilterItems = ({ items, refine, showCount, boxGrid }) => {
 	return items && items.length > 0 ? (
@@ -35,7 +36,7 @@ const FilterItems = ({ items, refine, showCount, boxGrid }) => {
 								onChange={() => refine(item.value)}
 								hidden={true}
 							/>
-							<span>{item.label}</span> {showCount && <em>({item.count})</em>}
+							<Text>{item.label}</Text> {showCount && <em>({item.count})</em>}
 						</label>
 					</BoxItem>
 				</Ratio>
@@ -50,7 +51,7 @@ const FilterItems = ({ items, refine, showCount, boxGrid }) => {
 							name={item.label}
 							onChange={() => refine(item.value)}
 						/>
-						<span>{item.label}</span> {showCount && <em>({item.count})</em>}
+						<Text>{item.label}</Text> {showCount && <em>({item.count})</em>}
 					</label>
 				</FilterItem>
 			)
@@ -145,32 +146,32 @@ class AlgoliaRefinementList extends React.Component {
 					</OptionsContainer>
 				)}
 				{searchable && items && items.length > 0 && currentBreakpoint > 0 && (
-					<More onClick={this.toggleMenu}>
-						<FontAwesomeIcon icon="plus" size="xs" /> WIĘCEJ
-					</More>
+					<UnstyledButton>
+						<Text onClick={this.toggleMenu}>
+							<FontAwesomeIcon icon="plus" size="xs" /> WIĘCEJ
+						</Text>
+					</UnstyledButton>
 				)}
 				{this.state.isMenuOpen && (
 					<>
-						<Portal node={document && document.getElementById("filters-container")}>
-							<Overlay onClick={this.toggleMenu} />
-							<FilterMenu
-								onKeyDown={(e) => {
-									if (e.key === "Escape") {
-										this.toggleMenu()
-									}
-								}}
-							>
-								<SearchBox
-									value={this.state.inputValue}
-									onChange={this.onInputChange}
-									clear={this.clearInput}
-									ref={this.searchBox}
-								/>
-								<FilterItemsContainer>
-									<FilterItems items={items} refine={refine} showCount />
-								</FilterItemsContainer>
-							</FilterMenu>
-						</Portal>
+						<Overlay onClick={this.toggleMenu} />
+						<FilterMenu
+							onKeyDown={(e) => {
+								if (e.key === "Escape") {
+									this.toggleMenu()
+								}
+							}}
+						>
+							<SearchBox
+								value={this.state.inputValue}
+								onChange={this.onInputChange}
+								clear={this.clearInput}
+								ref={this.searchBox}
+							/>
+							<FilterItemsContainer>
+								<FilterItems items={items} refine={refine} showCount />
+							</FilterItemsContainer>
+						</FilterMenu>
 					</>
 				)}
 			</AdaptiveFoldable>
