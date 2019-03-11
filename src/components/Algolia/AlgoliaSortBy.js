@@ -28,7 +28,6 @@ const Container = styled.label`
 	:hover {
 		border: 1px solid ${(p) => p.theme.colors.gray[25]};
 	}
-	font-size: 0.92rem;
 	svg {
 		margin-right: 6px;
 	}

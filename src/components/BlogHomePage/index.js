@@ -99,12 +99,10 @@ const InfoItem = styled.div`
 		margin-right: 3px;
 	}
 	color: ${(p) => p.theme.colors.gray[0]};
-	font-size: 0.85rem;
 `
 
 const Title = styled.h2`
 	margin: 0;
-	font-size: 1.4rem;
 	line-height: 1.6rem;
 	max-height: 3.2rem;
 	overflow: hidden;
@@ -118,10 +116,6 @@ const Excerpt = styled.p`
 	margin: 0 0 5px 0;
 
 	line-height: 1.5em;
-	font-size: 0.92rem;
-	@media (min-width: ${(p) => p.theme.breakpoints[0]}px) {
-		font-size: 1.04rem;
-	}
 
 	color: #333;
 	font-family: serif;

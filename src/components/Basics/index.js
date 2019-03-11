@@ -6,7 +6,6 @@ import Textarea from "react-textarea-autosize"
 export const Header = styled.h2`
 	text-align: center;
 	color: #2f2f2f;
-	font-size: 1.95rem;
 	font-weight: normal;
 	margin-bottom: 20px;
 	margin-top: 0px;
@@ -46,7 +45,6 @@ export const StyledLink = styled(Link)`
 
 export const StyledFieldCommon = css`
 	width: 100%;
-	font-size: 1rem;
 
 	border: 1px solid ${(p) => p.theme.colors.gray[50]};
 	color: ${(p) => p.theme.colors.black[50]};
@@ -97,7 +95,6 @@ export const StyledTextarea = styled(Textarea)`
 `
 
 export const FieldLabel = styled.div`
-	font-size: 0.75rem;
 	font-weight: bold;
 	display: block;
 	color: #3f3f3f;
@@ -132,7 +129,6 @@ export const MiniButton = styled.div`
 	transition: all 0.2s;
 	background: ${(p) => (p.error ? p.theme.colors.danger[50] : p.theme.colors.black[25])};
 	color: white;
-	font-size: 15px;
 	width: ${(p) => p.size}px;
 	height: ${(p) => p.size}px;
 	${(p) => p.position.top && `top: ${p.position.top}`};
@@ -174,7 +170,6 @@ export const Separator = styled.p`
 
 export const SubHeader = styled.h3`
 	text-transform: uppercase;
-	font-size: 0.85rem;
 	text-align: center;
 	margin: 15px 0;
 	font-weight: 300;
@@ -182,7 +177,6 @@ export const SubHeader = styled.h3`
 
 export const ImportantText = styled.h3`
 	text-transform: uppercase;
-	font-size: 1rem;
 	font-weight: bold;
 	margin: 0;
 `
@@ -198,7 +192,6 @@ export const InfoBlock = styled.div`
 
 	h3 {
 		margin: 0;
-		font-size: 1rem;
 	}
 
 	p {

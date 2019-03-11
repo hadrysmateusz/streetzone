@@ -14,7 +14,6 @@ export const InfoContainer = styled.div`
 `
 
 export const DateContainer = styled.div`
-	font-size: 0.8rem;
 	font-weight: 300;
 `
 

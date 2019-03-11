@@ -118,7 +118,11 @@ class AlgoliaRefinementList extends React.Component {
 			currentBreakpoint,
 			boxGrid
 		} = this.props
-		const limitedItems = show ? items.slice(0, show) : items
+		const limitedItems = this.state.isMenuOpen
+			? items
+			: show
+			? items.slice(0, show)
+			: items
 
 		return (
 			<AdaptiveFoldable
@@ -128,18 +132,18 @@ class AlgoliaRefinementList extends React.Component {
 				attribute={attribute}
 				showClear={currentRefinement && currentRefinement.length !== 0}
 			>
-				{searchable && currentBreakpoint < 1 ? (
-					<>
-						<SearchBox
-							value={this.state.inputValue}
-							onChange={this.onInputChange}
-							clear={this.clearInput}
-							ref={this.searchBox}
-						/>
-						<FilterItemsContainer>
-							<FilterItems items={items} refine={refine} />
-						</FilterItemsContainer>
-					</>
+				{searchable && (
+					<SearchBox
+						value={this.state.inputValue}
+						onChange={this.onInputChange}
+						clear={this.clearInput}
+						ref={this.searchBox}
+					/>
+				)}
+				{currentBreakpoint < 1 ? (
+					<FilterItemsContainer>
+						<FilterItems items={items} refine={refine} />
+					</FilterItemsContainer>
 				) : (
 					<OptionsContainer multiColumn={multiColumn} boxGrid={boxGrid}>
 						<FilterItems items={limitedItems} refine={refine} boxGrid={boxGrid} />
@@ -151,28 +155,6 @@ class AlgoliaRefinementList extends React.Component {
 							<FontAwesomeIcon icon="plus" size="xs" /> WIĘCEJ
 						</Text>
 					</UnstyledButton>
-				)}
-				{this.state.isMenuOpen && (
-					<>
-						<Overlay onClick={this.toggleMenu} />
-						<FilterMenu
-							onKeyDown={(e) => {
-								if (e.key === "Escape") {
-									this.toggleMenu()
-								}
-							}}
-						>
-							<SearchBox
-								value={this.state.inputValue}
-								onChange={this.onInputChange}
-								clear={this.clearInput}
-								ref={this.searchBox}
-							/>
-							<FilterItemsContainer>
-								<FilterItems items={items} refine={refine} showCount />
-							</FilterItemsContainer>
-						</FilterMenu>
-					</>
 				)}
 			</AdaptiveFoldable>
 		)

@@ -23,7 +23,6 @@ const PreviewOverlay = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	font-size: 1.95rem;
 `
 
 const OverlayButton = styled.div`
@@ -36,7 +35,6 @@ const OverlayButton = styled.div`
 	}
 	::after {
 		content: "${(p) => p.text}";
-		font-size: 0.7rem;
 		display: block;
 		text-align: center;
 		padding-top: 4px;
@@ -62,7 +60,6 @@ const EmptyPreview = styled.div`
 	height: ${size};
 	border-radius: 50%;
 	border: 2px dashed ${(p) => p.theme.colors[50]};
-	font-size: 1.45rem;
 	color: ${(p) => p.theme.colors[50]};
 `
 

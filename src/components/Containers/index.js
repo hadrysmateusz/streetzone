@@ -8,7 +8,7 @@ const pageContainerWidth = style({
 	transformValue: (n) => n + "px"
 })
 
-const PageContainer = styled.main`
+const PageContainer = styled.section`
 	max-width: ${(p) => p.theme.breakpoints[5]}px; /* default */
 	${pageContainerWidth}
 
@@ -26,7 +26,7 @@ const PageContainer = styled.main`
 	}
 `
 
-const BlogPageContainer = styled.main`
+const BlogPageContainer = styled.section`
 	${pageContainerWidth}
 	margin: 0 auto;
 	width: 100%;

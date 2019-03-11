@@ -12,7 +12,6 @@ const Header = styled.header`
 	padding: 6px 0;
 	margin: 0 15px;
 	background: white;
-	font-size: 1.35rem;
 	text-align: center;
 	border-bottom: 1px solid var(--gray100);
 `

@@ -21,18 +21,12 @@ export const MainInfoContainer = styled.div`
 		text-align: center;
 	}
 
-	.info-field {
-		font-size: 0.98rem;
-	}
-
 	h2 {
-		font-size: 1.45rem;
 		font-weight: 500;
 		margin: 0;
 	}
 
 	h3 {
-		font-size: 0.98rem;
 		font-weight: 300;
 		margin: 7px 0 10px 0;
 	}

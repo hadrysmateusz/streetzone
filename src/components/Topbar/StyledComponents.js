@@ -98,7 +98,6 @@ export const ClearFiltersSubButton = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	font-size: 0.8rem;
 	flex: 0 0 var(--width);
 `
 

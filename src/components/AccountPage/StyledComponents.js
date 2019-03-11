@@ -19,7 +19,6 @@ export const TabsNav = styled.nav`
 
 	text-transform: uppercase;
 	letter-spacing: 0.9px;
-	font-size: 0.75rem;
 	font-weight: normal;
 `
 
@@ -59,8 +58,6 @@ export const TabsNavItem = styled.li`
 	&.active {
 		font-weight: 700;
 	}
-
-	font-size: 0.74rem;
 `
 
 export const MainGrid = styled.div`

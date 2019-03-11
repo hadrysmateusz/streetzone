@@ -19,7 +19,6 @@ const PageHeader = styled.header`
 	padding: 0 20px;
 	display: grid;
 	grid-template-columns: 1fr 1fr 1fr;
-	font-size: 1.6rem;
 	font-family: "Playfair Display";
 `
 

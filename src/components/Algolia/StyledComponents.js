@@ -31,7 +31,6 @@ export const FilterItemsContainer = styled.div`
 export const BoxItem = styled.div`
 	border: 1px solid ${(p) => p.theme.colors.gray[75]};
 
-	font-size: 0.82rem;
 	height: 100%;
 	${(p) => p.checked && `color: white; background: black;`}
 	label {
@@ -45,8 +44,6 @@ export const BoxItem = styled.div`
 `
 
 export const NoResults = styled.div`
-	font-size: 0.76rem;
-
 	text-align: center;
 	margin: 6px 0;
 `
@@ -62,8 +59,6 @@ export const OptionsContainer = styled.div`
 export const FilterItem = styled.div`
 	display: flex;
 	align-items: center;
-
-	font-size: 0.86rem;
 
 	* {
 		cursor: pointer;
@@ -111,7 +106,6 @@ export const SearchBox = styled.div`
 	}
 	display: flex;
 	color: ${(p) => p.theme.colors.black[75]};
-	font-size: 0.8rem;
 
 	.icon-container {
 		display: flex;
@@ -167,12 +161,8 @@ export const ItemsLoaderContainer = styled.div`
 export const ClearButton = styled.button`
 	${resetButtonStyles}
 	color: ${(p) => p.theme.colors.danger[50]};
-	font-size: 0.82rem;
 	font-weight: 500;
-	/* padding: 3px 6px; */
 	display: inline-block;
-
-	
 `
 
 export const ResultsContainer = styled.main`
@@ -187,14 +177,12 @@ export const StyledPoweredBy = styled(PoweredBy)`
 		height: 100%;
 	}
 	.ais-PoweredBy-text {
-		font-size: 0.6rem;
 		display: block;
 	}
 	.ais-PoweredBy-logo {
 		height: 22px;
 		margin-left: -8px;
 		margin-right: -7px;
-		font-size: 4px;
 	}
 	.ais-PoweredBy-link {
 		display: block;
@@ -209,7 +197,6 @@ export const StyledPoweredByMobile = styled(PoweredBy)`
 		justify-content: center;
 	}
 	.ais-PoweredBy-text {
-		font-size: 0.6rem;
 		display: block;
 	}
 	.ais-PoweredBy-logo {
@@ -217,7 +204,6 @@ export const StyledPoweredByMobile = styled(PoweredBy)`
 
 		margin-left: -8px;
 		margin-right: -7px;
-		font-size: 4px;
 	}
 	.ais-PoweredBy-link {
 		display: block;
@@ -228,7 +214,6 @@ export const StyledPoweredByMobile = styled(PoweredBy)`
 export const OuterSearchContainer = styled.div`
 	display: flex;
 	height: 40px;
-	margin-bottom: 20px;
 	> * {
 		height: 100%;
 	}

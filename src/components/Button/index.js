@@ -71,7 +71,6 @@ const Button = styled.button`
 
 	text-transform: uppercase;
 	font-weight: 700;
-	font-size: 0.8rem;
 
 	/* Add spacing between children */
 	* + * {

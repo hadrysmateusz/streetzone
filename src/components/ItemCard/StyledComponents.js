@@ -17,11 +17,7 @@ const ContainerCommon = css`
 export const Container = styled.div`
 	${ContainerCommon}
 	position: relative;
-	font-size: 0.8rem;
 	height: 100%;
-	@media (min-width: ${(p) => p.theme.breakpoints[0]}px) {
-		font-size: 0.89rem;
-	}
 `
 
 export const MiniContainer = styled.div`
@@ -53,14 +49,12 @@ export const TopContainer = styled.div`
 	padding: 15px 0 12px 12px;
 	display: flex;
 	max-width: 100%;
-	font-size: 1rem;
 `
 
 export const SecondaryContainer = styled.div`
 	border-top: 1px solid ${(p) => p.theme.colors.gray[100]};
 	padding: 12px;
 
-	font-size: 0.95em;
 	display: grid;
 	grid-auto-columns: minmax(min-content, 1fr);
 	grid-auto-flow: column;
@@ -99,13 +93,11 @@ export const Designers = styled(ItemProperty)`
 export const Price = styled(ItemProperty)`
 	font-weight: bold;
 	text-align: left;
-	font-size: 0.96rem;
 `
 
 export const Size = styled(ItemProperty)`
 	font-weight: bold;
 	text-align: right;
-	font-size: 0.96rem;
 `
 
 export const StyledIcon = styled(FontAwesomeIcon)`

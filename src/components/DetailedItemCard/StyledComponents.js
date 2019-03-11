@@ -18,7 +18,6 @@ export const Section = styled.div`
 `
 export const InfoItem = styled.div`
 	margin: 10px 5px;
-	font-size: 0.95rem;
 	display: flex;
 
 	h4 {

@@ -12,7 +12,7 @@ import {
 import { withFirebase } from "../Firebase"
 import Filters from "../Filters"
 import AlgoliaResults from "../Algolia/AlgoliaResults"
-import { MainGrid, Sidebar, StyledInstantSearch } from "./StyledComponents"
+import { MainGrid, Sidebar, StyledInstantSearch, GridContainer } from "./StyledComponents"
 import ScrollToTop from "../ScrollToTop"
 import LoadingSpinner from "../LoadingSpinner"
 import AlgoliaSearchBox from "../Algolia/AlgoliaSearchBox"
@@ -195,13 +195,14 @@ class HomePage extends Component {
 				createURL={createURL}
 				refresh={this.state.refreshAlgolia}
 			>
-				<PageContainer>
+				<GridContainer>
 					<AlgoliaSearchBox />
+					<CurrentFilters />
 					<MainGrid>
 						<Sidebar hidden={!areFiltersOpen}>
-							<SidebarBox title="Aktywne Filtry">
+							{/* <SidebarBox title="Aktywne Filtry">
 								<CurrentFilters />
-							</SidebarBox>
+							</SidebarBox> */}
 							<SidebarBox title="Filtry">
 								<Filters
 									toggleFilters={this.toggleFilters}
@@ -220,7 +221,7 @@ class HomePage extends Component {
 							}}
 						/>
 					</MainGrid>
-				</PageContainer>
+				</GridContainer>
 				<ScrollToTop>↑</ScrollToTop>
 			</StyledInstantSearch>
 		)

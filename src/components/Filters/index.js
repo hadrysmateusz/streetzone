@@ -10,10 +10,10 @@ import {
 	FilterInnerContainer,
 	CloseIconContainer,
 	Section
-} from "../HomePage/StyledComponents"
+} from "./StyledComponents"
 import AlgoliaRefinementList from "../Algolia/AlgoliaRefinementList"
-import Button from "../Button"
 import AlgoliaRange from "../Algolia/AlgoliaRange"
+import Button from "../Button"
 import { ROUTES } from "../../constants"
 
 const TABS = {

@@ -5,6 +5,7 @@ import { Link } from "react-router-dom"
 
 import { CONST, ROUTES } from "../../constants"
 import { ImportantText } from "../Basics"
+import Logo from "../Logo"
 
 const OuterContainer = styled.div`
 	display: flex;
@@ -18,7 +19,6 @@ const OuterContainer = styled.div`
 	border-top: 1px solid ${(p) => p.theme.colors.gray[75]};
 	color: ${(p) => p.theme.colors.black[0]};
 	background: white;
-	font-size: 1.03rem;
 `
 
 const IconContainer = styled.div`
@@ -57,13 +57,6 @@ const InnerContainer = styled.div`
 	& > * {
 		padding: 8px 15px;
 	}
-
-	font-size: 0.86rem;
-`
-
-const Logo = styled.span`
-	font-size: 2.3rem;
-	font-weight: bold;
 `
 
 const Group = styled.div`

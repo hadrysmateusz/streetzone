@@ -6,6 +6,7 @@ export default styled.div`
 	display: flex;
 	flex-direction: column;
 	min-height: 100vh;
+	font-size: var(--font-size--m);
 
 	line-height: 1.5;
 

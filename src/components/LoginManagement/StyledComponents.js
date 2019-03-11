@@ -42,7 +42,6 @@ export const ConfirmPasswordContainer = styled.div`
 
 export const InfoContainer = styled.div`
 	position: relative;
-	font-size: 0.98rem;
 	line-height: 1.4rem;
 	color: ${(p) => p.theme.colors.black[50]};
 	font-weight: 300;
@@ -52,7 +51,6 @@ export const InfoIndicator = styled.div`
 	position: absolute;
 	top: 0px;
 	left: -25px;
-	font-size: 1.12rem;
 	color: ${(p) => p.theme.colors.black[75]};
 `
 
