@@ -43,9 +43,7 @@ class HomePage extends Component {
 
 	targetElement = null
 
-	setClearFiltersFlag = (to) => {
-		return this.setState({ clearFilters: to })
-	}
+	setClearFiltersFlag = (to) => this.setState({ clearFilters: to })
 
 	componentDidMount() {
 		/* this is required in order for the component to not get stuck on a later
@@ -197,7 +195,12 @@ class HomePage extends Component {
 			>
 				<GridContainer>
 					<AlgoliaSearchBox />
-					<CurrentFilters />
+					<CurrentFilters
+						clearFilters={{
+							value: this.state.clearFilters,
+							update: this.setClearFiltersFlag
+						}}
+					/>
 					<MainGrid>
 						<Sidebar hidden={!areFiltersOpen}>
 							{/* <SidebarBox title="Aktywne Filtry">
@@ -206,7 +209,7 @@ class HomePage extends Component {
 							<SidebarBox title="Filtry">
 								<Filters
 									toggleFilters={this.toggleFilters}
-									forceClear={{
+									clearFilters={{
 										value: this.state.clearFilters,
 										update: this.setClearFiltersFlag
 									}}
@@ -214,12 +217,7 @@ class HomePage extends Component {
 							</SidebarBox>
 							<SidebarBox title="Zapisane Filtry" />
 						</Sidebar>
-						<AlgoliaResults
-							clearFilters={{
-								value: this.state.clearFilters,
-								update: this.setClearFiltersFlag
-							}}
-						/>
+						<AlgoliaResults />
 					</MainGrid>
 				</GridContainer>
 				<ScrollToTop>↑</ScrollToTop>

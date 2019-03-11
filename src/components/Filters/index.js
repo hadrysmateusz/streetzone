@@ -98,7 +98,7 @@ export class Filters extends Component {
 					<Section>
 						<AlgoliaRange
 							attribute="price"
-							forceClear={this.props.forceClear}
+							forceClear={this.props.clearFilters}
 							tab={TABS.price}
 							openTab={this.state.openTab}
 							toggle={this.toggleTab}
@@ -110,7 +110,7 @@ export class Filters extends Component {
 						<Button onClick={this.props.toggleFilters}>Gotowe</Button>
 						<ClearAllFiltersButton
 							history={this.props.history}
-							onClick={this.props.forceClear.update}
+							onClick={this.props.clearFilters.update}
 						/>
 					</ButtonsContainer>
 				)}
