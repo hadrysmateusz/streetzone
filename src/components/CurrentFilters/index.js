@@ -5,7 +5,6 @@ import { compose } from "recompose"
 import { withRouter } from "react-router-dom"
 import { ClearFiltersSubButton } from "../Topbar/StyledComponents"
 import { ROUTES } from "../../constants"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 const Container = styled.div`
 	font-size: var(--font-size--s);

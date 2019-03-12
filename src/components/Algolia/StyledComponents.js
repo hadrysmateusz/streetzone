@@ -173,41 +173,13 @@ export const ResultsContainer = styled.main`
 `
 
 export const StyledPoweredBy = styled(PoweredBy)`
-	.ais-PoweredBy {
-		height: 100%;
-	}
-	.ais-PoweredBy-text {
-		display: block;
-	}
-	.ais-PoweredBy-logo {
-		height: 22px;
-		margin-left: -8px;
-		margin-right: -7px;
-	}
-	.ais-PoweredBy-link {
-		display: block;
-		height: 22px;
-	}
-`
-export const StyledPoweredByMobile = styled(PoweredBy)`
-	.ais-PoweredBy {
-		height: 100%;
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-	}
-	.ais-PoweredBy-text {
-		display: block;
-	}
-	.ais-PoweredBy-logo {
-		height: 22px;
+	margin: 0;
+	margin-top: 3px;
+	height: 100%;
+	transform: scale(0.9) translateX(12px);
 
-		margin-left: -8px;
-		margin-right: -7px;
-	}
-	.ais-PoweredBy-link {
-		display: block;
-		height: 22px;
+	.ais-PoweredBy-logo {
+		margin-bottom: -7px;
 	}
 `
 
