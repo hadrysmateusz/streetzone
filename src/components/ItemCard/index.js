@@ -5,7 +5,8 @@ import { compose } from "recompose"
 import { withAuthentication } from "../UserSession"
 import Ratio from "react-ratio"
 
-import { translateCondition } from "../../constants/item_schema"
+import formatDesigners from "../../utils/formatDesigners"
+import formatPrice from "../../utils/formatPrice"
 import {
 	MiniContainer,
 	Container,
@@ -17,7 +18,6 @@ import {
 	Name,
 	SecondaryContainer,
 	Price,
-	Condition,
 	Size,
 	StyledIcon
 } from "./StyledComponents"
@@ -64,7 +64,10 @@ class ItemCardBase extends Component {
 	}
 
 	render() {
-		const { itemId, name, price, designers = [], condition, size } = this.props.item
+		const { itemId, name, price, designers, size } = this.props.item
+
+		const formattedDesigners = formatDesigners(designers)
+		const formattedPrice = formatPrice(price)
 
 		return (
 			<Ratio ratio={2 / 3}>
@@ -82,20 +85,14 @@ class ItemCardBase extends Component {
 						<InfoContainer>
 							<TopContainer>
 								<InnerContainer>
-									{designers && (
-										<Designers title={designers.join(" X ")}>
-											{designers.join(" X ").toUpperCase()}
-										</Designers>
-									)}
+									<Designers title={formattedDesigners}>{formattedDesigners}</Designers>
 									<Name title={name}>{name}</Name>
 								</InnerContainer>
-								<HeartButton id={itemId} type="item" />
+								<HeartButton id={itemId} type="item" scale={2} />
 							</TopContainer>
 							<SecondaryContainer>
-								<Price title={price ? `Cena: ${price}` : null}>
-									{price ? `${price}zł` : "--"}
-								</Price>
-								<Size title={size ? `Rozmiar: ${size}` : undefined}>{size || "--"}</Size>
+								<Price title={price ? `Cena: ${price}` : null}>{formattedPrice}</Price>
+								<Size title={size ? `Rozmiar: ${size}` : null}>{size || "--"}</Size>
 							</SecondaryContainer>
 						</InfoContainer>
 					</Link>

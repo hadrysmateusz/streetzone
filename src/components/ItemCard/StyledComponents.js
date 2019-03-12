@@ -1,5 +1,6 @@
 import styled, { css } from "styled-components"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { Text, TextBlock, Header4 } from "../StyledComponents"
 
 const ContainerCommon = css`
 	overflow: hidden;
@@ -46,7 +47,7 @@ export const InfoContainer = styled.div`
 `
 
 export const TopContainer = styled.div`
-	padding: 15px 0 12px 12px;
+	padding: 15px 2px 12px 12px;
 	display: flex;
 	max-width: 100%;
 `
@@ -63,39 +64,41 @@ export const SecondaryContainer = styled.div`
 export const InnerContainer = styled.div`
 	flex: 1;
 	min-width: 0;
-	line-height: 0.89rem;
 
 	> :first-child {
 		margin-bottom: 4px;
 	}
 `
 
-const ItemProperty = styled.div`
+const itemBase = css`
 	white-space: nowrap;
 	text-overflow: ellipsis;
 	font-weight: 500;
 	overflow: hidden;
+	line-height: 1.2;
 	color: black;
 `
 
-export const Name = styled(ItemProperty)`
-	font-weight: normal;
-	padding-top: 3px;
+export const Name = styled(TextBlock)`
+	${itemBase}
 `
 
-export const Designers = styled(ItemProperty)`
+export const Designers = styled(Header4)`
+	${itemBase}
 	font-weight: bold;
 	text-transform: uppercase;
 	padding-right: 8px;
 	word-spacing: 0.35ch;
 `
 
-export const Price = styled(ItemProperty)`
+export const Price = styled(Text)`
+	${itemBase}
 	font-weight: bold;
 	text-align: left;
 `
 
-export const Size = styled(ItemProperty)`
+export const Size = styled(Text)`
+	${itemBase}
 	font-weight: bold;
 	text-align: right;
 `

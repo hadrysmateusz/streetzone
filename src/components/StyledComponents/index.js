@@ -10,6 +10,7 @@ const fontWeight = css`
 
 const textBase = css`
 	${fontWeight}
+	color: var(--black25);
 	${(p) => p.uppercase && "text-transform: uppercase"}
 `
 
@@ -18,32 +19,29 @@ const textBase = css`
 const headerBase = css`
 	${textBase}
 	margin: 0;
+	letter-spacing: 0.02em;
 	font-family: "Playfair Display", serif;
 `
 
 export const Header1 = styled.h1`
 	${headerBase}
-	color: var(--black-25);
 	font-size: var(--font-size--h1);
 	font-weight: 700;
 `
 
 export const Header2 = styled.h2`
 	${headerBase}
-	color: var(--black-25);
 	font-size: var(--font-size--h2);
 	font-weight: 700;
 `
 
 export const Header3 = styled.h3`
 	${headerBase}
-	color: var(--black-25);
 	font-size: var(--font-size--h3);
 `
 
 export const Header4 = styled.h4`
 	${headerBase}
-	color: var(--black-25);
 	font-size: var(--font-size--h4);
 `
 
