@@ -1,19 +1,16 @@
 import React from "react"
 import { connectRefinementList } from "react-instantsearch-dom"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { Portal } from "react-portal"
 import { UnstyledButton } from "../Button"
 
 import {
 	FilterItem,
-	FilterMenu,
 	SearchBox as SearchBoxContainer,
 	FilterItemsContainer,
 	OptionsContainer,
 	NoResults,
 	BoxItem
 } from "./StyledComponents"
-import Overlay from "../Overlay"
 import { AdaptiveFoldable } from "../Foldable"
 import { withBreakpoints } from "react-breakpoints"
 import { compose } from "recompose"
@@ -118,11 +115,8 @@ class AlgoliaRefinementList extends React.Component {
 			currentBreakpoint,
 			boxGrid
 		} = this.props
-		const limitedItems = this.state.isMenuOpen
-			? items
-			: show
-			? items.slice(0, show)
-			: items
+		const { isMenuOpen } = this.state
+		const limitedItems = isMenuOpen ? items : show ? items.slice(0, show) : items
 
 		return (
 			<AdaptiveFoldable
@@ -149,13 +143,25 @@ class AlgoliaRefinementList extends React.Component {
 						<FilterItems items={limitedItems} refine={refine} boxGrid={boxGrid} />
 					</OptionsContainer>
 				)}
-				{searchable && items && items.length > 0 && currentBreakpoint > 0 && (
-					<UnstyledButton>
-						<Text onClick={this.toggleMenu}>
-							<FontAwesomeIcon icon="plus" size="xs" /> WIĘCEJ
-						</Text>
-					</UnstyledButton>
-				)}
+				{searchable &&
+					items &&
+					items.length > 0 &&
+					(show ? items.length > show : true) &&
+					currentBreakpoint > 0 && (
+						<UnstyledButton>
+							<Text onClick={this.toggleMenu}>
+								{isMenuOpen ? (
+									<>
+										<FontAwesomeIcon icon="minus" size="xs" /> MNIEJ
+									</>
+								) : (
+									<>
+										<FontAwesomeIcon icon="plus" size="xs" /> WIĘCEJ
+									</>
+								)}
+							</Text>
+						</UnstyledButton>
+					)}
 			</AdaptiveFoldable>
 		)
 	}

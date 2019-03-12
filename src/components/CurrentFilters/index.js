@@ -5,6 +5,7 @@ import { compose } from "recompose"
 import { withRouter } from "react-router-dom"
 import { ClearFiltersSubButton } from "../Topbar/StyledComponents"
 import { ROUTES } from "../../constants"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 const Container = styled.div`
 	font-size: var(--font-size--s);
@@ -37,32 +38,9 @@ const CurrentFiltersView = ({ items, history, clearFilters }) => {
 		<Container>
 			{items.map((item) => {
 				if (item.attribute === "price") {
-					return (
-						<Item>
-							<strong>Cena</strong>
-						</Item>
-					)
-				} else if (item.attribute === "category") {
-					return (
-						<Item>
-							<strong>Kategoria: </strong>{" "}
-							<span>{item.currentRefinement.join(", ")}</span>
-						</Item>
-					)
-				} else if (item.attribute === "designers") {
-					return (
-						<Item>
-							<strong>Marka: </strong> <span>{item.currentRefinement.join(", ")}</span>
-						</Item>
-					)
-				} else if (item.attribute === "size") {
-					return (
-						<Item>
-							<strong>Rozmiar: </strong> <span>{item.currentRefinement.join(", ")}</span>
-						</Item>
-					)
+					return <Item>Cena</Item>
 				} else {
-					return null
+					return item.currentRefinement.map((refinement) => <Item>{refinement}</Item>)
 				}
 			})}
 			{items && items.length > 0 && (
@@ -71,7 +49,6 @@ const CurrentFiltersView = ({ items, history, clearFilters }) => {
 						history.push(ROUTES.HOME)
 						clearFilters.update(true)
 					}}
-					title="Wyczyść filtry"
 				>
 					Wyczyść wszystko
 				</ClearFiltersSubButton>
