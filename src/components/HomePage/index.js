@@ -180,6 +180,7 @@ class HomePage extends Component {
 
 	render() {
 		const { areFiltersOpen, searchState } = this.state
+		const { currentBreakpoint } = this.props
 
 		return this.state.isLoading ? (
 			<LoadingSpinner />
@@ -202,7 +203,7 @@ class HomePage extends Component {
 						}}
 					/>
 					<MainGrid>
-						<Sidebar hidden={!areFiltersOpen}>
+						<Sidebar hidden={!areFiltersOpen && !(currentBreakpoint > 0)}>
 							{/* <SidebarBox title="Aktywne Filtry">
 								<CurrentFilters />
 							</SidebarBox> */}
