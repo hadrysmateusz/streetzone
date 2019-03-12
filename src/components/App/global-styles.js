@@ -18,13 +18,19 @@ export default styled.div`
 		color: inherit;
 	}
 
-	--black-25: #191919;
+	--black0: #06080a;
+	--black25: #17191b;
+	--black50: #282b2d;
+	--black75: #323537;
+	--black100: #4a4c4e;
 
 	--gray0: #8f8f8f;
 	--gray25: #afafaf;
 	--gray50: #c6c6c6;
 	--gray75: #dadada;
 	--gray100: #eaeaea;
+
+	--almost-white: #f8f8f8;
 
 	--font-size--xs: 1.1rem;
 	--font-size--s: 1.2rem;

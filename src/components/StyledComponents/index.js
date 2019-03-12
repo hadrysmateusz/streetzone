@@ -10,7 +10,6 @@ const fontWeight = css`
 
 const textBase = css`
 	${fontWeight}
-	color: var(--black25);
 	${(p) => p.uppercase && "text-transform: uppercase"}
 `
 

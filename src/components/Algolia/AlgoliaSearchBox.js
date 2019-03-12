@@ -71,27 +71,25 @@ class AlgoliaSearchBox extends React.Component {
 			this.props.currentBreakpoint > 0 ? "Szukaj po nazwie, marce, itd." : "Szukaj"
 
 		return (
-			<OuterSearchContainer>
-				<SearchBox>
-					<div className="icon-container">
-						<FontAwesomeIcon icon="search" />
+			<SearchBox>
+				<div className="icon-container">
+					<FontAwesomeIcon icon="search" />
+				</div>
+				<input
+					type="text"
+					onChange={this.onChange}
+					value={this.state.inputValue}
+					placeholder={placeholderText}
+				/>
+				{this.state.inputValue && (
+					<div className="icon-container" onClick={this.clearField}>
+						<FontAwesomeIcon icon="times" />
 					</div>
-					<input
-						type="text"
-						onChange={this.onChange}
-						value={this.state.inputValue}
-						placeholder={placeholderText}
-					/>
-					{this.state.inputValue && (
-						<div className="icon-container" onClick={this.clearField}>
-							<FontAwesomeIcon icon="times" />
-						</div>
-					)}
-					<div className="powered-by-container">
-						<StyledPoweredBy />
-					</div>
-				</SearchBox>
-			</OuterSearchContainer>
+				)}
+				<div className="powered-by-container">
+					<StyledPoweredBy />
+				</div>
+			</SearchBox>
 		)
 	}
 }

@@ -17,10 +17,7 @@ const Header = styled.div`
 `
 
 const InnerContainer = styled.div`
-	margin-top: 10px;
-
-	@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
-	}
+	/* margin: 10px -15px; */
 `
 
 export const AdaptiveFoldable = withBreakpoints(

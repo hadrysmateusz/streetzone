@@ -29,9 +29,18 @@ export const FilterItemsContainer = styled.div`
 `
 
 export const BoxItem = styled.div`
-	border: 1px solid ${(p) => p.theme.colors.gray[75]};
-
+	border: 1px solid var(--gray75);
+	font-size: var(--font-size--s);
 	height: 100%;
+	transform: border 0.2s ease;
+	:hover {
+		border-color: var(--black25);
+	}
+
+	transition-property: border-color;
+	transition-duration: 0.15s;
+	transition-timing-function: ease;
+
 	${(p) => p.checked && `color: white; background: black;`}
 	label {
 		cursor: pointer;
@@ -50,15 +59,18 @@ export const NoResults = styled.div`
 
 export const OptionsContainer = styled.div`
 	display: grid;
-	gap: 10px;
 	max-width: 100%;
+	margin: 10px 0;
 	${(p) => p.multiColumn && `grid-template-columns: repeat(2, 1fr);`}
-	${(p) => p.boxGrid && "grid-template-columns: repeat(auto-fill, minmax(35px,1fr))"}
+	${(p) =>
+		p.boxGrid && "grid-template-columns: repeat(auto-fill, minmax(35px,1fr)); gap: 7px; "}
 `
 
 export const FilterItem = styled.div`
 	display: flex;
 	align-items: center;
+
+	padding: 3px 0;
 
 	* {
 		cursor: pointer;
@@ -78,7 +90,7 @@ export const FilterItem = styled.div`
 export const RangeContainer = styled.div`
 	width: 100%;
 	max-width: 100%;
-	height: 34px;
+	height: var(--form-element-height);
 	display: grid;
 	gap: 10px;
 	grid-template-columns: 1fr 1fr;
@@ -98,7 +110,7 @@ export const RangeContainer = styled.div`
 
 export const SearchBox = styled.div`
 	width: 100%;
-	height: 40px;
+	height: var(--form-element-height);
 	flex: 1;
 	border: 1px solid ${(p) => p.theme.colors.gray[75]};
 	:hover {
@@ -183,13 +195,5 @@ export const StyledPoweredBy = styled(PoweredBy)`
 	}
 	.ais-PoweredBy-logo {
 		margin-bottom: -7px;
-	}
-`
-
-export const OuterSearchContainer = styled.div`
-	display: flex;
-	height: 40px;
-	> * {
-		height: 100%;
 	}
 `
