@@ -1,11 +1,9 @@
 import React from "react"
 import styled from "styled-components"
-import Select from "react-select"
+import Select from "../StyledReactSelect"
 import { Media } from "react-breakpoints"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { connectSortBy } from "react-instantsearch-dom"
-
-import { THEME } from "../../constants"
 
 const StyledSelect = styled.select`
 	position: absolute;
@@ -31,6 +29,7 @@ const Container = styled.label`
 	svg {
 		margin-right: 6px;
 	}
+	height: var(--form-element-height);
 `
 
 class AlgoliaSortBy extends React.Component {
@@ -57,12 +56,12 @@ class AlgoliaSortBy extends React.Component {
 								styles={{
 									control: (provided, state) => ({
 										...provided,
+										height: "var(--form-element-height)",
 										minWidth: "180px",
 										minHeight: "0",
-										fontSize: "0.92rem",
-										border: `1px solid ${THEME.colors.gray[75]}`,
+										border: `1px solid var(--gray75)`,
 										"&:hover": {
-											borderColor: THEME.colors.gray[25]
+											borderColor: "var(--gray25)"
 										}
 									})
 								}}

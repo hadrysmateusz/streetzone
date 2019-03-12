@@ -27,6 +27,12 @@ export const Sidebar = styled.aside`
 	@media (max-width: ${(p) => p.theme.breakpoints[1] - 1}px) {
 		width: 0;
 		margin: 0;
+		position: fixed;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		z-index: 9999;
 	}
 `
 

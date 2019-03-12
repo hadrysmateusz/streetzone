@@ -176,8 +176,11 @@ export const StyledPoweredBy = styled(PoweredBy)`
 	margin: 0;
 	margin-top: 3px;
 	height: 100%;
-	transform: scale(0.9) translateX(12px);
+	transform: scale(0.88) translateX(12px);
 
+	.ais-PoweredBy-text {
+		display: none;
+	}
 	.ais-PoweredBy-logo {
 		margin-bottom: -7px;
 	}

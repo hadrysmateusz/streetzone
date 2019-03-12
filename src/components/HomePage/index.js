@@ -18,7 +18,8 @@ import LoadingSpinner from "../LoadingSpinner"
 import AlgoliaSearchBox from "../Algolia/AlgoliaSearchBox"
 import SidebarBox from "../SidebarBox"
 import CurrentFilters from "../CurrentFilters"
-import { PageContainer } from "../Containers"
+import AlgoliaSortBy from "../Algolia/AlgoliaSortBy"
+import Topbar from "../Topbar"
 
 const DEFAULT_SORTING = "dev_items_createdAt_desc"
 const DEFAULT_HITS_PER_PAGE = 12
@@ -141,15 +142,11 @@ class HomePage extends Component {
 	}
 
 	toggleFilters = () => {
-		if (this.props.currentBreakpoint > 0) {
+		const wasOpen = this.state.areFiltersOpen
+		if (wasOpen) {
 			enableBodyScroll(this.targetElement)
 		} else {
-			const wasOpen = this.state.areFiltersOpen
-			if (wasOpen) {
-				enableBodyScroll(this.targetElement)
-			} else {
-				disableBodyScroll(this.targetElement)
-			}
+			disableBodyScroll(this.targetElement)
 		}
 
 		this.setState((state) => {
@@ -182,6 +179,11 @@ class HomePage extends Component {
 		const { areFiltersOpen, searchState } = this.state
 		const { currentBreakpoint } = this.props
 
+		//
+		if (currentBreakpoint > 0) {
+			enableBodyScroll(this.targetElement)
+		}
+
 		return this.state.isLoading ? (
 			<LoadingSpinner />
 		) : (
@@ -195,13 +197,19 @@ class HomePage extends Component {
 				refresh={this.state.refreshAlgolia}
 			>
 				<GridContainer>
-					<AlgoliaSearchBox />
+					<Topbar
+						areFiltersOpen={areFiltersOpen}
+						toggleFilters={this.toggleFilters}
+						clearFilters={this.setClearFiltersFlag}
+					/>
+
 					<CurrentFilters
 						clearFilters={{
 							value: this.state.clearFilters,
 							update: this.setClearFiltersFlag
 						}}
 					/>
+
 					<MainGrid>
 						<Sidebar hidden={!areFiltersOpen && !(currentBreakpoint > 0)}>
 							{/* <SidebarBox title="Aktywne Filtry">
@@ -216,7 +224,7 @@ class HomePage extends Component {
 									}}
 								/>
 							</SidebarBox>
-							<SidebarBox title="Zapisane Filtry" />
+							{/* <SidebarBox title="Zapisane Filtry" /> */}
 						</Sidebar>
 						<AlgoliaResults />
 					</MainGrid>

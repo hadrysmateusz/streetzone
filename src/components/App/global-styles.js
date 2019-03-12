@@ -35,4 +35,6 @@ export default styled.div`
 	--font-size--h3: 2.2rem;
 	--font-size--h2: 3.6rem;
 	--font-size--h1: 4.2rem;
+
+	--form-element-height: 42px;
 `
