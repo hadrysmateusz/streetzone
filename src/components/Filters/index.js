@@ -46,7 +46,7 @@ const TABS = {
 const ClearAllFiltersButton = ({ history, onClick }) => (
 	<Button
 		onClick={() => {
-			history.push(ROUTES.HOME)
+			history.push(ROUTES.MARKETPLACE)
 			onClick(true)
 		}}
 		fullWidth
