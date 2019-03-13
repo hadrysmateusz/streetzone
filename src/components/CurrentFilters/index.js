@@ -7,6 +7,7 @@ import { withRouter } from "react-router-dom"
 import { ClearFiltersSubButton } from "../Topbar/StyledComponents"
 
 import { ROUTES } from "../../constants"
+import formatSize from "../../utils/formatSize"
 
 const Container = styled.div`
 	font-size: var(--font-size--s);
@@ -35,11 +36,16 @@ const Item = styled.div`
 `
 
 const CurrentFiltersView = ({ items, history, clearFilters }) => {
+	console.log(items)
 	return items && items.length > 0 ? (
 		<Container>
 			{items.map((item) => {
 				if (item.attribute === "price") {
 					return <Item>Cena</Item>
+				} else if (item.attribute === "size") {
+					return item.currentRefinement.map((refinement) => (
+						<Item>{formatSize(refinement)}</Item>
+					))
 				} else {
 					return item.currentRefinement.map((refinement) => <Item>{refinement}</Item>)
 				}

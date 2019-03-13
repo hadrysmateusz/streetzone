@@ -198,3 +198,9 @@ export const StyledPoweredBy = styled(PoweredBy)`
 		margin-bottom: -7px;
 	}
 `
+
+export const SizeCategoriesContainer = styled.div`
+	display: grid;
+	gap: 5px;
+	margin: 5px 0 5px 5px;
+`

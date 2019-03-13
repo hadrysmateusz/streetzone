@@ -21,7 +21,7 @@ export const Sidebar = styled.aside`
 
 	max-width: 100%;
 
-	width: 280px;
+	width: 285px;
 	margin-right: 20px;
 
 	/* mobile */

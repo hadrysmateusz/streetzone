@@ -10,15 +10,16 @@ import {
 } from "body-scroll-lock"
 
 import { withFirebase } from "../../components/Firebase"
-import Filters from "../../components/Filters"
 import AlgoliaResults from "../../components/Algolia/AlgoliaResults"
-import { MainGrid, Sidebar, StyledInstantSearch, GridContainer } from "./StyledComponents"
-import ScrollToTop from "../../components/ScrollToTop"
 import LoadingSpinner from "../../components/LoadingSpinner"
-import SidebarBox from "../../components/SidebarBox"
 import CurrentFilters from "../../components/CurrentFilters"
-import Topbar from "../../components/Topbar"
 import sortingOptions from "../../constants/sortingOptions"
+import ScrollToTop from "../../components/ScrollToTop"
+import SidebarBox from "../../components/SidebarBox"
+import Filters from "../../components/Filters"
+import Topbar from "../../components/Topbar"
+
+import { MainGrid, Sidebar, StyledInstantSearch, GridContainer } from "./StyledComponents"
 
 const DEFAULT_SORTING = sortingOptions[0].value
 const DEFAULT_HITS_PER_PAGE = 12

@@ -4,7 +4,12 @@ import Foldable from "../../Foldable"
 import { Text } from "../../StyledComponents"
 
 import BoxItem from "./BoxItem"
-import { FilterItem, NoResults, OptionsContainer } from "../StyledComponents"
+import {
+	FilterItem,
+	NoResults,
+	OptionsContainer,
+	SizeCategoriesContainer
+} from "../StyledComponents"
 
 const BoxItemsContainer = ({ title, items, refine }) => {
 	return (
@@ -28,17 +33,17 @@ export const BoxOptionsList = ({ items, refine }) => {
 		let sizes = { top: [], spodnie: [], buty: [] }
 		items.forEach((size) => {
 			// split the string to get category and value of the size
-			const [category, label] = size.value[0].split("-")
+			const [category, label] = size.label.split("-")
 			// push the label to the proper category's array
 			sizes[category].push({ ...size, label })
 		})
 
 		return (
-			<>
+			<SizeCategoriesContainer>
 				<BoxItemsContainer title="Buty" items={sizes.buty} refine={refine} />
 				<BoxItemsContainer title="Tee / Longsleeve" items={sizes.top} refine={refine} />
 				<BoxItemsContainer title="Spodnie" items={sizes.spodnie} refine={refine} />
-			</>
+			</SizeCategoriesContainer>
 		)
 	} else {
 		return <NoResults>Brak</NoResults>
