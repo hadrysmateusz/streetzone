@@ -61,8 +61,6 @@ class NewItemPage extends Component {
 				attachments
 			}
 
-			console.log(data)
-
 			// Add item to database
 			await firebase.item(itemId).set(data)
 
@@ -81,6 +79,7 @@ class NewItemPage extends Component {
 		const availableDesigners = (await this.props.firebase.db
 			.collection("designers")
 			.get()).docs.map((doc) => doc.data())
+
 		const availableNames = [
 			"Fajne ale drogie",
 			"O takie coś",
@@ -90,10 +89,12 @@ class NewItemPage extends Component {
 			"Super cośtam 2000",
 			"Przedmiot 75"
 		]
+
 		const availableCategories = Object.values(ITEM_SCHEMA.categories)
-		const availableUserIds = (await this.props.firebase.db
-			.collection("users")
-			.get()).docs.map((doc) => doc.data().id)
+
+		const usersSnapshot = await this.props.firebase.db.collection("users").get()
+		const usersDocsSnapshot = usersSnapshot.docs
+		const availableUserIds = usersDocsSnapshot.map((doc) => doc.id)
 
 		for (let i = 0; i < values.numberOfItems; i++) {
 			// name
@@ -119,7 +120,7 @@ class NewItemPage extends Component {
 			const price = randInt(50, 3500)
 
 			// userId
-			const userId = values.randomUser
+			const userId = values.randomUsers
 				? availableUserIds[randInt(0, availableUserIds.length - 1)]
 				: this.props.authUser.uid
 			console.log(userId)
