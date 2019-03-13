@@ -1,12 +1,16 @@
 import React, { Component } from "react"
 import { Link } from "react-router-dom"
-import { withFirebase } from "../Firebase"
 import { compose } from "recompose"
-import { withAuthentication } from "../UserSession"
 import Ratio from "react-ratio"
+
+import { withFirebase } from "../Firebase"
+import { withAuthentication } from "../UserSession"
+import { HeartButton } from "../SaveButton"
+import LoadingSpinner from "../LoadingSpinner"
 
 import formatDesigners from "../../utils/formatDesigners"
 import formatPrice from "../../utils/formatPrice"
+import formatSize from "../../utils/formatSize"
 import {
 	MiniContainer,
 	Container,
@@ -21,8 +25,6 @@ import {
 	Size,
 	StyledIcon
 } from "./StyledComponents"
-import { HeartButton } from "../SaveButton"
-import LoadingSpinner from "../LoadingSpinner"
 
 const ERR_NO_IMAGE = "NO_IMAGE"
 
@@ -68,6 +70,7 @@ class ItemCardBase extends Component {
 
 		const formattedDesigners = formatDesigners(designers)
 		const formattedPrice = formatPrice(price)
+		const formattedSize = formatSize(size)
 
 		return (
 			<Ratio ratio={2 / 3}>
@@ -92,7 +95,9 @@ class ItemCardBase extends Component {
 							</TopContainer>
 							<SecondaryContainer>
 								<Price title={price ? `Cena: ${price}` : null}>{formattedPrice}</Price>
-								<Size title={size ? `Rozmiar: ${size}` : null}>{size || "--"}</Size>
+								<Size title={size ? `Rozmiar: ${formattedSize}` : null}>
+									{formattedSize}
+								</Size>
 							</SecondaryContainer>
 						</InfoContainer>
 					</Link>

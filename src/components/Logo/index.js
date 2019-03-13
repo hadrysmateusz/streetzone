@@ -1,7 +1,8 @@
 import React from "react"
 import styled from "styled-components"
+import { Link } from "react-router-dom"
 
-import { CONST } from "../../constants"
+import { CONST, ROUTES } from "../../constants"
 
 const LogoContainer = styled.div`
 	font-size: var(--font-size--h2);
@@ -21,7 +22,9 @@ const LogoContainer = styled.div`
 `
 
 const Logo = ({ centered }) => (
-	<LogoContainer centered={centered}>{CONST.BRAND_NAME}</LogoContainer>
+	<LogoContainer centered={centered}>
+		<Link to={ROUTES.HOME}>{CONST.BRAND_NAME}</Link>
+	</LogoContainer>
 )
 
 export default Logo

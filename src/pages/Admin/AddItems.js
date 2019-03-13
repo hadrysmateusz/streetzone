@@ -143,7 +143,7 @@ class NewItemPage extends Component {
 			let size
 			if (sizeCategory) {
 				const availablSizes = ITEM_SCHEMA.size[sizeCategory]
-				size = availablSizes[randInt(0, availablSizes.length - 1)]
+				size = sizeCategory + "-" + availablSizes[randInt(0, availablSizes.length - 1)]
 			} else {
 				size = null
 			}
@@ -161,8 +161,6 @@ class NewItemPage extends Component {
 			const startIndex = randInt(0, lastAvailableStartIndex)
 
 			let files = values.files.slice(startIndex, startIndex + nOfFiles)
-
-			debugger
 
 			await this.uploadItem({
 				name,

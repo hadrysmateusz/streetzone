@@ -101,17 +101,17 @@ const sizeOptions = (category) => {
 		case categories.tee:
 		case categories.longsleeve:
 			return size.top.map((size) => ({
-				value: size,
+				value: `top-${size}`,
 				label: size
 			}))
 		case categories.buty:
 			return size.buty.map((size) => ({
-				value: size,
+				value: `buty-${size}`,
 				label: size
 			}))
 		case categories.spodnie:
 			return size.spodnie.map((size) => ({
-				value: size,
+				value: `spodnie-${size}`,
 				label: size
 			}))
 		default:

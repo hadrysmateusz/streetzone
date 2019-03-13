@@ -16,10 +16,6 @@ const Header = styled.div`
 	}
 `
 
-const InnerContainer = styled.div`
-	/* margin: 10px -15px; */
-`
-
 export const AdaptiveFoldable = withBreakpoints(
 	class extends Component {
 		state = { isFolded: false }
@@ -74,7 +70,7 @@ export const AdaptiveFoldable = withBreakpoints(
 						</div>
 						<FontAwesomeIcon icon={"caret-up"} />
 					</Header>
-					<InnerContainer hidden={isFolded}>{children}</InnerContainer>
+					<div hidden={isFolded}>{children}</div>
 				</div>
 			)
 		}

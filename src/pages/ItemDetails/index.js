@@ -31,6 +31,7 @@ import {
 // import { HeartButton } from "../SaveButton"
 import formatDesigners from "../../utils/formatDesigners"
 import formatPrice from "../../utils/formatPrice"
+import formatSize from "../../utils/formatSize"
 
 class ItemDetailsPage extends Component {
 	state = {
@@ -105,10 +106,12 @@ class ItemDetailsPage extends Component {
 		let conditionObj
 		let formattedDesigners
 		let formattedPrice
+		let formattedSize
 		if (item && !isLoading) {
 			conditionObj = translateCondition(item.condition)
 			formattedDesigners = formatDesigners(item.designers)
 			formattedPrice = formatPrice(item.price)
+			formattedSize = formatSize(item.size)
 		}
 
 		return item && !isLoading ? (
@@ -142,7 +145,7 @@ class ItemDetailsPage extends Component {
 									</tr>
 									<tr>
 										<th>Rozmiar</th>
-										<td>{item.size}</td>
+										<td>{formattedSize}</td>
 									</tr>
 									<tr>
 										<th>Stan</th>
