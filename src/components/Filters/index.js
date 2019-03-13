@@ -4,6 +4,7 @@ import { withRouter } from "react-router-dom"
 import { compose } from "recompose"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
+import SavedFilters from "./SavedFilters"
 import {
 	ButtonsContainer,
 	FiltersContainer,
@@ -32,6 +33,10 @@ const TABS = {
 	price: {
 		displayName: "Cena",
 		id: "price"
+	},
+	saved: {
+		displayName: "Zapisane Filtry",
+		id: "saved"
 	}
 }
 
@@ -92,6 +97,7 @@ export class Filters extends Component {
 							openTab={this.state.openTab}
 							toggle={this.toggleTab}
 							boxGrid
+							startFolded
 						/>
 					</Section>
 
@@ -102,6 +108,16 @@ export class Filters extends Component {
 							tab={TABS.price}
 							openTab={this.state.openTab}
 							toggle={this.toggleTab}
+							startFolded
+						/>
+					</Section>
+
+					<Section>
+						<SavedFilters
+							tab={TABS.saved}
+							openTab={this.state.openTab}
+							toggle={this.toggleTab}
+							startFolded
 						/>
 					</Section>
 				</FilterInnerContainer>

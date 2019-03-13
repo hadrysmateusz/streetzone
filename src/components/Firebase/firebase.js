@@ -4,8 +4,6 @@ import "firebase/auth"
 import "firebase/storage"
 import "firebase/firestore"
 
-import { ITEM_SCHEMA } from "../../constants"
-
 const S_THUMB_POSTFIX = "_S_THUMB"
 const M_THUMB_POSTFIX = "_M_THUMB"
 const L_THUMB_POSTFIX = "_L_THUMB"

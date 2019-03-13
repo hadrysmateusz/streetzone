@@ -30,12 +30,6 @@ export const FilterInnerContainer = styled.div`
 		padding: 5px 0;
 	}
 
-	/* desktop */
-	@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
-		max-height: calc(100vh - 170px);
-		overflow-y: auto;
-	}
-
 	/* mobile */
 	@media (max-width: ${(p) => p.theme.breakpoints[1] - 1}px) {
 		flex: 1 1 100%;

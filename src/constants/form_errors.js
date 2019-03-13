@@ -20,3 +20,4 @@ export const FILES_REQUIRED = "Wymagane jest conajmniej jedno zdjęcie"
 export const FILE_TOO_BIG = `Zdjęcia nie mogą być większe niż ${formattedMaxFileSize}`
 export const PRICE_MAX_LOWER_THAN_MIN =
 	"Cena maksymalna nie może być niższa niż cena minimalna."
+export const NO_FILTERS_APPLIED = "Brak filtrów do zapisania"

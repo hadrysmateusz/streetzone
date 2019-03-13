@@ -108,22 +108,16 @@ class AlgoliaRefinementList extends React.Component {
 			multiColumn,
 			show,
 			currentRefinement,
-			attribute,
-			tab,
-			openTab,
-			toggle,
 			currentBreakpoint,
-			boxGrid
+			boxGrid,
+			...rest
 		} = this.props
 		const { isMenuOpen } = this.state
 		const limitedItems = isMenuOpen ? items : show ? items.slice(0, show) : items
 
 		return (
 			<AdaptiveFoldable
-				tab={tab}
-				openTab={openTab}
-				toggle={toggle}
-				attribute={attribute}
+				{...rest}
 				showClear={currentRefinement && currentRefinement.length !== 0}
 			>
 				{searchable && (
