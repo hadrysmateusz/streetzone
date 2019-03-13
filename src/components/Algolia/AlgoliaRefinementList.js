@@ -75,15 +75,8 @@ const SearchBox = React.forwardRef(({ value, onChange, clear }, ref) => (
 class AlgoliaRefinementList extends React.Component {
 	state = { isMenuOpen: false, inputValue: "" }
 
-	searchBox = React.createRef()
-
 	toggleMenu = async () => {
 		await this.setState((state) => ({ isMenuOpen: !state.isMenuOpen }))
-		// focus the input upon opening the menu
-		const isOpen = this.state.isMenuOpen
-		if (isOpen) {
-			this.searchBox.current.focus()
-		}
 	}
 
 	onInputChange = (e) => {
@@ -125,7 +118,6 @@ class AlgoliaRefinementList extends React.Component {
 						value={this.state.inputValue}
 						onChange={this.onInputChange}
 						clear={this.clearInput}
-						ref={this.searchBox}
 					/>
 				)}
 				{currentBreakpoint < 1 ? (

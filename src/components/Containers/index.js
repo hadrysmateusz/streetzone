@@ -1,5 +1,6 @@
 import styled from "styled-components"
 import { style } from "styled-system"
+import React from "react"
 
 const pageContainerWidth = style({
 	prop: "maxWidth",
@@ -38,4 +39,15 @@ const BlogPageContainer = styled.section`
 	}
 `
 
-export { PageContainer, BlogPageContainer }
+const OuterGrayContainer = styled.section`
+	width: 100%;
+	background: var(--gray100);
+	${(p) => p.padded && "padding: 40px 0;"}
+`
+const GrayContainer = ({ padded, children, ...props }) => (
+	<OuterGrayContainer padded={padded}>
+		<PageContainer {...props}>{children}</PageContainer>
+	</OuterGrayContainer>
+)
+
+export { PageContainer, BlogPageContainer, GrayContainer }

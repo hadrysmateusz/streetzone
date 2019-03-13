@@ -70,7 +70,9 @@ const Button = styled.button`
 	border: 1px solid;
 
 	text-transform: uppercase;
-	font-weight: 700;
+	/* font-weight: 700; */
+	letter-spacing: 1px;
+	font-size: var(--font-size--xs);
 
 	/* Add spacing between children */
 	* + * {
@@ -110,15 +112,12 @@ export const UnstyledButton = styled.button`
 
 const IconButtonUnstyled = ({ icon, ...rest }) => (
 	<Button {...rest}>
-		<FontAwesomeIcon icon={icon} />
+		<FontAwesomeIcon icon={icon} fixedWidth />
 	</Button>
 )
 
 export const IconButton = styled(IconButtonUnstyled)`
-	height: 34px;
-	width: 34px;
-	${(p) => p.small && "height: 30px; width: 30px; font-size: 13px;"}
-	${(p) => p.large && "height: 40px; width: 40px;"}
+	padding: 0 16px;
 `
 
 const LoaderButtonUnstyled = ({ isLoading, text, loadingText = text, ...rest }) => (

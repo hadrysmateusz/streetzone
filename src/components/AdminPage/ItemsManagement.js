@@ -1,5 +1,7 @@
 import React, { Component } from "react"
 import LoadingSpinner from "../LoadingSpinner"
+import { Link } from "react-router-dom"
+import { ROUTES } from "../../constants"
 
 export class ItemsManagement extends Component {
 	state = { items: [], foundItem: null, isLoading: true, inputValue: "", error: null }
@@ -55,12 +57,16 @@ export class ItemsManagement extends Component {
 				<h2>Items</h2>
 				{items.length > 0 && (
 					<ul>
-						{items.map((item) => (
-							<li>
-								{item.name} {item.email} <strong>{item.uid}</strong>
-								<button onClick={() => this.onDelete(item.id)}>X</button>
-							</li>
-						))}
+						{items.map((item) => {
+							return (
+								<li>
+									<Link to={ROUTES.ITEM_DETAILS.replace(":id", item.itemId)}>
+										{item.name} {item.email} <strong>{item.uid}</strong>
+									</Link>
+									<button onClick={() => this.onDelete(item.itemId)}>X</button>
+								</li>
+							)
+						})}
 					</ul>
 				)}
 				<h4>Find by ID</h4>
@@ -74,7 +80,6 @@ export class ItemsManagement extends Component {
 						{foundItem.name} {foundItem.email}
 					</div>
 				)}
-
 				{error && <div>{error.message}</div>}
 			</div>
 		)
