@@ -6,17 +6,19 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 import SavedFilters from "./SavedFilters"
 import {
-	ButtonsContainer,
 	FiltersContainer,
 	FilterInnerContainer,
 	CloseIconContainer,
-	Section
+	Section,
+	ActionsContainer
 } from "./StyledComponents"
+import { ButtonContainer } from "../Button"
 import AlgoliaRefinementList from "../Algolia/AlgoliaRefinementList"
 import AlgoliaRange from "../Algolia/AlgoliaRange"
 import Button from "../Button"
 import { ROUTES } from "../../constants"
 import { withAuthentication } from "../UserSession"
+import { Header3 } from "../StyledComponents"
 
 const TABS = {
 	category: {
@@ -69,6 +71,12 @@ export class Filters extends Component {
 					</CloseIconContainer>
 				)}
 				<FilterInnerContainer>
+					{this.props.currentBreakpoint < 1 && (
+						<Section>
+							<Header3>Filtry</Header3>
+						</Section>
+					)}
+
 					<Section>
 						<AlgoliaRefinementList
 							tab={TABS.category}
@@ -124,13 +132,18 @@ export class Filters extends Component {
 					)}
 				</FilterInnerContainer>
 				{this.props.currentBreakpoint < 1 && (
-					<ButtonsContainer>
-						<Button onClick={this.props.toggleFilters}>Gotowe</Button>
-						<ClearAllFiltersButton
-							history={this.props.history}
-							onClick={this.props.clearFilters.update}
-						/>
-					</ButtonsContainer>
+					<ActionsContainer>
+						<ButtonContainer noMargin>
+							<Button onClick={this.props.toggleFilters} fullWidth>
+								Gotowe
+							</Button>
+							<ClearAllFiltersButton
+								history={this.props.history}
+								onClick={this.props.clearFilters.update}
+								fullWidth
+							/>
+						</ButtonContainer>
+					</ActionsContainer>
 				)}
 			</FiltersContainer>
 		)

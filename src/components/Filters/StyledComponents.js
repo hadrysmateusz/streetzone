@@ -19,9 +19,6 @@ export const FiltersContainer = styled.div`
 		bottom: 0;
 		height: 100vh;
 		background: white;
-		padding: 20px;
-		display: flex;
-		flex-flow: column nowrap;
 	}
 `
 
@@ -38,28 +35,17 @@ export const FilterInnerContainer = styled.div`
 	}
 `
 
-export const ButtonsContainer = styled.div`
+export const ActionsContainer = styled.div`
 	min-width: 0;
 	max-width: 100vw;
 	width: 100%;
-	display: grid;
-	grid-template-columns: 1fr 1fr;
-	grid-auto-rows: min-content;
-	gap: 10px;
+
 	background: white;
-	padding: 20px;
-	padding-top: 10px;
+	padding: 10px;
 	box-sizing: border-box;
 	position: fixed;
 	bottom: 0;
 	left: 0;
-	& > * {
-		height: 100%;
-		width: auto;
-		height: auto;
-		white-space: nowrap;
-		min-width: 0;
-	}
 `
 
 export const FiltersHeader = styled.div`
@@ -74,8 +60,7 @@ export const CloseIconContainer = styled.span`
 	cursor: pointer;
 	position: fixed;
 	padding: 20px;
-	right: 15px;
-	top: 15px;
+	right: 20px;
 `
 
 export const Section = styled.div`
@@ -83,4 +68,12 @@ export const Section = styled.div`
 		border-bottom: 1px solid var(--gray100);
 	}
 	padding: 15px;
+`
+
+export const ListItem = styled.div`
+	display: flex;
+	padding: 6px 0;
+	> :first-child {
+		flex: 1;
+	}
 `

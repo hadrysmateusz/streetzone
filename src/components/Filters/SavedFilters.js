@@ -1,16 +1,19 @@
 import React, { Component } from "react"
-import { AdaptiveFoldable } from "../Foldable"
 import { compose } from "recompose"
-import { withAuthentication } from "../UserSession"
-import { Link } from "react-router-dom"
-import { Form, Field } from "react-final-form"
-import { StyledInput } from "../Basics"
-import { LoaderButton, ButtonContainer } from "../Button"
-import { FORM_ERR } from "../../constants"
-import { withFirebase } from "../Firebase"
 import withRouter from "react-router-dom/withRouter"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import shortid from "shortid"
+import { Link } from "react-router-dom"
+import { Form, Field } from "react-final-form"
+
+import { StyledInput } from "../Basics"
+import { LoaderButton, ButtonContainer } from "../Button"
+import { withAuthentication } from "../UserSession"
+import { withFirebase } from "../Firebase"
+import { AdaptiveFoldable } from "../Foldable"
+
+import { ListItem } from "./StyledComponents"
+import { FORM_ERR } from "../../constants"
 
 const validate = ({ name }) => {
 	let errors = {}
@@ -110,13 +113,13 @@ export class SavedFilters extends Component {
 				/>
 				<div>
 					{this.state.filters.map((filter) => (
-						<div>
+						<ListItem>
 							<Link to={{ search: `?search=${filter.query}` }}>{filter.name} </Link>
 							<FontAwesomeIcon
 								icon="times"
 								onClick={() => this.removeFilter(filter.id)}
 							/>
-						</div>
+						</ListItem>
 					))}
 				</div>
 			</AdaptiveFoldable>

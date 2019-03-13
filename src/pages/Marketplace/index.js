@@ -212,9 +212,6 @@ class HomePage extends Component {
 
 					<MainGrid>
 						<Sidebar hidden={!areFiltersOpen && !(currentBreakpoint > 0)}>
-							{/* <SidebarBox title="Aktywne Filtry">
-								<CurrentFilters />
-							</SidebarBox> */}
 							<SidebarBox title="Filtry">
 								<Filters
 									toggleFilters={this.toggleFilters}
@@ -224,7 +221,6 @@ class HomePage extends Component {
 									}}
 								/>
 							</SidebarBox>
-							{/* <SidebarBox title="Zapisane Filtry" /> */}
 						</Sidebar>
 						<AlgoliaResults />
 					</MainGrid>
