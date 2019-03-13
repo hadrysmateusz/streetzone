@@ -88,7 +88,7 @@ export const Designers = styled(Header4)`
 	font-weight: bold;
 	text-transform: uppercase;
 	padding-right: 8px;
-	word-spacing: 0.35ch;
+	word-spacing: 0.12ch;
 `
 
 export const Price = styled(Text)`

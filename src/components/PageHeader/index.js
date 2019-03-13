@@ -101,7 +101,7 @@ const Navigation = ({ authUser, firebase, ...rest }) => {
 					)}
 				</Nav>
 
-				<Logo />
+				<Logo centered />
 
 				<Nav alignRight>
 					{authUser ? (

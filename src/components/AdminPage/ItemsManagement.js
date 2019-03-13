@@ -24,6 +24,13 @@ export class ItemsManagement extends Component {
 		this.setState({ error, inputValue: "", foundItem })
 	}
 
+	onDelete = async (id) => {
+		this.props.firebase.db
+			.collection("items")
+			.doc(id)
+			.delete()
+	}
+
 	componentDidMount() {
 		this.removeListener = this.props.firebase.db
 			.collection("items")
@@ -51,7 +58,7 @@ export class ItemsManagement extends Component {
 						{items.map((item) => (
 							<li>
 								{item.name} {item.email} <strong>{item.uid}</strong>
-								{/* <button onClick={() => this.onDelete(item.id)}>X</button> */}
+								<button onClick={() => this.onDelete(item.id)}>X</button>
 							</li>
 						))}
 					</ul>

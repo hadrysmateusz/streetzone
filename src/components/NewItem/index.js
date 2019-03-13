@@ -42,6 +42,7 @@ class NewItemPage extends Component {
 				condition: Number.parseFloat(values.condition),
 				status: ITEM_SCHEMA.status.available,
 				createdAt: Date.now(),
+				bumpedAt: Date.now(),
 				modifiedAt: null,
 				itemId,
 				userId,

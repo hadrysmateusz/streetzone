@@ -13,12 +13,15 @@ const LogoContainer = styled.div`
 	position: relative;
 	white-space: nowrap;
 	color: ${(p) => p.theme.colors.black[75]};
-
-	display: flex;
-	align-items: center;
-	justify-content: center;
+	${(p) =>
+		p.centered &&
+		`display: flex;
+		align-items: center;
+		justify-content: center;`}
 `
 
-const Logo = () => <LogoContainer>{CONST.BRAND_NAME}</LogoContainer>
+const Logo = ({ centered }) => (
+	<LogoContainer centered={centered}>{CONST.BRAND_NAME}</LogoContainer>
+)
 
 export default Logo

@@ -1,6 +1,6 @@
 export default [
 	{
-		value: "dev_items_createdAt_desc",
+		value: "dev_items",
 		label: "Najnowsze"
 	},
 	{

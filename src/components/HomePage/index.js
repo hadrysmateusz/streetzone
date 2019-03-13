@@ -15,13 +15,12 @@ import AlgoliaResults from "../Algolia/AlgoliaResults"
 import { MainGrid, Sidebar, StyledInstantSearch, GridContainer } from "./StyledComponents"
 import ScrollToTop from "../ScrollToTop"
 import LoadingSpinner from "../LoadingSpinner"
-import AlgoliaSearchBox from "../Algolia/AlgoliaSearchBox"
 import SidebarBox from "../SidebarBox"
 import CurrentFilters from "../CurrentFilters"
-import AlgoliaSortBy from "../Algolia/AlgoliaSortBy"
 import Topbar from "../Topbar"
+import sortingOptions from "../../constants/sortingOptions"
 
-const DEFAULT_SORTING = "dev_items_createdAt_desc"
+const DEFAULT_SORTING = sortingOptions[0].value
 const DEFAULT_HITS_PER_PAGE = 12
 const DEFAULT_SEARCH_STATE = Object.freeze({
 	hitsPerPage: DEFAULT_HITS_PER_PAGE,

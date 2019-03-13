@@ -90,62 +90,27 @@ const conditionOptions = [
 	}
 ]
 
+const size = {
+	top: ["XS", "S", "M", "L", "XL", "XXL", "3XL", "4XL"],
+	buty: [32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51],
+	spodnie: [26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44]
+}
+
 const sizeOptions = (category) => {
 	switch (category) {
 		case categories.tee:
 		case categories.longsleeve:
-			return ["XS", "S", "M", "L", "XL", "XXL", "3XL", "4XL"].map((size) => ({
+			return size.top.map((size) => ({
 				value: size,
 				label: size
 			}))
 		case categories.buty:
-			return [
-				32,
-				33,
-				34,
-				35,
-				36,
-				37,
-				38,
-				39,
-				40,
-				41,
-				42,
-				43,
-				44,
-				45,
-				46,
-				47,
-				48,
-				49,
-				50,
-				51
-			].map((size) => ({
+			return size.buty.map((size) => ({
 				value: size,
 				label: size
 			}))
 		case categories.spodnie:
-			return [
-				26,
-				27,
-				28,
-				29,
-				30,
-				31,
-				32,
-				33,
-				34,
-				35,
-				36,
-				37,
-				38,
-				39,
-				40,
-				41,
-				42,
-				43,
-				44
-			].map((size) => ({
+			return size.spodnie.map((size) => ({
 				value: size,
 				label: size
 			}))
@@ -183,5 +148,6 @@ export {
 	conditionOptions,
 	sizeOptions,
 	translateCondition,
-	status
+	status,
+	size
 }
