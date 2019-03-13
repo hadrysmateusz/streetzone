@@ -2,8 +2,9 @@ import React, { Component } from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import styled from "styled-components"
 
-import CustomFile from "./CustomFile"
 import LoadingSpinner from "../LoadingSpinner"
+
+import CustomFile from "./CustomFile"
 
 const size = "160px"
 

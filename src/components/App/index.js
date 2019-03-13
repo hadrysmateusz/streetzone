@@ -1,20 +1,16 @@
 import React from "react"
 import { BrowserRouter as Router } from "react-router-dom"
 import { compose } from "recompose"
-import styled from "styled-components"
 
 import { withAuthenticationProvider } from "../UserSession"
 import { withFirebase } from "../Firebase"
 import { withGlobalContextProvider } from "../GlobalContext"
 import AuthModal from "../AuthModal"
 import { Routes, Meta } from "../Routes"
-import GlobalStyles from "./global-styles"
 import PageHeader from "../PageHeader"
 import Footer from "../Footer"
 
-const ContentContainer = styled.div`
-	flex: 1;
-`
+import GlobalStyles from "./global-styles"
 
 class App extends React.Component {
 	render = () => {
@@ -24,9 +20,9 @@ class App extends React.Component {
 					<Meta />
 					<GlobalStyles>
 						<PageHeader />
-						<ContentContainer>
+						<div style={{ flex: 1 }}>
 							<Routes />
-						</ContentContainer>
+						</div>
 						<Footer />
 					</GlobalStyles>
 					<AuthModal />

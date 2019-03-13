@@ -4,6 +4,7 @@ import StarRatings from "react-star-ratings"
 
 import UserPreview from "../UserPreview"
 import { IconButton } from "../Button"
+
 import { CommentContainer, VerticalSeparator } from "./StyledComponents"
 
 const Comment = ({ data }) => (

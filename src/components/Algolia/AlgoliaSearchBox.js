@@ -4,7 +4,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { withRouter } from "react-router-dom"
 import { compose } from "recompose"
 import { withBreakpoints } from "react-breakpoints"
-import { SearchBox, StyledPoweredBy, OuterSearchContainer } from "./StyledComponents"
+
+import { SearchBox, StyledPoweredBy } from "./StyledComponents"
 
 class AlgoliaSearchBox extends React.Component {
 	delay = 350

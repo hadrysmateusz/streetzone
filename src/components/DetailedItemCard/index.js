@@ -1,15 +1,16 @@
 import React from "react"
 import moment from "moment"
-import { withRouter, Link } from "react-router-dom"
+import { withRouter } from "react-router-dom"
 import { compose } from "recompose"
 
 import { withFirebase } from "../Firebase"
 import { ItemCard } from "../ItemCard"
 import UserPreview from "../UserPreview"
 import Button, { ButtonContainer, LoaderButton } from "../Button"
-import { ROUTES } from "../../constants"
-import { DetailsContainer, Section, InfoItem, OuterContainer } from "./StyledComponents"
 import { ImportantText } from "../Basics"
+
+import { DetailsContainer, Section, InfoItem, OuterContainer } from "./StyledComponents"
+import { ROUTES } from "../../constants"
 import { translateCondition } from "../../constants/item_schema"
 
 class DetailedItemCard extends React.Component {

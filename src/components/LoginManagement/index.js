@@ -3,13 +3,14 @@ import { Form, Field } from "react-final-form"
 import { compose } from "recompose"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
-import { FORM_ERR } from "../../constants"
 import { FieldRow, StyledInput, SubHeader } from "../Basics"
 import { FormError } from "../FormElements"
 import { SocialButton, LoaderButton } from "../Button"
 import { withFirebase } from "../Firebase"
-import { PasswordChangeForm } from "../PasswordChange"
 import { withAuthentication } from "../UserSession"
+
+import { PasswordChangeForm } from "../../pages/PasswordChange"
+import { FORM_ERR } from "../../constants"
 import {
 	EnabledIndicator,
 	OuterContainer,

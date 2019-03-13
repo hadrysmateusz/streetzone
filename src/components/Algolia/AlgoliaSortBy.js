@@ -1,9 +1,10 @@
 import React from "react"
 import styled from "styled-components"
-import Select from "../StyledReactSelect"
 import { Media } from "react-breakpoints"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { connectSortBy } from "react-instantsearch-dom"
+
+import Select from "../StyledReactSelect"
 
 const StyledSelect = styled.select`
 	position: absolute;

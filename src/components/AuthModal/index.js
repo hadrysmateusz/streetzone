@@ -1,9 +1,12 @@
 import React from "react"
+
 import Modal from "../Modal"
-import SignInPage from "../SignIn"
 import { withGlobalContext } from "../GlobalContext"
+
+import SignInPage from "../../pages/SignIn"
+import SignUpPage from "../../pages/SignUp"
+
 import { ROUTES } from "../../constants"
-import SignUpPage from "../SignUp"
 
 class AuthModal extends React.Component {
 	render = () => {

@@ -1,7 +1,13 @@
 import React from "react"
 import { connectRefinementList } from "react-instantsearch-dom"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { withBreakpoints } from "react-breakpoints"
+import Ratio from "react-ratio"
+import { compose } from "recompose"
+
 import { UnstyledButton } from "../Button"
+import { AdaptiveFoldable } from "../Foldable"
+import { Text } from "../StyledComponents"
 
 import {
 	FilterItem,
@@ -11,11 +17,6 @@ import {
 	NoResults,
 	BoxItem
 } from "./StyledComponents"
-import { AdaptiveFoldable } from "../Foldable"
-import { withBreakpoints } from "react-breakpoints"
-import { compose } from "recompose"
-import Ratio from "react-ratio/lib/Ratio"
-import { Text } from "../StyledComponents"
 
 const FilterItems = ({ items, refine, showCount, boxGrid }) => {
 	return items && items.length > 0 ? (

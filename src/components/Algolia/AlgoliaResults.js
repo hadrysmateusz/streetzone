@@ -2,10 +2,11 @@ import React from "react"
 import { connectStateResults } from "react-instantsearch-dom"
 
 import { AlgoliaInfiniteHits } from "../Algolia/AlgoliaHits"
-import { ResultsContainer } from "./StyledComponents"
 import EmptyState, { QueryNoResults } from "../EmptyState"
 import { InfoBlock } from "../Basics"
 import Button, { ButtonContainer } from "../Button"
+
+import { ResultsContainer } from "./StyledComponents"
 
 const AlgoliaResults = connectStateResults(({ searchResults, searching }) => {
 	const hasResults = searchResults && searchResults.nbHits !== 0

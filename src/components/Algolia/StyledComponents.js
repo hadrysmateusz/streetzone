@@ -1,6 +1,7 @@
 import styled from "styled-components"
-import { resetButtonStyles } from "../../style-utils"
 import { PoweredBy } from "react-instantsearch-dom"
+
+import { resetButtonStyles } from "../../style-utils"
 
 export const FilterMenu = styled.div`
 	--width: 350px;

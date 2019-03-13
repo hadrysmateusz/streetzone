@@ -5,9 +5,10 @@ import ContainerDimensions from "react-container-dimensions"
 
 import LoadingSpinner from "../LoadingSpinner"
 import { ItemCard, ItemCardMini } from "../ItemCard"
-import { MiniContainer, ItemsLoaderContainer } from "./StyledComponents"
 import { ItemsContainer } from "../ItemsView"
 import Button from "../Button"
+
+import { MiniContainer, ItemsLoaderContainer } from "./StyledComponents"
 
 const ItemsLoader = ({ refine }) => (
 	<ItemsLoaderContainer>

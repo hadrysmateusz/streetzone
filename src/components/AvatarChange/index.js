@@ -7,6 +7,7 @@ import Button, { LoaderButton, ButtonContainer } from "../Button"
 import { FileHandlerSingle, CustomFile } from "../FileHandler"
 import { withFirebase } from "../Firebase"
 import { withAuthentication } from "../UserSession"
+
 import getProfilePictureURL from "../../utils/getProfilePictureURL"
 
 class AvatarChangeForm extends React.Component {

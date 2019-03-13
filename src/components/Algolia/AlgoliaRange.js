@@ -1,7 +1,9 @@
 import React from "react"
 import { connectRange } from "react-instantsearch-dom"
-import { RangeContainer } from "./StyledComponents"
+
 import { AdaptiveFoldable } from "../Foldable"
+
+import { RangeContainer } from "./StyledComponents"
 
 class AlgoliaRange extends React.Component {
 	delay = 400

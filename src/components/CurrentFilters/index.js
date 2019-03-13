@@ -3,7 +3,9 @@ import { connectCurrentRefinements } from "react-instantsearch-core"
 import styled from "styled-components"
 import { compose } from "recompose"
 import { withRouter } from "react-router-dom"
+
 import { ClearFiltersSubButton } from "../Topbar/StyledComponents"
+
 import { ROUTES } from "../../constants"
 
 const Container = styled.div`

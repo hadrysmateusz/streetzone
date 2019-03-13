@@ -3,9 +3,10 @@ import styled from "styled-components"
 import Dropzone from "react-dropzone"
 
 import Button from "../Button"
+import { FormError } from "../FormElements"
+
 import FileItem from "./FileItem"
 import CustomFile from "./CustomFile"
-import { FormError } from "../FormElements"
 
 const FilesContainer = styled.div`
 	position: relative;

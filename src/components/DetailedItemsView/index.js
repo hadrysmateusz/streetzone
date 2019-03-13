@@ -1,8 +1,9 @@
 import React from "react"
 import ContainerDimensions from "react-container-dimensions"
 
-import { ItemsContainer } from "./StyledComponents"
 import DetailedItemCard from "../DetailedItemCard"
+
+import { ItemsContainer } from "./StyledComponents"
 
 const DetailedItemsView = ({ items, isUserOwner }) => {
 	return (

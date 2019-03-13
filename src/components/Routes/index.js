@@ -6,165 +6,170 @@ import { Helmet } from "react-helmet"
 import { ROUTES, CONST } from "../../constants"
 
 import { LoadableComponentSpinner } from "../LoadingSpinner"
-
-import NotFound from "../NotFound"
 import ErrorBoundary from "../ErrorBoundary"
 
-const BugReportPage = Loadable({
-	loader: () => import("../BugReportPage"),
+import NotFound from "../../pages/NotFound"
+
+const Home = Loadable({
+	loader: () => import("../../pages/Home"),
 	loading: LoadableComponentSpinner
 })
 
-const BumpInfoPage = Loadable({
-	loader: () => import("../BumpInfoPage"),
+const BugReport = Loadable({
+	loader: () => import("../../pages/BugReport"),
 	loading: LoadableComponentSpinner
 })
 
-const AdminPage = Loadable({
-	loader: () => import("../AdminPage"),
+const BumpInfo = Loadable({
+	loader: () => import("../../pages/BumpInfo"),
+	loading: LoadableComponentSpinner
+})
+
+const Admin = Loadable({
+	loader: () => import("../../pages/Admin"),
 	loading: LoadableComponentSpinner
 })
 
 const UserInfo = Loadable({
-	loader: () => import("../AccountPage/UserInfo"),
+	loader: () => import("../../pages/Account/UserInfo"),
 	loading: LoadableComponentSpinner
 })
 const UserSettings = Loadable({
-	loader: () => import("../AccountPage/UserSettings"),
+	loader: () => import("../../pages/Account/UserSettings"),
 	loading: LoadableComponentSpinner
 })
 const UserFeedback = Loadable({
-	loader: () => import("../AccountPage/UserFeedback"),
+	loader: () => import("../../pages/Account/UserFeedback"),
 	loading: LoadableComponentSpinner
 })
 const UserItems = Loadable({
-	loader: () => import("../AccountPage/UserItems"),
+	loader: () => import("../../pages/Account/UserItems"),
 	loading: LoadableComponentSpinner
 })
 const UserFollowing = Loadable({
-	loader: () => import("../AccountPage/UserFollowing"),
+	loader: () => import("../../pages/Account/UserFollowing"),
 	loading: LoadableComponentSpinner
 })
 const UserLiked = Loadable({
-	loader: () => import("../AccountPage/UserLiked"),
+	loader: () => import("../../pages/Account/UserLiked"),
 	loading: LoadableComponentSpinner
 })
 
-const DesignerPage = Loadable({
-	loader: () => import("../DesignerPage"),
+const Designer = Loadable({
+	loader: () => import("../../pages/Designer"),
 	loading: LoadableComponentSpinner
 })
 
-const BlogPostPage = Loadable({
-	loader: () => import("../BlogPost"),
+const BlogPost = Loadable({
+	loader: () => import("../../pages/BlogPost"),
 	loading: LoadableComponentSpinner
 })
 
-const NewItemPage = Loadable({
-	loader: () => import("../NewItem"),
+const NewItem = Loadable({
+	loader: () => import("../../pages/NewItem"),
 	loading: LoadableComponentSpinner
 })
 
-const SignUpPage = Loadable({
-	loader: () => import("../SignUp"),
+const SignUp = Loadable({
+	loader: () => import("../../pages/SignUp"),
 	loading: LoadableComponentSpinner
 })
 
-const SignInPage = Loadable({
-	loader: () => import("../SignIn"),
+const SignIn = Loadable({
+	loader: () => import("../../pages/SignIn"),
 	loading: LoadableComponentSpinner
 })
 
-const PasswordForgetPage = Loadable({
-	loader: () => import("../PasswordForget"),
+const PasswordForget = Loadable({
+	loader: () => import("../../pages/PasswordForget"),
 	loading: LoadableComponentSpinner
 })
 
-const HomePage = Loadable({
-	loader: () => import("../HomePage"),
+const Marketplace = Loadable({
+	loader: () => import("../../pages/Marketplace"),
 	loading: LoadableComponentSpinner
 })
 
-const BlogHomePage = Loadable({
-	loader: () => import("../BlogHomePage"),
+const BlogHome = Loadable({
+	loader: () => import("../../pages/BlogHome"),
 	loading: LoadableComponentSpinner
 })
 
-const AccountPage = Loadable({
-	loader: () => import("../AccountPage"),
+const Account = Loadable({
+	loader: () => import("../../pages/Account"),
 	loading: LoadableComponentSpinner
 })
 
-const EditItemPage = Loadable({
-	loader: () => import("../EditItem"),
+const EditItem = Loadable({
+	loader: () => import("../../pages/EditItem"),
 	loading: LoadableComponentSpinner
 })
 
-const ItemDetailsPage = Loadable({
-	loader: () => import("../ItemDetailsPage"),
+const ItemDetails = Loadable({
+	loader: () => import("../../pages/ItemDetails"),
 	loading: LoadableComponentSpinner
 })
 
-const FAQPage = Loadable({
-	loader: () => import("../FAQPage"),
+const FAQ = Loadable({
+	loader: () => import("../../pages/FAQ"),
 	loading: LoadableComponentSpinner
 })
 
-const PrivacyPolicyPage = Loadable({
-	loader: () => import("../PrivacyPolicyPage"),
+const PrivacyPolicy = Loadable({
+	loader: () => import("../../pages/PrivacyPolicy"),
 	loading: LoadableComponentSpinner
 })
 
-const AboutPage = Loadable({
-	loader: () => import("../AboutPage"),
+const About = Loadable({
+	loader: () => import("../../pages/About"),
 	loading: LoadableComponentSpinner
 })
 
-const ContactPage = Loadable({
-	loader: () => import("../ContactPage"),
+const Contact = Loadable({
+	loader: () => import("../../pages/Contact"),
 	loading: LoadableComponentSpinner
 })
 
-const TermsPage = Loadable({
-	loader: () => import("../TermsPage"),
+const Terms = Loadable({
+	loader: () => import("../../pages/Terms"),
 	loading: LoadableComponentSpinner
 })
 
 const routes = [
 	{
 		path: ROUTES.ADMIN,
-		component: AdminPage
+		component: Admin
 	},
 	{
 		path: ROUTES.DESIGNER,
-		component: DesignerPage
+		component: Designer
 	},
 	{
 		path: ROUTES.BLOG_POST,
-		component: BlogPostPage
+		component: BlogPost
 	},
 	{
 		path: ROUTES.SIGN_UP,
-		component: SignUpPage,
+		component: SignUp,
 		title: `Utwórz konto`
 	},
 	{
 		path: ROUTES.SIGN_IN,
-		component: SignInPage,
+		component: SignIn,
 		title: `Zaloguj Się`
 	},
 	{
 		path: ROUTES.PASSWORD_FORGET,
-		component: PasswordForgetPage,
+		component: PasswordForget,
 		title: `Zresetuj hasło`
 	},
 	{
-		path: ROUTES.HOME,
-		component: HomePage
+		path: ROUTES.MARKETPLACE,
+		component: Marketplace
 	},
 	{
 		path: ROUTES.ACCOUNT_BASE,
-		component: AccountPage,
+		component: Account,
 		exact: false,
 		routes: [
 			{
@@ -213,56 +218,60 @@ const routes = [
 	},
 	{
 		path: ROUTES.NEW_ITEM,
-		component: NewItemPage,
+		component: NewItem,
 		title: `Wystaw przedmiot`
 	},
 	{
+		path: ROUTES.HOME,
+		component: Home
+	},
+	{
 		path: ROUTES.ITEM_DETAILS,
-		component: ItemDetailsPage
+		component: ItemDetails
 	},
 	{
 		path: ROUTES.EDIT_ITEM,
-		component: EditItemPage,
+		component: EditItem,
 		title: `Edytuj przedmiot`
 	},
 	{
 		path: ROUTES.BLOG_HOME,
-		component: BlogHomePage,
+		component: BlogHome,
 		title: `Blog`
 	},
 	{
 		path: ROUTES.FAQ,
-		component: FAQPage,
+		component: FAQ,
 		title: `FAQ`
 	},
 	{
 		path: ROUTES.PRIVACY_POLICY,
-		component: PrivacyPolicyPage,
+		component: PrivacyPolicy,
 		title: "Polityka Prywatności"
 	},
 	{
 		path: ROUTES.ABOUT,
-		component: AboutPage,
+		component: About,
 		title: "O nas"
 	},
 	{
 		path: ROUTES.CONTACT,
-		component: ContactPage,
+		component: Contact,
 		title: "Kontakt"
 	},
 	{
 		path: ROUTES.TERMS,
-		component: TermsPage,
+		component: Terms,
 		title: "Regulamin"
 	},
 	{
 		path: ROUTES.BUMP_INFO,
-		component: BumpInfoPage,
+		component: BumpInfo,
 		title: "Promowanie"
 	},
 	{
 		path: ROUTES.BUG_REPORT,
-		component: BugReportPage,
+		component: BugReport,
 		title: "Zgłoś problem"
 	}
 ]
