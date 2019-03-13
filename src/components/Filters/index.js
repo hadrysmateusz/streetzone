@@ -16,6 +16,7 @@ import AlgoliaRefinementList from "../Algolia/AlgoliaRefinementList"
 import AlgoliaRange from "../Algolia/AlgoliaRange"
 import Button from "../Button"
 import { ROUTES } from "../../constants"
+import { withAuthentication } from "../UserSession"
 
 const TABS = {
 	category: {
@@ -111,15 +112,16 @@ export class Filters extends Component {
 							startFolded
 						/>
 					</Section>
-
-					<Section>
-						<SavedFilters
-							tab={TABS.saved}
-							openTab={this.state.openTab}
-							toggle={this.toggleTab}
-							startFolded
-						/>
-					</Section>
+					{this.props.authUser && (
+						<Section>
+							<SavedFilters
+								tab={TABS.saved}
+								openTab={this.state.openTab}
+								toggle={this.toggleTab}
+								startFolded
+							/>
+						</Section>
+					)}
 				</FilterInnerContainer>
 				{this.props.currentBreakpoint < 1 && (
 					<ButtonsContainer>
@@ -137,5 +139,6 @@ export class Filters extends Component {
 
 export default compose(
 	withRouter,
-	withBreakpoints
+	withBreakpoints,
+	withAuthentication
 )(Filters)
