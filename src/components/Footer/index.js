@@ -3,9 +3,10 @@ import styled from "styled-components"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { Link } from "react-router-dom"
 
-import { CONST, ROUTES } from "../../constants"
 import { ImportantText } from "../Basics"
 import Logo from "../Logo"
+
+import { CONST, ROUTES } from "../../constants"
 
 const OuterContainer = styled.div`
 	display: flex;
@@ -46,8 +47,6 @@ const InnerContainer = styled.div`
 	max-width: ${(p) => p.theme.breakpoints[5]}px;
 	margin: 0 auto;
 	display: grid;
-	grid-template-columns: 2.5fr repeat(3, 1fr);
-	grid-auto-flow: column;
 	align-content: center;
 	align-items: flex-start;
 	justify-content: space-between;
@@ -56,6 +55,10 @@ const InnerContainer = styled.div`
 
 	& > * {
 		padding: 8px 15px;
+	}
+
+	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
+		grid-template-columns: 2.5fr repeat(3, 1fr);
 	}
 `
 
