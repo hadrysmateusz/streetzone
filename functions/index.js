@@ -118,6 +118,32 @@ exports.removeItemImages = functions.firestore
 		return res
 	})
 
+// When an item is removed from db remove it from it's owner's items list
+exports.removeItemFromUser = functions.firestore
+	.document(`items/{itemId}`)
+	.onDelete(async (snap, context) => {
+		const data = snap.data()
+		const userId = data.userId
+		const itemId = context.params.itemId
+		const db = admin.firestore()
+
+		// get owner's data
+		const userSnap = await db
+			.collection("users")
+			.doc(userId)
+			.get()
+		const userData = userSnap.data()
+		// filter out the removed item
+		const newItems = userData.items.filter((item) => item.itemId !== itemId)
+		// update the db with the new items list
+		const res = await db
+			.collection("users")
+			.doc(userId)
+			.update({ items: newItems })
+
+		return res
+	})
+
 // ------------------------------------
 // ---------- User handling -----------
 // ------------------------------------
