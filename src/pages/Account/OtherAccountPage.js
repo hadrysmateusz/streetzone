@@ -55,9 +55,13 @@ class OtherAccountPage extends Component {
 							<TabsNavContainer>
 								<TabsNav>
 									{routes.map(
-										(route) =>
+										(route, i) =>
 											(isUserOwner || !route.isProtected) && (
-												<TabsNavItem as={NavLink} to={route.path.replace(":id", userId)}>
+												<TabsNavItem
+													as={NavLink}
+													to={route.path.replace(":id", userId)}
+													key={i}
+												>
 													{route.label}
 												</TabsNavItem>
 											)

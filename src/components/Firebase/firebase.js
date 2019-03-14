@@ -36,9 +36,6 @@ class Firebase {
 
 		// Firestore (Database)
 		this.db = app.firestore()
-		this.db.settings({
-			timestampsInSnapshots: true
-		})
 	}
 
 	// Auth API
