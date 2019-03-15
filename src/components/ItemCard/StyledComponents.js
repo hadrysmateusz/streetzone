@@ -83,12 +83,14 @@ export const Name = styled(TextBlock)`
 	${itemBase}
 `
 
-export const Designers = styled(Header4)`
+export const Designers = styled(TextBlock).attrs({ size: "l" })`
 	${itemBase}
 	font-weight: bold;
 	text-transform: uppercase;
 	padding-right: 8px;
 	word-spacing: 0.12ch;
+	font-family: var(--font-family--serif);
+	letter-spacing: 0.05ch;
 `
 
 export const Price = styled(Text)`

@@ -19,7 +19,9 @@ const Header = styled.header`
 const SidebarBox = ({ title, children }) => (
 	<Container>
 		<Header>
-			<Header4 uppercase>{title}</Header4>
+			<Header4 uppercase bold>
+				{title}
+			</Header4>
 		</Header>
 		{children}
 	</Container>

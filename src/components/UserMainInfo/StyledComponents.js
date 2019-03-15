@@ -7,9 +7,6 @@ export const MainInfoContainer = styled.div`
 		grid-template-columns: max-content 1fr max-content;
 	}
 
-	margin-bottom: 40px;
-	padding-bottom: 20px;
-	border-bottom: 1px solid ${(p) => p.theme.colors.gray[75]};
 	gap: 20px;
 	overflow: hidden;
 
@@ -19,16 +16,6 @@ export const MainInfoContainer = styled.div`
 
 	@media (max-width: ${(p) => p.theme.breakpoints[0] - 1}px) {
 		text-align: center;
-	}
-
-	h2 {
-		font-weight: 500;
-		margin: 0;
-	}
-
-	h3 {
-		font-weight: 300;
-		margin: 7px 0 10px 0;
 	}
 `
 

@@ -15,6 +15,9 @@ import {
 import { HeartButton } from "../SaveButton"
 import { ROUTES } from "../../constants"
 import Link from "react-router-dom/Link"
+import { Header3 } from "../StyledComponents"
+import SingleValueDisplay from "../SingleValueDisplay"
+import { Flex } from "rebass"
 
 const MainInfo = ({ user, isUserOwner, userId }) => {
 	return (
@@ -23,30 +26,25 @@ const MainInfo = ({ user, isUserOwner, userId }) => {
 				<ProfilePicture url={getProfilePictureURL(user, "M")} size="170px" />
 			</div>
 			<InfoContainer>
-				<h2>{user.name}</h2>
-
-				<h3>
-					<div>{user.email}</div>
-				</h3>
-
-				<SeparatedContainer>
+				<Flex alignItems="center">
+					<Header3 bold>{user.name}</Header3>
 					<UserRating feedback={user.feedback} />
-					<span>
-						Ilość komentarzy: <strong>{user.feedback ? user.feedback.length : 0} </strong>
-					</span>
-				</SeparatedContainer>
+				</Flex>
+				<Flex>
+					<SingleValueDisplay title="W serwisie od">
+						{moment(user.userSince).format("D.MM.YYYY")}
+					</SingleValueDisplay>
 
-				<div className="info-field">
-					<span>W serwisie od: </span>
-					<strong>{moment(user.userSince).format("D.MM.YYYY")}</strong>
-				</div>
+					{user.city && (
+						<SingleValueDisplay title="Miasto">{user.city}</SingleValueDisplay>
+					)}
 
-				{user.city && (
-					<div className="info-field">
-						<span>Miasto: </span>
-						<strong>{user.city}</strong>
-					</div>
-				)}
+					<SingleValueDisplay title="E-Mail">{user.email}</SingleValueDisplay>
+
+					{user.phone && (
+						<SingleValueDisplay title="Nr Telefonu">{user.phone}</SingleValueDisplay>
+					)}
+				</Flex>
 			</InfoContainer>
 			<SecondContainer>
 				<SeparatedContainer>

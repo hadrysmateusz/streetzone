@@ -1,62 +1,37 @@
 import styled from "styled-components"
-
-export const TabsNavContainer = styled.div`
-	min-height: 100%;
-`
+import { NavLink } from "react-router-dom"
 
 export const TabsNav = styled.nav`
-	white-space: nowrap;
-
-	@media (max-width: ${(p) => p.theme.breakpoints[1] - 1}px) {
-		text-align: center;
-	}
-
-	background: white;
-
 	display: flex;
-	flex-flow: column nowrap;
-	margin: 0;
+	font-size: var(--font-size--m);
+	font-family: var(--font-family--serif);
+	justify-content: space-evenly;
+	padding: 20px 0;
+	color: var(--gray0);
 
-	text-transform: uppercase;
-	letter-spacing: 0.9px;
-	font-weight: normal;
+	@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
+		justify-content: center;
+		font-size: var(--font-size--h4);
+	}
 `
 
-export const TabsNavItem = styled.li`
+export const TabsNavItem = styled(NavLink)`
+	@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
+		padding: 4px 20px;
+	}
+
 	user-select: none;
-	position: relative;
-	list-style-type: none;
 	white-space: nowrap;
-	color: ${(p) => p.theme.colors.black[75]};
-	height: 38px;
-
-	:hover {
-		background: #f8f8f8;
-	}
-	> :first-child {
-		height: 100%;
-		padding: 0 14px;
-	}
-	span {
-		margin-left: 8px;
-	}
-
-	display: flex;
-	align-items: center;
-	border: none;
-	outline: none;
-	padding: 0 10px;
-	margin: 0 -10px;
-	color: ${(p) => p.theme.colors.black[75]};
+	display: block;
 	cursor: pointer;
-	text-transform: uppercase;
 
 	&:hover {
 		color: black;
 	}
 
 	&.active {
-		font-weight: 700;
+		color: black;
+		text-decoration: underline;
 	}
 `
 
@@ -77,11 +52,4 @@ export const UserSettingsContainer = styled.div`
 	max-width: 600px;
 `
 
-export const InnerContainer = styled.div`
-	display: grid;
-	gap: 20px;
-
-	@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
-		grid-template-columns: min-content 1fr;
-	}
-`
+export const InnerContainer = styled.div``

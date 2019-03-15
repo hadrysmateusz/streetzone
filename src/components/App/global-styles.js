@@ -42,5 +42,8 @@ export default styled.div`
 	--font-size--h2: 3.6rem;
 	--font-size--h1: 4.2rem;
 
-	--form-element-height: 42px;
+	--form-element-height: 40px;
+
+	--font-family--serif: "Playfair Display";
+	--font-family--sans-serif: "Open Sans";
 `

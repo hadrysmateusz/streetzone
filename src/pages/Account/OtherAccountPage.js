@@ -5,13 +5,7 @@ import LoadingSpinner from "../../components/LoadingSpinner"
 import { withFirebase } from "../../components/Firebase"
 import MainInfo from "../../components/UserMainInfo"
 
-import {
-	TabsNav,
-	TabsNavItem,
-	TabsNavContainer,
-	MainGrid,
-	InnerContainer
-} from "./StyledComponents"
+import { TabsNav, TabsNavItem, MainGrid, InnerContainer } from "./StyledComponents"
 
 class OtherAccountPage extends Component {
 	state = {
@@ -52,22 +46,20 @@ class OtherAccountPage extends Component {
 					<>
 						<MainInfo {...commonProps} />
 						<InnerContainer>
-							<TabsNavContainer>
-								<TabsNav>
-									{routes.map(
-										(route, i) =>
-											(isUserOwner || !route.isProtected) && (
-												<TabsNavItem
-													as={NavLink}
-													to={route.path.replace(":id", userId)}
-													key={i}
-												>
-													{route.label}
-												</TabsNavItem>
-											)
-									)}
-								</TabsNav>
-							</TabsNavContainer>
+							<TabsNav>
+								{routes.map(
+									(route, i) =>
+										(isUserOwner || !route.isProtected) && (
+											<TabsNavItem
+												as={NavLink}
+												to={route.path.replace(":id", userId)}
+												key={i}
+											>
+												{route.label}
+											</TabsNavItem>
+										)
+								)}
+							</TabsNav>
 
 							<Switch>
 								{routes.map(

@@ -17,7 +17,7 @@ export const PageHeaderOuter = styled.div`
 	z-index: 80;
 
 	background: white;
-	border-bottom: 1px solid ${(p) => p.theme.colors.gray[75]};
+	border-bottom: 1px solid var(--gray75);
 `
 
 export const Nav = styled.nav`
@@ -35,7 +35,7 @@ export const Submenu = styled.div`
 	right: 0;
 	background: white;
 
-	border: 1px solid ${(p) => p.theme.colors.gray[75]};
+	border: 1px solid var(--gray75);
 	border-top: none;
 
 	z-index: 81;
@@ -54,9 +54,8 @@ export const Submenu = styled.div`
 export const NavItem = styled.div`
 	user-select: none;
 	position: relative;
-	list-style-type: none;
 	white-space: nowrap;
-	color: ${(p) => p.theme.colors.gray[0]};
+	color: var(--gray0);
 	display: block;
 
 	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {

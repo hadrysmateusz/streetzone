@@ -174,35 +174,28 @@ const routes = [
 		routes: [
 			{
 				id: "items",
-				label: "Przedmioty na sprzedaż",
+				label: "Oferty",
 				path: ROUTES.ACCOUNT_ITEMS,
 				component: UserItems,
 				isProtected: false
 			},
 			{
 				id: "feedback",
-				label: "Opinie i komentarze",
+				label: "Opinie",
 				path: ROUTES.ACCOUNT_FEEDBACK,
 				component: UserFeedback,
 				isProtected: false
 			},
 			{
-				id: "info",
-				label: "Informacje",
-				path: ROUTES.ACCOUNT_INFO,
-				component: UserInfo,
-				isProtected: false
-			},
-			{
 				id: "savedItems",
-				label: "Zapisane przedmioty",
+				label: "Zapisane",
 				path: ROUTES.ACCOUNT_LIKED,
 				component: UserLiked,
 				isProtected: true
 			},
 			{
 				id: "followedUsers",
-				label: "Obserwowani użytkownicy",
+				label: "Obserwowani",
 				path: ROUTES.ACCOUNT_FOLLOWING,
 				component: UserFollowing,
 				isProtected: true

@@ -16,10 +16,8 @@ export const StyledNavLink = styled(NavLink)`
 	display: flex;
 	align-items: center;
 	background: none;
-	border: none;
-	outline: none;
 	padding: 0;
-	color: ${(p) => p.theme.colors.gray[0]};
+	color: var(--gray0);
 	cursor: pointer;
 
 	text-decoration: none;
