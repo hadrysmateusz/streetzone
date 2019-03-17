@@ -10,6 +10,7 @@ import { Text } from "../../StyledComponents"
 
 import SearchBox from "./SearchBox"
 import { BoxOptionsList, OptionsList } from "./OptionsList"
+import { Box } from "rebass"
 
 class AlgoliaRefinementList extends React.Component {
 	state = { isMenuOpen: false, inputValue: "" }
@@ -58,11 +59,13 @@ class AlgoliaRefinementList extends React.Component {
 			<AdaptiveFoldable {...rest} showClear={hasRefinements}>
 				{/* Search bar */}
 				{searchable && (
-					<SearchBox
-						value={this.state.inputValue}
-						onChange={this.onInputChange}
-						clear={this.clearInput}
-					/>
+					<Box mb="var(--spacing2)">
+						<SearchBox
+							value={this.state.inputValue}
+							onChange={this.onInputChange}
+							clear={this.clearInput}
+						/>
+					</Box>
 				)}
 
 				{/* Refinement list */}

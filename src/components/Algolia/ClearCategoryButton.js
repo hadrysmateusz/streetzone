@@ -12,7 +12,7 @@ const Clear = connectCurrentRefinements(({ items, refine, attribute }) => {
 				refine(itemToClear.value)
 			}}
 		>
-			(Wyczyść)
+			Wyczyść
 		</ClearButton>
 	)
 })
@@ -31,7 +31,7 @@ export const ClearRange = connectCurrentRefinements(
 					resetState()
 				}}
 			>
-				(Wyczyść)
+				Wyczyść
 			</ClearButton>
 		)
 	}

@@ -121,7 +121,7 @@ export class Filters extends Component {
 						/>
 					</Section>
 					{this.props.authUser && (
-						<Section>
+						<Section id="saved-filters-filters-section">
 							<SavedFilters
 								tab={TABS.saved}
 								openTab={this.state.openTab}

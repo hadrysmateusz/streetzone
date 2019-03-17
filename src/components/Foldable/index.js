@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { withBreakpoints } from "react-breakpoints"
 import Clear, { ClearRange } from "../Algolia/ClearCategoryButton"
 import { TextBlock } from "../StyledComponents"
+import { Flex } from "rebass"
 
 const Header = styled.header`
 	padding: ${(p) => (p.noMargin ? "0" : "var(--spacing3)")};
@@ -63,7 +64,7 @@ export const AdaptiveFoldable = withBreakpoints(
 			return (
 				<section>
 					<Header onClick={toggleFunction} isFolded={isFolded}>
-						<div>
+						<Flex>
 							<TextBlock bold uppercase>
 								{tab.displayName}
 							</TextBlock>
@@ -73,7 +74,7 @@ export const AdaptiveFoldable = withBreakpoints(
 								) : (
 									<Clear attribute={attribute} />
 								))}
-						</div>
+						</Flex>
 						<FontAwesomeIcon icon={"caret-up"} />
 					</Header>
 					<Content hidden={isFolded}>{children}</Content>

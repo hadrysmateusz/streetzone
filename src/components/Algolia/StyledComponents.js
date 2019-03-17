@@ -173,8 +173,8 @@ export const ItemsLoaderContainer = styled.div`
 export const ClearButton = styled.button`
 	${resetButtonStyles}
 	color: ${(p) => p.theme.colors.danger[50]};
-	font-weight: 500;
-	display: inline-block;
+	font-size: var(--font-size--xs);
+	margin: 0 var(--spacing1);
 `
 
 export const ResultsContainer = styled.main`
