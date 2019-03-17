@@ -5,7 +5,7 @@ import { TextBlock } from "../StyledComponents"
 const SingleValueDisplay = ({ title, children }) => {
 	return (
 		<div>
-			<TextBlock size="xs" uppercase>
+			<TextBlock size="xs" uppercase color="gray0">
 				{title}
 			</TextBlock>
 			<TextBlock size="m" bold>

@@ -1,6 +1,8 @@
 import React from "react"
 import moment from "moment"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { Flex } from "rebass"
+import { Link } from "react-router-dom"
 
 import ProfilePicture from "../ProfilePicture"
 import getProfilePictureURL from "../../utils/getProfilePictureURL"
@@ -10,14 +12,13 @@ import {
 	MainInfoContainer,
 	InfoContainer,
 	SecondContainer,
-	SeparatedContainer
+	SeparatedContainer,
+	InnerInfoContainer
 } from "./StyledComponents"
 import { HeartButton } from "../SaveButton"
 import { ROUTES } from "../../constants"
-import Link from "react-router-dom/Link"
 import { TextBlock } from "../StyledComponents"
 import SingleValueDisplay from "../SingleValueDisplay"
-import { Flex } from "rebass"
 
 const MainInfo = ({ user, isUserOwner, userId }) => {
 	return (
@@ -27,10 +28,13 @@ const MainInfo = ({ user, isUserOwner, userId }) => {
 			</div>
 			<InfoContainer>
 				<Flex alignItems="center">
-					<TextBlock bold>{user.name}</TextBlock>
+					<TextBlock bold size="l" style={{ marginRight: "var(--spacing2)" }}>
+						{user.name}
+					</TextBlock>
 					<UserRating feedback={user.feedback} />
 				</Flex>
-				<Flex>
+
+				<InnerInfoContainer>
 					<SingleValueDisplay title="W serwisie od">
 						{moment(user.userSince).format("D.MM.YYYY")}
 					</SingleValueDisplay>
@@ -44,7 +48,9 @@ const MainInfo = ({ user, isUserOwner, userId }) => {
 					{user.phone && (
 						<SingleValueDisplay title="Nr Telefonu">{user.phone}</SingleValueDisplay>
 					)}
-				</Flex>
+				</InnerInfoContainer>
+
+				<TextBlock>{user.info}</TextBlock>
 			</InfoContainer>
 			<SecondContainer>
 				<SeparatedContainer>

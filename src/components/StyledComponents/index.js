@@ -18,6 +18,7 @@ const textBase = css`
 
 const bodyTextBase = css`
 	${textBase}
+	${(p) => p.color && `color: var(--${p.color});`}
 	font-size: ${(p) => {
 		switch (p.size) {
 			case "xs":

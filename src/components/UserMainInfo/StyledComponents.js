@@ -23,6 +23,13 @@ export const InfoContainer = styled.div`
 	padding-top: 10px;
 `
 
+export const InnerInfoContainer = styled.div`
+	display: flex;
+	> * + * {
+		padding-left: var(--spacing3);
+	}
+`
+
 export const SeparatedContainer = styled.div`
 	display: flex;
 	align-items: center;
