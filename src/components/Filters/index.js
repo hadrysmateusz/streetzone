@@ -18,7 +18,7 @@ import AlgoliaRange from "../Algolia/AlgoliaRange"
 import Button from "../Button"
 import { ROUTES } from "../../constants"
 import { withAuthentication } from "../UserSession"
-import { Header3 } from "../StyledComponents"
+import { TextBlock } from "../StyledComponents"
 
 const TABS = {
 	category: {
@@ -73,7 +73,7 @@ export class Filters extends Component {
 				<FilterInnerContainer>
 					{this.props.currentBreakpoint < 1 && (
 						<Section>
-							<Header3>Filtry</Header3>
+							<TextBlock bold>Filtry</TextBlock>
 						</Section>
 					)}
 

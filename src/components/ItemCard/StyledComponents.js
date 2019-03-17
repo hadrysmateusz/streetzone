@@ -1,6 +1,6 @@
 import styled, { css } from "styled-components"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { Text, TextBlock, Header4 } from "../StyledComponents"
+import { Text, TextBlock } from "../StyledComponents"
 
 const ContainerCommon = css`
 	overflow: hidden;
@@ -83,14 +83,12 @@ export const Name = styled(TextBlock)`
 	${itemBase}
 `
 
-export const Designers = styled(TextBlock).attrs({ size: "l" })`
+export const Designers = styled(TextBlock)`
 	${itemBase}
 	font-weight: bold;
 	text-transform: uppercase;
 	padding-right: 8px;
 	word-spacing: 0.12ch;
-	font-family: var(--font-family--serif);
-	letter-spacing: 0.05ch;
 `
 
 export const Price = styled(Text)`

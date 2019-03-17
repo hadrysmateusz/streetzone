@@ -8,7 +8,6 @@ export const PageHeader = styled.header`
 	padding: 0 20px;
 	display: grid;
 	grid-template-columns: 1fr 1fr 1fr;
-	font-family: "Playfair Display";
 `
 
 export const PageHeaderOuter = styled.div`
@@ -17,7 +16,7 @@ export const PageHeaderOuter = styled.div`
 	z-index: 80;
 
 	background: white;
-	border-bottom: 1px solid var(--gray75);
+	/* border-bottom: 1px solid var(--gray75); */
 `
 
 export const Nav = styled.nav`

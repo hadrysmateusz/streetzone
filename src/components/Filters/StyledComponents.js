@@ -23,10 +23,6 @@ export const FiltersContainer = styled.div`
 `
 
 export const FilterInnerContainer = styled.div`
-	> * {
-		padding: 5px 0;
-	}
-
 	/* mobile */
 	@media (max-width: ${(p) => p.theme.breakpoints[1] - 1}px) {
 		flex: 1 1 100%;
@@ -65,9 +61,8 @@ export const CloseIconContainer = styled.span`
 
 export const Section = styled.div`
 	:not(:last-child) {
-		border-bottom: 1px solid var(--gray100);
+		border-bottom: 1px solid var(--gray75);
 	}
-	padding: 15px;
 `
 
 export const ListItem = styled.div`

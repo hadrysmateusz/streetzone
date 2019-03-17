@@ -6,7 +6,7 @@ export default styled.div`
 	display: flex;
 	flex-direction: column;
 	min-height: 100vh;
-	font-size: var(--font-size--m);
+	font-size: var(--font-size--s);
 
 	line-height: 1.5;
 
@@ -32,15 +32,18 @@ export default styled.div`
 
 	--almost-white: #f8f8f8;
 
-	--font-size--xs: 1.1rem;
-	--font-size--s: 1.2rem;
-	--font-size--m: 1.4rem;
-	--font-size--l: 1.6rem;
+	--spacing-base: 4px;
+	--spacing1: calc(var(--spacing-base) * 1);
+	--spacing2: calc(var(--spacing-base) * 2);
+	--spacing3: calc(var(--spacing-base) * 4);
+	--spacing4: calc(var(--spacing-base) * 8);
+	--spacing5: calc(var(--spacing-base) * 16);
 
-	--font-size--h4: 1.8rem;
-	--font-size--h3: 2.2rem;
-	--font-size--h2: 3.6rem;
-	--font-size--h1: 4.2rem;
+	--font-size--xs: 1rem;
+	--font-size--s: 1.4rem;
+	--font-size--m: 1.8rem;
+	--font-size--l: 2.4rem;
+	--font-size--xl: 3.2rem;
 
 	--form-element-height: 40px;
 

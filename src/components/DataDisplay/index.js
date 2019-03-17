@@ -11,7 +11,7 @@ const StyledTable = styled.table`
 		font-weight: bold;
 		text-align: right;
 	}
-	font-size: var(--font-size--l);
+	font-size: var(--font-size--m);
 `
 
 const DataDisplay = ({ children, textSize }) => {

@@ -8,7 +8,6 @@ import LoadingSpinner from "../../components/LoadingSpinner"
 import MainInfo from "../../components/UserMainInfo"
 
 import { TabsNav, TabsNavItem, MainGrid, InnerContainer } from "./StyledComponents"
-import { Header4 } from "../../components/StyledComponents"
 
 class AccountPage extends Component {
 	state = {

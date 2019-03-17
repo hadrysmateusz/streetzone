@@ -31,7 +31,7 @@ export const FilterItemsContainer = styled.div`
 
 export const BoxItem = styled.div`
 	border: 1px solid var(--gray75);
-	font-size: var(--font-size--s);
+	font-size: var(--font-size--xs);
 	height: 100%;
 	transform: border 0.2s ease;
 	:hover {
@@ -61,17 +61,16 @@ export const NoResults = styled.div`
 export const OptionsContainer = styled.div`
 	display: grid;
 	max-width: 100%;
-	margin: 10px 0;
+	gap: var(--spacing1);
 	${(p) => p.multiColumn && `grid-template-columns: repeat(2, 1fr);`}
 	${(p) =>
-		p.boxGrid && "grid-template-columns: repeat(auto-fill, minmax(35px,1fr)); gap: 7px; "}
+		p.boxGrid &&
+		"grid-template-columns: repeat(auto-fill, minmax(35px,1fr)); gap: var(--spacing2); "};
 `
 
 export const FilterItem = styled.div`
 	display: flex;
 	align-items: center;
-
-	padding: 3px 0;
 
 	* {
 		cursor: pointer;

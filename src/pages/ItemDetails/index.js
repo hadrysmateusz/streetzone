@@ -20,7 +20,7 @@ import { translateCondition } from "../../constants/item_schema"
 import { PageContainer, GrayContainer } from "../../components/Containers"
 import { AlgoliaMiniHits } from "../../components/Algolia/AlgoliaHits"
 import { VirtualMenu, VirtualRefinementList } from "../../components/Algolia/Virtual"
-import { Header4, TextBlock, Header3 } from "../../components/StyledComponents"
+import { TextBlock } from "../../components/StyledComponents"
 import {
 	ItemContainer,
 	InfoContainer,
@@ -121,9 +121,9 @@ class ItemDetailsPage extends Component {
 						<ImageGallery item={item} />
 						<InfoContainer>
 							<SectionContainer>
-								<Header4 uppercase>
+								<TextBlock uppercase>
 									{item.designers && <Designers>{formattedDesigners}</Designers>}
-								</Header4>
+								</TextBlock>
 								<TextBlock size="l">{item.name}</TextBlock>
 							</SectionContainer>
 
@@ -186,7 +186,7 @@ class ItemDetailsPage extends Component {
 					</ItemContainer>
 				</PageContainer>
 				<GrayContainer padded>
-					<Header3 uppercase>Podobne przedmioty</Header3>
+					<TextBlock uppercase>Podobne przedmioty</TextBlock>
 					<InstantSearch
 						appId={process.env.REACT_APP_APP_ID}
 						apiKey={process.env.REACT_APP_ALGOLIA_API_KEY}
@@ -200,7 +200,7 @@ class ItemDetailsPage extends Component {
 						<VirtualMenu attribute="category" defaultRefinement={item.category} />
 						<AlgoliaMiniHits />
 					</InstantSearch>
-					<Header3 uppercase>Inne przedmioty sprzedającego</Header3>
+					<TextBlock uppercase>Inne przedmioty sprzedającego</TextBlock>
 					<InstantSearch
 						appId={process.env.REACT_APP_APP_ID}
 						apiKey={process.env.REACT_APP_ALGOLIA_API_KEY}

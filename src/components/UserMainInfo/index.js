@@ -15,7 +15,7 @@ import {
 import { HeartButton } from "../SaveButton"
 import { ROUTES } from "../../constants"
 import Link from "react-router-dom/Link"
-import { Header3 } from "../StyledComponents"
+import { TextBlock } from "../StyledComponents"
 import SingleValueDisplay from "../SingleValueDisplay"
 import { Flex } from "rebass"
 
@@ -27,7 +27,7 @@ const MainInfo = ({ user, isUserOwner, userId }) => {
 			</div>
 			<InfoContainer>
 				<Flex alignItems="center">
-					<Header3 bold>{user.name}</Header3>
+					<TextBlock bold>{user.name}</TextBlock>
 					<UserRating feedback={user.feedback} />
 				</Flex>
 				<Flex>

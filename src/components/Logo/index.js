@@ -5,7 +5,7 @@ import { Link } from "react-router-dom"
 import { CONST, ROUTES } from "../../constants"
 
 const LogoContainer = styled.div`
-	font-size: var(--font-size--h2);
+	font-size: var(--font-size--xl);
 	font-weight: bold;
 	font-family: "Playfair Display";
 

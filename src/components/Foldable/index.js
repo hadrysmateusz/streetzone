@@ -3,10 +3,12 @@ import styled from "styled-components"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { withBreakpoints } from "react-breakpoints"
 import Clear, { ClearRange } from "../Algolia/ClearCategoryButton"
-import { Header4 } from "../StyledComponents"
+import { TextBlock } from "../StyledComponents"
 
-const Header = styled.div`
+const Header = styled.header`
+	padding: ${(p) => (p.noMargin ? "0" : "var(--spacing3)")};
 	cursor: pointer;
+	user-select: none;
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
@@ -14,6 +16,10 @@ const Header = styled.div`
 		transition: transform 0.32s ease;
 		${(p) => p.isFolded && "transform: rotate(-180deg);"}
 	}
+`
+
+const Content = styled.div`
+	padding: 0 var(--spacing3) var(--spacing3);
 `
 
 export const AdaptiveFoldable = withBreakpoints(
@@ -55,12 +61,12 @@ export const AdaptiveFoldable = withBreakpoints(
 					: this.toggle
 
 			return (
-				<div>
+				<section>
 					<Header onClick={toggleFunction} isFolded={isFolded}>
 						<div>
-							<Header4 light uppercase>
+							<TextBlock bold uppercase>
 								{tab.displayName}
-							</Header4>
+							</TextBlock>
 							{showClear &&
 								(tab.id === "price" ? (
 									<ClearRange attribute={attribute} resetState={resetState} />
@@ -70,8 +76,8 @@ export const AdaptiveFoldable = withBreakpoints(
 						</div>
 						<FontAwesomeIcon icon={"caret-up"} />
 					</Header>
-					<div hidden={isFolded}>{children}</div>
-				</div>
+					<Content hidden={isFolded}>{children}</Content>
+				</section>
 			)
 		}
 	}
@@ -94,7 +100,7 @@ class Foldable extends Component {
 	render() {
 		return (
 			<div>
-				<Header onClick={this.toggle} isFolded={this.state.isFolded}>
+				<Header onClick={this.toggle} isFolded={this.state.isFolded} noMargin>
 					<span>{this.props.title}</span>
 					<FontAwesomeIcon icon={"caret-up"} />
 				</Header>

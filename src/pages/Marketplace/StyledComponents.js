@@ -16,12 +16,14 @@ export const MainGrid = styled.div`
 `
 
 export const Sidebar = styled.aside`
+	align-self: flex-start;
+	border: 1px solid var(--gray75);
 	grid-area: filters;
 	box-sizing: content-box;
 
 	max-width: 100%;
 
-	width: 285px;
+	width: 270px;
 	margin-right: 20px;
 
 	/* mobile */

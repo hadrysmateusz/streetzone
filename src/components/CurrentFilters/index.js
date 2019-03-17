@@ -10,7 +10,7 @@ import { ROUTES } from "../../constants"
 import formatSize from "../../utils/formatSize"
 
 const Container = styled.div`
-	font-size: var(--font-size--s);
+	font-size: var(--font-size--xs);
 	display: flex;
 	flex-direction: column;
 	max-width: ${(p) => p.theme.breakpoints[5]}px;

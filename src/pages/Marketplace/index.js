@@ -15,7 +15,6 @@ import LoadingSpinner from "../../components/LoadingSpinner"
 import CurrentFilters from "../../components/CurrentFilters"
 import sortingOptions from "../../constants/sortingOptions"
 import ScrollToTop from "../../components/ScrollToTop"
-import SidebarBox from "../../components/SidebarBox"
 import Filters from "../../components/Filters"
 import Topbar from "../../components/Topbar"
 
@@ -212,15 +211,13 @@ class HomePage extends Component {
 
 					<MainGrid>
 						<Sidebar hidden={!areFiltersOpen && !(currentBreakpoint > 0)}>
-							<SidebarBox title="Filtry">
-								<Filters
-									toggleFilters={this.toggleFilters}
-									clearFilters={{
-										value: this.state.clearFilters,
-										update: this.setClearFiltersFlag
-									}}
-								/>
-							</SidebarBox>
+							<Filters
+								toggleFilters={this.toggleFilters}
+								clearFilters={{
+									value: this.state.clearFilters,
+									update: this.setClearFiltersFlag
+								}}
+							/>
 						</Sidebar>
 						<AlgoliaResults />
 					</MainGrid>

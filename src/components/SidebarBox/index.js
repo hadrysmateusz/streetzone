@@ -1,6 +1,6 @@
 import React from "react"
 import styled from "styled-components"
-import { Header4 } from "../StyledComponents"
+import { TextBlock } from "../StyledComponents"
 
 const Container = styled.section`
 	border: 1px solid var(--gray100);
@@ -19,9 +19,9 @@ const Header = styled.header`
 const SidebarBox = ({ title, children }) => (
 	<Container>
 		<Header>
-			<Header4 uppercase bold>
+			<TextBlock uppercase bold>
 				{title}
-			</Header4>
+			</TextBlock>
 		</Header>
 		{children}
 	</Container>
