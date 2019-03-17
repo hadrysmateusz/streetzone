@@ -1,4 +1,4 @@
-import React, { Component } from "react"
+import React, { Component, useState, useEffect, useContext } from "react"
 import { Link } from "react-router-dom"
 import { compose } from "recompose"
 import Ratio from "react-ratio"
@@ -8,6 +8,7 @@ import { withAuthentication } from "../UserSession"
 import { HeartButton } from "../SaveButton"
 import LoadingSpinner from "../LoadingSpinner"
 
+import { FirebaseContext } from "../Firebase"
 import formatDesigners from "../../utils/formatDesigners"
 import formatPrice from "../../utils/formatPrice"
 import formatSize from "../../utils/formatSize"
@@ -28,148 +29,108 @@ import {
 
 const ERR_NO_IMAGE = "NO_IMAGE"
 
-class ItemCardBase extends Component {
-	state = {
-		imageURL: "",
-		error: null,
-		isLoading: true
-	}
+function useImage(attachment) {
+	const firebase = useContext(FirebaseContext)
+	const [imageURL, setImageURL] = useState(null)
+	const [error, setError] = useState(null)
 
-	componentDidMount = () => {
-		this.loadImage()
-	}
-
-	// Make sure if component's props change the images get updated
-	componentDidUpdate = (prevProps) => {
-		if (
-			prevProps.item.attachments &&
-			this.props.item.attachments &&
-			prevProps.item.attachments[0] !== this.props.item.attachments[0]
-		) {
-			this.loadImage()
-		}
-	}
-
-	loadImage = async () => {
-		const { item, firebase } = this.props
-		this.setState({ isLoading: true })
-
+	const fetchImage = async () => {
 		try {
-			const imageURL = await firebase.getImageURL(item.attachments[0], "M")
-			this.setState({ imageURL })
+			const imageURL = await firebase.getImageURL(attachment, "M")
+			setImageURL(imageURL)
 		} catch (error) {
-			this.setState({ error: ERR_NO_IMAGE })
+			setError(ERR_NO_IMAGE)
 			console.log(error)
-		} finally {
-			this.setState({ isLoading: false })
 		}
 	}
 
-	render() {
-		const { itemId, name, price, designers, size } = this.props.item
+	useEffect(() => {
+		fetchImage()
+	})
 
-		const formattedDesigners = formatDesigners(designers)
-		const formattedPrice = formatPrice(price)
-		const formattedSize = formatSize(size)
-
-		return (
-			<Ratio ratio={2 / 3}>
-				<Container className={this.props.className}>
-					<Link to={`/i/${itemId}`}>
-						<ThumbnailContainer>
-							{this.state.error && this.state.error === ERR_NO_IMAGE ? (
-								<StyledIcon icon="image" />
-							) : this.state.isLoading ? (
-								<LoadingSpinner size={7} delay={500} />
-							) : (
-								<img src={this.state.imageURL} alt="" />
-							)}
-						</ThumbnailContainer>
-						<InfoContainer>
-							<TopContainer>
-								<InnerContainer>
-									<Designers title={formattedDesigners}>{formattedDesigners}</Designers>
-									<Name title={name}>{name}</Name>
-								</InnerContainer>
-								<HeartButton id={itemId} type="item" scale={2} />
-							</TopContainer>
-							<SecondaryContainer>
-								<Price title={price ? `Cena: ${price}` : null}>{formattedPrice}</Price>
-								<Size title={size ? `Rozmiar: ${formattedSize}` : null}>
-									{formattedSize}
-								</Size>
-							</SecondaryContainer>
-						</InfoContainer>
-					</Link>
-				</Container>
-			</Ratio>
-		)
-	}
+	return [imageURL, error]
 }
 
-class ItemCardMiniBase extends Component {
-	state = { imageURL: "" }
+const ItemCardImage = ({ imageId }) => {
+	const [imageURL, error] = useImage(imageId, [imageId])
+	const isLoading = imageURL === null
 
-	componentDidMount = () => {
-		this.loadImage()
-	}
+	return (
+		<ThumbnailContainer>
+			{error ? (
+				<StyledIcon icon="image" />
+			) : isLoading ? (
+				<LoadingSpinner size={7} delay={500} />
+			) : (
+				<img src={imageURL} alt="" />
+			)}
+		</ThumbnailContainer>
+	)
+}
 
-	// Make sure if component's props change the images get updated
-	componentDidUpdate = (prevProps, prevState) => {
-		if (prevProps.item.attachments[0] !== this.props.item.attachments[0]) {
-			this.loadImage()
-		}
-	}
+const ItemCardBase = ({ item, ...rest }) => {
+	const { itemId, name, price, designers, size } = item
 
-	loadImage = async () => {
-		const { item, firebase } = this.props
+	const formattedDesigners = formatDesigners(designers)
+	const formattedPrice = formatPrice(price)
+	const formattedSize = formatSize(size)
 
-		try {
-			const imageURL = await firebase.getImageURL(item.attachments[0], "M")
-			this.setState({ imageURL })
-		} catch (error) {
-			console.log(error)
-		}
-	}
-
-	render() {
-		const { itemId, name, price, designers = [], size } = this.props.item
-
-		return (
-			<MiniContainer className={this.props.className}>
+	return (
+		<Ratio ratio={2 / 3}>
+			<Container {...rest}>
 				<Link to={`/i/${itemId}`}>
-					<ThumbnailContainer>
-						<img src={this.state.imageURL} alt="" />
-					</ThumbnailContainer>
+					<ItemCardImage imageId={item.attachments[0]} />
+
 					<InfoContainer>
 						<TopContainer>
 							<InnerContainer>
-								{designers && (
-									<Designers title={designers.join(" X ")}>
-										{designers.join(" X ").toUpperCase()}
-									</Designers>
-								)}
+								<Designers title={formattedDesigners}>{formattedDesigners}</Designers>
 								<Name title={name}>{name}</Name>
 							</InnerContainer>
+							<HeartButton id={itemId} type="item" scale={2} />
 						</TopContainer>
 						<SecondaryContainer>
-							<Price title={`Cena: ${price}`}>{price}zł</Price>
-							<Size title={size ? `Rozmiar: ${size}` : undefined}>{size}</Size>
+							<Price title={price ? `Cena: ${price}` : null}>{formattedPrice}</Price>
+							<Size title={size ? `Rozmiar: ${formattedSize}` : null}>
+								{formattedSize}
+							</Size>
 						</SecondaryContainer>
 					</InfoContainer>
 				</Link>
-			</MiniContainer>
-		)
-	}
+			</Container>
+		</Ratio>
+	)
 }
 
-const ItemCard = compose(
-	withAuthentication,
-	withFirebase
-)(ItemCardBase)
-const ItemCardMini = compose(
-	withAuthentication,
-	withFirebase
-)(ItemCardMiniBase)
+const ItemCardMiniBase = ({ item, ...rest }) => {
+	const { itemId, name, price, designers, size } = item
 
-export { ItemCard, ItemCardMini }
+	const formattedDesigners = formatDesigners(designers)
+	const formattedPrice = formatPrice(price)
+	const formattedSize = formatSize(size)
+
+	return (
+		<MiniContainer {...rest}>
+			<Link to={`/i/${itemId}`}>
+				<ItemCardImage imageId={item.attachments[0]} />
+
+				<InfoContainer>
+					<TopContainer>
+						<InnerContainer>
+							<Designers title={formattedDesigners}>{formattedDesigners}</Designers>
+							<Name title={name}>{name}</Name>
+						</InnerContainer>
+						<HeartButton id={itemId} type="item" scale={2} />
+					</TopContainer>
+					<SecondaryContainer>
+						<Price title={price ? `Cena: ${price}` : null}>{formattedPrice}</Price>
+						<Size title={size ? `Rozmiar: ${formattedSize}` : null}>{formattedSize}</Size>
+					</SecondaryContainer>
+				</InfoContainer>
+			</Link>
+		</MiniContainer>
+	)
+}
+
+export const ItemCard = withAuthentication(ItemCardBase)
+export const ItemCardMini = withAuthentication(ItemCardMiniBase)
