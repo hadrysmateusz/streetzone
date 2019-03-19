@@ -42,3 +42,26 @@ export const TextBlock = styled.p`
 export const Text = styled.span`
 	${bodyTextBase}
 `
+
+export const SmallText = styled(Text).attrs({
+	color: "gray0",
+	size: "xs",
+	uppercase: "true"
+})``
+export const SmallTextBlock = styled(TextBlock).attrs({
+	color: "gray0",
+	size: "xs",
+	uppercase: "true"
+})``
+
+// containers
+
+export const HorizontalContainer = styled.div`
+	display: flex;
+	${(p) =>
+		p.gap &&
+		`> * + * {
+			padding-left: var(--spacing${p.gap});
+		}
+	`}
+`

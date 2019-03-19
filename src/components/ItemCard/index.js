@@ -51,7 +51,7 @@ function useImage(attachment) {
 	return [imageURL, error]
 }
 
-const ItemCardImage = ({ imageId }) => {
+export const ItemCardImage = ({ imageId }) => {
 	const [imageURL, error] = useImage(imageId, [imageId])
 	const isLoading = imageURL === null
 

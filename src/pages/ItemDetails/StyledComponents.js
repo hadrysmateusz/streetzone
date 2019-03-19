@@ -34,7 +34,7 @@ export const SectionContainer = styled.div`
 	:not(:last-child) {
 		border-bottom: 1px solid var(--gray75);
 	}
-	padding: 10px;
+	padding: var(--spacing3) 0;
 `
 
 export const InfoItem = styled.div`
@@ -42,11 +42,6 @@ export const InfoItem = styled.div`
 	font-weight: 500;
 	color: #444;
 	padding: 1px 0;
-`
-
-export const Description = styled.div`
-	margin-top: 10px;
-	color: #3d3d3d;
 `
 
 export const Sold = styled.div`

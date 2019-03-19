@@ -4,7 +4,7 @@ import { withRouter } from "react-router-dom"
 import { compose } from "recompose"
 
 import { withFirebase } from "../Firebase"
-import { ItemCard } from "../ItemCard"
+import { ItemCardImage } from "../ItemCard"
 import UserPreview from "../UserPreview"
 import Button, { ButtonContainer, LoaderButton } from "../Button"
 import { ImportantText } from "../Basics"
@@ -55,7 +55,7 @@ class DetailedItemCard extends React.Component {
 
 		return (
 			<OuterContainer>
-				<ItemCard item={item} />
+				<ItemCardImage imageId={item.attachments[0]} />
 				<DetailsContainer>
 					<Section>
 						<InfoItem>

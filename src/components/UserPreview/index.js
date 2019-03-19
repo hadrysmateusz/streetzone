@@ -9,7 +9,7 @@ import LoadingSpinner from "../LoadingSpinner"
 import getProfilePictureURL from "../../utils/getProfilePictureURL"
 import UserRating from "../UserRating"
 import { ROUTES } from "../../constants"
-import { DateContainer, Name, InfoContainer, Container } from "./StyledComponents"
+import { Name, InfoContainer, Container } from "./StyledComponents"
 
 class UserPreview extends Component {
 	state = {
@@ -56,9 +56,9 @@ class UserPreview extends Component {
 						<Name nameOnly={this.props.nameOnly}>{user.name}</Name>
 						{!this.props.nameOnly && (
 							<>
-								<DateContainer>
+								<div>
 									W serwisie od {moment(Date.now()).diff(user.userSince, "days")} dni
-								</DateContainer>
+								</div>
 								<div>
 									<UserRating size="15px" feedback={user.feedback} />
 								</div>

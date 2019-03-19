@@ -1,13 +1,11 @@
 import React from "react"
 
-import { TextBlock } from "../StyledComponents"
+import { TextBlock, SmallTextBlock } from "../StyledComponents"
 
 const SingleValueDisplay = ({ title, children }) => {
 	return (
 		<div>
-			<TextBlock size="xs" uppercase color="gray0">
-				{title}
-			</TextBlock>
+			<SmallTextBlock>{title}</SmallTextBlock>
 			<TextBlock size="m" bold>
 				{children}
 			</TextBlock>

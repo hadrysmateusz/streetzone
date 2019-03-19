@@ -19,7 +19,7 @@ const CurrentImage = styled.div`
 	height: 640px;
 
 	background: white;
-	border: 1px solid ${(p) => p.theme.colors.gray[75]};
+	/* border: 1px solid ${(p) => p.theme.colors.gray[75]}; */
 
 	text-align: center;
 	display: flex;

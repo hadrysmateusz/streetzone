@@ -3,6 +3,7 @@ import styled from "styled-components"
 
 const StyledTable = styled.table`
 	width: 100%;
+	margin: var(--spacing1) -3px var(--spacing2);
 	th {
 		font-weight: normal;
 		text-align: left;

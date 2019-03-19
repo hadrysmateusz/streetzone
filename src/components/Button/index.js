@@ -98,11 +98,11 @@ const Button = styled.button`
 export const ButtonContainer = styled.div`
 	width: 100%;
 	display: flex;
-	${(p) => !p.noMargin && "margin: 10px 0;"}
+	${(p) => !p.noMargin && "margin: var(--spacing2) 0;"}
 	${(p) => p.alignRight && "justify-content: flex-end;"}
 	${(p) => p.centered && "justify-content: center;"}
-	* + * {
-		margin-left: 10px;
+	> * + * {
+		margin-left: var(--spacing2);
 	}
 `
 

@@ -12,12 +12,11 @@ import {
 	MainInfoContainer,
 	InfoContainer,
 	SecondContainer,
-	SeparatedContainer,
-	InnerInfoContainer
+	SeparatedContainer
 } from "./StyledComponents"
 import { HeartButton } from "../SaveButton"
 import { ROUTES } from "../../constants"
-import { TextBlock } from "../StyledComponents"
+import { TextBlock, HorizontalContainer } from "../StyledComponents"
 import SingleValueDisplay from "../SingleValueDisplay"
 
 const MainInfo = ({ user, isUserOwner, userId }) => {
@@ -34,7 +33,7 @@ const MainInfo = ({ user, isUserOwner, userId }) => {
 					<UserRating feedback={user.feedback} />
 				</Flex>
 
-				<InnerInfoContainer>
+				<HorizontalContainer gap="3">
 					<SingleValueDisplay title="W serwisie od">
 						{moment(user.userSince).format("D.MM.YYYY")}
 					</SingleValueDisplay>
@@ -48,7 +47,7 @@ const MainInfo = ({ user, isUserOwner, userId }) => {
 					{user.phone && (
 						<SingleValueDisplay title="Nr Telefonu">{user.phone}</SingleValueDisplay>
 					)}
-				</InnerInfoContainer>
+				</HorizontalContainer>
 
 				<TextBlock>{user.info}</TextBlock>
 			</InfoContainer>

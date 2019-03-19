@@ -30,10 +30,6 @@ const Admin = Loadable({
 	loading: LoadableComponentSpinner
 })
 
-const UserInfo = Loadable({
-	loader: () => import("../../pages/Account/UserInfo"),
-	loading: LoadableComponentSpinner
-})
 const UserSettings = Loadable({
 	loader: () => import("../../pages/Account/UserSettings"),
 	loading: LoadableComponentSpinner

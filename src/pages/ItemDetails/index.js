@@ -2,7 +2,7 @@ import React, { Component } from "react"
 import { Link } from "react-router-dom"
 import { compose } from "recompose"
 import { InstantSearch, Configure } from "react-instantsearch-dom"
-// import moment from "moment"
+import moment from "moment"
 
 import DataDisplay from "../../components/DataDisplay"
 import ImageGallery from "../../components/ImageGallery"
@@ -20,7 +20,11 @@ import { translateCondition } from "../../constants/item_schema"
 import { PageContainer, GrayContainer } from "../../components/Containers"
 import { AlgoliaMiniHits } from "../../components/Algolia/AlgoliaHits"
 import { VirtualMenu, VirtualRefinementList } from "../../components/Algolia/Virtual"
-import { TextBlock } from "../../components/StyledComponents"
+import {
+	TextBlock,
+	SmallTextBlock,
+	HorizontalContainer
+} from "../../components/StyledComponents"
 import {
 	ItemContainer,
 	InfoContainer,
@@ -32,6 +36,7 @@ import {
 import formatDesigners from "../../utils/formatDesigners"
 import formatPrice from "../../utils/formatPrice"
 import formatSize from "../../utils/formatSize"
+import { Flex } from "rebass"
 
 class ItemDetailsPage extends Component {
 	state = {
@@ -121,23 +126,23 @@ class ItemDetailsPage extends Component {
 						<ImageGallery item={item} />
 						<InfoContainer>
 							<SectionContainer>
-								<TextBlock uppercase>
-									{item.designers && <Designers>{formattedDesigners}</Designers>}
+								<TextBlock uppercase size="l" bold>
+									{item.designers && formattedDesigners}
 								</TextBlock>
-								<TextBlock size="l">{item.name}</TextBlock>
+								<TextBlock size="m">{item.name}</TextBlock>
 							</SectionContainer>
 
 							<SectionContainer>
-								{/* <MoreInfo>
-					<div>
-					Dodano:{" "}
-					<span>{moment(item.createdAt).format("D.M.YY o HH:mm")}</span>
-					</div>
-					<div>
-					Edytowano:{" "}
-					<span>{moment(item.createdAt).format("D.M.YY o HH:mm")}</span>
-					</div>
-					</MoreInfo> */}
+								<HorizontalContainer gap="3">
+									<SmallTextBlock>
+										<b>Dodano:&nbsp;</b>
+										{moment(item.createdAt).format("D.M.YY o HH:mm")}
+									</SmallTextBlock>
+									<SmallTextBlock>
+										<b>Edytowano:&nbsp;</b>
+										{moment(item.createdAt).format("D.M.YY o HH:mm")}
+									</SmallTextBlock>
+								</HorizontalContainer>
 								<DataDisplay>
 									<tr>
 										<th>Cena</th>
@@ -153,9 +158,15 @@ class ItemDetailsPage extends Component {
 									</tr>
 								</DataDisplay>
 
-								<ButtonContainer>
-									{isUserOwner ? (
-										<>
+								{isUserOwner ? (
+									<>
+										<ButtonContainer>
+											<Button accent fullWidth>
+												Promuj
+											</Button>
+										</ButtonContainer>
+
+										<ButtonContainer noMargin>
 											<Button as={Link} to={`/e/${item.itemId}`} fullWidth>
 												Edytuj
 											</Button>
@@ -166,21 +177,21 @@ class ItemDetailsPage extends Component {
 												onClick={this.deleteItem}
 												fullWidth
 											/>
-										</>
-									) : (
-										<>
-											<Button primary fullWidth>
-												Kontakt
-											</Button>
-											<Button fullWidth>Zapisz</Button>
-											<IconButton icon="ellipsis-h" />
-										</>
-									)}
-								</ButtonContainer>
+										</ButtonContainer>
+									</>
+								) : (
+									<ButtonContainer noMargin>
+										<Button primary fullWidth>
+											Kontakt
+										</Button>
+										<Button fullWidth>Zapisz</Button>
+										<IconButton icon="ellipsis-h" />
+									</ButtonContainer>
+								)}
 							</SectionContainer>
 							<SectionContainer>
 								{!isUserOwner && <UserPreview id={item.userId} />}
-								<Description>{item.description}</Description>
+								<TextBlock>{item.description}</TextBlock>
 							</SectionContainer>
 						</InfoContainer>
 					</ItemContainer>
