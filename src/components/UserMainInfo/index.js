@@ -8,12 +8,7 @@ import ProfilePicture from "../ProfilePicture"
 import getProfilePictureURL from "../../utils/getProfilePictureURL"
 import Button, { ButtonContainer } from "../Button"
 import UserRating from "../UserRating"
-import {
-	MainInfoContainer,
-	InfoContainer,
-	SecondContainer,
-	SeparatedContainer
-} from "./StyledComponents"
+import { MainInfoContainer, InfoContainer, SecondContainer } from "./StyledComponents"
 import { HeartButton } from "../SaveButton"
 import { ROUTES } from "../../constants"
 import { TextBlock, HorizontalContainer } from "../StyledComponents"
@@ -52,14 +47,6 @@ const MainInfo = ({ user, isUserOwner, userId }) => {
 				<TextBlock>{user.info}</TextBlock>
 			</InfoContainer>
 			<SecondContainer>
-				<SeparatedContainer>
-					<span>
-						<strong>{user.followers || 0}</strong> Obserwujących
-					</span>
-					<span>
-						<strong>{user.following || 0}</strong> Obserwowanych
-					</span>
-				</SeparatedContainer>
 				{isUserOwner ? (
 					<ButtonContainer alignRight noMargin>
 						<Button as={Link} to={ROUTES.ACCOUNT_SETTINGS.replace(":id", userId)}>
