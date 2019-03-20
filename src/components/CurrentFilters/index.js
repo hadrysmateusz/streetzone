@@ -36,7 +36,6 @@ const Item = styled.div`
 `
 
 const CurrentFiltersView = ({ items, history, clearFilters }) => {
-	console.log(items)
 	return items && items.length > 0 ? (
 		<Container>
 			{items.map((item) => {

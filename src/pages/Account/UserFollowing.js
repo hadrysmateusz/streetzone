@@ -5,14 +5,13 @@ import { compose } from "recompose"
 import EmptyState, { UserNoFollowing } from "../../components/EmptyState"
 import { withFirebase } from "../../components/Firebase"
 import LoadingSpinner from "../../components/LoadingSpinner"
-import UserPreview from "../../components/UserPreview"
-// import Comment from "../../components/Comment"
-// import AddComment from "../../components/AddComment"
+import FollowedUserCard from "../../components/FollowedUserCard"
+import { FollowedUsersContainer } from "./StyledComponents"
 
 class UserFollowing extends React.Component {
 	state = { users: [], error: null, isLoading: true }
 
-	getUsers = async () => {
+	getUserIds = async () => {
 		this.setState({ isLoading: true })
 		const userId = this.props.match.params.id
 		const { user, error } = await this.props.firebase.getUserData(userId)
@@ -20,7 +19,7 @@ class UserFollowing extends React.Component {
 	}
 
 	componentDidMount = async () => {
-		await this.getUsers()
+		await this.getUserIds()
 	}
 
 	render() {
@@ -32,11 +31,11 @@ class UserFollowing extends React.Component {
 		) : (
 			<div>
 				{users && users.length > 0 ? (
-					<div>
+					<FollowedUsersContainer>
 						{users.map((userId) => {
-							return <UserPreview id={userId} />
+							return <FollowedUserCard id={userId} />
 						})}
-					</div>
+					</FollowedUsersContainer>
 				) : (
 					<EmptyState state={UserNoFollowing} />
 				)}

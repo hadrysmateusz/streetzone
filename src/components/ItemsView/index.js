@@ -9,7 +9,7 @@ const ItemsContainer = styled.div`
 	grid-gap: 3px;
 
 	${(p) => {
-		const cols = Math.min(Math.ceil(p.containerWidth / 310), 4)
+		const cols = Math.min(Math.ceil(p.containerWidth / 280), 4)
 		return `grid-template-columns: repeat(${cols}, 1fr);`
 	}}
 
@@ -24,7 +24,7 @@ const ItemsView = ({ items }) => {
 			{({ width }) => (
 				<ItemsContainer containerWidth={width}>
 					{items.map((item) => (
-						<ItemCard key={item.objectID} item={item} />
+						<ItemCard key={item.itemId} item={item} />
 					))}
 				</ItemsContainer>
 			)}

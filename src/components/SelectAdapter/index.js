@@ -8,8 +8,6 @@ const SelectAdapter = ({ onChange, value, initial, options, isMulti, ...rest }) 
 	if (!value) {
 		value = null
 	} else {
-		console.log(value)
-
 		// Find the matching value based on the isMulti prop
 		// and possible values in the options prop
 		if (isMulti) {

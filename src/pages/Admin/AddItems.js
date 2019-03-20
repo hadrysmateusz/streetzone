@@ -121,7 +121,6 @@ class NewItemPage extends Component {
 			const userId = values.randomUsers
 				? availableUserIds[randInt(0, availableUserIds.length - 1)]
 				: this.props.authUser.uid
-			console.log(userId)
 
 			// condition
 			const condition = randInt(5, 11)

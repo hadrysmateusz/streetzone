@@ -24,11 +24,11 @@ class UserItems extends Component {
 	getUserItems = async () => {
 		this.setState({ isFetchingItems: true })
 		let { items, error } = await this.props.firebase.getUserItems(this.props.user)
+		items.reverse()
 		this.setState({ items, error, isFetchingItems: false })
 	}
 
 	componentDidMount = async () => {
-		console.log(this.props)
 		try {
 			this.getUserItems()
 		} catch (error) {
@@ -42,8 +42,6 @@ class UserItems extends Component {
 		if (this.state.error) throw this.state.error
 		const { isLoading, isFetchingItems, items } = this.state
 		const { isAuthorized } = this.props
-
-		console.log(this.state)
 
 		return (
 			<div>
