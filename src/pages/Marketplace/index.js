@@ -178,7 +178,6 @@ class HomePage extends Component {
 		const { areFiltersOpen, searchState } = this.state
 		const { currentBreakpoint } = this.props
 
-		//
 		if (currentBreakpoint > 0) {
 			enableBodyScroll(this.targetElement)
 		}
