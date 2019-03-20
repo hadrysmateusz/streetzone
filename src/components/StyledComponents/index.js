@@ -58,6 +58,7 @@ export const SmallTextBlock = styled(TextBlock).attrs({
 
 export const HorizontalContainer = styled.div`
 	display: flex;
+	${(p) => p.justifyContent && `justify-content: ${p.justifyContent};`}
 	${(p) =>
 		p.gap &&
 		`> * + * {
