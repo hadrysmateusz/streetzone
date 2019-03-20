@@ -52,13 +52,6 @@ export const FiltersHeader = styled.div`
 	border-bottom: 1px solid var(--gray100);
 `
 
-export const CloseIconContainer = styled.span`
-	cursor: pointer;
-	position: fixed;
-	padding: 20px;
-	right: 20px;
-`
-
 export const Section = styled.div`
 	:not(:last-child) {
 		border-bottom: 1px solid var(--gray75);
@@ -71,4 +64,18 @@ export const ListItem = styled.div`
 	> :first-child {
 		flex: 1;
 	}
+`
+
+export const CloseIconContainer = styled.span`
+	cursor: pointer;
+	padding: var(--spacing1);
+`
+
+export const MobileFiltersHeader = styled.header`
+	border-bottom: 1px solid var(--gray75);
+	padding: var(--spacing3);
+	display: grid;
+	grid-template-columns: 1fr min-content;
+	grid-auto-flow: column;
+	align-items: center;
 `

@@ -10,7 +10,8 @@ import {
 	FilterInnerContainer,
 	CloseIconContainer,
 	Section,
-	ActionsContainer
+	ActionsContainer,
+	MobileFiltersHeader
 } from "./StyledComponents"
 import { ButtonContainer } from "../Button"
 import AlgoliaRefinementList from "../Algolia/AlgoliaRefinementList"
@@ -65,16 +66,16 @@ export class Filters extends Component {
 	render() {
 		return (
 			<FiltersContainer {...this.props}>
-				{this.props.currentBreakpoint < 1 && (
-					<CloseIconContainer onClick={this.props.toggleFilters}>
-						<FontAwesomeIcon icon="times" />
-					</CloseIconContainer>
-				)}
 				<FilterInnerContainer>
 					{this.props.currentBreakpoint < 1 && (
-						<Section>
-							<TextBlock bold>Filtry</TextBlock>
-						</Section>
+						<MobileFiltersHeader>
+							<TextBlock size="m" bold>
+								Filtry
+							</TextBlock>
+							<CloseIconContainer onClick={this.props.toggleFilters}>
+								<FontAwesomeIcon icon="times" />
+							</CloseIconContainer>
+						</MobileFiltersHeader>
 					)}
 
 					<Section>
@@ -134,7 +135,7 @@ export class Filters extends Component {
 				{this.props.currentBreakpoint < 1 && (
 					<ActionsContainer>
 						<ButtonContainer noMargin>
-							<Button onClick={this.props.toggleFilters} fullWidth>
+							<Button onClick={this.props.toggleFilters} fullWidth primary>
 								Gotowe
 							</Button>
 							<ClearAllFiltersButton
