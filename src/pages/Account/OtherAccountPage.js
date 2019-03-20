@@ -5,7 +5,7 @@ import LoadingSpinner from "../../components/LoadingSpinner"
 import { withFirebase } from "../../components/Firebase"
 import MainInfo from "../../components/UserMainInfo"
 
-import { TabsNav, TabsNavItem, MainGrid, InnerContainer } from "./StyledComponents"
+import { TabsNav, TabsNavItem, MainContainer } from "./StyledComponents"
 
 class OtherAccountPage extends Component {
 	state = {
@@ -41,11 +41,11 @@ class OtherAccountPage extends Component {
 		const commonProps = { user, userId, isUserOwner }
 
 		return (
-			<MainGrid>
+			<MainContainer>
 				{!isLoading && user ? (
 					<>
 						<MainInfo {...commonProps} />
-						<InnerContainer>
+						<div>
 							<TabsNav>
 								{routes.map(
 									(route, i) =>
@@ -84,12 +84,12 @@ class OtherAccountPage extends Component {
 									)}
 								/>
 							</Switch>
-						</InnerContainer>
+						</div>
 					</>
 				) : (
 					<LoadingSpinner />
 				)}
-			</MainGrid>
+			</MainContainer>
 		)
 	}
 }

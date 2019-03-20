@@ -2,7 +2,7 @@ import styled from "styled-components"
 
 export const ItemsContainer = styled.div`
 	display: grid;
-	grid-gap: 3px;
+	grid-gap: var(--spacing1);
 	width: 100%;
 	margin: 0 auto;
 
@@ -13,7 +13,7 @@ export const ItemsContainer = styled.div`
 	}
 
 	@media (min-width: ${(p) => p.theme.breakpoints[0]}px) {
-		grid-gap: 10px;
+		grid-gap: var(--spacing3);
 	}
 
 	@media (min-width: ${(p) => p.theme.breakpoints[3]}px) {

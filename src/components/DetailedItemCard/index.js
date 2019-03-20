@@ -7,11 +7,16 @@ import { withFirebase } from "../Firebase"
 import { ItemCardImage } from "../ItemCard"
 import UserPreview from "../UserPreview"
 import Button, { ButtonContainer, LoaderButton } from "../Button"
-import { ImportantText } from "../Basics"
+import { ImportantText, Separator } from "../Basics"
 
 import { DetailsContainer, Section, InfoItem, OuterContainer } from "./StyledComponents"
 import { ROUTES } from "../../constants"
 import { translateCondition } from "../../constants/item_schema"
+import { SmallTextBlock, HorizontalContainer, TextBlock } from "../StyledComponents"
+import DataDisplay from "../DataDisplay"
+import formatDesigners from "../../utils/formatDesigners"
+import formatPrice from "../../utils/formatPrice"
+import formatSize from "../../utils/formatSize"
 
 class DetailedItemCard extends React.Component {
 	state = { isDeleting: false }
@@ -51,44 +56,51 @@ class DetailedItemCard extends React.Component {
 	render() {
 		const { item, isUserOwner, history } = this.props
 
-		const conditionObj = translateCondition(item.condition)
+		let conditionObj = translateCondition(item.condition)
+		let formattedDesigners = formatDesigners(item.designers)
+		let formattedPrice = formatPrice(item.price)
+		let formattedSize = formatSize(item.size)
 
 		return (
 			<OuterContainer>
 				<ItemCardImage imageId={item.attachments[0]} />
 				<DetailsContainer>
-					<Section>
-						<InfoItem>
-							<ImportantText>
-								{item.designers && item.designers.join(" x ")}
-							</ImportantText>
-						</InfoItem>
-						<InfoItem>{item.name}</InfoItem>
-					</Section>
-					<Section>
-						<InfoItem>
-							<h4>Stan</h4>
-							<strong title={conditionObj.tooltip}>{conditionObj.displayValue}</strong>
-						</InfoItem>
-						<InfoItem>
-							<h4>Cena</h4>
-							{item.originalPrice && item.price !== item.originalPrice && (
-								<strike>{item.originalPrice}</strike>
-							)}
-							<strong>{item.price}zł</strong>
-						</InfoItem>
-					</Section>
-					<Section>
-						<InfoItem>
-							<h4>Dodano</h4>
-							<strong>{moment(item.createdAt).format("D.MM.YYYY")}</strong>
-						</InfoItem>
-						<InfoItem>
-							<h4>Edytowano</h4>
-							<strong>{moment(item.editedAt).format("D.MM.YYYY")}</strong>
-						</InfoItem>
-					</Section>
-					<Section>
+					<div>
+						<TextBlock uppercase size="m" bold>
+							{item.designers && formattedDesigners}
+						</TextBlock>
+						<TextBlock size="m">{item.name}</TextBlock>
+					</div>
+					<Separator />
+
+					<div>
+						<HorizontalContainer gap="3">
+							<SmallTextBlock>
+								<b>Dodano:&nbsp;</b>
+								{moment(item.createdAt).format("D.M.YY o HH:mm")}
+							</SmallTextBlock>
+							<SmallTextBlock>
+								<b>Edytowano:&nbsp;</b>
+								{moment(item.createdAt).format("D.M.YY o HH:mm")}
+							</SmallTextBlock>
+						</HorizontalContainer>
+						<DataDisplay>
+							<tr>
+								<th>Cena</th>
+								<td>{formattedPrice}</td>
+							</tr>
+							<tr>
+								<th>Rozmiar</th>
+								<td>{formattedSize}</td>
+							</tr>
+							<tr>
+								<th>Stan</th>
+								<td>{conditionObj.displayValue}</td>
+							</tr>
+						</DataDisplay>
+					</div>
+					<Separator />
+					<div>
 						{isUserOwner ? (
 							<div>
 								<ButtonContainer>
@@ -121,7 +133,7 @@ Zaczekaj jeszcze: --"
 						) : (
 							<UserPreview id={item.userId} pictureSize="52px" />
 						)}
-					</Section>
+					</div>
 				</DetailsContainer>
 			</OuterContainer>
 		)

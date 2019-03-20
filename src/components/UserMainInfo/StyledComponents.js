@@ -19,10 +19,6 @@ export const MainInfoContainer = styled.div`
 	}
 `
 
-export const InfoContainer = styled.div`
-	padding-top: 10px;
-`
-
 export const InnerInfoContainer = styled.div`
 	display: flex;
 	> * + * {
@@ -46,5 +42,12 @@ export const SeparatedContainer = styled.div`
 export const SecondContainer = styled.div`
 	display: flex;
 	flex-direction: column;
-	align-items: flex-end;
+	justify-content: center;
+`
+
+export const InfoContainer = styled.div`
+	display: grid;
+	gap: var(--spacing2);
+	grid-auto-rows: min-content;
+	max-width: 600px;
 `

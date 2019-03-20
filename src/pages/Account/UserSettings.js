@@ -4,8 +4,9 @@ import AvatarChangeForm from "../../components/AvatarChange"
 import LoginManagement from "../../components/LoginManagement"
 import SignOutButton from "../../components/SignOut"
 import ProfileEdit from "../../components/ProfileEdit"
-import { UserSettingsContainer, Section } from "./StyledComponents"
 import { SubHeader } from "../../components/Basics"
+
+import { UserSettingsContainer, Section } from "./StyledComponents"
 
 const UserSettings = () => (
 	<UserSettingsContainer>

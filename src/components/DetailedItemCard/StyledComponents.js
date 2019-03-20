@@ -1,31 +1,19 @@
 import styled from "styled-components"
 
 export const OuterContainer = styled.div`
-	display: flex;
-	> * {
-		flex: 0 0 50%;
-		max-width: 50%;
-	}
+	display: grid;
+	grid-template-columns: 4fr 6fr;
+	gap: var(--spacing3);
 `
-export const DetailsContainer = styled.div`
-	padding: 0 8px;
-`
+
 export const Section = styled.div`
-	margin: 10px 0;
 	&:not(:last-child) {
 		border-bottom: 1px solid ${(p) => p.theme.colors.gray[75]};
 	}
 `
-export const InfoItem = styled.div`
-	margin: 10px 5px;
-	display: flex;
 
-	h4 {
-		flex: 1;
-		margin: 0;
-		font-weight: 400;
-	}
-	strike {
-		color: ${(p) => p.theme.colors.gray[50]};
-	}
+export const DetailsContainer = styled.div`
+	display: grid;
+	grid-auto-flow: row;
+	gap: var(--spacing2);
 `

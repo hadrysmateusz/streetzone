@@ -7,7 +7,7 @@ import { withAuthorization } from "../../components/UserSession"
 import LoadingSpinner from "../../components/LoadingSpinner"
 import MainInfo from "../../components/UserMainInfo"
 
-import { TabsNav, TabsNavItem, MainGrid, InnerContainer } from "./StyledComponents"
+import { TabsNav, TabsNavItem, MainContainer, InnerContainer } from "./StyledComponents"
 
 class AccountPage extends Component {
 	state = {
@@ -32,11 +32,11 @@ class AccountPage extends Component {
 		const commonProps = { user, userId, isUserOwner }
 
 		return (
-			<MainGrid>
+			<MainContainer>
 				{!isLoading && user ? (
 					<>
 						<MainInfo {...commonProps} />
-						<InnerContainer>
+						<div>
 							<TabsNav>
 								{routes.map(
 									(route, i) =>
@@ -72,12 +72,12 @@ class AccountPage extends Component {
 									)}
 								/>
 							</Switch>
-						</InnerContainer>
+						</div>
 					</>
 				) : (
 					<LoadingSpinner />
 				)}
-			</MainGrid>
+			</MainContainer>
 		)
 	}
 }

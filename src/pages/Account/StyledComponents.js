@@ -3,15 +3,15 @@ import { NavLink } from "react-router-dom"
 
 export const TabsNav = styled.nav`
 	display: flex;
-	font-size: var(--font-size--m);
-	font-family: var(--font-family--serif);
 	justify-content: space-evenly;
-	padding: 20px 0;
+	padding: var(--spacing3) 0;
+	margin-bottom: var(--spacing4);
 	color: var(--gray0);
+
+	border-bottom: 1px solid var(--gray75);
 
 	@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
 		justify-content: center;
-		font-size: var(--font-size--h4);
 	}
 `
 
@@ -35,7 +35,7 @@ export const TabsNavItem = styled(NavLink)`
 	}
 `
 
-export const MainGrid = styled.div`
+export const MainContainer = styled.div`
 	height: 100%;
 	width: 100%;
 	flex: 1;
@@ -51,5 +51,3 @@ export const UserSettingsContainer = styled.div`
 	margin: 0 auto;
 	max-width: 600px;
 `
-
-export const InnerContainer = styled.div``
