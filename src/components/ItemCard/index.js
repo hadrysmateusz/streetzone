@@ -29,14 +29,14 @@ import {
 
 const ERR_NO_IMAGE = "NO_IMAGE"
 
-function useImage(attachment) {
+function useImage(imageId) {
 	const firebase = useContext(FirebaseContext)
 	const [imageURL, setImageURL] = useState(null)
 	const [error, setError] = useState(null)
 
 	const fetchImage = async () => {
 		try {
-			const imageURL = await firebase.getImageURL(attachment, "M")
+			const imageURL = await firebase.getImageURL(imageId, "M")
 			setImageURL(imageURL)
 		} catch (error) {
 			setError(ERR_NO_IMAGE)
@@ -46,13 +46,13 @@ function useImage(attachment) {
 
 	useEffect(() => {
 		fetchImage()
-	})
+	}, [imageId])
 
 	return [imageURL, error]
 }
 
 export const ItemCardImage = ({ imageId }) => {
-	const [imageURL, error] = useImage(imageId, [imageId])
+	const [imageURL, error] = useImage(imageId)
 	const isLoading = imageURL === null
 
 	return (

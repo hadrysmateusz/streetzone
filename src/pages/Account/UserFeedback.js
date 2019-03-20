@@ -33,19 +33,19 @@ class UserFeedback extends React.Component {
 
 	render() {
 		const { error, feedback, isLoading } = this.state
-		const { isUserOwner } = this.props
+		const { isAuthorized } = this.props
 		if (error) throw error
 
 		return isLoading ? (
 			<LoadingSpinner />
 		) : (
 			<div>
-				{!isUserOwner && <AddComment refresh={this.getFeedback} />}
+				{!isAuthorized && <AddComment refresh={this.getFeedback} />}
 				<>
 					{feedback && feedback.length > 0 ? (
 						<div>
-							{feedback.map((data) => {
-								return <Comment data={data} />
+							{feedback.map((data, i) => {
+								return <Comment key={i} data={data} />
 							})}
 						</div>
 					) : (

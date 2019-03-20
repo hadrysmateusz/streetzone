@@ -7,9 +7,9 @@ import { withFirebase } from "../Firebase"
 import { ItemCardImage } from "../ItemCard"
 import UserPreview from "../UserPreview"
 import Button, { ButtonContainer, LoaderButton } from "../Button"
-import { ImportantText, Separator } from "../Basics"
+import { Separator } from "../Basics"
 
-import { DetailsContainer, Section, InfoItem, OuterContainer } from "./StyledComponents"
+import { DetailsContainer, OuterContainer } from "./StyledComponents"
 import { ROUTES } from "../../constants"
 import { translateCondition } from "../../constants/item_schema"
 import { SmallTextBlock, HorizontalContainer, TextBlock } from "../StyledComponents"
@@ -54,7 +54,7 @@ class DetailedItemCard extends React.Component {
 	}
 
 	render() {
-		const { item, isUserOwner, history } = this.props
+		const { item, isAuthorized, history } = this.props
 
 		let conditionObj = translateCondition(item.condition)
 		let formattedDesigners = formatDesigners(item.designers)
@@ -101,7 +101,7 @@ class DetailedItemCard extends React.Component {
 					</div>
 					<Separator />
 					<div>
-						{isUserOwner ? (
+						{isAuthorized ? (
 							<div>
 								<ButtonContainer>
 									<Button

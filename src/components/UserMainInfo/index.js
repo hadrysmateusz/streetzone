@@ -14,7 +14,7 @@ import { ROUTES } from "../../constants"
 import { TextBlock, HorizontalContainer } from "../StyledComponents"
 import SingleValueDisplay from "../SingleValueDisplay"
 
-const MainInfo = ({ user, isUserOwner, userId }) => {
+const MainInfo = ({ user, isAuthorized, userId }) => {
 	return (
 		<MainInfoContainer>
 			<div>
@@ -47,7 +47,7 @@ const MainInfo = ({ user, isUserOwner, userId }) => {
 				<TextBlock>{user.info}</TextBlock>
 			</InfoContainer>
 			<SecondContainer>
-				{isUserOwner ? (
+				{isAuthorized ? (
 					<ButtonContainer alignRight noMargin>
 						<Button as={Link} to={ROUTES.ACCOUNT_SETTINGS.replace(":id", userId)}>
 							<span>Edytuj Profil</span>

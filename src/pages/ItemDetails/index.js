@@ -100,12 +100,12 @@ class ItemDetailsPage extends Component {
 	render() {
 		const { item, isLoading, isDeleting } = this.state
 		const { authUser } = this.props
-		let isUserOwner
+		let isAuthorized
 
 		if (item && authUser) {
 			const ownerId = item.userId
 			const authUserId = this.props.authUser.uid
-			isUserOwner = authUserId && ownerId === authUserId
+			isAuthorized = authUserId && ownerId === authUserId
 		}
 
 		let conditionObj
@@ -158,7 +158,7 @@ class ItemDetailsPage extends Component {
 									</tr>
 								</DataDisplay>
 
-								{isUserOwner ? (
+								{isAuthorized ? (
 									<>
 										<ButtonContainer>
 											<Button accent fullWidth>
@@ -190,7 +190,7 @@ class ItemDetailsPage extends Component {
 								)}
 							</SectionContainer>
 							<SectionContainer>
-								{!isUserOwner && <UserPreview id={item.userId} />}
+								{!isAuthorized && <UserPreview id={item.userId} />}
 								<TextBlock>{item.description}</TextBlock>
 							</SectionContainer>
 						</InfoContainer>

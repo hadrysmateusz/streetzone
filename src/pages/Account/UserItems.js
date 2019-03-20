@@ -41,7 +41,7 @@ class UserItems extends Component {
 	render() {
 		if (this.state.error) throw this.state.error
 		const { isLoading, isFetchingItems, items } = this.state
-		const { isUserOwner } = this.props
+		const { isAuthorized } = this.props
 
 		console.log(this.state)
 
@@ -50,8 +50,8 @@ class UserItems extends Component {
 				{isLoading || isFetchingItems ? (
 					<LoadingSpinner fixedHeight />
 				) : items && items.length > 0 ? (
-					isUserOwner ? (
-						<DetailedItemsView items={items} isUserOwner={isUserOwner} />
+					isAuthorized ? (
+						<DetailedItemsView items={items} isAuthorized={isAuthorized} />
 					) : (
 						<ItemsView items={items} />
 					)
