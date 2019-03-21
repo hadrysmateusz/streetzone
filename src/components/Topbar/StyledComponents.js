@@ -9,7 +9,7 @@ export const Container = styled.div`
 		"filter sort";
 
 	@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
-		grid-template-columns: 1fr max-content;
+		grid-template-columns: 1fr 180px;
 		grid-template-areas: "search sort";
 		gap: 10px;
 		.filter-container {

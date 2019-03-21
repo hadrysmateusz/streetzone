@@ -4,7 +4,7 @@ import { Media } from "react-breakpoints"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { connectSortBy } from "react-instantsearch-dom"
 
-import Select from "../StyledReactSelect"
+import Dropdown from "../FormElements/dropdown"
 
 const StyledSelect = styled.select`
 	position: absolute;
@@ -49,38 +49,11 @@ class AlgoliaSortBy extends React.Component {
 				{({ currentBreakpoint }) => {
 					if (currentBreakpoint > 0) {
 						return (
-							<Select
+							<Dropdown
 								{...rest}
 								options={items}
 								defaultValue={defaultRefinement}
 								onChange={(data, action) => refine(data.value)}
-								styles={{
-									control: (provided, state) => ({
-										...provided,
-										height: "var(--form-element-height)",
-										minWidth: "180px",
-										minHeight: "0",
-										border: `1px solid var(--gray75)`,
-										"&:hover": {
-											borderColor: "var(--gray25)"
-										}
-									})
-								}}
-								theme={(theme) => ({
-									...theme,
-									borderRadius: 0,
-									colors: {
-										...theme.colors,
-										primary: "rgb(65, 214, 165)",
-										primary75: "rgba(65, 214, 165, 0.75)",
-										primary50: "rgba(65, 214, 165, 0.5)",
-										primary25: "rgba(65, 214, 165, 0.25)"
-									},
-									spacing: {
-										...theme.spacing,
-										baseUnit: 3
-									}
-								})}
 							/>
 						)
 					} else {
