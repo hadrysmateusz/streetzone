@@ -1,6 +1,7 @@
 import React from "react"
 import { BrowserRouter as Router } from "react-router-dom"
 import { compose } from "recompose"
+import styled from "styled-components"
 
 import { withAuthenticationProvider } from "../UserSession"
 import { withFirebase } from "../Firebase"
@@ -10,7 +11,13 @@ import { Routes, Meta } from "../Routes"
 import PageHeader from "../PageHeader"
 import Footer from "../Footer"
 
-import GlobalStyles from "./global-styles"
+const AppContainer = styled.div`
+	position: relative;
+	z-index: 0;
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
+`
 
 class App extends React.Component {
 	render = () => {
@@ -18,13 +25,13 @@ class App extends React.Component {
 			<Router>
 				<div id="App-Element">
 					<Meta />
-					<GlobalStyles>
+					<AppContainer>
 						<PageHeader />
 						<div style={{ flex: 1 }}>
 							<Routes />
 						</div>
 						<Footer />
-					</GlobalStyles>
+					</AppContainer>
 					<AuthModal />
 				</div>
 			</Router>

@@ -1,7 +1,7 @@
 import styled from "styled-components"
 
 export default styled.div`
-	position: relative;
+	/* position: relative;
 	z-index: 0;
 	display: flex;
 	flex-direction: column;
@@ -48,5 +48,5 @@ export default styled.div`
 	--form-element-height: 40px;
 
 	--font-family--serif: "Playfair Display";
-	--font-family--sans-serif: "Open Sans";
+	--font-family--sans-serif: "Open Sans"; */
 `
