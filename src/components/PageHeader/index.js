@@ -11,10 +11,13 @@ import Logo from "../Logo"
 import { ROUTES } from "../../constants"
 import getProfilePictureURL from "../../utils/getProfilePictureURL"
 import { NavItem, Submenu, Nav, PageHeader, PageHeaderOuter } from "./StyledComponents"
+import useScrollPosition from "../../hooks/useScrollPosition"
 
 const Navigation = ({ authUser, firebase, ...rest }) => {
+	const scrollPosition = useScrollPosition()
+
 	return (
-		<PageHeaderOuter>
+		<PageHeaderOuter scrollPosition={scrollPosition}>
 			<PageHeader {...rest}>
 				<Nav>
 					<NavItem>

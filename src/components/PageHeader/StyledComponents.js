@@ -14,9 +14,10 @@ export const PageHeaderOuter = styled.div`
 	position: sticky;
 	top: 0;
 	z-index: 80;
-
 	background: white;
-	/* border-bottom: 1px solid var(--gray75); */
+	border-bottom: 1px solid white;
+	transition: border-color 0.14s linear;
+	${(p) => p.scrollPosition !== 0 && "border-color: var(--gray75);"}
 `
 
 export const Nav = styled.nav`
