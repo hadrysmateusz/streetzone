@@ -50,10 +50,14 @@ const StyledSelect = styled(Select).attrs({
 	.react-select__option {
 		&:active {
 			background: var(--black0);
+			color: white;
 		}
 	}
-	.react-select__option--is-focused,
 	.react-select__option--is-selected {
+		background: var(--gray100);
+		color: black;
+	}
+	.react-select__option--is-focused {
 		background: var(--black25);
 		color: white;
 	}
