@@ -5,9 +5,7 @@ import "../../index.css"
 
 storiesOf("Textarea", module)
 	.addDecorator((storyFn) => <div style={{ margin: "40px" }}>{storyFn()}</div>)
-	.add("basic", () => <Textarea />)
-	.add("disabled", () => <Textarea disabled />)
-	.add("placeholder", () => <Textarea placeholder="Placeholder" />)
-	.add("disabled + placeholder", () => <Textarea disabled placeholder="Placeholder" />)
-	.add("info", () => <Textarea info="Additional information" />)
-	.add("error", () => <Textarea error="This field is required" />)
+	.add("basic", () => <Textarea placeholder="Placeholder" />)
+	.add("disabled", () => <Textarea placeholder="Placeholder" disabled />)
+	.add("info", () => <Textarea placeholder="Placeholder" info="Additional information" />)
+	.add("error", () => <Textarea placeholder="Placeholder" error="Error message" />)

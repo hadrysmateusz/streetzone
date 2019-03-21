@@ -2,6 +2,7 @@ import React from "react"
 import styled from "styled-components"
 import Select from "react-select"
 import FormElementContainer from "./container"
+import { disabledStyles, hoverStyles, focusStyles, basicStyles } from "./commonStyles"
 
 const StyledSelect = styled(Select).attrs({
 	classNamePrefix: "react-select",
@@ -9,44 +10,41 @@ const StyledSelect = styled(Select).attrs({
 })`
 	.react-select--container {
 	}
+
 	.react-select__control {
-		transition: box-shadow 0.11s ease, border-color 0.11s ease;
+		${basicStyles}
 
 		border-radius: 0;
-
-		width: 100%;
 		height: var(--form-element-height);
-		border: 1px solid;
-		border-color: ${(p) => (!!p.hasError ? "var(--error50)" : "var(--gray25)")};
 
 		&:not([disabled]) {
-			:hover,
-			:focus {
-				border-color: var(--black25);
+			:hover {
+				${hoverStyles}
 			}
 		}
 	}
 	.react-select__control--menu-is-open,
 	.react-select__control--is-focused {
-		border-color: var(--black75);
-		box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
+		${focusStyles}
 	}
 
 	.react-select__control--is-disabled {
-		background: var(--almost-white);
+		${disabledStyles}
 	}
 
 	.react-select__value-container {
 		padding: 0 var(--spacing2);
-		${(p) => p.hasIcon && "padding-left: var(--form-element-height);"}
 	}
+
 	.react-select__indicators {
 	}
+
 	.react-select__menu {
 		border-radius: 0;
 	}
 	.react-select__menu-list {
 	}
+
 	.react-select__option {
 		&:active {
 			background: var(--black0);

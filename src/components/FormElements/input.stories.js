@@ -6,13 +6,12 @@ import { faSearch } from "@fortawesome/free-solid-svg-icons"
 
 storiesOf("Input", module)
 	.addDecorator((storyFn) => <div style={{ margin: "40px" }}>{storyFn()}</div>)
-	.add("basic", () => <Input />)
-	.add("disabled", () => <Input disabled />)
-	.add("placeholder", () => <Input placeholder="Placeholder" />)
-	.add("disabled + placeholder", () => <Input disabled placeholder="Placeholder" />)
-	.add("disabled + placeholder + icon", () => (
-		<Input disabled placeholder="Placeholder" icon={faSearch} />
+	.add("basic", () => <Input placeholder="Placeholder" />)
+	.add("disabled", () => <Input placeholder="Placeholder" disabled />)
+	.add("info", () => <Input placeholder="Placeholder" info="Additional information" />)
+	.add("error", () => <Input placeholder="Placeholder" error="Error message" />)
+
+	.add("icon", () => <Input placeholder="Placeholder" icon={faSearch} />)
+	.add("disabled + icon", () => (
+		<Input placeholder="Placeholder" disabled icon={faSearch} />
 	))
-	.add("icon", () => <Input icon={faSearch} />)
-	.add("info", () => <Input info="Additional information" />)
-	.add("error", () => <Input error="This field is required" />)
