@@ -31,11 +31,14 @@ import {
 	faInfoCircle,
 	faFlag,
 	faPhone,
-	faMinus
+	faMinus,
+	faExclamationCircle
 } from "@fortawesome/free-solid-svg-icons"
 import {
 	faHeart as farHeart,
-	faEnvelope as farEnvelope /* , faSquare, faCheckSquare */
+	faEnvelope as farEnvelope,
+	faSquare,
+	faCheckSquare
 } from "@fortawesome/free-regular-svg-icons"
 import { fab } from "@fortawesome/free-brands-svg-icons"
 
@@ -45,8 +48,8 @@ library.add(
 	faUser,
 	faPlus,
 	faUserCircle,
-	// faSquare,
-	// faCheckSquare,
+	faSquare,
+	faCheckSquare,
 	faAngleRight,
 	faAngleDoubleRight,
 	faAngleLeft,
@@ -76,5 +79,6 @@ library.add(
 	faInfoCircle,
 	faFlag,
 	faPhone,
-	faMinus
+	faMinus,
+	faExclamationCircle
 )
