@@ -23,8 +23,11 @@ export const FullscreenContainer = styled.div`
 	background: white;
 `
 
-const ContentContainer = styled.div`
-	/* padding: 0 var(--spacing3); */
+const IconContainer = styled.div`
+	padding: var(--spacing3);
+	margin-left: calc(0px - var(--spacing3));
+	width: 50px;
+	cursor: pointer;
 `
 
 export const MenuNavItem = styled.div`
@@ -66,19 +69,23 @@ const Menu = ({ children, currentBreakpoint }) => {
 
 	return (
 		<div>
-			<FontAwesomeIcon icon="bars" size="lg" onClick={toggle} />
+			<IconContainer onClick={toggle}>
+				<FontAwesomeIcon icon="bars" size="lg" />
+			</IconContainer>
 			{isOpen && (
 				<Portal>
 					<FullscreenContainer ref={menuRef}>
 						<PageHeaderContainer>
-							<FontAwesomeIcon icon="times" onClick={toggle} size="lg" />
+							<IconContainer onClick={toggle}>
+								<FontAwesomeIcon icon="times" size="lg" />
+							</IconContainer>
 						</PageHeaderContainer>
 
-						<ContentContainer>
+						<div>
 							{React.Children.map(children, (child) =>
 								child ? <MenuNavItem onClick={switchRoute}>{child}</MenuNavItem> : null
 							)}
-						</ContentContainer>
+						</div>
 					</FullscreenContainer>
 				</Portal>
 			)}
