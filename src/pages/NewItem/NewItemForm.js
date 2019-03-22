@@ -6,13 +6,14 @@ import styled from "styled-components"
 import { withRouter } from "react-router-dom"
 
 import Button, { LoaderButton } from "../../components/Button"
-import { FieldRow, FieldLabel, StyledTextarea } from "../../components/Basics"
-import SelectAdapter from "../../components/SelectAdapter"
-import { FormError, Input, Textarea } from "../../components/FormElements"
+import { FieldRow } from "../../components/Basics"
+import DropdownFinalform from "../../components/DropdownFinalform"
+import { Input, Textarea } from "../../components/FormElements"
+// import { TextBlock } from "../../components/StyledComponents"
 import { FileHandler } from "../../components/FileHandler"
 
 import validate from "./validate"
-import { ITEM_SCHEMA, ROUTES } from "../../constants"
+import { ITEM_SCHEMA, ROUTES, CONST } from "../../constants"
 
 const StyledForm = styled.form`
 	display: grid;
@@ -61,43 +62,38 @@ const NewItemForm = ({ initialValues, onSubmit, history, isLoading }) => {
 						{/* Designers */}
 						<FieldRow gridArea="designers">
 							<Field name="designers" type="select">
-								{({ input, meta }) => (
-									<>
-										<FieldLabel htmlFor="designer-input">Projektanci</FieldLabel>
-										<SelectAdapter
-											id="designer-input"
-											placeholder={"Projektanci"}
+								{({ input, meta }) => {
+									const error = meta.error && meta.touched ? meta.error : null
+									return (
+										<DropdownFinalform
+											{...input}
 											options={ITEM_SCHEMA.designerOptions}
 											isClearable={true}
 											isSearchable={true}
 											isMulti={true}
-											{...meta}
-											{...input}
+											placeholder="Projektanci"
+											error={error}
 										/>
-										<FormError message={meta.error} show={meta.error && meta.touched} />
-									</>
-								)}
+									)
+								}}
 							</Field>
 						</FieldRow>
 
 						{/* Category */}
 						<FieldRow gridArea="category">
 							<Field name="category" type="select">
-								{({ input, meta }) => (
-									<>
-										<FieldLabel htmlFor="category-input">Kategoria</FieldLabel>
-										<SelectAdapter
-											id="category-input"
-											placeholder={"Kategoria"}
-											options={ITEM_SCHEMA.categoryOptions}
-											isClearable={true}
-											isSearchable={true}
-											{...meta}
+								{({ input, meta }) => {
+									const error = meta.error && meta.touched ? meta.error : null
+									return (
+										<DropdownFinalform
 											{...input}
+											options={ITEM_SCHEMA.categoryOptions}
+											isSearchable={true}
+											placeholder="Kategoria"
+											error={error}
 										/>
-										<FormError message={meta.error} show={meta.error && meta.touched} />
-									</>
-								)}
+									)
+								}}
 							</Field>
 						</FieldRow>
 
@@ -105,7 +101,9 @@ const NewItemForm = ({ initialValues, onSubmit, history, isLoading }) => {
 						<FieldRow gridArea="size">
 							<Field name="size">
 								{({ input, meta }) => {
+									const error = meta.error && meta.touched ? meta.error : null
 									const options = ITEM_SCHEMA.sizeOptions(values.category)
+
 									return (
 										<>
 											<OnChange name="category">
@@ -118,21 +116,17 @@ const NewItemForm = ({ initialValues, onSubmit, history, isLoading }) => {
 													}
 												}}
 											</OnChange>
-											<FieldLabel htmlFor="size-input">Rozmiar</FieldLabel>
-											<SelectAdapter
-												id="size-input"
-												placeholder={"Rozmiar"}
+											<DropdownFinalform
+												{...input}
 												options={options}
-												isClearable={true}
 												isSearchable={true}
-												isDisabled={
+												disabled={
 													!values.category ||
 													values.category === ITEM_SCHEMA.categories.akcesoria
 												}
-												{...meta}
-												{...input}
+												placeholder="Rozmiar"
+												error={error}
 											/>
-											<FormError meta={meta} />
 										</>
 									)
 								}}
@@ -161,21 +155,19 @@ const NewItemForm = ({ initialValues, onSubmit, history, isLoading }) => {
 						{/* Condition */}
 						<FieldRow gridArea="condition">
 							<Field name="condition">
-								{({ input, meta }) => (
-									<>
-										<FieldLabel htmlFor="condition-input">Stan</FieldLabel>
-										<SelectAdapter
-											id="condition-input"
-											placeholder={"Stan"}
+								{({ input, meta }) => {
+									const error = meta.error && meta.touched ? meta.error : null
+									return (
+										<DropdownFinalform
+											{...input}
 											options={ITEM_SCHEMA.conditionOptions}
 											isClearable={true}
 											isSearchable={true}
-											{...meta}
-											{...input}
+											placeholder="Stan"
+											error={error}
 										/>
-										<FormError message={meta.error} show={meta.error && meta.touched} />
-									</>
-								)}
+									)
+								}}
 							</Field>
 						</FieldRow>
 
@@ -187,7 +179,7 @@ const NewItemForm = ({ initialValues, onSubmit, history, isLoading }) => {
 									return (
 										<Textarea
 											{...input}
-											placeholder="Oryginalna cena, możliwości wysyłki, informacje o uszkodzeniach itd."
+											placeholder={CONST.ITEM_DESC_PLACEHOLDER}
 											error={error}
 										/>
 									)
@@ -197,7 +189,6 @@ const NewItemForm = ({ initialValues, onSubmit, history, isLoading }) => {
 
 						{/* Files (handled by separate component) */}
 						<FieldRow gridArea="files">
-							<FieldLabel>Zdjęcia</FieldLabel>
 							<Field name="files" isLoading={isLoading} component={FileHandler} />
 						</FieldRow>
 

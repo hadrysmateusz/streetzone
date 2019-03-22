@@ -4,15 +4,9 @@ import { compose } from "recompose"
 import styled from "styled-components"
 
 import { withFirebase } from "../../components/Firebase"
-import {
-	StyledLink,
-	FieldRow,
-	FieldLabel,
-	StyledInput,
-	Header
-} from "../../components/Basics"
+import { StyledLink, FieldRow, Header } from "../../components/Basics"
 import { LoaderButton } from "../../components/Button"
-import { FormError } from "../../components/FormElements"
+import { FormError, Input } from "../../components/FormElements"
 
 import { ROUTES, FORM_ERR, REGEX } from "../../constants"
 
@@ -74,13 +68,12 @@ class PasswordForgetFormBase extends Component {
 						{/* E-mail */}
 						<FieldRow>
 							<Field name="email">
-								{({ input, meta }) => (
-									<>
-										<FieldLabel>E-mail</FieldLabel>
-										<StyledInput {...input} type="text" placeholder="E-mail" />
-										<FormError message={meta.error} show={meta.error && meta.touched} />
-									</>
-								)}
+								{({ input, meta }) => {
+									const error = meta.error && meta.touched ? meta.error : null
+									return (
+										<Input {...input} type="email" placeholder="E-mail" error={error} />
+									)
+								}}
 							</Field>
 						</FieldRow>
 

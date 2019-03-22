@@ -4,8 +4,8 @@ import { Form, Field } from "react-final-form"
 
 import { withAuthentication } from "../../components/UserSession"
 import { LoaderButton } from "../../components/Button"
-import { FieldRow, FieldLabel, StyledInput } from "../../components/Basics"
-import { FormError } from "../../components/FormElements"
+import { FieldRow, FieldLabel } from "../../components/Basics"
+import { FormError, Input } from "../../components/FormElements"
 import { FileHandler } from "../../components/FileHandler"
 import { ITEM_SCHEMA, CONST } from "../../constants"
 
@@ -189,22 +189,19 @@ class NewItemPage extends Component {
 								{/* Number of items */}
 								<FieldRow gridArea="numberOfItems">
 									<Field name="numberOfItems">
-										{({ input, meta }) => (
-											<>
-												<FieldLabel>Number of items </FieldLabel>
-												<StyledInput
+										{({ input, meta }) => {
+											const error = meta.error && meta.touched ? meta.error : null
+											return (
+												<Input
 													{...input}
 													type="number"
 													min="0"
 													step="1"
-													placeholder="n of items"
+													placeholder="Number of items"
+													error={error}
 												/>
-												<FormError
-													message={meta.error}
-													show={meta.error && meta.touched}
-												/>
-											</>
-										)}
+											)
+										}}
 									</Field>
 								</FieldRow>
 

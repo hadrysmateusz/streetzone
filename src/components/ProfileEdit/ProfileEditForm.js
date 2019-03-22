@@ -4,8 +4,8 @@ import styled from "styled-components"
 import { compose } from "recompose"
 
 import Button, { LoaderButton, ButtonContainer } from "../Button"
-import { FieldRow, StyledInput, StyledTextarea } from "../Basics"
-import { FormError } from "../FormElements"
+import { FieldRow } from "../Basics"
+import { Input, Textarea } from "../FormElements"
 import { withAuthentication } from "../UserSession"
 import { withFirebase } from "../Firebase"
 import validate from "./validate"
@@ -38,64 +38,79 @@ const ProfileEditForm = (props) => {
 							{/* Name */}
 							<FieldRow gridArea="name">
 								<Field name="name">
-									{({ input, meta }) => (
-										<>
-											<StyledInput {...input} type="text" placeholder="Imię i nazwisko" />
-											<FormError message={meta.error} show={meta.error && meta.touched} />
-										</>
-									)}
+									{({ input, meta }) => {
+										const error = meta.error && meta.touched ? meta.error : null
+										return (
+											<Input
+												{...input}
+												type="text"
+												placeholder="Imię i nazwisko"
+												error={error}
+											/>
+										)
+									}}
 								</Field>
 							</FieldRow>
 
 							{/* E-mail */}
 							<FieldRow gridArea="email">
 								<Field name="email">
-									{({ input, meta }) => (
-										<>
-											<StyledInput {...input} type="text" placeholder="E-mail" />
-											<FormError message={meta.error} show={meta.error && meta.touched} />
-										</>
-									)}
+									{({ input, meta }) => {
+										const error = meta.error && meta.touched ? meta.error : null
+										return (
+											<Input {...input} type="email" placeholder="E-mail" error={error} />
+										)
+									}}
 								</Field>
 							</FieldRow>
 
 							{/* City */}
 							<FieldRow gridArea="city">
 								<Field name="city">
-									{({ input, meta }) => (
-										<>
-											<StyledInput
+									{({ input, meta }) => {
+										const error = meta.error && meta.touched ? meta.error : null
+										return (
+											<Input
 												{...input}
 												type="text"
 												placeholder="Miejsce zamieszkania"
+												error={error}
 											/>
-											<FormError message={meta.error} show={meta.error && meta.touched} />
-										</>
-									)}
+										)
+									}}
 								</Field>
 							</FieldRow>
 
 							{/* Phone number */}
 							<FieldRow gridArea="phone">
 								<Field name="phone">
-									{({ input, meta }) => (
-										<>
-											<StyledInput {...input} type="text" placeholder="Numer telefonu" />
-											<FormError message={meta.error} show={meta.error && meta.touched} />
-										</>
-									)}
+									{({ input, meta }) => {
+										const error = meta.error && meta.touched ? meta.error : null
+										return (
+											<Input
+												{...input}
+												type="text"
+												placeholder="Numer telefonu"
+												error={error}
+											/>
+										)
+									}}
 								</Field>
 							</FieldRow>
 
 							{/* Info */}
 							<FieldRow gridArea="info">
 								<Field name="info">
-									{({ input, meta }) => (
-										<>
-											<StyledTextarea {...input} placeholder="Dodatkowe informacje" />
-											<FormError message={meta.error} show={meta.error && meta.touched} />
-										</>
-									)}
+									{({ input, meta }) => {
+										const error = meta.error && meta.touched ? meta.error : null
+										return (
+											<Textarea
+												{...input}
+												placeholder="Dodatkowe informacje"
+												error={error}
+											/>
+										)
+									}}
 								</Field>
 							</FieldRow>
 						</FieldsContainer>

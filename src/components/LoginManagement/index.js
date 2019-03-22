@@ -3,8 +3,8 @@ import { Form, Field } from "react-final-form"
 import { compose } from "recompose"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
-import { FieldRow, StyledInput, SubHeader } from "../Basics"
-import { FormError } from "../FormElements"
+import { FieldRow, SubHeader } from "../Basics"
+import { Input } from "../FormElements"
 import { SocialButton, LoaderButton } from "../Button"
 import { withFirebase } from "../Firebase"
 import { withAuthentication } from "../UserSession"
@@ -232,12 +232,12 @@ class DefaultLoginToggle extends Component {
 						{/* Hasło */}
 						<FieldRow>
 							<Field name="password">
-								{({ input, meta }) => (
-									<>
-										<StyledInput {...input} type="password" placeholder="Hasło" />
-										<FormError message={meta.error} show={meta.error && meta.touched} />
-									</>
-								)}
+								{({ input, meta }) => {
+									const error = meta.error && meta.touched ? meta.error : null
+									return (
+										<Input {...input} type="password" placeholder="Hasło" error={error} />
+									)
+								}}
 							</Field>
 						</FieldRow>
 
@@ -245,16 +245,17 @@ class DefaultLoginToggle extends Component {
 							{/* Powtórz Hasło */}
 							<FieldRow>
 								<Field name="passwordConfirm">
-									{({ input, meta }) => (
-										<>
-											<StyledInput
+									{({ input, meta }) => {
+										const error = meta.error && meta.touched ? meta.error : null
+										return (
+											<Input
 												{...input}
 												type="password"
 												placeholder="Potwierdź Hasło"
+												error={error}
 											/>
-											<FormError message={meta.error} show={meta.error && meta.touched} />
-										</>
-									)}
+										)
+									}}
 								</Field>
 							</FieldRow>
 

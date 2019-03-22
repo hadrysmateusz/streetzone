@@ -5,15 +5,9 @@ import { compose } from "recompose"
 import styled from "styled-components"
 
 import { withFirebase } from "../../components/Firebase"
-import {
-	StyledLink,
-	FieldRow,
-	FieldLabel,
-	StyledInput,
-	Header
-} from "../../components/Basics"
+import { StyledLink, FieldRow, Header } from "../../components/Basics"
 import { LoaderButton } from "../../components/Button"
-import { FormError } from "../../components/FormElements"
+import { FormError, Input } from "../../components/FormElements"
 import { withGlobalContext } from "../../components/GlobalContext"
 
 import { SignInLink } from "../SignIn"
@@ -90,63 +84,65 @@ class SignUpFormBase extends Component {
 							{/* Imię */}
 							<FieldRow>
 								<Field name="name">
-									{({ input, meta }) => (
-										<>
-											<FieldLabel>Imię</FieldLabel>
-											<StyledInput {...input} type="text" placeholder="Imię" />
-											<FormError message={meta.error} show={meta.error && meta.touched} />
-										</>
-									)}
+									{({ input, meta }) => {
+										const error = meta.error && meta.touched ? meta.error : null
+										return (
+											<Input
+												{...input}
+												type="text"
+												placeholder="Nazwa użytkownika"
+												error={error}
+											/>
+										)
+									}}
 								</Field>
 							</FieldRow>
 
 							{/* E-mail */}
 							<FieldRow>
 								<Field name="email">
-									{({ input, meta }) => (
-										<>
-											<FieldLabel>E-mail</FieldLabel>
-											<StyledInput {...input} type="text" placeholder="E-mail" />
-											<FormError message={meta.error} show={meta.error && meta.touched} />
-										</>
-									)}
+									{({ input, meta }) => {
+										const error = meta.error && meta.touched ? meta.error : null
+										return (
+											<Input {...input} type="email" placeholder="E-mail" error={error} />
+										)
+									}}
 								</Field>
 							</FieldRow>
 
 							{/* Hasło */}
 							<FieldRow>
 								<Field name="password">
-									{({ input, meta }) => (
-										<>
-											<FieldLabel>Hasło</FieldLabel>
-											<StyledInput {...input} type="password" placeholder="Hasło" />
-											<FormError message={meta.error} show={meta.error && meta.touched} />
-										</>
-									)}
+									{({ input, meta }) => {
+										const error = meta.error && meta.touched ? meta.error : null
+										return (
+											<Input
+												{...input}
+												type="password"
+												placeholder="Hasło"
+												error={error}
+											/>
+										)
+									}}
 								</Field>
 							</FieldRow>
 
 							{/* Powtórz Hasło */}
-							{values.password && (
-								<FieldRow>
-									<Field name="passwordConfirm">
-										{({ input, meta }) => (
-											<>
-												<FieldLabel>Potwierdź Hasło</FieldLabel>
-												<StyledInput
-													{...input}
-													type="password"
-													placeholder="Potwierdź Hasło"
-												/>
-												<FormError
-													message={meta.error}
-													show={meta.error && meta.touched}
-												/>
-											</>
-										)}
-									</Field>
-								</FieldRow>
-							)}
+							<FieldRow>
+								<Field name="passwordConfirm">
+									{({ input, meta }) => {
+										const error = meta.error && meta.touched ? meta.error : null
+										return (
+											<Input
+												{...input}
+												type="password"
+												placeholder="Potwierdź Hasło"
+												error={error}
+											/>
+										)
+									}}
+								</Field>
+							</FieldRow>
 
 							<LoaderButton
 								text="Utwórz konto"

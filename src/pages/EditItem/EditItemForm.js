@@ -4,17 +4,12 @@ import styled from "styled-components"
 import { withRouter } from "react-router-dom"
 
 import Button, { LoaderButton } from "../../components/Button"
-import {
-	FieldRow,
-	FieldLabel,
-	StyledInput,
-	StyledTextarea
-} from "../../components/Basics"
-import { FormError } from "../../components/FormElements"
+import { FieldRow, FieldLabel } from "../../components/Basics"
+import { Input, Textarea } from "../../components/FormElements"
 import { FileHandler } from "../../components/FileHandler"
 
 import validate from "./validate"
-import { ROUTES } from "../../constants"
+import { ROUTES, CONST } from "../../constants"
 
 const StyledForm = styled.form`
 	display: grid;
@@ -37,37 +32,41 @@ const EditItemForm = ({ initialValues, onSubmit, history, isLoading }) => (
 					{/* Price */}
 					<FieldRow gridArea="price">
 						<Field name="price">
-							{({ input, meta }) => (
-								<>
-									<FieldLabel>Cena </FieldLabel>
-									<StyledInput
-										{...input}
-										type="number"
-										min="0"
-										step="1"
-										placeholder="Cena"
-									/>
-									<FormError message={meta.error} show={meta.error && meta.touched} />
-								</>
-							)}
+							{({ input, meta }) => {
+								const error = meta.error && meta.touched ? meta.error : null
+								return (
+									<>
+										<FieldLabel>Cena </FieldLabel>
+										<Input
+											{...input}
+											type="number"
+											min="0"
+											step="1"
+											placeholder="Cena"
+											error={error}
+										/>
+									</>
+								)
+							}}
 						</Field>
 					</FieldRow>
 
 					{/* Description */}
 					<FieldRow gridArea="description">
 						<Field name="description">
-							{({ input, meta }) => (
-								<>
-									<FieldLabel>Opis </FieldLabel>
-									<StyledTextarea
-										{...input}
-										minRows={4}
-										maxRows={12}
-										placeholder="Dodatkowe informacje"
-									/>
-									<FormError message={meta.error} show={meta.error && meta.touched} />
-								</>
-							)}
+							{({ input, meta }) => {
+								const error = meta.error && meta.touched ? meta.error : null
+								return (
+									<>
+										<FieldLabel>Opis </FieldLabel>
+										<Textarea
+											{...input}
+											placeholder={CONST.ITEM_DESC_PLACEHOLDER}
+											error={error}
+										/>
+									</>
+								)
+							}}
 						</Field>
 					</FieldRow>
 

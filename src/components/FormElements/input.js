@@ -5,6 +5,15 @@ import FormElementContainer from "./container"
 import commonStyles from "./commonStyles"
 
 const StyledInput = styled.input`
+	/* only show arrows on hover in firefox */
+	&[type="number"] {
+		-moz-appearance: textfield;
+	}
+	&[type="number"]:hover,
+	&[type="number"]:focus {
+		-moz-appearance: number-input;
+	}
+
 	font-size: var(--font-size--s) !important;
 	height: var(--form-element-height);
 	padding: 0 var(--spacing2);

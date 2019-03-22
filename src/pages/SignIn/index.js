@@ -4,15 +4,8 @@ import { Form, Field } from "react-final-form"
 import { compose } from "recompose"
 import styled from "styled-components"
 
-import {
-	StyledLink,
-	FieldRow,
-	FieldLabel,
-	StyledInput,
-	Header,
-	Separator
-} from "../../components/Basics"
-import { FormError } from "../../components/FormElements"
+import { StyledLink, FieldRow, Header, Separator } from "../../components/Basics"
+import { FormError, Input } from "../../components/FormElements"
 import { FacebookButton, GoogleButton, LoaderButton } from "../../components/Button"
 import { withGlobalContext } from "../../components/GlobalContext"
 import { withFirebase } from "../../components/Firebase"
@@ -82,26 +75,24 @@ class SignInFormBase extends Component {
 						{/* E-mail */}
 						<FieldRow>
 							<Field name="email">
-								{({ input, meta }) => (
-									<>
-										<FieldLabel>E-mail</FieldLabel>
-										<StyledInput {...input} type="text" placeholder="E-mail" />
-										<FormError message={meta.error} show={meta.error && meta.touched} />
-									</>
-								)}
+								{({ input, meta }) => {
+									const error = meta.error && meta.touched ? meta.error : null
+									return (
+										<Input {...input} type="email" placeholder="E-mail" error={error} />
+									)
+								}}
 							</Field>
 						</FieldRow>
 
 						{/* Hasło */}
 						<FieldRow>
 							<Field name="password">
-								{({ input, meta }) => (
-									<>
-										<FieldLabel>Hasło</FieldLabel>
-										<StyledInput {...input} type="password" placeholder="Hasło" />
-										<FormError message={meta.error} show={meta.error && meta.touched} />
-									</>
-								)}
+								{({ input, meta }) => {
+									const error = meta.error && meta.touched ? meta.error : null
+									return (
+										<Input {...input} type="password" placeholder="Hasło" error={error} />
+									)
+								}}
 							</Field>
 						</FieldRow>
 

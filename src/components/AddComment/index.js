@@ -6,8 +6,8 @@ import StarRatings from "react-star-ratings"
 
 import { LoaderButton, ButtonContainer } from "../Button"
 import { withFirebase } from "../Firebase"
-import { FieldRow, FieldLabel, StyledTextarea } from "../Basics"
-import { FormError } from "../FormElements"
+import { FieldRow, FieldLabel } from "../Basics"
+import { FormError, Textarea } from "../FormElements"
 import { withAuthentication } from "../UserSession"
 
 import { RatingContainer, OuterContainer } from "./StyledComponents"
@@ -83,17 +83,12 @@ class AddComment extends React.Component {
 									{/* Comment */}
 									<FieldRow>
 										<Field name="comment">
-											{({ input, meta }) => (
-												<>
-													<FieldLabel>Komentarz</FieldLabel>
-
-													<StyledTextarea {...input} />
-													<FormError
-														message={meta.error}
-														show={meta.error && meta.touched}
-													/>
-												</>
-											)}
+											{({ input, meta }) => {
+												const error = meta.error && meta.touched ? meta.error : null
+												return (
+													<Textarea {...input} placeholder="Komentarz" error={error} />
+												)
+											}}
 										</Field>
 									</FieldRow>
 								</div>

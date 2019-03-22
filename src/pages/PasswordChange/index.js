@@ -1,9 +1,9 @@
 import React, { Component } from "react"
 import { Form, Field } from "react-final-form"
 
-import { StyledInput, FieldRow, FieldLabel, SubHeader } from "../../components/Basics"
+import { FieldRow, SubHeader } from "../../components/Basics"
 import { LoaderButton } from "../../components/Button"
-import { FormError } from "../../components/FormElements"
+import { FormError, Input } from "../../components/FormElements"
 
 import { FORM_ERR } from "../../constants"
 
@@ -57,12 +57,17 @@ class PasswordChangeForm extends Component {
 						{/* Hasło */}
 						<FieldRow>
 							<Field name="passwordNew">
-								{({ input, meta }) => (
-									<>
-										<StyledInput {...input} type="password" placeholder="Nowe Hasło" />
-										<FormError message={meta.error} show={meta.error && meta.touched} />
-									</>
-								)}
+								{({ input, meta }) => {
+									const error = meta.error && meta.touched ? meta.error : null
+									return (
+										<Input
+											{...input}
+											type="password"
+											placeholder="Nowe Hasło"
+											error={error}
+										/>
+									)
+								}}
 							</Field>
 						</FieldRow>
 
@@ -70,17 +75,17 @@ class PasswordChangeForm extends Component {
 						{values.passwordNew && (
 							<FieldRow>
 								<Field name="passwordConfirm">
-									{({ input, meta }) => (
-										<>
-											<FieldLabel>Potwierdź Nowe Hasło</FieldLabel>
-											<StyledInput
+									{({ input, meta }) => {
+										const error = meta.error && meta.touched ? meta.error : null
+										return (
+											<Input
 												{...input}
 												type="password"
 												placeholder="Potwierdź Nowe Hasło"
+												error={error}
 											/>
-											<FormError message={meta.error} show={meta.error && meta.touched} />
-										</>
-									)}
+										)
+									}}
 								</Field>
 							</FieldRow>
 						)}

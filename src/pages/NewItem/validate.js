@@ -17,6 +17,8 @@ export default (values) => {
 	// Price
 	if (!price) {
 		errors.price = FORM_ERR.IS_REQUIRED
+	} else if (price < 0) {
+		errors.price = FORM_ERR.NO_NEGATIVE
 	}
 
 	// Category

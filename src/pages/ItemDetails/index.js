@@ -25,18 +25,11 @@ import {
 	SmallTextBlock,
 	HorizontalContainer
 } from "../../components/StyledComponents"
-import {
-	ItemContainer,
-	InfoContainer,
-	Description,
-	Designers,
-	SectionContainer
-} from "./StyledComponents"
+import { ItemContainer, InfoContainer, SectionContainer } from "./StyledComponents"
 // import { HeartButton } from "../SaveButton"
 import formatDesigners from "../../utils/formatDesigners"
 import formatPrice from "../../utils/formatPrice"
 import formatSize from "../../utils/formatSize"
-import { Flex } from "rebass"
 
 class ItemDetailsPage extends Component {
 	state = {

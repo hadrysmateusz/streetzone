@@ -1,9 +1,7 @@
-import React, { Component, useState, useEffect, useContext } from "react"
+import React, { useState, useEffect, useContext } from "react"
 import { Link } from "react-router-dom"
-import { compose } from "recompose"
 import Ratio from "react-ratio"
 
-import { withFirebase } from "../Firebase"
 import { withAuthentication } from "../UserSession"
 import { HeartButton } from "../SaveButton"
 import LoadingSpinner from "../LoadingSpinner"

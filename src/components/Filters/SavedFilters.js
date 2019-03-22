@@ -6,11 +6,11 @@ import shortid from "shortid"
 import { Link } from "react-router-dom"
 import { Form, Field } from "react-final-form"
 
-import { StyledInput } from "../Basics"
 import { LoaderButton, ButtonContainer } from "../Button"
 import { withAuthentication } from "../UserSession"
 import { withFirebase } from "../Firebase"
 import { AdaptiveFoldable } from "../Foldable"
+import { Input } from "../FormElements"
 
 import { ListItem } from "./StyledComponents"
 import { FORM_ERR } from "../../constants"
@@ -94,9 +94,12 @@ export class SavedFilters extends Component {
 							<form onSubmit={handleSubmit}>
 								<ButtonContainer>
 									<Field name="name">
-										{({ input }) => (
-											<StyledInput {...input} type="text" placeholder="Nazwa" />
-										)}
+										{({ input, meta }) => {
+											const error = meta.error && meta.touched ? meta.error : null
+											return (
+												<Input {...input} type="text" placeholder="Nazwa" error={error} />
+											)
+										}}
 									</Field>
 
 									<LoaderButton

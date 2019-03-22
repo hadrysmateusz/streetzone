@@ -5,3 +5,5 @@ export const ATTACHMENTS_MAX_SIZE = 5242880
 export const DESC_MAX_CHARACTERS = 500
 export const ACCOUNT_DESC_MAX_CHARACTERS = 200
 export const COMMENT_MAX_CHARACTERS = 400
+export const ITEM_DESC_PLACEHOLDER =
+	"Oryginalna cena, możliwości wysyłki, informacje o uszkodzeniach itd."

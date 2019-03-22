@@ -21,3 +21,4 @@ export const FILE_TOO_BIG = `Zdjęcia nie mogą być większe niż ${formattedMa
 export const PRICE_MAX_LOWER_THAN_MIN =
 	"Cena maksymalna nie może być niższa niż cena minimalna."
 export const NO_FILTERS_APPLIED = "Brak filtrów do zapisania"
+export const NO_NEGATIVE = "Wartość nie może być ujemna"

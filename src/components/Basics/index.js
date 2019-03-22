@@ -1,7 +1,6 @@
 import { Link, NavLink } from "react-router-dom"
 import styled, { css } from "styled-components"
 import { gridArea } from "styled-system"
-import Textarea from "react-textarea-autosize"
 
 export const Header = styled.h2`
 	text-align: center;
@@ -62,34 +61,6 @@ export const StyledFieldCommon = css`
 			}
 		}
 	}
-`
-
-export const StyledInputNumberSpecific = css`
-	/* only show arrows on hover in firefox */
-	&[type="number"] {
-		-moz-appearance: textfield;
-	}
-	&[type="number"]:hover,
-	&[type="number"]:focus {
-		-moz-appearance: number-input;
-	}
-`
-export const StyledInput = styled.input`
-	${StyledFieldCommon}
-	min-width: 0;
-	min-height: 38px; /* ie compatibility */
-	padding: 0 10px;
-	line-height: 36px;
-
-	${(props) => props.type === "number" && StyledInputNumberSpecific}
-`
-
-export const StyledTextarea = styled(Textarea)`
-	${StyledFieldCommon}
-	line-height: 1.45em;
-	padding: 6px 10px;
-	resize: vertical;
-	min-height: calc(4 * 1.45em + 0.7em);
 `
 
 export const FieldLabel = styled.div`
