@@ -1,13 +1,16 @@
-import styled from "styled-components"
+import styled, { css } from "styled-components"
 
-export const PageHeader = styled.header`
+export const HEADER_HEIGHT = "60px"
+
+export const PageHeaderContainer = styled.header`
 	width: 100%;
 	max-width: ${(p) => p.theme.breakpoints[5]}px;
-	height: 60px;
+	height: ${HEADER_HEIGHT};
 	margin: 0 auto;
 	padding: 0 20px;
 	display: grid;
 	grid-template-columns: 1fr 1fr 1fr;
+	align-items: center;
 `
 
 export const PageHeaderOuter = styled.div`

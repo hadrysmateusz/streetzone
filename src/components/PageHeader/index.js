@@ -10,30 +10,64 @@ import Logo from "../Logo"
 
 import { ROUTES } from "../../constants"
 import getProfilePictureURL from "../../utils/getProfilePictureURL"
-import { NavItem, Submenu, Nav, PageHeader, PageHeaderOuter } from "./StyledComponents"
+import {
+	NavItem,
+	Submenu,
+	Nav,
+	PageHeaderContainer,
+	PageHeaderOuter
+} from "./StyledComponents"
 import useScrollPosition from "../../hooks/useScrollPosition"
+import { withBreakpoints } from "react-breakpoints"
+import Menu from "../FullscreenMenu"
 
-const Navigation = ({ authUser, firebase, ...rest }) => {
+const Navigation = ({ authUser, firebase, currentBreakpoint, ...rest }) => {
 	const scrollPosition = useScrollPosition()
 
 	return (
 		<PageHeaderOuter scrollPosition={scrollPosition}>
-			<PageHeader {...rest}>
-				<Nav>
-					<NavItem>
+			<PageHeaderContainer {...rest}>
+				{currentBreakpoint > 0 ? (
+					<Nav>
+						<NavItem>
+							<StyledNavLink to={ROUTES.BLOG_HOME}>Czytaj</StyledNavLink>
+						</NavItem>
+						<NavItem>
+							<StyledNavLink to={ROUTES.MARKETPLACE} exact={true}>
+								Kupuj
+							</StyledNavLink>
+						</NavItem>
+						{authUser && (
+							<NavItem>
+								<StyledNavLink to={ROUTES.NEW_ITEM}>Sprzedawaj</StyledNavLink>
+							</NavItem>
+						)}
+					</Nav>
+				) : (
+					<Menu>
+						<StyledNavLink to={ROUTES.HOME} exact>
+							Strona główna
+						</StyledNavLink>
 						<StyledNavLink to={ROUTES.BLOG_HOME}>Czytaj</StyledNavLink>
-					</NavItem>
-					<NavItem>
-						<StyledNavLink to={ROUTES.MARKETPLACE} exact={true}>
+						<StyledNavLink to={ROUTES.MARKETPLACE} exact>
 							Kupuj
 						</StyledNavLink>
-					</NavItem>
-					{authUser && (
-						<NavItem>
-							<StyledNavLink to={ROUTES.NEW_ITEM}>Sprzedawaj</StyledNavLink>
-						</NavItem>
-					)}
-				</Nav>
+						<StyledNavLink to={ROUTES.NEW_ITEM}>Sprzedawaj</StyledNavLink>
+
+						{authUser && [
+							<StyledNavLink to={ROUTES.ACCOUNT_BASE.replace(":id", authUser.uid)}>
+								Profil
+							</StyledNavLink>,
+							<StyledNavLink as="a" onClick={firebase.signOut}>
+								Wyloguj się
+							</StyledNavLink>
+						]}
+
+						{!authUser && (
+							<StyledNavLink to={ROUTES.SIGN_IN}>Zaloguj / Zarejestruj się</StyledNavLink>
+						)}
+					</Menu>
+				)}
 
 				<Logo centered />
 
@@ -43,7 +77,7 @@ const Navigation = ({ authUser, firebase, ...rest }) => {
 							<NavItem>
 								<StyledNavLink to={ROUTES.ACCOUNT_BASE.replace(":id", authUser.uid)}>
 									<ProfilePicture
-										size="44px"
+										size="35px"
 										url={getProfilePictureURL(authUser, "S")}
 										inline
 									/>
@@ -99,7 +133,7 @@ const Navigation = ({ authUser, firebase, ...rest }) => {
 						</NavItem>
 					)}
 				</Nav>
-			</PageHeader>
+			</PageHeaderContainer>
 		</PageHeaderOuter>
 	)
 }
@@ -107,5 +141,6 @@ const Navigation = ({ authUser, firebase, ...rest }) => {
 export default compose(
 	withRouter,
 	withAuthentication,
-	withFirebase
+	withFirebase,
+	withBreakpoints
 )(Navigation)
