@@ -9,13 +9,18 @@ import { ItemsContainer } from "../ItemsView"
 import Button from "../Button"
 
 import { MiniContainer, ItemsLoaderContainer } from "./StyledComponents"
+import useDelayRender from "../../hooks/useDelayRender"
 
-const ItemsLoader = ({ refine }) => (
-	<ItemsLoaderContainer>
-		<LoadingSpinner fixedHeight />
-		<Button onClick={refine}>Wczytaj więcej</Button>
-	</ItemsLoaderContainer>
-)
+const ItemsLoader = ({ refine }) => {
+	const shouldRender = useDelayRender(200)
+
+	return shouldRender ? (
+		<ItemsLoaderContainer>
+			<LoadingSpinner fixedHeight />
+			<Button onClick={refine}>Wczytaj więcej</Button>
+		</ItemsLoaderContainer>
+	) : null
+}
 
 const AlgoliaInfiniteHits = connectInfiniteHits(({ hits, hasMore, refine }) => {
 	return (
@@ -27,13 +32,13 @@ const AlgoliaInfiniteHits = connectInfiniteHits(({ hits, hasMore, refine }) => {
 		>
 			<ContainerDimensions>
 				{({ width }) =>
-					width && (
+					width ? (
 						<ItemsContainer containerWidth={width}>
 							{hits.map((item) => (
 								<ItemCard key={item.objectID} item={item} />
 							))}
 						</ItemsContainer>
-					)
+					) : null
 				}
 			</ContainerDimensions>
 		</InfiniteScroll>
