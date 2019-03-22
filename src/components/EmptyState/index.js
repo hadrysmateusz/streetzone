@@ -73,6 +73,6 @@ export const Generic = {
 }
 
 export const QueryNoResults = {
-	text: "Brak wyników",
+	text: "Brak wyników spełniających kryteria",
 	image: PATH + "SadFace.png"
 }
