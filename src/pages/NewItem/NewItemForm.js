@@ -9,8 +9,9 @@ import Button, { LoaderButton } from "../../components/Button"
 import { FieldRow } from "../../components/Basics"
 import DropdownFinalform from "../../components/DropdownFinalform"
 import { Input, Textarea } from "../../components/FormElements"
-// import { TextBlock } from "../../components/StyledComponents"
+import { TextBlock } from "../../components/StyledComponents"
 import { FileHandler } from "../../components/FileHandler"
+import { StyledLink } from "../../components/Basics"
 
 import validate from "./validate"
 import { ITEM_SCHEMA, ROUTES, CONST } from "../../constants"
@@ -18,14 +19,34 @@ import { ITEM_SCHEMA, ROUTES, CONST } from "../../constants"
 const StyledForm = styled.form`
 	display: grid;
 	grid-template-columns: 1fr 1fr;
-	gap: 10px;
-	grid-template-areas:
-		"name name"
-		"designers designers"
-		"category size"
-		"price condition"
-		"description description"
-		"files files";
+	gap: var(--spacing2);
+	@media (min-width: ${(p) => p.theme.breakpoints[0]}px) {
+		gap: var(--spacing3);
+	}
+`
+
+const FormElement = styled.div`
+	grid-column: span 2;
+	@media (min-width: ${(p) => p.theme.breakpoints[0]}px) {
+		${(p) => p.small && "grid-column: span 1;"}
+	}
+`
+
+const InfoBox = styled.div`
+	grid-column: span 2;
+	background: var(--almost-white);
+	border: 1px solid var(--gray100);
+	padding: var(--spacing2);
+	@media (min-width: ${(p) => p.theme.breakpoints[0]}px) {
+		padding: var(--spacing2) var(--spacing3);
+	}
+
+	display: grid;
+	gap: var(--spacing2);
+	@media (min-width: ${(p) => p.theme.breakpoints[0]}px) {
+		gap: var(--spacing3);
+		${(p) => p.columns && `grid-template-columns: repeat(${p.columns}, 1fr);`}
+	}
 `
 
 const NewItemForm = ({ initialValues, onSubmit, history, isLoading }) => {
@@ -47,8 +68,12 @@ const NewItemForm = ({ initialValues, onSubmit, history, isLoading }) => {
 			render={({ form, handleSubmit, submitting, pristine, values, ...rest }) => {
 				return (
 					<StyledForm onSubmit={handleSubmit}>
+						<TextBlock size="m" bold uppercase>
+							Informacje
+						</TextBlock>
+
 						{/* Name */}
-						<FieldRow gridArea="name">
+						<FormElement>
 							<Field name="name">
 								{({ input, meta }) => {
 									const error = meta.error && meta.touched ? meta.error : null
@@ -57,10 +82,10 @@ const NewItemForm = ({ initialValues, onSubmit, history, isLoading }) => {
 									)
 								}}
 							</Field>
-						</FieldRow>
+						</FormElement>
 
 						{/* Designers */}
-						<FieldRow gridArea="designers">
+						<FormElement>
 							<Field name="designers" type="select">
 								{({ input, meta }) => {
 									const error = meta.error && meta.touched ? meta.error : null
@@ -71,16 +96,25 @@ const NewItemForm = ({ initialValues, onSubmit, history, isLoading }) => {
 											isClearable={true}
 											isSearchable={true}
 											isMulti={true}
-											placeholder="Projektanci"
+											placeholder="Projektanci / Marki"
 											error={error}
+											info="Możesz wybrać więcej niż jedną markę w przypadku kolaboracji"
 										/>
 									)
 								}}
 							</Field>
-						</FieldRow>
+						</FormElement>
+
+						<InfoBox>
+							<TextBlock>
+								Jeśli nie znalazłeś marki której potrzebujesz napisz do nas na{" "}
+								<b>bumped@gmail.com</b> lub użyj formularza dostępnego{" "}
+								<StyledLink to={ROUTES.REQUEST_DESIGNER}>tutaj</StyledLink>.
+							</TextBlock>
+						</InfoBox>
 
 						{/* Category */}
-						<FieldRow gridArea="category">
+						<FormElement small>
 							<Field name="category" type="select">
 								{({ input, meta }) => {
 									const error = meta.error && meta.touched ? meta.error : null
@@ -88,17 +122,17 @@ const NewItemForm = ({ initialValues, onSubmit, history, isLoading }) => {
 										<DropdownFinalform
 											{...input}
 											options={ITEM_SCHEMA.categoryOptions}
-											isSearchable={true}
+											isSearchable={false}
 											placeholder="Kategoria"
 											error={error}
 										/>
 									)
 								}}
 							</Field>
-						</FieldRow>
+						</FormElement>
 
 						{/* Size */}
-						<FieldRow gridArea="size">
+						<FormElement small>
 							<Field name="size">
 								{({ input, meta }) => {
 									const error = meta.error && meta.touched ? meta.error : null
@@ -119,22 +153,23 @@ const NewItemForm = ({ initialValues, onSubmit, history, isLoading }) => {
 											<DropdownFinalform
 												{...input}
 												options={options}
-												isSearchable={true}
+												isSearchable={false}
 												disabled={
 													!values.category ||
 													values.category === ITEM_SCHEMA.categories.akcesoria
 												}
 												placeholder="Rozmiar"
 												error={error}
+												info="Dostępne rozmiary zależne są od wybranej kategorii"
 											/>
 										</>
 									)
 								}}
 							</Field>
-						</FieldRow>
+						</FormElement>
 
 						{/* Price */}
-						<FieldRow gridArea="price">
+						<FormElement small>
 							<Field name="price">
 								{({ input, meta }) => {
 									const error = meta.error && meta.touched ? meta.error : null
@@ -150,10 +185,10 @@ const NewItemForm = ({ initialValues, onSubmit, history, isLoading }) => {
 									)
 								}}
 							</Field>
-						</FieldRow>
+						</FormElement>
 
 						{/* Condition */}
-						<FieldRow gridArea="condition">
+						<FormElement small>
 							<Field name="condition">
 								{({ input, meta }) => {
 									const error = meta.error && meta.touched ? meta.error : null
@@ -161,18 +196,32 @@ const NewItemForm = ({ initialValues, onSubmit, history, isLoading }) => {
 										<DropdownFinalform
 											{...input}
 											options={ITEM_SCHEMA.conditionOptions}
-											isClearable={true}
-											isSearchable={true}
+											isSearchable={false}
 											placeholder="Stan"
 											error={error}
+											info="Więcej informacji poniżej"
 										/>
 									)
 								}}
 							</Field>
-						</FieldRow>
+						</FormElement>
+
+						<InfoBox columns={2}>
+							<TextBlock>
+								<b>DS (Deadstock)</b> - Przedmiot nowy, oryginalnie zapakowany.
+							</TextBlock>
+							<TextBlock>
+								<b>VNDS (Very Near Deadstock)</b> - Przedmiot nowy, bez śladów
+								użytkowania.
+							</TextBlock>
+						</InfoBox>
+
+						<TextBlock size="m" bold uppercase>
+							Opis
+						</TextBlock>
 
 						{/* Description */}
-						<FieldRow gridArea="description">
+						<FormElement>
 							<Field name="description">
 								{({ input, meta }) => {
 									const error = meta.error && meta.touched ? meta.error : null
@@ -185,12 +234,16 @@ const NewItemForm = ({ initialValues, onSubmit, history, isLoading }) => {
 									)
 								}}
 							</Field>
-						</FieldRow>
+						</FormElement>
+
+						<TextBlock size="m" bold uppercase>
+							Zdjęcia
+						</TextBlock>
 
 						{/* Files (handled by separate component) */}
-						<FieldRow gridArea="files">
+						<FormElement>
 							<Field name="files" isLoading={isLoading} component={FileHandler} />
-						</FieldRow>
+						</FormElement>
 
 						<LoaderButton
 							text="Gotowe"

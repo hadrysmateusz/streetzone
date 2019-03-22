@@ -72,7 +72,7 @@ class NewItemPage extends Component {
 
 	render() {
 		return (
-			<PageContainer maxWidth={1}>
+			<PageContainer maxWidth={2}>
 				<NewItemForm onSubmit={this.onSubmit} />
 			</PageContainer>
 		)
