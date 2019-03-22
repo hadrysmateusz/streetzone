@@ -6,14 +6,9 @@ import styled from "styled-components"
 import { withRouter } from "react-router-dom"
 
 import Button, { LoaderButton } from "../../components/Button"
-import {
-	FieldRow,
-	FieldLabel,
-	StyledInput,
-	StyledTextarea
-} from "../../components/Basics"
+import { FieldRow, FieldLabel, StyledTextarea } from "../../components/Basics"
 import SelectAdapter from "../../components/SelectAdapter"
-import { FormError } from "../../components/FormElements"
+import { FormError, Input, Textarea } from "../../components/FormElements"
 import { FileHandler } from "../../components/FileHandler"
 
 import validate from "./validate"
@@ -54,13 +49,12 @@ const NewItemForm = ({ initialValues, onSubmit, history, isLoading }) => {
 						{/* Name */}
 						<FieldRow gridArea="name">
 							<Field name="name">
-								{({ input, meta }) => (
-									<>
-										<FieldLabel>Nazwa</FieldLabel>
-										<StyledInput {...input} type="text" placeholder="Nazwa" />
-										<FormError message={meta.error} show={meta.error && meta.touched} />
-									</>
-								)}
+								{({ input, meta }) => {
+									const error = meta.error && meta.touched ? meta.error : null
+									return (
+										<Input {...input} type="text" placeholder="Nazwa" error={error} />
+									)
+								}}
 							</Field>
 						</FieldRow>
 
@@ -148,19 +142,19 @@ const NewItemForm = ({ initialValues, onSubmit, history, isLoading }) => {
 						{/* Price */}
 						<FieldRow gridArea="price">
 							<Field name="price">
-								{({ input, meta }) => (
-									<>
-										<FieldLabel>Cena </FieldLabel>
-										<StyledInput
+								{({ input, meta }) => {
+									const error = meta.error && meta.touched ? meta.error : null
+									return (
+										<Input
 											{...input}
 											type="number"
 											min="0"
 											step="1"
 											placeholder="Cena"
+											error={error}
 										/>
-										<FormError message={meta.error} show={meta.error && meta.touched} />
-									</>
-								)}
+									)
+								}}
 							</Field>
 						</FieldRow>
 
@@ -188,13 +182,16 @@ const NewItemForm = ({ initialValues, onSubmit, history, isLoading }) => {
 						{/* Description */}
 						<FieldRow gridArea="description">
 							<Field name="description">
-								{({ input, meta }) => (
-									<>
-										<FieldLabel>Opis</FieldLabel>
-										<StyledTextarea {...input} placeholder="Dodatkowe informacje" />
-										<FormError message={meta.error} show={meta.error && meta.touched} />
-									</>
-								)}
+								{({ input, meta }) => {
+									const error = meta.error && meta.touched ? meta.error : null
+									return (
+										<Textarea
+											{...input}
+											placeholder="Oryginalna cena, możliwości wysyłki, informacje o uszkodzeniach itd."
+											error={error}
+										/>
+									)
+								}}
 							</Field>
 						</FieldRow>
 
