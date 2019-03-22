@@ -131,7 +131,16 @@ const Terms = Loadable({
 	loading: LoadableComponentSpinner
 })
 
+const RequestDesigner = Loadable({
+	loader: () => import("../../pages/RequestDesigner"),
+	loading: LoadableComponentSpinner
+})
+
 const routes = [
+	{
+		path: ROUTES.REQUEST_DESIGNER,
+		component: RequestDesigner
+	},
 	{
 		path: ROUTES.ADMIN,
 		component: Admin
