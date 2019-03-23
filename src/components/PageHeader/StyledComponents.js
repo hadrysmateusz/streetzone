@@ -71,3 +71,8 @@ export const NavItem = styled.div`
 		height: 100%;
 	}
 `
+
+export const UserNameContainer = styled.div`
+	color: var(--black25);
+	padding-right: var(--spacing2);
+`

@@ -15,19 +15,18 @@ const FormElementContainer = ({ info, error, children }) => {
 	return (
 		<div>
 			{children}
-			{info ||
-				(error && (
-					<InfoContainer hasError={!!error}>
-						{error ? (
-							<>
-								<FontAwesomeIcon icon={faExclamationCircle} />
-								&nbsp;<span>{error}</span>
-							</>
-						) : (
-							info && <span>{info}</span>
-						)}
-					</InfoContainer>
-				))}
+			{(info || error) && (
+				<InfoContainer hasError={!!error}>
+					{error ? (
+						<>
+							<FontAwesomeIcon icon={faExclamationCircle} />
+							&nbsp;<span>{error}</span>
+						</>
+					) : (
+						info && <span>{info}</span>
+					)}
+				</InfoContainer>
+			)}
 		</div>
 	)
 }

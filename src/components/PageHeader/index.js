@@ -15,7 +15,8 @@ import {
 	Submenu,
 	Nav,
 	PageHeaderContainer,
-	PageHeaderOuter
+	PageHeaderOuter,
+	UserNameContainer
 } from "./StyledComponents"
 import useScrollPosition from "../../hooks/useScrollPosition"
 import { withBreakpoints } from "react-breakpoints"
@@ -76,8 +77,11 @@ const Navigation = ({ authUser, firebase, currentBreakpoint, ...rest }) => {
 						<>
 							<NavItem>
 								<StyledNavLink to={ROUTES.ACCOUNT_BASE.replace(":id", authUser.uid)}>
+									{currentBreakpoint >= 1 && (
+										<UserNameContainer>{authUser.name}</UserNameContainer>
+									)}
 									<ProfilePicture
-										size="35px"
+										size={currentBreakpoint >= 1 ? "36px" : "30px"}
 										url={getProfilePictureURL(authUser, "S")}
 										inline
 									/>
