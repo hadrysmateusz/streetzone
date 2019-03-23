@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useState } from "react"
+import React, { useEffect, useState } from "react"
 import { Route, Switch, Redirect, withRouter } from "react-router-dom"
 import { compose } from "recompose"
 
@@ -6,15 +6,15 @@ import { withAuthentication } from "../../components/UserSession"
 import ErrorBoundary from "../../components/ErrorBoundary"
 import { PageContainer } from "../../components/Containers"
 
-import { FirebaseContext } from "../../components/Firebase"
 import { withAuthorization } from "../../components/UserSession"
+import useFirebase from "../../hooks/useFirebase"
 import LoadingSpinner from "../../components/LoadingSpinner"
 import MainInfo from "../../components/UserMainInfo"
 
 import { TabsNav, TabsNavItem, MainContainer } from "./StyledComponents"
 
 const useUserData = (userId, authUser, isAuthorized) => {
-	const firebase = useContext(FirebaseContext)
+	const firebase = useFirebase()
 	const [user, setUser] = useState(null)
 	const [error, setError] = useState(null)
 
@@ -35,28 +35,12 @@ const useUserData = (userId, authUser, isAuthorized) => {
 	return [user, error]
 }
 
-// const useUserMaintenance = (user, isAuthorized) => {
-// 	const firebase = useContext(FirebaseContext)
-// 	if (!isAuthorized || !user) return
-
-// 	const fetchUser = async () => {
-// 		const savedItems = user.saved
-
-// 		console.log(savedItems)
-// 	}
-
-// 	useEffect(() => {
-// 		fetchUser()
-// 	})
-// }
-
 const AccountPage = ({ routes, match, authUser }) => {
 	const userId = match.params.id
 	const isAuthenticated = !!authUser
 	const isAuthorized = isAuthenticated && authUser.uid === userId
 
 	const [user, error] = useUserData(userId, authUser, isAuthorized)
-	// useUserMaintenance(user, isAuthorized)
 
 	if (error) throw error
 

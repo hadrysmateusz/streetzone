@@ -33,6 +33,8 @@ const EditItemPage = ({ match, history }) => {
 
 			// Get item attachments' refs and urls for previews
 			const imageURLs = await firebase.batchGetImageURLs(item.attachments)
+
+			// create CustomFile objects with the fetched previewUrls
 			const files = item.attachments.map((attachment, i) => {
 				return new CustomFile({
 					ref: attachment,
