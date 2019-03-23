@@ -6,11 +6,12 @@ import StarRatings from "react-star-ratings"
 
 import { LoaderButton, ButtonContainer } from "../Button"
 import { withFirebase } from "../Firebase"
-import { FieldRow, FieldLabel } from "../Basics"
+import { FieldRow } from "../Basics"
 import { FormError, Textarea } from "../FormElements"
 import { withAuthentication } from "../UserSession"
+import { SmallTextBlock } from "../StyledComponents"
 
-import { RatingContainer, OuterContainer } from "./StyledComponents"
+import { RatingContainer, OuterContainer, Group } from "./StyledComponents"
 import validate from "./validate"
 
 class AddComment extends React.Component {
@@ -53,13 +54,28 @@ class AddComment extends React.Component {
 					render={({ form, handleSubmit, submitting, pristine, values, ...rest }) => {
 						return (
 							<form onSubmit={handleSubmit}>
-								<div>
+								<Group>
+									{/* Comment */}
+									<SmallTextBlock>Treść komentarza</SmallTextBlock>
+									<FieldRow>
+										<Field name="comment">
+											{({ input, meta }) => {
+												const error = meta.error && meta.touched ? meta.error : null
+												return (
+													<Textarea {...input} placeholder="Komentarz" error={error} />
+												)
+											}}
+										</Field>
+									</FieldRow>
+								</Group>
+
+								<Group>
 									{/* Rating */}
+									<SmallTextBlock>Ocena sprzedawcy</SmallTextBlock>
 									<FieldRow>
 										<Field name="rating">
 											{({ input, meta }) => (
 												<>
-													<FieldLabel>Ocena sprzedawcy</FieldLabel>
 													<RatingContainer>
 														<StarRatings
 															rating={+input.value}
@@ -79,23 +95,11 @@ class AddComment extends React.Component {
 											)}
 										</Field>
 									</FieldRow>
+								</Group>
 
-									{/* Comment */}
-									<FieldRow>
-										<Field name="comment">
-											{({ input, meta }) => {
-												const error = meta.error && meta.touched ? meta.error : null
-												return (
-													<Textarea {...input} placeholder="Komentarz" error={error} />
-												)
-											}}
-										</Field>
-									</FieldRow>
-								</div>
-
-								<ButtonContainer centered>
+								<ButtonContainer>
 									<LoaderButton
-										text="Gotowe"
+										text="Wystaw opinie"
 										type="submit"
 										isLoading={submitting}
 										disabled={submitting || pristine}
