@@ -7,6 +7,7 @@ import { withFirebase } from "../../components/Firebase"
 import LoadingSpinner from "../../components/LoadingSpinner"
 import Comment from "../../components/Comment"
 import AddComment from "../../components/AddComment"
+import { PageContainer } from "../../components/Containers"
 
 class UserFeedback extends React.Component {
 	state = { feedback: [], error: null, isLoading: true }
@@ -39,7 +40,7 @@ class UserFeedback extends React.Component {
 		return isLoading ? (
 			<LoadingSpinner />
 		) : (
-			<div>
+			<PageContainer maxWidth={2}>
 				{!isAuthorized && <AddComment refresh={this.getFeedback} />}
 				<>
 					{feedback && feedback.length > 0 ? (
@@ -52,7 +53,7 @@ class UserFeedback extends React.Component {
 						<EmptyState state={UserNoFeedback} />
 					)}
 				</>
-			</div>
+			</PageContainer>
 		)
 	}
 }
