@@ -97,7 +97,7 @@ class AddComment extends React.Component {
 									</FieldRow>
 								</Group>
 
-								<ButtonContainer>
+								<ButtonContainer noMargin>
 									<LoaderButton
 										text="Wystaw opinie"
 										type="submit"
