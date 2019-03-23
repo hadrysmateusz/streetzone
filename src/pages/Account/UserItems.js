@@ -56,18 +56,20 @@ class UserItems extends Component {
 				) : (
 					<EmptyState state={UserNoItems} />
 				)}
-				<InfoBlock>
-					<h3>
-						<FontAwesomeIcon icon="info-circle" /> PROMOWANIE (BUMP-Y)
-					</h3>
-					<p>
-						Promowanie pomaga sprzedawać szybciej i sprawniej, zwiększając widoczność
-						twoich przedmiotów.
-					</p>
-					<ButtonContainer centered noMargin as={Link} to={ROUTES.BUMP_INFO}>
-						<Button>DOWIEDZ SIĘ WIĘCEJ</Button>
-					</ButtonContainer>
-				</InfoBlock>
+				{isAuthorized && (
+					<InfoBlock>
+						<h3>
+							<FontAwesomeIcon icon="info-circle" /> PROMOWANIE (BUMP-Y)
+						</h3>
+						<p>
+							Promowanie pomaga sprzedawać szybciej i sprawniej, zwiększając widoczność
+							twoich przedmiotów.
+						</p>
+						<ButtonContainer centered noMargin as={Link} to={ROUTES.BUMP_INFO}>
+							<Button>DOWIEDZ SIĘ WIĘCEJ</Button>
+						</ButtonContainer>
+					</InfoBlock>
+				)}
 			</div>
 		)
 	}
