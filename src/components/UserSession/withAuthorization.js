@@ -1,43 +1,23 @@
-import React from "react"
+import React, { useState, useEffect } from "react"
 import { withRouter } from "react-router-dom"
-import { compose } from "recompose"
 
-import AuthUserContext from "./context"
-import { withFirebase } from "../Firebase"
+import useAuthentication from "../../hooks/useAuthentication"
 import { ROUTES } from "../../constants"
 
-const withAuthorization = (condition) => (Component) => {
-	class WithAuthorization extends React.Component {
-		componentDidMount = () => {
-			this.removeListener = this.props.firebase.onAuthUserListener(
-				(authUser) => {
-					if (!condition(authUser)) {
-						this.props.history.push(ROUTES.SIGN_IN)
-					}
-				},
-				() => this.props.history.push(ROUTES.SIGN_IN)
-			)
-		}
+const withAuthorization = (condition) => (Component) =>
+	withRouter((props) => {
+		const authUser = useAuthentication()
+		const [isAuthorized, setIsAuthorized] = useState(false)
 
-		componentWillUnmount = () => {
-			this.removeListener()
-		}
+		useEffect(() => {
+			if (condition(authUser, props.match.params)) {
+				setIsAuthorized(true)
+			} else {
+				props.history.push(ROUTES.SIGN_IN)
+			}
+		})
 
-		render() {
-			return (
-				<AuthUserContext.Consumer>
-					{(authUser) =>
-						condition(authUser) ? <Component {...this.props} /> : null
-					}
-				</AuthUserContext.Consumer>
-			)
-		}
-	}
-
-	return compose(
-		withRouter,
-		withFirebase
-	)(WithAuthorization)
-}
+		return isAuthorized ? <Component {...props} /> : null
+	})
 
 export default withAuthorization
