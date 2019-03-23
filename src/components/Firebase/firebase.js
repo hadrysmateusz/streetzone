@@ -116,14 +116,23 @@ class Firebase {
 		}
 
 		try {
+			let idsToDelete = []
+			const oldIds = user.savedItems
+
 			// get data from firestore
-			for (let itemId of user.savedItems) {
-				const item = await this.getItemData(itemId)
-				res.items.push(item)
+			for (let itemId of oldIds) {
+				const itemDoc = await this.item(itemId).get()
+				if (itemDoc.exists) {
+					res.items.push(itemDoc.data())
+				} else {
+					idsToDelete.push(itemId)
+				}
 			}
 
-			// filter out items that don't exist anymore
-			res.items = res.items.filter((item) => Object.keys(item).length)
+			// create new list of ids by removing marked ids
+			const newIds = oldIds.filter((id) => !idsToDelete.includes(id))
+
+			this.user(user.uid).update({ savedItems: newIds })
 		} catch (error) {
 			res.error = error
 		} finally {
