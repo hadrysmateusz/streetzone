@@ -1,30 +1,38 @@
-import React, { Component } from "react"
+import React, { useState, useEffect } from "react"
 import { compose } from "recompose"
+import { withRouter } from "react-router-dom"
 
 import { withAuthorization, withAuthentication } from "../../components/UserSession"
 import LoadingSpinner from "../../components/LoadingSpinner"
 import { PageContainer } from "../../components/Containers"
 import { CustomFile } from "../../components/FileHandler"
-import { withFirebase } from "../../components/Firebase"
+import useFirebase from "../../hooks/useFirebase"
 import EmptyState from "../../components/EmptyState"
 
 import { NotFoundError } from "../../errors"
 import EditItemForm from "./EditItemForm"
+import useAuthentication from "../../hooks/useAuthentication"
 
-class EditItemPage extends Component {
-	state = {
-		error: null,
-		isLoading: true,
-		initialData: null
-	}
+const formatDataForEditForm = (price, description, files) => ({
+	price: Number.parseInt(price),
+	description: description || "",
+	files: files,
+	modifiedAt: Date.now()
+})
 
-	componentDidMount = async () => {
+const EditItemPage = ({ match, history }) => {
+	const firebase = useFirebase()
+	const authUser = useAuthentication()
+	const [error, setError] = useState(null)
+	const [initialData, setInitialData] = useState(null)
+
+	const getItem = async () => {
 		try {
 			// Get item from database
-			let item = await this.props.firebase.getItemData(this.props.match.params.id)
+			let item = await firebase.getItemData(match.params.id)
 
 			// Get item attachments' refs and urls for previews
-			const imageURLs = await this.props.firebase.batchGetImageURLs(item.attachments)
+			const imageURLs = await firebase.batchGetImageURLs(item.attachments)
 			const files = item.attachments.map((attachment, i) => {
 				return new CustomFile({
 					ref: attachment,
@@ -34,28 +42,20 @@ class EditItemPage extends Component {
 			})
 
 			// Format data for the form
-			const initialData = {
-				price: Number.parseInt(item.price),
-				description: item.description || "",
-				files: files,
-				modifiedAt: Date.now()
-			}
+			const initialData = formatDataForEditForm(item.price, item.description, files)
 
-			this.setState({ initialData })
-		} catch (error) {
+			setInitialData(initialData)
+		} catch (err) {
 			if (error instanceof NotFoundError) {
-				this.setState({ error })
+				setError(err)
 			} else {
-				throw error
+				throw err
 			}
-		} finally {
-			this.setState({ isLoading: false })
 		}
 	}
 
-	onSubmit = async (values) => {
+	const onSubmit = async (values) => {
 		try {
-			const { firebase, history, match } = this.props
 			const files = values.files
 
 			// Upload NEW files and get ALL refs
@@ -71,12 +71,7 @@ class EditItemPage extends Component {
 			)
 
 			// Format the data
-			const data = {
-				modifiedAt: Date.now(),
-				price: Number.parseInt(values.price),
-				description: values.description || "",
-				attachments: newRefs
-			}
+			const data = formatDataForEditForm(values.price, values.description, files)
 
 			// TODO: add a check against an external schema to make sure all values are present
 
@@ -84,7 +79,7 @@ class EditItemPage extends Component {
 			await firebase.item(match.params.id).update(data)
 
 			// Get just the old refs
-			let oldRefs = this.state.initialData.files.map((file) => file.ref)
+			let oldRefs = initialData.files.map((file) => file.ref)
 
 			// Old refs no longer present in new refs are marked for deletion
 			let refsToDelete = oldRefs.filter((oldRef) => !newRefs.includes(oldRef))
@@ -101,30 +96,36 @@ class EditItemPage extends Component {
 		}
 	}
 
-	render() {
-		const { isLoading, error, initialData } = this.state
-		return (
-			<PageContainer maxWidth={1}>
-				{error ? (
-					<EmptyState text={error.message} />
-				) : isLoading ? (
-					<LoadingSpinner />
-				) : (
-					<EditItemForm
-						initialValues={initialData}
-						isLoading={isLoading}
-						onSubmit={this.onSubmit}
-					/>
-				)}
-			</PageContainer>
-		)
+	useEffect(() => {
+		getItem()
+	}, [match, authUser])
+
+	return (
+		<PageContainer maxWidth={2}>
+			{error ? (
+				<EmptyState text={error.message} />
+			) : !initialData ? (
+				<LoadingSpinner />
+			) : (
+				<EditItemForm initialValues={initialData} onSubmit={onSubmit} />
+			)}
+		</PageContainer>
+	)
+}
+
+const condition = (authUser, pathParams) => {
+	const isAuthenticated = !!authUser
+	if (!isAuthenticated) {
+		return
+	} else {
+		console.log(pathParams, pathParams.id)
+		const isAuthorized = authUser.items.includes(pathParams.id)
+		return isAuthorized
 	}
 }
 
-const condition = (authUser) => !!authUser
-
 export default compose(
-	withFirebase,
 	withAuthentication,
+	withRouter,
 	withAuthorization(condition)
 )(EditItemPage)

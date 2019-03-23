@@ -6,7 +6,6 @@ import styled from "styled-components"
 import { withRouter } from "react-router-dom"
 
 import Button, { LoaderButton } from "../../components/Button"
-import { FieldRow } from "../../components/Basics"
 import DropdownFinalform from "../../components/DropdownFinalform"
 import { Input, Textarea } from "../../components/FormElements"
 import { TextBlock } from "../../components/StyledComponents"
