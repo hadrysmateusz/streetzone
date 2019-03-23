@@ -21,7 +21,7 @@ const FormElementContainer = ({ info, error, children }) => {
 						{error ? (
 							<>
 								<FontAwesomeIcon icon={faExclamationCircle} />
-								<span>{error}</span>
+								&nbsp;<span>{error}</span>
 							</>
 						) : (
 							info && <span>{info}</span>
