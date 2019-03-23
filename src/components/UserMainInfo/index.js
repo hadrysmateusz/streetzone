@@ -44,7 +44,7 @@ const MainInfo = ({ user, isAuthorized, userId }) => {
 					)}
 				</HorizontalContainer>
 
-				<TextBlock>{user.info}</TextBlock>
+				<TextBlock color="black50">{user.info}</TextBlock>
 			</InfoContainer>
 			<SecondContainer>
 				{isAuthorized ? (
