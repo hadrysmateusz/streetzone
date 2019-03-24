@@ -136,7 +136,16 @@ const RequestDesigner = Loadable({
 	loading: LoadableComponentSpinner
 })
 
+const Designers = Loadable({
+	loader: () => import("../../pages/Designers"),
+	loading: LoadableComponentSpinner
+})
+
 const routes = [
+	{
+		path: "/marki",
+		component: Designers
+	},
 	{
 		path: ROUTES.REQUEST_DESIGNER,
 		component: RequestDesigner
