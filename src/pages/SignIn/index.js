@@ -237,7 +237,7 @@ const SignInLink = withGlobalContext(({ globalContext, ...rest }) => {
 					Zaloguj się
 				</button>
 			) : (
-				<StyledLink to={ROUTES.SIGN_UP} className="link">
+				<StyledLink to={ROUTES.SIGN_IN} className="link">
 					Zaloguj się
 				</StyledLink>
 			)}
