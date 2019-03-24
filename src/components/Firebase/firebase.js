@@ -160,6 +160,11 @@ class Firebase {
 	post = (id) => this.db.collection("posts").doc(id)
 	posts = () => this.db.collection("posts")
 
+	// Designers API
+
+	designer = (id) => this.db.collection("designers").doc(id)
+	designers = () => this.db.collection("designers")
+
 	// Storage API
 
 	file = (ref) => this.storageRef.child(ref)
