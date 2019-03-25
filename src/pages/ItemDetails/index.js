@@ -30,6 +30,7 @@ import { ItemContainer, InfoContainer, SectionContainer } from "./StyledComponen
 import formatDesigners from "../../utils/formatDesigners"
 import formatPrice from "../../utils/formatPrice"
 import formatSize from "../../utils/formatSize"
+import { CONST } from "../../constants"
 
 class ItemDetailsPage extends Component {
 	state = {
@@ -194,7 +195,7 @@ class ItemDetailsPage extends Component {
 					<InstantSearch
 						appId={process.env.REACT_APP_APP_ID}
 						apiKey={process.env.REACT_APP_ALGOLIA_API_KEY}
-						indexName="dev_items"
+						indexName={CONST.DEV_ITEMS_MARKETPLACE_DEFAULT_ALGOLIA_INDEX}
 					>
 						<Configure hitsPerPage={3} />
 						<VirtualRefinementList
@@ -208,7 +209,7 @@ class ItemDetailsPage extends Component {
 					<InstantSearch
 						appId={process.env.REACT_APP_APP_ID}
 						apiKey={process.env.REACT_APP_ALGOLIA_API_KEY}
-						indexName="dev_items"
+						indexName={CONST.DEV_ITEMS_MARKETPLACE_DEFAULT_ALGOLIA_INDEX}
 					>
 						<Configure hitsPerPage={3} />
 						<VirtualMenu attribute="userId" defaultRefinement={item.userId} />

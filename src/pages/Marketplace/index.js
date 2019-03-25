@@ -19,6 +19,7 @@ import Filters from "../../components/Filters"
 import Topbar from "../../components/Topbar"
 
 import { MainGrid, Sidebar, StyledInstantSearch, GridContainer } from "./StyledComponents"
+import { CONST } from "../../constants"
 
 const DEFAULT_SORTING = sortingOptions[0].value
 const DEFAULT_HITS_PER_PAGE = 12
@@ -188,7 +189,7 @@ class HomePage extends Component {
 			<StyledInstantSearch
 				appId={process.env.REACT_APP_APP_ID}
 				apiKey={process.env.REACT_APP_ALGOLIA_API_KEY}
-				indexName="dev_items"
+				indexName={CONST.DEV_ITEMS_MARKETPLACE_DEFAULT_ALGOLIA_INDEX}
 				searchState={searchState}
 				onSearchStateChange={this.onSearchStateChange}
 				createURL={createURL}
