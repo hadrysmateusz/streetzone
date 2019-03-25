@@ -22,12 +22,16 @@ const Container = styled.div`
 	margin: 0 auto;
 `
 
+const StyledForm = styled.form`
+	display: grid;
+	gap: var(--spacing3);
+`
+
 const SignUpPage = () => {
 	return (
 		<div>
 			<Header>Utwórz konto</Header>
 			<SignUpForm />
-			<SignInLink />
 		</div>
 	)
 }
@@ -80,7 +84,7 @@ class SignUpFormBase extends Component {
 					onSubmit={this.onSubmit}
 					validate={validate}
 					render={({ handleSubmit, submitting, pristine, values }) => (
-						<form onSubmit={handleSubmit}>
+						<StyledForm onSubmit={handleSubmit}>
 							{/* Imię */}
 							<FieldRow>
 								<Field name="name">
@@ -152,7 +156,8 @@ class SignUpFormBase extends Component {
 								fullWidth
 							/>
 							{error && <FormError message={error.message} show={error} />}
-						</form>
+							<SignInLink />
+						</StyledForm>
 					)}
 				/>
 			</Container>
@@ -169,7 +174,7 @@ export const SignUpForm = compose(
 export const SignUpLink = withGlobalContext(({ globalContext, ...rest }) => {
 	return (
 		<p {...rest}>
-			Nie masz jeszcze konta?
+			Nie masz jeszcze konta?{" "}
 			{globalContext.isLoginModalVisible ? (
 				<button onClick={() => globalContext.openModal(ROUTES.SIGN_UP)}>
 					Utwórz konto

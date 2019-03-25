@@ -23,6 +23,11 @@ const Container = styled.div`
 	margin: 0 auto;
 `
 
+const StyledForm = styled.form`
+	display: grid;
+	gap: var(--spacing3);
+`
+
 const SignInPage = () => {
 	return (
 		<Container>
@@ -71,7 +76,7 @@ class SignInFormBase extends Component {
 				onSubmit={this.onSubmit}
 				validate={validate}
 				render={({ handleSubmit, submitting }) => (
-					<form onSubmit={handleSubmit}>
+					<StyledForm onSubmit={handleSubmit}>
 						{/* E-mail */}
 						<FieldRow>
 							<Field name="email">
@@ -104,7 +109,7 @@ class SignInFormBase extends Component {
 							fullWidth
 						/>
 						{error && <FormError message={error.message} show={error} />}
-					</form>
+					</StyledForm>
 				)}
 			/>
 		)
