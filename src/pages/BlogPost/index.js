@@ -15,7 +15,7 @@ import { Separator } from "../../components/Basics"
 import { minWidth, maxWidth } from "../../style-utils"
 import { ROUTES } from "../../constants"
 
-const Content = styled(Box).attrs({ p: 3, as: "article" })`
+const Content = styled.div`
 	margin: 10px 0;
 	@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
 		margin: 30px 0;
@@ -60,7 +60,6 @@ const Image = styled.img`
 const LinkContainer = styled(Box).attrs({ p: 3 })`
 	${maxWidth[0]`display: none;`}
 	color: ${(p) => p.theme.colors.black[25]};
-	font-weight: ${(p) => p.theme.fontWeights[1]};
 	background: rgba(255, 255, 255, 0.8);
 	text-align: center;
 	position: absolute;
@@ -68,7 +67,6 @@ const LinkContainer = styled(Box).attrs({ p: 3 })`
 	left: 0;
 	a {
 		:hover {
-			color: ${(p) => p.theme.colors.accent};
 		}
 		text-decoration: none !important;
 	}

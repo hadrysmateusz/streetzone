@@ -8,6 +8,7 @@ import DesignersDb from "./DesignersDb"
 import UsersManagement from "./UsersManagement"
 import ItemsManagement from "./ItemsManagement"
 import AddItems from "./AddItems"
+import BlogManagement from "./BlogManagement"
 
 export class AdminPage extends Component {
 	render() {
@@ -15,6 +16,7 @@ export class AdminPage extends Component {
 			<div
 				style={{ margin: "0 auto", width: "100%", maxWidth: "800px", padding: "10px" }}
 			>
+				<BlogManagement />
 				<DesignersDb firebase={this.props.firebase} />
 				<UsersManagement firebase={this.props.firebase} />
 				<ItemsManagement firebase={this.props.firebase} />
