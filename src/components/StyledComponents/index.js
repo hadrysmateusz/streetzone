@@ -29,6 +29,8 @@ const bodyTextBase = css`
 				return "var(--font-size--m)"
 			case "l":
 				return "var(--font-size--l)"
+			case "xl":
+				return "var(--font-size--xl)"
 			default:
 				return "var(--font-size--s)"
 		}
