@@ -170,16 +170,5 @@ const GoogleButton = styled(Button)`
 	}
 `
 
-const SocialButton = ({ provider, ...rest }) => {
-	switch (provider) {
-		case "google.com":
-			return <GoogleButton {...rest} />
-		case "facebook.com":
-			return <FacebookButton {...rest} />
-		default:
-			return <Button {...rest} />
-	}
-}
-
 export default Button
-export { LoaderButton, FacebookButton, GoogleButton, SocialButton }
+export { LoaderButton, FacebookButton, GoogleButton, Button }

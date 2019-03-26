@@ -7,6 +7,7 @@ import { withRouter } from "react-router-dom"
 
 import Button, { LoaderButton } from "../../components/Button"
 import DropdownFinalform from "../../components/DropdownFinalform"
+import InfoBox from "../../components/InfoBox"
 import { Input, Textarea } from "../../components/FormElements"
 import { TextBlock } from "../../components/StyledComponents"
 import { FileHandler } from "../../components/FileHandler"
@@ -28,23 +29,6 @@ const FormElement = styled.div`
 	grid-column: span 2;
 	@media (min-width: ${(p) => p.theme.breakpoints[0]}px) {
 		${(p) => p.small && "grid-column: span 1;"}
-	}
-`
-
-const InfoBox = styled.div`
-	grid-column: span 2;
-	background: var(--almost-white);
-	border: 1px solid var(--gray100);
-	padding: var(--spacing2);
-	@media (min-width: ${(p) => p.theme.breakpoints[0]}px) {
-		padding: var(--spacing2) var(--spacing3);
-	}
-
-	display: grid;
-	gap: var(--spacing2);
-	@media (min-width: ${(p) => p.theme.breakpoints[0]}px) {
-		gap: var(--spacing3);
-		${(p) => p.columns && `grid-template-columns: repeat(${p.columns}, 1fr);`}
 	}
 `
 

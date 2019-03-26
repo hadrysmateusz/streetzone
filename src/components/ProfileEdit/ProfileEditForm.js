@@ -10,12 +10,8 @@ import { withAuthentication } from "../UserSession"
 import { withFirebase } from "../Firebase"
 import validate from "./validate"
 
-const StyledForm = styled.form`
-	max-width: 600px;
-	margin: 0 auto;
-`
-
 const FieldsContainer = styled.div`
+	margin-top: var(--spacing3);
 	display: grid;
 	grid-template-columns: 1fr 1fr;
 	gap: 15px;
@@ -33,7 +29,7 @@ const ProfileEditForm = (props) => {
 			initialValues={props.initialValues}
 			render={({ form, handleSubmit, submitting, pristine, values, ...rest }) => {
 				return (
-					<StyledForm onSubmit={handleSubmit}>
+					<form onSubmit={handleSubmit}>
 						<FieldsContainer>
 							{/* Name */}
 							<FieldRow gridArea="name">
@@ -117,17 +113,19 @@ const ProfileEditForm = (props) => {
 
 						<ButtonContainer centered>
 							<LoaderButton
-								text="Gotowe"
+								text="Zapisz"
 								type="submit"
 								isLoading={submitting}
 								disabled={submitting || pristine}
 								primary
+								fullWidth
 							/>
 							<Button
 								text="Anuluj"
 								type="button"
-								disabled={submitting}
+								disabled={submitting || pristine}
 								onClick={form.reset}
+								fullWidth
 							>
 								Anuluj
 							</Button>
@@ -135,7 +133,7 @@ const ProfileEditForm = (props) => {
 						{/* {process.env.NODE_ENV === "development" && (
 							<pre>{JSON.stringify(values, 0, 2)}</pre>
 						)} */}
-					</StyledForm>
+					</form>
 				)
 			}}
 		/>

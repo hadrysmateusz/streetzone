@@ -1,20 +1,5 @@
 import styled from "styled-components"
 
-export const EnabledIndicator = styled.div`
-	height: 28px;
-	width: 28px;
-	background: white;
-	border: 2px solid ${(p) => p.theme.colors.gray[50]};
-	border-radius: 2px;
-	margin-right: 12px;
-
-	color: ${(p) => p.theme.colors.black[75]};
-
-	display: flex;
-	justify-content: center;
-	align-items: center;
-`
-
 export const OuterContainer = styled.div`
 	display: grid;
 	grid-template-columns: 1fr 1fr;
@@ -33,13 +18,6 @@ export const PasswordContainer = styled.div`
 	}
 `
 
-export const ConfirmPasswordContainer = styled.div`
-	display: flex;
-	* + * {
-		margin-left: 10px;
-	}
-`
-
 export const InfoContainer = styled.div`
 	position: relative;
 	line-height: 1.4rem;
@@ -55,8 +33,8 @@ export const InfoIndicator = styled.div`
 `
 
 export const LoginManagementContainer = styled.div`
-	margin: 35px auto 50px;
+	margin: var(--spacing3) auto;
 	.provider-container {
-		margin: 15px 0;
+		margin: var(--spacing3) 0;
 	}
 `

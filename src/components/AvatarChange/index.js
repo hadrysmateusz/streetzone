@@ -111,11 +111,13 @@ class AvatarChangeForm extends React.Component {
 										isLoading={submitting}
 										disabled={submitting || pristine || isLoading}
 										primary
+										fullWidth
 									/>
 									<Button
 										type="button"
 										disabled={submitting || pristine || isLoading}
 										onClick={() => form.reset()}
+										fullWidth
 									>
 										Anuluj
 									</Button>
