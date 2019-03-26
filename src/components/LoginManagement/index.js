@@ -5,7 +5,7 @@ import SocialLoginManagement from "./SocialLoginManagement"
 import useAuthentication from "../../hooks/useAuthentication"
 import useFirebase from "../../hooks/useFirebase"
 import LoadingSpinner from "../LoadingSpinner"
-import { FormError } from "../FormElements"
+import ErrorBox from "../ErrorBox"
 
 const LoginManagement = () => {
 	const firebase = useFirebase()
@@ -60,7 +60,7 @@ const LoginManagement = () => {
 	}
 
 	if (error) {
-		return <FormError message={error.message} show={!!error} />
+		return <ErrorBox error="Wystąpił problem" />
 	}
 
 	if (!activeMethods) {
