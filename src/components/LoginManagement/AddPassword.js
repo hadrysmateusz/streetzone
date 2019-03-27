@@ -40,10 +40,6 @@ class AddPassword extends Component {
 				validate={validate}
 				render={({ handleSubmit, submitting, pristine, values, invalid }) => (
 					<form onSubmit={handleSubmit}>
-						<TextBlock size="m" bold uppercase>
-							Dodaj hasło
-						</TextBlock>
-
 						<InfoBox>
 							Jeśli za pierwszym razem zalogowałeś się używając jednego z kont
 							społecznościowych, możesz również dodać hasło by logować się za pomocą
@@ -81,7 +77,7 @@ class AddPassword extends Component {
 
 						<ButtonContainer>
 							<LoaderButton
-								text={`Zapisz`}
+								text="Zapisz"
 								type="submit"
 								isLoading={submitting}
 								disabled={submitting || pristine || invalid}

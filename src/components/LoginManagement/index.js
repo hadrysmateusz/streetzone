@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react"
+import styled from "styled-components"
 
 import PasswordManagement from "./PasswordManagement"
 import SocialLoginManagement from "./SocialLoginManagement"
@@ -6,6 +7,12 @@ import useAuthentication from "../../hooks/useAuthentication"
 import useFirebase from "../../hooks/useFirebase"
 import LoadingSpinner from "../LoadingSpinner"
 import ErrorBox from "../ErrorBox"
+
+const Section = styled.div`
+	/* border-top: 1px solid var(--gray75); */
+	margin: var(--spacing5) 0;
+	/* padding-top: var(--spacing5); */
+`
 
 const LoginManagement = () => {
 	const firebase = useFirebase()
@@ -76,12 +83,16 @@ const LoginManagement = () => {
 
 	return (
 		<>
-			<PasswordManagement {...commonProps} onLink={onPasswordLoginLink} />
-			<SocialLoginManagement
-				{...commonProps}
-				onLink={onSocialLoginLink}
-				onUnlink={onUnlink}
-			/>
+			<Section>
+				<PasswordManagement {...commonProps} onLink={onPasswordLoginLink} />
+			</Section>
+			<Section>
+				<SocialLoginManagement
+					{...commonProps}
+					onLink={onSocialLoginLink}
+					onUnlink={onUnlink}
+				/>
+			</Section>
 		</>
 	)
 }

@@ -3,7 +3,7 @@ import InfoBox from "../InfoBox"
 import { TextBlock } from "../StyledComponents"
 
 import SocialLoginCard from "./SocialLoginCard"
-import { SocialContainer } from "./StyledComponents"
+import { SocialCardsContainer, SocialContainer } from "./StyledComponents"
 import SIGN_IN_METHODS from "./signInMethods"
 
 const SocialLoginManagement = ({ activeMethods, onlyOneLeft, onLink, onUnlink }) => {
@@ -18,20 +18,22 @@ const SocialLoginManagement = ({ activeMethods, onlyOneLeft, onLink, onUnlink })
 				logować się za ich pomocą do serwisu.
 			</InfoBox>
 
-			{SIGN_IN_METHODS.map((signInMethod) => {
-				const isEnabled = activeMethods.includes(signInMethod.id)
+			<SocialCardsContainer>
+				{SIGN_IN_METHODS.map((signInMethod) => {
+					const isEnabled = activeMethods.includes(signInMethod.id)
 
-				return signInMethod.id !== "password" ? (
-					<SocialLoginCard
-						key={signInMethod.id}
-						isEnabled={isEnabled}
-						onlyOneLeft={onlyOneLeft}
-						signInMethod={signInMethod}
-						onUnlink={onUnlink}
-						onLink={onLink}
-					/>
-				) : null
-			})}
+					return signInMethod.id !== "password" ? (
+						<SocialLoginCard
+							key={signInMethod.id}
+							isEnabled={isEnabled}
+							onlyOneLeft={onlyOneLeft}
+							signInMethod={signInMethod}
+							onUnlink={onUnlink}
+							onLink={onLink}
+						/>
+					) : null
+				})}
+			</SocialCardsContainer>
 		</SocialContainer>
 	)
 }

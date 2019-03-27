@@ -1,7 +1,7 @@
 import React, { Component } from "react"
 import { Form, Field } from "react-final-form"
 
-import { FieldRow, SubHeader } from "../../components/Basics"
+import { FieldRow } from "../../components/Basics"
 import { LoaderButton } from "../../components/Button"
 import { FormError, Input } from "../../components/FormElements"
 
@@ -52,8 +52,6 @@ class PasswordChangeForm extends Component {
 				validate={this.validate}
 				render={({ handleSubmit, submitting, pristine, values }) => (
 					<form onSubmit={handleSubmit}>
-						<SubHeader>Zmień hasło</SubHeader>
-
 						{/* Hasło */}
 						<FieldRow>
 							<Field name="passwordNew">
@@ -72,23 +70,21 @@ class PasswordChangeForm extends Component {
 						</FieldRow>
 
 						{/* Powtórz Hasło */}
-						{values.passwordNew && (
-							<FieldRow>
-								<Field name="passwordConfirm">
-									{({ input, meta }) => {
-										const error = meta.error && meta.touched ? meta.error : null
-										return (
-											<Input
-												{...input}
-												type="password"
-												placeholder="Potwierdź Nowe Hasło"
-												error={error}
-											/>
-										)
-									}}
-								</Field>
-							</FieldRow>
-						)}
+						<FieldRow>
+							<Field name="passwordConfirm">
+								{({ input, meta }) => {
+									const error = meta.error && meta.touched ? meta.error : null
+									return (
+										<Input
+											{...input}
+											type="password"
+											placeholder="Potwierdź Nowe Hasło"
+											error={error}
+										/>
+									)
+								}}
+							</Field>
+						</FieldRow>
 
 						<LoaderButton
 							text="Zmień hasło"
@@ -96,6 +92,7 @@ class PasswordChangeForm extends Component {
 							isLoading={submitting}
 							disabled={submitting || pristine}
 							fullWidth
+							primary
 						/>
 						{error && <FormError message={error.message} show={error} />}
 					</form>

@@ -2,7 +2,7 @@ import styled from "styled-components"
 
 export const OuterContainer = styled.div`
 	display: grid;
-	grid-template-columns: 1fr 1fr;
+	/* grid-template-columns: 1fr 1fr; */
 	gap: 15px;
 `
 
@@ -37,4 +37,10 @@ export const LoginManagementContainer = styled.div`
 	.provider-container {
 		margin: var(--spacing3) 0;
 	}
+`
+
+export const SocialCardsContainer = styled.div`
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: var(--spacing3);
 `

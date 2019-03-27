@@ -1,7 +1,7 @@
 import styled from "styled-components"
 
 const InfoBox = styled.div`
-	grid-column: span 2;
+	${(p) => p.span && `grid-column: span ${p.span};`}
 	background: var(--almost-white);
 	border: 1px solid var(--gray100);
 	padding: var(--spacing2);

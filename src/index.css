@@ -25,6 +25,7 @@
 	--spacing3: calc(var(--spacing-base) * 4);
 	--spacing4: calc(var(--spacing-base) * 8);
 	--spacing5: calc(var(--spacing-base) * 16);
+	--spacing6: calc(var(--spacing-base) * 32);
 
 	--font-size--xs: 1rem;
 	--font-size--s: 1.4rem;

@@ -16,18 +16,18 @@ const UserSettings = () => (
 			</TextBlock>
 			<ProfileEdit />
 		</Section>
+
 		<Section>
 			<TextBlock size="m" bold uppercase>
 				Zdjęcie profilowe
 			</TextBlock>
 			<AvatarChangeForm />
 		</Section>
+
 		<Section>
-			<TextBlock size="m" bold uppercase>
-				Metody logowania
-			</TextBlock>
 			<LoginManagement />
 		</Section>
+
 		<Section>
 			<SignOutButton />
 		</Section>

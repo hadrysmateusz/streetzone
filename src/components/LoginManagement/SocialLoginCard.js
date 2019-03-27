@@ -1,5 +1,5 @@
 import React from "react"
-import Button, { GoogleButton, FacebookButton } from "../Button"
+import Button, { GoogleButton, FacebookButton, ButtonContainer } from "../Button"
 import styled from "styled-components"
 import { TextBlock } from "../StyledComponents"
 
@@ -16,6 +16,9 @@ const SocialButton = ({ provider, ...rest }) => {
 
 const SocialLoginCardContainer = styled.div`
 	border: 1px solid var(--gray75);
+	padding: var(--spacing3);
+	display: grid;
+	gap: var(--spacing2);
 `
 
 const SocialLoginCard = ({ onlyOneLeft, isEnabled, signInMethod, onLink, onUnlink }) => {
@@ -30,27 +33,29 @@ const SocialLoginCard = ({ onlyOneLeft, isEnabled, signInMethod, onLink, onUnlin
 				{isEnabled ? "połączono" : "nie połączono"}
 			</TextBlock>
 
-			{isEnabled ? (
-				<SocialButton
-					provider={signInMethod.id}
-					onClick={() => onUnlink(signInMethod.id)}
-					disabled={onlyOneLeft}
-					title={
-						onlyOneLeft ? "Nie można dezaktywować ostatniej metody logowania" : undefined
-					}
-					fullWidth
-				>
-					Rozłącz
-				</SocialButton>
-			) : (
-				<SocialButton
-					provider={signInMethod.id}
-					onClick={() => onLink(signInMethod.provider)}
-					fullWidth
-				>
-					Połącz
-				</SocialButton>
-			)}
+			<ButtonContainer>
+				{isEnabled ? (
+					<SocialButton
+						provider={signInMethod.id}
+						onClick={() => onUnlink(signInMethod.id)}
+						disabled={onlyOneLeft}
+						title={
+							onlyOneLeft
+								? "Nie można dezaktywować ostatniej metody logowania"
+								: undefined
+						}
+					>
+						Rozłącz
+					</SocialButton>
+				) : (
+					<SocialButton
+						provider={signInMethod.id}
+						onClick={() => onLink(signInMethod.provider)}
+					>
+						Połącz
+					</SocialButton>
+				)}
+			</ButtonContainer>
 		</SocialLoginCardContainer>
 	)
 }

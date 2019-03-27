@@ -88,7 +88,7 @@ const NewItemForm = ({ initialValues, onSubmit, history, isLoading }) => {
 							</Field>
 						</FormElement>
 
-						<InfoBox>
+						<InfoBox span={2}>
 							<TextBlock>
 								Jeśli nie znalazłeś marki której potrzebujesz napisz do nas na{" "}
 								<b>bumped@gmail.com</b> lub użyj formularza dostępnego{" "}
@@ -189,7 +189,7 @@ const NewItemForm = ({ initialValues, onSubmit, history, isLoading }) => {
 							</Field>
 						</FormElement>
 
-						<InfoBox columns={2}>
+						<InfoBox columns={2} span={2}>
 							<TextBlock>
 								<b>DS (Deadstock)</b> - Przedmiot nowy, oryginalnie zapakowany.
 							</TextBlock>
