@@ -183,9 +183,9 @@ const AddDesigner = () => {
 								primary
 							/>
 						</ButtonContainer>
-						{process.env.NODE_ENV === "development" && (
+						{/* {process.env.NODE_ENV === "development" && (
 							<pre>{JSON.stringify(values, 0, 2)}</pre>
-						)}
+						)} */}
 					</form>
 				)
 			}}

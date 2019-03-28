@@ -17,6 +17,7 @@ import sortingOptions from "../../constants/sortingOptions"
 import ScrollToTop from "../../components/ScrollToTop"
 import Filters from "../../components/Filters"
 import Topbar from "../../components/Topbar"
+import { TextBlock } from "../../components/StyledComponents"
 
 import { MainGrid, Sidebar, StyledInstantSearch, GridContainer } from "./StyledComponents"
 import { CONST } from "../../constants"
@@ -195,6 +196,9 @@ class HomePage extends Component {
 				createURL={createURL}
 				refresh={this.state.refreshAlgolia}
 			>
+				{/* <TextBlock bold uppercase>
+					🔥 Promowane
+				</TextBlock> */}
 				<GridContainer>
 					<Topbar
 						areFiltersOpen={areFiltersOpen}
