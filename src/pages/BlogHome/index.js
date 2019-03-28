@@ -8,6 +8,7 @@ import moment from "moment"
 import LoadingSpinner from "../../components/LoadingSpinner"
 import { withFirebase } from "../../components/Firebase"
 import { BlogPageContainer } from "../../components/Containers"
+import { TextBlock } from "../../components/StyledComponents"
 
 import { ROUTES } from "../../constants"
 
@@ -122,6 +123,91 @@ const Excerpt = styled.p`
 	font-family: serif;
 `
 
+const PromotedContainer = styled.div`
+	display: grid;
+	grid-template-columns: 2fr 1fr;
+	grid-template-rows: 1fr 1fr;
+	height: 440px;
+	gap: var(--spacing3);
+	> *:first-child {
+		grid-row: span 2;
+	}
+`
+
+const PromotedPostContainer = styled.div`
+	width: 100%;
+	height: 100%;
+	background: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.5)),
+		url(${(p) => p.image});
+	background-size: cover;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: flex-end;
+	color: white;
+	text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+	padding-bottom: var(--spacing4);
+`
+
+const MainGrid = styled.div`
+	display: grid;
+	grid-template-columns: 1fr 4fr;
+	gap: var(--spacing4);
+	margin-top: var(--spacing4);
+`
+
+const Sidebar = styled.aside``
+
+const ContentArea = styled.main``
+
+const SectionContainer = styled.section`
+	margin-bottom: var(--spacing4);
+
+	header {
+		display: flex;
+		justify-content: space-between;
+		margin-bottom: var(--spacing3);
+	}
+
+	.content {
+		display: grid;
+		grid-auto-flow: column;
+		gap: var(--spacing3);
+	}
+`
+
+const Section = ({ title, hasMore, children }) => {
+	return (
+		<SectionContainer>
+			<header>
+				<TextBlock bold uppercase size="m">
+					{title}
+				</TextBlock>
+				{hasMore && (
+					<TextBlock color="gray0">
+						Więcej <FontAwesomeIcon size="xs" icon="arrow-right" />
+					</TextBlock>
+				)}
+			</header>
+			<div className="content">{children}</div>
+		</SectionContainer>
+	)
+}
+
+const PromotedPost = ({ title, author, createdAt, mainImageURL }) => {
+	return (
+		<PromotedPostContainer image={mainImageURL}>
+			<TextBlock serif size="l">
+				{title}
+			</TextBlock>
+			<TextBlock serif>
+				{author && author + " - "}
+				{moment(createdAt).format("D.M.YY")}
+			</TextBlock>
+		</PromotedPostContainer>
+	)
+}
+
 export class BlogHomePage extends Component {
 	state = { posts: [], isLoading: true }
 
@@ -144,38 +230,53 @@ export class BlogHomePage extends Component {
 				{isLoading ? (
 					<LoadingSpinner />
 				) : (
-					<PostsContainer>
-						{posts.map((post) => {
-							let excerpt = removeMarkdown(post.content, { gfm: true })
-							excerpt = excerpt.replace(/\\n/g, "\n")
-							const length = 85
-							excerpt = excerpt.length < length ? excerpt : excerpt.substring(0, length)
-							excerpt += "..."
+					<>
+						<PromotedContainer>
+							<PromotedPost {...posts[0]} />
+							<PromotedPost {...posts[1]} />
+							<PromotedPost {...posts[2]} />
+						</PromotedContainer>
+						<MainGrid>
+							<Sidebar />
+							<ContentArea>
+								<Section title="Nadchodzące Dropy" hasMore />
+								<Section title="Czyszczenie i pielęgnacja" />
+								<PostsContainer>
+									{posts.map((post) => {
+										let excerpt = removeMarkdown(post.content, { gfm: true })
+										excerpt = excerpt.replace(/\\n/g, "\n")
+										const length = 85
+										excerpt =
+											excerpt.length < length ? excerpt : excerpt.substring(0, length)
+										excerpt += "..."
 
-							return (
-								<Post>
-									<Link to={ROUTES.BLOG_POST.replace(":id", post.postId)}>
-										<ImageContainer>
-											<Image url={post.photo_url} />
-										</ImageContainer>
-										<div>
-											<Title as="h3">{post.title}</Title>
-											<DetailsContainer>
-												<InfoItem>
-													<FontAwesomeIcon icon="user" /> {post.author}
-												</InfoItem>
-												<InfoItem>
-													<FontAwesomeIcon icon="calendar" />{" "}
-													{moment(post.createdAt).format("D.M.YY")}
-												</InfoItem>
-											</DetailsContainer>
-											<Excerpt>{excerpt}</Excerpt>
-										</div>
-									</Link>
-								</Post>
-							)
-						})}
-					</PostsContainer>
+										return (
+											<Post>
+												<Link to={ROUTES.BLOG_POST.replace(":id", post.postId)}>
+													<ImageContainer>
+														<Image url={post.photo_url} />
+													</ImageContainer>
+													<div>
+														<Title as="h3">{post.title}</Title>
+														<DetailsContainer>
+															<InfoItem>
+																<FontAwesomeIcon icon="user" /> {post.author}
+															</InfoItem>
+															<InfoItem>
+																<FontAwesomeIcon icon="calendar" />{" "}
+																{moment(post.createdAt).format("D.M.YY")}
+															</InfoItem>
+														</DetailsContainer>
+														<Excerpt>{excerpt}</Excerpt>
+													</div>
+												</Link>
+											</Post>
+										)
+									})}
+								</PostsContainer>
+							</ContentArea>
+						</MainGrid>
+					</>
 				)}
 			</BlogPageContainer>
 		)

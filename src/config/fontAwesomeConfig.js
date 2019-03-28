@@ -33,7 +33,8 @@ import {
 	faPhone,
 	faMinus,
 	faExclamationCircle,
-	faLongArrowAltLeft
+	faLongArrowAltLeft,
+	faArrowRight
 } from "@fortawesome/free-solid-svg-icons"
 import {
 	faHeart as farHeart,
@@ -82,5 +83,6 @@ library.add(
 	faPhone,
 	faMinus,
 	faExclamationCircle,
-	faLongArrowAltLeft
+	faLongArrowAltLeft,
+	faArrowRight
 )
