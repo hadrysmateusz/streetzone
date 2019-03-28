@@ -84,7 +84,7 @@ const AddPost = () => {
 	const firebase = useFirebase()
 
 	const onSubmit = async (
-		{ mainImage, title, author, mainContent, dropDate },
+		{ section, mainImage, title, author, mainContent, dropDate },
 		actions
 	) => {
 		try {
@@ -100,6 +100,7 @@ const AddPost = () => {
 
 			let data = {
 				id,
+				section,
 				title: title.trim(),
 				mainContent,
 				mainImageRef,
@@ -240,9 +241,9 @@ const AddPost = () => {
 								primary
 							/>
 						</ButtonContainer>
-						{process.env.NODE_ENV === "development" && (
+						{/* {process.env.NODE_ENV === "development" && (
 							<pre>{JSON.stringify(values, 0, 2)}</pre>
-						)}
+						)} */}
 					</form>
 				)
 			}}
