@@ -18,6 +18,7 @@ const textBase = css`
 
 const bodyTextBase = css`
 	${textBase}
+	${(p) => p.serif && "font-family: var(--font-family--serif);"}
 	${(p) => p.color && `color: var(--${p.color});`}
 	font-size: ${(p) => {
 		switch (p.size) {
