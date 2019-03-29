@@ -4,6 +4,8 @@ import React, { Component } from "react"
 import { Link } from "react-router-dom"
 import moment from "moment"
 import cloneDeep from "clone-deep"
+import { connectInfiniteHits } from "react-instantsearch-core"
+import InfiniteScroll from "react-infinite-scroller"
 
 import LoadingSpinner from "../../components/LoadingSpinner"
 import { withFirebase } from "../../components/Firebase"
@@ -18,7 +20,7 @@ import {
 	Sidebar,
 	ContentArea,
 	SectionContainer,
-	Post,
+	Post as PostContainer,
 	Image,
 	ImageContainer,
 	DetailsContainer,
@@ -33,6 +35,59 @@ const DEFAULT_SEARCH_STATE = Object.freeze({
 	refinementList: {},
 	query: "",
 	page: 1
+})
+
+const Post = ({ id, mainContent, mainImageURL, section, title, author, createdAt }) => {
+	let excerpt = removeMarkdown(mainContent, { gfm: true })
+	excerpt = excerpt.replace(/\\n/g, "\n")
+	const length = 85
+	excerpt = excerpt.length < length ? excerpt : excerpt.substring(0, length)
+	excerpt += "..."
+
+	return (
+		<PostContainer>
+			<Link to={ROUTES.BLOG_POST.replace(":id", id)}>
+				<ImageContainer>
+					<Image url={mainImageURL} />
+				</ImageContainer>
+				<div>
+					<TextBlock uppercase color="gray0">
+						{section}
+					</TextBlock>
+					<TextBlock size="l" bold as="h3">
+						{title}
+					</TextBlock>
+					<DetailsContainer>
+						<TextBlock color="gray0">
+							<FontAwesomeIcon icon="user" /> {author}
+						</TextBlock>
+						<TextBlock color="gray0">
+							<FontAwesomeIcon icon="calendar" /> {moment(createdAt).format("D.M.YY")}
+						</TextBlock>
+					</DetailsContainer>
+					<TextBlock>{excerpt}</TextBlock>
+				</div>
+			</Link>
+		</PostContainer>
+	)
+}
+
+const InfinitePosts = connectInfiniteHits(({ hits, hasMore, refine, ...rest }) => {
+	return (
+		<InfiniteScroll
+			hasMore={hasMore}
+			loader={<LoadingSpinner fixedHeight />}
+			initialLoad={false}
+			loadMore={refine}
+			{...rest}
+		>
+			<PostsContainer>
+				{hits.map((post) => (
+					<Post {...post} />
+				))}
+			</PostsContainer>
+		</InfiniteScroll>
+	)
 })
 
 const Section = ({ title, hasMore, children }) => {
@@ -53,33 +108,50 @@ const Section = ({ title, hasMore, children }) => {
 	)
 }
 
-const PromotedPost = ({ title, author, createdAt, mainImageURL }) => {
+const PromotedPost = ({ title, author, createdAt, mainImageURL, id }) => {
 	return (
-		<PromotedPostContainer image={mainImageURL}>
-			<TextBlock serif size="l">
-				{title}
-			</TextBlock>
-			<TextBlock serif>
-				{author && author + " - "}
-				{moment(createdAt).format("D.M.YY")}
-			</TextBlock>
-		</PromotedPostContainer>
+		<Link to={ROUTES.BLOG_POST.replace(":id", id)}>
+			<PromotedPostContainer image={mainImageURL}>
+				<TextBlock serif size="l">
+					{title}
+				</TextBlock>
+				<TextBlock serif>
+					{author && author + " - "}
+					{moment(createdAt).format("D.M.YY")}
+				</TextBlock>
+			</PromotedPostContainer>
+		</Link>
 	)
 }
 
 export class BlogHomePage extends Component {
-	state = { posts: [], isLoading: true }
+	state = { drops: [], promotedPosts: [], isLoading: true }
 
-	getPosts = async (sortBy = "createdAt", sortDirection = "desc") => {
+	getDrops = async () => {
 		this.setState({ isLoading: true })
-		let query = this.props.firebase.posts().orderBy(sortBy, sortDirection)
+		let query = this.props.firebase
+			.posts()
+			.where("section", "==", "Dropy")
+			.limit(2)
 		const snapshot = await query.get()
-		let posts = snapshot.docs.map((doc) => ({ ...doc.data(), postId: doc.id }))
+		let posts = snapshot.docs.map((doc) => doc.data())
+		await this.setState({ posts, isLoading: false })
+	}
+
+	getPromotedPosts = async () => {
+		this.setState({ isLoading: true })
+		let query = this.props.firebase
+			.posts()
+			.where("isPromoted", "==", true)
+			.limit(3)
+		const snapshot = await query.get()
+		let posts = snapshot.docs.map((doc) => doc.data())
 		await this.setState({ posts, isLoading: false })
 	}
 
 	componentDidMount = () => {
-		this.getPosts()
+		this.getPromotedPosts()
+		this.getDrops()
 	}
 
 	urlToState = (parsedSearch) => {
@@ -111,7 +183,7 @@ export class BlogHomePage extends Component {
 	}
 
 	render() {
-		const { isLoading, posts } = this.state
+		const { isLoading, promotedPosts, drops } = this.state
 
 		return (
 			<BlogPageContainer maxWidth={5}>
@@ -126,55 +198,20 @@ export class BlogHomePage extends Component {
 							defaultSearchState={DEFAULT_SEARCH_STATE}
 						>
 							<PromotedContainer>
-								<PromotedPost {...posts[0]} />
-								<PromotedPost {...posts[1]} />
-								<PromotedPost {...posts[2]} />
+								<PromotedPost {...promotedPosts[0]} />
+								<PromotedPost {...promotedPosts[1]} />
+								<PromotedPost {...promotedPosts[2]} />
 							</PromotedContainer>
 							<MainGrid>
 								<Sidebar />
 								<ContentArea>
-									<Section title="Nadchodzące Dropy" hasMore />
+									<Section title="Nadchodzące Dropy" hasMore>
+										{drops.map((post) => (
+											<Post {...post} />
+										))}
+									</Section>
 									<Section title="Czyszczenie i pielęgnacja" />
-									<PostsContainer>
-										{posts.map((post) => {
-											let excerpt = removeMarkdown(post.mainContent, { gfm: true })
-											excerpt = excerpt.replace(/\\n/g, "\n")
-											const length = 85
-											excerpt =
-												excerpt.length < length ? excerpt : excerpt.substring(0, length)
-											excerpt += "..."
-
-											console.log(post)
-
-											return (
-												<Post>
-													<Link to={ROUTES.BLOG_POST.replace(":id", post.id)}>
-														<ImageContainer>
-															<Image url={post.mainImageURL} />
-														</ImageContainer>
-														<div>
-															<TextBlock uppercase color="gray0">
-																{post.section}
-															</TextBlock>
-															<TextBlock size="l" bold as="h3">
-																{post.title}
-															</TextBlock>
-															<DetailsContainer>
-																<TextBlock color="gray0">
-																	<FontAwesomeIcon icon="user" /> {post.author}
-																</TextBlock>
-																<TextBlock color="gray0">
-																	<FontAwesomeIcon icon="calendar" />{" "}
-																	{moment(post.createdAt).format("D.M.YY")}
-																</TextBlock>
-															</DetailsContainer>
-															<TextBlock>{excerpt}</TextBlock>
-														</div>
-													</Link>
-												</Post>
-											)
-										})}
-									</PostsContainer>
+									<InfinitePosts />
 								</ContentArea>
 							</MainGrid>
 						</InstantSearchWrapper>

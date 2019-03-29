@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react"
 import equal from "deep-equal"
 import { withRouter } from "react-router-dom"
-
-import { CONST } from "../../constants"
 import { InstantSearch } from "react-instantsearch-dom"
 
 const createURL = (state) => `?search=${btoa(JSON.stringify(state))}`
@@ -84,6 +82,8 @@ const InstantSearchWrapper = withRouter(
 				return defaultSearchState
 			}
 		}
+
+		console.log(indexName)
 
 		return (
 			<InstantSearch
