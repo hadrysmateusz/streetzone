@@ -1,6 +1,7 @@
 import React from "react"
 import styled from "styled-components"
 import Select from "react-select"
+
 import FormElementContainer from "./container"
 import { disabledStyles, hoverStyles, focusStyles, basicStyles } from "./commonStyles"
 
@@ -27,7 +28,6 @@ const StyledSelect = styled(Select).attrs({
 	.react-select__control--is-focused {
 		${focusStyles}
 	}
-
 	.react-select__control--is-disabled {
 		${disabledStyles}
 	}

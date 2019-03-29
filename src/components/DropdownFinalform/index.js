@@ -41,7 +41,7 @@ const DropdownFinalform = ({ onChange: setValue, value, options, isMulti, ...res
 	)
 }
 
-const AlgoliaSelectAdapter = connectSortBy(
+export const AlgoliaSelectAdapter = connectSortBy(
 	({ refine, items, currentRefinement, ...rest }) => {
 		const value = items.find((option) => option.value === value)
 		return (
@@ -56,4 +56,3 @@ const AlgoliaSelectAdapter = connectSortBy(
 )
 
 export default DropdownFinalform
-export { AlgoliaSelectAdapter }

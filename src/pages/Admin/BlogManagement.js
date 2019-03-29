@@ -1,6 +1,6 @@
-import React, { Component, useState, useEffect } from "react"
+import React /* Component, useState, useEffect */ from "react"
 import shortid from "shortid"
-import { OnChange } from "react-final-form-listeners"
+// import { OnChange } from "react-final-form-listeners"
 import Datetime from "react-datetime"
 
 import LoadingSpinner from "../../components/LoadingSpinner"
@@ -14,8 +14,9 @@ import { Form, Field } from "react-final-form"
 import useFirebase from "../../hooks/useFirebase"
 import { FORM_ERR } from "../../constants"
 import useFirestoreCollection from "../../hooks/useFirestoreCollection"
-import DropdownFinalform from "../../components/DropdownFinalform"
 import { Textarea } from "../../components/FormElements"
+import DropdownFinalform from "../../components/DropdownFinalform"
+import MultiTextInputFinalform from "../../components/MultiTextInputFinalform"
 
 import "react-datetime/css/react-datetime.css"
 
@@ -181,13 +182,7 @@ const AddPost = () => {
 								{({ input, meta }) => {
 									const error = meta.error && meta.touched ? meta.error : null
 									return (
-										<Input
-											{...input}
-											type="text"
-											placeholder="Author"
-											error={error}
-											info="autor jest zbędny dla dropów"
-										/>
+										<Input {...input} type="text" placeholder="Author" error={error} />
 									)
 								}}
 							</Field>
@@ -231,6 +226,15 @@ const AddPost = () => {
 						)}
 
 						<Field name="mainImage" component={FileHandlerSingle} />
+
+						<Field name="tags" type="select">
+							{({ input, meta }) => {
+								const error = meta.error && meta.touched ? meta.error : null
+								return (
+									<MultiTextInputFinalform {...input} placeholder="Tagi" error={error} />
+								)
+							}}
+						</Field>
 
 						<ButtonContainer centered>
 							<LoaderButton
