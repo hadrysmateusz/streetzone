@@ -225,6 +225,7 @@ export class BlogHomePage extends Component {
 
 	render() {
 		const { isLoading, posts } = this.state
+
 		return (
 			<BlogPageContainer maxWidth={5}>
 				{isLoading ? (
@@ -243,31 +244,38 @@ export class BlogHomePage extends Component {
 								<Section title="Czyszczenie i pielęgnacja" />
 								<PostsContainer>
 									{posts.map((post) => {
-										let excerpt = removeMarkdown(post.content, { gfm: true })
+										let excerpt = removeMarkdown(post.mainContent, { gfm: true })
 										excerpt = excerpt.replace(/\\n/g, "\n")
 										const length = 85
 										excerpt =
 											excerpt.length < length ? excerpt : excerpt.substring(0, length)
 										excerpt += "..."
 
+										console.log(post)
+
 										return (
 											<Post>
-												<Link to={ROUTES.BLOG_POST.replace(":id", post.postId)}>
+												<Link to={ROUTES.BLOG_POST.replace(":id", post.id)}>
 													<ImageContainer>
-														<Image url={post.photo_url} />
+														<Image url={post.mainImageURL} />
 													</ImageContainer>
 													<div>
-														<Title as="h3">{post.title}</Title>
+														<TextBlock uppercase color="gray0">
+															{post.section}
+														</TextBlock>
+														<TextBlock size="l" bold as="h3">
+															{post.title}
+														</TextBlock>
 														<DetailsContainer>
-															<InfoItem>
+															<TextBlock color="gray0">
 																<FontAwesomeIcon icon="user" /> {post.author}
-															</InfoItem>
-															<InfoItem>
+															</TextBlock>
+															<TextBlock color="gray0">
 																<FontAwesomeIcon icon="calendar" />{" "}
 																{moment(post.createdAt).format("D.M.YY")}
-															</InfoItem>
+															</TextBlock>
 														</DetailsContainer>
-														<Excerpt>{excerpt}</Excerpt>
+														<TextBlock>{excerpt}</TextBlock>
 													</div>
 												</Link>
 											</Post>
