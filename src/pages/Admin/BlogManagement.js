@@ -21,15 +21,15 @@ import "react-datetime/css/react-datetime.css"
 
 const sectionOptions = [
 	{
-		value: "knowledge",
+		value: "Wiedza",
 		label: "Wiedza"
 	},
 	{
-		value: "drops",
+		value: "Dropy",
 		label: "Dropy"
 	},
 	{
-		value: "articles",
+		value: "Artykuły",
 		label: "Artykuły"
 	}
 ]
