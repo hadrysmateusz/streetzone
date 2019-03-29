@@ -3,12 +3,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import React, { Component } from "react"
 import { Link } from "react-router-dom"
 import moment from "moment"
+import cloneDeep from "clone-deep"
 
 import LoadingSpinner from "../../components/LoadingSpinner"
 import { withFirebase } from "../../components/Firebase"
 import { BlogPageContainer } from "../../components/Containers"
 import { TextBlock } from "../../components/StyledComponents"
-import AlgoliaSearchContainer from "../../components/Topbar"
+import InstantSearchWrapper from "../../components/InstantSearchWrapper"
 
 import {
 	PromotedContainer,
@@ -118,8 +119,8 @@ export class BlogHomePage extends Component {
 					<LoadingSpinner />
 				) : (
 					<>
-						<AlgoliaSearchContainer
-							indexName={CONST.DEV_ITEMS_MARKETPLACE_DEFAULT_ALGOLIA_INDEX}
+						<InstantSearchWrapper
+							indexName={CONST.DEV_BLOG_ALGOLIA_INDEX}
 							onSearchStateChange={this.onSearchStateChange}
 							urlToState={this.urlToState}
 							defaultSearchState={DEFAULT_SEARCH_STATE}
@@ -176,7 +177,7 @@ export class BlogHomePage extends Component {
 									</PostsContainer>
 								</ContentArea>
 							</MainGrid>
-						</AlgoliaSearchContainer>
+						</InstantSearchWrapper>
 					</>
 				)}
 			</BlogPageContainer>

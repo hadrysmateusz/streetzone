@@ -7,7 +7,7 @@ import { InstantSearch } from "react-instantsearch-dom"
 
 const createURL = (state) => `?search=${btoa(JSON.stringify(state))}`
 
-const AlgoliaSearchContainer = withRouter(
+const InstantSearchWrapper = withRouter(
 	({
 		indexName,
 		onSearchStateChange,
@@ -102,4 +102,4 @@ const AlgoliaSearchContainer = withRouter(
 	}
 )
 
-export default AlgoliaSearchContainer
+export default InstantSearchWrapper

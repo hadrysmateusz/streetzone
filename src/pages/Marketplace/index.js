@@ -15,7 +15,7 @@ import sortingOptions from "../../constants/sortingOptions"
 import ScrollToTop from "../../components/ScrollToTop"
 import Filters from "../../components/Filters"
 import Topbar from "../../components/Topbar"
-import AlgoliaSearchContainer from "../../components/Topbar"
+import InstantSearchWrapper from "../../components/InstantSearchWrapper"
 
 import { MainGrid, Sidebar, GridContainer } from "./StyledComponents"
 import { CONST } from "../../constants"
@@ -114,7 +114,7 @@ class HomePage extends Component {
 		}
 
 		return (
-			<AlgoliaSearchContainer
+			<InstantSearchWrapper
 				indexName={CONST.DEV_ITEMS_MARKETPLACE_DEFAULT_ALGOLIA_INDEX}
 				onSearchStateChange={this.onSearchStateChange}
 				urlToState={this.urlToState}
@@ -151,7 +151,7 @@ class HomePage extends Component {
 					</MainGrid>
 				</GridContainer>
 				<ScrollToTop>↑</ScrollToTop>
-			</AlgoliaSearchContainer>
+			</InstantSearchWrapper>
 		)
 	}
 }
