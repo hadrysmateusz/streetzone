@@ -81,6 +81,34 @@ export class BlogHomePage extends Component {
 		this.getPosts()
 	}
 
+	urlToState = (parsedSearch) => {
+		let searchState = cloneDeep(DEFAULT_SEARCH_STATE)
+		// format the searchState according to Algolia's spec
+		const { tags, section, query, page } = parsedSearch
+
+		searchState.refinementList.section = section || []
+		searchState.refinementList.tags = tags || []
+		searchState.query = query || ""
+		searchState.page = page || 1
+
+		return searchState
+	}
+
+	onSearchStateChange = async (newSearchState) => {
+		// format the state to keep the url relatively short
+		const { refinementList, query, page } = newSearchState
+		let formattedState = {}
+		if (refinementList !== undefined) {
+			if (refinementList.tags !== undefined) formattedState.tags = refinementList.tags
+			if (refinementList.section !== undefined)
+				formattedState.section = refinementList.section
+		}
+		if (page !== undefined) formattedState.page = page
+		if (query !== undefined) formattedState.query = query
+
+		return formattedState
+	}
+
 	render() {
 		const { isLoading, posts } = this.state
 
