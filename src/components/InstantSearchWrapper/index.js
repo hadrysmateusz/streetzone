@@ -89,7 +89,7 @@ const InstantSearchWrapper = withRouter(
 			<InstantSearch
 				appId={process.env.REACT_APP_APP_ID}
 				apiKey={process.env.REACT_APP_ALGOLIA_API_KEY}
-				indexName={CONST.DEV_ITEMS_MARKETPLACE_DEFAULT_ALGOLIA_INDEX}
+				indexName={indexName}
 				searchState={searchState}
 				onSearchStateChange={handleSearchStateChange}
 				createURL={createURL}
