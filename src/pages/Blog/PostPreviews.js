@@ -8,7 +8,7 @@ import InfiniteScroll from "react-infinite-scroller"
 
 import LoadingSpinner from "../../components/LoadingSpinner"
 import { TextBlock } from "../../components/StyledComponents"
-import Button from "../../components/Button"
+import Button, { ButtonContainer } from "../../components/Button"
 
 import {
 	Post as PostContainer,
@@ -45,14 +45,16 @@ export const SmallPost = ({ id, mainImageURL, title, createdAt }) => {
 				<ImageContainer>
 					<Image url={mainImageURL} />
 				</ImageContainer>
-				<div>
+				<div className="post-details">
 					<TextBlock serif size="l">
 						{title}
 					</TextBlock>
 					<TextBlock serif color="black75">
 						{moment(createdAt).format("D.M.YY")}
 					</TextBlock>
-					<Button>Czytaj więcej</Button>
+					<ButtonContainer>
+						<Button>Czytaj więcej</Button>
+					</ButtonContainer>
 				</div>
 			</SmallPostContainer>
 		</Link>
@@ -66,14 +68,16 @@ export const DropPost = ({ id, mainImageURL, title, dropsAt }) => {
 				<ImageContainer>
 					<Image url={mainImageURL} />
 				</ImageContainer>
-				<div>
+				<div className="post-details">
 					<TextBlock serif size="l">
 						{title}
 					</TextBlock>
 					<TextBlock serif color="black75">
 						{moment(dropsAt).format("D.M.YY")}
 					</TextBlock>
-					<Button>Czytaj więcej</Button>
+					<ButtonContainer>
+						<Button>Czytaj więcej</Button>
+					</ButtonContainer>
 				</div>
 			</SmallPostContainer>
 		</Link>

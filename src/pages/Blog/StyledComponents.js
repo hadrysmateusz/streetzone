@@ -144,6 +144,7 @@ export const SmallPostContainer = styled.div`
 	display: grid;
 	grid-template-rows: 240px auto;
 	height: 100%;
+	gap: var(--spacing2);
 `
 
 export const TagsNavContainer = styled.div`
