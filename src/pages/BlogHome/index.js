@@ -227,7 +227,9 @@ export class BlogHomePage extends Component {
 								<PromotedPost {...promotedPosts[2]} />
 							</PromotedContainer>
 							<MainGrid>
-								<Sidebar />
+								<Sidebar>
+									<BasicRefinementList attribute="tags" />
+								</Sidebar>
 								<ContentArea>
 									<Section title="Nadchodzące Dropy" hasMore>
 										{drops.map((post) => (
