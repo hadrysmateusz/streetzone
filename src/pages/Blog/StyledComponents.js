@@ -3,10 +3,10 @@ import styled from "styled-components"
 export const PostsContainer = styled.div`
 	display: grid;
 	gap: 10px;
-	margin: 10px 0;
+	/* margin: 10px 0;
 	@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
 		margin: 30px 0;
-	}
+	} */
 `
 
 export const Post = styled.div`
@@ -118,7 +118,7 @@ export const MainGrid = styled.div`
 	margin-top: var(--spacing4);
 `
 
-export const Sidebar = styled.aside``
+export const SidebarContainer = styled.aside``
 
 export const ContentArea = styled.main``
 
@@ -139,9 +139,19 @@ export const SectionContainer = styled.section`
 	}
 `
 
-export const DropPostContainer = styled.div`
-	height: 400px;
+export const SmallPostContainer = styled.div`
 	overflow: hidden;
 	display: grid;
-	grid-template-rows: 290px 1fr;
+	grid-template-rows: 240px auto;
+	height: 100%;
+`
+
+export const TagsNavContainer = styled.div`
+	display: grid;
+	gap: var(--spacing2);
+`
+
+export const SectionNavContainer = styled.div`
+	display: grid;
+	/* gap: var(--spacing1); */
 `

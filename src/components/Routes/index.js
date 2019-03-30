@@ -57,7 +57,7 @@ const Designer = Loadable({
 })
 
 const BlogPost = Loadable({
-	loader: () => import("../../pages/BlogPost"),
+	loader: () => import("../../pages/Blog/Post"),
 	loading: LoadableComponentSpinner
 })
 
@@ -87,7 +87,7 @@ const Marketplace = Loadable({
 })
 
 const BlogHome = Loadable({
-	loader: () => import("../../pages/BlogHome"),
+	loader: () => import("../../pages/Blog/Post"),
 	loading: LoadableComponentSpinner
 })
 
@@ -143,7 +143,35 @@ const Designers = Loadable({
 
 const routes = [
 	{
-		path: "/marki",
+		path: ROUTES.BLOG_HOME,
+		component: Loadable({
+			loader: () => import("../../pages/Blog/Home"),
+			loading: LoadableComponentSpinner
+		})
+	},
+	{
+		path: ROUTES.BLOG_SECTION,
+		component: Loadable({
+			loader: () => import("../../pages/Blog/Section"),
+			loading: LoadableComponentSpinner
+		})
+	},
+	{
+		path: ROUTES.BLOG_TAG,
+		component: Loadable({
+			loader: () => import("../../pages/Blog/Tag"),
+			loading: LoadableComponentSpinner
+		})
+	},
+	{
+		path: ROUTES.BLOG_POST,
+		component: Loadable({
+			loader: () => import("../../pages/Blog/Post"),
+			loading: LoadableComponentSpinner
+		})
+	},
+	{
+		path: ROUTES.DESIGNERS,
 		component: Designers
 	},
 	{
@@ -157,10 +185,6 @@ const routes = [
 	{
 		path: ROUTES.DESIGNER,
 		component: Designer
-	},
-	{
-		path: ROUTES.BLOG_POST,
-		component: BlogPost
 	},
 	{
 		path: ROUTES.SIGN_UP,
@@ -241,11 +265,7 @@ const routes = [
 		component: EditItem,
 		title: `Edytuj przedmiot`
 	},
-	{
-		path: ROUTES.BLOG_HOME,
-		component: BlogHome,
-		title: `Blog`
-	},
+
 	{
 		path: ROUTES.FAQ,
 		component: FAQ,
