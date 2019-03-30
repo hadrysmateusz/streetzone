@@ -14,10 +14,10 @@ const Blog = ({ routes, match }) => {
 						<Route exact path={route.path} render={() => <route.component />} key={i} />
 					)
 				})}
-				{/* <Route
+				<Route
 					path="*"
-					render={() => <Redirect to={routes.find((r) => r.id === "home")} />}
-				/> */}
+					render={() => <Redirect to={routes.find((r) => r.id === "home").path} />}
+				/>
 			</Switch>
 		</>
 	)
