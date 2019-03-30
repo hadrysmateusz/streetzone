@@ -12,6 +12,23 @@ import SearchBox from "./SearchBox"
 import { BoxOptionsList, OptionsList } from "./OptionsList"
 import { Box } from "rebass"
 
+export const BasicRefinementList = connectRefinementList(
+	({
+		items,
+		refine,
+		multiColumn,
+		show,
+		currentRefinement,
+		currentBreakpoint,
+		boxGrid,
+		...rest
+	}) => {
+		let itemsToShow = show ? items : items.slice(0, show)
+
+		return <OptionsList items={itemsToShow} refine={refine} multiColumn={multiColumn} />
+	}
+)
+
 class AlgoliaRefinementList extends React.Component {
 	state = { isMenuOpen: false, inputValue: "" }
 
