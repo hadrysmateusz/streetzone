@@ -1,9 +1,10 @@
 export const HOME = "/"
 
-export const BLOG_HOME = "/czytaj"
-export const BLOG_SECTION = "/czytaj/s/:section"
-export const BLOG_TAG = "/czytaj/t/:tag"
-export const BLOG_POST = "/czytaj/p/:id"
+export const BLOG_BASE = "/czytaj"
+export const BLOG_HOME = BLOG_BASE + "/h"
+export const BLOG_SECTION = BLOG_BASE + "/h/:section"
+export const BLOG_TAG = BLOG_BASE + "/h/:section/:tag"
+export const BLOG_POST = BLOG_BASE + "/p/:id"
 
 export const MARKETPLACE = "/kupuj"
 export const DESIGNER = "/marki/:id"

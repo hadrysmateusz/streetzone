@@ -10,10 +10,15 @@ import { PageContainer } from "../../components/Containers"
 
 const BlogTagPage = ({ match }) => {
 	const selectedTag = decodeURIComponent(match.params.tag)
+	const currentSection = decodeURIComponent(match.params.section)
+	const shouldFilterSection = currentSection && currentSection !== "Wszystko"
 
 	return (
 		<PageContainer>
 			<InstantSearchBlogWrapper>
+				{shouldFilterSection && (
+					<VirtualMenu attribute="section" defaultRefinement={currentSection} />
+				)}
 				<VirtualMenu attribute="tags" defaultRefinement={selectedTag} />
 
 				<MainGrid>

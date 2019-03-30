@@ -153,7 +153,7 @@ export class BlogPost extends Component {
 					<>
 						<Content>
 							<LinkContainer>
-								<Link to={ROUTES.BLOG_HOME}>
+								<Link to={ROUTES.BLOG_BASE}>
 									<FontAwesomeIcon icon="caret-left" />
 									Wróć
 								</Link>

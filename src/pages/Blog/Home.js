@@ -1,6 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import React, { Component } from "react"
-import { Link } from "react-router-dom"
+import { Link, withRouter } from "react-router-dom"
+import { compose } from "recompose"
 
 import LoadingSpinner from "../../components/LoadingSpinner"
 import { withFirebase } from "../../components/Firebase"
@@ -83,6 +84,10 @@ export class BlogHomePage extends Component {
 
 	render() {
 		const { isLoading, promotedPosts, drops, carePosts } = this.state
+		const { match, routes } = this.props
+
+		// const selectedSection = decodeURIComponent(match.params.section)
+		console.log(this.props)
 
 		return (
 			<BlogPageContainer maxWidth={5}>
@@ -124,4 +129,7 @@ export class BlogHomePage extends Component {
 	}
 }
 
-export default withFirebase(BlogHomePage)
+export default compose(
+	withRouter,
+	withFirebase
+)(BlogHomePage)

@@ -31,7 +31,7 @@ const Navigation = ({ authUser, firebase, currentBreakpoint, ...rest }) => {
 				{currentBreakpoint > 0 ? (
 					<Nav>
 						<NavItem>
-							<StyledNavLink to={ROUTES.BLOG_HOME}>Czytaj</StyledNavLink>
+							<StyledNavLink to={ROUTES.BLOG_BASE}>Czytaj</StyledNavLink>
 						</NavItem>
 						<NavItem>
 							<StyledNavLink to={ROUTES.MARKETPLACE} exact>
@@ -49,7 +49,7 @@ const Navigation = ({ authUser, firebase, currentBreakpoint, ...rest }) => {
 						<StyledNavLink to={ROUTES.HOME} exact>
 							Strona główna
 						</StyledNavLink>
-						<StyledNavLink to={ROUTES.BLOG_HOME}>Czytaj</StyledNavLink>
+						<StyledNavLink to={ROUTES.BLOG_BASE}>Czytaj</StyledNavLink>
 						<StyledNavLink to={ROUTES.MARKETPLACE} exact>
 							Kupuj
 						</StyledNavLink>

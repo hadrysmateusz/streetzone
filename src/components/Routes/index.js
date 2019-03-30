@@ -56,11 +56,6 @@ const Designer = Loadable({
 	loading: LoadableComponentSpinner
 })
 
-const BlogPost = Loadable({
-	loader: () => import("../../pages/Blog/Post"),
-	loading: LoadableComponentSpinner
-})
-
 const NewItem = Loadable({
 	loader: () => import("../../pages/NewItem"),
 	loading: LoadableComponentSpinner
@@ -83,11 +78,6 @@ const PasswordForget = Loadable({
 
 const Marketplace = Loadable({
 	loader: () => import("../../pages/Marketplace"),
-	loading: LoadableComponentSpinner
-})
-
-const BlogHome = Loadable({
-	loader: () => import("../../pages/Blog/Post"),
 	loading: LoadableComponentSpinner
 })
 
@@ -141,34 +131,53 @@ const Designers = Loadable({
 	loading: LoadableComponentSpinner
 })
 
+const BlogHome = Loadable({
+	loader: () => import("../../pages/Blog/Home"),
+	loading: LoadableComponentSpinner
+})
+
+const BlogSection = Loadable({
+	loader: () => import("../../pages/Blog/Section"),
+	loading: LoadableComponentSpinner
+})
+
 const routes = [
 	{
-		path: ROUTES.BLOG_HOME,
+		path: ROUTES.BLOG_BASE,
 		component: Loadable({
-			loader: () => import("../../pages/Blog/Home"),
+			loader: () => import("../../pages/Blog"),
 			loading: LoadableComponentSpinner
-		})
-	},
-	{
-		path: ROUTES.BLOG_SECTION,
-		component: Loadable({
-			loader: () => import("../../pages/Blog/Section"),
-			loading: LoadableComponentSpinner
-		})
-	},
-	{
-		path: ROUTES.BLOG_TAG,
-		component: Loadable({
-			loader: () => import("../../pages/Blog/Tag"),
-			loading: LoadableComponentSpinner
-		})
-	},
-	{
-		path: ROUTES.BLOG_POST,
-		component: Loadable({
-			loader: () => import("../../pages/Blog/Post"),
-			loading: LoadableComponentSpinner
-		})
+		}),
+		exact: false,
+		routes: [
+			{
+				id: "home",
+				path: ROUTES.BLOG_HOME,
+				component: BlogHome
+			},
+			{
+				id: "section",
+				path: ROUTES.BLOG_SECTION,
+				component: BlogSection
+			},
+			{
+				id: "tag",
+				path: ROUTES.BLOG_TAG,
+				component: Loadable({
+					loader: () => import("../../pages/Blog/Tag"),
+					loading: LoadableComponentSpinner
+				})
+			},
+			{
+				id: "post",
+				path: ROUTES.BLOG_POST,
+				component: Loadable({
+					loader: () => import("../../pages/Blog/Post"),
+					loading: LoadableComponentSpinner
+				})
+			}
+		],
+		title: "Blog"
 	},
 	{
 		path: ROUTES.DESIGNERS,

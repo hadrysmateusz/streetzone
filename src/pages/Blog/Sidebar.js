@@ -1,5 +1,5 @@
 import React from "react"
-import { withRouter, Link } from "react-router-dom"
+import { withRouter, NavLink } from "react-router-dom"
 
 import {
 	SidebarContainer,
@@ -9,16 +9,28 @@ import {
 import { ROUTES } from "../../constants"
 import { connectRefinementList } from "react-instantsearch-dom"
 import { Text } from "../../components/StyledComponents"
+import { compose } from "recompose"
 
-const BlogNavSmart = connectRefinementList((props) => {
-	return props.items.map((item) => (
-		<Link to={ROUTES.BLOG_TAG.replace(":tag", encodeURIComponent(item.value))}>
-			{item.label}{" "}
-			<Text italic color="gray0">
-				({item.count})
-			</Text>
-		</Link>
-	))
+const BlogNavSmart = compose(
+	withRouter,
+	connectRefinementList
+)(({ match, items }) => {
+	return items.map((item) => {
+		let currentSection = match.params.section ? match.params.section : "Wszystko"
+		let route = ROUTES.BLOG_TAG.replace(":section", currentSection).replace(
+			":tag",
+			encodeURIComponent(item.value)
+		)
+
+		return (
+			<NavLink to={route}>
+				{item.label}{" "}
+				<Text italic color="gray0">
+					({item.count})
+				</Text>
+			</NavLink>
+		)
+	})
 })
 
 const TagsNav = () => {
@@ -32,26 +44,28 @@ const TagsNav = () => {
 const SectionNav = () => {
 	return (
 		<SectionNavContainer>
-			<Link to={ROUTES.BLOG_HOME}>
+			<NavLink to={ROUTES.BLOG_HOME}>
 				<Text size="l" uppercase bold serif color="gray0">
 					Wszystko
 				</Text>
-			</Link>
-			<Link to={ROUTES.BLOG_SECTION.replace(":section", encodeURIComponent("Artykuły"))}>
+			</NavLink>
+			<NavLink
+				to={ROUTES.BLOG_SECTION.replace(":section", encodeURIComponent("Artykuły"))}
+			>
 				<Text size="l" uppercase bold serif color="gray0">
 					Artykuły
 				</Text>
-			</Link>
-			<Link to={ROUTES.BLOG_SECTION.replace(":section", encodeURIComponent("Dropy"))}>
+			</NavLink>
+			<NavLink to={ROUTES.BLOG_SECTION.replace(":section", encodeURIComponent("Dropy"))}>
 				<Text size="l" uppercase bold serif color="gray0">
 					Dropy
 				</Text>
-			</Link>
-			<Link to={ROUTES.BLOG_SECTION.replace(":section", encodeURIComponent("Wiedza"))}>
+			</NavLink>
+			<NavLink to={ROUTES.BLOG_SECTION.replace(":section", encodeURIComponent("Wiedza"))}>
 				<Text size="l" uppercase bold serif color="gray0">
 					Wiedza
 				</Text>
-			</Link>
+			</NavLink>
 		</SectionNavContainer>
 	)
 }
