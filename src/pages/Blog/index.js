@@ -10,7 +10,6 @@ const Blog = ({ routes, match }) => {
 		<>
 			<Switch>
 				{routes.map((route, i) => {
-					console.log(route)
 					return (
 						<Route exact path={route.path} render={() => <route.component />} key={i} />
 					)

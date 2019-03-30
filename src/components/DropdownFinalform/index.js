@@ -28,8 +28,6 @@ const DropdownFinalform = ({ onChange: setValue, value, options, isMulti, ...res
 		}
 	}
 
-	// console.log(rest)
-
 	return (
 		<Dropdown
 			{...rest}

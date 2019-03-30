@@ -5,7 +5,6 @@ export default (limit = 200) => {
 	const [value, setScroll] = useState(window.scrollY)
 
 	const updateScroll = () => {
-		console.log(window.scrollY)
 		setScroll(window.scrollY)
 	}
 	const throttledUpdateScroll = throttle(updateScroll, limit, { leading: true })

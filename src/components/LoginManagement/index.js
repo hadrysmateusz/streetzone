@@ -21,8 +21,6 @@ const LoginManagement = () => {
 	const [activeMethods, setActiveMethods] = useState(null)
 	const [error, setError] = useState(null)
 
-	console.log("rerender")
-
 	useEffect(() => {
 		fetchActiveMethods()
 	}, [])

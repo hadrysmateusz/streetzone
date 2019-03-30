@@ -119,7 +119,7 @@ const AddPost = () => {
 
 			if (dropsAt) {
 				data.dropsAt = dropsAt.valueOf()
-				debugger
+				// debugger
 			}
 
 			await firebase.post(id).set(data)

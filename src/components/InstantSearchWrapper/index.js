@@ -28,7 +28,7 @@ const InstantSearchWrapper = withRouter(
 		page without the ability to navigate back other than clearing all filters */
 
 			let newState = { ...searchState, page: 1 }
-			debugger
+			// debugger
 			setSearchState(newState)
 		}, [])
 
@@ -55,7 +55,7 @@ const InstantSearchWrapper = withRouter(
 
 			const formattedState = await onSearchStateChange(newSearchState)
 			const url = encodeURL(formattedState)
-			debugger
+			// debugger
 			history.push(url)
 
 			// update the searchState (to increase apparent performance)
@@ -66,7 +66,7 @@ const InstantSearchWrapper = withRouter(
 			try {
 				const parsedSearch = decodeURL(location.search)
 				const formattedState = urlToState(parsedSearch)
-				debugger
+				// debugger
 				return formattedState
 			} catch (e) {
 				console.log(e)
@@ -74,8 +74,6 @@ const InstantSearchWrapper = withRouter(
 				return defaultSearchState
 			}
 		}
-
-		console.log(indexName)
 
 		return (
 			<InstantSearch

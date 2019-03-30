@@ -44,7 +44,6 @@ const AccountPage = ({ routes, match, authUser }) => {
 
 	if (error) throw error
 
-	console.log(routes, match)
 	const commonProps = { user, userId, isAuthorized }
 
 	return (

@@ -84,10 +84,8 @@ export class BlogHomePage extends Component {
 
 	render() {
 		const { isLoading, promotedPosts, drops, carePosts } = this.state
-		const { match, routes } = this.props
 
 		// const selectedSection = decodeURIComponent(match.params.section)
-		console.log(this.props)
 
 		return (
 			<BlogPageContainer maxWidth={5}>

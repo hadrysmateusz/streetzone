@@ -62,7 +62,6 @@ const StyledSelect = styled(Select).attrs({
 `
 
 const Dropdown = ({ info, error, disabled, ...rest }) => {
-	console.log(rest)
 	return (
 		<FormElementContainer info={info} error={error}>
 			<StyledSelect hasError={!!error} isDisabled={disabled} {...rest} />

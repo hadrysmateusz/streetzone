@@ -37,7 +37,6 @@ class UserPreview extends Component {
 		/* error can also be provided by a parent component 
 		if it is controling the fetching of user data */
 		if (this.state.error || this.props.error) {
-			console.log("ERROR")
 			return (
 				<Container vertical={this.props.vertical}>
 					<ProfilePicture size={this.props.pictureSize || "60px"} url="" inline />
