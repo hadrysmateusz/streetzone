@@ -3,8 +3,7 @@ import { ROUTES } from "../../constants"
 import { StyledLink } from "../../components/Basics"
 import useFirebase from "../../hooks/useFirebase"
 import LoadingSpinner from "../../components/LoadingSpinner"
-
-const createURL = (state) => `${ROUTES.MARKETPLACE}?search=${btoa(JSON.stringify(state))}`
+import { encodeURL } from "../../utils/algoliaURLutils"
 
 const useDesigners = () => {
 	const firebase = useFirebase()
@@ -28,7 +27,11 @@ const useDesigners = () => {
 }
 
 const DesignerLink = ({ value }) => {
-	return <StyledLink to={createURL({ designers: [value] })}>{value}</StyledLink>
+	return (
+		<StyledLink to={encodeURL({ designers: [value] }, ROUTES.MARKETPLACE)}>
+			{value}
+		</StyledLink>
+	)
 }
 
 const DesignersPage = () => {

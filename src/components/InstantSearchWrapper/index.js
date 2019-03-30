@@ -2,8 +2,7 @@ import React, { useState, useEffect } from "react"
 import equal from "deep-equal"
 import { withRouter } from "react-router-dom"
 import { InstantSearch } from "react-instantsearch-dom"
-
-const createURL = (state) => `?search=${btoa(JSON.stringify(state))}`
+import { decodeURL, encodeURL } from "../../utils/algoliaURLutils"
 
 const InstantSearchWrapper = withRouter(
 	({
@@ -55,7 +54,7 @@ const InstantSearchWrapper = withRouter(
 			// shouldScroll(cloneDeep(searchState), _newSearchState)
 
 			const formattedState = await onSearchStateChange(newSearchState)
-			const url = createURL(formattedState)
+			const url = encodeURL(formattedState)
 			debugger
 			history.push(url)
 
@@ -65,14 +64,7 @@ const InstantSearchWrapper = withRouter(
 
 		const createStateFromURL = () => {
 			try {
-				// get the encoded search parameter from URL
-				var searchParams = new URLSearchParams(location.search)
-				const search = searchParams.get("search")
-
-				// decode and parse the search paramter
-				const convertedSearch = atob(search)
-				const parsedSearch = JSON.parse(convertedSearch)
-
+				const parsedSearch = decodeURL(location.search)
 				const formattedState = urlToState(parsedSearch)
 				debugger
 				return formattedState
@@ -92,7 +84,7 @@ const InstantSearchWrapper = withRouter(
 				indexName={indexName}
 				searchState={searchState}
 				onSearchStateChange={handleSearchStateChange}
-				createURL={createURL}
+				createURL={decodeURL}
 				refresh={shouldRefresh}
 				{...rest}
 			>
