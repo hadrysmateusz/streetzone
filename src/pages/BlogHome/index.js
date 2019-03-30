@@ -24,10 +24,13 @@ import {
 	Image,
 	ImageContainer,
 	DetailsContainer,
-	PostsContainer
+	PostsContainer,
+	DropPostContainer
 } from "./StyledComponents"
 
 import { ROUTES, CONST } from "../../constants"
+import Button from "../../components/Button"
+import { BasicRefinementList } from "../../components/Algolia/AlgoliaRefinementList"
 
 const DEFAULT_HITS_PER_PAGE = 12
 const DEFAULT_SEARCH_STATE = Object.freeze({
@@ -36,6 +39,27 @@ const DEFAULT_SEARCH_STATE = Object.freeze({
 	query: "",
 	page: 1
 })
+
+const DropPost = ({ id, mainImageURL, title, dropsAt }) => {
+	return (
+		<DropPostContainer>
+			<Link to={ROUTES.BLOG_POST.replace(":id", id)}>
+				<ImageContainer>
+					<Image url={mainImageURL} />
+				</ImageContainer>
+				<div>
+					<TextBlock serif size="l">
+						{title}
+					</TextBlock>
+					<TextBlock serif color="black75">
+						{moment(dropsAt).format("D.M.YY")}
+					</TextBlock>
+					<Button>Czytaj więcej</Button>
+				</div>
+			</Link>
+		</DropPostContainer>
+	)
+}
 
 const Post = ({ id, mainContent, mainImageURL, section, title, author, createdAt }) => {
 	let excerpt = removeMarkdown(mainContent, { gfm: true })
@@ -134,8 +158,8 @@ export class BlogHomePage extends Component {
 			.where("section", "==", "Dropy")
 			.limit(2)
 		const snapshot = await query.get()
-		let posts = snapshot.docs.map((doc) => doc.data())
-		await this.setState({ posts, isLoading: false })
+		let drops = snapshot.docs.map((doc) => doc.data())
+		await this.setState({ drops, isLoading: false })
 	}
 
 	getPromotedPosts = async () => {
@@ -145,8 +169,8 @@ export class BlogHomePage extends Component {
 			.where("isPromoted", "==", true)
 			.limit(3)
 		const snapshot = await query.get()
-		let posts = snapshot.docs.map((doc) => doc.data())
-		await this.setState({ posts, isLoading: false })
+		let promotedPosts = snapshot.docs.map((doc) => doc.data())
+		await this.setState({ promotedPosts, isLoading: false })
 	}
 
 	componentDidMount = () => {
@@ -207,7 +231,7 @@ export class BlogHomePage extends Component {
 								<ContentArea>
 									<Section title="Nadchodzące Dropy" hasMore>
 										{drops.map((post) => (
-											<Post {...post} />
+											<DropPost {...post} />
 										))}
 									</Section>
 									<Section title="Czyszczenie i pielęgnacja" />

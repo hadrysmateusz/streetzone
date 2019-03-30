@@ -56,6 +56,8 @@ export const ImageContainer = styled.div`
 	justify-content: center;
 	align-items: flex-start;
 
+	overflow: hidden;
+
 	@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
 		align-items: center;
 	}
@@ -132,6 +134,14 @@ export const SectionContainer = styled.section`
 	.content {
 		display: grid;
 		grid-auto-flow: column;
+		grid-auto-columns: 1fr;
 		gap: var(--spacing3);
 	}
+`
+
+export const DropPostContainer = styled.div`
+	height: 400px;
+	overflow: hidden;
+	display: grid;
+	grid-template-rows: 290px 1fr;
 `

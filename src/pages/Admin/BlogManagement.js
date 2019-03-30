@@ -51,7 +51,7 @@ const BlogPostContainer = styled.div`
 const BlogPost = ({ post }) => {
 	const firebase = useFirebase()
 
-	const { id, mainImageURL, mainImageRef, title, author } = post
+	const { id, mainImageURL, title, author, isPromoted, section } = post
 
 	const onDelete = (id) => {
 		try {
@@ -67,12 +67,14 @@ const BlogPost = ({ post }) => {
 
 	return (
 		<BlogPostContainer>
-			<TextBlock bold size="m">
+			<TextBlock color="gray0" uppercase>
+				{section}
+			</TextBlock>
+			<TextBlock bold size="l">
 				{title}
 			</TextBlock>
-			<TextBlock bold color="#444">
-				{author}
-			</TextBlock>
+			{author && <TextBlock color="#666">by {author}</TextBlock>}
+			{isPromoted && <TextBlock bold>Is Promoted</TextBlock>}
 			<BlogImageContainer>
 				<img src={mainImageURL} />
 			</BlogImageContainer>
@@ -85,7 +87,7 @@ const AddPost = () => {
 	const firebase = useFirebase()
 
 	const onSubmit = async (
-		{ section, mainImage, title, author, mainContent, dropDate },
+		{ section, mainImage, title, author, mainContent, dropsAt },
 		actions
 	) => {
 		try {
@@ -115,8 +117,8 @@ const AddPost = () => {
 				data.author = author
 			}
 
-			if (dropDate) {
-				data.dropDate = dropDate.valueOf()
+			if (dropsAt) {
+				data.dropsAt = dropsAt.valueOf()
 				debugger
 			}
 
@@ -130,7 +132,7 @@ const AddPost = () => {
 		}
 	}
 
-	const validate = ({ author, title, section, mainContent, mainImage, dropDate }) => {
+	const validate = ({ author, title, section, mainContent, mainImage, dropsAt }) => {
 		const errors = {}
 
 		if (!title) {
@@ -209,7 +211,7 @@ const AddPost = () => {
 								<Text size="m" bold>
 									Data dropu
 								</Text>
-								<Field name="dropDate">
+								<Field name="dropsAt">
 									{({ input, meta }) => {
 										const error = meta.error && meta.touched ? meta.error : null
 										return (
