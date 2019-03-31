@@ -113,7 +113,9 @@ export const PromotedPostContainer = styled.div`
 
 export const MainGrid = styled.div`
 	display: grid;
-	grid-template-columns: 1fr 4fr;
+	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
+		grid-template-columns: 1fr 4fr;
+	}
 	gap: var(--spacing4);
 `
 

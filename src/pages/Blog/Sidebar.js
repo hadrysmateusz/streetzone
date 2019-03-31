@@ -1,16 +1,22 @@
 import React from "react"
 import { withRouter, NavLink } from "react-router-dom"
+import { withBreakpoints } from "react-breakpoints"
+import { compose } from "recompose"
+import { connectRefinementList } from "react-instantsearch-dom"
+
+import { Text } from "../../components/StyledComponents"
+import { Dropdown } from "../../components/FormElements"
+import { ROUTES } from "../../constants"
+import { withProps } from "../../HOCs"
 
 import {
 	SidebarContainer,
 	TagsNavContainer,
 	SectionNavContainer
 } from "./StyledComponents"
-import { ROUTES } from "../../constants"
-import { connectRefinementList } from "react-instantsearch-dom"
-import { Text } from "../../components/StyledComponents"
 
-const TagsNavSmart = connectRefinementList(({ currentSection, items }) => {
+const TagsNavSmart = ({ currentSection, items }) => {
+	console.log(items)
 	return items.map((item) => {
 		let route = ROUTES.BLOG_TAG.replace(":section", currentSection).replace(
 			":tag",
@@ -26,12 +32,12 @@ const TagsNavSmart = connectRefinementList(({ currentSection, items }) => {
 			</NavLink>
 		)
 	})
-})
+}
 
-const TagsNav = ({ currentSection }) => {
+const TagsNav = ({ ...props }) => {
 	return (
 		<TagsNavContainer>
-			<TagsNavSmart attribute="tags" currentSection={currentSection} />
+			<TagsNavSmart attribute="tags" {...props} />
 		</TagsNavContainer>
 	)
 }
@@ -89,16 +95,53 @@ const SectionNav = ({ currentSection }) => {
 	)
 }
 
-const Sidebar = ({ match }) => {
+const Sidebar = ({ match, history, items, currentBreakpoint }) => {
 	let currentSection = match.params.section ? match.params.section : "Wszystko"
+	console.log(items)
+
+	let options = [
+		{
+			label: "sekcje",
+			options: ["Wszystko", "Artykuły", "Dropy", "Wiedza"].map((value) => ({
+				value,
+				label: value
+			}))
+		},
+		{
+			label: "tagi",
+			options: Object.values(items).map((a) => ({
+				value: a.value,
+				label: a.value
+			}))
+		}
+	]
 
 	return (
 		<SidebarContainer>
-			{/* <BasicRefinementList attribute="tags" /> */}
-			<SectionNav currentSection={currentSection} />
-			<TagsNav currentSection={currentSection} />
+			{currentBreakpoint >= 2 ? (
+				<>
+					<SectionNav currentSection={currentSection} />
+					<TagsNav currentSection={currentSection} items={items} />
+				</>
+			) : (
+				<Dropdown
+					isSearchable={false}
+					placeholder="Wybierz temat"
+					options={options}
+					onChange={(data) => {
+						history.push(
+							ROUTES.BLOG_SECTION.replace(":section", encodeURIComponent(data.value))
+						)
+					}}
+				/>
+			)}
 		</SidebarContainer>
 	)
 }
 
-export default withRouter(Sidebar)
+export default compose(
+	withProps({ attribute: "tags" }),
+	connectRefinementList,
+	withRouter,
+	withBreakpoints
+)(Sidebar)
