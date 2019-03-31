@@ -101,15 +101,15 @@ const Sidebar = ({ match, history, items, currentBreakpoint }) => {
 		{
 			label: "sekcje",
 			options: ["Wszystko", "Artykuły", "Dropy", "Wiedza"].map((value) => ({
-				value,
+				value: "section-" + value,
 				label: value
 			}))
 		},
 		{
 			label: "tagi",
 			options: Object.values(items).map((a) => ({
-				value: a.value,
-				label: a.value
+				value: "tag-" + a.value[0],
+				label: a.value[0]
 			}))
 		}
 	]
@@ -127,9 +127,21 @@ const Sidebar = ({ match, history, items, currentBreakpoint }) => {
 					placeholder="Wybierz temat"
 					options={options}
 					onChange={(data) => {
-						history.push(
-							ROUTES.BLOG_SECTION.replace(":section", encodeURIComponent(data.value))
-						)
+						const [type, value] = data.value.split("-")
+						if (type === "section") {
+							history.push(
+								ROUTES.BLOG_SECTION.replace(":section", encodeURIComponent(value))
+							)
+						} else if (type === "tag") {
+							history.push(
+								ROUTES.BLOG_TAG.replace(
+									":section",
+									encodeURIComponent(currentSection)
+								).replace(":tag", value)
+							)
+						} else {
+							console.log("ERROR")
+						}
 					}}
 				/>
 			)}
