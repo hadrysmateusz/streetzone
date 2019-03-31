@@ -17,20 +17,16 @@ const InstantSearchWrapper = withRouter(
 	}) => {
 		const [searchState, setSearchState] = useState(defaultSearchState)
 		const [shouldRefresh, setShouldRefresh] = useState(false)
+		const [isFirstRender, setIsFirstRender] = useState(true)
 
 		useEffect(() => {
-			const state = createStateFromURL()
+			let state = createStateFromURL()
+			if (isFirstRender) {
+				state = { ...state, page: 1 }
+				setIsFirstRender(false)
+			}
 			setSearchState(state)
 		}, [location])
-
-		useEffect(() => {
-			/* this is required in order for the component to not get stuck on a later
-		page without the ability to navigate back other than clearing all filters */
-
-			let newState = { ...searchState, page: 1 }
-			// debugger
-			setSearchState(newState)
-		}, [])
 
 		const refresh = () => {
 			setShouldRefresh(true)
@@ -49,13 +45,9 @@ const InstantSearchWrapper = withRouter(
 		// }
 
 		const handleSearchStateChange = async (newSearchState) => {
-			// const _newSearchState = await cloneDeep(newSearchState)
-
-			// shouldScroll(cloneDeep(searchState), _newSearchState)
-
 			const formattedState = await onSearchStateChange(newSearchState)
 			const url = encodeURL(formattedState)
-			// debugger
+			debugger
 			history.push(url)
 
 			// update the searchState (to increase apparent performance)
