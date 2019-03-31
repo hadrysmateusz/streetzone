@@ -2,14 +2,6 @@
 	/* base font size for the rem units */
 	font-size: 10px;
 
-	/* !!! WHEN CHANGING ALSO CHANGE IN THEME.JS !!! */
-	--bp1: 480px;
-	--bp2: 575px;
-	--bp3: 768px;
-	--bp4: 960px;
-	--bp5: 1024px;
-	--bp6: 1200px;
-
 	--error50: #e63b27;
 	--error0: #ffdeda;
 

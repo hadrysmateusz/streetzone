@@ -1,5 +1,4 @@
 export default {
-	/* !!! WHEN CHANGING ALSO CHANGE IN INDEX.CSS !!! */
 	breakpoints: [480, 575, 768, 960, 1024, 1200],
 	space: [0, 4, 8, 16, 32, 64, 128, 256],
 	colors: {
