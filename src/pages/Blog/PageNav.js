@@ -23,7 +23,10 @@ const PageNav = ({ match }) => {
 
 	return (
 		<NavContainer>
-			<Link to={ROUTES.BLOG_HOME}>Czytaj</Link>
+			<Link to={ROUTES.HOME}>Główna</Link>
+			<Link to={ROUTES.BLOG_HOME}>
+				<IconContainer>&gt;</IconContainer>Czytaj
+			</Link>
 			{section && (
 				<Link to={ROUTES.BLOG_SECTION.replace(":section", section).replace(":tag", tag)}>
 					<IconContainer>&gt;</IconContainer>
