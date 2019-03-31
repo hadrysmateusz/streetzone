@@ -90,20 +90,23 @@ const AddDesigner = () => {
 			colorB = colorB.trim()
 
 			const id = shortid.generate()
-			const imageId = shortid.generate()
 
-			const logoSnapshot = await firebase.uploadFile(`brand-logos/${imageId}`, logo.data)
-			const logoRef = logoSnapshot.ref.fullPath
-			const logoURL = await firebase.getImageURL(logoRef)
+			let data = { id, label, colorA, colorB }
 
-			await firebase.designer(id).set({
-				id,
-				label,
-				logoRef,
-				logoURL,
-				colorA,
-				colorB
-			})
+			if (logo) {
+				const imageId = shortid.generate()
+				const logoSnapshot = await firebase.uploadFile(
+					`brand-logos/${imageId}`,
+					logo.data
+				)
+				const logoRef = logoSnapshot.ref.fullPath
+				const logoURL = await firebase.getImageURL(logoRef)
+
+				data.logoRef = logoRef
+				data.logoURL = logoURL
+			}
+
+			await firebase.designer(id).set(data)
 
 			// Reset form
 			actions.reset()
@@ -115,10 +118,6 @@ const AddDesigner = () => {
 
 	const validate = ({ logo, label, colorA, colorB }) => {
 		const errors = {}
-
-		if (!logo) {
-			errors.logo = FORM_ERR.IS_REQUIRED
-		}
 
 		if (!label) {
 			errors.label = FORM_ERR.IS_REQUIRED
