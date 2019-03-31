@@ -3,7 +3,6 @@ import { compose } from "recompose"
 import { Route, Switch, Redirect, withRouter } from "react-router-dom"
 
 import { withFirebase } from "../../components/Firebase"
-import Sidebar from "./Sidebar"
 
 const Blog = ({ routes, match }) => {
 	return (

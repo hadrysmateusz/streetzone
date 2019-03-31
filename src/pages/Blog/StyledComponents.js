@@ -115,7 +115,6 @@ export const MainGrid = styled.div`
 	display: grid;
 	grid-template-columns: 1fr 4fr;
 	gap: var(--spacing4);
-	margin-top: var(--spacing4);
 `
 
 export const SidebarContainer = styled.aside``

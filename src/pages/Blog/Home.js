@@ -19,6 +19,7 @@ import {
 import { InfinitePosts, PromotedPost, DropPost, SmallPost } from "./PostPreviews"
 import Sidebar from "./Sidebar"
 import { ROUTES } from "../../constants"
+import PageNav from "./PageNav"
 
 const Section = ({ title, hasMore, children, linkTo }) => {
 	return (
@@ -99,6 +100,7 @@ export class BlogHomePage extends Component {
 								<PromotedPost {...promotedPosts[1]} />
 								<PromotedPost {...promotedPosts[2]} />
 							</PromotedContainer>
+							<PageNav />
 							<MainGrid>
 								<Sidebar />
 								<ContentArea>
@@ -111,7 +113,14 @@ export class BlogHomePage extends Component {
 											<DropPost {...post} />
 										))}
 									</Section>
-									<Section title="Czyszczenie i pielęgnacja">
+									<Section
+										title="Czyszczenie i pielęgnacja"
+										hasMore
+										linkTo={ROUTES.BLOG_TAG.replace(":section", "Wiedza").replace(
+											":tag",
+											"Pielęgnacja"
+										)}
+									>
 										{carePosts.map((post) => (
 											<SmallPost {...post} />
 										))}

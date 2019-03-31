@@ -7,6 +7,7 @@ import Sidebar from "./Sidebar"
 import InstantSearchBlogWrapper from "./InstantSearchBlogWrapper"
 import { VirtualMenu } from "../../components/Algolia/Virtual"
 import { PageContainer } from "../../components/Containers"
+import PageNav from "./PageNav"
 
 const BlogTagPage = ({ match }) => {
 	const selectedTag = decodeURIComponent(match.params.tag)
@@ -20,7 +21,7 @@ const BlogTagPage = ({ match }) => {
 					<VirtualMenu attribute="section" defaultRefinement={currentSection} />
 				)}
 				<VirtualMenu attribute="tags" defaultRefinement={selectedTag} />
-
+				<PageNav />
 				<MainGrid>
 					<Sidebar />
 					<ContentArea>
