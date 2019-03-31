@@ -34,7 +34,7 @@ const bodyTextBase = css`
 			case "xl":
 				return "var(--font-size--xl)"
 			default:
-				return "var(--font-size--s)"
+				return p.size
 		}
 	}};
 `
