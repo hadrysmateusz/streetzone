@@ -141,16 +141,26 @@ export const SectionContainer = styled.section`
 
 	.content {
 		display: grid;
+		gap: var(--spacing2);
+		grid-auto-columns: 70%;
+		overflow: auto;
+		width: auto;
 		grid-auto-flow: column;
-		grid-auto-columns: 1fr;
-		gap: var(--spacing3);
+		@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
+			grid-auto-flow: column;
+			grid-auto-columns: 1fr;
+			gap: var(--spacing3);
+		}
 	}
 `
 
 export const SmallPostContainer = styled.div`
 	overflow: hidden;
 	display: grid;
-	grid-template-rows: 240px auto;
+	grid-template-rows: 180px auto;
+	@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
+		grid-template-rows: 240px auto;
+	}
 	height: 100%;
 	gap: var(--spacing2);
 `
