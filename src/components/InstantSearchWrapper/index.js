@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react"
-import equal from "deep-equal"
+// import equal from "deep-equal"
 import { withRouter } from "react-router-dom"
 import { InstantSearch } from "react-instantsearch-dom"
 import { decodeURL, encodeURL } from "../../utils/algoliaURLutils"
@@ -37,16 +37,16 @@ const InstantSearchWrapper = withRouter(
 			setShouldRefresh(false)
 		}
 
-		const shouldScroll = (oldState, newState) => {
-			/* get copies of current and prev states and compare all values except for page
-		to determine whether the component should scroll back to the top */
-			const _oldState = { ...oldState, page: null }
-			const _newState = { ...newState, page: null }
-			const areEqual = equal(_newState, _oldState)
-			if (!areEqual) {
-				window.scrollTo(0, 0)
-			}
-		}
+		// const shouldScroll = (oldState, newState) => {
+		// 	/* get copies of current and prev states and compare all values except for page
+		// to determine whether the component should scroll back to the top */
+		// 	const _oldState = { ...oldState, page: null }
+		// 	const _newState = { ...newState, page: null }
+		// 	const areEqual = equal(_newState, _oldState)
+		// 	if (!areEqual) {
+		// 		window.scrollTo(0, 0)
+		// 	}
+		// }
 
 		const handleSearchStateChange = async (newSearchState) => {
 			// const _newSearchState = await cloneDeep(newSearchState)

@@ -141,13 +141,25 @@ const BlogSection = Loadable({
 	loading: LoadableComponentSpinner
 })
 
+const BlogBase = Loadable({
+	loader: () => import("../../pages/Blog"),
+	loading: LoadableComponentSpinner
+})
+
+const BlogPost = Loadable({
+	loader: () => import("../../pages/Blog/Post"),
+	loading: LoadableComponentSpinner
+})
+
+const BlogTag = Loadable({
+	loader: () => import("../../pages/Blog/Tag"),
+	loading: LoadableComponentSpinner
+})
+
 const routes = [
 	{
 		path: ROUTES.BLOG_BASE,
-		component: Loadable({
-			loader: () => import("../../pages/Blog"),
-			loading: LoadableComponentSpinner
-		}),
+		component: BlogBase,
 		exact: false,
 		routes: [
 			{
@@ -163,18 +175,12 @@ const routes = [
 			{
 				id: "tag",
 				path: ROUTES.BLOG_TAG,
-				component: Loadable({
-					loader: () => import("../../pages/Blog/Tag"),
-					loading: LoadableComponentSpinner
-				})
+				component: BlogTag
 			},
 			{
 				id: "post",
 				path: ROUTES.BLOG_POST,
-				component: Loadable({
-					loader: () => import("../../pages/Blog/Post"),
-					loading: LoadableComponentSpinner
-				})
+				component: BlogPost
 			}
 		],
 		title: "Blog"

@@ -52,7 +52,7 @@ const DesignerItemContainer = styled.div`
 const DesignerItem = ({ designer }) => {
 	const firebase = useFirebase()
 
-	const { id, logoURL, logoRef, label, colorA, colorB } = designer
+	const { id, logoURL, label, colorA, colorB } = designer
 
 	const onDelete = (id) => {
 		try {

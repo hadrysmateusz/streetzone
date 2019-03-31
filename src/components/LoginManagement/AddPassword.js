@@ -5,7 +5,6 @@ import { FieldRow } from "../Basics"
 import { Input } from "../FormElements"
 import { LoaderButton, ButtonContainer } from "../Button"
 import InfoBox from "../InfoBox"
-import { TextBlock } from "../StyledComponents"
 import { FORM_ERR } from "../../constants"
 
 const validate = (values) => {

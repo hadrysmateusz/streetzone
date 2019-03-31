@@ -1,6 +1,5 @@
-import React /* Component, useState, useEffect */ from "react"
+import React from "react"
 import shortid from "shortid"
-// import { OnChange } from "react-final-form-listeners"
 import Datetime from "react-datetime"
 
 import LoadingSpinner from "../../components/LoadingSpinner"
@@ -76,7 +75,7 @@ const BlogPost = ({ post }) => {
 			{author && <TextBlock color="#666">by {author}</TextBlock>}
 			{isPromoted && <TextBlock bold>Is Promoted</TextBlock>}
 			<BlogImageContainer>
-				<img src={mainImageURL} />
+				<img src={mainImageURL} alt="" />
 			</BlogImageContainer>
 			<Button onClick={() => onDelete(id)}>Delete</Button>
 		</BlogPostContainer>

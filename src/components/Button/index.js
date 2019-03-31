@@ -95,7 +95,7 @@ const Button = styled.button`
 	${ellipsis}
 `
 
-export const ButtonContainer = styled.div`
+const ButtonContainer = styled.div`
 	width: 100%;
 	display: flex;
 	${(p) => !p.noMargin && "margin: var(--spacing2) 0;"}
@@ -106,7 +106,7 @@ export const ButtonContainer = styled.div`
 	}
 `
 
-export const UnstyledButton = styled.button`
+const UnstyledButton = styled.button`
 	${resetButtonStyles}
 `
 
@@ -116,7 +116,7 @@ const IconButtonUnstyled = ({ icon, ...rest }) => (
 	</Button>
 )
 
-export const IconButton = styled(IconButtonUnstyled)`
+const IconButton = styled(IconButtonUnstyled)`
 	padding: 0 16px;
 `
 
@@ -171,4 +171,12 @@ const GoogleButton = styled(Button)`
 `
 
 export default Button
-export { LoaderButton, FacebookButton, GoogleButton, Button }
+export {
+	LoaderButton,
+	FacebookButton,
+	GoogleButton,
+	Button,
+	ButtonContainer,
+	IconButton,
+	UnstyledButton
+}

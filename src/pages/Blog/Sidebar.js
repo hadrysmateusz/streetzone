@@ -16,7 +16,6 @@ import {
 } from "./StyledComponents"
 
 const TagsNavSmart = ({ currentSection, items }) => {
-	console.log(items)
 	return items.map((item) => {
 		let route = ROUTES.BLOG_TAG.replace(":section", currentSection).replace(
 			":tag",
@@ -97,7 +96,6 @@ const SectionNav = ({ currentSection }) => {
 
 const Sidebar = ({ match, history, items, currentBreakpoint }) => {
 	let currentSection = match.params.section ? match.params.section : "Wszystko"
-	console.log(items)
 
 	let options = [
 		{

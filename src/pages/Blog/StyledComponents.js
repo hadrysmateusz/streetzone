@@ -87,12 +87,16 @@ export const DetailsContainer = styled.div`
 
 export const PromotedContainer = styled.div`
 	display: grid;
-	grid-template-columns: 2fr 1fr;
-	grid-template-rows: 1fr 1fr;
-	height: 440px;
-	gap: var(--spacing3);
-	> *:first-child {
-		grid-row: span 2;
+	gap: var(--spacing2);
+
+	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
+		grid-template-columns: 2fr 1fr;
+		grid-template-rows: 1fr 1fr;
+		gap: var(--spacing3);
+		height: 440px;
+		> *:first-child {
+			grid-row: span 2;
+		}
 	}
 `
 
@@ -108,7 +112,10 @@ export const PromotedPostContainer = styled.div`
 	justify-content: flex-end;
 	color: white;
 	text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-	padding-bottom: var(--spacing4);
+	padding: var(--spacing3) 0;
+	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
+		padding: var(--spacing4) 0;
+	}
 `
 
 export const MainGrid = styled.div`

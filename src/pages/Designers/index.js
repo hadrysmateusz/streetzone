@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from "react"
+import React from "react"
 import styled from "styled-components"
 import { ROUTES } from "../../constants"
 import { StyledLink } from "../../components/Basics"
-import useFirebase from "../../hooks/useFirebase"
 import { encodeURL } from "../../utils/algoliaURLutils"
 import { PageContainer } from "../../components/Containers"
 import { TextBlock } from "../../components/StyledComponents"
@@ -65,26 +64,26 @@ class InstantSearchDesignersWrapper extends React.Component {
 	}
 }
 
-const useDesigners = () => {
-	const firebase = useFirebase()
-	const [designers, setDesigners] = useState(null)
+// const useDesigners = () => {
+// 	const firebase = useFirebase()
+// 	const [designers, setDesigners] = useState(null)
 
-	const getDesigners = async () => {
-		const snap = await firebase.designers().get()
-		let designersArr = []
-		snap.forEach((designer) => {
-			console.log(designer, designer.data())
-			designersArr.push(designer.data())
-		})
-		setDesigners(designersArr)
-	}
+// 	const getDesigners = async () => {
+// 		const snap = await firebase.designers().get()
+// 		let designersArr = []
+// 		snap.forEach((designer) => {
+// 			console.log(designer, designer.data())
+// 			designersArr.push(designer.data())
+// 		})
+// 		setDesigners(designersArr)
+// 	}
 
-	useEffect(() => {
-		getDesigners()
-	}, [])
+// 	useEffect(() => {
+// 		getDesigners()
+// 	}, [])
 
-	return designers
-}
+// 	return designers
+// }
 
 const DesignerLink = ({ value }) => {
 	return (

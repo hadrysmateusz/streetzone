@@ -9,11 +9,14 @@ const MultiTextInputFinalform = ({ onChange: setValue, value, ...rest }) => {
 	}
 
 	const customSetState = (value, inputValue, createOption) => {
+		console.log(value, inputValue)
 		if (!value) {
 			setValue(undefined)
 		} else {
+			console.log(createOption(inputValue))
 			setValue([...value, createOption(inputValue)])
 		}
+		console.log(value, inputValue)
 	}
 
 	return <MultiTextInput {...rest} value={value} customSetState={customSetState} />

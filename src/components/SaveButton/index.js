@@ -50,7 +50,7 @@ const HeartButtonContainer = styled.div`
 	${(p) => p.active && activeSaveButton}
 `
 
-export class SaveButtonBase extends Component {
+class SaveButtonBase extends Component {
 	state = {
 		isSaved: false,
 		isLoginModalVisible: false
