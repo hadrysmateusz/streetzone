@@ -95,7 +95,7 @@ class AlgoliaRefinementList extends React.Component {
 				{/* More button */}
 				{hasMore && (
 					<UnstyledButton>
-						<Text onClick={this.toggleMenu}>
+						<Text onClick={this.toggleMenu} size="xs" bold>
 							{isMenuOpen ? (
 								<>
 									<FontAwesomeIcon icon="minus" size="xs" /> MNIEJ
