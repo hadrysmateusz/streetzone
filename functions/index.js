@@ -30,6 +30,7 @@ const DEV_ITEMS_MARKETPLACE_DEFAULT_ALGOLIA_INDEX = "dev_items"
 const DEV_ITEMS_MARKETPLACE_PRICE_ASC_ALGOLIA_INDEX = "dev_items_price_asc"
 const DEV_ITEMS_CUSTOM_ALGOLIA_INDEX = "dev_custom"
 const DEV_BLOG_ALGOLIA_INDEX = "dev_posts"
+const DEV_DESIGNERS_ALGOLIA_INDEX = "dev_designers"
 // ===============================================================================
 
 const client = algoliasearch(ALGOLIA_ID, ALGOLIA_ADMIN_KEY)
@@ -121,6 +122,28 @@ exports.onBlogPostDeleted = functions.firestore
 	.document(`posts/{id}`)
 	.onDelete((snap, context) => {
 		algoliaDelete(snap, context, DEV_BLOG_ALGOLIA_INDEX)
+	})
+
+// ------------------------------------
+// ------- Designers List Events ------
+// ------------------------------------
+
+exports.onDesignerCreated = functions.firestore
+	.document(`designers/{id}`)
+	.onCreate((snap, context) => {
+		algoliaAdd(snap, context, DEV_DESIGNERS_ALGOLIA_INDEX)
+	})
+
+exports.onDesignerUpdated = functions.firestore
+	.document(`designers/{id}`)
+	.onUpdate((snap, context) => {
+		algoliaUpdate(snap, context, DEV_DESIGNERS_ALGOLIA_INDEX)
+	})
+
+exports.onDesignerDeleted = functions.firestore
+	.document(`designers/{id}`)
+	.onDelete((snap, context) => {
+		algoliaDelete(snap, context, DEV_DESIGNERS_ALGOLIA_INDEX)
 	})
 
 // ------------------------------------
