@@ -47,7 +47,7 @@ const InstantSearchWrapper = withRouter(
 		const handleSearchStateChange = async (newSearchState) => {
 			const formattedState = await onSearchStateChange(newSearchState)
 			const url = encodeURL(formattedState)
-			debugger
+			// debugger
 			history.push(url)
 
 			// update the searchState (to increase apparent performance)

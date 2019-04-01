@@ -17,6 +17,7 @@ import Filters from "../../components/Filters"
 import Topbar from "../../components/Topbar"
 import InstantSearchWrapper from "../../components/InstantSearchWrapper"
 
+import Header from "./Header"
 import { MainGrid, Sidebar, GridContainer } from "./StyledComponents"
 import { CONST } from "../../constants"
 
@@ -120,6 +121,7 @@ class HomePage extends Component {
 				urlToState={this.urlToState}
 				defaultSearchState={DEFAULT_SEARCH_STATE}
 			>
+				<Header />
 				{/* <TextBlock bold uppercase>
 					🔥 Promowane
 				</TextBlock> */}
