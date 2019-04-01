@@ -14,13 +14,13 @@ export const Post = styled.div`
 		display: grid;
 		grid-template-columns: 100px 1fr;
 		grid-template-rows: auto;
-		gap: 20px;
+		gap: var(--spacing3);
 		overflow: hidden;
-		padding: 15px;
+		padding: var(--spacing3);
 
-		background: white;
-		border: 1px solid ${(p) => p.theme.colors.gray[75]};
-		box-shadow: 0 0px 5px -1px rgba(0, 0, 0, 0.05);
+		background: var(--almost-white);
+		/* border: 1px solid ${(p) => p.theme.colors.gray[75]}; */
+		/* box-shadow: 0 0px 5px -1px rgba(0, 0, 0, 0.05); */
 
 		@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
 			grid-template-columns: 200px 1fr;
@@ -29,16 +29,7 @@ export const Post = styled.div`
 		@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
 			grid-template-columns: 300px 1fr;
 			grid-template-rows: 300px;
-			gap: 30px;
-		}
-		@media (max-width: ${(p) => p.theme.breakpoints[5] - 1}px) {
-			border-left: none;
-			border-right: none;
-		}
-	}
-	:not(:last-child) a {
-		@media (max-width: ${(p) => p.theme.breakpoints[5] - 1}px) {
-			/* border-bottom: none; */
+			gap: var(--spacing4);
 		}
 	}
 `
