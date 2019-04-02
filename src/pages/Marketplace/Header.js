@@ -22,11 +22,12 @@ const Logo = styled.img`
 const InnerContainer = styled.div`
 	height: 100%;
 	padding: var(--spacing3) 0;
-	display: grid;
-	grid-template-columns: max-content 1fr;
-	gap: var(--spacing3);
+	display: flex;
+	> * + * {
+		margin-left: var(--spacing3);
+	}
 	color: white;
-	text-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+	text-shadow: 0 1px 4px rgba(0, 0, 0, 0.26);
 	align-items: center;
 `
 
