@@ -201,7 +201,6 @@ export const DesignersList = connectInfiniteHits(({ hits, hasMore, refine, ...re
 			</SectionContainer>
 		)
 	})
-	debugger
 
 	return (
 		<div>

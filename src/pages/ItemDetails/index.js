@@ -30,7 +30,7 @@ import { ItemContainer, InfoContainer, SectionContainer } from "./StyledComponen
 import formatDesigners from "../../utils/formatDesigners"
 import formatPrice from "../../utils/formatPrice"
 import formatSize from "../../utils/formatSize"
-import { CONST } from "../../constants"
+import { CONST, ROUTES } from "../../constants"
 
 class ItemDetailsPage extends Component {
 	state = {
@@ -161,7 +161,11 @@ class ItemDetailsPage extends Component {
 										</ButtonContainer>
 
 										<ButtonContainer noMargin>
-											<Button as={Link} to={`/e/${item.itemId}`} fullWidth>
+											<Button
+												as={Link}
+												to={ROUTES.EDIT_ITEM.replace(":id", item.itemId)}
+												fullWidth
+											>
 												Edytuj
 											</Button>
 											<LoaderButton
