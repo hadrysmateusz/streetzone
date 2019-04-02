@@ -33,23 +33,24 @@ export const Nav = styled.nav`
 `
 
 export const Submenu = styled.div`
-	position: absolute;
-	top: 100%;
-	right: 0;
 	background: white;
 
 	border: 1px solid var(--gray75);
-	border-top: none;
 
+	display: grid;
+	gap: var(--spacing2);
+	padding: var(--spacing3);
+	box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.05);
+`
+
+export const SubmenuContainer = styled.div`
+	position: absolute;
+	top: 100%;
+
+	${(p) => `${p.align}: 0;`}
 	z-index: 81;
 
-	display: flex;
-	flex-flow: column nowrap;
-	justify-content: center;
-	align-items: center;
-	margin: 0;
-	padding: 5px 0;
-	box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.05);
+	padding-top: var(--spacing3);
 
 	display: none;
 `
@@ -62,7 +63,7 @@ export const NavItem = styled.div`
 	display: block;
 
 	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
-		:hover > ${Submenu} {
+		:hover > ${SubmenuContainer} {
 			display: block;
 		}
 	}

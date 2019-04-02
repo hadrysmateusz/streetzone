@@ -13,6 +13,7 @@ import getProfilePictureURL from "../../utils/getProfilePictureURL"
 import {
 	NavItem,
 	Submenu,
+	SubmenuContainer,
 	Nav,
 	PageHeaderContainer,
 	PageHeaderOuter,
@@ -32,11 +33,49 @@ const Navigation = ({ authUser, firebase, currentBreakpoint, ...rest }) => {
 					<Nav>
 						<NavItem>
 							<StyledNavLink to={ROUTES.BLOG_BASE}>Czytaj</StyledNavLink>
+							<SubmenuContainer align="left">
+								<Submenu>
+									<NavItem>
+										<StyledNavLink to={ROUTES.BLOG_HOME} exact>
+											Wszystko
+										</StyledNavLink>
+									</NavItem>
+									<NavItem>
+										<StyledNavLink to={ROUTES.BLOG_SECTION.replace(":section", "Dropy")}>
+											Nadchodzące dropy
+										</StyledNavLink>
+									</NavItem>
+									<NavItem>
+										<StyledNavLink
+											to={ROUTES.BLOG_SECTION.replace(":section", "Artykuły")}
+										>
+											Artykuły
+										</StyledNavLink>
+									</NavItem>
+									<NavItem>
+										<StyledNavLink to={ROUTES.BLOG_SECTION.replace(":section", "Wiedza")}>
+											Wiedza
+										</StyledNavLink>
+									</NavItem>
+								</Submenu>
+							</SubmenuContainer>
 						</NavItem>
 						<NavItem>
 							<StyledNavLink to={ROUTES.MARKETPLACE} exact>
 								Kupuj
 							</StyledNavLink>
+							<SubmenuContainer align="left">
+								<Submenu>
+									<NavItem>
+										<StyledNavLink to={ROUTES.MARKETPLACE}>Tablica</StyledNavLink>
+									</NavItem>
+									<NavItem>
+										<StyledNavLink to={ROUTES.DESIGNERS}>
+											Projektanci / Marki
+										</StyledNavLink>
+									</NavItem>
+								</Submenu>
+							</SubmenuContainer>
 						</NavItem>
 						{authUser && (
 							<NavItem>
@@ -86,49 +125,55 @@ const Navigation = ({ authUser, firebase, currentBreakpoint, ...rest }) => {
 										inline
 									/>
 								</StyledNavLink>
-								<Submenu>
-									<NavItem>
-										<StyledNavLink to={ROUTES.ACCOUNT_ITEMS.replace(":id", authUser.uid)}>
-											Twoje przedmioty
-										</StyledNavLink>
-									</NavItem>
+								<SubmenuContainer align="right">
+									<Submenu>
+										<NavItem>
+											<StyledNavLink
+												to={ROUTES.ACCOUNT_ITEMS.replace(":id", authUser.uid)}
+											>
+												Twoje przedmioty
+											</StyledNavLink>
+										</NavItem>
 
-									<NavItem>
-										<StyledNavLink to={ROUTES.ACCOUNT_LIKED.replace(":id", authUser.uid)}>
-											Zapisane przedmioty
-										</StyledNavLink>
-									</NavItem>
+										<NavItem>
+											<StyledNavLink
+												to={ROUTES.ACCOUNT_LIKED.replace(":id", authUser.uid)}
+											>
+												Zapisane przedmioty
+											</StyledNavLink>
+										</NavItem>
 
-									<NavItem>
-										<StyledNavLink
-											to={ROUTES.ACCOUNT_FOLLOWING.replace(":id", authUser.uid)}
-										>
-											Obserwowani użytkownicy
-										</StyledNavLink>
-									</NavItem>
+										<NavItem>
+											<StyledNavLink
+												to={ROUTES.ACCOUNT_FOLLOWING.replace(":id", authUser.uid)}
+											>
+												Obserwowani użytkownicy
+											</StyledNavLink>
+										</NavItem>
 
-									<NavItem>
-										<StyledNavLink
-											to={ROUTES.ACCOUNT_FEEDBACK.replace(":id", authUser.uid)}
-										>
-											Opinie i komentarze
-										</StyledNavLink>
-									</NavItem>
+										<NavItem>
+											<StyledNavLink
+												to={ROUTES.ACCOUNT_FEEDBACK.replace(":id", authUser.uid)}
+											>
+												Opinie i komentarze
+											</StyledNavLink>
+										</NavItem>
 
-									<NavItem>
-										<StyledNavLink
-											to={ROUTES.ACCOUNT_SETTINGS.replace(":id", authUser.uid)}
-										>
-											Opcje / Edytuj profil
-										</StyledNavLink>
-									</NavItem>
+										<NavItem>
+											<StyledNavLink
+												to={ROUTES.ACCOUNT_SETTINGS.replace(":id", authUser.uid)}
+											>
+												Opcje / Edytuj profil
+											</StyledNavLink>
+										</NavItem>
 
-									<NavItem>
-										<StyledNavLink as="a" onClick={firebase.signOut}>
-											Wyloguj
-										</StyledNavLink>
-									</NavItem>
-								</Submenu>
+										<NavItem>
+											<StyledNavLink as="a" onClick={firebase.signOut}>
+												Wyloguj
+											</StyledNavLink>
+										</NavItem>
+									</Submenu>
+								</SubmenuContainer>
 							</NavItem>
 						</>
 					) : (
