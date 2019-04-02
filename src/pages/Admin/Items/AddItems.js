@@ -2,12 +2,12 @@ import React, { Component } from "react"
 import shortid from "shortid"
 import { Form, Field } from "react-final-form"
 
-import { withAuthentication } from "../../components/UserSession"
-import { LoaderButton } from "../../components/Button"
-import { FieldRow, FieldLabel } from "../../components/Basics"
-import { FormError, Input } from "../../components/FormElements"
-import { FileHandler } from "../../components/FileHandler"
-import { ITEM_SCHEMA, CONST } from "../../constants"
+import { withAuthentication } from "../../../components/UserSession"
+import { LoaderButton } from "../../../components/Button"
+import { FieldRow, FieldLabel } from "../../../components/Basics"
+import { FormError, Input } from "../../../components/FormElements"
+import { FileHandler } from "../../../components/FileHandler"
+import { ITEM_SCHEMA, CONST } from "../../../constants"
 
 function randInt(min, max) {
 	min = Math.ceil(min)
@@ -178,70 +178,63 @@ class NewItemPage extends Component {
 
 	render() {
 		return (
-			<div>
-				<hr />
-				<h4>Add</h4>
-				<Form
-					onSubmit={this.onSubmit}
-					render={({ form, handleSubmit, submitting, pristine, values, ...rest }) => {
-						return (
-							<form onSubmit={handleSubmit}>
-								{/* Number of items */}
-								<FieldRow gridArea="numberOfItems">
-									<Field name="numberOfItems">
-										{({ input, meta }) => {
-											const error = meta.error && meta.touched ? meta.error : null
-											return (
-												<Input
-													{...input}
-													type="number"
-													min="0"
-													step="1"
-													placeholder="Number of items"
-													error={error}
-												/>
-											)
-										}}
-									</Field>
-								</FieldRow>
+			<Form
+				onSubmit={this.onSubmit}
+				render={({ form, handleSubmit, submitting, pristine, values, ...rest }) => {
+					return (
+						<form onSubmit={handleSubmit}>
+							{/* Number of items */}
+							<FieldRow gridArea="numberOfItems">
+								<Field name="numberOfItems">
+									{({ input, meta }) => {
+										const error = meta.error && meta.touched ? meta.error : null
+										return (
+											<Input
+												{...input}
+												type="number"
+												min="0"
+												step="1"
+												placeholder="Number of items"
+												error={error}
+											/>
+										)
+									}}
+								</Field>
+							</FieldRow>
 
-								{/* Random users */}
-								<FieldRow gridArea="randomUsers">
-									<Field name="randomUsers">
-										{({ input, meta }) => (
-											<>
-												<FieldLabel>Random users </FieldLabel>
-												<input {...input} type="checkbox" />
-												<FormError
-													message={meta.error}
-													show={meta.error && meta.touched}
-												/>
-											</>
-										)}
-									</Field>
-								</FieldRow>
+							{/* Random users */}
+							<FieldRow gridArea="randomUsers">
+								<Field name="randomUsers">
+									{({ input, meta }) => (
+										<>
+											<FieldLabel>Random users </FieldLabel>
+											<input {...input} type="checkbox" />
+											<FormError message={meta.error} show={meta.error && meta.touched} />
+										</>
+									)}
+								</Field>
+							</FieldRow>
 
-								{/* Files (handled by separate component) */}
-								<FieldRow gridArea="files">
-									<FieldLabel>Zdjęcia</FieldLabel>
-									<Field name="files" component={FileHandler} />
-								</FieldRow>
+							{/* Files (handled by separate component) */}
+							<FieldRow gridArea="files">
+								<FieldLabel>Zdjęcia</FieldLabel>
+								<Field name="files" component={FileHandler} />
+							</FieldRow>
 
-								<LoaderButton
-									text="Gotowe"
-									type="submit"
-									isLoading={submitting}
-									disabled={submitting || pristine}
-								/>
-								{/* 
+							<LoaderButton
+								text="Gotowe"
+								type="submit"
+								isLoading={submitting}
+								disabled={submitting || pristine}
+							/>
+							{/* 
 								{process.env.NODE_ENV === "development" && (
 									<pre>{JSON.stringify(values, 0, 2)}</pre>
 								)} */}
-							</form>
-						)
-					}}
-				/>
-			</div>
+						</form>
+					)
+				}}
+			/>
 		)
 	}
 }

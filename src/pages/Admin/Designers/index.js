@@ -1,16 +1,17 @@
-import React, { Component } from "react"
+import React from "react"
 import shortid from "shortid"
 
-import LoadingSpinner from "../../components/LoadingSpinner"
+import LoadingSpinner from "../../../components/LoadingSpinner"
 import styled from "styled-components"
 
-import Button, { LoaderButton, ButtonContainer } from "../../components/Button"
-import { Input } from "../../components/FormElements"
-import { TextBlock } from "../../components/StyledComponents"
-import { FileHandlerSingle } from "../../components/FileHandler"
+import Button, { LoaderButton, ButtonContainer } from "../../../components/Button"
+import { Input } from "../../../components/FormElements"
+import { TextBlock } from "../../../components/StyledComponents"
+import { FileHandlerSingle } from "../../../components/FileHandler"
 import { Form, Field } from "react-final-form"
-import useFirebase from "../../hooks/useFirebase"
-import { FORM_ERR } from "../../constants"
+import useFirebase from "../../../hooks/useFirebase"
+import useDesigners from "../../../hooks/useDesigners"
+import { FORM_ERR } from "../../../constants"
 
 const Swatch = styled.div`
 	width: 40px;
@@ -192,44 +193,36 @@ const AddDesigner = () => {
 	)
 }
 
-export class DesignersDb extends Component {
-	state = { items: [], isLoading: true, error: null }
+const DesignersDb = () => {
+	const designers = useDesigners()
+	const isLoading = !designers
+	const isEmpty = !designers || designers.length === 0
 
-	componentDidMount() {
-		this.removeListener = this.props.firebase.db
-			.collection("designers")
-			.onSnapshot(async (itemsSnapshot) => {
-				const items = itemsSnapshot.docs.map((doc) => doc.data())
-				this.setState({ items, isLoading: false })
-			})
-	}
+	return (
+		<div>
+			<TextBlock size="xl" bold>
+				Designers
+			</TextBlock>
 
-	componentWillUnmount() {
-		this.removeListener && this.removeListener()
-	}
+			<TextBlock size="m" color="gray0">
+				Add designer
+			</TextBlock>
 
-	render() {
-		const { isLoading, items } = this.state
+			<AddDesigner />
 
-		return isLoading ? (
-			<LoadingSpinner />
-		) : (
+			<TextBlock size="m" color="gray0">
+				All designers
+			</TextBlock>
+
 			<div>
-				<TextBlock size="xl" bold>
-					Designers
-				</TextBlock>
-				{items.length > 0 && (
-					<div>
-						{items.map((item) => (
-							<DesignerItem designer={item} />
-						))}
-					</div>
+				{isLoading ? (
+					<LoadingSpinner fixedHeight />
+				) : (
+					!isEmpty && designers.map((item) => <DesignerItem designer={item} />)
 				)}
-				<h4>Add</h4>
-				<AddDesigner />
 			</div>
-		)
-	}
+		</div>
+	)
 }
 
 export default DesignersDb

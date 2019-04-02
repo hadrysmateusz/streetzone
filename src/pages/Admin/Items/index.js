@@ -1,11 +1,15 @@
-import React, { Component } from "react"
+import React from "react"
 import { Link } from "react-router-dom"
 
-import LoadingSpinner from "../../components/LoadingSpinner"
+import LoadingSpinner from "../../../components/LoadingSpinner"
+import { TextBlock } from "../../../components/StyledComponents"
 
-import { ROUTES } from "../../constants"
+import AddItems from "./AddItems"
 
-export class ItemsManagement extends Component {
+import { ROUTES } from "../../../constants"
+import { withFirebase } from "../../../components/Firebase"
+
+export class ItemsManagement extends React.Component {
 	state = { items: [], foundItem: null, isLoading: true, inputValue: "", error: null }
 
 	onChange = (e) => {
@@ -55,8 +59,37 @@ export class ItemsManagement extends Component {
 			<LoadingSpinner />
 		) : (
 			<div>
-				<hr />
-				<h2>Items</h2>
+				{error && <div>{error.message}</div>}
+
+				<TextBlock size="xl" bold>
+					Items
+				</TextBlock>
+
+				<TextBlock size="m" color="gray0">
+					Add item
+				</TextBlock>
+
+				<AddItems firebase={this.props.firebase} />
+
+				<TextBlock size="m" color="gray0">
+					Find by ID
+				</TextBlock>
+
+				<form onSubmit={this.onSubmit}>
+					<input type="text" onChange={this.onChange} value={inputValue} />
+					<input type="submit" />
+				</form>
+				{foundItem && (
+					<div>
+						<h3>Found item</h3>
+						{foundItem.name} {foundItem.email}
+					</div>
+				)}
+
+				<TextBlock size="m" color="gray0">
+					All items
+				</TextBlock>
+
 				{items.length > 0 && (
 					<ul>
 						{items.map((item) => {
@@ -71,21 +104,9 @@ export class ItemsManagement extends Component {
 						})}
 					</ul>
 				)}
-				<h4>Find by ID</h4>
-				<form onSubmit={this.onSubmit}>
-					<input type="text" onChange={this.onChange} value={inputValue} />
-					<input type="submit" />
-				</form>
-				{foundItem && (
-					<div>
-						<h3>Found item</h3>
-						{foundItem.name} {foundItem.email}
-					</div>
-				)}
-				{error && <div>{error.message}</div>}
 			</div>
 		)
 	}
 }
 
-export default ItemsManagement
+export default withFirebase(ItemsManagement)

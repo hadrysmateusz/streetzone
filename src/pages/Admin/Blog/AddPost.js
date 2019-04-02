@@ -2,20 +2,16 @@ import React from "react"
 import shortid from "shortid"
 import Datetime from "react-datetime"
 
-import LoadingSpinner from "../../components/LoadingSpinner"
-import styled from "styled-components"
-
-import Button, { LoaderButton, ButtonContainer } from "../../components/Button"
-import { Input } from "../../components/FormElements"
-import { TextBlock, Text } from "../../components/StyledComponents"
-import { FileHandlerSingle } from "../../components/FileHandler"
+import { LoaderButton, ButtonContainer } from "../../../components/Button"
+import { Input } from "../../../components/FormElements"
+import { Text } from "../../../components/StyledComponents"
+import { FileHandlerSingle } from "../../../components/FileHandler"
 import { Form, Field } from "react-final-form"
-import useFirebase from "../../hooks/useFirebase"
-import { FORM_ERR } from "../../constants"
-import useFirestoreCollection from "../../hooks/useFirestoreCollection"
-import { Textarea } from "../../components/FormElements"
-import DropdownFinalform from "../../components/DropdownFinalform"
-import MultiTextInputFinalform from "../../components/MultiTextInputFinalform"
+import useFirebase from "../../../hooks/useFirebase"
+import { FORM_ERR } from "../../../constants"
+import { Textarea } from "../../../components/FormElements"
+import DropdownFinalform from "../../../components/DropdownFinalform"
+import MultiTextInputFinalform from "../../../components/MultiTextInputFinalform"
 
 import "react-datetime/css/react-datetime.css"
 
@@ -33,54 +29,6 @@ const sectionOptions = [
 		label: "Artykuły"
 	}
 ]
-
-const BlogImageContainer = styled.div`
-	img {
-		max-height: 100px;
-		max-width: 300px;
-	}
-`
-
-const BlogPostContainer = styled.div`
-	border: 1px solid black;
-	padding: 16px;
-	margin: 10px 0;
-`
-
-const BlogPost = ({ post }) => {
-	const firebase = useFirebase()
-
-	const { id, mainImageURL, title, author, isPromoted, section } = post
-
-	const onDelete = (id) => {
-		try {
-			const shouldDelete = window.confirm(`Do you really want to delete "${title}"?`)
-			if (shouldDelete) {
-				firebase.post(id).delete()
-			}
-		} catch (error) {
-			console.log(error)
-			alert(error)
-		}
-	}
-
-	return (
-		<BlogPostContainer>
-			<TextBlock color="gray0" uppercase>
-				{section}
-			</TextBlock>
-			<TextBlock bold size="l">
-				{title}
-			</TextBlock>
-			{author && <TextBlock color="#666">by {author}</TextBlock>}
-			{isPromoted && <TextBlock bold>Is Promoted</TextBlock>}
-			<BlogImageContainer>
-				<img src={mainImageURL} alt="" />
-			</BlogImageContainer>
-			<Button onClick={() => onDelete(id)}>Delete</Button>
-		</BlogPostContainer>
-	)
-}
 
 const AddPost = () => {
 	const firebase = useFirebase()
@@ -256,27 +204,4 @@ const AddPost = () => {
 	)
 }
 
-const BlogManagement = () => {
-	const posts = useFirestoreCollection("posts")
-
-	return !posts ? (
-		<LoadingSpinner fixedHeight />
-	) : (
-		<div>
-			<TextBlock size="xl" bold>
-				Blog
-			</TextBlock>
-			{posts.length > 0 && (
-				<div>
-					{posts.map((post) => (
-						<BlogPost post={post} />
-					))}
-				</div>
-			)}
-			<h4>Add</h4>
-			<AddPost />
-		</div>
-	)
-}
-
-export default BlogManagement
+export default AddPost

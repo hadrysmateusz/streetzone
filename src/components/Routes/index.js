@@ -25,11 +25,6 @@ const BumpInfo = Loadable({
 	loading: LoadableComponentSpinner
 })
 
-const Admin = Loadable({
-	loader: () => import("../../pages/Admin"),
-	loading: LoadableComponentSpinner
-})
-
 const UserSettings = Loadable({
 	loader: () => import("../../pages/Account/UserSettings"),
 	loading: LoadableComponentSpinner
@@ -156,7 +151,85 @@ const BlogTag = Loadable({
 	loading: LoadableComponentSpinner
 })
 
+const Admin = Loadable({
+	loader: () => import("../../pages/Admin"),
+	loading: LoadableComponentSpinner
+})
+
+const AdminBlog = Loadable({
+	loader: () => import("../../pages/Admin/Blog"),
+	loading: LoadableComponentSpinner
+})
+
+const AdminBlogEdit = Loadable({
+	loader: () => import("../../pages/Admin/BlogEdit"),
+	loading: LoadableComponentSpinner
+})
+
+const AdminDesigners = Loadable({
+	loader: () => import("../../pages/Admin/Designers"),
+	loading: LoadableComponentSpinner
+})
+
+const AdminDesignerEdit = Loadable({
+	loader: () => import("../../pages/Admin/DesignerEdit"),
+	loading: LoadableComponentSpinner
+})
+
+const AdminItems = Loadable({
+	loader: () => import("../../pages/Admin/Items"),
+	loading: LoadableComponentSpinner
+})
+
+const AdminUsers = Loadable({
+	loader: () => import("../../pages/Admin/Users"),
+	loading: LoadableComponentSpinner
+})
+
 const routes = [
+	{
+		path: ROUTES.ADMIN_BASE,
+		component: Admin,
+		exact: false,
+		routes: [
+			{
+				id: "blog",
+				path: ROUTES.ADMIN_BLOG,
+				component: AdminBlog,
+				isNavigable: true
+			},
+			{
+				id: "blogEdit",
+				path: ROUTES.ADMIN_BLOG_EDIT,
+				component: AdminBlogEdit,
+				isNavigable: false
+			},
+			{
+				id: "items",
+				path: ROUTES.ADMIN_ITEMS,
+				component: AdminItems,
+				isNavigable: true
+			},
+			{
+				id: "users",
+				path: ROUTES.ADMIN_USERS,
+				component: AdminUsers,
+				isNavigable: true
+			},
+			{
+				id: "designers",
+				path: ROUTES.ADMIN_DESIGNERS,
+				component: AdminDesigners,
+				isNavigable: true
+			},
+			{
+				id: "designerEdit",
+				path: ROUTES.ADMIN_DESIGNER_EDIT,
+				component: AdminDesignerEdit,
+				isNavigable: false
+			}
+		]
+	},
 	{
 		path: ROUTES.BLOG_BASE,
 		component: BlogBase,
@@ -192,10 +265,6 @@ const routes = [
 	{
 		path: ROUTES.REQUEST_DESIGNER,
 		component: RequestDesigner
-	},
-	{
-		path: ROUTES.ADMIN,
-		component: Admin
 	},
 	{
 		path: ROUTES.DESIGNER,

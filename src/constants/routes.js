@@ -24,9 +24,9 @@ export const ACCOUNT_LIKED = ACCOUNT_BASE + "/zapisane"
 export const ACCOUNT_FOLLOWING = ACCOUNT_BASE + "/obserwowane"
 
 export const ITEM_DETAILS = "/i/:id"
-export const NEW_ITEM = "/nowy"
-export const DELETE_ITEM = "/usun/:id"
-export const EDIT_ITEM = "/e/:id"
+export const NEW_ITEM = "/i/nowy"
+export const DELETE_ITEM = "/i/usun/:id"
+export const EDIT_ITEM = "/i/:id/edytuj"
 
 export const FAQ = "/faq"
 export const PRIVACY_POLICY = "/polityka-prywatnosci"
@@ -37,7 +37,13 @@ export const BUMP_INFO = "/promowanie"
 export const BUG_REPORT = "/zglos_problem"
 export const REQUEST_DESIGNER = "/req_des"
 
-export const ADMIN = "/admin"
+export const ADMIN_BASE = "/admin"
+export const ADMIN_BLOG = ADMIN_BASE + "/blog"
+export const ADMIN_BLOG_EDIT = ADMIN_BASE + "/blog/:id"
+export const ADMIN_ITEMS = ADMIN_BASE + "/items"
+export const ADMIN_USERS = ADMIN_BASE + "/users"
+export const ADMIN_DESIGNERS = ADMIN_BASE + "/designers"
+export const ADMIN_DESIGNER_EDIT = ADMIN_BASE + "/designers/:id"
 
 // External
 // TODO: create social media pages and add addresses

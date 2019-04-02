@@ -1,8 +1,10 @@
-import React, { Component } from "react"
+import React from "react"
 
-import LoadingSpinner from "../../components/LoadingSpinner"
+import LoadingSpinner from "../../../components/LoadingSpinner"
+import { withFirebase } from "../../../components/Firebase"
+import { TextBlock } from "../../../components/StyledComponents"
 
-export class UsersManagement extends Component {
+export class UsersManagement extends React.Component {
 	state = { users: [], foundUser: null, isLoading: true, inputValue: "", error: null }
 
 	onChange = (e) => {
@@ -45,8 +47,32 @@ export class UsersManagement extends Component {
 			<LoadingSpinner />
 		) : (
 			<div>
-				<hr />
-				<h2>Users</h2>
+				{error && <div>{error.message}</div>}
+
+				<TextBlock size="xl" bold>
+					Users
+				</TextBlock>
+
+				<TextBlock size="m" color="gray0">
+					Find by ID
+				</TextBlock>
+
+				<form onSubmit={this.onSubmit}>
+					<input type="text" onChange={this.onChange} value={inputValue} />
+					<input type="submit" />
+				</form>
+
+				{foundUser && (
+					<div>
+						<h3>Found User</h3>
+						{foundUser.name} {foundUser.email}
+					</div>
+				)}
+
+				<TextBlock size="m" color="gray0">
+					All users
+				</TextBlock>
+
 				{users.length > 0 && (
 					<ul>
 						{users.map((user) => (
@@ -57,22 +83,9 @@ export class UsersManagement extends Component {
 						))}
 					</ul>
 				)}
-				<h4>Find by ID</h4>
-				<form onSubmit={this.onSubmit}>
-					<input type="text" onChange={this.onChange} value={inputValue} />
-					<input type="submit" />
-				</form>
-				{foundUser && (
-					<div>
-						<h3>Found User</h3>
-						{foundUser.name} {foundUser.email}
-					</div>
-				)}
-
-				{error && <div>{error.message}</div>}
 			</div>
 		)
 	}
 }
 
-export default UsersManagement
+export default withFirebase(UsersManagement)
