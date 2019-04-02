@@ -44,6 +44,7 @@ class NewItemPage extends Component {
 				status: ITEM_SCHEMA.status.available,
 				createdAt: Date.now(),
 				bumpedAt: Date.now(),
+				promotedAt: Date.now(),
 				modifiedAt: null,
 				itemId,
 				userId,
