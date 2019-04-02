@@ -4,7 +4,20 @@ import { withRouter } from "react-router-dom"
 import { InstantSearch } from "react-instantsearch-dom"
 import { decodeURL, encodeURL } from "../../utils/algoliaURLutils"
 
-const InstantSearchWrapper = withRouter(
+export const UncontrolledInstantSearchWrapper = ({ indexName, children, ...rest }) => {
+	return (
+		<InstantSearch
+			appId={process.env.REACT_APP_APP_ID}
+			apiKey={process.env.REACT_APP_ALGOLIA_API_KEY}
+			indexName={indexName}
+			{...rest}
+		>
+			{children}
+		</InstantSearch>
+	)
+}
+
+export const InstantSearchWrapper = withRouter(
 	({
 		indexName,
 		onSearchStateChange,
