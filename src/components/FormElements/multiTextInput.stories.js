@@ -1,6 +1,6 @@
 import React from "react"
 import { storiesOf } from "@storybook/react"
-import MultiTextInput from "./multiTextInput"
+import { MultiTextInput } from "./multiTextInput"
 import "../../index.css"
 
 storiesOf("MultiTextInput", module)

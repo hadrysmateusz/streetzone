@@ -1,25 +1,26 @@
 import React from "react"
-import { MultiTextInput } from "../FormElements"
+import { MultiTextInputControlled } from "../FormElements"
 
-const MultiTextInputFinalform = ({ onChange: setValue, value, ...rest }) => {
+const MultiTextInputFinalform = ({ onChange, value, ...rest }) => {
 	// only null resets the field so if a value
 	// wasn't found set it to null to clear the field
-	if (!value) {
-		value = null
-	}
 
-	const customSetState = (value, inputValue, createOption) => {
-		console.log(value, inputValue)
-		if (!value) {
-			setValue(undefined)
+	const customSetState = (newOption) => {
+		if (!newOption) {
+			onChange(null)
 		} else {
-			console.log(createOption(inputValue))
-			setValue([...value, createOption(inputValue)])
+			if (value) {
+				value = [...value, newOption]
+			} else {
+				value = [newOption]
+			}
+			onChange(value)
 		}
-		console.log(value, inputValue)
 	}
 
-	return <MultiTextInput {...rest} value={value} customSetState={customSetState} />
+	return (
+		<MultiTextInputControlled {...rest} value={value} customSetState={customSetState} />
+	)
 }
 
 export default MultiTextInputFinalform
