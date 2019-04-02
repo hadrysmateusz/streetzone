@@ -17,6 +17,7 @@ import Filters from "../../components/Filters"
 import Topbar from "../../components/Topbar"
 import InstantSearchWrapper from "../../components/InstantSearchWrapper"
 
+import PromotedSection from "./PromotedSection"
 import Header from "./Header"
 import { MainGrid, Sidebar, GridContainer } from "./StyledComponents"
 import { CONST } from "../../constants"
@@ -85,6 +86,8 @@ class HomePage extends Component {
 		if (sortBy !== undefined) formattedState.sortBy = sortBy
 		if (range && range.price !== undefined) formattedState.price = range.price
 
+		// debugger
+
 		return formattedState
 	}
 
@@ -122,9 +125,8 @@ class HomePage extends Component {
 				defaultSearchState={DEFAULT_SEARCH_STATE}
 			>
 				<Header />
-				{/* <TextBlock bold uppercase>
-					🔥 Promowane
-				</TextBlock> */}
+				<PromotedSection />
+
 				<GridContainer>
 					<Topbar
 						areFiltersOpen={areFiltersOpen}
