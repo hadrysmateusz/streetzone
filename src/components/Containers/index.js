@@ -18,7 +18,7 @@ const PageContainer = styled.section`
 
 	width: 100%;
 
-	margin: var(--margin-y) auto;
+	margin: ${(p) => (p.noMargin ? "0" : "var(--margin-y)")} auto;
 	padding: 0 var(--padding-x);
 
 	@media (min-width: ${(p) => p.theme.breakpoints[0]}px) {
