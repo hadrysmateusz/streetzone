@@ -27,14 +27,14 @@ import {
 
 const ERR_NO_IMAGE = "NO_IMAGE"
 
-function useImage(imageId) {
+export function useImage(imageId, size = "M") {
 	const firebase = useContext(FirebaseContext)
 	const [imageURL, setImageURL] = useState(null)
 	const [error, setError] = useState(null)
 
 	const fetchImage = async () => {
 		try {
-			const imageURL = await firebase.getImageURL(imageId, "M")
+			const imageURL = await firebase.getImageURL(imageId, size)
 			setImageURL(imageURL)
 		} catch (error) {
 			setError(ERR_NO_IMAGE)
