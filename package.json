@@ -57,10 +57,13 @@
 		"@babel/core": "^7.4.0",
 		"@storybook/addon-actions": "^5.0.3",
 		"@storybook/addon-links": "^5.0.3",
+		"@storybook/addon-storyshots": "^5.0.6",
 		"@storybook/addons": "^5.0.3",
 		"@storybook/react": "^5.0.3",
 		"babel-loader": "^8.0.5",
-		"prop-types": "^15.7.2"
+		"prop-types": "^15.7.2",
+		"react-test-renderer": "^16.8.6",
+		"require-context.macro": "^1.0.4"
 	},
 	"scripts": {
 		"start": "react-scripts start",
