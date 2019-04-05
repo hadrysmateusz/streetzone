@@ -6,51 +6,50 @@ import { ellipsis, resetButtonStyles } from "../../style-utils"
 import { SPIN } from "../../style-utils/keyframes"
 
 const primary = css`
-	border-color: ${(p) => p.theme.colors.black[0]};
-	background: ${(p) => p.theme.colors.black[0]};
+	border-color: var(--black0);
+	background: var(--black0);
 	color: white;
 
 	&:not([disabled]) {
 		&:hover {
-			background: ${(p) => p.theme.colors.black[50]};
-			border-color: ${(p) => p.theme.colors.black[50]};
+			background: var(--black50);
+			border-color: var(--black50);
 		}
 	}
 `
 
 const accent = css`
-	border-color: ${(p) => p.theme.colors.accent};
-	background: ${(p) => p.theme.colors.accent};
+	border-color: var(--accent25);
+	background: var(--accent50);
 	color: white;
 
-	text-shadow: 1px 1px ${(p) => p.theme.colors.accent};
+	text-shadow: 1px 1px var(--accent50);
 
 	:not([disabled]) {
 		:hover {
-			background: #f9c50e;
-			border-color: #f9c50e;
+			background: var(--accent25);
+			border-color: var(--accent25);
 		}
 	}
 `
 
 const basic = css`
-	border-color: ${(p) => p.theme.colors.gray[75]};
+	border-color: var(--gray75);
 	background: white;
-	color: ${(p) => p.theme.colors.black[0]};
+	color: var(--black0);
 
 	&:not([disabled]) {
 		&:hover {
-			background: #fdfdfd;
-			border-color: ${(p) => p.theme.colors.black[50]};
+			background: var(--almost-white);
+			border-color: var(--black50);
 		}
 	}
 `
 
 const disabled = css`
-	border-color: ${(p) => p.theme.colors.gray[100]};
-	background: transparent;
-	background: #fdfdfd;
-	color: ${(p) => p.theme.colors.gray[50]};
+	border-color: var(--gray100);
+	background: var(--almost-white);
+	color: var(--gray50);
 `
 
 const Button = styled.button`
