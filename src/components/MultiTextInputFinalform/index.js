@@ -2,8 +2,19 @@ import React from "react"
 import { MultiTextInputControlled } from "../FormElements"
 
 const MultiTextInputFinalform = ({ onChange, value, ...rest }) => {
-	// only null resets the field so if a value
-	// wasn't found set it to null to clear the field
+	// convert any string value to React Select option object
+	if (value) {
+		value = value.map((a) => {
+			if (typeof a === "string") {
+				return {
+					value: a,
+					label: a
+				}
+			} else {
+				return a
+			}
+		})
+	}
 
 	const customSetState = (newOption) => {
 		if (!newOption) {
