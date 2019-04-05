@@ -104,6 +104,10 @@ export const MiniButton = styled.div`
 	${(p) => p.position.right && `right: ${p.position.right}`};
 	${(p) => p.position.bottom && `bottom: ${p.position.bottom}`};
 	${(p) => p.position.left && `left: ${p.position.left}`};
+	${(p) => p.top && `top: ${p.top}`};
+	${(p) => p.right && `right: ${p.right}`};
+	${(p) => p.bottom && `bottom: ${p.bottom}`};
+	${(p) => p.left && `left: ${p.left}`};
 	display: flex;
 	justify-content: center;
 	align-items: center;
