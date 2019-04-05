@@ -8,27 +8,42 @@ import { Text } from "../../../components/StyledComponents"
 import { FileHandlerSingle } from "../../../components/FileHandler"
 import { Form, Field } from "react-final-form"
 import useFirebase from "../../../hooks/useFirebase"
-import { FORM_ERR } from "../../../constants"
 import { Textarea } from "../../../components/FormElements"
 import DropdownFinalform from "../../../components/DropdownFinalform"
 import MultiTextInputFinalform from "../../../components/MultiTextInputFinalform"
 
+import sectionOptions from "./sectionOptions"
+
 import "react-datetime/css/react-datetime.css"
 
-const sectionOptions = [
-	{
-		value: "Wiedza",
-		label: "Wiedza"
-	},
-	{
-		value: "Dropy",
-		label: "Dropy"
-	},
-	{
-		value: "Artykuły",
-		label: "Artykuły"
+import { FORM_ERR } from "../../../constants"
+
+const validate = ({ author, title, section, mainContent, mainImage, dropsAt }) => {
+	const errors = {}
+
+	if (!title) {
+		errors.title = FORM_ERR.IS_REQUIRED
 	}
-]
+
+	if (!section) {
+		errors.section = FORM_ERR.IS_REQUIRED
+	} else {
+		if (section !== "drops" && !author) {
+			errors.author = FORM_ERR.IS_REQUIRED
+		}
+	}
+
+	if (!mainContent) {
+		errors.mainContent = FORM_ERR.IS_REQUIRED
+	}
+
+	if (!mainImage) {
+		errors.mainImage = FORM_ERR.IS_REQUIRED
+	}
+
+	console.log(errors)
+	return errors
+}
 
 const AddPost = () => {
 	const firebase = useFirebase()
@@ -79,33 +94,6 @@ const AddPost = () => {
 		}
 	}
 
-	const validate = ({ author, title, section, mainContent, mainImage, dropsAt }) => {
-		const errors = {}
-
-		if (!title) {
-			errors.title = FORM_ERR.IS_REQUIRED
-		}
-
-		if (!section) {
-			errors.section = FORM_ERR.IS_REQUIRED
-		} else {
-			if (section !== "drops" && !author) {
-				errors.author = FORM_ERR.IS_REQUIRED
-			}
-		}
-
-		if (!mainContent) {
-			errors.mainContent = FORM_ERR.IS_REQUIRED
-		}
-
-		if (!mainImage) {
-			errors.mainImage = FORM_ERR.IS_REQUIRED
-		}
-
-		console.log(errors)
-		return errors
-	}
-
 	return (
 		<Form
 			onSubmit={onSubmit}
@@ -126,7 +114,7 @@ const AddPost = () => {
 								)
 							}}
 						</Field>
-						{values.section !== "drops" && (
+						{values.section && values.section !== "Dropy" && (
 							<Field name="author">
 								{({ input, meta }) => {
 									const error = meta.error && meta.touched ? meta.error : null
@@ -153,7 +141,7 @@ const AddPost = () => {
 							}}
 						</Field>
 
-						{values.section === "drops" && (
+						{values.section === "Dropy" && (
 							<>
 								<Text size="m" bold>
 									Data dropu
@@ -194,9 +182,9 @@ const AddPost = () => {
 								primary
 							/>
 						</ButtonContainer>
-						{/* {process.env.NODE_ENV === "development" && (
+						{process.env.NODE_ENV === "development" && (
 							<pre>{JSON.stringify(values, 0, 2)}</pre>
-						)} */}
+						)}
 					</form>
 				)
 			}}

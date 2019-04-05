@@ -162,7 +162,7 @@ const AdminBlog = Loadable({
 })
 
 const AdminBlogEdit = Loadable({
-	loader: () => import("../../pages/Admin/BlogEdit"),
+	loader: () => import("../../pages/Admin/Blog/Edit.js"),
 	loading: LoadableComponentSpinner
 })
 
