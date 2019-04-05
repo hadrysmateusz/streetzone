@@ -1,5 +1,5 @@
 import React from "react"
-import styled from "styled-components"
+import styled from "styled-components/macro"
 
 const PATH = process.env.PUBLIC_URL + "/img/empty_states/"
 
@@ -73,6 +73,6 @@ export const Generic = {
 }
 
 export const QueryNoResults = {
-	text: "Brak wyników",
+	text: "Brak wyników spełniających kryteria",
 	image: PATH + "SadFace.png"
 }

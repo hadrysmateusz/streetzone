@@ -3,8 +3,9 @@ import { connectSearchBox } from "react-instantsearch-dom"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { withRouter } from "react-router-dom"
 import { compose } from "recompose"
+import { withBreakpoints } from "react-breakpoints"
 
-import { SearchBox, StyledPoweredBy, OuterSearchContainer } from "./StyledComponents"
+import { SearchBox, StyledPoweredBy } from "./StyledComponents"
 
 class AlgoliaSearchBox extends React.Component {
 	delay = 350
@@ -67,33 +68,35 @@ class AlgoliaSearchBox extends React.Component {
 	}
 
 	render() {
+		const placeholderText =
+			this.props.currentBreakpoint > 0 ? "Szukaj po nazwie, marce, itd." : "Szukaj"
+
 		return (
-			<OuterSearchContainer>
-				<SearchBox>
-					<div className="icon-container">
-						<FontAwesomeIcon icon="search" />
+			<SearchBox>
+				<div className="icon-container">
+					<FontAwesomeIcon icon="search" />
+				</div>
+				<input
+					type="text"
+					onChange={this.onChange}
+					value={this.state.inputValue}
+					placeholder={placeholderText}
+				/>
+				{this.state.inputValue && (
+					<div className="icon-container" onClick={this.clearField}>
+						<FontAwesomeIcon icon="times" />
 					</div>
-					<input
-						type="text"
-						onChange={this.onChange}
-						value={this.state.inputValue}
-						placeholder="Szukaj po nazwie, marce, kategorii itd."
-					/>
-					{this.state.inputValue && (
-						<div className="icon-container" onClick={this.clearField}>
-							<FontAwesomeIcon icon="times" />
-						</div>
-					)}
-					<div className="powered-by-container">
-						<StyledPoweredBy />
-					</div>
-				</SearchBox>
-			</OuterSearchContainer>
+				)}
+				<div className="powered-by-container">
+					<StyledPoweredBy />
+				</div>
+			</SearchBox>
 		)
 	}
 }
 
 export default compose(
 	withRouter,
-	connectSearchBox
+	connectSearchBox,
+	withBreakpoints
 )(AlgoliaSearchBox)

@@ -1,11 +1,11 @@
-import styled, { css } from "styled-components"
+import styled, { css } from "styled-components/macro"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { Text, TextBlock } from "../StyledComponents"
 
 const ContainerCommon = css`
 	overflow: hidden;
 	min-width: 0;
 	min-height: 0;
-	border: 1px solid ${(p) => p.theme.colors.gray[75]};
 	background: white;
 
 	a {
@@ -18,11 +18,7 @@ const ContainerCommon = css`
 export const Container = styled.div`
 	${ContainerCommon}
 	position: relative;
-	font-size: 0.8rem;
 	height: 100%;
-	@media (min-width: ${(p) => p.theme.breakpoints[0]}px) {
-		font-size: 0.89rem;
-	}
 `
 
 export const MiniContainer = styled.div`
@@ -47,26 +43,19 @@ export const ThumbnailContainer = styled.div`
 `
 
 export const InfoContainer = styled.div`
-	padding: 0 5px;
-	@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
-		padding: 0 9px;
-	}
 	border-top: 1px solid ${(p) => p.theme.colors.gray[100]};
 `
 
 export const TopContainer = styled.div`
-	padding: 12px 0 9px 9px;
+	padding: 15px 2px 12px 12px;
 	display: flex;
 	max-width: 100%;
 `
 
 export const SecondaryContainer = styled.div`
 	border-top: 1px solid ${(p) => p.theme.colors.gray[100]};
-	padding: 8px 9px;
-	@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
-		padding: 10px 9px;
-	}
-	font-size: 0.95em;
+	padding: 12px;
+
 	display: grid;
 	grid-auto-columns: minmax(min-content, 1fr);
 	grid-auto-flow: column;
@@ -75,43 +64,42 @@ export const SecondaryContainer = styled.div`
 export const InnerContainer = styled.div`
 	flex: 1;
 	min-width: 0;
-	line-height: 0.89rem;
 
 	> :first-child {
 		margin-bottom: 4px;
 	}
 `
 
-const ItemProperty = styled.div`
+const itemBase = css`
 	white-space: nowrap;
 	text-overflow: ellipsis;
 	font-weight: 500;
 	overflow: hidden;
-	color: ${(p) => p.theme.colors.black[25]};
+	line-height: 1.2;
+	color: black;
 `
 
-export const Name = styled(ItemProperty)`
-	font-weight: normal;
+export const Name = styled(TextBlock)`
+	${itemBase}
 `
 
-export const Designers = styled(ItemProperty)`
+export const Designers = styled(TextBlock)`
+	${itemBase}
 	font-weight: bold;
 	text-transform: uppercase;
 	padding-right: 8px;
-	word-spacing: 0.35ch;
+	word-spacing: 0.12ch;
 `
 
-export const Price = styled(ItemProperty)`
-	color: ${(p) => p.theme.colors.accent};
+export const Price = styled(Text)`
+	${itemBase}
+	font-weight: bold;
 	text-align: left;
 `
 
-export const Condition = styled(ItemProperty)`
-	color: ${(p) => p.theme.colors.black[100]};
-	text-align: center;
-`
-
-export const Size = styled(ItemProperty)`
+export const Size = styled(Text)`
+	${itemBase}
+	font-weight: bold;
 	text-align: right;
 `
 

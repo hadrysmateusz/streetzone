@@ -1,5 +1,5 @@
 import React, { Component } from "react"
-import styled, { css } from "styled-components"
+import styled, { css } from "styled-components/macro"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import Lightbox from "react-image-lightbox"
 
@@ -19,7 +19,7 @@ const CurrentImage = styled.div`
 	height: 640px;
 
 	background: white;
-	border: 1px solid ${(p) => p.theme.colors.gray[75]};
+	/* border: 1px solid ${(p) => p.theme.colors.gray[75]}; */
 
 	text-align: center;
 	display: flex;

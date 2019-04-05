@@ -1,5 +1,6 @@
-import styled from "styled-components"
+import styled from "styled-components/macro"
 import { style } from "styled-system"
+import React from "react"
 
 const pageContainerWidth = style({
 	prop: "maxWidth",
@@ -8,20 +9,25 @@ const pageContainerWidth = style({
 	transformValue: (n) => n + "px"
 })
 
-const PageContainer = styled.main`
+const PageContainer = styled.section`
+	max-width: ${(p) => p.theme.breakpoints[5]}px; /* default */
 	${pageContainerWidth}
-	margin: 0 auto;
+
+	--margin-y: 10px;
+	--padding-x: 3px;
+
 	width: 100%;
-	padding: 10px;
-	flex: 1;
-	display: flex;
-	flex-direction: column;
+
+	margin: ${(p) => (p.noMargin ? "0" : "var(--margin-y)")} auto;
+	padding: 0 var(--padding-x);
+
 	@media (min-width: ${(p) => p.theme.breakpoints[0]}px) {
-		padding: 20px;
+		--margin-y: 20px;
+		--padding-x: 20px;
 	}
 `
 
-const BlogPageContainer = styled.main`
+const BlogPageContainer = styled.section`
 	${pageContainerWidth}
 	margin: 0 auto;
 	width: 100%;
@@ -33,4 +39,15 @@ const BlogPageContainer = styled.main`
 	}
 `
 
-export { PageContainer, BlogPageContainer }
+const OuterGrayContainer = styled.section`
+	width: 100%;
+	background: var(--gray100);
+	${(p) => p.padded && "padding: 40px 0;"}
+`
+const GrayContainer = ({ padded, children, ...props }) => (
+	<OuterGrayContainer padded={padded}>
+		<PageContainer {...props}>{children}</PageContainer>
+	</OuterGrayContainer>
+)
+
+export { PageContainer, BlogPageContainer, GrayContainer }

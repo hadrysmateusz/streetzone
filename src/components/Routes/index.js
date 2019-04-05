@@ -6,188 +6,318 @@ import { Helmet } from "react-helmet"
 import { ROUTES, CONST } from "../../constants"
 
 import { LoadableComponentSpinner } from "../LoadingSpinner"
-
-import NotFound from "../NotFound"
 import ErrorBoundary from "../ErrorBoundary"
 
-const AdminPage = Loadable({
-	loader: () => import("../AdminPage"),
+import NotFound from "../../pages/NotFound"
+
+const Home = Loadable({
+	loader: () => import("../../pages/Home"),
 	loading: LoadableComponentSpinner
 })
 
-const UserInfo = Loadable({
-	loader: () => import("../AccountPage/UserInfo"),
+const BugReport = Loadable({
+	loader: () => import("../../pages/BugReport"),
 	loading: LoadableComponentSpinner
 })
+
+const BumpInfo = Loadable({
+	loader: () => import("../../pages/BumpInfo"),
+	loading: LoadableComponentSpinner
+})
+
 const UserSettings = Loadable({
-	loader: () => import("../AccountPage/UserSettings"),
+	loader: () => import("../../pages/Account/UserSettings"),
 	loading: LoadableComponentSpinner
 })
 const UserFeedback = Loadable({
-	loader: () => import("../AccountPage/UserFeedback"),
+	loader: () => import("../../pages/Account/UserFeedback"),
 	loading: LoadableComponentSpinner
 })
 const UserItems = Loadable({
-	loader: () => import("../AccountPage/UserItems"),
+	loader: () => import("../../pages/Account/UserItems"),
 	loading: LoadableComponentSpinner
 })
 const UserFollowing = Loadable({
-	loader: () => import("../AccountPage/UserFollowing"),
+	loader: () => import("../../pages/Account/UserFollowing"),
 	loading: LoadableComponentSpinner
 })
 const UserLiked = Loadable({
-	loader: () => import("../AccountPage/UserLiked"),
+	loader: () => import("../../pages/Account/UserLiked"),
 	loading: LoadableComponentSpinner
 })
 
-const DesignerPage = Loadable({
-	loader: () => import("../DesignerPage"),
+const Designer = Loadable({
+	loader: () => import("../../pages/Designer"),
 	loading: LoadableComponentSpinner
 })
 
-const BlogPostPage = Loadable({
-	loader: () => import("../BlogPost"),
+const NewItem = Loadable({
+	loader: () => import("../../pages/NewItem"),
 	loading: LoadableComponentSpinner
 })
 
-const NewItemPage = Loadable({
-	loader: () => import("../NewItem"),
+const SignUp = Loadable({
+	loader: () => import("../../pages/SignUp"),
 	loading: LoadableComponentSpinner
 })
 
-const SignUpPage = Loadable({
-	loader: () => import("../SignUp"),
+const SignIn = Loadable({
+	loader: () => import("../../pages/SignIn"),
 	loading: LoadableComponentSpinner
 })
 
-const SignInPage = Loadable({
-	loader: () => import("../SignIn"),
+const PasswordForget = Loadable({
+	loader: () => import("../../pages/PasswordForget"),
 	loading: LoadableComponentSpinner
 })
 
-const PasswordForgetPage = Loadable({
-	loader: () => import("../PasswordForget"),
+const Marketplace = Loadable({
+	loader: () => import("../../pages/Marketplace"),
 	loading: LoadableComponentSpinner
 })
 
-const HomePage = Loadable({
-	loader: () => import("../HomePage"),
+const Account = Loadable({
+	loader: () => import("../../pages/Account"),
 	loading: LoadableComponentSpinner
 })
 
-const BlogHomePage = Loadable({
-	loader: () => import("../BlogHomePage"),
+const EditItem = Loadable({
+	loader: () => import("../../pages/EditItem"),
 	loading: LoadableComponentSpinner
 })
 
-const AccountPage = Loadable({
-	loader: () => import("../AccountPage"),
+const ItemDetails = Loadable({
+	loader: () => import("../../pages/ItemDetails"),
 	loading: LoadableComponentSpinner
 })
 
-const EditItemPage = Loadable({
-	loader: () => import("../EditItem"),
+const FAQ = Loadable({
+	loader: () => import("../../pages/FAQ"),
 	loading: LoadableComponentSpinner
 })
 
-const ItemDetailsPage = Loadable({
-	loader: () => import("../ItemDetailsPage"),
+const PrivacyPolicy = Loadable({
+	loader: () => import("../../pages/PrivacyPolicy"),
 	loading: LoadableComponentSpinner
 })
 
-const FAQPage = Loadable({
-	loader: () => import("../FAQPage"),
+const About = Loadable({
+	loader: () => import("../../pages/About"),
 	loading: LoadableComponentSpinner
 })
 
-const PrivacyPolicyPage = Loadable({
-	loader: () => import("../PrivacyPolicyPage"),
+const Contact = Loadable({
+	loader: () => import("../../pages/Contact"),
 	loading: LoadableComponentSpinner
 })
 
-const AboutPage = Loadable({
-	loader: () => import("../AboutPage"),
+const Terms = Loadable({
+	loader: () => import("../../pages/Terms"),
 	loading: LoadableComponentSpinner
 })
 
-const ContactPage = Loadable({
-	loader: () => import("../ContactPage"),
+const RequestDesigner = Loadable({
+	loader: () => import("../../pages/RequestDesigner"),
 	loading: LoadableComponentSpinner
 })
 
-const TermsPage = Loadable({
-	loader: () => import("../TermsPage"),
+const Designers = Loadable({
+	loader: () => import("../../pages/Designers"),
+	loading: LoadableComponentSpinner
+})
+
+const BlogHome = Loadable({
+	loader: () => import("../../pages/Blog/Home"),
+	loading: LoadableComponentSpinner
+})
+
+const BlogSection = Loadable({
+	loader: () => import("../../pages/Blog/Section"),
+	loading: LoadableComponentSpinner
+})
+
+const BlogBase = Loadable({
+	loader: () => import("../../pages/Blog"),
+	loading: LoadableComponentSpinner
+})
+
+const BlogPost = Loadable({
+	loader: () => import("../../pages/Blog/Post"),
+	loading: LoadableComponentSpinner
+})
+
+const BlogTag = Loadable({
+	loader: () => import("../../pages/Blog/Tag"),
+	loading: LoadableComponentSpinner
+})
+
+const Admin = Loadable({
+	loader: () => import("../../pages/Admin"),
+	loading: LoadableComponentSpinner
+})
+
+const AdminBlog = Loadable({
+	loader: () => import("../../pages/Admin/Blog"),
+	loading: LoadableComponentSpinner
+})
+
+const AdminBlogEdit = Loadable({
+	loader: () => import("../../pages/Admin/Blog/Edit.js"),
+	loading: LoadableComponentSpinner
+})
+
+const AdminDesigners = Loadable({
+	loader: () => import("../../pages/Admin/Designers"),
+	loading: LoadableComponentSpinner
+})
+
+const AdminDesignerEdit = Loadable({
+	loader: () => import("../../pages/Admin/DesignerEdit"),
+	loading: LoadableComponentSpinner
+})
+
+const AdminItems = Loadable({
+	loader: () => import("../../pages/Admin/Items"),
+	loading: LoadableComponentSpinner
+})
+
+const AdminUsers = Loadable({
+	loader: () => import("../../pages/Admin/Users"),
 	loading: LoadableComponentSpinner
 })
 
 const routes = [
 	{
-		path: ROUTES.ADMIN,
-		component: AdminPage
+		path: ROUTES.ADMIN_BASE,
+		component: Admin,
+		exact: false,
+		routes: [
+			{
+				id: "blog",
+				path: ROUTES.ADMIN_BLOG,
+				component: AdminBlog,
+				isNavigable: true
+			},
+			{
+				id: "blogEdit",
+				path: ROUTES.ADMIN_BLOG_EDIT,
+				component: AdminBlogEdit,
+				isNavigable: false
+			},
+			{
+				id: "items",
+				path: ROUTES.ADMIN_ITEMS,
+				component: AdminItems,
+				isNavigable: true
+			},
+			{
+				id: "users",
+				path: ROUTES.ADMIN_USERS,
+				component: AdminUsers,
+				isNavigable: true
+			},
+			{
+				id: "designers",
+				path: ROUTES.ADMIN_DESIGNERS,
+				component: AdminDesigners,
+				isNavigable: true
+			},
+			{
+				id: "designerEdit",
+				path: ROUTES.ADMIN_DESIGNER_EDIT,
+				component: AdminDesignerEdit,
+				isNavigable: false
+			}
+		]
+	},
+	{
+		path: ROUTES.BLOG_BASE,
+		component: BlogBase,
+		exact: false,
+		routes: [
+			{
+				id: "home",
+				path: ROUTES.BLOG_HOME,
+				component: BlogHome
+			},
+			{
+				id: "section",
+				path: ROUTES.BLOG_SECTION,
+				component: BlogSection
+			},
+			{
+				id: "tag",
+				path: ROUTES.BLOG_TAG,
+				component: BlogTag
+			},
+			{
+				id: "post",
+				path: ROUTES.BLOG_POST,
+				component: BlogPost
+			}
+		],
+		title: "Blog"
+	},
+	{
+		path: ROUTES.DESIGNERS,
+		component: Designers
+	},
+	{
+		path: ROUTES.REQUEST_DESIGNER,
+		component: RequestDesigner
 	},
 	{
 		path: ROUTES.DESIGNER,
-		component: DesignerPage
-	},
-	{
-		path: ROUTES.BLOG_POST,
-		component: BlogPostPage
+		component: Designer
 	},
 	{
 		path: ROUTES.SIGN_UP,
-		component: SignUpPage,
+		component: SignUp,
 		title: `Utwórz konto`
 	},
 	{
 		path: ROUTES.SIGN_IN,
-		component: SignInPage,
+		component: SignIn,
 		title: `Zaloguj Się`
 	},
 	{
 		path: ROUTES.PASSWORD_FORGET,
-		component: PasswordForgetPage,
+		component: PasswordForget,
 		title: `Zresetuj hasło`
 	},
 	{
-		path: ROUTES.HOME,
-		component: HomePage
+		path: ROUTES.MARKETPLACE,
+		component: Marketplace
 	},
 	{
 		path: ROUTES.ACCOUNT_BASE,
-		component: AccountPage,
+		component: Account,
 		exact: false,
 		routes: [
 			{
 				id: "items",
-				label: "Przedmioty na sprzedaż",
+				label: "Oferty",
 				path: ROUTES.ACCOUNT_ITEMS,
 				component: UserItems,
 				isProtected: false
 			},
 			{
 				id: "feedback",
-				label: "Opinie i komentarze",
+				label: "Opinie",
 				path: ROUTES.ACCOUNT_FEEDBACK,
 				component: UserFeedback,
 				isProtected: false
 			},
 			{
-				id: "info",
-				label: "Informacje",
-				path: ROUTES.ACCOUNT_INFO,
-				component: UserInfo,
-				isProtected: false
-			},
-			{
 				id: "savedItems",
-				label: "Zapisane przedmioty",
+				label: "Zapisane",
 				path: ROUTES.ACCOUNT_LIKED,
 				component: UserLiked,
 				isProtected: true
 			},
 			{
 				id: "followedUsers",
-				label: "Obserwowani użytkownicy",
+				label: "Obserwowani",
 				path: ROUTES.ACCOUNT_FOLLOWING,
 				component: UserFollowing,
 				isProtected: true
@@ -203,47 +333,57 @@ const routes = [
 	},
 	{
 		path: ROUTES.NEW_ITEM,
-		component: NewItemPage,
+		component: NewItem,
 		title: `Wystaw przedmiot`
 	},
 	{
+		path: ROUTES.HOME,
+		component: Home
+	},
+	{
 		path: ROUTES.ITEM_DETAILS,
-		component: ItemDetailsPage
+		component: ItemDetails
 	},
 	{
 		path: ROUTES.EDIT_ITEM,
-		component: EditItemPage,
+		component: EditItem,
 		title: `Edytuj przedmiot`
 	},
-	{
-		path: ROUTES.BLOG_HOME,
-		component: BlogHomePage,
-		title: `Blog`
-	},
+
 	{
 		path: ROUTES.FAQ,
-		component: FAQPage,
+		component: FAQ,
 		title: `FAQ`
 	},
 	{
 		path: ROUTES.PRIVACY_POLICY,
-		component: PrivacyPolicyPage,
+		component: PrivacyPolicy,
 		title: "Polityka Prywatności"
 	},
 	{
 		path: ROUTES.ABOUT,
-		component: AboutPage,
+		component: About,
 		title: "O nas"
 	},
 	{
 		path: ROUTES.CONTACT,
-		component: ContactPage,
+		component: Contact,
 		title: "Kontakt"
 	},
 	{
 		path: ROUTES.TERMS,
-		component: TermsPage,
+		component: Terms,
 		title: "Regulamin"
+	},
+	{
+		path: ROUTES.BUMP_INFO,
+		component: BumpInfo,
+		title: "Promowanie"
+	},
+	{
+		path: ROUTES.BUG_REPORT,
+		component: BugReport,
+		title: "Zgłoś problem"
 	}
 ]
 

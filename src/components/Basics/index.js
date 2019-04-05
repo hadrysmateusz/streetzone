@@ -1,30 +1,10 @@
 import { Link, NavLink } from "react-router-dom"
-import styled, { css } from "styled-components"
+import styled, { css } from "styled-components/macro"
 import { gridArea } from "styled-system"
-import Textarea from "react-textarea-autosize"
-
-export const resetButtonStyles = css`
-	background: none;
-	border: none;
-	box-shadow: none;
-	display: block;
-	border-radius: 0;
-	outline: none;
-	cursor: pointer;
-`
-
-export const More = styled.button`
-	${resetButtonStyles}
-	font-size: 0.81rem;
-	font-weight: bold;
-	color: ${(p) => p.theme.colors.black[50]};
-	margin: 3px 0;
-`
 
 export const Header = styled.h2`
 	text-align: center;
 	color: #2f2f2f;
-	font-size: 1.95rem;
 	font-weight: normal;
 	margin-bottom: 20px;
 	margin-top: 0px;
@@ -35,19 +15,19 @@ export const StyledNavLink = styled(NavLink)`
 	display: flex;
 	align-items: center;
 	background: none;
-	border: none;
-	outline: none;
 	padding: 0;
-	color: ${(p) => p.theme.colors.black[75]};
+	color: var(--gray0);
 	cursor: pointer;
-	text-transform: uppercase;
+
+	text-decoration: none;
 
 	&:hover {
 		color: black;
 	}
 
 	&.active {
-		color: ${(p) => p.theme.colors.accent};
+		color: black;
+		text-decoration: underline;
 	}
 `
 
@@ -62,7 +42,6 @@ export const StyledLink = styled(Link)`
 
 export const StyledFieldCommon = css`
 	width: 100%;
-	font-size: 1rem;
 
 	border: 1px solid ${(p) => p.theme.colors.gray[50]};
 	color: ${(p) => p.theme.colors.black[50]};
@@ -84,36 +63,7 @@ export const StyledFieldCommon = css`
 	}
 `
 
-export const StyledInputNumberSpecific = css`
-	/* only show arrows on hover in firefox */
-	&[type="number"] {
-		-moz-appearance: textfield;
-	}
-	&[type="number"]:hover,
-	&[type="number"]:focus {
-		-moz-appearance: number-input;
-	}
-`
-export const StyledInput = styled.input`
-	${StyledFieldCommon}
-	min-width: 0;
-	min-height: 38px; /* ie compatibility */
-	padding: 0 10px;
-	line-height: 36px;
-
-	${(props) => props.type === "number" && StyledInputNumberSpecific}
-`
-
-export const StyledTextarea = styled(Textarea)`
-	${StyledFieldCommon}
-	line-height: 1.45em;
-	padding: 6px 10px;
-	resize: vertical;
-	min-height: calc(4 * 1.45em + 0.7em);
-`
-
 export const FieldLabel = styled.div`
-	font-size: 0.75rem;
 	font-weight: bold;
 	display: block;
 	color: #3f3f3f;
@@ -148,13 +98,16 @@ export const MiniButton = styled.div`
 	transition: all 0.2s;
 	background: ${(p) => (p.error ? p.theme.colors.danger[50] : p.theme.colors.black[25])};
 	color: white;
-	font-size: 15px;
 	width: ${(p) => p.size}px;
 	height: ${(p) => p.size}px;
 	${(p) => p.position.top && `top: ${p.position.top}`};
 	${(p) => p.position.right && `right: ${p.position.right}`};
 	${(p) => p.position.bottom && `bottom: ${p.position.bottom}`};
 	${(p) => p.position.left && `left: ${p.position.left}`};
+	${(p) => p.top && `top: ${p.top}`};
+	${(p) => p.right && `right: ${p.right}`};
+	${(p) => p.bottom && `bottom: ${p.bottom}`};
+	${(p) => p.left && `left: ${p.left}`};
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -190,8 +143,31 @@ export const Separator = styled.p`
 
 export const SubHeader = styled.h3`
 	text-transform: uppercase;
-	font-size: 0.85rem;
 	text-align: center;
 	margin: 15px 0;
 	font-weight: 300;
+`
+
+export const ImportantText = styled.h3`
+	text-transform: uppercase;
+	font-weight: bold;
+	margin: 0;
+`
+
+export const InfoBlock = styled.div`
+	background: #f2f2f2;
+	margin: 110px 0;
+	padding: 30px;
+	text-align: center;
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+
+	h3 {
+		margin: 0;
+	}
+
+	p {
+		max-width: 550px;
+	}
 `

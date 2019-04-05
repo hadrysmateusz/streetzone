@@ -5,16 +5,22 @@ import ContainerDimensions from "react-container-dimensions"
 
 import LoadingSpinner from "../LoadingSpinner"
 import { ItemCard, ItemCardMini } from "../ItemCard"
-import { MiniContainer, ItemsLoaderContainer } from "./StyledComponents"
 import { ItemsContainer } from "../ItemsView"
 import Button from "../Button"
 
-const ItemsLoader = ({ refine }) => (
-	<ItemsLoaderContainer>
-		<LoadingSpinner fixedHeight />
-		<Button onClick={refine}>Wczytaj więcej</Button>
-	</ItemsLoaderContainer>
-)
+import { MiniContainer, ItemsLoaderContainer } from "./StyledComponents"
+import useDelayRender from "../../hooks/useDelayRender"
+
+const ItemsLoader = ({ refine }) => {
+	const shouldRender = useDelayRender(200)
+
+	return shouldRender ? (
+		<ItemsLoaderContainer>
+			<LoadingSpinner fixedHeight />
+			<Button onClick={refine}>Wczytaj więcej</Button>
+		</ItemsLoaderContainer>
+	) : null
+}
 
 const AlgoliaInfiniteHits = connectInfiniteHits(({ hits, hasMore, refine }) => {
 	return (
@@ -26,13 +32,13 @@ const AlgoliaInfiniteHits = connectInfiniteHits(({ hits, hasMore, refine }) => {
 		>
 			<ContainerDimensions>
 				{({ width }) =>
-					width && (
+					width ? (
 						<ItemsContainer containerWidth={width}>
 							{hits.map((item) => (
 								<ItemCard key={item.objectID} item={item} />
 							))}
 						</ItemsContainer>
-					)
+					) : null
 				}
 			</ContainerDimensions>
 		</InfiniteScroll>

@@ -1,55 +1,55 @@
 import React from "react"
-import styled, { css } from "styled-components"
+import styled, { css } from "styled-components/macro"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
-import { ellipsis } from "../../style-utils"
+import { ellipsis, resetButtonStyles } from "../../style-utils"
 import { SPIN } from "../../style-utils/keyframes"
 
 const primary = css`
-	border-color: ${(p) => p.theme.colors.black[0]};
-	background: ${(p) => p.theme.colors.black[0]};
+	border-color: var(--black0);
+	background: var(--black0);
 	color: white;
 
 	&:not([disabled]) {
 		&:hover {
-			background: ${(p) => p.theme.colors.black[50]};
-			border-color: ${(p) => p.theme.colors.black[50]};
+			background: var(--black50);
+			border-color: var(--black50);
 		}
 	}
 `
 
 const accent = css`
-	border-color: ${(p) => p.theme.colors.accent};
-	background: ${(p) => p.theme.colors.accent};
+	border-color: var(--accent25);
+	background: var(--accent50);
 	color: white;
 
-	text-shadow: 1px 1px ${(p) => p.theme.colors.accent};
+	text-shadow: 1px 1px var(--accent50);
 
 	:not([disabled]) {
 		:hover {
-			background: rgb(76, 220, 184);
-			border-color: ${(p) => p.theme.colors.accent};
+			background: var(--accent25);
+			border-color: var(--accent25);
 		}
 	}
 `
 
 const basic = css`
-	border-color: ${(p) => p.theme.colors.gray[75]};
+	border-color: var(--gray75);
 	background: white;
-	color: ${(p) => p.theme.colors.black[0]};
+	color: var(--black0);
 
 	&:not([disabled]) {
 		&:hover {
-			background: #fdfdfd;
-			border-color: ${(p) => p.theme.colors.black[50]};
+			background: var(--almost-white);
+			border-color: var(--black50);
 		}
 	}
 `
 
 const disabled = css`
-	border-color: ${(p) => p.theme.colors.gray[100]};
-	background: transparent;
-	color: ${(p) => p.theme.colors.gray[50]};
+	border-color: var(--gray100);
+	background: var(--almost-white);
+	color: var(--gray50);
 `
 
 const Button = styled.button`
@@ -58,16 +58,20 @@ const Button = styled.button`
 	justify-content: center;
 	align-items: center;
 
-	height: 46px;
+	transition-property: background, color, border-color;
+	transition-duration: 0.15s;
+	transition-timing-function: ease;
+
+	height: 40px;
 	min-width: 0;
 	padding: 0 0.95rem;
 	margin: 0;
-	border: 2px solid;
-	border-radius: 2px;
+	border: 1px solid;
 
 	text-transform: uppercase;
-	font-weight: 700;
-	font-size: 0.8rem;
+	/* font-weight: 700; */
+	letter-spacing: 1px;
+	font-size: var(--font-size--xs);
 
 	/* Add spacing between children */
 	* + * {
@@ -75,11 +79,7 @@ const Button = styled.button`
 	}
 
 	/* Change cursor if button isn't disabled */
-	&:not([disabled]) {
-		cursor: pointer;
-	}
-
-
+	${(p) => (p.disabled ? "cursor: default;" : "cursor: pointer;")}
 
 	/* Variant styles */
 	${(p) => (p.accent ? accent : p.primary ? primary : basic)}
@@ -94,28 +94,29 @@ const Button = styled.button`
 	${ellipsis}
 `
 
-export const ButtonContainer = styled.div`
+const ButtonContainer = styled.div`
 	width: 100%;
 	display: flex;
-	margin: 10px 0;
+	${(p) => !p.noMargin && "margin: var(--spacing2) 0;"}
 	${(p) => p.alignRight && "justify-content: flex-end;"}
 	${(p) => p.centered && "justify-content: center;"}
-	* + * {
-		margin-left: 10px;
+	> * + * {
+		margin-left: var(--spacing2);
 	}
+`
+
+const UnstyledButton = styled.button`
+	${resetButtonStyles}
 `
 
 const IconButtonUnstyled = ({ icon, ...rest }) => (
 	<Button {...rest}>
-		<FontAwesomeIcon icon={icon} />
+		<FontAwesomeIcon icon={icon} fixedWidth />
 	</Button>
 )
 
-export const IconButton = styled(IconButtonUnstyled)`
-	height: 34px;
-	width: 34px;
-	${(p) => p.small && "height: 30px; width: 30px; font-size: 13px;"}
-	${(p) => p.large && "height: 40px; width: 40px;"}
+const IconButton = styled(IconButtonUnstyled)`
+	padding: 0 16px;
 `
 
 const LoaderButtonUnstyled = ({ isLoading, text, loadingText = text, ...rest }) => (
@@ -168,16 +169,13 @@ const GoogleButton = styled(Button)`
 	}
 `
 
-const SocialButton = ({ provider, ...rest }) => {
-	switch (provider) {
-		case "google.com":
-			return <GoogleButton {...rest} />
-		case "facebook.com":
-			return <FacebookButton {...rest} />
-		default:
-			return <Button {...rest} />
-	}
-}
-
 export default Button
-export { LoaderButton, FacebookButton, GoogleButton, SocialButton }
+export {
+	LoaderButton,
+	FacebookButton,
+	GoogleButton,
+	Button,
+	ButtonContainer,
+	IconButton,
+	UnstyledButton
+}

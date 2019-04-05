@@ -1,6 +1,7 @@
-import styled from "styled-components"
-import { resetButtonStyles } from "../Basics"
+import styled from "styled-components/macro"
 import { PoweredBy } from "react-instantsearch-dom"
+
+import { resetButtonStyles } from "../../style-utils"
 
 export const FilterMenu = styled.div`
 	--width: 350px;
@@ -28,31 +29,48 @@ export const FilterItemsContainer = styled.div`
 	overflow: auto;
 `
 
-export const NoResults = styled.div`
-	font-size: 0.76rem;
+export const BoxItem = styled.div`
+	border: 1px solid var(--gray75);
+	font-size: var(--font-size--xs);
+	height: 100%;
+	transform: border 0.2s ease;
+	:hover {
+		border-color: var(--black25);
+	}
 
+	transition-property: border-color;
+	transition-duration: 0.15s;
+	transition-timing-function: ease;
+
+	${(p) => p.checked && `color: white; background: black;`}
+	label {
+		cursor: pointer;
+		width: 100%;
+		height: 100%;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+`
+
+export const NoResults = styled.div`
 	text-align: center;
 	margin: 6px 0;
 `
 
 export const OptionsContainer = styled.div`
+	display: grid;
+	max-width: 100%;
+	gap: var(--spacing1);
+	${(p) => p.multiColumn && `grid-template-columns: repeat(2, 1fr);`}
 	${(p) =>
-		p.multiColumn &&
-		`display: grid;
-		grid-template-columns: repeat(3, 1fr);`}
+		p.boxGrid &&
+		"grid-template-columns: repeat(auto-fill, minmax(35px,1fr)); gap: var(--spacing2); "};
 `
 
 export const FilterItem = styled.div`
 	display: flex;
 	align-items: center;
-
-	font-size: 0.88rem;
-	padding: 6px 6px;
-
-	@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
-		padding: 4px 6px;
-		font-size: 0.84rem;
-	}
 
 	* {
 		cursor: pointer;
@@ -64,7 +82,6 @@ export const FilterItem = styled.div`
 
 	label {
 		color: ${(p) => p.theme.colors.black[75]};
-		text-transform: uppercase;
 		cursor: pointer;
 		width: 100%;
 	}
@@ -73,7 +90,7 @@ export const FilterItem = styled.div`
 export const RangeContainer = styled.div`
 	width: 100%;
 	max-width: 100%;
-	height: 34px;
+	height: var(--form-element-height);
 	display: grid;
 	gap: 10px;
 	grid-template-columns: 1fr 1fr;
@@ -93,7 +110,7 @@ export const RangeContainer = styled.div`
 
 export const SearchBox = styled.div`
 	width: 100%;
-	height: 34px;
+	height: var(--form-element-height);
 	flex: 1;
 	border: 1px solid ${(p) => p.theme.colors.gray[75]};
 	:hover {
@@ -110,6 +127,8 @@ export const SearchBox = styled.div`
 	}
 
 	.powered-by-container {
+		transform: scale(0.84);
+		margin-top: 2px;
 	}
 
 	input {
@@ -154,10 +173,8 @@ export const ItemsLoaderContainer = styled.div`
 export const ClearButton = styled.button`
 	${resetButtonStyles}
 	color: ${(p) => p.theme.colors.danger[50]};
-	/* font-size: 0.82rem; */
-	/* padding: 3px 6px; */
-	display: inline-block;
-	
+	font-size: var(--font-size--xs);
+	margin: 0 var(--spacing1);
 `
 
 export const ResultsContainer = styled.main`
@@ -168,58 +185,21 @@ export const ResultsContainer = styled.main`
 `
 
 export const StyledPoweredBy = styled(PoweredBy)`
-	.ais-PoweredBy {
-		height: 100%;
-	}
-	.ais-PoweredBy-text {
-		font-size: 0.6rem;
-		display: block;
-	}
-	.ais-PoweredBy-logo {
-		height: 22px;
-		margin-left: -8px;
-		margin-right: -7px;
-		font-size: 4px;
-	}
-	.ais-PoweredBy-link {
-		display: block;
-		height: 22px;
-	}
-`
-export const StyledPoweredByMobile = styled(PoweredBy)`
-	.ais-PoweredBy {
-		height: 100%;
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-	}
-	.ais-PoweredBy-text {
-		font-size: 0.6rem;
-		display: block;
-	}
-	.ais-PoweredBy-logo {
-		height: 22px;
+	margin: 0;
+	margin-top: 3px;
+	height: 100%;
+	transform: scale(0.88) translateX(10px);
 
-		margin-left: -8px;
-		margin-right: -7px;
-		font-size: 4px;
+	.ais-PoweredBy-text {
+		display: none;
 	}
-	.ais-PoweredBy-link {
-		display: block;
-		height: 22px;
+	.ais-PoweredBy-logo {
+		margin-bottom: -7px;
 	}
 `
 
-export const OuterSearchContainer = styled.div`
-	grid-area: search;
-	display: flex;
-	> * {
-		height: 100%;
-	}
-	> *:first-child {
-		margin-right: 3px;
-		@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
-			margin-right: 5px;
-		}
-	}
+export const SizeCategoriesContainer = styled.div`
+	display: grid;
+	gap: 5px;
+	margin: 5px 0 5px 5px;
 `

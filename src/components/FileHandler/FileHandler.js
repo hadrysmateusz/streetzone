@@ -1,11 +1,12 @@
 import React, { Component } from "react"
-import styled from "styled-components"
+import styled from "styled-components/macro"
 import Dropzone from "react-dropzone"
 
 import Button from "../Button"
+import { FormError } from "../FormElements"
+
 import FileItem from "./FileItem"
 import CustomFile from "./CustomFile"
-import { FormError } from "../FormElements"
 
 const FilesContainer = styled.div`
 	position: relative;
@@ -27,24 +28,25 @@ const FilesContainer = styled.div`
 	background: white;
 	.empty-state {
 		position: absolute;
-		color: ${(p) => p.theme.colors.gray[25]};
 		top: 0;
 		left: 0;
+
 		width: 100%;
 		height: 100%;
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		font-size: 1.2rem;
+		color: ${(p) => p.theme.colors.gray[25]};
 	}
 	.overlay {
 		position: absolute;
 		top: 0;
 		left: 0;
+
 		z-index: 89;
 		background: rgba(0, 0, 0, 0.32);
-		color: white;
 		text-shadow: 1px 1px rgba(0, 0, 0, 0.2);
+		color: white;
 	}
 `
 

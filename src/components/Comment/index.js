@@ -3,36 +3,45 @@ import moment from "moment"
 import StarRatings from "react-star-ratings"
 
 import UserPreview from "../UserPreview"
-import { IconButton } from "../Button"
-import { CommentContainer, VerticalSeparator } from "./StyledComponents"
+import { IconButton, ButtonContainer } from "../Button"
 
-const Comment = ({ data }) => (
-	<CommentContainer>
-		<UserPreview id={data.author} vertical nameOnly />
-		<div className="info-bar">
-			<div className="info-bar-inner-container">
+import { CommentContainer, Header } from "./StyledComponents"
+import { Text, SmallText, TextBlock } from "../StyledComponents"
+
+const Comment = ({ data }) => {
+	const createdAt = moment(data.createdAt).format("D.M.YY")
+	return (
+		<CommentContainer>
+			<Header>
+				<UserPreview id={data.author} />
+				<ButtonContainer alignRight>
+					<IconButton icon="flag" title="Zgłoś naruszenie" />
+					<IconButton icon="ellipsis-h" title="Więcej" />
+				</ButtonContainer>
+			</Header>
+
+			<TextBlock>
+				<SmallText>DODANO</SmallText>{" "}
+				<Text size="xs" bold>
+					{createdAt}
+				</Text>
+			</TextBlock>
+
+			<TextBlock>
+				<SmallText>OCENA</SmallText>{" "}
 				<StarRatings
 					rating={data.rating}
 					starRatedColor="gold"
 					numberOfStars={5}
 					name="rating"
-					starDimension="18px"
+					starDimension="14px"
 					starSpacing="2px"
 				/>
-				<VerticalSeparator />
-				<div>{moment(data.createdAt).format("D.M.YYYY")}</div>
-			</div>
-			<div className="buttons-container">
-				<IconButton small icon="flag" title="Zgłoś naruszenie">
-					Flag
-				</IconButton>
-				<IconButton small icon="ellipsis-h" title="Więcej">
-					More
-				</IconButton>
-			</div>
-		</div>
-		<div>{data.comment}</div>
-	</CommentContainer>
-)
+			</TextBlock>
+
+			<TextBlock>{data.comment}</TextBlock>
+		</CommentContainer>
+	)
+}
 
 export default Comment

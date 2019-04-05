@@ -1,40 +1,7 @@
-import styled from "styled-components"
+import styled from "styled-components/macro"
 
 export const CommentContainer = styled.div`
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	margin-bottom: 40px;
-
-	.info-bar {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		position: relative;
-		width: 100%;
-		height: 46px;
-		padding: 10px 0;
-		border-top: 1px solid ${(p) => p.theme.colors.gray[75]};
-		border-bottom: 1px solid ${(p) => p.theme.colors.gray[75]};
-		margin-bottom: 20px;
-	}
-
-	.info-bar-inner-container {
-		display: grid;
-		grid-template-columns: 1fr auto 1fr;
-		align-items: center;
-	}
-
-	.buttons-container {
-		display: flex;
-		position: absolute;
-		right: 0;
-		top: 0;
-		padding: 7px;
-		* + * {
-			margin: 0 7px;
-		}
-	}
+	margin-bottom: var(--spacing4);
 `
 
 export const VerticalSeparator = styled.div`
@@ -42,4 +9,11 @@ export const VerticalSeparator = styled.div`
 	margin: 0 15px;
 	width: 0;
 	border-left: 1px solid ${(p) => p.theme.colors.gray[75]};
+`
+
+export const Header = styled.div`
+	width: 100%;
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	align-items: center;
 `

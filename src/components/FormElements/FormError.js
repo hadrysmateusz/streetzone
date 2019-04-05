@@ -1,6 +1,6 @@
 import React from "react"
 import { Box } from "rebass"
-import styled from "styled-components"
+import styled from "styled-components/macro"
 import { space, color, fontSize } from "styled-system"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 

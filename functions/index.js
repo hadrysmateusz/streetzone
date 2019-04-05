@@ -23,7 +23,15 @@ const DATABASE_URL = "https://streetwear-app.firebaseio.com"
 
 const ALGOLIA_ID = functions.config().algolia.app_id
 const ALGOLIA_ADMIN_KEY = functions.config().algolia.api_key
-const ALGOLIA_INDEX_NAME = "dev_items"
+
+// ===============================================================================
+// !!! REMEMBER TO ALSO CHANGE IN "SRC/CONSTANTS/CONST.JS" !!!
+const DEV_ITEMS_MARKETPLACE_DEFAULT_ALGOLIA_INDEX = "dev_items"
+const DEV_ITEMS_MARKETPLACE_PRICE_ASC_ALGOLIA_INDEX = "dev_items_price_asc"
+const DEV_ITEMS_CUSTOM_ALGOLIA_INDEX = "dev_custom"
+const DEV_BLOG_ALGOLIA_INDEX = "dev_posts"
+const DEV_DESIGNERS_ALGOLIA_INDEX = "dev_designers"
+// ===============================================================================
 
 const client = algoliasearch(ALGOLIA_ID, ALGOLIA_ADMIN_KEY)
 
@@ -36,46 +44,106 @@ admin.initializeApp({
 const bucket = admin.storage().bucket()
 
 // ------------------------------------
-// -------- Algolia Index Sync --------
+// ---- Algolia Index Sync Helpers ----
+// ------------------------------------
+
+const algoliaAdd = (snap, context, indexName) => {
+	// Get the item document
+	const item = snap.data()
+
+	// Add an 'objectID' field which Algolia requires
+	item.objectID = context.params.id
+
+	// Write to the algolia index
+	const index = client.initIndex(indexName)
+	return index.saveObject(item)
+}
+
+const algoliaUpdate = (snap, context, indexName) => {
+	// Get the item document
+	const item = snap.after.data()
+
+	// Add an 'objectID' field which Algolia requires
+	item.objectID = context.params.id
+
+	// Write to the algolia index
+	const index = client.initIndex(indexName)
+	return index.saveObject(item)
+}
+
+const algoliaDelete = (snap, context, indexName) => {
+	// Get the object id
+	const objectID = context.params.id
+
+	// Remove item with the corresponding id
+	const index = client.initIndex(indexName)
+	return index.deleteObject(objectID)
+}
+
+// ------------------------------------
+// ------------ Item Events -----------
 // ------------------------------------
 
 exports.onItemCreated = functions.firestore
-	.document(`items/{itemId}`)
+	.document(`items/{id}`)
 	.onCreate((snap, context) => {
-		// Get the item document
-		const item = snap.data()
-
-		// Add an 'objectID' field which Algolia requires
-		item.objectID = context.params.itemId
-
-		// Write to the algolia index
-		const index = client.initIndex(ALGOLIA_INDEX_NAME)
-		return index.saveObject(item)
+		algoliaAdd(snap, context, DEV_ITEMS_MARKETPLACE_DEFAULT_ALGOLIA_INDEX)
 	})
 
 exports.onItemUpdated = functions.firestore
-	.document(`items/{itemId}`)
+	.document(`items/{id}`)
 	.onUpdate((snap, context) => {
-		// Get the item document
-		const item = snap.after.data()
-
-		// Add an 'objectID' field which Algolia requires
-		item.objectID = context.params.itemId
-
-		// Write to the algolia index
-		const index = client.initIndex(ALGOLIA_INDEX_NAME)
-		return index.saveObject(item)
+		algoliaUpdate(snap, context, DEV_ITEMS_MARKETPLACE_DEFAULT_ALGOLIA_INDEX)
 	})
 
 exports.onItemDeleted = functions.firestore
-	.document(`items/{itemId}`)
+	.document(`items/{id}`)
 	.onDelete((snap, context) => {
-		// Get the object id
-		const objectID = context.params.itemId
+		algoliaDelete(snap, context, DEV_ITEMS_MARKETPLACE_DEFAULT_ALGOLIA_INDEX)
+	})
 
-		// Remove item with the corresponding id
-		const index = client.initIndex(ALGOLIA_INDEX_NAME)
-		return index.deleteObject(objectID)
+// ------------------------------------
+// --------- Blog Post Events ---------
+// ------------------------------------
+
+exports.onBlogPostCreated = functions.firestore
+	.document(`posts/{id}`)
+	.onCreate((snap, context) => {
+		algoliaAdd(snap, context, DEV_BLOG_ALGOLIA_INDEX)
+	})
+
+exports.onBlogPostUpdated = functions.firestore
+	.document(`posts/{id}`)
+	.onUpdate((snap, context) => {
+		algoliaUpdate(snap, context, DEV_BLOG_ALGOLIA_INDEX)
+	})
+
+exports.onBlogPostDeleted = functions.firestore
+	.document(`posts/{id}`)
+	.onDelete((snap, context) => {
+		algoliaDelete(snap, context, DEV_BLOG_ALGOLIA_INDEX)
+	})
+
+// ------------------------------------
+// ------- Designers List Events ------
+// ------------------------------------
+
+exports.onDesignerCreated = functions.firestore
+	.document(`designers/{id}`)
+	.onCreate((snap, context) => {
+		algoliaAdd(snap, context, DEV_DESIGNERS_ALGOLIA_INDEX)
+	})
+
+exports.onDesignerUpdated = functions.firestore
+	.document(`designers/{id}`)
+	.onUpdate((snap, context) => {
+		algoliaUpdate(snap, context, DEV_DESIGNERS_ALGOLIA_INDEX)
+	})
+
+exports.onDesignerDeleted = functions.firestore
+	.document(`designers/{id}`)
+	.onDelete((snap, context) => {
+		algoliaDelete(snap, context, DEV_DESIGNERS_ALGOLIA_INDEX)
 	})
 
 // ------------------------------------
@@ -115,6 +183,32 @@ exports.removeItemImages = functions.firestore
 		)
 
 		console.log(`Success: ${successCount}, Failure: ${failureCount}`)
+		return res
+	})
+
+// When an item is removed from db remove it from it's owner's items list
+exports.removeItemFromUser = functions.firestore
+	.document(`items/{itemId}`)
+	.onDelete(async (snap, context) => {
+		const data = snap.data()
+		const userId = data.userId
+		const itemId = context.params.itemId
+		const db = admin.firestore()
+
+		// get owner's data
+		const userSnap = await db
+			.collection("users")
+			.doc(userId)
+			.get()
+		const userData = userSnap.data()
+		// filter out the removed item
+		const newItems = userData.items.filter((item) => item.itemId !== itemId)
+		// update the db with the new items list
+		const res = await db
+			.collection("users")
+			.doc(userId)
+			.update({ items: newItems })
+
 		return res
 	})
 

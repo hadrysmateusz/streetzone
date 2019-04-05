@@ -1,5 +1,5 @@
 import React from "react"
-import styled from "styled-components"
+import styled from "styled-components/macro"
 import ContainerDimensions from "react-container-dimensions"
 
 import { ItemCard } from "../ItemCard"
@@ -14,7 +14,7 @@ const ItemsContainer = styled.div`
 	}}
 
 	@media (min-width: ${(p) => p.theme.breakpoints[0]}px) {
-		grid-gap: 10px;
+		grid-gap: 20px;
 	}
 `
 
@@ -24,7 +24,7 @@ const ItemsView = ({ items }) => {
 			{({ width }) => (
 				<ItemsContainer containerWidth={width}>
 					{items.map((item) => (
-						<ItemCard key={item.objectID} item={item} />
+						<ItemCard key={item.itemId} item={item} />
 					))}
 				</ItemsContainer>
 			)}

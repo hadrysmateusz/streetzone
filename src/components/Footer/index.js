@@ -1,7 +1,10 @@
 import React from "react"
-import styled from "styled-components"
+import styled from "styled-components/macro"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { Link } from "react-router-dom"
+
+import { ImportantText } from "../Basics"
+import Logo from "../Logo"
 
 import { CONST, ROUTES } from "../../constants"
 
@@ -14,23 +17,15 @@ const OuterContainer = styled.div`
 	align-items: center;
 	align-content: center;
 	justify-content: space-between;
-	padding: 10px;
 	border-top: 1px solid ${(p) => p.theme.colors.gray[75]};
 	color: ${(p) => p.theme.colors.black[0]};
 	background: white;
-	font-size: 1.03rem;
-	/* box-shadow: 0 -3px 5px -1px rgba(0, 0, 0, 0.05); */
 `
 
 const IconContainer = styled.div`
-	display: grid;
-	grid-template-columns: repeat(3, auto);
-	grid-template-rows: 100%;
-	gap: 15px;
-	& > * {
-		&:hover {
-			color: ${(p) => p.theme.colors.accent};
-		}
+	display: flex;
+	* + * {
+		margin-left: 10px;
 	}
 `
 
@@ -47,15 +42,32 @@ const Item = styled(Link)`
 `
 
 const InnerContainer = styled.div`
-	display: flex;
+	padding: 20px 0;
+	width: 100%;
+	max-width: ${(p) => p.theme.breakpoints[5]}px;
+	margin: 0 auto;
+	display: grid;
 	align-content: center;
-	align-items: center;
-	justify-content: center;
+	align-items: flex-start;
+	justify-content: space-between;
 
 	flex-flow: row wrap;
 
 	& > * {
 		padding: 8px 15px;
+	}
+
+	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
+		grid-template-columns: 2.5fr repeat(3, 1fr);
+	}
+`
+
+const Group = styled.div`
+	> :first-child {
+		margin-bottom: 20px;
+	}
+	> * {
+		margin: 10px 0;
 	}
 `
 
@@ -63,27 +75,37 @@ const Footer = () => {
 	return (
 		<OuterContainer>
 			<InnerContainer>
-				<Item to={ROUTES.TERMS}>Regulamin</Item>
-				<Item to={ROUTES.PRIVACY_POLICY}>Polityka Prywatności</Item>
-				<Item to={ROUTES.FAQ}>FAQ</Item>
-				<Item to={ROUTES.ABOUT}>O nas</Item>
-				<Item to={ROUTES.CONTACT}>Kontakt</Item>
-
-				<IconContainer>
-					<Item to={ROUTES.TWITTER_PROFILE}>
-						<FontAwesomeIcon icon={["fab", "twitter"]} />
-					</Item>
-					<Item to={ROUTES.FACEBOOK_PROFILE}>
-						<FontAwesomeIcon icon={["fab", "facebook-square"]} />
-					</Item>
-					<Item to={ROUTES.INSTAGRAM_PROFILE}>
-						<FontAwesomeIcon icon={["fab", "instagram"]} />
-					</Item>
-				</IconContainer>
-			</InnerContainer>
-
-			<InnerContainer>
-				<div>{CONST.BRAND_NAME} © 2019</div>
+				<Group>
+					<Logo>Bumped</Logo>
+					<div>© 2019 {CONST.BRAND_NAME}</div>
+				</Group>
+				<Group>
+					<ImportantText>INFORMACJE</ImportantText>
+					<Item to={ROUTES.ABOUT}>O nas</Item>
+					<Item to={ROUTES.TERMS}>Regulamin</Item>
+					<Item to={ROUTES.PRIVACY_POLICY}>Polityka Prywatności</Item>
+				</Group>
+				<Group>
+					<ImportantText>KONTAKT</ImportantText>
+					<Item to={ROUTES.CONTACT}>Kontakt</Item>
+					<div>{CONST.CONTACT_EMAIL}</div>
+					<IconContainer>
+						<Item to={ROUTES.TWITTER_PROFILE}>
+							<FontAwesomeIcon icon={["fab", "twitter"]} />
+						</Item>
+						<Item to={ROUTES.FACEBOOK_PROFILE}>
+							<FontAwesomeIcon icon={["fab", "facebook-square"]} />
+						</Item>
+						<Item to={ROUTES.INSTAGRAM_PROFILE}>
+							<FontAwesomeIcon icon={["fab", "instagram"]} />
+						</Item>
+					</IconContainer>
+				</Group>
+				<Group>
+					<ImportantText>POMOC</ImportantText>
+					<Item to={ROUTES.FAQ}>FAQ</Item>
+					<Item to={ROUTES.BUG_REPORT}>Zgłoś problem</Item>
+				</Group>
 			</InnerContainer>
 		</OuterContainer>
 	)

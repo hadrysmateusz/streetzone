@@ -1,4 +1,4 @@
-import styled from "styled-components"
+import styled from "styled-components/macro"
 import { ClearRefinements } from "react-instantsearch-dom"
 
 const AlgoliaClearRefinements = styled(ClearRefinements)`
@@ -12,7 +12,6 @@ const AlgoliaClearRefinements = styled(ClearRefinements)`
 		${(p) => p.fullWidth && "margin: 4px 0;"}
 		padding: 0.8rem 1.85rem;
 		text-align: center;
-		font-size: 0.79rem;
 		display: inline-block;
 		font-weight: 500;
 		${(p) => p.disabled && `font-weight: normal;`}

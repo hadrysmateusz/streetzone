@@ -1,5 +1,5 @@
 import React, { Component } from "react"
-import styled, { css } from "styled-components"
+import styled, { css } from "styled-components/macro"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { withFirebase } from "../Firebase"
 import { withAuthentication } from "../UserSession"
@@ -27,15 +27,16 @@ const activeSaveButton = css`
 	}
 `
 const HeartButtonContainer = styled.div`
-	font-size: 1.15rem;
 	background: rgba(255, 255, 255, 1);
-	padding: 5px;
+	padding: 4px;
 	color: ${(p) => p.theme.colors.black[0]};
 	display: flex;
 	cursor: pointer;
 	justify-content: center;
 	align-items: center;
 	transition: transform 0.2s ease;
+
+	font-size: ${(p) => 10 * (p.scale || 1)}px;
 
 	.filled {
 		color: ${(p) => p.theme.colors.accent};
@@ -49,7 +50,7 @@ const HeartButtonContainer = styled.div`
 	${(p) => p.active && activeSaveButton}
 `
 
-export class SaveButtonBase extends Component {
+class SaveButtonBase extends Component {
 	state = {
 		isSaved: false,
 		isLoginModalVisible: false
@@ -121,6 +122,7 @@ export class SaveButtonBase extends Component {
 				className={this.props.className}
 				active={this.state.isSaved}
 				onClick={this.onClick}
+				scale={this.props.scale}
 			>
 				<div className="fa-layers fa-fw">
 					<FontAwesomeIcon className="outline" icon={["far", "heart"]} />

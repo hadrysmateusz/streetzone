@@ -1,9 +1,10 @@
 import React, { Component } from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import styled from "styled-components"
+import styled from "styled-components/macro"
+
+import LoadingSpinner from "../LoadingSpinner"
 
 import CustomFile from "./CustomFile"
-import LoadingSpinner from "../LoadingSpinner"
 
 const size = "160px"
 
@@ -23,7 +24,6 @@ const PreviewOverlay = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	font-size: 1.95rem;
 `
 
 const OverlayButton = styled.div`
@@ -36,7 +36,6 @@ const OverlayButton = styled.div`
 	}
 	::after {
 		content: "${(p) => p.text}";
-		font-size: 0.7rem;
 		display: block;
 		text-align: center;
 		padding-top: 4px;
@@ -62,7 +61,6 @@ const EmptyPreview = styled.div`
 	height: ${size};
 	border-radius: 50%;
 	border: 2px dashed ${(p) => p.theme.colors[50]};
-	font-size: 1.45rem;
 	color: ${(p) => p.theme.colors[50]};
 `
 
@@ -80,7 +78,7 @@ class FileHandlerSingle extends Component {
 		// Reset the file input to prevent bugs
 		event.target.value = null
 
-		// Create CustomFile Object with previewURL
+		// Create CustomFile Object with previewUrl
 		let previewUrl = window.URL.createObjectURL(newFile)
 		const file = new CustomFile({ previewUrl, data: newFile })
 

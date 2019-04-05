@@ -1,11 +1,10 @@
 import React from "react"
-import styled from "styled-components"
-import Select from "react-select"
+import styled from "styled-components/macro"
 import { Media } from "react-breakpoints"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { connectSortBy } from "react-instantsearch-dom"
 
-import { THEME } from "../../constants"
+import Dropdown from "../FormElements/dropdown"
 
 const StyledSelect = styled.select`
 	position: absolute;
@@ -28,10 +27,10 @@ const Container = styled.label`
 	:hover {
 		border: 1px solid ${(p) => p.theme.colors.gray[25]};
 	}
-	font-size: 0.92rem;
 	svg {
 		margin-right: 6px;
 	}
+	height: var(--form-element-height);
 `
 
 class AlgoliaSortBy extends React.Component {
@@ -50,38 +49,11 @@ class AlgoliaSortBy extends React.Component {
 				{({ currentBreakpoint }) => {
 					if (currentBreakpoint > 0) {
 						return (
-							<Select
+							<Dropdown
 								{...rest}
 								options={items}
 								defaultValue={defaultRefinement}
 								onChange={(data, action) => refine(data.value)}
-								styles={{
-									control: (provided, state) => ({
-										...provided,
-										minWidth: "180px",
-										minHeight: "0",
-										fontSize: "0.92rem",
-										border: `1px solid ${THEME.colors.gray[75]}`,
-										"&:hover": {
-											borderColor: THEME.colors.gray[25]
-										}
-									})
-								}}
-								theme={(theme) => ({
-									...theme,
-									borderRadius: 0,
-									colors: {
-										...theme.colors,
-										primary: "rgb(65, 214, 165)",
-										primary75: "rgba(65, 214, 165, 0.75)",
-										primary50: "rgba(65, 214, 165, 0.5)",
-										primary25: "rgba(65, 214, 165, 0.25)"
-									},
-									spacing: {
-										...theme.spacing,
-										baseUnit: 3
-									}
-								})}
 							/>
 						)
 					} else {

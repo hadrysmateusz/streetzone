@@ -7,6 +7,7 @@ import Button, { LoaderButton, ButtonContainer } from "../Button"
 import { FileHandlerSingle, CustomFile } from "../FileHandler"
 import { withFirebase } from "../Firebase"
 import { withAuthentication } from "../UserSession"
+
 import getProfilePictureURL from "../../utils/getProfilePictureURL"
 
 class AvatarChangeForm extends React.Component {
@@ -110,11 +111,13 @@ class AvatarChangeForm extends React.Component {
 										isLoading={submitting}
 										disabled={submitting || pristine || isLoading}
 										primary
+										fullWidth
 									/>
 									<Button
 										type="button"
 										disabled={submitting || pristine || isLoading}
 										onClick={() => form.reset()}
+										fullWidth
 									>
 										Anuluj
 									</Button>

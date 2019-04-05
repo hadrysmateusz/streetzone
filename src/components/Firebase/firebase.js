@@ -4,8 +4,6 @@ import "firebase/auth"
 import "firebase/storage"
 import "firebase/firestore"
 
-import { ITEM_SCHEMA } from "../../constants"
-
 const S_THUMB_POSTFIX = "_S_THUMB"
 const M_THUMB_POSTFIX = "_M_THUMB"
 const L_THUMB_POSTFIX = "_L_THUMB"
@@ -38,9 +36,6 @@ class Firebase {
 
 		// Firestore (Database)
 		this.db = app.firestore()
-		this.db.settings({
-			timestampsInSnapshots: true
-		})
 	}
 
 	// Auth API
@@ -121,14 +116,23 @@ class Firebase {
 		}
 
 		try {
+			let idsToDelete = []
+			const oldIds = user.savedItems
+
 			// get data from firestore
-			for (let itemId of user.savedItems) {
-				const item = await this.getItemData(itemId)
-				res.items.push(item)
+			for (let itemId of oldIds) {
+				const itemDoc = await this.item(itemId).get()
+				if (itemDoc.exists) {
+					res.items.push(itemDoc.data())
+				} else {
+					idsToDelete.push(itemId)
+				}
 			}
 
-			// filter out items that don't exist anymore
-			res.items = res.items.filter((item) => Object.keys(item).length)
+			// create new list of ids by removing marked ids
+			const newIds = oldIds.filter((id) => !idsToDelete.includes(id))
+
+			this.user(user.uid).update({ savedItems: newIds })
 		} catch (error) {
 			res.error = error
 		} finally {
@@ -155,6 +159,11 @@ class Firebase {
 
 	post = (id) => this.db.collection("posts").doc(id)
 	posts = () => this.db.collection("posts")
+
+	// Designers API
+
+	designer = (id) => this.db.collection("designers").doc(id)
+	designers = () => this.db.collection("designers")
 
 	// Storage API
 

@@ -1,7 +1,9 @@
 import React from "react"
 import { connectRange } from "react-instantsearch-dom"
-import { RangeContainer } from "./StyledComponents"
+
 import { AdaptiveFoldable } from "../Foldable"
+
+import { RangeContainer } from "./StyledComponents"
 
 class AlgoliaRange extends React.Component {
 	delay = 400
@@ -40,13 +42,10 @@ class AlgoliaRange extends React.Component {
 	}
 
 	render() {
-		const { attribute, tab, openTab, toggle } = this.props
+		const { ...rest } = this.props
 		return (
 			<AdaptiveFoldable
-				tab={tab}
-				openTab={openTab}
-				toggle={toggle}
-				attribute={attribute}
+				{...rest}
 				showClear={this.state.min || this.state.max}
 				resetState={this.resetState}
 			>

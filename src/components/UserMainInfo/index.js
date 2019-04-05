@@ -1,64 +1,54 @@
 import React from "react"
 import moment from "moment"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { Flex } from "rebass"
+import { Link } from "react-router-dom"
 
 import ProfilePicture from "../ProfilePicture"
 import getProfilePictureURL from "../../utils/getProfilePictureURL"
 import Button, { ButtonContainer } from "../Button"
 import UserRating from "../UserRating"
-import {
-	MainInfoContainer,
-	InfoContainer,
-	SecondContainer,
-	SeparatedContainer
-} from "./StyledComponents"
+import { MainInfoContainer, InfoContainer, SecondContainer } from "./StyledComponents"
 import { HeartButton } from "../SaveButton"
 import { ROUTES } from "../../constants"
-import Link from "react-router-dom/Link"
+import { TextBlock, HorizontalContainer } from "../StyledComponents"
+import SingleValueDisplay from "../SingleValueDisplay"
 
-const MainInfo = ({ user, isUserOwner, userId }) => {
+const MainInfo = ({ user, isAuthorized, userId }) => {
 	return (
 		<MainInfoContainer>
 			<div>
 				<ProfilePicture url={getProfilePictureURL(user, "M")} size="170px" />
 			</div>
 			<InfoContainer>
-				<h2>{user.name}</h2>
-
-				<h3>
-					<div>{user.email}</div>
-				</h3>
-
-				<SeparatedContainer>
+				<Flex alignItems="center">
+					<TextBlock bold size="l" style={{ marginRight: "var(--spacing2)" }}>
+						{user.name}
+					</TextBlock>
 					<UserRating feedback={user.feedback} />
-					<span>
-						Ilość komentarzy: <strong>{user.feedback ? user.feedback.length : 0} </strong>
-					</span>
-				</SeparatedContainer>
+				</Flex>
 
-				<div className="info-field">
-					<span>W serwisie od: </span>
-					<strong>{moment(user.userSince).format("D.MM.YYYY")}</strong>
-				</div>
+				<HorizontalContainer gap="3">
+					<SingleValueDisplay title="W serwisie od">
+						{moment(user.userSince).format("D.MM.YYYY")}
+					</SingleValueDisplay>
 
-				{user.city && (
-					<div className="info-field">
-						<span>Miasto: </span>
-						<strong>{user.city}</strong>
-					</div>
-				)}
+					{user.city && (
+						<SingleValueDisplay title="Miasto">{user.city}</SingleValueDisplay>
+					)}
+
+					<SingleValueDisplay title="E-Mail">{user.email}</SingleValueDisplay>
+
+					{user.phone && (
+						<SingleValueDisplay title="Nr Telefonu">{user.phone}</SingleValueDisplay>
+					)}
+				</HorizontalContainer>
+
+				<TextBlock color="black50">{user.info}</TextBlock>
 			</InfoContainer>
 			<SecondContainer>
-				<SeparatedContainer>
-					<span>
-						<strong>{user.followers || 0}</strong> Obserwujących
-					</span>
-					<span>
-						<strong>{user.following || 0}</strong> Obserwowanych
-					</span>
-				</SeparatedContainer>
-				{isUserOwner ? (
-					<ButtonContainer alignRight>
+				{isAuthorized ? (
+					<ButtonContainer alignRight noMargin>
 						<Button as={Link} to={ROUTES.ACCOUNT_SETTINGS.replace(":id", userId)}>
 							<span>Edytuj Profil</span>
 						</Button>
@@ -67,7 +57,7 @@ const MainInfo = ({ user, isUserOwner, userId }) => {
 						</Button>
 					</ButtonContainer>
 				) : (
-					<ButtonContainer alignRight>
+					<ButtonContainer alignRight noMargin>
 						<Button primary>
 							<FontAwesomeIcon icon={["far", "envelope"]} size="lg" />
 							<span>Wyślij wiadomość</span>

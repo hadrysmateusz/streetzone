@@ -9,7 +9,7 @@ import LoadingSpinner from "../LoadingSpinner"
 import getProfilePictureURL from "../../utils/getProfilePictureURL"
 import UserRating from "../UserRating"
 import { ROUTES } from "../../constants"
-import { DateContainer, Name, InfoContainer, Container } from "./StyledComponents"
+import { Name, InfoContainer, Container } from "./StyledComponents"
 
 class UserPreview extends Component {
 	state = {
@@ -20,16 +20,23 @@ class UserPreview extends Component {
 
 	componentDidMount = async () => {
 		let { id, firebase } = this.props
-		let { user, error } = await firebase.getUserData(id)
-		if (error) {
-			this.props.onError && this.props.onError(error)
+		if (this.props.user) {
+			this.setState({ user: this.props.user, isLoading: false })
+		} else {
+			let { user, error } = await firebase.getUserData(id)
+			if (error) {
+				this.props.onError && this.props.onError(error)
+			}
+			this.setState({ user, error, isLoading: false })
 		}
-		this.setState({ user, error, isLoading: false })
 	}
 
 	render() {
-		const { isLoading, user, error } = this.state
-		if (error) {
+		const { isLoading, user } = this.state
+
+		/* error can also be provided by a parent component 
+		if it is controling the fetching of user data */
+		if (this.state.error || this.props.error) {
 			return (
 				<Container vertical={this.props.vertical}>
 					<ProfilePicture size={this.props.pictureSize || "60px"} url="" inline />
@@ -56,9 +63,9 @@ class UserPreview extends Component {
 						<Name nameOnly={this.props.nameOnly}>{user.name}</Name>
 						{!this.props.nameOnly && (
 							<>
-								<DateContainer>
+								<div>
 									W serwisie od {moment(Date.now()).diff(user.userSince, "days")} dni
-								</DateContainer>
+								</div>
 								<div>
 									<UserRating size="15px" feedback={user.feedback} />
 								</div>

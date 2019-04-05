@@ -1,4 +1,4 @@
-import styled from "styled-components"
+import styled from "styled-components/macro"
 
 export const MainInfoContainer = styled.div`
 	display: grid;
@@ -7,9 +7,6 @@ export const MainInfoContainer = styled.div`
 		grid-template-columns: max-content 1fr max-content;
 	}
 
-	margin-bottom: 20px;
-	padding-bottom: 20px;
-	border-bottom: 1px solid ${(p) => p.theme.colors.gray[75]};
 	gap: 20px;
 	overflow: hidden;
 
@@ -20,26 +17,13 @@ export const MainInfoContainer = styled.div`
 	@media (max-width: ${(p) => p.theme.breakpoints[0] - 1}px) {
 		text-align: center;
 	}
-
-	.info-field {
-		font-size: 0.98rem;
-	}
-
-	h2 {
-		font-size: 1.45rem;
-		font-weight: 500;
-		margin: 0;
-	}
-
-	h3 {
-		font-size: 0.98rem;
-		font-weight: 300;
-		margin: 7px 0 10px 0;
-	}
 `
 
-export const InfoContainer = styled.div`
-	padding-top: 10px;
+export const InnerInfoContainer = styled.div`
+	display: flex;
+	> * + * {
+		padding-left: var(--spacing3);
+	}
 `
 
 export const SeparatedContainer = styled.div`
@@ -58,5 +42,12 @@ export const SeparatedContainer = styled.div`
 export const SecondContainer = styled.div`
 	display: flex;
 	flex-direction: column;
-	align-items: flex-end;
+	justify-content: center;
+`
+
+export const InfoContainer = styled.div`
+	display: grid;
+	gap: var(--spacing2);
+	grid-auto-rows: min-content;
+	max-width: 600px;
 `
