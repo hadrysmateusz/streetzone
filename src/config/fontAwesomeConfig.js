@@ -40,7 +40,8 @@ import {
 	faHeart as farHeart,
 	faEnvelope as farEnvelope,
 	faSquare,
-	faCheckSquare
+	faCheckSquare,
+	faStar
 } from "@fortawesome/free-regular-svg-icons"
 import { fab } from "@fortawesome/free-brands-svg-icons"
 
@@ -84,5 +85,6 @@ library.add(
 	faMinus,
 	faExclamationCircle,
 	faLongArrowAltLeft,
-	faArrowRight
+	faArrowRight,
+	faStar
 )
