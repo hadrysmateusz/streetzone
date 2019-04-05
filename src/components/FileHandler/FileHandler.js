@@ -28,23 +28,25 @@ const FilesContainer = styled.div`
 	background: white;
 	.empty-state {
 		position: absolute;
-		color: ${(p) => p.theme.colors.gray[25]};
 		top: 0;
 		left: 0;
+
 		width: 100%;
 		height: 100%;
 		display: flex;
 		justify-content: center;
 		align-items: center;
+		color: ${(p) => p.theme.colors.gray[25]};
 	}
 	.overlay {
 		position: absolute;
 		top: 0;
 		left: 0;
+
 		z-index: 89;
 		background: rgba(0, 0, 0, 0.32);
-		color: white;
 		text-shadow: 1px 1px rgba(0, 0, 0, 0.2);
+		color: white;
 	}
 `
 
