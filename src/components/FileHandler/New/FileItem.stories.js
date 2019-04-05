@@ -1,10 +1,13 @@
 import React from "react"
 import { storiesOf } from "@storybook/react"
+import { action } from "@storybook/addon-actions"
+
 import FileItem from "./FileItem"
 
 const commonProps = {
 	id: 1,
-	onDelete: (id) => console.log("delete " + id),
+	onDelete: action("delete"),
+	onSetMain: action("set-main"),
 	previewUrl: "  https://picsum.photos/250/250/?random"
 }
 

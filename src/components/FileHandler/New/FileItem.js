@@ -5,6 +5,7 @@ import PropTypes from "prop-types"
 import { overlayCommon } from "../../../style-utils"
 import Icon from "../../Icon"
 import { TextBlock } from "../../StyledComponents"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 const Thumbnail = styled.div`
 	background: var(--gray);
@@ -41,32 +42,43 @@ const Thumbnail = styled.div`
 	}
 `
 
-const PureFileItem = ({ id, previewUrl, hasError, onDelete }) => {
+const IconContainer = styled.div`
+	text-align: center;
+	padding: var(--spacing1) var(--spacing2);
+	margin: 0 var(--spacing1);
+	transition: transform 0.12s linear;
+	cursor: pointer;
+	:hover {
+		color: var(--gray100);
+		transform: scale(1.03);
+	}
+`
+
+const ErrorIndicator = styled(FontAwesomeIcon)`
+	color: var(--error50);
+	position: absolute;
+	z-index: 90;
+	top: var(--spacing2);
+	right: var(--spacing2);
+`
+
+const PureFileItem = ({ id, previewUrl, error, onDelete, onSetMain }) => {
+	const hasError = !!error
+
 	return (
 		<Ratio ratio={6 / 7}>
-			<Thumbnail>
+			<Thumbnail hasError={hasError}>
+				{hasError && <ErrorIndicator title={error} icon="exclamation-circle" />}
 				<img src={previewUrl} alt="" />
 				<div className="overlay">
-					<div>
-						<Icon
-							mx="var(--spacing2)"
-							px="var(--spacing2)"
-							py="var(--spacing1)"
-							fontSize="3rem"
-							icon={["far", "star"]}
-						/>
+					<IconContainer onClick={() => onSetMain(id)}>
+						<FontAwesomeIcon icon={["far", "star"]} size="2x" />
 						<TextBlock centered>Główne</TextBlock>
-					</div>
-					<div onClick={() => onDelete(id)}>
-						<Icon
-							mx="var(--spacing2)"
-							px="var(--spacing2)"
-							py="var(--spacing1)"
-							fontSize="3rem"
-							icon="trash"
-						/>
+					</IconContainer>
+					<IconContainer onClick={() => onDelete(id)}>
+						<FontAwesomeIcon icon="trash" size="2x" />
 						<TextBlock centered>Usuń</TextBlock>
-					</div>
+					</IconContainer>
 				</div>
 			</Thumbnail>
 		</Ratio>
