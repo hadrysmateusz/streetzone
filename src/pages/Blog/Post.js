@@ -4,7 +4,7 @@ import moment from "moment"
 import { compose } from "recompose"
 import { withRouter, Link } from "react-router-dom"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import styled from "styled-components"
+import styled from "styled-components/macro"
 import { Box, Text, Flex } from "rebass"
 
 import { BlogPageContainer } from "../../components/Containers"

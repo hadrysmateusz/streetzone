@@ -1,5 +1,5 @@
 import React, { Component } from "react"
-import styled from "styled-components"
+import styled from "styled-components/macro"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { withBreakpoints } from "react-breakpoints"
 import Clear, { ClearRange } from "../Algolia/ClearCategoryButton"

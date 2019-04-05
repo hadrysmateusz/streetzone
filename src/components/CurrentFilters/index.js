@@ -1,6 +1,6 @@
 import React from "react"
 import { connectCurrentRefinements } from "react-instantsearch-core"
-import styled from "styled-components"
+import styled from "styled-components/macro"
 import { compose } from "recompose"
 import { withRouter } from "react-router-dom"
 

@@ -1,7 +1,7 @@
 import React from "react"
 import { BrowserRouter as Router } from "react-router-dom"
 import { compose } from "recompose"
-import styled from "styled-components"
+import styled from "styled-components/macro"
 
 import { withAuthenticationProvider } from "../UserSession"
 import { withFirebase } from "../Firebase"

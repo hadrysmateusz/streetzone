@@ -1,6 +1,6 @@
 import React, { Component } from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import styled from "styled-components"
+import styled from "styled-components/macro"
 
 import LoadingSpinner from "../LoadingSpinner"
 
@@ -78,7 +78,7 @@ class FileHandlerSingle extends Component {
 		// Reset the file input to prevent bugs
 		event.target.value = null
 
-		// Create CustomFile Object with previewURL
+		// Create CustomFile Object with previewUrl
 		let previewUrl = window.URL.createObjectURL(newFile)
 		const file = new CustomFile({ previewUrl, data: newFile })
 

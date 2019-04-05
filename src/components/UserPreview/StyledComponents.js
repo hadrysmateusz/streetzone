@@ -1,4 +1,4 @@
-import styled from "styled-components"
+import styled from "styled-components/macro"
 import { ellipsis } from "../../style-utils"
 
 export const Name = styled.div`

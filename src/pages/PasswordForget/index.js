@@ -1,7 +1,7 @@
 import React, { Component } from "react"
 import { Form, Field } from "react-final-form"
 import { compose } from "recompose"
-import styled from "styled-components"
+import styled from "styled-components/macro"
 
 import { withFirebase } from "../../components/Firebase"
 import { StyledLink, FieldRow, Header } from "../../components/Basics"

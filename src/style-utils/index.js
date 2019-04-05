@@ -1,5 +1,5 @@
 import theme from "../constants/theme"
-import { css } from "styled-components"
+import { css } from "styled-components/macro"
 
 export const minWidth = theme.breakpoints.reduce((acc, val, i) => {
 	acc[i] = (...args) => css`

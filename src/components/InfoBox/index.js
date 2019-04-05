@@ -1,4 +1,4 @@
-import styled from "styled-components"
+import styled from "styled-components/macro"
 
 const InfoBox = styled.div`
 	${(p) => p.span && `grid-column: span ${p.span};`}

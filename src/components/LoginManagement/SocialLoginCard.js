@@ -1,6 +1,6 @@
 import React from "react"
 import Button, { GoogleButton, FacebookButton, ButtonContainer } from "../Button"
-import styled from "styled-components"
+import styled from "styled-components/macro"
 import { TextBlock } from "../StyledComponents"
 
 const SocialButton = ({ provider, ...rest }) => {

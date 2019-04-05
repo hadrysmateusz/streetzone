@@ -1,4 +1,4 @@
-import styled from "styled-components"
+import styled from "styled-components/macro"
 import { InstantSearch } from "react-instantsearch-dom"
 
 import { PageContainer } from "../../components/Containers"

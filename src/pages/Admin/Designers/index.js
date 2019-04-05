@@ -2,7 +2,7 @@ import React from "react"
 import shortid from "shortid"
 
 import LoadingSpinner from "../../../components/LoadingSpinner"
-import styled from "styled-components"
+import styled from "styled-components/macro"
 
 import Button, { LoaderButton, ButtonContainer } from "../../../components/Button"
 import { Input } from "../../../components/FormElements"

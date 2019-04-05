@@ -1,5 +1,5 @@
 import React from "react"
-import styled from "styled-components"
+import styled from "styled-components/macro"
 import { connectHits } from "react-instantsearch-dom"
 import moment from "moment"
 import { Link } from "react-router-dom"

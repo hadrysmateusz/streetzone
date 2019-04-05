@@ -2,7 +2,7 @@ import React from "react"
 import { Form, Field } from "react-final-form"
 import { OnChange } from "react-final-form-listeners"
 // import AsyncCreatable from "react-select/lib/AsyncCreatable"
-import styled from "styled-components"
+import styled from "styled-components/macro"
 import { withRouter } from "react-router-dom"
 
 import Button, { LoaderButton } from "../../components/Button"

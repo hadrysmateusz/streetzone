@@ -1,7 +1,7 @@
 import "react-app-polyfill/ie11"
 import React from "react"
 import ReactDOM from "react-dom"
-import { ThemeProvider } from "styled-components"
+import { ThemeProvider } from "styled-components/macro"
 import ReactBreakpoints from "react-breakpoints"
 import "react-image-lightbox/style.css"
 

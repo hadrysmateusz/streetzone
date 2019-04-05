@@ -1,4 +1,4 @@
-import styled from "styled-components"
+import styled from "styled-components/macro"
 import { ClearRefinements } from "react-instantsearch-dom"
 
 const AlgoliaClearRefinements = styled(ClearRefinements)`

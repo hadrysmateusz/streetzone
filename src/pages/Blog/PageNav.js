@@ -1,7 +1,7 @@
 import React from "react"
 import { withRouter, Link } from "react-router-dom"
 import { ROUTES } from "../../constants"
-import styled from "styled-components"
+import styled from "styled-components/macro"
 
 const NavContainer = styled.div`
 	margin: var(--spacing3) 0;

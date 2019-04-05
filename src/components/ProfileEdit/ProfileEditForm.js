@@ -1,6 +1,6 @@
 import React from "react"
 import { Form, Field } from "react-final-form"
-import styled from "styled-components"
+import styled from "styled-components/macro"
 import { compose } from "recompose"
 
 import Button, { LoaderButton, ButtonContainer } from "../Button"

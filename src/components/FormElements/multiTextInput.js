@@ -1,6 +1,6 @@
 import React, { Component } from "react"
 import CreatableSelect from "react-select/lib/Creatable"
-import styled from "styled-components"
+import styled from "styled-components/macro"
 
 import FormElementContainer from "./container"
 import { disabledStyles, hoverStyles, focusStyles, basicStyles } from "./commonStyles"

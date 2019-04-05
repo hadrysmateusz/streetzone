@@ -1,4 +1,4 @@
-import { css } from "styled-components"
+import { css } from "styled-components/macro"
 
 export const disabledStyles = css`
 	background: var(--almost-white);

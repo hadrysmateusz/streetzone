@@ -1,4 +1,4 @@
-import styled from "styled-components"
+import styled from "styled-components/macro"
 
 const ScrollToTop = styled.button.attrs((p) => ({
 	onClick: () => document.getElementById(p.element || "App-Element").scrollIntoView(true)

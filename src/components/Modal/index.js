@@ -1,6 +1,6 @@
 import React from "react"
 import { Portal } from "react-portal"
-import styled from "styled-components"
+import styled from "styled-components/macro"
 
 const ModalContainer = styled.div`
 	position: fixed;

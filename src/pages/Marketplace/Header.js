@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react"
 import { connectCurrentRefinements, connectStats } from "react-instantsearch-dom"
 import { compose } from "recompose"
 import useFirebase from "../../hooks/useFirebase"
-import styled from "styled-components"
+import styled from "styled-components/macro"
 import { PageContainer } from "../../components/Containers"
 import { TextBlock } from "../../components/StyledComponents"
 

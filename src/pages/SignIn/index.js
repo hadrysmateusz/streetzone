@@ -2,7 +2,7 @@ import React, { Component } from "react"
 import { withRouter } from "react-router-dom"
 import { Form, Field } from "react-final-form"
 import { compose } from "recompose"
-import styled from "styled-components"
+import styled from "styled-components/macro"
 
 import { StyledLink, FieldRow, Header, Separator } from "../../components/Basics"
 import { FormError, Input } from "../../components/FormElements"

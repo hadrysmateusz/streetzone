@@ -1,6 +1,6 @@
 import React from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import styled, { css } from "styled-components"
+import styled, { css } from "styled-components/macro"
 import Ratio from "react-ratio"
 
 import { MiniButton } from "../Basics"
