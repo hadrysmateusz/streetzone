@@ -8,7 +8,7 @@ import { css } from "styled-components/macro"
 
 const item = {
 	id: "id1",
-	previewUrl: "https://picsum.photos/250/250/"
+	previewUrl: "https://picsum.photos/800/800/"
 }
 
 const ControlledHandler = ({ item, ...props }) => {
