@@ -1,7 +1,8 @@
+import shortid from "shortid"
+
 export default class CustomFile {
-	static nextId = 0
 	constructor(params) {
-		this.id = CustomFile.nextId++
+		this.id = shortid.generate()
 		this.ref = params.ref || ""
 		this.previewUrl = params.previewUrl || ""
 		this.data = params.data || {}
