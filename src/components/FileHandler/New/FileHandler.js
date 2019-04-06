@@ -7,7 +7,7 @@ import { FormElementContainer, commonStyles } from "../../FormElements"
 import { CustomFile } from ".."
 import { ButtonContainer, Button } from "../../Button"
 import FileItem from "./FileItem"
-import { overlayCommon } from "../../../style-utils"
+import { overlayCommon, overlayStyles } from "../../../style-utils"
 
 const FileHandlerContainer = styled.div`
 	${commonStyles.basicStyles}
@@ -36,9 +36,7 @@ const FileHandlerContainer = styled.div`
 
 const DragOverlay = styled.div`
 	${overlayCommon}
-	background: rgba(0, 0, 0, 0.32);
-	text-shadow: 1px 1px rgba(0, 0, 0, 0.2);
-	color: white;
+	${overlayStyles}
 	z-index: 89;
 `
 
@@ -47,7 +45,15 @@ const EmptyState = styled.div`
 	${commonStyles.placeholderStyles}
 `
 
-const FileHandler = ({ info, error, disabled, input: { value, onChange }, ...rest }) => {
+const FileHandler = ({
+	info,
+	error,
+	itemErrors,
+	disabled,
+	value = [],
+	onChange,
+	...rest
+}) => {
 	const onDrop = useCallback(
 		(acceptedFiles) => {
 			// Map Files to CustomFiles with previews
@@ -119,12 +125,12 @@ const FileHandler = ({ info, error, disabled, input: { value, onChange }, ...res
 	}
 
 	return (
-		<FormElementContainer error={error} info={info}>
+		<FormElementContainer error={error} info={info} {...rest}>
 			<ButtonContainer>
-				<Button onClick={clickDropzone}>
+				<Button type="button" onClick={clickDropzone}>
 					{!isEmpty ? "Dodaj pliki" : "Wybierz pliki"}
 				</Button>
-				<Button onClick={onClear} disabled={isEmpty}>
+				<Button type="button" onClick={onClear} disabled={isEmpty}>
 					Usuń wszystkie
 				</Button>
 			</ButtonContainer>
@@ -137,6 +143,9 @@ const FileHandler = ({ info, error, disabled, input: { value, onChange }, ...res
 					? value.map((file, i) => {
 							// if no item has isMain, default to the first item
 							const isMain = hasMain ? file.isMain : i === 0
+							// check if item has an error
+							const error = itemErrors ? itemErrors[file.id] : null
+
 							return (
 								<FileItem
 									key={file.id}
@@ -145,6 +154,7 @@ const FileHandler = ({ info, error, disabled, input: { value, onChange }, ...res
 									id={file.id}
 									previewUrl={file.previewUrl}
 									isMain={isMain}
+									error={error}
 								/>
 							)
 					  })
@@ -157,13 +167,15 @@ const FileHandler = ({ info, error, disabled, input: { value, onChange }, ...res
 FileHandler.propTypes = {
 	info: PropTypes.string,
 	error: PropTypes.string,
+	itemErrors: PropTypes.array,
 	disabled: PropTypes.bool,
 	value: PropTypes.array.isRequired,
 	onChange: PropTypes.func.isRequired
 }
 
 FileHandler.defaultProps = {
-	value: []
+	value: [],
+	itemErrors: []
 }
 
 export default FileHandler

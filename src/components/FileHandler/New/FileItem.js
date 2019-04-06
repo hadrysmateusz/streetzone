@@ -2,8 +2,7 @@ import React from "react"
 import styled from "styled-components/macro"
 import Ratio from "react-ratio"
 import PropTypes from "prop-types"
-import { overlayCommon } from "../../../style-utils"
-import Icon from "../../Icon"
+import { overlayCommon, overlayStyles } from "../../../style-utils"
 import { TextBlock } from "../../StyledComponents"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
@@ -28,17 +27,23 @@ const Thumbnail = styled.div`
 
 	.overlay {
 		${overlayCommon}
-		opacity: 0;
-
+		${overlayStyles}
 		transition: opacity 0.2s ease;
-		background: rgba(0, 0, 0, 0.32);
-		text-shadow: 1px 1px rgba(0, 0, 0, 0.2);
-		color: white;
 		z-index: 89;
-
+		opacity: 0;
 		&:hover {
 			opacity: 1;
 		}
+	}
+
+	.error-container {
+		${overlayStyles}
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		width: 100%;
+		z-index: 88;
+		padding: var(--spacing2);
 	}
 `
 
@@ -86,24 +91,31 @@ const PureFileItem = ({ id, previewUrl, error, onDelete, onSetMain, isMain }) =>
 				<img src={previewUrl} alt="" />
 				<div className="overlay">
 					<IconContainer onClick={() => onSetMain(id)}>
-						<FontAwesomeIcon icon={["far", "star"]} size="2x" />
+						<FontAwesomeIcon icon={["far", "star"]} size="2x" fixedWidth />
 						<TextBlock centered>Główne</TextBlock>
 					</IconContainer>
 					<IconContainer onClick={() => onDelete(id)}>
-						<FontAwesomeIcon icon="trash" size="2x" />
+						<FontAwesomeIcon icon="trash" size="2x" fixedWidth />
 						<TextBlock centered>Usuń</TextBlock>
 					</IconContainer>
 				</div>
+				{hasError && <div className="error-container">{error}</div>}
 			</Thumbnail>
 		</Ratio>
 	)
 }
 
 PureFileItem.propTypes = {
+	id: PropTypes.string.isRequired,
 	previewUrl: PropTypes.string.isRequired,
-	id: PropTypes.number.isRequired,
+	isMain: PropTypes.bool,
 	error: PropTypes.string,
-	onDelete: PropTypes.func.isRequired
+	onDelete: PropTypes.func.isRequired,
+	onSetMain: PropTypes.func.isRequired
+}
+
+PureFileItem.defaultProps = {
+	isMain: false
 }
 
 export default PureFileItem

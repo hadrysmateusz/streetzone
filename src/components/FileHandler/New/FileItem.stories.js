@@ -17,5 +17,11 @@ storiesOf("FileItem", module)
 	))
 	.add("basic", () => <FileItem {...commonProps} />)
 	.add("error", () => <FileItem {...commonProps} error="Some error" />)
+	.add("multi-line error", () => (
+		<FileItem
+			{...commonProps}
+			error="This is an unnecessarily long error with some details"
+		/>
+	))
 	.add("isMain", () => <FileItem {...commonProps} isMain />)
 	.add("main + error", () => <FileItem {...commonProps} error="Some error" isMain />)

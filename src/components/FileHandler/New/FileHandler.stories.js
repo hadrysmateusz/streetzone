@@ -7,28 +7,58 @@ import Button, { ButtonContainer } from "../../Button"
 
 const items = [
 	{
-		id: 1,
+		id: "id1",
 		previewUrl: "https://picsum.photos/250/250/"
 	},
 	{
-		id: 2,
-		previewUrl: "https://picsum.photos/300/250/"
+		id: "id2",
+		previewUrl: "https://picsum.photos/300/250/",
+		error: "Mocked error"
 	},
 	{
-		id: 3,
+		id: "id3",
 		previewUrl: "https://picsum.photos/250/300/"
 	}
 ]
+
+const validate = ({ files }) => {
+	const errors = {}
+
+	errors.files = (() => {
+		let main
+		let specific = {}
+
+		// Attachment too big
+		files.forEach((file) => {
+			const fileId = file.id
+
+			if (file.error) {
+				specific[fileId] = file.error
+			}
+		})
+
+		let errObj = { main, specific }
+		return errObj
+	})()
+
+	return errors
+}
 
 const ControlledHandler = ({ items = [], error }) => {
 	return (
 		<Form
 			onSubmit={action("submit")}
+			validate={validate}
 			initialValues={{ files: items }}
-			render={({ handleSubmit, values, ...rest }) => {
+			render={({ form, handleSubmit, submitting, pristine, values, ...rest }) => {
 				return (
 					<form onSubmit={handleSubmit}>
-						<Field name="files" component={FileHandler} error={error} />
+						<Field name="files">
+							{({ input, meta }) => {
+								const itemErrors = meta.error ? meta.error.specific : null
+								return <FileHandler {...input} error={error} itemErrors={itemErrors} />
+							}}
+						</Field>
 						<ButtonContainer>
 							<Button primary type="submit">
 								Submit
