@@ -239,7 +239,6 @@ const NewItemForm = ({ initialValues, onSubmit, history, isLoading }) => {
 								{({ input, meta }) => {
 									const error = meta.error && meta.touched ? meta.error.main : null
 									const itemErrors = meta.error ? meta.error.specific : null
-									debugger
 									return <FileHandler {...input} error={error} itemErrors={itemErrors} />
 								}}
 							</Field>

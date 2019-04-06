@@ -8,7 +8,7 @@ const commonProps = {
 	id: 1,
 	onDelete: action("delete"),
 	onSetMain: action("set-main"),
-	previewUrl: "  https://picsum.photos/250/250/"
+	previewUrl: "https://picsum.photos/250/250/"
 }
 
 storiesOf("FileItem", module)

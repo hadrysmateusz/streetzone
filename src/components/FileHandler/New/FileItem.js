@@ -2,9 +2,9 @@ import React from "react"
 import styled from "styled-components/macro"
 import Ratio from "react-ratio"
 import PropTypes from "prop-types"
-import { overlayCommon, overlayStyles } from "../../../style-utils"
 import { TextBlock } from "../../StyledComponents"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { IconContainer, ErrorContainer, Overlay } from "./common"
 
 const Thumbnail = styled.div`
 	background: var(--gray);
@@ -17,46 +17,12 @@ const Thumbnail = styled.div`
 	position: relative;
 
 	border: 1px solid;
-	border-color: ${(p) => (p.hasError ? "var(--error50)" : "var(--gray0)")};
+	border-color: ${(p) => (p.hasError ? "var(--error50)" : "var(--gray25)")};
 
 	img {
 		object-fit: cover;
 		width: 100%;
 		height: 100%;
-	}
-
-	.overlay {
-		${overlayCommon}
-		${overlayStyles}
-		transition: opacity 0.2s ease;
-		z-index: 89;
-		opacity: 0;
-		&:hover {
-			opacity: 1;
-		}
-	}
-
-	.error-container {
-		${overlayStyles}
-		position: absolute;
-		bottom: 0;
-		left: 0;
-		width: 100%;
-		z-index: 88;
-		padding: var(--spacing2);
-		font-size: var(--font-size--xs);
-	}
-`
-
-const IconContainer = styled.div`
-	text-align: center;
-	padding: var(--spacing1) var(--spacing2);
-	margin: 0 var(--spacing1);
-	transition: transform 0.12s linear;
-	cursor: pointer;
-	:hover {
-		color: var(--gray100);
-		transform: scale(1.03);
 	}
 `
 
@@ -90,7 +56,7 @@ const PureFileItem = ({ id, previewUrl, error, onDelete, onSetMain, isMain }) =>
 					{isMain && <IndicatorIcon color="var(--accent50)" icon="star" />}
 				</IndicatorsContainer>
 				<img src={previewUrl} alt="" />
-				<div className="overlay">
+				<Overlay>
 					<IconContainer onClick={() => onSetMain(id)}>
 						<FontAwesomeIcon icon={["far", "star"]} size="2x" fixedWidth />
 						<TextBlock centered>Główne</TextBlock>
@@ -99,8 +65,8 @@ const PureFileItem = ({ id, previewUrl, error, onDelete, onSetMain, isMain }) =>
 						<FontAwesomeIcon icon="trash" size="2x" fixedWidth />
 						<TextBlock centered>Usuń</TextBlock>
 					</IconContainer>
-				</div>
-				{hasError && <div className="error-container">{error}</div>}
+				</Overlay>
+				{hasError && <ErrorContainer>{error}</ErrorContainer>}
 			</Thumbnail>
 		</Ratio>
 	)

@@ -7,7 +7,8 @@ import { FormElementContainer, commonStyles } from "../../FormElements"
 import { CustomFile } from ".."
 import { ButtonContainer, Button } from "../../Button"
 import FileItem from "./FileItem"
-import { overlayCommon, overlayStyles } from "../../../style-utils"
+import { overlayCommon } from "../../../style-utils"
+import { Overlay } from "./common"
 
 const FileHandlerContainer = styled.div`
 	${commonStyles.basicStyles}
@@ -34,12 +35,6 @@ const FileHandlerContainer = styled.div`
 	position: relative;
 `
 
-const DragOverlay = styled.div`
-	${overlayCommon}
-	${overlayStyles}
-	z-index: 89;
-`
-
 const EmptyState = styled.div`
 	${overlayCommon}
 	${commonStyles.placeholderStyles}
@@ -55,7 +50,7 @@ const FileHandler = ({
 	...rest
 }) => {
 	const onDrop = useCallback(
-		(acceptedFiles) => {
+		(acceptedFiles, rejectedFiles) => {
 			// Map Files to CustomFiles with previews
 			const newFiles = [...acceptedFiles].map((data) => {
 				let previewUrl = window.URL.createObjectURL(data)
@@ -74,6 +69,10 @@ const FileHandler = ({
 		},
 		[value]
 	)
+
+	const onDropRejected = (...args) => {
+		debugger
+	}
 
 	useEffect(
 		() => () => {
@@ -116,6 +115,7 @@ const FileHandler = ({
 
 	const { getRootProps, getInputProps, isDragActive, rootRef, open } = useDropzone({
 		onDrop,
+		onDropRejected,
 		accept: "image/jpeg,image/png",
 		noClick: !isEmpty
 	})
@@ -137,10 +137,11 @@ const FileHandler = ({
 			<FileHandlerContainer {...getRootProps({ hasError: !!error, isEmpty })}>
 				<input {...getInputProps()} />
 
-				{isDragActive && <DragOverlay>Upuść pliki tutaj aby dodać</DragOverlay>}
+				{isDragActive && <Overlay alwaysShow>Upuść pliki tutaj aby dodać</Overlay>}
 
-				{!isEmpty
-					? value.map((file, i) => {
+				{isEmpty
+					? !isDragActive && <EmptyState>Wybierz lub przeciągnij pliki</EmptyState>
+					: value.map((file, i) => {
 							// if no item has isMain, default to the first item
 							const isMain = hasMain ? file.isMain : i === 0
 							// check if item has an error
@@ -157,8 +158,7 @@ const FileHandler = ({
 									error={error}
 								/>
 							)
-					  })
-					: !isDragActive && <EmptyState>Wybierz lub przeciągnij pliki</EmptyState>}
+					  })}
 			</FileHandlerContainer>
 		</FormElementContainer>
 	)

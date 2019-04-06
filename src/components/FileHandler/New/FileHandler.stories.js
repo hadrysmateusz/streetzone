@@ -44,19 +44,19 @@ const validate = ({ files }) => {
 	return errors
 }
 
-const ControlledHandler = ({ items = [], error }) => {
+const ControlledHandler = ({ items = [], ...props }) => {
 	return (
 		<Form
 			onSubmit={action("submit")}
 			validate={validate}
 			initialValues={{ files: items }}
-			render={({ form, handleSubmit, submitting, pristine, values, ...rest }) => {
+			render={({ form, handleSubmit, submitting, pristine, values }) => {
 				return (
 					<form onSubmit={handleSubmit}>
 						<Field name="files">
 							{({ input, meta }) => {
 								const itemErrors = meta.error ? meta.error.specific : null
-								return <FileHandler {...input} error={error} itemErrors={itemErrors} />
+								return <FileHandler {...input} itemErrors={itemErrors} {...props} />
 							}}
 						</Field>
 						<ButtonContainer>
