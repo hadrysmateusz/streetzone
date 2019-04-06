@@ -85,12 +85,28 @@ const FileHandler = ({ info, error, disabled, input: { value, onChange }, ...res
 		onChange(newValue)
 	}
 
+	const onSetMain = (id) => {
+		// Find
+		const newValue = value.map((fileItem) => {
+			if (fileItem.id === id) {
+				fileItem.isMain = true
+			} else {
+				fileItem.isMain = false
+			}
+			return fileItem
+		})
+
+		// Update the state container
+		onChange(newValue)
+	}
+
 	const onClear = () => {
 		// Set state to an empty array
 		onChange([])
 	}
 
 	const isEmpty = !value || value.length === 0
+	const hasMain = value.find((fileItem) => fileItem.isMain)
 
 	const { getRootProps, getInputProps, isDragActive, rootRef, open } = useDropzone({
 		onDrop,
@@ -99,7 +115,6 @@ const FileHandler = ({ info, error, disabled, input: { value, onChange }, ...res
 	})
 
 	const clickDropzone = () => {
-		// rootRef.current.click()
 		open()
 	}
 
@@ -119,13 +134,17 @@ const FileHandler = ({ info, error, disabled, input: { value, onChange }, ...res
 				{isDragActive && <DragOverlay>Upuść pliki tutaj aby dodać</DragOverlay>}
 
 				{!isEmpty
-					? value.map((file) => {
+					? value.map((file, i) => {
+							// if no item has isMain, default to the first item
+							const isMain = hasMain ? file.isMain : i === 0
 							return (
 								<FileItem
 									key={file.id}
 									onDelete={onDelete}
+									onSetMain={onSetMain}
 									id={file.id}
 									previewUrl={file.previewUrl}
+									isMain={isMain}
 								/>
 							)
 					  })
