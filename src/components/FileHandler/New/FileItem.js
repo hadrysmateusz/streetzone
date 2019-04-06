@@ -44,6 +44,7 @@ const Thumbnail = styled.div`
 		width: 100%;
 		z-index: 88;
 		padding: var(--spacing2);
+		font-size: var(--font-size--xs);
 	}
 `
 
