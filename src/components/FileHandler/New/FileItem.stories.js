@@ -8,7 +8,7 @@ const commonProps = {
 	id: 1,
 	onDelete: action("delete"),
 	onSetMain: action("set-main"),
-	previewUrl: "  https://picsum.photos/250/250/?random"
+	previewUrl: "  https://picsum.photos/250/250/"
 }
 
 storiesOf("FileItem", module)
@@ -17,3 +17,5 @@ storiesOf("FileItem", module)
 	))
 	.add("basic", () => <FileItem {...commonProps} />)
 	.add("error", () => <FileItem {...commonProps} error="Some error" />)
+	.add("isMain", () => <FileItem {...commonProps} isMain />)
+	.add("main + error", () => <FileItem {...commonProps} error="Some error" isMain />)

@@ -54,21 +54,35 @@ const IconContainer = styled.div`
 	}
 `
 
-const ErrorIndicator = styled(FontAwesomeIcon)`
-	color: var(--error50);
+const IndicatorIcon = styled(FontAwesomeIcon)`
+	color: ${(p) => p.color};
+`
+
+const IndicatorsContainer = styled.div`
 	position: absolute;
 	z-index: 90;
 	top: var(--spacing2);
 	right: var(--spacing2);
+	display: grid;
+	gap: var(--spacing2);
 `
 
-const PureFileItem = ({ id, previewUrl, error, onDelete, onSetMain }) => {
+const PureFileItem = ({ id, previewUrl, error, onDelete, onSetMain, isMain }) => {
 	const hasError = !!error
 
 	return (
 		<Ratio ratio={6 / 7}>
 			<Thumbnail hasError={hasError}>
-				{hasError && <ErrorIndicator title={error} icon="exclamation-circle" />}
+				<IndicatorsContainer>
+					{hasError && (
+						<IndicatorIcon
+							color="var(--error50)"
+							title={error}
+							icon="exclamation-circle"
+						/>
+					)}
+					{isMain && <IndicatorIcon color="var(--accent50)" icon="star" />}
+				</IndicatorsContainer>
 				<img src={previewUrl} alt="" />
 				<div className="overlay">
 					<IconContainer onClick={() => onSetMain(id)}>
