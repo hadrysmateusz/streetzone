@@ -44,12 +44,12 @@ export const MainContainer = styled.div`
 `
 
 export const Section = styled.div`
-	margin: var(--spacing5) 0;
+	margin: var(--spacing5) auto;
+	max-width: ${(p) => p.theme.breakpoints[1]}px;
 `
 
 export const UserSettingsContainer = styled.div`
-	margin: 0 auto;
-	max-width: ${(p) => p.theme.breakpoints[1]}px;
+	max-width: ${(p) => p.theme.breakpoints[5]}px;
 `
 
 export const FollowedUsersContainer = styled.div`

@@ -1,14 +1,13 @@
 import React from "react"
 import { Form, Field } from "react-final-form"
-import styled from "styled-components/macro"
-import { compose } from "recompose"
+import styled, { css } from "styled-components/macro"
 
 import Button, { LoaderButton, ButtonContainer } from "../Button"
 import { FieldRow } from "../Basics"
 import { Input, Textarea } from "../FormElements"
-import { withAuthentication } from "../UserSession"
-import { withFirebase } from "../Firebase"
 import validate from "./validate"
+import FileHandlerSingle from "../FileHandler/New/FileHandlerSingle"
+import { TextBlock } from "../StyledComponents"
 
 const FieldsContainer = styled.div`
 	margin-top: var(--spacing3);
@@ -18,7 +17,8 @@ const FieldsContainer = styled.div`
 	grid-template-areas:
 		"name email"
 		"city phone"
-		"info info";
+		"info info"
+		"photo photo";
 `
 
 const ProfileEditForm = (props) => {
@@ -30,6 +30,9 @@ const ProfileEditForm = (props) => {
 			render={({ form, handleSubmit, submitting, pristine, values, ...rest }) => {
 				return (
 					<form onSubmit={handleSubmit}>
+						<TextBlock size="m" bold uppercase>
+							Podstawowe informacje
+						</TextBlock>
 						<FieldsContainer>
 							{/* Name */}
 							<FieldRow gridArea="name">
@@ -109,6 +112,28 @@ const ProfileEditForm = (props) => {
 									}}
 								</Field>
 							</FieldRow>
+
+							{/* Avatar */}
+							<FieldRow gridArea="photo">
+								<TextBlock size="m" bold uppercase>
+									Zdjęcie profilowe
+								</TextBlock>
+								<Field name="file">
+									{({ input, meta }) => {
+										return (
+											<FileHandlerSingle
+												{...input}
+												containerStyles={css`
+													width: 220px;
+													height: 220px;
+													border-radius: 50%;
+													margin: var(--spacing3) 0;
+												`}
+											/>
+										)
+									}}
+								</Field>
+							</FieldRow>
 						</FieldsContainer>
 
 						<ButtonContainer centered>
@@ -140,7 +165,4 @@ const ProfileEditForm = (props) => {
 	)
 }
 
-export default compose(
-	withAuthentication,
-	withFirebase
-)(ProfileEditForm)
+export default ProfileEditForm
