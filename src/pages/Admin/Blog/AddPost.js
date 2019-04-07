@@ -49,7 +49,7 @@ const AddPost = () => {
 	const firebase = useFirebase()
 
 	const onSubmit = async (
-		{ section, mainImage, title, author, mainContent, dropsAt },
+		{ section, mainImage, title, author, mainContent, dropsAt, tags },
 		actions
 	) => {
 		try {
@@ -72,7 +72,8 @@ const AddPost = () => {
 				mainImageURL,
 				createdAt: Date.now(),
 				editedAt: null,
-				comments: []
+				comments: [],
+				tags
 			}
 
 			if (author) {
