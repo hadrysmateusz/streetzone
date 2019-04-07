@@ -79,6 +79,7 @@ export class ItemsManagement extends React.Component {
 					<input type="text" onChange={this.onChange} value={inputValue} />
 					<input type="submit" />
 				</form>
+
 				{foundItem && (
 					<div>
 						<h3>Found item</h3>

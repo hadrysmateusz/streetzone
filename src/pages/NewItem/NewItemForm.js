@@ -10,7 +10,7 @@ import DropdownFinalform from "../../components/DropdownFinalform"
 import InfoBox from "../../components/InfoBox"
 import { Input, Textarea } from "../../components/FormElements"
 import { TextBlock } from "../../components/StyledComponents"
-import FileHandler from "../../components/FileHandler/New/FileHandler"
+import { FileHandler } from "../../components/FileHandler"
 import { StyledLink } from "../../components/Basics"
 
 import validate from "./validate"

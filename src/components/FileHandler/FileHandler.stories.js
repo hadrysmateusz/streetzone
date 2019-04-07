@@ -3,7 +3,7 @@ import { storiesOf } from "@storybook/react"
 import { Form, Field } from "react-final-form"
 import FileHandler from "./FileHandler"
 import { action } from "@storybook/addon-actions"
-import Button, { ButtonContainer } from "../../Button"
+import Button, { ButtonContainer } from "../Button"
 
 const items = [
 	{

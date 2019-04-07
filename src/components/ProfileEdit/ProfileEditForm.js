@@ -6,7 +6,7 @@ import Button, { LoaderButton, ButtonContainer } from "../Button"
 import { FieldRow } from "../Basics"
 import { Input, Textarea } from "../FormElements"
 import validate from "./validate"
-import FileHandlerSingle from "../FileHandler/New/FileHandlerSingle"
+import FileHandlerSingle from "../FileHandler/FileHandlerSingle"
 import { TextBlock } from "../StyledComponents"
 
 const FieldsContainer = styled.div`

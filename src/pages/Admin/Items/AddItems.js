@@ -53,6 +53,7 @@ class NewItemPage extends Component {
 				status: ITEM_SCHEMA.status.available,
 				createdAt: Date.now(),
 				bumpedAt: Date.now(),
+				promotedAt: Date.now(),
 				modifiedAt: null,
 				itemId,
 				userId: values.userId,
@@ -218,7 +219,16 @@ class NewItemPage extends Component {
 							{/* Files (handled by separate component) */}
 							<FieldRow gridArea="files">
 								<FieldLabel>Zdjęcia</FieldLabel>
-								<Field name="files" component={FileHandler} />
+
+								<Field name="files">
+									{({ input, meta }) => {
+										const error = meta.error && meta.touched ? meta.error.main : null
+										const itemErrors = meta.error ? meta.error.specific : null
+										return (
+											<FileHandler {...input} error={error} itemErrors={itemErrors} />
+										)
+									}}
+								</Field>
 							</FieldRow>
 
 							<LoaderButton

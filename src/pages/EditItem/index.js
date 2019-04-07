@@ -20,6 +20,13 @@ const formatDataForEditForm = (price, description, files) => ({
 	modifiedAt: Date.now()
 })
 
+const formatDataForDb = (price, description, attachmentRefs) => ({
+	price: Number.parseInt(price),
+	description: description.trim() || "",
+	attachments: attachmentRefs,
+	modifiedAt: Date.now()
+})
+
 const EditItemPage = ({ match, history }) => {
 	const firebase = useFirebase()
 	const authUser = useAuthentication()
@@ -56,10 +63,8 @@ const EditItemPage = ({ match, history }) => {
 		}
 	}
 
-	const onSubmit = async (values) => {
+	const onSubmit = async ({ files, price, description }) => {
 		try {
-			const files = values.files
-
 			// Upload NEW files and get ALL refs
 			const newRefs = await Promise.all(
 				files.map(async (file) => {
@@ -73,9 +78,11 @@ const EditItemPage = ({ match, history }) => {
 			)
 
 			// Format the data
-			const data = formatDataForEditForm(values.price, values.description, files)
+			const data = formatDataForDb(price, description, newRefs)
 
 			// TODO: add a check against an external schema to make sure all values are present
+
+			debugger
 
 			// Update item
 			await firebase.item(match.params.id).update(data)
