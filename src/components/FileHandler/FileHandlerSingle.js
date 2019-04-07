@@ -1,147 +1,134 @@
-import React, { Component } from "react"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import React, { useCallback, useEffect } from "react"
+import PropTypes from "prop-types"
+import { useDropzone } from "react-dropzone"
 import styled from "styled-components/macro"
 
-import LoadingSpinner from "../LoadingSpinner"
+import { FormElementContainer, commonStyles } from "../FormElements"
+import { CustomFile } from "."
+import { TextBlock } from "../StyledComponents"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { IconContainer, Overlay } from "./common"
 
-import CustomFile from "./CustomFile"
+const FileHandlerContainer = styled.div`
+	${commonStyles.basicStyles}
+	min-height: 150px;
 
-const size = "160px"
+	&[disabled] {
+		${commonStyles.disabledStyles}
+	}
 
-const PreviewContainer = styled.div`
-	width: ${size};
-	height: ${size};
+	&:not([disabled]) {
+		:hover {
+			${commonStyles.hoverStyles}
+		}
+		:focus {
+			${commonStyles.focusStyles}
+		}
+	}
+
+	height: 100%;
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	overflow: hidden;
 	position: relative;
-	margin: 5px auto 20px;
+
+	img {
+		object-fit: cover;
+		width: 100%;
+		height: 100%;
+	}
+
+	${(p) => p.containerStyles}
 `
 
-const PreviewOverlay = styled.div`
-	width: ${size};
-	height: ${size};
-	background: rgba(0, 0, 0, 0.32);
-	border-radius: 50%;
-	position: absolute;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-`
+const FileHandlerSingle = ({
+	info,
+	error,
+	disabled,
+	value,
+	onChange,
+	containerStyles,
+	...rest
+}) => {
+	const onDrop = useCallback(
+		(acceptedFiles, rejectedFiles) => {
+			// Create CustomFile with preview
+			const file = acceptedFiles[0]
+			let previewUrl = window.URL.createObjectURL(file)
+			let customFile = new CustomFile({ previewUrl, data: file })
 
-const OverlayButton = styled.div`
-	padding: 13px;
-	color: #eee;
-	transition: all;
-	&:hover {
-		color: white;
-		transform: scale(1.13);
-	}
-	::after {
-		content: "${(p) => p.text}";
-		display: block;
-		text-align: center;
-		padding-top: 4px;
-		text-shadow: 1px 1px solid black;
-	}
-`
+			// Reset the file input to prevent bugs
+			rootRef.current.value = null
 
-const Preview = styled.div`
-	width: ${size};
-	height: ${size};
-	border-radius: 50%;
-	background-repeat: no-repeat;
-	background-size: cover;
-	background-position: center;
-	background-image: ${(props) => `url(${props.url})`};
-`
+			// Update the state container
+			onChange(customFile)
+		},
+		[value]
+	)
 
-const EmptyPreview = styled.div`
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	width: ${size};
-	height: ${size};
-	border-radius: 50%;
-	border: 2px dashed ${(p) => p.theme.colors[50]};
-	color: ${(p) => p.theme.colors[50]};
-`
-
-class FileHandlerSingle extends Component {
-	fileInput = React.createRef()
-
-	clickFileInput = () => {
-		this.fileInput.current.click()
+	const onDropRejected = (...args) => {
+		debugger
 	}
 
-	onChange = async (event) => {
-		// Get the only file
-		const newFile = event.target.files[0]
+	useEffect(
+		() => () => {
+			// Revoke the data url to avoid memory leaks
+			URL.revokeObjectURL(value.previewUrl)
+		},
+		[value]
+	)
 
-		// Reset the file input to prevent bugs
-		event.target.value = null
-
-		// Create CustomFile Object with previewUrl
-		let previewUrl = window.URL.createObjectURL(newFile)
-		const file = new CustomFile({ previewUrl, data: newFile })
-
-		// Update value in final-form
-		this.props.input.onChange(file)
+	const onClear = () => {
+		onChange(null)
 	}
 
-	deleteFile = async () => {
-		// Update value in final-form
-		this.props.input.onChange(undefined)
+	const isEmpty = !value || value.length === 0
+
+	const { getRootProps, getInputProps, isDragActive, rootRef, open } = useDropzone({
+		onDrop,
+		onDropRejected,
+		accept: "image/jpeg,image/png",
+		noClick: true,
+		multiple: false
+	})
+
+	const clickDropzone = () => {
+		open()
 	}
 
-	reset = async () => {
-		// Reset value in final-form to initial-value
-		this.props.input.onChange(this.props.meta.initial)
-	}
+	return (
+		<FormElementContainer error={error} info={info} {...rest}>
+			<FileHandlerContainer
+				{...getRootProps({ hasError: !!error, isEmpty, containerStyles })}
+			>
+				<input {...getInputProps()} />
 
-	render() {
-		const { input, meta, isLoading, ...rest } = this.props
+				{!isEmpty && <img src={value.previewUrl} alt="" />}
 
-		const hasContent = !!input.value
+				<Overlay alwaysShow>
+					<IconContainer onClick={clickDropzone}>
+						<FontAwesomeIcon icon="plus" size="2x" fixedWidth />
+						<TextBlock centered>{!isEmpty ? "Zmień" : "Dodaj"}</TextBlock>
+					</IconContainer>
+					<IconContainer onClick={onClear}>
+						<FontAwesomeIcon icon="trash" size="2x" fixedWidth />
+						<TextBlock centered>Usuń</TextBlock>
+					</IconContainer>
+				</Overlay>
+			</FileHandlerContainer>
+		</FormElementContainer>
+	)
+}
 
-		return (
-			<div>
-				{hasContent ? (
-					<PreviewContainer>
-						<PreviewOverlay>
-							<OverlayButton text="Zmień" onClick={this.clickFileInput}>
-								<FontAwesomeIcon icon="plus" />
-							</OverlayButton>
-							<OverlayButton text="Usuń" onClick={this.deleteFile}>
-								<FontAwesomeIcon icon="trash" />
-							</OverlayButton>
-						</PreviewOverlay>
-						<Preview url={input.value.previewUrl} />
-					</PreviewContainer>
-				) : (
-					<PreviewContainer>
-						{isLoading ? (
-							<LoadingSpinner width={size} height={size} />
-						) : (
-							<>
-								<PreviewOverlay onClick={this.clickFileInput}>
-									<OverlayButton text="Dodaj">
-										<FontAwesomeIcon icon="plus" />
-									</OverlayButton>
-								</PreviewOverlay>
-								<EmptyPreview />
-							</>
-						)}
-					</PreviewContainer>
-				)}
-				<input
-					{...rest}
-					type="file"
-					accept="image/*"
-					onChange={this.onChange}
-					hidden
-					ref={this.fileInput}
-				/>
-			</div>
-		)
-	}
+FileHandlerSingle.propTypes = {
+	info: PropTypes.string,
+	error: PropTypes.string,
+	disabled: PropTypes.bool,
+	value: PropTypes.object.isRequired,
+	onChange: PropTypes.func.isRequired,
+	containerStyles: PropTypes.any
 }
 
 export default FileHandlerSingle

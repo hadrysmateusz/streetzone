@@ -40,7 +40,8 @@ const NewItemForm = ({ initialValues, onSubmit, history, isLoading }) => {
 			category: "",
 			price: "",
 			size: "",
-			description: ""
+			description: "",
+			files: []
 		}
 	}
 	return (
@@ -224,8 +225,23 @@ const NewItemForm = ({ initialValues, onSubmit, history, isLoading }) => {
 						</TextBlock>
 
 						{/* Files (handled by separate component) */}
+
+						<InfoBox span={2}>
+							<TextBlock>
+								Co najmniej na jednym zdjęciu powinna znajdować się kartka z twoją nazwą
+								użytkownika. Zdjęcie główne zostanie miniaturą widoczną m.in. na stronie
+								głównej.
+							</TextBlock>
+						</InfoBox>
+
 						<FormElement>
-							<Field name="files" isLoading={isLoading} component={FileHandler} />
+							<Field name="files">
+								{({ input, meta }) => {
+									const error = meta.error && meta.touched ? meta.error.main : null
+									const itemErrors = meta.error ? meta.error.specific : null
+									return <FileHandler {...input} error={error} itemErrors={itemErrors} />
+								}}
+							</Field>
 						</FormElement>
 
 						<LoaderButton

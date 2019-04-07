@@ -1,169 +1,176 @@
-import React, { Component } from "react"
+import React, { useCallback, useEffect } from "react"
+import PropTypes from "prop-types"
+import { useDropzone } from "react-dropzone"
 import styled from "styled-components/macro"
-import Dropzone from "react-dropzone"
 
-import Button from "../Button"
-import { FormError } from "../FormElements"
-
+import { FormElementContainer, commonStyles } from "../FormElements"
+import { CustomFile } from "."
+import { ButtonContainer, Button } from "../Button"
 import FileItem from "./FileItem"
-import CustomFile from "./CustomFile"
+import { overlayCommon } from "../../style-utils"
+import { Overlay } from "./common"
 
-const FilesContainer = styled.div`
-	position: relative;
+const FileHandlerContainer = styled.div`
+	${commonStyles.basicStyles}
+	min-height: 150px;
+
+	&[disabled] {
+		${commonStyles.disabledStyles}
+	}
+
+	&:not([disabled]) {
+		:hover {
+			/* only apply hover styles if the container is empty */
+			${(p) => p.isEmpty && commonStyles.hoverStyles}
+		}
+		:focus {
+			${commonStyles.focusStyles}
+		}
+	}
+
 	display: grid;
-	grid-gap: 10px;
-	grid-template-columns: 1fr 1fr;
-
-	min-height: 144px;
-
-	@media (min-width: ${(p) => p.theme.breakpoints[0]}px) {
-		grid-template-columns: 1fr 1fr 1fr;
-	}
-
-	user-select: none;
-	outline: none;
-	margin: 10px 0 0 0;
-	padding: 10px;
-	border: 1px solid #c6c6c6;
-	background: white;
-	.empty-state {
-		position: absolute;
-		top: 0;
-		left: 0;
-
-		width: 100%;
-		height: 100%;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		color: ${(p) => p.theme.colors.gray[25]};
-	}
-	.overlay {
-		position: absolute;
-		top: 0;
-		left: 0;
-
-		z-index: 89;
-		background: rgba(0, 0, 0, 0.32);
-		text-shadow: 1px 1px rgba(0, 0, 0, 0.2);
-		color: white;
-	}
+	grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+	gap: var(--spacing3);
+	padding: var(--spacing3);
+	position: relative;
 `
 
-class FileHandlerUnstyled extends Component {
-	dropzone = React.createRef()
+const EmptyState = styled.div`
+	${overlayCommon}
+	${commonStyles.placeholderStyles}
+`
 
-	clickDropzone = () => {
-		this.dropzone.current.open()
-	}
+const FileHandler = ({ info, error, itemErrors, disabled, value, onChange, ...rest }) => {
+	// make sure the value is always an array to prevent errors
+	if (!value) value = []
 
-	onDrop = (acceptedFiles, rejectedFiles) => {
-		// Get old files from final-form
-		const oldFiles = this.props.input.value || []
-
-		// Convert FileList into an array
-		const newFiles = acceptedFiles
-
-		// Reset the file input to prevent bugs
-		this.dropzone.current.value = null
-
-		// Map files to custom files with previews
-		const files = oldFiles.concat(
-			newFiles.map((newFile) => {
-				let previewUrl = window.URL.createObjectURL(newFile)
-				return new CustomFile({ previewUrl, data: newFile })
+	const onDrop = useCallback(
+		(acceptedFiles, rejectedFiles) => {
+			// Map Files to CustomFiles with previews
+			const newFiles = [...acceptedFiles].map((data) => {
+				let previewUrl = window.URL.createObjectURL(data)
+				let customFile = new CustomFile({ previewUrl, data })
+				return customFile
 			})
-		)
 
-		// Update value in final-form
-		this.props.input.onChange(files)
+			// Reset the file input to prevent bugs
+			rootRef.current.value = null
+
+			// Merge old files and new files
+			const newValue = [...value, ...newFiles]
+
+			// Update the state container
+			onChange(newValue)
+		},
+		[value]
+	)
+
+	const onDropRejected = (...args) => {
+		debugger
 	}
 
-	deleteFileItem = async (id) => {
-		// Get files from final-form
-		const files = this.props.input.value
+	useEffect(
+		() => () => {
+			// Revoke the data urls to avoid memory leaks
+			value.forEach((file) => URL.revokeObjectURL(file.previewUrl))
+		},
+		[value]
+	)
 
-		// Update value in final-form
-		await this.props.input.onChange(files.filter((fileItem) => fileItem.id !== id))
+	const onDelete = (id) => {
+		// Filter out the file with given id
+		const newValue = value.filter((fileItem) => fileItem.id !== id)
+
+		// Update the state container
+		onChange(newValue)
 	}
 
-	clear = async () => {
-		await this.props.input.onChange([])
+	const onSetMain = (id) => {
+		// Find
+		const newValue = value.map((fileItem) => {
+			if (fileItem.id === id) {
+				fileItem.isMain = true
+			} else {
+				fileItem.isMain = false
+			}
+			return fileItem
+		})
+
+		// Update the state container
+		onChange(newValue)
 	}
 
-	render() {
-		const { input, meta, isLoading, ...rest } = this.props
-		const hasContent = Array.isArray(input.value) && input.value.length > 0
-
-		return (
-			<div {...rest}>
-				<div className="buttonContainer">
-					<Button
-						type="button"
-						onClick={this.clickDropzone}
-						disabled={meta.submitting || isLoading}
-					>
-						{hasContent ? "Dodaj pliki" : "Wybierz pliki"}
-					</Button>
-					<Button
-						type="button"
-						onClick={this.clear}
-						disabled={
-							meta.submitting || isLoading || !input.value || input.value.length === 0
-						}
-					>
-						Usuń wszystkie
-					</Button>
-				</div>
-				<Dropzone
-					onDrop={this.onDrop}
-					accept={"image/jpeg,image/png"}
-					disableClick={hasContent}
-					ref={this.dropzone}
-				>
-					{({ getRootProps, getInputProps, isDragActive }) => {
-						return (
-							<FilesContainer {...getRootProps()}>
-								<input {...getInputProps()} />
-								{isDragActive && (
-									<div className="empty-state overlay">Upuść pliki tutaj aby dodać</div>
-								)}
-
-								{hasContent
-									? input.value.map((file, i) => {
-											const error = meta.error && meta.error.specific[i]
-											return (
-												<FileItem
-													key={i}
-													onDelete={this.deleteFileItem}
-													fileItem={file}
-													error={error}
-												/>
-											)
-									  })
-									: !isDragActive && (
-											<div className="empty-state">Wybierz lub przeciągnij pliki</div>
-									  )}
-							</FilesContainer>
-						)
-					}}
-				</Dropzone>
-
-				<FormError
-					message={meta.error ? meta.error.main : ""}
-					show={meta.error && (meta.dirty || meta.submitFailed) && meta.error.main}
-				/>
-			</div>
-		)
+	const onClear = () => {
+		// Set state to an empty array
+		onChange([])
 	}
+
+	const isEmpty = !value || value.length === 0
+	const hasMain = value.find((fileItem) => fileItem.isMain)
+
+	const { getRootProps, getInputProps, isDragActive, rootRef, open } = useDropzone({
+		onDrop,
+		onDropRejected,
+		accept: "image/jpeg,image/png",
+		noClick: !isEmpty
+	})
+
+	const clickDropzone = () => {
+		open()
+	}
+
+	return (
+		<FormElementContainer error={error} info={info} {...rest}>
+			<ButtonContainer>
+				<Button type="button" onClick={clickDropzone}>
+					{!isEmpty ? "Dodaj pliki" : "Wybierz pliki"}
+				</Button>
+				<Button type="button" onClick={onClear} disabled={isEmpty}>
+					Usuń wszystkie
+				</Button>
+			</ButtonContainer>
+			<FileHandlerContainer {...getRootProps({ hasError: !!error, isEmpty })}>
+				<input {...getInputProps()} />
+
+				{isDragActive && <Overlay alwaysShow>Upuść pliki tutaj aby dodać</Overlay>}
+
+				{isEmpty
+					? !isDragActive && <EmptyState>Wybierz lub przeciągnij pliki</EmptyState>
+					: value.map((file, i) => {
+							// if no item has isMain, default to the first item
+							const isMain = hasMain ? file.isMain : i === 0
+							// check if item has an error
+							const error = itemErrors ? itemErrors[file.id] : null
+
+							return (
+								<FileItem
+									key={file.id}
+									onDelete={onDelete}
+									onSetMain={onSetMain}
+									id={file.id}
+									previewUrl={file.previewUrl}
+									isMain={isMain}
+									error={error}
+								/>
+							)
+					  })}
+			</FileHandlerContainer>
+		</FormElementContainer>
+	)
 }
 
-const FileHandler = styled(FileHandlerUnstyled)`
-	.buttonContainer {
-		display: grid;
-		grid-template-columns: 1fr 1fr;
-		gap: 10px;
-	}
-`
+FileHandler.propTypes = {
+	info: PropTypes.string,
+	error: PropTypes.string,
+	itemErrors: PropTypes.array,
+	disabled: PropTypes.bool,
+	value: PropTypes.array.isRequired,
+	onChange: PropTypes.func.isRequired
+}
+
+FileHandler.defaultProps = {
+	value: [],
+	itemErrors: []
+}
 
 export default FileHandler

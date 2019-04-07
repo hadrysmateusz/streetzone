@@ -171,8 +171,14 @@ const AddDesigner = () => {
 								)
 							}}
 						</Field>
+
 						<GradientSwatch colorA={values.colorA} colorB={values.colorB} />
-						<Field name="logo" component={FileHandlerSingle} />
+
+						<Field name="logo">
+							{({ input, meta }) => {
+								return <FileHandlerSingle {...input} error={meta.error} />
+							}}
+						</Field>
 
 						<ButtonContainer centered>
 							<LoaderButton

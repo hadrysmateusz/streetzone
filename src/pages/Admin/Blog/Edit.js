@@ -2,17 +2,14 @@ import React, { useState, useEffect } from "react"
 import { withRouter } from "react-router-dom"
 import shortid from "shortid"
 import Datetime from "react-datetime"
-
-import { TextBlock } from "../../../components/StyledComponents"
-import { LoaderButton, ButtonContainer } from "../../../components/Button"
-import { Input } from "../../../components/FormElements"
-import { Text } from "../../../components/StyledComponents"
-import { FileHandlerSingle } from "../../../components/FileHandler"
 import { Form, Field } from "react-final-form"
+
+import { TextBlock, Text } from "../../../components/StyledComponents"
+import { LoaderButton, ButtonContainer } from "../../../components/Button"
+import { FileHandlerSingle, CustomFile } from "../../../components/FileHandler"
 import useFirebase from "../../../hooks/useFirebase"
-import { Textarea } from "../../../components/FormElements"
+import { Textarea, Input } from "../../../components/FormElements"
 import MultiTextInputFinalform from "../../../components/MultiTextInputFinalform"
-import { CustomFile } from "../../../components/FileHandler"
 
 import "react-datetime/css/react-datetime.css"
 import LoadingSpinner from "../../../components/LoadingSpinner"
@@ -191,7 +188,11 @@ const BlogEdit = ({ match }) => {
 									</>
 								)}
 
-								<Field name="mainImage" component={FileHandlerSingle} />
+								<Field name="mainImage">
+									{({ input, meta }) => {
+										return <FileHandlerSingle {...input} />
+									}}
+								</Field>
 
 								<Field name="tags" type="select">
 									{({ input, meta }) => {

@@ -73,7 +73,13 @@ const EditItemForm = ({ initialValues, onSubmit, history, isLoading }) => (
 					{/* Files (handled by separate component) */}
 					<FieldRow gridArea="files">
 						<FieldLabel>Zdjęcia </FieldLabel>
-						<Field name="files" isLoading={isLoading} component={FileHandler} />
+						<Field name="files">
+							{({ input, meta }) => {
+								const error = meta.error && meta.touched ? meta.error.main : null
+								const itemErrors = meta.error ? meta.error.specific : null
+								return <FileHandler {...input} error={error} itemErrors={itemErrors} />
+							}}
+						</Field>
 					</FieldRow>
 
 					<LoaderButton

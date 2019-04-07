@@ -17,7 +17,7 @@ export const PageHeaderOuter = styled.div`
 	position: sticky;
 	top: 0;
 	z-index: 80;
-	background: white;
+	background: rgb(255, 255, 255, 0.95);
 	border-bottom: 1px solid white;
 	transition: border-color 0.14s linear;
 	${(p) => p.scrollPosition !== 0 && "border-color: var(--gray75);"}

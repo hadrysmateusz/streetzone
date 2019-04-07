@@ -46,3 +46,9 @@ export const overlayCommon = css`
 	justify-content: center;
 	align-items: center;
 `
+
+export const overlayCommonStyles = css`
+	background: rgba(0, 0, 0, 0.36);
+	text-shadow: 1px 1px rgba(0, 0, 0, 0.25);
+	color: white;
+`

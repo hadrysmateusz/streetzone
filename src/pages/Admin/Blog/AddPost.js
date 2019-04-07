@@ -162,7 +162,11 @@ const AddPost = () => {
 							</>
 						)}
 
-						<Field name="mainImage" component={FileHandlerSingle} />
+						<Field name="mainImage">
+							{({ input, meta }) => {
+								return <FileHandlerSingle {...input} error={meta.error} />
+							}}
+						</Field>
 
 						<Field name="tags" type="select">
 							{({ input, meta }) => {

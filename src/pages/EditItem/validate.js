@@ -17,7 +17,7 @@ export default (values) => {
 	// Files
 	errors.files = (() => {
 		let main
-		let specific = []
+		let specific = {}
 
 		if (!files || files.length === 0) {
 			// Empty field
@@ -28,9 +28,11 @@ export default (values) => {
 				main = FORM_ERR.TOO_MANY_FILES
 			}
 			// Attachment too big
-			files.forEach((file, i) => {
+			files.forEach((file) => {
+				const fileId = file.id
+
 				if (file.data.size > CONST.ATTACHMENTS_MAX_SIZE) {
-					specific[i] = FORM_ERR.FILE_TOO_BIG
+					specific[fileId] = FORM_ERR.FILE_TOO_BIG
 				}
 			})
 		}
