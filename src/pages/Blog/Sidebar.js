@@ -102,7 +102,7 @@ const Sidebar = ({ match, history, items, currentBreakpoint }) => {
 			label: "sekcje",
 			options: ["Wszystko", "Artykuły", "Dropy", "Wiedza"].map((value) => ({
 				value: "section-" + value,
-				label: value
+				label: value.toUpperCase()
 			}))
 		},
 		{
