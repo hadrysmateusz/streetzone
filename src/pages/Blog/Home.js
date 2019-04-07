@@ -5,7 +5,7 @@ import { compose } from "recompose"
 
 import LoadingSpinner from "../../components/LoadingSpinner"
 import { withFirebase } from "../../components/Firebase"
-import { BlogPageContainer, PageContainer } from "../../components/Containers"
+import { PageContainer } from "../../components/Containers"
 import { TextBlock } from "../../components/StyledComponents"
 
 import InstantSearchBlogWrapper from "./InstantSearchBlogWrapper"
@@ -89,49 +89,47 @@ export class BlogHomePage extends Component {
 		// const selectedSection = decodeURIComponent(match.params.section)
 
 		return (
-			<BlogPageContainer maxWidth={5}>
+			<PageContainer maxWidth={5}>
 				{isLoading ? (
 					<LoadingSpinner />
 				) : (
-					<PageContainer>
-						<InstantSearchBlogWrapper>
-							<PromotedContainer>
-								<PromotedPost {...promotedPosts[0]} />
-								<PromotedPost {...promotedPosts[1]} />
-								<PromotedPost {...promotedPosts[2]} />
-							</PromotedContainer>
-							<PageNav />
-							<MainGrid>
-								<Sidebar />
-								<ContentArea>
-									<Section
-										title="Nadchodzące Dropy"
-										hasMore
-										linkTo={ROUTES.BLOG_SECTION.replace(":section", "Dropy")}
-									>
-										{drops.map((post) => (
-											<DropPost {...post} />
-										))}
-									</Section>
-									<Section
-										title="Czyszczenie i pielęgnacja"
-										hasMore
-										linkTo={ROUTES.BLOG_TAG.replace(":section", "Wiedza").replace(
-											":tag",
-											"Pielęgnacja"
-										)}
-									>
-										{carePosts.map((post) => (
-											<SmallPost {...post} />
-										))}
-									</Section>
-									<InfinitePosts />
-								</ContentArea>
-							</MainGrid>
-						</InstantSearchBlogWrapper>
-					</PageContainer>
+					<InstantSearchBlogWrapper>
+						<PromotedContainer>
+							<PromotedPost {...promotedPosts[0]} />
+							<PromotedPost {...promotedPosts[1]} />
+							<PromotedPost {...promotedPosts[2]} />
+						</PromotedContainer>
+						<PageNav />
+						<MainGrid>
+							<Sidebar />
+							<ContentArea>
+								<Section
+									title="Nadchodzące Dropy"
+									hasMore
+									linkTo={ROUTES.BLOG_SECTION.replace(":section", "Dropy")}
+								>
+									{drops.map((post) => (
+										<DropPost {...post} />
+									))}
+								</Section>
+								<Section
+									title="Czyszczenie i pielęgnacja"
+									hasMore
+									linkTo={ROUTES.BLOG_TAG.replace(":section", "Wiedza").replace(
+										":tag",
+										"Pielęgnacja"
+									)}
+								>
+									{carePosts.map((post) => (
+										<SmallPost {...post} />
+									))}
+								</Section>
+								<InfinitePosts />
+							</ContentArea>
+						</MainGrid>
+					</InstantSearchBlogWrapper>
 				)}
-			</BlogPageContainer>
+			</PageContainer>
 		)
 	}
 }

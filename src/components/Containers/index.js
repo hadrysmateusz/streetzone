@@ -27,18 +27,6 @@ const PageContainer = styled.section`
 	}
 `
 
-const BlogPageContainer = styled.section`
-	${pageContainerWidth}
-	margin: 0 auto;
-	width: 100%;
-	flex: 1;
-	display: flex;
-	flex-direction: column;
-	@media (min-width: ${pageContainerWidth}) {
-		padding: 20px;
-	}
-`
-
 const OuterGrayContainer = styled.section`
 	width: 100%;
 	background: var(--gray100);
@@ -50,4 +38,4 @@ const GrayContainer = ({ padded, children, ...props }) => (
 	</OuterGrayContainer>
 )
 
-export { PageContainer, BlogPageContainer, GrayContainer }
+export { PageContainer, GrayContainer }
