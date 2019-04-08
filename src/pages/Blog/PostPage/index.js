@@ -4,11 +4,11 @@ import { withRouter } from "react-router-dom"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import styled from "styled-components/macro"
 
-import { PageContainer } from "../../components/Containers"
-import { TextBlock } from "../../components/StyledComponents"
-import PageNav from "./PageNav"
-import useFirebase from "../../hooks/useFirebase"
-import { ImageContainer, Image, ShareButtons } from "./StyledComponents"
+import { PageContainer } from "../../../components/Containers"
+import { TextBlock } from "../../../components/StyledComponents"
+import PageNav from "../PageNav"
+import useFirebase from "../../../hooks/useFirebase"
+import { ImageContainer, Image, ShareButtons } from "../StyledComponents"
 
 const OuterContainer = styled.div`
 	display: grid;

@@ -1,14 +1,14 @@
 import React from "react"
 import { withRouter, Redirect } from "react-router-dom"
 
-import { MainGrid, ContentArea } from "./StyledComponents"
-import { InfinitePosts } from "./PostPreviews"
+import { MainGrid, ContentArea } from "../StyledComponents"
+import InfinitePosts from "../InfinitePostsList"
 import Sidebar from "./Sidebar"
-import InstantSearchBlogWrapper from "./InstantSearchBlogWrapper"
-import { VirtualMenu } from "../../components/Algolia/Virtual"
-import { PageContainer } from "../../components/Containers"
-import PageNav from "./PageNav"
-import { ROUTES } from "../../constants"
+import InstantSearchBlogWrapper from "../InstantSearchBlogWrapper"
+import { VirtualMenu } from "../../../components/Algolia/Virtual"
+import { PageContainer } from "../../../components/Containers"
+import PageNav from "../PageNav"
+import { ROUTES } from "../../../constants"
 
 const BlogSectionPage = ({ match }) => {
 	const selectedSection = decodeURIComponent(match.params.section)

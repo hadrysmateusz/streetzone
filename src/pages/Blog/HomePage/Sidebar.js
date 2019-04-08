@@ -4,16 +4,16 @@ import { withBreakpoints } from "react-breakpoints"
 import { compose } from "recompose"
 import { connectRefinementList } from "react-instantsearch-dom"
 
-import { Text } from "../../components/StyledComponents"
-import { Dropdown } from "../../components/FormElements"
-import { ROUTES } from "../../constants"
-import { withProps } from "../../HOCs"
+import { Text } from "../../../components/StyledComponents"
+import { Dropdown } from "../../../components/FormElements"
+import { ROUTES } from "../../../constants"
+import { withProps } from "../../../HOCs"
 
 import {
 	SidebarContainer,
 	TagsNavContainer,
 	SectionNavContainer
-} from "./StyledComponents"
+} from "../StyledComponents"
 
 const TagsNavSmart = ({ currentSection, items }) => {
 	return items.map((item) => {

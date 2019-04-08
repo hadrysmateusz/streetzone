@@ -2,7 +2,7 @@ import React from "react"
 import { storiesOf } from "@storybook/react"
 import { PureBlogPost } from "./Post"
 import StoryRouter from "storybook-react-router"
-import themeDecorator from "../../storybook-decorators/theme"
+import themeDecorator from "../../../storybook-decorators/theme"
 
 const mockedPost = {
 	id: "some_id",

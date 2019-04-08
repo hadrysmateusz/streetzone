@@ -127,27 +127,27 @@ const Designers = Loadable({
 })
 
 const BlogHome = Loadable({
-	loader: () => import("../../pages/Blog/Home"),
+	loader: () => import("../../pages/Blog/HomePage/Home"),
 	loading: LoadableComponentSpinner
 })
 
 const BlogSection = Loadable({
-	loader: () => import("../../pages/Blog/Section"),
+	loader: () => import("../../pages/Blog/HomePage/Section"),
 	loading: LoadableComponentSpinner
 })
 
 const BlogBase = Loadable({
-	loader: () => import("../../pages/Blog"),
+	loader: () => import("../../pages/Blog/"),
 	loading: LoadableComponentSpinner
 })
 
 const BlogPost = Loadable({
-	loader: () => import("../../pages/Blog/Post"),
+	loader: () => import("../../pages/Blog/PostPage"),
 	loading: LoadableComponentSpinner
 })
 
 const BlogTag = Loadable({
-	loader: () => import("../../pages/Blog/Tag"),
+	loader: () => import("../../pages/Blog/HomePage/Tag"),
 	loading: LoadableComponentSpinner
 })
 
