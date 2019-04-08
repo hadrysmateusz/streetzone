@@ -8,23 +8,7 @@ import { PageContainer } from "../../components/Containers"
 import { TextBlock } from "../../components/StyledComponents"
 import PageNav from "./PageNav"
 import useFirebase from "../../hooks/useFirebase"
-import { ImageContainer, Image } from "./StyledComponents"
-
-const ShareButtons = styled.div`
-	display: grid;
-	grid-template-columns: repeat(auto-fill, min-content);
-	grid-auto-flow: column;
-	justify-content: start;
-	gap: var(--spacing3);
-	color: var(--gray50);
-	font-size: var(--font-size--l);
-	& > div {
-		cursor: pointer;
-	}
-	& > div:hover svg {
-		color: var(--black75);
-	}
-`
+import { ImageContainer, Image, ShareButtons } from "./StyledComponents"
 
 const OuterContainer = styled.div`
 	display: grid;
