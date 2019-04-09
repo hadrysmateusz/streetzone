@@ -13,6 +13,7 @@ import { NotFoundError } from "../../errors"
 import EditItemForm from "./EditItemForm"
 import useAuthentication from "../../hooks/useAuthentication"
 import { formatItemDataForDb, MODE } from "../../utils/formatting/formatItemData"
+import { S_THUMB_POSTFIX, M_THUMB_POSTFIX, L_THUMB_POSTFIX } from "../../constants/const"
 
 const formatDataForEditForm = (price, description, files) => ({
 	price: Number.parseInt(price),
@@ -87,7 +88,12 @@ const EditItemPage = ({ match, history }) => {
 			let refsToDelete = oldRefs.filter((oldRef) => !newRefs.includes(oldRef))
 
 			// Remove files associated with the marked refs
-			await firebase.batchRemoveFiles(refsToDelete)
+			for (const ref of refsToDelete) {
+				await firebase.removeFile(ref)
+				await firebase.removeFile(ref + L_THUMB_POSTFIX)
+				await firebase.removeFile(ref + M_THUMB_POSTFIX)
+				await firebase.removeFile(ref + S_THUMB_POSTFIX)
+			}
 
 			// Redirect to home page
 			history.push("/")
