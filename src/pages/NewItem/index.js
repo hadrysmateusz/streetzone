@@ -1,13 +1,12 @@
 import React, { Component } from "react"
 import { compose } from "recompose"
-import shortid from "shortid"
 
 import { withAuthorization, withAuthentication } from "../../components/UserSession"
 import { withFirebase } from "../../components/Firebase"
 import { PageContainer } from "../../components/Containers"
 
 import NewItemForm from "./NewItemForm"
-import { ITEM_SCHEMA } from "../../constants"
+import { formatItemDataForDb } from "../../utils/formatting/formatItemData"
 
 class NewItemPage extends Component {
 	state = { isLoading: false }
@@ -27,39 +26,46 @@ class NewItemPage extends Component {
 				})
 			)
 
-			// Generate unique id
-			const itemId = shortid.generate()
+			const formattedData = formatItemDataForDb({ ...values, attachments }, "CREATE")
 
-			console.log("incoming data", values)
+			// // Generate unique id
+			// const itemId = shortid.generate()
 
-			// Format the data
-			const data = {
-				name: values.name,
-				designers: values.designers,
-				price: Number.parseInt(values.price),
-				category: values.category,
-				size: values.size || null,
-				description: values.description || "",
-				condition: Number.parseFloat(values.condition),
-				status: ITEM_SCHEMA.status.available,
-				createdAt: Date.now(),
-				bumpedAt: Date.now(),
-				promotedAt: Date.now(),
-				modifiedAt: null,
-				itemId,
-				userId,
-				attachments
-			}
+			// console.log("incoming data", values)
 
-			console.log("formatted data", data)
+			// // Format the data
+			// const data = {
+			// 	name: values.name,
+			// 	designers: values.designers,
+			// 	category: values.category,
+
+			// 	size: values.size || null,
+			// 	description: values.description || "",
+
+			// 	price: Number.parseInt(values.price),
+			// 	condition: Number.parseFloat(values.condition),
+
+			// 	createdAt: Date.now(),
+			// 	bumpedAt: Date.now(),
+			// 	promotedAt: Date.now(),
+			// 	modifiedAt: null,
+
+			// 	status: ITEM_SCHEMA.status.available,
+
+			// 	itemId,
+			// 	userId,
+			// 	attachments
+			// }
+
+			// console.log("formatted data", data)
 
 			// TODO: add a check against an external schema to make sure all values are present
 
 			// Add item to database
-			await firebase.item(itemId).set(data)
+			await firebase.item(formattedData.id).set(formattedData)
 
 			// Add the new item's id to user's items
-			const items = [...oldItems, itemId]
+			const items = [...oldItems, formattedData.id]
 			await firebase.user(userId).update({ items })
 
 			// Redirect to home page
