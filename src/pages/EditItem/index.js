@@ -12,18 +12,12 @@ import EmptyState from "../../components/EmptyState"
 import { NotFoundError } from "../../errors"
 import EditItemForm from "./EditItemForm"
 import useAuthentication from "../../hooks/useAuthentication"
+import { formatItemDataForDb, MODE } from "../../utils/formatting/formatItemData"
 
 const formatDataForEditForm = (price, description, files) => ({
 	price: Number.parseInt(price),
 	description: description || "",
 	files: files,
-	modifiedAt: Date.now()
-})
-
-const formatDataForDb = (price, description, attachmentRefs) => ({
-	price: Number.parseInt(price),
-	description: description.trim() || "",
-	attachments: attachmentRefs,
 	modifiedAt: Date.now()
 })
 
@@ -78,11 +72,10 @@ const EditItemPage = ({ match, history }) => {
 			)
 
 			// Format the data
-			const data = formatDataForDb(price, description, newRefs)
-
-			// TODO: add a check against an external schema to make sure all values are present
-
-			debugger
+			const data = formatItemDataForDb(
+				{ price, description, attachments: newRefs },
+				MODE.EDIT
+			)
 
 			// Update item
 			await firebase.item(match.params.id).update(data)
