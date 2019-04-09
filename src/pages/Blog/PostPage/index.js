@@ -1,33 +1,14 @@
 import React, { useState, useEffect } from "react"
-import Loadable from "react-loadable"
 import moment from "moment"
-import { withRouter, Link } from "react-router-dom"
+import { withRouter } from "react-router-dom"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import styled from "styled-components/macro"
 
-import { PageContainer } from "../../components/Containers"
-import LoadingSpinner from "../../components/LoadingSpinner"
-import { Separator } from "../../components/Basics"
-import { TextBlock } from "../../components/StyledComponents"
-import PageNav from "./PageNav"
-import useFirebase from "../../hooks/useFirebase"
-import { ImageContainer, Image } from "./StyledComponents"
-
-const ShareButtons = styled.div`
-	display: grid;
-	grid-template-columns: repeat(auto-fill, min-content);
-	grid-auto-flow: column;
-	justify-content: start;
-	gap: var(--spacing3);
-	color: var(--gray50);
-	font-size: var(--font-size--l);
-	& > div {
-		cursor: pointer;
-	}
-	& > div:hover svg {
-		color: var(--black75);
-	}
-`
+import { PageContainer } from "../../../components/Containers"
+import { TextBlock } from "../../../components/StyledComponents"
+import PageNav from "../PageNav"
+import useFirebase from "../../../hooks/useFirebase"
+import { ImageContainer, Image, ShareButtons } from "../StyledComponents"
 
 const OuterContainer = styled.div`
 	display: grid;
@@ -87,6 +68,81 @@ const usePost = (id) => {
 	}, [])
 
 	return post
+}
+
+export const PureBlogPost = ({ post }) => {
+	return (
+		<PageContainer maxWidth={5}>
+			{post && (
+				<>
+					{/* Page Nav */}
+					<PageNav />
+
+					{/* Title */}
+					<TextBlock serif size="xxl">
+						{post.title}
+					</TextBlock>
+
+					{/* Subtitle */}
+					<TextBlock size="m" color="gray25">
+						{post.mainContent.slice(0, post.mainContent.indexOf(".")).slice(0, 180)}
+					</TextBlock>
+
+					<OuterContainer>
+						<Main>
+							{/* Header image */}
+							<ImageContainer>
+								<Image url={post.mainImageURL} />
+							</ImageContainer>
+
+							<InnerContainer>
+								<InfoAside>
+									{/* Share buttons */}
+									<ShareButtons>
+										<div title="Udostępnij na Twitterze">
+											<FontAwesomeIcon icon={["fab", "twitter"]} />
+										</div>
+										<div title="Udostępnij na Facebooku">
+											<FontAwesomeIcon icon={["fab", "facebook-square"]} />
+										</div>
+										<div title="Udostępnij na Instagramie">
+											<FontAwesomeIcon icon={["fab", "instagram"]} />
+										</div>
+									</ShareButtons>
+									{/* Info */}
+									<Info>
+										<div>
+											Dodano <b>{moment(post.createdAt).format("D.M.YY")}</b>
+										</div>
+										<div>
+											przez <b>{post.author}</b>
+										</div>
+										<div>
+											w <b>{post.section}</b>
+										</div>
+									</Info>
+									{/* Tags */}
+									<TagsContainer>
+										{post.tags.map((tag) => (
+											<TextBlock uppercase color="gray25" size="xs">
+												{tag}
+											</TextBlock>
+										))}
+									</TagsContainer>
+								</InfoAside>
+								<Article>{post.mainContent}</Article>
+							</InnerContainer>
+						</Main>
+						<Aside>
+							<TextBlock size="l" bold>
+								Podobne Artykuły
+							</TextBlock>
+						</Aside>
+					</OuterContainer>
+				</>
+			)}
+		</PageContainer>
+	)
 }
 
 const BlogPost = withRouter(({ match }) => {

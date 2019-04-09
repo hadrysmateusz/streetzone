@@ -69,17 +69,17 @@ class ItemDetailsPage extends Component {
 			this.setState({ isDeleting: true })
 			try {
 				const firebase = this.props.firebase
-				const itemId = this.props.match.params.id
+				const id = this.props.match.params.id
 
 				// Fetch current user's items from database
 				const currentUserSnapshot = await firebase.currentUser().get()
 				const oldItems = currentUserSnapshot.data().items
 
 				// Delete the item
-				await firebase.item(itemId).delete()
+				await firebase.item(id).delete()
 
 				// Remove the deleted item from user's items
-				const items = oldItems.filter((item) => item !== itemId)
+				const items = oldItems.filter((item) => item !== id)
 				await firebase.currentUser().update({ items })
 
 				this.props.history.push("/")
@@ -163,7 +163,7 @@ class ItemDetailsPage extends Component {
 										<ButtonContainer noMargin>
 											<Button
 												as={Link}
-												to={ROUTES.EDIT_ITEM.replace(":id", item.itemId)}
+												to={ROUTES.EDIT_ITEM.replace(":id", item.id)}
 												fullWidth
 											>
 												Edytuj

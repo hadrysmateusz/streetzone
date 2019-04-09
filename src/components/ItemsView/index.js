@@ -24,7 +24,7 @@ const ItemsView = ({ items }) => {
 			{({ width }) => (
 				<ItemsContainer containerWidth={width}>
 					{items.map((item) => (
-						<ItemCard key={item.itemId} item={item} />
+						<ItemCard key={item.id} item={item} />
 					))}
 				</ItemsContainer>
 			)}

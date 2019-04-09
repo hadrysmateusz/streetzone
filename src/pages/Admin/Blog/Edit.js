@@ -38,10 +38,10 @@ const BlogEdit = ({ match }) => {
 	const firebase = useFirebase()
 	const [item, setItem] = useState(null)
 
-	const itemId = match.params.id
+	const id = match.params.id
 
 	const getData = async () => {
-		const snap = await firebase.post(itemId).get()
+		const snap = await firebase.post(id).get()
 
 		let data = snap.data()
 
@@ -59,7 +59,7 @@ const BlogEdit = ({ match }) => {
 
 	useEffect(() => {
 		getData()
-	}, [itemId])
+	}, [id])
 
 	const onSubmit = async (
 		{ section, mainImage, title, author, mainContent, dropsAt },
@@ -95,7 +95,7 @@ const BlogEdit = ({ match }) => {
 				data.dropsAt = dropsAt.valueOf()
 			}
 
-			await firebase.post(itemId).update(data)
+			await firebase.post(id).update(data)
 
 			// remove the old image
 			await firebase.removeFile(item.mainImageRef)
@@ -115,7 +115,7 @@ const BlogEdit = ({ match }) => {
 			</TextBlock>
 
 			<TextBlock size="m" color="gray0">
-				Editing {itemId} <b>{item && `(${item.section} - ${item.title})`}</b>
+				Editing {id} <b>{item && `(${item.section} - ${item.title})`}</b>
 			</TextBlock>
 
 			{!item ? (

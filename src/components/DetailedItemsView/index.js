@@ -11,7 +11,7 @@ const DetailedItemsView = ({ items, isAuthorized }) => {
 			{({ width }) => (
 				<ItemsContainer containerWidth={width}>
 					{items.map((item) => (
-						<DetailedItemCard item={item} key={item.itemId} isAuthorized={isAuthorized} />
+						<DetailedItemCard item={item} key={item.id} isAuthorized={isAuthorized} />
 					))}
 				</ItemsContainer>
 			)}

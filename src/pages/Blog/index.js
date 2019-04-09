@@ -1,8 +1,5 @@
 import React from "react"
-import { compose } from "recompose"
 import { Route, Switch, Redirect, withRouter } from "react-router-dom"
-
-import { withFirebase } from "../../components/Firebase"
 
 const Blog = ({ routes, match }) => {
 	return (
@@ -22,7 +19,4 @@ const Blog = ({ routes, match }) => {
 	)
 }
 
-export default compose(
-	withFirebase,
-	withRouter
-)(Blog)
+export default withRouter(Blog)

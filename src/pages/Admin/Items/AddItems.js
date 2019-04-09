@@ -1,5 +1,4 @@
 import React, { Component } from "react"
-import shortid from "shortid"
 import { Form, Field } from "react-final-form"
 
 import { withAuthentication } from "../../../components/UserSession"
@@ -8,6 +7,7 @@ import { FieldRow, FieldLabel } from "../../../components/Basics"
 import { FormError, Input } from "../../../components/FormElements"
 import { FileHandler } from "../../../components/FileHandler"
 import { ITEM_SCHEMA, CONST } from "../../../constants"
+import { formatItemDataForDb, MODE } from "../../../utils/formatting/formatItemData"
 
 function randInt(min, max) {
 	min = Math.ceil(min)
@@ -38,33 +38,14 @@ class NewItemPage extends Component {
 				})
 			)
 
-			// Generate unique id
-			const itemId = shortid.generate()
-
-			// Format the data
-			const data = {
-				name: values.name,
-				designers: values.designers,
-				price: Number.parseInt(values.price),
-				category: values.category,
-				size: values.size || null,
-				description: values.description || "",
-				condition: Number.parseFloat(values.condition),
-				status: ITEM_SCHEMA.status.available,
-				createdAt: Date.now(),
-				bumpedAt: Date.now(),
-				promotedAt: Date.now(),
-				modifiedAt: null,
-				itemId,
-				userId: values.userId,
-				attachments
-			}
+			// Format data
+			const formattedData = formatItemDataForDb({ ...values, attachments }, MODE.CREATE)
 
 			// Add item to database
-			await firebase.item(itemId).set(data)
+			await firebase.item(formattedData.id).set(formattedData)
 
 			// Add the new item's id to user's items
-			const items = [...oldItems, itemId]
+			const items = [...oldItems, formattedData.id]
 			await firebase.user(values.userId).update({ items })
 
 			return

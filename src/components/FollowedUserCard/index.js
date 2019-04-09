@@ -35,8 +35,8 @@ class FollowedUserCard extends Component {
 
 			// get data from firestore
 			for (let i = 0; i < Math.min(itemIds.length, MAX_ITEMS); i++) {
-				const itemId = itemIds[i]
-				const item = await this.props.firebase.getItemData(itemId)
+				const id = itemIds[i]
+				const item = await this.props.firebase.getItemData(id)
 				items.push(item)
 			}
 

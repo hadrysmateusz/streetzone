@@ -1,12 +1,38 @@
 import styled from "styled-components/macro"
+import { ellipsis } from "../../style-utils"
 
 export const PostsContainer = styled.div`
 	display: grid;
 	gap: 10px;
-	/* margin: 10px 0;
+`
+
+export const ShareButtons = styled.div`
+	display: grid;
+	grid-template-columns: repeat(auto-fill, min-content);
+	grid-auto-flow: column;
+	justify-content: start;
+	gap: var(--spacing3);
+	color: var(--gray50);
+	font-size: var(--font-size--m);
 	@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
-		margin: 30px 0;
-	} */
+		font-size: var(--font-size--l);
+	}
+	& > div {
+		cursor: pointer;
+	}
+	& > div:hover svg {
+		color: var(--black75);
+	}
+`
+
+export const TagsContainer = styled.div`
+	display: flex;
+	flex-flow: row wrap;
+	> *:not(:last-child) {
+		margin-right: var(--spacing2);
+		${ellipsis}
+	}
+	color: var(--gray50);
 `
 
 export const Post = styled.div`
@@ -19,16 +45,13 @@ export const Post = styled.div`
 		padding: var(--spacing3);
 
 		background: var(--almost-white);
-		/* border: 1px solid ${(p) => p.theme.colors.gray[75]}; */
-		/* box-shadow: 0 0px 5px -1px rgba(0, 0, 0, 0.05); */
+		justify-content: start;
 
 		@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
 			grid-template-columns: 200px 1fr;
-			grid-template-rows: 200px;
 		}
 		@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
 			grid-template-columns: 300px 1fr;
-			grid-template-rows: 300px;
 			gap: var(--spacing4);
 		}
 	}
@@ -50,7 +73,7 @@ export const ImageContainer = styled.div`
 	overflow: hidden;
 
 	@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
-		align-items: center;
+		/* align-items: center; */
 	}
 `
 
@@ -66,13 +89,19 @@ export const Image = styled.div`
 `
 
 export const DetailsContainer = styled.div`
-	display: grid;
-	grid-auto-columns: max-content;
-	grid-auto-flow: column;
-	gap: 10px;
-	margin: 10px 0;
+	color: var(--gray0);
+	font-size: var(--font-size--xs);
 	@media (min-width: ${(p) => p.theme.breakpoints[0]}px) {
-		grid-auto-flow: row;
+		font-size: var(--font-size--s);
+	}
+`
+
+export const MainContainer = styled.div`
+	display: grid;
+	align-content: start;
+	gap: var(--spacing1);
+	@media (min-width: ${(p) => p.theme.breakpoints[0]}px) {
+		gap: var(--spacing2);
 	}
 `
 

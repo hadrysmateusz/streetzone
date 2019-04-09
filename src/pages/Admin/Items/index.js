@@ -96,10 +96,10 @@ export class ItemsManagement extends React.Component {
 						{items.map((item) => {
 							return (
 								<li>
-									<Link to={ROUTES.ITEM_DETAILS.replace(":id", item.itemId)}>
+									<Link to={ROUTES.ITEM_DETAILS.replace(":id", item.id)}>
 										{item.name} {item.email} <strong>{item.uid}</strong>
 									</Link>
-									<button onClick={() => this.onDelete(item.itemId)}>X</button>
+									<button onClick={() => this.onDelete(item.id)}>X</button>
 								</li>
 							)
 						})}

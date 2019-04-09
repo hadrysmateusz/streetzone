@@ -3,23 +3,24 @@ import React, { Component } from "react"
 import { Link, withRouter } from "react-router-dom"
 import { compose } from "recompose"
 
-import LoadingSpinner from "../../components/LoadingSpinner"
-import { withFirebase } from "../../components/Firebase"
-import { PageContainer } from "../../components/Containers"
-import { TextBlock } from "../../components/StyledComponents"
+import LoadingSpinner from "../../../components/LoadingSpinner"
+import { withFirebase } from "../../../components/Firebase"
+import { PageContainer } from "../../../components/Containers"
+import { TextBlock } from "../../../components/StyledComponents"
 
-import InstantSearchBlogWrapper from "./InstantSearchBlogWrapper"
+import InstantSearchBlogWrapper from "../InstantSearchBlogWrapper"
 
 import {
 	PromotedContainer,
 	MainGrid,
 	ContentArea,
 	SectionContainer
-} from "./StyledComponents"
-import { InfinitePosts, PromotedPost, DropPost, SmallPost } from "./PostPreviews"
+} from "../StyledComponents"
+import { PromotedPost, DropPost, SmallPost } from "../Previews"
 import Sidebar from "./Sidebar"
-import { ROUTES } from "../../constants"
-import PageNav from "./PageNav"
+import { ROUTES } from "../../../constants"
+import PageNav from "../PageNav"
+import InfinitePosts from "../InfinitePostsList"
 
 const Section = ({ title, hasMore, children, linkTo }) => {
 	return (

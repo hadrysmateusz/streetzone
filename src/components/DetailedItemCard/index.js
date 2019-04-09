@@ -30,17 +30,17 @@ class DetailedItemCard extends React.Component {
 			this.setState({ isDeleting: true })
 			try {
 				const firebase = this.props.firebase
-				const itemId = this.props.item.itemId
+				const id = this.props.item.id
 
 				// Fetch current user's items from database
 				const currentUserSnapshot = await firebase.currentUser().get()
 				const oldItems = currentUserSnapshot.data().items
 
 				// Delete the item
-				await firebase.item(itemId).delete()
+				await firebase.item(id).delete()
 
 				// Remove the deleted item from user's items
-				const items = oldItems.filter((item) => item !== itemId)
+				const items = oldItems.filter((item) => item !== id)
 				await firebase.currentUser().update({ items })
 
 				this.props.history.push("/")
@@ -72,7 +72,7 @@ class DetailedItemCard extends React.Component {
 						</TextBlock>
 						<TextBlock size="m">{item.name}</TextBlock>
 					</div>
-					<HeartButton id={item.itemId} type="item" scale={2} />
+					<HeartButton id={item.id} type="item" scale={2} />
 					<Separator />
 
 					<div>
@@ -110,7 +110,7 @@ class DetailedItemCard extends React.Component {
 										fullWidth
 										onClick={() => {
 											/* This is not an a-tag to allow for programmatic disabling */
-											history.push(ROUTES.EDIT_ITEM.replace(":id", item.itemId))
+											history.push(ROUTES.EDIT_ITEM.replace(":id", item.id))
 										}}
 										// TODO: make the "Zaczekaj jeszcze show actual remaining time"
 										title="Przedmiot może być edytowany dopiero po 24 godzinach.
