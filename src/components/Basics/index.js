@@ -67,7 +67,7 @@ export const FieldLabel = styled.div`
 	font-weight: bold;
 	display: block;
 	color: #3f3f3f;
-	padding-bottom: 5px;
+	padding-bottom: var(--spacing1);
 	margin-left: 2px;
 	text-transform: uppercase;
 	text-align: center;
@@ -88,7 +88,7 @@ export const Container = styled.div`
 	align-content: stretch;
 	flex-direction: column;
 	max-width: ${(props) => props.width}px;
-	padding: 0 20px;
+	padding: 0 var(--spacing3);
 	margin: 0 auto;
 `
 
@@ -125,7 +125,7 @@ const SeparatorTextContent = css`
 		color: #888;
 		content: "${(props) => props.text}";
 		background: #fbfbfb;
-		padding: 0 4px;
+		padding: 0 var(--spacing1);
 		transform: translateY(-0.6rem)
 	}
 `
@@ -157,7 +157,7 @@ export const ImportantText = styled.h3`
 export const InfoBlock = styled.div`
 	background: #f2f2f2;
 	margin: 110px 0;
-	padding: 30px;
+	padding: var(--spacing4);
 	text-align: center;
 	display: flex;
 	align-items: center;

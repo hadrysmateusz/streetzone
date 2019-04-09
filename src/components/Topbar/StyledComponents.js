@@ -38,7 +38,7 @@ export const Toggle = styled.div`
 		border: 1px solid ${(p) => p.theme.colors.gray[25]};
 	}
 	background: white;
-	padding: 0 12px;
+	padding: 0 var(--spacing3);
 	color: ${(p) => p.theme.colors.black[75]};
 	display: flex;
 	justify-content: center;
@@ -48,7 +48,7 @@ export const Toggle = styled.div`
 	flex: 1;
 
 	svg {
-		margin-right: 5px;
+		margin-right: var(--spacing2);
 	}
 `
 

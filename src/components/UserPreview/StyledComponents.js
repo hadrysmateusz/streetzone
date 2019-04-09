@@ -9,13 +9,13 @@ export const Name = styled.div`
 `
 
 export const InfoContainer = styled.div`
-	padding-left: 8px;
+	padding-left: var(--spacing2);
 	overflow: hidden;
-	${(p) => p.vertical && "text-align: center; padding: 8px 0 0 0;"}
+	${(p) => p.vertical && "text-align: center; padding: var(--spacing2) 0 0 0;"}
 `
 
 export const Container = styled.div`
-	margin: 10px 0;
+	margin: var(--spacing2) 0;
 	display: flex;
 	flex-direction: ${(p) => (p.vertical ? "column" : "row")};
 	${(p) => p.vertical && "align-items: center;"}

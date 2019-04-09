@@ -3,32 +3,6 @@ import { PoweredBy } from "react-instantsearch-dom"
 
 import { resetButtonStyles } from "../../style-utils"
 
-export const FilterMenu = styled.div`
-	--width: 350px;
-
-	width: var(--width);
-	max-height: 75vh;
-	padding: 20px;
-	padding-bottom: 10px;
-
-	position: absolute;
-	top: 10px;
-	right: calc(0px - (var(--width) + 10px));
-	z-index: 995;
-
-	background: white;
-	box-shadow: 0 1px 12px 0 rgba(0, 0, 0, 0.13);
-	border: 1px solid ${(p) => p.theme.colors.gray[75]};
-`
-
-export const FilterItemsContainer = styled.div`
-	display: grid;
-	margin-top: 10px;
-	padding-bottom: 10px;
-	grid-template-columns: 1fr 1fr;
-	overflow: auto;
-`
-
 export const BoxItem = styled.div`
 	border: 1px solid var(--gray75);
 	font-size: var(--font-size--xs);
@@ -55,7 +29,7 @@ export const BoxItem = styled.div`
 
 export const NoResults = styled.div`
 	text-align: center;
-	margin: 6px 0;
+	margin: var(--spacing2) 0;
 `
 
 export const OptionsContainer = styled.div`
@@ -77,7 +51,7 @@ export const FilterItem = styled.div`
 	}
 
 	span {
-		padding-left: 6px;
+		padding-left: var(--spacing2);
 	}
 
 	label {
@@ -92,7 +66,7 @@ export const RangeContainer = styled.div`
 	max-width: 100%;
 	height: var(--form-element-height);
 	display: grid;
-	gap: 10px;
+	gap: var(--spacing2);
 	grid-template-columns: 1fr 1fr;
 	input {
 		border: 1px solid ${(p) => p.theme.colors.gray[75]};
@@ -100,7 +74,7 @@ export const RangeContainer = styled.div`
 			border: 1px solid ${(p) => p.theme.colors.gray[25]};
 		}
 		color: ${(p) => p.theme.colors.black[75]};
-		padding: 0 10px;
+		padding: 0 var(--spacing2);
 		height: 100%;
 		min-width: 0;
 		min-height: 0;
@@ -137,7 +111,7 @@ export const SearchBox = styled.div`
 		background: white;
 		min-width: 0;
 		width: 100%;
-		padding: 0 5px;
+		padding: 0 var(--spacing1);
 	}
 `
 
@@ -146,10 +120,10 @@ export const MiniContainer = styled.div`
 	overflow: auto;
 	grid-auto-rows: auto;
 	grid-template-columns: repeat(6, 46%);
-	grid-gap: 4px;
+	grid-gap: var(--spacing1);
 
 	@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
-		grid-gap: 10px;
+		grid-gap: var(--spacing2);
 		grid-template-columns: repeat(6, 30%);
 	}
 	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
@@ -200,6 +174,6 @@ export const StyledPoweredBy = styled(PoweredBy)`
 
 export const SizeCategoriesContainer = styled.div`
 	display: grid;
-	gap: 5px;
-	margin: 5px 0 5px 5px;
+	gap: var(--spacing1);
+	margin: var(--spacing1) 0 var(--spacing1) var(--spacing1);
 `

@@ -22,7 +22,7 @@ export const Sidebar = styled.aside`
 	max-width: 100%;
 
 	width: 270px;
-	margin-right: 20px;
+	margin-right: var(--spacing3);
 
 	/* mobile */
 	@media (max-width: ${(p) => p.theme.breakpoints[1] - 1}px) {

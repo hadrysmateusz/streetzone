@@ -29,10 +29,10 @@ export const InnerInfoContainer = styled.div`
 export const SeparatedContainer = styled.div`
 	display: flex;
 	align-items: center;
-	--vertical-margin: 10px;
+	--vertical-margin: var(--spacing2);
 	margin: var(--vertical-margin) calc(var(--vertical-margin) * -1);
 	> * {
-		padding: 3px 10px;
+		padding: var(--spacing1) var(--spacing2);
 	}
 	> * + * {
 		border-left: 1px solid ${(p) => p.theme.colors.gray[75]};

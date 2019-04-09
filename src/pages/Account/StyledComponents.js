@@ -17,7 +17,7 @@ export const TabsNav = styled.nav`
 
 export const TabsNavItem = styled(NavLink)`
 	@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
-		padding: 4px 20px;
+		padding: var(--spacing1) var(--spacing3);
 	}
 
 	user-select: none;

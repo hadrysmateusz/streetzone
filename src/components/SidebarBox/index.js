@@ -4,14 +4,14 @@ import { TextBlock } from "../StyledComponents"
 
 const Container = styled.section`
 	border: 1px solid var(--gray100);
-	margin-bottom: 20px;
+	margin-bottom: var(--spacing3);
 	position: relative;
 	background: white;
 `
 
 const Header = styled.header`
-	padding: 6px 0;
-	margin: 0 15px;
+	padding: var(--spacing1) 0;
+	margin: 0 var(--spacing3);
 	text-align: center;
 	border-bottom: 1px solid var(--gray100);
 `

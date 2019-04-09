@@ -27,7 +27,7 @@ export const FilterInnerContainer = styled.div`
 	@media (max-width: ${(p) => p.theme.breakpoints[1] - 1}px) {
 		flex: 1 1 100%;
 		overflow-y: scroll;
-		margin-bottom: 70px;
+		margin-bottom: var(--spacing5);
 	}
 `
 
@@ -37,7 +37,7 @@ export const ActionsContainer = styled.div`
 	width: 100%;
 
 	background: white;
-	padding: 10px;
+	padding: var(--spacing2);
 	box-sizing: border-box;
 	position: fixed;
 	bottom: 0;
@@ -45,8 +45,8 @@ export const ActionsContainer = styled.div`
 `
 
 export const FiltersHeader = styled.div`
-	padding: 6px 0;
-	margin: 0 15px;
+	padding: var(--spacing2) 0;
+	margin: 0 var(--spacing3);
 	background: white;
 	text-align: center;
 	border-bottom: 1px solid var(--gray100);
@@ -60,7 +60,7 @@ export const Section = styled.div`
 
 export const ListItem = styled.div`
 	display: flex;
-	padding: 6px 0;
+	padding: var(--spacing2) 0;
 	> :first-child {
 		flex: 1;
 	}

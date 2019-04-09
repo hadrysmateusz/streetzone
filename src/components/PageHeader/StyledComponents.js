@@ -7,7 +7,7 @@ export const PageHeaderContainer = styled.header`
 	max-width: ${(p) => p.theme.breakpoints[5]}px;
 	height: ${HEADER_HEIGHT};
 	margin: 0 auto;
-	padding: 0 20px;
+	padding: 0 var(--spacing3);
 	display: grid;
 	grid-template-columns: 1fr 1fr 1fr;
 	align-items: center;

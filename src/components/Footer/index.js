@@ -25,7 +25,7 @@ const OuterContainer = styled.div`
 const IconContainer = styled.div`
 	display: flex;
 	* + * {
-		margin-left: 10px;
+		margin-left: var(--spacing2);
 	}
 `
 
@@ -42,7 +42,7 @@ const Item = styled(Link)`
 `
 
 const InnerContainer = styled.div`
-	padding: 20px 0;
+	padding: var(--spacing3) 0;
 	width: 100%;
 	max-width: ${(p) => p.theme.breakpoints[5]}px;
 	margin: 0 auto;
@@ -54,7 +54,7 @@ const InnerContainer = styled.div`
 	flex-flow: row wrap;
 
 	& > * {
-		padding: 8px 15px;
+		padding: var(--spacing2) var(--spacing3);
 	}
 
 	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
@@ -64,10 +64,10 @@ const InnerContainer = styled.div`
 
 const Group = styled.div`
 	> :first-child {
-		margin-bottom: 20px;
+		margin-bottom: var(--spacing3);
 	}
 	> * {
-		margin: 10px 0;
+		margin: var(--spacing2) 0;
 	}
 `
 

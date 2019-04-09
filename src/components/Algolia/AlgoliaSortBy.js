@@ -22,13 +22,13 @@ const Container = styled.label`
 	align-items: center;
 	min-width: 0;
 	background: white;
-	padding: 0 12px;
+	padding: 0 var(--spacing3);
 	border: 1px solid ${(p) => p.theme.colors.gray[75]};
 	:hover {
 		border: 1px solid ${(p) => p.theme.colors.gray[25]};
 	}
 	svg {
-		margin-right: 6px;
+		margin-right: var(--spacing2);
 	}
 	height: var(--form-element-height);
 `

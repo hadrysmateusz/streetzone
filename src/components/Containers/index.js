@@ -30,7 +30,7 @@ const PageContainer = styled.section`
 const OuterGrayContainer = styled.section`
 	width: 100%;
 	background: var(--gray100);
-	${(p) => p.padded && "padding: 40px 0;"}
+	${(p) => p.padded && "padding: var(--spacing4) 0;"}
 `
 const GrayContainer = ({ padded, children, ...props }) => (
 	<OuterGrayContainer padded={padded}>

@@ -66,7 +66,7 @@ export const InnerContainer = styled.div`
 	min-width: 0;
 
 	> :first-child {
-		margin-bottom: 4px;
+		margin-bottom: var(--spacing1);
 	}
 `
 
@@ -87,7 +87,7 @@ export const Designers = styled(TextBlock)`
 	${itemBase}
 	font-weight: bold;
 	text-transform: uppercase;
-	padding-right: 8px;
+	padding-right: var(--spacing2);
 	word-spacing: 0.12ch;
 `
 

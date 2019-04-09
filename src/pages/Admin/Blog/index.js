@@ -21,8 +21,8 @@ const BlogImageContainer = styled.div`
 
 const BlogPostContainer = styled.div`
 	border: 1px solid black;
-	padding: 16px;
-	margin: 10px 0;
+	padding: var(--spacing3);
+	margin: var(--spacing2) 0;
 `
 
 const BlogPost = ({ post }) => {

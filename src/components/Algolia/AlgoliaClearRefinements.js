@@ -9,7 +9,7 @@ const AlgoliaClearRefinements = styled(ClearRefinements)`
 		background: ${(p) => (p.primary ? "#282828" : `white`)};
 		color: ${(p) => (p.primary ? "white" : "#3e3e3e")};
 		${(p) => p.disabled && `color: #c3c3c3;`}
-		${(p) => p.fullWidth && "margin: 4px 0;"}
+		${(p) => p.fullWidth && "margin: var(--spacing1) 0;"}
 		padding: 0.8rem 1.85rem;
 		text-align: center;
 		display: inline-block;

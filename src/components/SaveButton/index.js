@@ -28,7 +28,7 @@ const activeSaveButton = css`
 `
 const HeartButtonContainer = styled.div`
 	background: rgba(255, 255, 255, 1);
-	padding: 4px;
+	padding: var(--spacing1);
 	color: ${(p) => p.theme.colors.black[0]};
 	display: flex;
 	cursor: pointer;
