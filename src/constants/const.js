@@ -7,6 +7,9 @@ export const ACCOUNT_DESC_MAX_CHARACTERS = 200
 export const COMMENT_MAX_CHARACTERS = 400
 export const ITEM_DESC_PLACEHOLDER =
 	"Oryginalna cena, możliwości wysyłki, informacje o uszkodzeniach itd."
+export const S_THUMB_POSTFIX = "_S_THUMB"
+export const M_THUMB_POSTFIX = "_M_THUMB"
+export const L_THUMB_POSTFIX = "_L_THUMB"
 
 // ===============================================================================
 // !!! REMEMBER TO ALSO CHANGE IN THE CLOUD FUNCTIONS DIRECTORY !!!

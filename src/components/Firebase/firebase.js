@@ -3,10 +3,7 @@ import app from "firebase/app"
 import "firebase/auth"
 import "firebase/storage"
 import "firebase/firestore"
-
-const S_THUMB_POSTFIX = "_S_THUMB"
-const M_THUMB_POSTFIX = "_M_THUMB"
-const L_THUMB_POSTFIX = "_L_THUMB"
+import { S_THUMB_POSTFIX, M_THUMB_POSTFIX, L_THUMB_POSTFIX } from "../../constants/const"
 
 const config = {
 	apiKey: process.env.REACT_APP_API_KEY,
