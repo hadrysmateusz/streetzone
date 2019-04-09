@@ -1,6 +1,6 @@
 import React from "react"
 import { storiesOf } from "@storybook/react"
-import { PromotedPost, SmallPost, DropPost, Post } from "."
+import BasicPost from "./BasicPost"
 import StoryRouter from "storybook-react-router"
 import themeDecorator from "../../../storybook-decorators/theme"
 
@@ -22,4 +22,4 @@ const mockedPost = {
 storiesOf("BasicPost", module)
 	.addDecorator(themeDecorator)
 	.addDecorator(StoryRouter())
-	.add("default", () => <Post {...mockedPost} />)
+	.add("default", () => <BasicPost {...mockedPost} />)

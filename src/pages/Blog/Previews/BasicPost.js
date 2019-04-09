@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import React from "react"
 import { Link } from "react-router-dom"
 import moment from "moment"
+import PropTypes from "prop-types"
 
 import { TextBlock, Text } from "../../../components/StyledComponents"
 
@@ -82,6 +83,18 @@ const BasicPost = ({
 			</Link>
 		</PostContainer>
 	)
+}
+
+BasicPost.propTypes = {
+	id: PropTypes.string.isRequired,
+	mainContent: PropTypes.string.isRequired,
+	mainImageURL: PropTypes.string.isRequired,
+	section: PropTypes.string.isRequired,
+	title: PropTypes.string.isRequired,
+	tags: PropTypes.array.isRequired,
+	dropsAt: PropTypes.number,
+	createdAt: PropTypes.number,
+	author: PropTypes.string
 }
 
 export default BasicPost

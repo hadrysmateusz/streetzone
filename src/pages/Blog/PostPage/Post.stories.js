@@ -1,6 +1,6 @@
 import React from "react"
 import { storiesOf } from "@storybook/react"
-import { PureBlogPost } from "./Post"
+import PureBlogPost from "."
 import StoryRouter from "storybook-react-router"
 import themeDecorator from "../../../storybook-decorators/theme"
 

@@ -1,13 +1,13 @@
 import React from "react"
 import { Link } from "react-router-dom"
 import moment from "moment"
+import PropTypes from "prop-types"
 
 import { TextBlock } from "../../../components/StyledComponents"
 import Button, { ButtonContainer } from "../../../components/Button"
+import { ROUTES } from "../../../constants"
 
 import { Image, ImageContainer, SmallPostContainer } from "../StyledComponents"
-
-import { ROUTES } from "../../../constants"
 
 const DropPost = ({ id, mainImageURL, title, dropsAt }) => {
 	return (
@@ -30,6 +30,13 @@ const DropPost = ({ id, mainImageURL, title, dropsAt }) => {
 			</SmallPostContainer>
 		</Link>
 	)
+}
+
+DropPost.propTypes = {
+	id: PropTypes.string.isRequired,
+	mainImageURL: PropTypes.string.isRequired,
+	title: PropTypes.string.isRequired,
+	dropsAt: PropTypes.number.isRequired
 }
 
 export default DropPost
