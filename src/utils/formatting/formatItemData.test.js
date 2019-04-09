@@ -34,8 +34,8 @@ const expectedRequired = {
 	isVerified: false,
 	createdAt: expect.any(Number),
 	refreshedAt: expect.any(Number),
-	promotedAt: expect.any(Number),
-	modifiedAt: expect.any(Number)
+	modifiedAt: expect.any(Number),
+	promotedAt: null
 }
 
 const expectedFull = {
