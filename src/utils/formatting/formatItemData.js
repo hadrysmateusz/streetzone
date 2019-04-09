@@ -45,25 +45,59 @@ export const formatItemDataForDb = (data, mode, flagState = true) => {
 	let formatted = {}
 
 	if ([MODE.CREATE, MODE.EDIT].includes(mode)) {
-		// check if all required values are present
-		for (const field of REQUIRED) {
-			if (!data[field]) {
-				throw new Error("missing required data")
+		if (mode === MODE.CREATE) {
+			// check if all required values are present
+			for (const field of REQUIRED) {
+				if (!data[field]) {
+					throw new Error("missing required data")
+				}
 			}
 		}
 
-		// REQUIRED
-		formatted.designers = formatNonEmptyArray(data.designers)
-		formatted.attachments = formatNonEmptyArray(data.attachments)
-		formatted.name = formatString(data.name)
-		formatted.category = formatString(data.category)
-		formatted.price = formatInt(data.price)
-		formatted.condition = formatFloat(data.condition)
-		formatted.userId = formatString(data.userId)
+		// designers
+		if (data.designers !== undefined) {
+			formatted.designers = formatNonEmptyArray(data.designers)
+		}
 
-		// OPTIONAL
-		formatted.size = data.size ? formatString(data.size) : null
-		formatted.description = data.description ? formatString(data.description) : null
+		// attachments
+		if (data.attachments !== undefined) {
+			formatted.attachments = formatNonEmptyArray(data.attachments)
+		}
+
+		// name
+		if (data.name !== undefined) {
+			formatted.name = formatString(data.name)
+		}
+
+		// category
+		if (data.category !== undefined) {
+			formatted.category = formatString(data.category)
+		}
+
+		// price
+		if (data.price !== undefined) {
+			formatted.price = formatInt(data.price)
+		}
+
+		// condition
+		if (data.condition !== undefined) {
+			formatted.condition = formatFloat(data.condition)
+		}
+
+		// userId
+		if (data.userId !== undefined) {
+			formatted.userId = formatString(data.userId)
+		}
+
+		// size
+		if (data.size !== undefined) {
+			formatted.size = formatString(data.size)
+		}
+
+		// description
+		if (data.description !== undefined) {
+			formatted.description = formatString(data.description)
+		}
 	}
 
 	if (mode === MODE.CREATE) {
