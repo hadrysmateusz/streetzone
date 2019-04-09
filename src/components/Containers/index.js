@@ -13,8 +13,8 @@ const PageContainer = styled.section`
 	max-width: ${(p) => p.theme.breakpoints[5]}px; /* default */
 	${pageContainerWidth}
 
-	--margin-y: 10px;
-	--padding-x: 3px;
+	--margin-y: var(--spacing3);
+	--padding-x: ${(p) => (p.extraWide ? "0" : "var(--spacing3)")};
 
 	width: 100%;
 
@@ -22,8 +22,8 @@ const PageContainer = styled.section`
 	padding: 0 var(--padding-x);
 
 	@media (min-width: ${(p) => p.theme.breakpoints[0]}px) {
-		--margin-y: 20px;
-		--padding-x: 20px;
+		--margin-y: var(--spacing3);
+		--padding-x: var(--spacing3);
 	}
 `
 

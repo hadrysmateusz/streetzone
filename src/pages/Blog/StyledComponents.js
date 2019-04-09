@@ -148,7 +148,9 @@ export const MainGrid = styled.div`
 
 export const SidebarContainer = styled.aside``
 
-export const ContentArea = styled.main``
+export const ContentArea = styled.main`
+	min-width: 0;
+`
 
 export const SectionContainer = styled.section`
 	margin-bottom: var(--spacing4);

@@ -1,8 +1,6 @@
 import styled from "styled-components/macro"
 import { InstantSearch } from "react-instantsearch-dom"
 
-import { PageContainer } from "../../components/Containers"
-
 export const StyledInstantSearch = styled(InstantSearch)`
 	height: 100%;
 	> {
@@ -39,7 +37,7 @@ export const Sidebar = styled.aside`
 	}
 `
 
-export const GridContainer = styled(PageContainer)`
+export const GridContainer = styled.div`
 	display: grid;
-	gap: 20px;
+	gap: var(--spacing3);
 `
