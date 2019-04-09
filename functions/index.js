@@ -152,7 +152,7 @@ exports.onDesignerDeleted = functions.firestore
 
 // When an item is removed from db remove its images from storage
 exports.removeItemImages = functions.firestore
-	.document(`items/{itemId}`)
+	.document(`items/{id}`)
 	.onDelete(async (snap) => {
 		const data = snap.data()
 		let successCount = 0
@@ -188,11 +188,11 @@ exports.removeItemImages = functions.firestore
 
 // When an item is removed from db remove it from it's owner's items list
 exports.removeItemFromUser = functions.firestore
-	.document(`items/{itemId}`)
+	.document(`items/{id}`)
 	.onDelete(async (snap, context) => {
 		const data = snap.data()
 		const userId = data.userId
-		const itemId = context.params.itemId
+		const id = context.params.id
 		const db = admin.firestore()
 
 		// get owner's data
@@ -202,7 +202,7 @@ exports.removeItemFromUser = functions.firestore
 			.get()
 		const userData = userSnap.data()
 		// filter out the removed item
-		const newItems = userData.items.filter((item) => item.itemId !== itemId)
+		const newItems = userData.items.filter((item) => item.id !== id)
 		// update the db with the new items list
 		const res = await db
 			.collection("users")

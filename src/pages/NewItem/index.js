@@ -29,7 +29,7 @@ class NewItemPage extends Component {
 			const formattedData = formatItemDataForDb({ ...values, attachments }, "CREATE")
 
 			// // Generate unique id
-			// const itemId = shortid.generate()
+			// const id = shortid.generate()
 
 			// console.log("incoming data", values)
 
@@ -52,7 +52,7 @@ class NewItemPage extends Component {
 
 			// 	status: ITEM_SCHEMA.status.available,
 
-			// 	itemId,
+			// 	id,
 			// 	userId,
 			// 	attachments
 			// }

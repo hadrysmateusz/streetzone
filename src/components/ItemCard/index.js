@@ -67,7 +67,7 @@ export const ItemCardImage = ({ imageId }) => {
 }
 
 const ItemCardBase = ({ item, ...rest }) => {
-	const { itemId, name, price, designers, size } = item
+	const { id, name, price, designers, size } = item
 
 	const formattedDesigners = formatDesigners(designers)
 	const formattedPrice = formatPrice(price)
@@ -76,7 +76,7 @@ const ItemCardBase = ({ item, ...rest }) => {
 	return (
 		<Ratio ratio={2 / 3}>
 			<Container {...rest}>
-				<Link to={`/i/${itemId}`}>
+				<Link to={`/i/${id}`}>
 					<ItemCardImage imageId={item.attachments[0]} />
 
 					<InfoContainer>
@@ -85,7 +85,7 @@ const ItemCardBase = ({ item, ...rest }) => {
 								<Designers title={formattedDesigners}>{formattedDesigners}</Designers>
 								<Name title={name}>{name}</Name>
 							</InnerContainer>
-							<HeartButton id={itemId} type="item" scale={2} />
+							<HeartButton id={id} type="item" scale={2} />
 						</TopContainer>
 						<SecondaryContainer>
 							<Price title={price ? `Cena: ${price}` : null}>{formattedPrice}</Price>
@@ -101,7 +101,7 @@ const ItemCardBase = ({ item, ...rest }) => {
 }
 
 const ItemCardMiniBase = ({ item, ...rest }) => {
-	const { itemId, name, price, designers, size } = item
+	const { id, name, price, designers, size } = item
 
 	const formattedDesigners = formatDesigners(designers)
 	const formattedPrice = formatPrice(price)
@@ -109,7 +109,7 @@ const ItemCardMiniBase = ({ item, ...rest }) => {
 
 	return (
 		<MiniContainer {...rest}>
-			<Link to={`/i/${itemId}`}>
+			<Link to={`/i/${id}`}>
 				<ItemCardImage imageId={item.attachments[0]} />
 
 				<InfoContainer>
@@ -118,7 +118,7 @@ const ItemCardMiniBase = ({ item, ...rest }) => {
 							<Designers title={formattedDesigners}>{formattedDesigners}</Designers>
 							<Name title={name}>{name}</Name>
 						</InnerContainer>
-						<HeartButton id={itemId} type="item" scale={2} />
+						<HeartButton id={id} type="item" scale={2} />
 					</TopContainer>
 					<SecondaryContainer>
 						<Price title={price ? `Cena: ${price}` : null}>{formattedPrice}</Price>

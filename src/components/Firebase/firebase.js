@@ -95,8 +95,8 @@ class Firebase {
 
 		try {
 			// get data from firestore
-			for (let itemId of user.items) {
-				const item = await this.getItemData(itemId)
+			for (let id of user.items) {
+				const item = await this.getItemData(id)
 				res.items.push(item)
 			}
 
@@ -120,12 +120,12 @@ class Firebase {
 			const oldIds = user.savedItems
 
 			// get data from firestore
-			for (let itemId of oldIds) {
-				const itemDoc = await this.item(itemId).get()
+			for (let id of oldIds) {
+				const itemDoc = await this.item(id).get()
 				if (itemDoc.exists) {
 					res.items.push(itemDoc.data())
 				} else {
-					idsToDelete.push(itemId)
+					idsToDelete.push(id)
 				}
 			}
 
@@ -145,10 +145,10 @@ class Firebase {
 	item = (id) => this.db.collection("items").doc(id)
 	items = () => this.db.collection("items")
 
-	getItemData = async (itemId) => {
-		const itemDoc = await this.item(itemId).get()
+	getItemData = async (id) => {
+		const itemDoc = await this.item(id).get()
 		if (!itemDoc.exists) {
-			console.warn(`Item with id ${itemId} wasn't found`)
+			console.warn(`Item with id ${id} wasn't found`)
 			return {}
 		} else {
 			return itemDoc.data()

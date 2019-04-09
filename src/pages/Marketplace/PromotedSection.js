@@ -106,7 +106,7 @@ const PromotedItem = ({ item }) => {
 	const formattedSize = formatSize(item.size)
 
 	return (
-		<Link to={`/i/${item.itemId}`}>
+		<Link to={`/i/${item.id}`}>
 			<PromotedItemContainer image={imageURL}>
 				<TextBlock serif size="xl">
 					{item.name}

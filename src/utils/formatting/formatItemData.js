@@ -67,7 +67,7 @@ export const formatItemDataForDb = (data, mode, flagState = true) => {
 	}
 
 	if (mode === MODE.CREATE) {
-		formatted.itemId = shortid.generate()
+		formatted.id = shortid.generate()
 
 		formatted.createdAt = Date.now()
 		formatted.refreshedAt = Date.now()

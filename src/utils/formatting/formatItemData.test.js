@@ -29,7 +29,7 @@ const expectedRequired = {
 	condition: 11.5,
 	attachments: ["attachment1", "attachment2"],
 	userId: "userid",
-	itemId: expect.any(String),
+	id: expect.any(String),
 	isArchived: false,
 	isVerified: false,
 	createdAt: expect.any(Number),
