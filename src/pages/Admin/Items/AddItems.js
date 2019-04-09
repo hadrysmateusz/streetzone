@@ -7,7 +7,7 @@ import { FieldRow, FieldLabel } from "../../../components/Basics"
 import { FormError, Input } from "../../../components/FormElements"
 import { FileHandler } from "../../../components/FileHandler"
 import { ITEM_SCHEMA, CONST } from "../../../constants"
-import { formatItemDataForDb } from "../../../utils/formatting/formatItemData"
+import { formatItemDataForDb, MODE } from "../../../utils/formatting/formatItemData"
 
 function randInt(min, max) {
 	min = Math.ceil(min)
@@ -39,7 +39,7 @@ class NewItemPage extends Component {
 			)
 
 			// Format data
-			const formattedData = formatItemDataForDb({ ...values, attachments }, "CREATE")
+			const formattedData = formatItemDataForDb({ ...values, attachments }, MODE.CREATE)
 
 			// Add item to database
 			await firebase.item(formattedData.id).set(formattedData)

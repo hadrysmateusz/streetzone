@@ -4,9 +4,9 @@ import { compose } from "recompose"
 import { withAuthorization, withAuthentication } from "../../components/UserSession"
 import { withFirebase } from "../../components/Firebase"
 import { PageContainer } from "../../components/Containers"
+import { formatItemDataForDb, MODE } from "../../utils/formatting/formatItemData"
 
 import NewItemForm from "./NewItemForm"
-import { formatItemDataForDb } from "../../utils/formatting/formatItemData"
 
 class NewItemPage extends Component {
 	state = { isLoading: false }
@@ -26,7 +26,7 @@ class NewItemPage extends Component {
 				})
 			)
 
-			const formattedData = formatItemDataForDb({ ...values, attachments }, "CREATE")
+			const formattedData = formatItemDataForDb({ ...values, attachments }, MODE.CREATE)
 
 			// // Generate unique id
 			// const id = shortid.generate()
