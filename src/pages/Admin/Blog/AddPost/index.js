@@ -2,20 +2,42 @@ import React, { useState } from "react"
 import shortid from "shortid"
 import Datetime from "react-datetime"
 import { Form, Field } from "react-final-form"
+import styled from "styled-components/macro"
+import { OnChange } from "react-final-form-listeners"
+import ReactMarkdown from "react-markdown"
 
 import { LoaderButton, ButtonContainer } from "../../../../components/Button"
+import { PageContainer } from "../../../../components/Containers"
 import { Input } from "../../../../components/FormElements"
 import { Text } from "../../../../components/StyledComponents"
-import { FileHandlerSingle } from "../../../../components/FileHandler"
+import { FileHandlerSingle, FileHandlerText } from "../../../../components/FileHandler"
 import { Textarea } from "../../../../components/FormElements"
 import DropdownFinalform from "../../../../components/DropdownFinalform"
 import MultiTextInputFinalform from "../../../../components/MultiTextInputFinalform"
 import useFirebase from "../../../../hooks/useFirebase"
 
+import Wizard from "./WizardForm"
 import sectionOptions from "./section_options"
 import validate from "./validate"
 
 import "react-datetime/css/react-datetime.css"
+
+const Error = ({ name }) => (
+	<Field
+		name={name}
+		subscribe={{ touched: true, error: true }}
+		render={({ meta: { touched, error } }) =>
+			touched && error ? <span>{error}</span> : null
+		}
+	/>
+)
+
+const required = (value) => (value ? undefined : "Required")
+
+const StyledForm = styled.form`
+	display: grid;
+	gap: var(--spacing3);
+`
 
 const AddPost = () => {
 	const firebase = useFirebase()
@@ -55,7 +77,6 @@ const AddPost = () => {
 
 			if (dropsAt) {
 				data.dropsAt = dropsAt.valueOf()
-				// debugger
 			}
 
 			await firebase.post(id).set(data)
@@ -68,124 +89,183 @@ const AddPost = () => {
 		}
 	}
 
-	const uploadFile = (e) => {
-		const file = e.currentTarget.files[0]
-		if (file) {
-			const reader = new FileReader()
-			reader.addEventListener("loadend", () => {
-				setFileContents(reader.result)
-				console.log(reader.result)
-			})
-
-			reader.readAsText(file)
-		}
-	}
-
 	return (
-		<Form
-			onSubmit={onSubmit}
-			validate={validate}
-			initialValues={{ mainContent: fileContents }}
-			render={({ handleSubmit, submitting, pristine, form, values }) => {
-				return (
-					<form onSubmit={handleSubmit}>
-						<Field name="section" type="select">
-							{({ input, meta }) => {
-								const error = meta.error && meta.touched ? meta.error : null
-								return (
-									<DropdownFinalform
-										{...input}
-										options={sectionOptions}
-										placeholder="Section"
+		<PageContainer>
+			<Wizard initialValues={{ mainContent: fileContents }} onSubmit={onSubmit}>
+				<Wizard.Page>
+					<Field name="section" type="select">
+						{({ input, meta }) => {
+							const error = meta.error && meta.touched ? meta.error : null
+							return (
+								<DropdownFinalform
+									{...input}
+									options={sectionOptions}
+									placeholder="Section"
+									error={error}
+								/>
+							)
+						}}
+					</Field>
+				</Wizard.Page>
+
+				<Wizard.Page
+					validate={(values) => {
+						const errors = {}
+						return errors
+					}}
+				>
+					<Field name="file">
+						{({ input, meta }) => {
+							return (
+								<>
+									<FileHandlerText {...input} error={meta.error} />
+									<OnChange name="file">
+										{(value, previous) => {
+											// immediately after every change event, reset this field
+											input.onChange(undefined)
+										}}
+									</OnChange>
+								</>
+							)
+						}}
+					</Field>
+
+					<Field name="mainContent">
+						{({ input, meta }) => {
+							const error = meta.error && meta.touched ? meta.error : null
+							const { value, ...inputRest } = input
+							return (
+								<>
+									<Textarea
+										{...inputRest}
+										value={value}
+										placeholder="Main text content"
 										error={error}
 									/>
-								)
-							}}
-						</Field>
-						{values.section && values.section !== "Dropy" && (
-							<Field name="author">
-								{({ input, meta }) => {
-									const error = meta.error && meta.touched ? meta.error : null
-									return (
-										<Input {...input} type="text" placeholder="Author" error={error} />
-									)
-								}}
-							</Field>
-						)}
+									<ReactMarkdown source={value} />
+									<OnChange name="file">
+										{(value, previous) => {
+											//
+											input.onChange(value)
+										}}
+									</OnChange>
+								</>
+							)
+						}}
+					</Field>
+				</Wizard.Page>
 
-						<Field name="title">
-							{({ input, meta }) => {
-								const error = meta.error && meta.touched ? meta.error : null
-								return <Input {...input} type="text" placeholder="Title" error={error} />
-							}}
-						</Field>
+				<Wizard.Page
+					validate={(values) => {
+						const errors = {}
+						return errors
+					}}
+				>
+					<Field
+						name="section"
+						subscribe={{ value: true }}
+						render={({ input: { value: section } }) => (
+							<div>
+								{section && section !== "Dropy" && (
+									<>
+										<Text size="s" bold>
+											Autor
+										</Text>
+										<Field name="author">
+											{({ input, meta }) => {
+												const error = meta.error && meta.touched ? meta.error : null
+												return (
+													<Input
+														{...input}
+														type="text"
+														placeholder="Author"
+														error={error}
+													/>
+												)
+											}}
+										</Field>
+									</>
+								)}
 
-						<Field name="mainContent">
-							{({ input, meta }) => {
-								const error = meta.error && meta.touched ? meta.error : null
-								return (
-									<Textarea {...input} placeholder="Main text content" error={error} />
-								)
-							}}
-						</Field>
-
-						{values.section === "Dropy" && (
-							<>
-								<Text size="m" bold>
-									Data dropu
+								<Text size="s" bold>
+									{section && section === "Dropy" ? "Nazwa przedmiotu" : "Tytuł"}
 								</Text>
-								<Field name="dropsAt">
+								<Field name="title">
 									{({ input, meta }) => {
 										const error = meta.error && meta.touched ? meta.error : null
 										return (
-											<Datetime
+											<Input {...input} type="text" placeholder="Title" error={error} />
+										)
+									}}
+								</Field>
+
+								{section === "Dropy" && (
+									<>
+										<Text size="s" bold>
+											Data dropu
+										</Text>
+										<Field name="dropsAtDate">
+											{({ input, meta }) => {
+												const error = meta.error && meta.touched ? meta.error : null
+												return (
+													<Datetime
+														{...input}
+														error={error}
+														input={false}
+														timeFormat={false}
+													/>
+												)
+											}}
+										</Field>
+
+										<Text size="s" bold>
+											Czas dropu
+										</Text>
+										<Field name="dropsAtTime">
+											{({ input, meta }) => {
+												const error = meta.error && meta.touched ? meta.error : null
+												return (
+													<Datetime
+														{...input}
+														error={error}
+														input={false}
+														timeFormat="HH:mm"
+														dateFormat={false}
+													/>
+												)
+											}}
+										</Field>
+									</>
+								)}
+
+								<Field name="mainImage">
+									{({ input, meta }) => {
+										return (
+											<>
+												<FileHandlerSingle {...input} error={meta.error} />
+											</>
+										)
+									}}
+								</Field>
+
+								<Field name="tags" type="select">
+									{({ input, meta }) => {
+										const error = meta.error && meta.touched ? meta.error : null
+										return (
+											<MultiTextInputFinalform
 												{...input}
+												placeholder="Tagi"
 												error={error}
-												input={false}
-												timeFormat="HH:mm"
 											/>
 										)
 									}}
 								</Field>
-							</>
+							</div>
 						)}
-
-						<Field name="mainImage">
-							{({ input, meta }) => {
-								return (
-									<>
-										<FileHandlerSingle {...input} error={meta.error} />
-										<input type="file" onChange={uploadFile} />
-									</>
-								)
-							}}
-						</Field>
-
-						<Field name="tags" type="select">
-							{({ input, meta }) => {
-								const error = meta.error && meta.touched ? meta.error : null
-								return (
-									<MultiTextInputFinalform {...input} placeholder="Tagi" error={error} />
-								)
-							}}
-						</Field>
-
-						<ButtonContainer centered>
-							<LoaderButton
-								text="Gotowe"
-								type="submit"
-								isLoading={submitting}
-								disabled={submitting || pristine}
-								primary
-							/>
-						</ButtonContainer>
-						{process.env.NODE_ENV === "development" && (
-							<pre>{JSON.stringify(values, 0, 2)}</pre>
-						)}
-					</form>
-				)
-			}}
-		/>
+					/>
+				</Wizard.Page>
+			</Wizard>
+		</PageContainer>
 	)
 }
 
