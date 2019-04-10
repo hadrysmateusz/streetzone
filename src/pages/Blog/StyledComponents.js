@@ -4,6 +4,9 @@ import { ellipsis } from "../../style-utils"
 export const PostsContainer = styled.div`
 	display: grid;
 	gap: 10px;
+	@media (max-width: ${(p) => p.theme.breakpoints[0] - 1}px) {
+		margin: 0 calc(var(--spacing3) * -1);
+	}
 `
 
 export const ShareButtons = styled.div`
