@@ -62,7 +62,7 @@ const Button = styled.button`
 	transition-duration: 0.15s;
 	transition-timing-function: ease;
 
-	height: 40px;
+	height: ${(p) => (p.big ? "48px" : "40px")};
 	min-width: 0;
 	padding: 0 0.95rem;
 	margin: 0;
