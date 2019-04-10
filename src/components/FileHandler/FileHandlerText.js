@@ -1,39 +1,15 @@
-import React, { useCallback, useEffect } from "react"
+import React, { useCallback } from "react"
 import PropTypes from "prop-types"
 import { useDropzone } from "react-dropzone"
 import styled from "styled-components/macro"
 
-import { FormElementContainer, commonStyles } from "../FormElements"
-import { TextBlock } from "../StyledComponents"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { IconContainer, Overlay } from "./common"
+import { FormElementContainer, commonStyles, Textarea } from "../FormElements"
+
+import { Overlay } from "./common"
 import { Button, ButtonContainer } from "../Button"
-import { overlayCommon } from "../../style-utils"
 
 const FileHandlerContainer = styled.div`
-	${commonStyles.basicStyles}
-	height: 150px;
-
-	&[disabled] {
-		${commonStyles.disabledStyles}
-	}
-
-	&:not([disabled]) {
-		:hover {
-			/* only apply hover styles if the container is empty */
-			${(p) => p.isEmpty && commonStyles.hoverStyles}
-		}
-		:focus {
-			${commonStyles.focusStyles}
-		}
-	}
-
 	position: relative;
-`
-
-const EmptyState = styled.div`
-	${overlayCommon}
-	${commonStyles.placeholderStyles}
 `
 
 const FileHandlerText = ({
@@ -69,10 +45,6 @@ const FileHandlerText = ({
 		debugger
 	}
 
-	const onClear = () => {
-		onChange(null)
-	}
-
 	const isEmpty = !value || value.length === 0
 
 	const { getRootProps, getInputProps, isDragActive, rootRef, open } = useDropzone({
@@ -90,7 +62,7 @@ const FileHandlerText = ({
 	return (
 		<FormElementContainer error={error} info={info} {...rest}>
 			<ButtonContainer>
-				<Button type="button" onClick={clickDropzone}>
+				<Button type="button" onClick={clickDropzone} fullWidth>
 					{!isEmpty ? "Dodaj plik" : "Wybierz plik"}
 				</Button>
 			</ButtonContainer>
@@ -99,9 +71,16 @@ const FileHandlerText = ({
 			>
 				<input {...getInputProps()} />
 
-				{isDragActive && <Overlay alwaysShow>Upuść tutaj aby dodać</Overlay>}
+				<Textarea
+					info={info}
+					error={error}
+					disabled={disabled}
+					value={value}
+					onChange={onChange}
+					placeholder="Wybierz lub przeciągnij plik"
+				/>
 
-				{!isDragActive && <EmptyState>Wybierz lub przeciągnij plik</EmptyState>}
+				{isDragActive && <Overlay alwaysShow>Upuść tutaj aby dodać</Overlay>}
 			</FileHandlerContainer>
 		</FormElementContainer>
 	)

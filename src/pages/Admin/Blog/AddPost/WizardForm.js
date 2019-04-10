@@ -61,10 +61,10 @@ export default class Wizard extends React.Component {
 						<ButtonContainer>
 							{page > 0 && (
 								<Button type="button" onClick={this.previous}>
-									« Previous
+									« Wstecz
 								</Button>
 							)}
-							{!isLastPage && <Button type="submit">Next »</Button>}
+							{!isLastPage && <Button type="submit">Dalej »</Button>}
 							{isLastPage && (
 								<Button type="submit" primary disabled={submitting}>
 									Submit
@@ -73,7 +73,7 @@ export default class Wizard extends React.Component {
 						</ButtonContainer>
 						{activePage}
 
-						<pre>{JSON.stringify(values, 0, 2)}</pre>
+						{/* <pre>{JSON.stringify(values, 0, 2)}</pre> */}
 					</form>
 				)}
 			</Form>

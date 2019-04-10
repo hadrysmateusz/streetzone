@@ -39,6 +39,20 @@ const StyledForm = styled.form`
 	gap: var(--spacing3);
 `
 
+const ContentEditorContainer = styled.div`
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: var(--spacing2);
+`
+
+const PreviewStyles = styled.div`
+	width: 100%;
+	margin: 0 auto;
+	border: 1px solid var(--gray25);
+	padding: var(--spacing2);
+	margin-top: var(--spacing2);
+`
+
 const AddPost = () => {
 	const firebase = useFirebase()
 	const [fileContents, setFileContents] = useState()
@@ -92,7 +106,12 @@ const AddPost = () => {
 	return (
 		<PageContainer>
 			<Wizard initialValues={{ mainContent: fileContents }} onSubmit={onSubmit}>
-				<Wizard.Page>
+				<Wizard.Page
+					validate={(values) => {
+						const errors = {}
+						return errors
+					}}
+				>
 					<Field name="section" type="select">
 						{({ input, meta }) => {
 							const error = meta.error && meta.touched ? meta.error : null
@@ -100,56 +119,23 @@ const AddPost = () => {
 								<DropdownFinalform
 									{...input}
 									options={sectionOptions}
-									placeholder="Section"
+									placeholder="Sekcja"
 									error={error}
 								/>
 							)
 						}}
 					</Field>
-				</Wizard.Page>
-
-				<Wizard.Page
-					validate={(values) => {
-						const errors = {}
-						return errors
-					}}
-				>
-					<Field name="file">
-						{({ input, meta }) => {
-							return (
-								<>
-									<FileHandlerText {...input} error={meta.error} />
-									<OnChange name="file">
-										{(value, previous) => {
-											// immediately after every change event, reset this field
-											input.onChange(undefined)
-										}}
-									</OnChange>
-								</>
-							)
-						}}
-					</Field>
-
 					<Field name="mainContent">
 						{({ input, meta }) => {
 							const error = meta.error && meta.touched ? meta.error : null
-							const { value, ...inputRest } = input
+							const { value } = input
 							return (
-								<>
-									<Textarea
-										{...inputRest}
-										value={value}
-										placeholder="Main text content"
-										error={error}
-									/>
-									<ReactMarkdown source={value} />
-									<OnChange name="file">
-										{(value, previous) => {
-											//
-											input.onChange(value)
-										}}
-									</OnChange>
-								</>
+								<ContentEditorContainer>
+									<FileHandlerText {...input} error={error} />
+									<PreviewStyles>
+										<ReactMarkdown source={value} />
+									</PreviewStyles>
+								</ContentEditorContainer>
 							)
 						}}
 					</Field>
