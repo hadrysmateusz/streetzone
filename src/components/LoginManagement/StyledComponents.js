@@ -3,18 +3,18 @@ import styled from "styled-components/macro"
 export const OuterContainer = styled.div`
 	display: grid;
 	/* grid-template-columns: 1fr 1fr; */
-	gap: 15px;
+	gap: var(--spacing3);
 `
 
 export const SocialContainer = styled.div`
 	display: grid;
-	gap: 15px;
+	gap: var(--spacing3);
 `
 
 export const PasswordContainer = styled.div`
 	form {
 		display: grid;
-		gap: 15px;
+		gap: var(--spacing3);
 	}
 `
 

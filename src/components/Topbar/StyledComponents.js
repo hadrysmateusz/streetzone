@@ -2,7 +2,7 @@ import styled from "styled-components/macro"
 
 export const Container = styled.div`
 	display: grid;
-	gap: 4px;
+	gap: var(--spacing1);
 	grid-auto-columns: 1fr 1fr;
 	grid-template-areas:
 		"search search"
@@ -11,7 +11,7 @@ export const Container = styled.div`
 	@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
 		grid-template-columns: 1fr 180px;
 		grid-template-areas: "search sort";
-		gap: 10px;
+		gap: var(--spacing2);
 		.filter-container {
 			display: none;
 		}

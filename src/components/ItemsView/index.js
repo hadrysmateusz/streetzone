@@ -14,7 +14,7 @@ const ItemsContainer = styled.div`
 	}}
 
 	@media (min-width: ${(p) => p.theme.breakpoints[0]}px) {
-		grid-gap: 20px;
+		grid-gap: var(--spacing3);
 	}
 `
 

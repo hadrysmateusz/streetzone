@@ -13,7 +13,7 @@ const FieldsContainer = styled.div`
 	margin-top: var(--spacing3);
 	display: grid;
 	grid-template-columns: 1fr 1fr;
-	gap: 15px;
+	gap: var(--spacing3);
 	grid-template-areas:
 		"name email"
 		"city phone"

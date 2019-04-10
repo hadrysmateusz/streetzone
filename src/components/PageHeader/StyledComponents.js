@@ -27,7 +27,7 @@ export const Nav = styled.nav`
 	display: grid;
 	grid-auto-flow: column;
 	grid-auto-columns: min-content;
-	gap: 30px;
+	gap: var(--spacing4);
 	${(p) => p.alignRight && "justify-content: flex-end;"}
 	${(p) => p.centered && "justify-content: center;"}
 `

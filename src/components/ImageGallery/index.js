@@ -63,7 +63,7 @@ const ThumbnailsContainer = styled.ul`
 		${CONST.ATTACHMENTS_MAX_COUNT},
 		minmax(calc(100vw / 5.5), 1fr)
 	);
-	gap: 10px;
+	gap: var(--spacing2);
 
 	position: relative;
 

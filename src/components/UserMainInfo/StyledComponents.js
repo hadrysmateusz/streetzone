@@ -7,7 +7,7 @@ export const MainInfoContainer = styled.div`
 		grid-template-columns: max-content 1fr max-content;
 	}
 
-	gap: 20px;
+	gap: var(--spacing3);
 	overflow: hidden;
 
 	> :first-child {
