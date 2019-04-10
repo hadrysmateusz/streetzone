@@ -167,7 +167,7 @@ const AdminBlogEdit = Loadable({
 })
 
 const AdminBlogAddPost = Loadable({
-	loader: () => import("../../pages/Admin/Blog/AddPost/index.js/index.js.js"),
+	loader: () => import("../../pages/Admin/Blog/AddPost"),
 	loading: LoadableComponentSpinner
 })
 
