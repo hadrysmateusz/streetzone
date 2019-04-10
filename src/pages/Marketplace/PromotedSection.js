@@ -13,6 +13,7 @@ import { ItemCard, useImage } from "../../components/ItemCard"
 import formatDesigners from "../../utils/formatDesigners"
 import formatPrice from "../../utils/formatPrice"
 import Button, { ButtonContainer } from "../../components/Button"
+import { overlayTextShadow } from "../../style-utils"
 
 const OuterContainer = styled.div`
 	padding: var(--spacing3) 0;
@@ -48,7 +49,7 @@ const PromotedItemContainer = styled.div`
 	align-items: center;
 	justify-content: flex-end;
 	color: white;
-	text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+	${overlayTextShadow}
 	padding: var(--spacing3) 0;
 	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
 		padding: var(--spacing4) 0;

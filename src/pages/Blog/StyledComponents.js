@@ -1,5 +1,5 @@
 import styled from "styled-components/macro"
-import { ellipsis } from "../../style-utils"
+import { ellipsis, overlayTextShadow } from "../../style-utils"
 
 export const PostsContainer = styled.div`
 	display: grid;
@@ -134,7 +134,7 @@ export const PromotedPostContainer = styled.div`
 	align-items: center;
 	justify-content: flex-end;
 	color: white;
-	text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+	${overlayTextShadow}
 	padding: var(--spacing3) 0;
 	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
 		padding: var(--spacing4) 0;
