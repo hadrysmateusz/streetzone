@@ -1,52 +1,25 @@
-import React from "react"
+import React, { useState } from "react"
 import shortid from "shortid"
 import Datetime from "react-datetime"
-
-import { LoaderButton, ButtonContainer } from "../../../components/Button"
-import { Input } from "../../../components/FormElements"
-import { Text } from "../../../components/StyledComponents"
-import { FileHandlerSingle } from "../../../components/FileHandler"
 import { Form, Field } from "react-final-form"
-import useFirebase from "../../../hooks/useFirebase"
-import { Textarea } from "../../../components/FormElements"
-import DropdownFinalform from "../../../components/DropdownFinalform"
-import MultiTextInputFinalform from "../../../components/MultiTextInputFinalform"
 
-import sectionOptions from "./sectionOptions"
+import { LoaderButton, ButtonContainer } from "../../../../components/Button"
+import { Input } from "../../../../components/FormElements"
+import { Text } from "../../../../components/StyledComponents"
+import { FileHandlerSingle } from "../../../../components/FileHandler"
+import { Textarea } from "../../../../components/FormElements"
+import DropdownFinalform from "../../../../components/DropdownFinalform"
+import MultiTextInputFinalform from "../../../../components/MultiTextInputFinalform"
+import useFirebase from "../../../../hooks/useFirebase"
+
+import sectionOptions from "./section_options"
+import validate from "./validate"
 
 import "react-datetime/css/react-datetime.css"
 
-import { FORM_ERR } from "../../../constants"
-
-const validate = ({ author, title, section, mainContent, mainImage, dropsAt }) => {
-	const errors = {}
-
-	if (!title) {
-		errors.title = FORM_ERR.IS_REQUIRED
-	}
-
-	if (!section) {
-		errors.section = FORM_ERR.IS_REQUIRED
-	} else {
-		if (section !== "drops" && !author) {
-			errors.author = FORM_ERR.IS_REQUIRED
-		}
-	}
-
-	if (!mainContent) {
-		errors.mainContent = FORM_ERR.IS_REQUIRED
-	}
-
-	if (!mainImage) {
-		errors.mainImage = FORM_ERR.IS_REQUIRED
-	}
-
-	console.log(errors)
-	return errors
-}
-
 const AddPost = () => {
 	const firebase = useFirebase()
+	const [fileContents, setFileContents] = useState()
 
 	const onSubmit = async (
 		{ section, mainImage, title, author, mainContent, dropsAt, tags },
@@ -95,10 +68,24 @@ const AddPost = () => {
 		}
 	}
 
+	const uploadFile = (e) => {
+		const file = e.currentTarget.files[0]
+		if (file) {
+			const reader = new FileReader()
+			reader.addEventListener("loadend", () => {
+				setFileContents(reader.result)
+				console.log(reader.result)
+			})
+
+			reader.readAsText(file)
+		}
+	}
+
 	return (
 		<Form
 			onSubmit={onSubmit}
 			validate={validate}
+			initialValues={{ mainContent: fileContents }}
 			render={({ handleSubmit, submitting, pristine, form, values }) => {
 				return (
 					<form onSubmit={handleSubmit}>
@@ -165,7 +152,12 @@ const AddPost = () => {
 
 						<Field name="mainImage">
 							{({ input, meta }) => {
-								return <FileHandlerSingle {...input} error={meta.error} />
+								return (
+									<>
+										<FileHandlerSingle {...input} error={meta.error} />
+										<input type="file" onChange={uploadFile} />
+									</>
+								)
 							}}
 						</Field>
 

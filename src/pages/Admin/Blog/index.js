@@ -75,13 +75,13 @@ const BlogManagement = () => {
 			<TextBlock size="xl" bold>
 				Blog
 			</TextBlock>
-			<TextBlock size="m" color="gray0">
-				Add post
-			</TextBlock>
-			<AddPost />
-			<TextBlock size="m" color="gray0">
-				All posts
-			</TextBlock>
+
+			<ButtonContainer>
+				<Button primary as={Link} to={ROUTES.ADMIN_BLOG_ADD}>
+					Dodaj posta
+				</Button>
+			</ButtonContainer>
+
 			{posts.length > 0 && (
 				<div>
 					{posts.map((post) => (
