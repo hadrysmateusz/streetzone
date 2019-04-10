@@ -5,7 +5,7 @@ import { OnChange } from "react-final-form-listeners"
 import styled from "styled-components/macro"
 import { withRouter } from "react-router-dom"
 
-import Button, { LoaderButton } from "../../components/Button"
+import Button, { LoaderButton, ButtonContainer } from "../../components/Button"
 import DropdownFinalform from "../../components/DropdownFinalform"
 import InfoBox from "../../components/InfoBox"
 import { Input, Textarea } from "../../components/FormElements"
@@ -244,20 +244,27 @@ const NewItemForm = ({ initialValues, onSubmit, history, isLoading }) => {
 							</Field>
 						</FormElement>
 
-						<LoaderButton
-							text="Gotowe"
-							type="submit"
-							isLoading={submitting}
-							disabled={submitting || pristine}
-						/>
-						<Button
+						<FormElement>
+							<ButtonContainer>
+								<LoaderButton
+									text="Gotowe"
+									type="submit"
+									big
+									fullWidth
+									primary
+									isLoading={submitting}
+									disabled={submitting || pristine}
+								/>
+							</ButtonContainer>
+						</FormElement>
+						{/* <Button
 							text="Anuluj"
 							type="button"
 							disabled={submitting}
 							onClick={() => history.push(ROUTES.HOME)}
 						>
 							Anuluj
-						</Button>
+						</Button> */}
 						{/* {process.env.NODE_ENV === "development" && (
 							<pre>{JSON.stringify(values, 0, 2)}</pre>
 						)} */}
