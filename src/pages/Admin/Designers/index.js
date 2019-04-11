@@ -45,9 +45,9 @@ const LogoContainer = styled.div`
 `
 
 const DesignerItemContainer = styled.div`
-	margin: 10px 0;
+	margin: var(--spacing2) 0;
 	border: 1px solid black;
-	padding: 10px;
+	padding: var(--spacing2);
 `
 
 const DesignerItem = ({ designer }) => {

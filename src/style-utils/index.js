@@ -52,3 +52,7 @@ export const overlayCommonStyles = css`
 	text-shadow: 1px 1px rgba(0, 0, 0, 0.25);
 	color: white;
 `
+
+export const overlayTextShadow = css`
+	text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.3), 0 2px 3px rgba(0, 0, 0, 0.5);
+`

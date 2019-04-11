@@ -1,9 +1,12 @@
 import styled from "styled-components/macro"
-import { ellipsis } from "../../style-utils"
+import { ellipsis, overlayTextShadow } from "../../style-utils"
 
 export const PostsContainer = styled.div`
 	display: grid;
 	gap: 10px;
+	@media (max-width: ${(p) => p.theme.breakpoints[0] - 1}px) {
+		margin: 0 calc(var(--spacing3) * -1);
+	}
 `
 
 export const ShareButtons = styled.div`
@@ -57,30 +60,9 @@ export const Post = styled.div`
 	}
 `
 
-export const ImageContainer = styled.div`
-	max-width: 100%;
-	max-height: 100%;
-
-	width: 100%;
-	height: 100%;
-
-	cursor: pointer;
-
-	display: flex;
-	justify-content: center;
-	align-items: flex-start;
-
-	overflow: hidden;
-
-	@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
-		/* align-items: center; */
-	}
-`
-
 export const Image = styled.div`
 	width: 100%;
-	height: 0;
-	padding-bottom: 100%;
+	height: 100%;
 	background-image: url("${(p) => p.url}");
 	background-size: cover;
 	background-repeat: no-repeat;
@@ -131,7 +113,7 @@ export const PromotedPostContainer = styled.div`
 	align-items: center;
 	justify-content: flex-end;
 	color: white;
-	text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+	${overlayTextShadow}
 	padding: var(--spacing3) 0;
 	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
 		padding: var(--spacing4) 0;
@@ -148,7 +130,9 @@ export const MainGrid = styled.div`
 
 export const SidebarContainer = styled.aside``
 
-export const ContentArea = styled.main``
+export const ContentArea = styled.main`
+	min-width: 0;
+`
 
 export const SectionContainer = styled.section`
 	margin-bottom: var(--spacing4);

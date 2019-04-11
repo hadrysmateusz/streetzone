@@ -10,7 +10,7 @@ const StyledTextarea = styled(Textarea)`
 	resize: vertical;
 	min-height: calc(4 * 1.45em + 0.7em);
 	font-size: var(--font-size--s) !important;
-	font-family: var(--font-family--sans-serif);
+	/* font-family: var(--font-family--sans-serif); */
 	padding: var(--spacing2);
 
 	${commonStyles}

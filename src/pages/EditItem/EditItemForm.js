@@ -14,7 +14,7 @@ import { ROUTES, CONST } from "../../constants"
 const StyledForm = styled.form`
 	display: grid;
 	grid-template-columns: 1fr 1fr;
-	gap: 10px;
+	gap: var(--spacing3);
 	grid-template-areas:
 		"price price"
 		"description description"

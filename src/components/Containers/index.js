@@ -13,8 +13,8 @@ const PageContainer = styled.section`
 	max-width: ${(p) => p.theme.breakpoints[5]}px; /* default */
 	${pageContainerWidth}
 
-	--margin-y: 10px;
-	--padding-x: 3px;
+	--margin-y: var(--spacing3);
+	--padding-x: ${(p) => (p.extraWide ? "var(--spacing1)" : "var(--spacing3)")};
 
 	width: 100%;
 
@@ -22,15 +22,15 @@ const PageContainer = styled.section`
 	padding: 0 var(--padding-x);
 
 	@media (min-width: ${(p) => p.theme.breakpoints[0]}px) {
-		--margin-y: 20px;
-		--padding-x: 20px;
+		--margin-y: var(--spacing3);
+		--padding-x: var(--spacing3);
 	}
 `
 
 const OuterGrayContainer = styled.section`
 	width: 100%;
 	background: var(--gray100);
-	${(p) => p.padded && "padding: 40px 0;"}
+	${(p) => p.padded && "padding: var(--spacing4) 0;"}
 `
 const GrayContainer = ({ padded, children, ...props }) => (
 	<OuterGrayContainer padded={padded}>

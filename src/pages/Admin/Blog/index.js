@@ -21,8 +21,8 @@ const BlogImageContainer = styled.div`
 
 const BlogPostContainer = styled.div`
 	border: 1px solid black;
-	padding: 16px;
-	margin: 10px 0;
+	padding: var(--spacing3);
+	margin: var(--spacing2) 0;
 `
 
 const BlogPost = ({ post }) => {
@@ -75,13 +75,13 @@ const BlogManagement = () => {
 			<TextBlock size="xl" bold>
 				Blog
 			</TextBlock>
-			<TextBlock size="m" color="gray0">
-				Add post
-			</TextBlock>
-			<AddPost />
-			<TextBlock size="m" color="gray0">
-				All posts
-			</TextBlock>
+
+			<ButtonContainer>
+				<Button primary as={Link} to={ROUTES.ADMIN_BLOG_ADD}>
+					Dodaj posta
+				</Button>
+			</ButtonContainer>
+
 			{posts.length > 0 && (
 				<div>
 					{posts.map((post) => (

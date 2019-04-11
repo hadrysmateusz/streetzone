@@ -166,6 +166,11 @@ const AdminBlogEdit = Loadable({
 	loading: LoadableComponentSpinner
 })
 
+const AdminBlogAddPost = Loadable({
+	loader: () => import("../../pages/Admin/Blog/AddPost"),
+	loading: LoadableComponentSpinner
+})
+
 const AdminDesigners = Loadable({
 	loader: () => import("../../pages/Admin/Designers"),
 	loading: LoadableComponentSpinner
@@ -202,6 +207,12 @@ const routes = [
 				id: "blogEdit",
 				path: ROUTES.ADMIN_BLOG_EDIT,
 				component: AdminBlogEdit,
+				isNavigable: false
+			},
+			{
+				id: "blogAdd",
+				path: ROUTES.ADMIN_BLOG_ADD,
+				component: AdminBlogAddPost,
 				isNavigable: false
 			},
 			{

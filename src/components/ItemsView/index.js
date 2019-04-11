@@ -8,13 +8,14 @@ const ItemsContainer = styled.div`
 	display: grid;
 	grid-gap: 3px;
 
+
 	${(p) => {
-		const cols = Math.min(Math.ceil(p.containerWidth / 280), 4)
+		const cols = Math.min(Math.ceil(p.containerWidth / 280), 3)
 		return `grid-template-columns: repeat(${cols}, 1fr);`
 	}}
 
 	@media (min-width: ${(p) => p.theme.breakpoints[0]}px) {
-		grid-gap: 20px;
+		grid-gap: var(--spacing3);
 	}
 `
 

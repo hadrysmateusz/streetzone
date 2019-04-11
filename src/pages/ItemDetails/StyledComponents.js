@@ -14,8 +14,8 @@ export const ItemContainer = styled.div`
 export const InfoContainer = styled.div`
 	flex: 0 0 100%;
 	background: white;
-	padding-bottom: 70px;
-	padding-left: 20px;
+	padding-bottom: var(--spacing5);
+	padding-left: var(--spacing3);
 	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
 		max-width: 330px;
 	}
@@ -52,11 +52,11 @@ export const Sold = styled.div`
 
 export const Name = styled.div`
 	color: ${(p) => p.theme.colors.black[75]};
-	margin-bottom: 15px;
+	margin-bottom: var(--spacing3);
 `
 
 export const Designers = styled.h3`
 	margin: 0;
-	margin-bottom: 5px;
+	margin-bottom: var(--spacing1);
 	font-weight: bold;
 `

@@ -62,7 +62,7 @@ const Button = styled.button`
 	transition-duration: 0.15s;
 	transition-timing-function: ease;
 
-	height: 40px;
+	height: ${(p) => (p.big ? "48px" : "40px")};
 	min-width: 0;
 	padding: 0 0.95rem;
 	margin: 0;
@@ -75,7 +75,7 @@ const Button = styled.button`
 
 	/* Add spacing between children */
 	* + * {
-		margin-left: 6px;
+		margin-left: var(--spacing2);
 	}
 
 	/* Change cursor if button isn't disabled */
@@ -116,7 +116,7 @@ const IconButtonUnstyled = ({ icon, ...rest }) => (
 )
 
 const IconButton = styled(IconButtonUnstyled)`
-	padding: 0 16px;
+	padding: 0 var(--spacing3);
 `
 
 const LoaderButtonUnstyled = ({ isLoading, text, loadingText = text, ...rest }) => (
@@ -134,7 +134,7 @@ const LoaderButton = styled(LoaderButtonUnstyled)`
 		width: auto;
 	}
 	.spinner {
-		margin-right: 8px;
+		margin-right: var(--spacing2);
 		position: absolute;
 		top: 0.2rem;
 		left: -1.3rem;
@@ -143,7 +143,7 @@ const LoaderButton = styled(LoaderButtonUnstyled)`
 `
 
 const FacebookButton = styled(Button)`
-	padding-left: 8px;
+	padding-left: var(--spacing2);
 	color: white;
 	background-color: ${(p) => (p.disabled ? "#7D8EB2" : "#3b5998")};
 	border-color: ${(p) => (p.disabled ? "#7D8EB2" : "#3b5998")};
@@ -156,7 +156,7 @@ const FacebookButton = styled(Button)`
 `
 
 const GoogleButton = styled(Button)`
-	padding-left: 8px;
+	padding-left: var(--spacing2);
 	color: white;
 	background-color: ${(p) => (p.disabled ? "#9FBFF4" : "#4285f4")};
 	border-color: ${(p) => (p.disabled ? "#9FBFF4" : "#4285f4")};

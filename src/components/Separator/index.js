@@ -10,7 +10,7 @@ const SeparatorBase = ({ children, ...rest }) => (
 )
 
 const Separator = styled(SeparatorBase)`
-	padding: ${(p) => p.spacing || "6px"} 0;
+	padding: ${(p) => p.spacing || "var(--spacing1)"} 0;
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -25,8 +25,8 @@ const Separator = styled(SeparatorBase)`
 		display: grid;
 		grid-auto-flow: column;
 		align-items: center;
-		gap: 6px;
-		padding: 0 6px;
+		gap: var(--spacing1);
+		padding: 0 var(--spacing1);
 		color: ${(p) => p.theme.colors.gray[25]};
 	}
 `

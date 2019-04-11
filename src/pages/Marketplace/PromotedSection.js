@@ -12,12 +12,10 @@ import { TextBlock } from "../../components/StyledComponents"
 import { ItemCard, useImage } from "../../components/ItemCard"
 import formatDesigners from "../../utils/formatDesigners"
 import formatPrice from "../../utils/formatPrice"
-import formatSize from "../../utils/formatSize"
 import Button, { ButtonContainer } from "../../components/Button"
+import { overlayTextShadow } from "../../style-utils"
 
 const OuterContainer = styled.div`
-	/* background: linear-gradient(1225deg, #fbfbfb, #e5e5e5); */
-	/* background: var(--almost-white); */
 	padding: var(--spacing3) 0;
 `
 
@@ -42,17 +40,16 @@ const TopContainer = styled.div`
 const PromotedItemContainer = styled.div`
 	width: 100%;
 	height: 100%;
-  /* background-image: url(${(p) => p.image});
-  background-color: var(--almost-white); */
 	background: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.24)),
 		url(${(p) => p.image});
 	background-size: cover;
+	background-position: center;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	justify-content: flex-end;
 	color: white;
-	text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+	${overlayTextShadow}
 	padding: var(--spacing3) 0;
 	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
 		padding: var(--spacing4) 0;
@@ -103,7 +100,6 @@ const PromotedItem = ({ item }) => {
 
 	const formattedDesigners = formatDesigners(item.designers)
 	const formattedPrice = formatPrice(item.price)
-	const formattedSize = formatSize(item.size)
 
 	return (
 		<Link to={`/i/${item.id}`}>
@@ -112,11 +108,8 @@ const PromotedItem = ({ item }) => {
 					{item.name}
 				</TextBlock>
 				<TextBlock serif>{formattedDesigners}</TextBlock>
-				{/* <TextBlock serif>
-					Cena: <b>{formattedPrice}</b>&nbsp;&nbsp;&nbsp; Rozmiar: <b>{formattedSize}</b>
-				</TextBlock> */}
+
 				<ButtonContainer centered>
-					{/* <Button>Więcej informacji</Button> */}
 					<Button>Kup za {formattedPrice}</Button>
 				</ButtonContainer>
 			</PromotedItemContainer>

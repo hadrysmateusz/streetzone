@@ -1,6 +1,7 @@
 import shortid from "shortid"
 
 import isNonEmptyArray from "../isNonEmptyArray"
+import isSet from "./isSet"
 
 export const MODE = {
 	CREATE: "CREATE",
@@ -55,47 +56,47 @@ export const formatItemDataForDb = (data, mode, flagState = true) => {
 		}
 
 		// designers
-		if (data.designers !== undefined) {
+		if (isSet(data.designers)) {
 			formatted.designers = formatNonEmptyArray(data.designers)
 		}
 
 		// attachments
-		if (data.attachments !== undefined) {
+		if (isSet(data.attachments)) {
 			formatted.attachments = formatNonEmptyArray(data.attachments)
 		}
 
 		// name
-		if (data.name !== undefined) {
+		if (isSet(data.name)) {
 			formatted.name = formatString(data.name)
 		}
 
 		// category
-		if (data.category !== undefined) {
+		if (isSet(data.category)) {
 			formatted.category = formatString(data.category)
 		}
 
 		// price
-		if (data.price !== undefined) {
+		if (isSet(data.price)) {
 			formatted.price = formatInt(data.price)
 		}
 
 		// condition
-		if (data.condition !== undefined) {
+		if (isSet(data.condition)) {
 			formatted.condition = formatFloat(data.condition)
 		}
 
 		// userId
-		if (data.userId !== undefined) {
+		if (isSet(data.userId)) {
 			formatted.userId = formatString(data.userId)
 		}
 
 		// size
-		if (data.size !== undefined) {
+		if (isSet(data.size)) {
 			formatted.size = formatString(data.size)
 		}
 
 		// description
-		if (data.description !== undefined) {
+		if (isSet(data.description)) {
 			formatted.description = formatString(data.description)
 		}
 	}

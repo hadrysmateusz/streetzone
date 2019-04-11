@@ -18,7 +18,7 @@ const ModalBox = styled.div`
 	box-sizing: content-box;
 	width: 280px;
 	background: white;
-	padding: 30px;
+	padding: var(--spacing4);
 	box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.45);
 `
 

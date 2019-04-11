@@ -6,7 +6,7 @@ export const CommentContainer = styled.div`
 
 export const VerticalSeparator = styled.div`
 	height: 100%;
-	margin: 0 15px;
+	margin: 0 var(--spacing3);
 	width: 0;
 	border-left: 1px solid ${(p) => p.theme.colors.gray[75]};
 `

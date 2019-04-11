@@ -7,7 +7,7 @@ export const PageHeaderContainer = styled.header`
 	max-width: ${(p) => p.theme.breakpoints[5]}px;
 	height: ${HEADER_HEIGHT};
 	margin: 0 auto;
-	padding: 0 20px;
+	padding: 0 var(--spacing3);
 	display: grid;
 	grid-template-columns: 1fr 1fr 1fr;
 	align-items: center;
@@ -17,7 +17,7 @@ export const PageHeaderOuter = styled.div`
 	position: sticky;
 	top: 0;
 	z-index: 80;
-	background: rgb(255, 255, 255, 0.95);
+	background: rgba(255, 255, 255, 0.95);
 	border-bottom: 1px solid white;
 	transition: border-color 0.14s linear;
 	${(p) => p.scrollPosition !== 0 && "border-color: var(--gray75);"}
@@ -27,7 +27,7 @@ export const Nav = styled.nav`
 	display: grid;
 	grid-auto-flow: column;
 	grid-auto-columns: min-content;
-	gap: 30px;
+	gap: var(--spacing4);
 	${(p) => p.alignRight && "justify-content: flex-end;"}
 	${(p) => p.centered && "justify-content: center;"}
 `

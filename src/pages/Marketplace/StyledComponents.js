@@ -1,8 +1,6 @@
 import styled from "styled-components/macro"
 import { InstantSearch } from "react-instantsearch-dom"
 
-import { PageContainer } from "../../components/Containers"
-
 export const StyledInstantSearch = styled(InstantSearch)`
 	height: 100%;
 	> {
@@ -24,7 +22,7 @@ export const Sidebar = styled.aside`
 	max-width: 100%;
 
 	width: 270px;
-	margin-right: 20px;
+	margin-right: var(--spacing3);
 
 	/* mobile */
 	@media (max-width: ${(p) => p.theme.breakpoints[1] - 1}px) {
@@ -39,7 +37,7 @@ export const Sidebar = styled.aside`
 	}
 `
 
-export const GridContainer = styled(PageContainer)`
+export const GridContainer = styled.div`
 	display: grid;
-	gap: 20px;
+	gap: var(--spacing3);
 `

@@ -21,16 +21,16 @@ const Container = styled.div`
 `
 
 const Item = styled.div`
-	padding: 6px;
+	padding: var(--spacing2);
 	background: white;
 	border: 1px solid ${(p) => p.theme.colors.gray[75]};
-	margin: 3px 0;
+	margin: var(--spacing1) 0;
 
 	/* desktop */
 	@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
 		margin: 0;
 		+ * {
-			margin-left: 10px;
+			margin-left: var(--spacing2);
 		}
 	}
 `

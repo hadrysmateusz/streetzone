@@ -45,7 +45,7 @@ const Container = styled.div`
 	flex: 0 1 100%;
 	user-select: none;
 	min-width: 0;
-	margin-bottom: 10px;
+	margin-bottom: var(--spacing2);
 	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
 		margin-bottom: 0;
 	}
@@ -63,7 +63,7 @@ const ThumbnailsContainer = styled.ul`
 		${CONST.ATTACHMENTS_MAX_COUNT},
 		minmax(calc(100vw / 5.5), 1fr)
 	);
-	gap: 10px;
+	gap: var(--spacing2);
 
 	position: relative;
 
@@ -77,7 +77,7 @@ const ThumbnailsContainer = styled.ul`
 		overflow-x: visible;
 	}
 
-	margin-top: 10px;
+	margin-top: var(--spacing2);
 
 	li {
 		/* setup aspect ratio hack */
