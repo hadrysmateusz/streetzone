@@ -5,7 +5,7 @@ import { OnChange } from "react-final-form-listeners"
 import styled from "styled-components/macro"
 import { withRouter } from "react-router-dom"
 
-import Button, { LoaderButton, ButtonContainer } from "../../components/Button"
+import { LoaderButton, ButtonContainer } from "../../components/Button"
 import DropdownFinalform from "../../components/DropdownFinalform"
 import InfoBox from "../../components/InfoBox"
 import { Input, Textarea } from "../../components/FormElements"

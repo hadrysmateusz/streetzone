@@ -1,9 +1,8 @@
 import React, { useCallback } from "react"
-import PropTypes from "prop-types"
 import { useDropzone } from "react-dropzone"
 import styled from "styled-components/macro"
 
-import { FormElementContainer, commonStyles, Textarea } from "../FormElements"
+import { FormElementContainer, Textarea } from "../FormElements"
 
 import { Overlay } from "./common"
 import { Button, ButtonContainer } from "../Button"

@@ -2,12 +2,12 @@ import React, { useCallback, useEffect } from "react"
 import PropTypes from "prop-types"
 import { useDropzone } from "react-dropzone"
 import styled from "styled-components/macro"
-
-import { FormElementContainer, commonStyles } from "../FormElements"
-import { CustomFile } from "."
-import { TextBlock } from "../StyledComponents"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+
+import { CustomFile } from "."
 import { IconContainer, Overlay } from "./common"
+import { FormElementContainer, commonStyles } from "../FormElements"
+import { TextBlock } from "../StyledComponents"
 
 const FileHandlerContainer = styled.div`
 	${commonStyles.basicStyles}

@@ -1,43 +1,22 @@
-import React, { useState } from "react"
+import React from "react"
 import shortid from "shortid"
 import Datetime from "react-datetime"
-import { Form, Field } from "react-final-form"
+import { Field } from "react-final-form"
 import styled from "styled-components/macro"
-import { OnChange } from "react-final-form-listeners"
 import ReactMarkdown from "react-markdown"
 
-import { LoaderButton, ButtonContainer } from "../../../../components/Button"
 import { PageContainer } from "../../../../components/Containers"
 import { Input } from "../../../../components/FormElements"
 import { Text } from "../../../../components/StyledComponents"
 import { FileHandlerSingle, FileHandlerText } from "../../../../components/FileHandler"
-import { Textarea } from "../../../../components/FormElements"
 import DropdownFinalform from "../../../../components/DropdownFinalform"
 import MultiTextInputFinalform from "../../../../components/MultiTextInputFinalform"
 import useFirebase from "../../../../hooks/useFirebase"
 
 import Wizard from "./WizardForm"
 import sectionOptions from "./section_options"
-import validate from "./validate"
 
 import "react-datetime/css/react-datetime.css"
-
-const Error = ({ name }) => (
-	<Field
-		name={name}
-		subscribe={{ touched: true, error: true }}
-		render={({ meta: { touched, error } }) =>
-			touched && error ? <span>{error}</span> : null
-		}
-	/>
-)
-
-const required = (value) => (value ? undefined : "Required")
-
-const StyledForm = styled.form`
-	display: grid;
-	gap: var(--spacing3);
-`
 
 const ContentEditorContainer = styled.div`
 	display: grid;
@@ -55,7 +34,6 @@ const PreviewStyles = styled.div`
 
 const AddPost = () => {
 	const firebase = useFirebase()
-	const [fileContents, setFileContents] = useState()
 
 	const onSubmit = async (
 		{ section, mainImage, title, author, mainContent, dropsAt, tags },
@@ -105,7 +83,7 @@ const AddPost = () => {
 
 	return (
 		<PageContainer>
-			<Wizard initialValues={{ mainContent: fileContents }} onSubmit={onSubmit}>
+			<Wizard onSubmit={onSubmit}>
 				<Wizard.Page
 					validate={(values) => {
 						const errors = {}
