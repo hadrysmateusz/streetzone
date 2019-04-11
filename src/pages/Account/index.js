@@ -101,10 +101,7 @@ const AccountPage = ({ routes, match, authUser }) => {
 	)
 }
 
-const condition = (authUser) => !!authUser
-
 export default compose(
-	withAuthorization(condition),
 	withAuthentication,
 	withRouter
 )(AccountPage)
