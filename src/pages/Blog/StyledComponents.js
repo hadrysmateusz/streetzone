@@ -60,30 +60,9 @@ export const Post = styled.div`
 	}
 `
 
-export const ImageContainer = styled.div`
-	max-width: 100%;
-	max-height: 100%;
-
-	width: 100%;
-	height: 100%;
-
-	cursor: pointer;
-
-	display: flex;
-	justify-content: center;
-	align-items: flex-start;
-
-	overflow: hidden;
-
-	@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
-		/* align-items: center; */
-	}
-`
-
 export const Image = styled.div`
 	width: 100%;
-	height: 0;
-	padding-bottom: 100%;
+	height: 100%;
 	background-image: url("${(p) => p.url}");
 	background-size: cover;
 	background-repeat: no-repeat;

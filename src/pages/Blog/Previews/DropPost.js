@@ -13,9 +13,7 @@ const DropPost = ({ id, mainImageURL, title, dropsAt }) => {
 	return (
 		<Link to={ROUTES.BLOG_POST.replace(":id", id)}>
 			<SmallPostContainer>
-				<ImageContainer>
-					<Image url={mainImageURL} />
-				</ImageContainer>
+				<Image url={mainImageURL} />
 				<div className="post-details">
 					<TextBlock serif size="l">
 						{title}

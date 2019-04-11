@@ -41,9 +41,7 @@ const BasicPost = ({
 	return (
 		<PostContainer>
 			<Link to={ROUTES.BLOG_POST.replace(":id", id)}>
-				<ImageContainer>
-					<Image url={mainImageURL} />
-				</ImageContainer>
+				<Image url={mainImageURL} />
 				<MainContainer>
 					<TextBlock uppercase color="gray0">
 						{section}
