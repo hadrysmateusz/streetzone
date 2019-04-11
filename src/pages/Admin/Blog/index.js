@@ -10,8 +10,6 @@ import useFirebase from "../../../hooks/useFirebase"
 import useFirestoreCollection from "../../../hooks/useFirestoreCollection"
 import { ROUTES } from "../../../constants"
 
-import AddPost from "./AddPost"
-
 const BlogImageContainer = styled.div`
 	img {
 		max-height: 100px;

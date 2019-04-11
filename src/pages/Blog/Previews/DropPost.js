@@ -7,7 +7,7 @@ import { TextBlock } from "../../../components/StyledComponents"
 import Button, { ButtonContainer } from "../../../components/Button"
 import { ROUTES } from "../../../constants"
 
-import { Image, ImageContainer, SmallPostContainer } from "../StyledComponents"
+import { Image, SmallPostContainer } from "../StyledComponents"
 
 const DropPost = ({ id, mainImageURL, title, dropsAt }) => {
 	return (

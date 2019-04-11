@@ -41,10 +41,10 @@ export const InstantSearchWrapper = withRouter(
 			setSearchState(state)
 		}, [location])
 
-		const refresh = () => {
-			setShouldRefresh(true)
-			setShouldRefresh(false)
-		}
+		// const refresh = () => {
+		// 	setShouldRefresh(true)
+		// 	setShouldRefresh(false)
+		// }
 
 		// const shouldScroll = (oldState, newState) => {
 		// 	/* get copies of current and prev states and compare all values except for page

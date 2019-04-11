@@ -10,7 +10,6 @@ import { TextBlock, Text } from "../../../components/StyledComponents"
 import {
 	Post as PostContainer,
 	Image,
-	ImageContainer,
 	DetailsContainer,
 	MainContainer,
 	ShareButtons,
