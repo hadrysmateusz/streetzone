@@ -106,17 +106,20 @@ const FileHandlerSingle = ({
 				<input {...getInputProps()} />
 
 				{!isEmpty && <img src={value.previewUrl} alt="" />}
-
-				<Overlay alwaysShow>
-					<IconContainer onClick={clickDropzone}>
-						<FontAwesomeIcon icon="plus" size="2x" fixedWidth />
-						<TextBlock centered>{!isEmpty ? "Zmień" : "Dodaj"}</TextBlock>
-					</IconContainer>
-					<IconContainer onClick={onClear}>
-						<FontAwesomeIcon icon="trash" size="2x" fixedWidth />
-						<TextBlock centered>Usuń</TextBlock>
-					</IconContainer>
-				</Overlay>
+				{isDragActive ? (
+					<Overlay alwaysShow>Upuść tutaj by dodać</Overlay>
+				) : (
+					<Overlay alwaysShow>
+						<IconContainer onClick={clickDropzone}>
+							<FontAwesomeIcon icon="plus" size="2x" fixedWidth />
+							<TextBlock centered>{!isEmpty ? "Zmień" : "Dodaj"}</TextBlock>
+						</IconContainer>
+						<IconContainer onClick={onClear}>
+							<FontAwesomeIcon icon="trash" size="2x" fixedWidth />
+							<TextBlock centered>Usuń</TextBlock>
+						</IconContainer>
+					</Overlay>
+				)}
 			</FileHandlerContainer>
 		</FormElementContainer>
 	)
