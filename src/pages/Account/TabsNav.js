@@ -15,7 +15,6 @@ const DropdownNavItem = ({ label, routes }) => {
 	const [isOpen, setIsOpen] = useState(false)
 	const onClick = () => {
 		setIsOpen(!isOpen)
-		console.log("adsf")
 	}
 
 	return (
@@ -35,9 +34,12 @@ const DropdownNavItem = ({ label, routes }) => {
 
 export const AccountPageTabs = withBreakpoints(
 	({ currentBreakpoint, routes, userId, ...rest }) => {
+		routes.forEach((route) => {
+			route.path = route.path.replace(":id", userId)
+		})
+
 		if (currentBreakpoint < 2) {
 			routes = routes.reduce((acc, curr, i) => {
-				curr.path = curr.path.replace(":id", userId)
 				if (!curr.category) {
 					return { ...acc, [curr.id]: curr }
 				} else {
