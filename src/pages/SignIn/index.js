@@ -8,7 +8,6 @@ import { StyledLink, FieldRow, Header, Separator } from "../../components/Basics
 import { FormError, Input } from "../../components/FormElements"
 import { FacebookButton, GoogleButton, LoaderButton } from "../../components/Button"
 import { withFirebase } from "../../components/Firebase"
-import { CenteredContainer } from "../../components/Containers"
 
 import { SignUpLink } from "../SignUp"
 import { PasswordForgetLink } from "../PasswordForget"
@@ -16,6 +15,12 @@ import { PasswordForgetLink } from "../PasswordForget"
 import { ROUTES, AUTH_ERR } from "../../constants"
 import validate from "./validate"
 import formatUserData from "../../utils/formatUserData"
+
+const Container = styled.div`
+	width: 100%;
+	max-width: 280px;
+	margin: 0 auto;
+`
 
 const StyledForm = styled.form`
 	display: grid;
@@ -27,20 +32,40 @@ const SocialButtonsContainer = styled.div`
 	gap: var(--spacing2);
 `
 
+const OuterContainer = styled.div`
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
+	position: relative;
+	&::before,
+	&::after {
+		content: "";
+		display: block;
+		flex-grow: 1;
+		min-height: 120px;
+	}
+
+	&::before {
+		margin-top: -120px;
+	}
+`
+
 const SignInPage = () => {
 	return (
-		<CenteredContainer>
-			<Header>Zaloguj się</Header>
-			<SocialButtonsContainer>
-				<SignInGoogle />
-				<SignInFacebook />
-			</SocialButtonsContainer>
-			<Separator text="lub" />
-			<SignInForm />
-			<PasswordForgetLink />
-			<Separator />
-			<SignUpLink />
-		</CenteredContainer>
+		<OuterContainer>
+			<Container>
+				<Header>Zaloguj się</Header>
+				<SocialButtonsContainer>
+					<SignInGoogle />
+					<SignInFacebook />
+				</SocialButtonsContainer>
+				<Separator text="lub" />
+				<SignInForm />
+				<PasswordForgetLink />
+				<Separator />
+				<SignUpLink />
+			</Container>
+		</OuterContainer>
 	)
 }
 

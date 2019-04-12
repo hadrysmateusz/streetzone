@@ -38,40 +38,4 @@ const GrayContainer = ({ padded, children, ...props }) => (
 	</OuterGrayContainer>
 )
 
-const CenteredContainerBox = styled.div`
-	flex-shrink: 0;
-
-	display: block;
-	margin: 0 auto;
-	min-height: 0;
-	width: 320px;
-	max-width: 100%;
-	padding: var(--spacing3);
-`
-const OuterCenteredContainer = styled.div`
-	display: flex;
-	flex-direction: column;
-	min-height: 100vh;
-	position: relative;
-	&::before,
-	&::after {
-		content: "";
-		display: block;
-		flex-grow: 1;
-		min-height: 150px;
-	}
-
-	&::before {
-		margin-top: -150px;
-	}
-`
-
-const CenteredContainer = ({ children }) => {
-	return (
-		<OuterCenteredContainer>
-			<CenteredContainerBox>{children}</CenteredContainerBox>
-		</OuterCenteredContainer>
-	)
-}
-
-export { PageContainer, GrayContainer, CenteredContainer }
+export { PageContainer, GrayContainer }

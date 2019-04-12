@@ -8,13 +8,18 @@ import { withFirebase } from "../../components/Firebase"
 import { StyledLink, FieldRow, Header } from "../../components/Basics"
 import { LoaderButton } from "../../components/Button"
 import { FormError, Input } from "../../components/FormElements"
-import { CenteredContainer } from "../../components/Containers"
 
 import { SignInLink } from "../SignIn"
 
 import { ROUTES, AUTH_ERR } from "../../constants"
 import formatUserData from "../../utils/formatUserData"
 import validate from "./validate"
+
+const Container = styled.div`
+	width: 100%;
+	max-width: 280px;
+	margin: 0 auto;
+`
 
 const StyledForm = styled.form`
 	display: grid;
@@ -23,10 +28,10 @@ const StyledForm = styled.form`
 
 const SignUpPage = () => {
 	return (
-		<CenteredContainer>
+		<div>
 			<Header>Utwórz konto</Header>
 			<SignUpForm />
-		</CenteredContainer>
+		</div>
 	)
 }
 
@@ -71,81 +76,88 @@ class SignUpFormBase extends Component {
 		return redirectToReferrer ? (
 			<Redirect to={redirectTo} />
 		) : (
-			<Form
-				onSubmit={this.onSubmit}
-				validate={validate}
-				render={({ handleSubmit, submitting, pristine, values }) => (
-					<StyledForm onSubmit={handleSubmit}>
-						{/* Imię */}
-						<FieldRow>
-							<Field name="name">
-								{({ input, meta }) => {
-									const error = meta.error && meta.touched ? meta.error : null
-									return (
-										<Input
-											{...input}
-											type="text"
-											placeholder="Nazwa użytkownika"
-											error={error}
-										/>
-									)
-								}}
-							</Field>
-						</FieldRow>
+			<Container>
+				<Form
+					onSubmit={this.onSubmit}
+					validate={validate}
+					render={({ handleSubmit, submitting, pristine, values }) => (
+						<StyledForm onSubmit={handleSubmit}>
+							{/* Imię */}
+							<FieldRow>
+								<Field name="name">
+									{({ input, meta }) => {
+										const error = meta.error && meta.touched ? meta.error : null
+										return (
+											<Input
+												{...input}
+												type="text"
+												placeholder="Nazwa użytkownika"
+												error={error}
+											/>
+										)
+									}}
+								</Field>
+							</FieldRow>
 
-						{/* E-mail */}
-						<FieldRow>
-							<Field name="email">
-								{({ input, meta }) => {
-									const error = meta.error && meta.touched ? meta.error : null
-									return (
-										<Input {...input} type="email" placeholder="E-mail" error={error} />
-									)
-								}}
-							</Field>
-						</FieldRow>
+							{/* E-mail */}
+							<FieldRow>
+								<Field name="email">
+									{({ input, meta }) => {
+										const error = meta.error && meta.touched ? meta.error : null
+										return (
+											<Input {...input} type="email" placeholder="E-mail" error={error} />
+										)
+									}}
+								</Field>
+							</FieldRow>
 
-						{/* Hasło */}
-						<FieldRow>
-							<Field name="password">
-								{({ input, meta }) => {
-									const error = meta.error && meta.touched ? meta.error : null
-									return (
-										<Input {...input} type="password" placeholder="Hasło" error={error} />
-									)
-								}}
-							</Field>
-						</FieldRow>
+							{/* Hasło */}
+							<FieldRow>
+								<Field name="password">
+									{({ input, meta }) => {
+										const error = meta.error && meta.touched ? meta.error : null
+										return (
+											<Input
+												{...input}
+												type="password"
+												placeholder="Hasło"
+												error={error}
+											/>
+										)
+									}}
+								</Field>
+							</FieldRow>
 
-						{/* Powtórz Hasło */}
-						<FieldRow>
-							<Field name="passwordConfirm">
-								{({ input, meta }) => {
-									const error = meta.error && meta.touched ? meta.error : null
-									return (
-										<Input
-											{...input}
-											type="password"
-											placeholder="Potwierdź Hasło"
-											error={error}
-										/>
-									)
-								}}
-							</Field>
-						</FieldRow>
+							{/* Powtórz Hasło */}
+							<FieldRow>
+								<Field name="passwordConfirm">
+									{({ input, meta }) => {
+										const error = meta.error && meta.touched ? meta.error : null
+										return (
+											<Input
+												{...input}
+												type="password"
+												placeholder="Potwierdź Hasło"
+												error={error}
+											/>
+										)
+									}}
+								</Field>
+							</FieldRow>
 
-						<LoaderButton
-							text="Utwórz konto"
-							type="submit"
-							isLoading={submitting}
-							disabled={submitting || pristine}
-							fullWidth
-						/>
-						{error && <FormError message={error.message} show={error} />}
-						<SignInLink />
-					</StyledForm>
-				)}
-			/>
+							<LoaderButton
+								text="Utwórz konto"
+								type="submit"
+								isLoading={submitting}
+								disabled={submitting || pristine}
+								fullWidth
+							/>
+							{error && <FormError message={error.message} show={error} />}
+							<SignInLink />
+						</StyledForm>
+					)}
+				/>
+			</Container>
 		)
 	}
 }
