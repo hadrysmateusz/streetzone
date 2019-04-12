@@ -3,6 +3,7 @@ import moment from "moment"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { Flex } from "rebass"
 import { Link } from "react-router-dom"
+import { withBreakpoints } from "react-breakpoints"
 
 import ProfilePicture from "../ProfilePicture"
 import getProfilePictureURL from "../../utils/getProfilePictureURL"
@@ -20,17 +21,20 @@ import { TextBlock, HorizontalContainer } from "../StyledComponents"
 import SingleValueDisplay from "../SingleValueDisplay"
 import useContentToggle from "../../hooks/useContentToggle"
 
-const MainInfo = ({ user, isAuthorized, userId }) => {
+const MainInfo = ({ user, isAuthorized, userId, currentBreakpoint }) => {
 	const { getToggleProps, getContentProps } = useContentToggle(false)
 
 	return (
 		<MainInfoContainer>
 			<TopContainer>
 				<div>
-					<ProfilePicture url={getProfilePictureURL(user, "M")} size="150px" />
+					<ProfilePicture
+						url={getProfilePictureURL(user, "M")}
+						size={currentBreakpoint > 1 ? "125px" : "80px"}
+					/>
 				</div>
 				<InfoContainer>
-					<TextBlock bold size="l">
+					<TextBlock bold size="m">
 						{user.name}
 					</TextBlock>
 					<HorizontalContainer gap="3">
@@ -48,20 +52,37 @@ const MainInfo = ({ user, isAuthorized, userId }) => {
 							<SingleValueDisplay title="Miasto">{user.city}</SingleValueDisplay>
 						)}
 					</HorizontalContainer>
-
-					<TextBlock color="gray0" size="xs" {...getToggleProps()}>
-						więcej informacji
-					</TextBlock>
-					<TextBlock color="black50" {...getContentProps()}>
-						{user.info}
-					</TextBlock>
+					{currentBreakpoint > 2 ? (
+						<TextBlock color="black50">{user.info}</TextBlock>
+					) : (
+						<>
+							<TextBlock color="gray0" size="xs" {...getToggleProps()}>
+								więcej informacji <FontAwesomeIcon icon="chevron-down" size="xs" />
+							</TextBlock>
+							<TextBlock color="black50" {...getContentProps()}>
+								{user.info}
+							</TextBlock>
+						</>
+					)}
 				</InfoContainer>
 			</TopContainer>
 			<SecondContainer>
-				<ButtonContainer alignRight noMargin>
+				<ButtonContainer alignRight>
 					{isAuthorized ? (
 						<>
-							<Button as={Link} to={ROUTES.ACCOUNT_SETTINGS.replace(":id", userId)}>
+							<Button
+								primary
+								as={Link}
+								to={ROUTES.NEW_ITEM}
+								fullWidth={currentBreakpoint <= 1}
+							>
+								<span>Wystaw Przedmiot</span>
+							</Button>
+							<Button
+								as={Link}
+								to={ROUTES.ACCOUNT_SETTINGS.replace(":id", userId)}
+								fullWidth={currentBreakpoint <= 1}
+							>
 								<span>Edytuj Profil</span>
 							</Button>
 							<Button>
@@ -70,11 +91,11 @@ const MainInfo = ({ user, isAuthorized, userId }) => {
 						</>
 					) : (
 						<>
-							<Button primary>
+							<Button primary fullWidth={currentBreakpoint <= 1}>
 								<FontAwesomeIcon icon={["far", "envelope"]} size="lg" />
 								<span>Wyślij wiadomość</span>
 							</Button>
-							<Button>
+							<Button fullWidth={currentBreakpoint <= 1}>
 								<HeartButton id={userId} type="user" />
 							</Button>
 							<Button>
@@ -88,4 +109,4 @@ const MainInfo = ({ user, isAuthorized, userId }) => {
 	)
 }
 
-export default MainInfo
+export default withBreakpoints(MainInfo)

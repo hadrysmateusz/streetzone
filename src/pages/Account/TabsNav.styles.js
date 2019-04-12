@@ -1,6 +1,8 @@
 import styled from "styled-components/macro"
 import { NavLink } from "react-router-dom"
 
+export const OuterContainer = styled.div``
+
 export const Container = styled.nav`
 	display: flex;
 	justify-content: space-evenly;
@@ -42,9 +44,13 @@ export const Submenu = styled.div`
 	border: 1px solid var(--gray75);
 
 	display: grid;
-	gap: var(--spacing2);
-	padding: var(--spacing3);
+	padding: var(--spacing2) 0;
 	box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.05);
+
+	> * {
+		padding: var(--spacing2) 0;
+		width: 100%;
+	}
 `
 
 export const SubmenuContainer = styled.div`
@@ -60,18 +66,18 @@ export const SubmenuContainer = styled.div`
 
 export const Nav = styled.nav`
 	display: grid;
-	grid-template-columns: repeat(auto-fill, 1fr);
+	grid-auto-columns: 1fr;
 	grid-auto-flow: column;
 	gap: var(--spacing2);
 	@media (min-width: ${(p) => p.theme.breakpoints[3]}px) {
 		gap: var(--spacing3);
 	}
+	margin: var(--spacing2) 0;
 `
 
 export const NavItem = styled.div`
 	border-bottom: 1px solid var(--gray75);
 	text-align: center;
-	padding: var(--spacing2) 0;
 
 	font-size: var(--font-size--xs);
 	text-transform: uppercase;
@@ -86,6 +92,13 @@ export const NavItem = styled.div`
 		color: black;
 	}
 	cursor: pointer;
+
+	> :first-child {
+		height: 100%;
+		width: 100%;
+		display: block;
+		padding: var(--spacing2) 0;
+	}
 `
 
 export const StyledNavLink = styled(NavLink)`

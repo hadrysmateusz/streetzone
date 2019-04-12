@@ -1,21 +1,6 @@
 import styled from "styled-components/macro"
 
 export const MainInfoContainer = styled.div`
-	/* display: grid;
-
-	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
-		grid-template-columns: max-content 1fr max-content;
-	}
-
-	gap: var(--spacing3);
-	overflow: hidden;
-
-	> :first-child {
-		margin: 0 auto;
-	}
-
-	@media (max-width: ${(p) => p.theme.breakpoints[0] - 1}px) {
-	} */
 	display: grid;
 	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
 		grid-auto-flow: columns;
@@ -60,4 +45,8 @@ export const TopContainer = styled.div`
 	display: grid;
 	grid-template-columns: min-content 1fr;
 	gap: var(--spacing3);
+	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
+		grid-template-columns: min-content 1fr;
+		gap: var(--spacing3);
+	}
 `
