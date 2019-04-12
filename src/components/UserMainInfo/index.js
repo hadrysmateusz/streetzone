@@ -8,68 +8,81 @@ import ProfilePicture from "../ProfilePicture"
 import getProfilePictureURL from "../../utils/getProfilePictureURL"
 import Button, { ButtonContainer } from "../Button"
 import UserRating from "../UserRating"
-import { MainInfoContainer, InfoContainer, SecondContainer } from "./StyledComponents"
+import {
+	MainInfoContainer,
+	InfoContainer,
+	SecondContainer,
+	TopContainer
+} from "./StyledComponents"
 import { HeartButton } from "../SaveButton"
 import { ROUTES } from "../../constants"
 import { TextBlock, HorizontalContainer } from "../StyledComponents"
 import SingleValueDisplay from "../SingleValueDisplay"
+import useContentToggle from "../../hooks/useContentToggle"
 
 const MainInfo = ({ user, isAuthorized, userId }) => {
+	const { getToggleProps, getContentProps } = useContentToggle(false)
+
 	return (
 		<MainInfoContainer>
-			<div>
-				<ProfilePicture url={getProfilePictureURL(user, "M")} size="170px" />
-			</div>
-			<InfoContainer>
-				<Flex alignItems="center">
-					<TextBlock bold size="l" style={{ marginRight: "var(--spacing2)" }}>
+			<TopContainer>
+				<div>
+					<ProfilePicture url={getProfilePictureURL(user, "M")} size="150px" />
+				</div>
+				<InfoContainer>
+					<TextBlock bold size="l">
 						{user.name}
 					</TextBlock>
-					<UserRating feedback={user.feedback} />
-				</Flex>
+					<HorizontalContainer gap="3">
+						<SingleValueDisplay title="W serwisie od">
+							{moment(user.userSince).format("D.MM.YYYY")}
+						</SingleValueDisplay>
 
-				<HorizontalContainer gap="3">
-					<SingleValueDisplay title="W serwisie od">
-						{moment(user.userSince).format("D.MM.YYYY")}
-					</SingleValueDisplay>
+						{user.feedback && (
+							<SingleValueDisplay title="Opinie">
+								{Array.from(user.feedback).length}
+							</SingleValueDisplay>
+						)}
 
-					{user.city && (
-						<SingleValueDisplay title="Miasto">{user.city}</SingleValueDisplay>
-					)}
+						{user.city && (
+							<SingleValueDisplay title="Miasto">{user.city}</SingleValueDisplay>
+						)}
+					</HorizontalContainer>
 
-					<SingleValueDisplay title="E-Mail">{user.email}</SingleValueDisplay>
-
-					{user.phone && (
-						<SingleValueDisplay title="Nr Telefonu">{user.phone}</SingleValueDisplay>
-					)}
-				</HorizontalContainer>
-
-				<TextBlock color="black50">{user.info}</TextBlock>
-			</InfoContainer>
+					<TextBlock color="gray0" size="xs" {...getToggleProps()}>
+						więcej informacji
+					</TextBlock>
+					<TextBlock color="black50" {...getContentProps()}>
+						{user.info}
+					</TextBlock>
+				</InfoContainer>
+			</TopContainer>
 			<SecondContainer>
-				{isAuthorized ? (
-					<ButtonContainer alignRight noMargin>
-						<Button as={Link} to={ROUTES.ACCOUNT_SETTINGS.replace(":id", userId)}>
-							<span>Edytuj Profil</span>
-						</Button>
-						<Button>
-							<FontAwesomeIcon icon="ellipsis-h" size="lg" />
-						</Button>
-					</ButtonContainer>
-				) : (
-					<ButtonContainer alignRight noMargin>
-						<Button primary>
-							<FontAwesomeIcon icon={["far", "envelope"]} size="lg" />
-							<span>Wyślij wiadomość</span>
-						</Button>
-						<Button>
-							<HeartButton id={userId} type="user" />
-						</Button>
-						<Button>
-							<FontAwesomeIcon icon="ellipsis-h" size="lg" />
-						</Button>
-					</ButtonContainer>
-				)}
+				<ButtonContainer alignRight noMargin>
+					{isAuthorized ? (
+						<>
+							<Button as={Link} to={ROUTES.ACCOUNT_SETTINGS.replace(":id", userId)}>
+								<span>Edytuj Profil</span>
+							</Button>
+							<Button>
+								<FontAwesomeIcon icon="ellipsis-h" size="lg" />
+							</Button>
+						</>
+					) : (
+						<>
+							<Button primary>
+								<FontAwesomeIcon icon={["far", "envelope"]} size="lg" />
+								<span>Wyślij wiadomość</span>
+							</Button>
+							<Button>
+								<HeartButton id={userId} type="user" />
+							</Button>
+							<Button>
+								<FontAwesomeIcon icon="ellipsis-h" size="lg" />
+							</Button>
+						</>
+					)}
+				</ButtonContainer>
 			</SecondContainer>
 		</MainInfoContainer>
 	)
