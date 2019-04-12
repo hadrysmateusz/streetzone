@@ -108,7 +108,7 @@ export const StyledNavLink = styled(NavLink)`
 	text-decoration: none;
 
 	&.active {
+		font-weight: bold;
 		color: black;
-		text-decoration: underline;
 	}
 `

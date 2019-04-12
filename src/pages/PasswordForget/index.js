@@ -1,27 +1,21 @@
 import React, { Component } from "react"
 import { Form, Field } from "react-final-form"
 import { compose } from "recompose"
-import styled from "styled-components/macro"
 
 import { withFirebase } from "../../components/Firebase"
 import { StyledLink, FieldRow, Header } from "../../components/Basics"
-import { LoaderButton } from "../../components/Button"
+import { LoaderButton, ButtonContainer } from "../../components/Button"
 import { FormError, Input } from "../../components/FormElements"
+import { CenteredContainer } from "../../components/Containers"
 
 import { ROUTES, FORM_ERR, REGEX } from "../../constants"
 
-const Container = styled.div`
-	width: 100%;
-	max-width: 280px;
-	margin: 0 auto;
-`
-
 const PasswordForgetPage = () => {
 	return (
-		<Container>
+		<CenteredContainer>
 			<Header>Zresetuj hasło</Header>
 			<PasswordForgetForm />
-		</Container>
+		</CenteredContainer>
 	)
 }
 
@@ -77,13 +71,15 @@ class PasswordForgetFormBase extends Component {
 							</Field>
 						</FieldRow>
 
-						<LoaderButton
-							text="Zresetuj hasło"
-							type="submit"
-							isLoading={submitting}
-							disabled={submitting || pristine}
-							fullWidth
-						/>
+						<ButtonContainer>
+							<LoaderButton
+								text="Zresetuj hasło"
+								type="submit"
+								isLoading={submitting}
+								disabled={submitting || pristine}
+								fullWidth
+							/>
+						</ButtonContainer>
 						{error && <FormError message={error.message} show={error} />}
 					</form>
 				)}

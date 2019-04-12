@@ -1,14 +1,12 @@
 import React from "react"
 import moment from "moment"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { Flex } from "rebass"
 import { Link } from "react-router-dom"
 import { withBreakpoints } from "react-breakpoints"
 
 import ProfilePicture from "../ProfilePicture"
 import getProfilePictureURL from "../../utils/getProfilePictureURL"
 import Button, { ButtonContainer } from "../Button"
-import UserRating from "../UserRating"
 import {
 	MainInfoContainer,
 	InfoContainer,
