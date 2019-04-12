@@ -62,6 +62,7 @@ export const ClearFiltersSubButton = styled.div`
 	justify-content: center;
 	align-items: center;
 	flex: 0 0 var(--width);
+	margin-left: var(--spacing2);
 `
 
 export const FiltersToggleContainer = styled.div`

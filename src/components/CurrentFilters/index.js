@@ -12,30 +12,18 @@ import formatSize from "../../utils/formatSize"
 const Container = styled.div`
 	font-size: var(--font-size--xs);
 	display: flex;
-	flex-direction: column;
-	max-width: ${(p) => p.theme.breakpoints[5]}px;
-	max-height: 40px;
-	@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
-		flex-direction: row;
-	}
+	flex-flow: row wrap;
+	margin: calc(-1 * var(--spacing1));
 `
 
 const Item = styled.div`
 	padding: var(--spacing2);
 	background: white;
 	border: 1px solid ${(p) => p.theme.colors.gray[75]};
-	margin: var(--spacing1) 0;
-
-	/* desktop */
-	@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
-		margin: 0;
-		+ * {
-			margin-left: var(--spacing2);
-		}
-	}
+	margin: var(--spacing1);
 `
 
-const CurrentFiltersView = ({ items, history, clearFilters }) => {
+const CurrentFiltersView = ({ items, history, clearFilters, refine }) => {
 	return items && items.length > 0 ? (
 		<Container>
 			{items.map((item) => {
