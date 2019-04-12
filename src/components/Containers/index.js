@@ -9,7 +9,7 @@ const pageContainerWidth = style({
 	transformValue: (n) => n + "px"
 })
 
-const PageContainer = styled.section`
+export const PageContainer = styled.section`
 	max-width: ${(p) => p.theme.breakpoints[5]}px; /* default */
 	${pageContainerWidth}
 
@@ -32,10 +32,45 @@ const OuterGrayContainer = styled.section`
 	background: var(--gray100);
 	${(p) => p.padded && "padding: var(--spacing4) 0;"}
 `
-const GrayContainer = ({ padded, children, ...props }) => (
+export const GrayContainer = ({ padded, children, ...props }) => (
 	<OuterGrayContainer padded={padded}>
 		<PageContainer {...props}>{children}</PageContainer>
 	</OuterGrayContainer>
 )
 
-export { PageContainer, GrayContainer }
+const CenteredContainerBox = styled.div`
+	flex-shrink: 0;
+
+	display: block;
+	margin: 0 auto;
+	min-height: 0;
+	width: 320px;
+	max-width: 100%;
+	padding: var(--spacing3);
+`
+const OuterCenteredContainer = styled.div`
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
+	position: relative;
+	/* TODO: Do centering in a different way because this breaks the build */
+	/* &::before,
+	&::after {
+		content: "";
+		display: block;
+		flex-grow: 1;
+		min-height: 150px;
+	}
+
+	&::before {
+		margin-top: -150px;
+	} */
+`
+
+export const CenteredContainer = ({ children }) => {
+	return (
+		<OuterCenteredContainer>
+			<CenteredContainerBox>{children}</CenteredContainerBox>
+		</OuterCenteredContainer>
+	)
+}
