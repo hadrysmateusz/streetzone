@@ -69,10 +69,13 @@ export const Nav = styled.nav`
 	grid-auto-columns: 1fr;
 	grid-auto-flow: column;
 	gap: var(--spacing2);
+	margin: var(--spacing2) 0;
+	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
+		margin: var(--spacing4) 0;
+	}
 	@media (min-width: ${(p) => p.theme.breakpoints[3]}px) {
 		gap: var(--spacing3);
 	}
-	margin: var(--spacing2) 0;
 `
 
 export const NavItem = styled.div`

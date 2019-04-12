@@ -55,23 +55,10 @@ const AccountPage = ({ routes, match, authUser }) => {
 						<>
 							<MainInfo {...commonProps} />
 							<div>
-								{/* <TabsNav>
-									{routes.map(
-										(route, i) =>
-											(isAuthorized || !route.isProtected) &&
-											route.id !== "settings" && (
-												<TabsNavItem to={route.path.replace(":id", userId)} key={i}>
-													{route.label}
-												</TabsNavItem>
-											)
-									)}
-								</TabsNav> */}
-
 								<AccountPageTabs
 									routes={routes}
 									isAuthorized={isAuthorized}
 									userId={userId}
-									categorized
 								/>
 
 								<Switch>

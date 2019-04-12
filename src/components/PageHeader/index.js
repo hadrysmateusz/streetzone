@@ -23,7 +23,7 @@ import useScrollPosition from "../../hooks/useScrollPosition"
 import { withBreakpoints } from "react-breakpoints"
 import Menu from "../FullscreenMenu"
 
-const Navigation = ({ authUser, firebase, currentBreakpoint, ...rest }) => {
+const Navigation = ({ authUser, firebase, currentBreakpoint, location, ...rest }) => {
 	const scrollPosition = useScrollPosition()
 
 	return (
@@ -104,7 +104,11 @@ const Navigation = ({ authUser, firebase, currentBreakpoint, ...rest }) => {
 						]}
 
 						{!authUser && (
-							<StyledNavLink to={ROUTES.SIGN_IN}>Zaloguj / Zarejestruj się</StyledNavLink>
+							<StyledNavLink
+								to={{ pathname: ROUTES.SIGN_IN, state: { redirectTo: location } }}
+							>
+								Zaloguj / Zarejestruj się
+							</StyledNavLink>
 						)}
 					</Menu>
 				)}
@@ -178,7 +182,11 @@ const Navigation = ({ authUser, firebase, currentBreakpoint, ...rest }) => {
 						</>
 					) : (
 						<NavItem>
-							<StyledNavLink to={ROUTES.SIGN_IN}>Zaloguj się</StyledNavLink>
+							<StyledNavLink
+								to={{ pathname: ROUTES.SIGN_IN, state: { redirectTo: location } }}
+							>
+								Zaloguj się
+							</StyledNavLink>
 						</NavItem>
 					)}
 				</Nav>
