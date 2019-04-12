@@ -327,31 +327,35 @@ const routes = [
 				path: ROUTES.ACCOUNT_SAVED_ITEMS,
 				component: UserLiked,
 				isProtected: true,
-				category: "Zapisane"
+				category: "Zapisane",
+				shortLabel: "Przedmioty"
 			},
 			{
 				id: "savedFilters",
-				label: "Zapisane",
+				label: "Zapisane Filtry",
 				path: ROUTES.ACCOUNT_SAVED_FILTERS,
 				component: UserSavedFilters,
 				isProtected: true,
-				category: "Zapisane"
+				category: "Zapisane",
+				shortLabel: "Filtry"
 			},
 			{
 				id: "followedUsers",
-				label: "Obserwowani",
+				label: "Obserwowani Użytkownicy",
 				path: ROUTES.ACCOUNT_SAVED_USERS,
 				component: UserFollowing,
 				isProtected: true,
-				category: "Zapisane"
+				category: "Zapisane",
+				shortLabel: "Użytkownicy"
 			},
 			{
 				id: "followedDrops",
-				label: "Obserwowane dropy",
+				label: "Obserwowane Dropy",
 				path: ROUTES.ACCOUNT_SAVED_DROPS,
 				component: UserSavedDrops,
 				isProtected: true,
-				category: "Zapisane"
+				category: "Zapisane",
+				shortLabel: "Dropy"
 			},
 			{
 				id: "feedback",

@@ -12,6 +12,7 @@ import LoadingSpinner from "../../components/LoadingSpinner"
 import MainInfo from "../../components/UserMainInfo"
 
 import { TabsNav, TabsNavItem, MainContainer } from "./StyledComponents"
+import { AccountPageTabs } from "./TabsNav"
 
 const useUserData = (userId, authUser, isAuthorized) => {
 	const firebase = useFirebase()
@@ -54,7 +55,7 @@ const AccountPage = ({ routes, match, authUser }) => {
 						<>
 							<MainInfo {...commonProps} />
 							<div>
-								<TabsNav>
+								{/* <TabsNav>
 									{routes.map(
 										(route, i) =>
 											(isAuthorized || !route.isProtected) &&
@@ -64,7 +65,14 @@ const AccountPage = ({ routes, match, authUser }) => {
 												</TabsNavItem>
 											)
 									)}
-								</TabsNav>
+								</TabsNav> */}
+
+								<AccountPageTabs
+									routes={routes}
+									isAuthorized={isAuthorized}
+									userId={userId}
+									categorized
+								/>
 
 								<Switch>
 									{routes.map(
