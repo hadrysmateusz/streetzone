@@ -1,13 +1,13 @@
 import React, { Component } from "react"
-import { withRouter } from "react-router-dom"
+import { withRouter, Redirect } from "react-router-dom"
 import { Form, Field } from "react-final-form"
 import { compose } from "recompose"
 import styled from "styled-components/macro"
 
+import { CenteredContainer } from "../../components/Containers"
 import { StyledLink, FieldRow, Header, Separator } from "../../components/Basics"
 import { FormError, Input } from "../../components/FormElements"
 import { FacebookButton, GoogleButton, LoaderButton } from "../../components/Button"
-import { withGlobalContext } from "../../components/GlobalContext"
 import { withFirebase } from "../../components/Firebase"
 
 import { SignUpLink } from "../SignUp"
@@ -17,38 +17,39 @@ import { ROUTES, AUTH_ERR } from "../../constants"
 import validate from "./validate"
 import formatUserData from "../../utils/formatUserData"
 
-const Container = styled.div`
-	width: 100%;
-	max-width: 280px;
-	margin: 0 auto;
-`
-
 const StyledForm = styled.form`
 	display: grid;
 	gap: var(--spacing3);
 `
 
+const SocialButtonsContainer = styled.div`
+	display: grid;
+	gap: var(--spacing2);
+`
+
 const SignInPage = () => {
 	return (
-		<Container>
+		<CenteredContainer>
 			<Header>Zaloguj się</Header>
-			<SignInGoogle />
-			<SignInFacebook />
+			<SocialButtonsContainer>
+				<SignInGoogle />
+				<SignInFacebook />
+			</SocialButtonsContainer>
 			<Separator text="lub" />
 			<SignInForm />
 			<PasswordForgetLink />
 			<Separator />
 			<SignUpLink />
-		</Container>
+		</CenteredContainer>
 	)
 }
 
 class SignInFormBase extends Component {
-	state = { error: null }
+	state = { error: null, redirectToReferrer: false }
 
 	onSubmit = async (values, actions) => {
 		const { email, password } = values
-		const { globalContext, firebase, history } = this.props
+		const { firebase } = this.props
 
 		try {
 			// Attempt signIn
@@ -57,21 +58,21 @@ class SignInFormBase extends Component {
 			actions.reset()
 			// Reset component
 			await this.setState({ error: null })
-			// Close modal if applicable
-			if (globalContext.isLoginModalVisible) {
-				globalContext.closeModal()
-			}
-			// Redirect
-			history.push(ROUTES.HOME)
+
+			this.setState({ redirectToReferrer: true })
 		} catch (error) {
 			this.setState({ error })
 		}
 	}
 
 	render() {
-		const { error } = this.state
+		const { error, redirectToReferrer } = this.state
 
-		return (
+		const { redirectTo } = this.props.location.state || { redirectTo: { pathname: "/" } }
+
+		return redirectToReferrer ? (
+			<Redirect to={redirectTo} />
+		) : (
 			<Form
 				onSubmit={this.onSubmit}
 				validate={validate}
@@ -117,11 +118,11 @@ class SignInFormBase extends Component {
 }
 
 class SignInGoogleBase extends Component {
-	state = { error: null }
+	state = { error: null, redirectToReferrer: false }
 
 	onSubmit = async (event) => {
 		event.preventDefault()
-		const { globalContext, history, firebase } = this.props
+		const { firebase } = this.props
 		try {
 			const socialAuthUser = await firebase.signInWithGoogle()
 			// If this is the first time this user signs up, create a user in db
@@ -135,14 +136,7 @@ class SignInGoogleBase extends Component {
 				await this.props.firebase.user(socialAuthUser.user.uid).set(userData)
 			}
 
-			this.setState({ error: null })
-
-			// Close modal if applicable
-			if (globalContext.isLoginModalVisible) {
-				globalContext.closeModal()
-			}
-
-			history.push(ROUTES.HOME)
+			this.setState({ error: null, redirectToReferrer: true })
 		} catch (error) {
 			if (error.code === AUTH_ERR.CODE_EMAIL_ACCOUNT_EXISTS) {
 				error.message = AUTH_ERR.MSG_EMAIL_ACCOUNT_EXISTS
@@ -152,9 +146,13 @@ class SignInGoogleBase extends Component {
 	}
 
 	render() {
-		const { error } = this.state
+		const { error, redirectToReferrer } = this.state
 
-		return (
+		let { redirectTo } = this.props.location.state || { redirectTo: { pathname: "/" } }
+
+		return redirectToReferrer ? (
+			<Redirect to={redirectTo} />
+		) : (
 			<form onSubmit={this.onSubmit}>
 				<GoogleButton fullWidth type="submit">
 					Zaloguj się przez Google
@@ -166,11 +164,11 @@ class SignInGoogleBase extends Component {
 }
 
 class SignInFacebookBase extends Component {
-	state = { error: null }
+	state = { error: null, redirectToReferrer: false }
 
 	onSubmit = async (event) => {
 		event.preventDefault()
-		const { globalContext, history, firebase } = this.props
+		const { firebase } = this.props
 		try {
 			const socialAuthUser = await firebase.signInWithFacebook()
 			// If this is the first time this user signs up, create a user in db
@@ -184,14 +182,7 @@ class SignInFacebookBase extends Component {
 				await this.props.firebase.user(socialAuthUser.user.uid).set(userData)
 			}
 
-			this.setState({ error: null })
-
-			// Close modal if applicable
-			if (globalContext.isLoginModalVisible) {
-				globalContext.closeModal()
-			}
-
-			history.push(ROUTES.HOME)
+			this.setState({ error: null, redirectToReferrer: true })
 		} catch (error) {
 			if (error.code === AUTH_ERR.CODE_EMAIL_ACCOUNT_EXISTS) {
 				error.message = AUTH_ERR.MSG_EMAIL_ACCOUNT_EXISTS
@@ -202,9 +193,13 @@ class SignInFacebookBase extends Component {
 	}
 
 	render() {
-		const { error } = this.state
+		const { error, redirectToReferrer } = this.state
 
-		return (
+		let { redirectTo } = this.props.location.state || { redirectTo: { pathname: "/" } }
+
+		return redirectToReferrer ? (
+			<Redirect to={redirectTo} />
+		) : (
 			<form onSubmit={this.onSubmit}>
 				<FacebookButton fullWidth type="submit">
 					Zaloguj się przez Facebooka
@@ -217,38 +212,29 @@ class SignInFacebookBase extends Component {
 
 const SignInForm = compose(
 	withRouter,
-	withFirebase,
-	withGlobalContext
+	withFirebase
 )(SignInFormBase)
 
 const SignInGoogle = compose(
 	withRouter,
-	withFirebase,
-	withGlobalContext
+	withFirebase
 )(SignInGoogleBase)
 
 const SignInFacebook = compose(
 	withRouter,
-	withFirebase,
-	withGlobalContext
+	withFirebase
 )(SignInFacebookBase)
 
-const SignInLink = withGlobalContext(({ globalContext, ...rest }) => {
+const SignInLink = ({ ...props }) => {
 	return (
-		<p {...rest}>
+		<p {...props}>
 			Masz już konto?{" "}
-			{globalContext.isLoginModalVisible ? (
-				<button onClick={() => globalContext.openModal(ROUTES.SIGN_IN)}>
-					Zaloguj się
-				</button>
-			) : (
-				<StyledLink to={ROUTES.SIGN_IN} className="link">
-					Zaloguj się
-				</StyledLink>
-			)}
+			<StyledLink to={ROUTES.SIGN_IN} className="link">
+				Zaloguj się
+			</StyledLink>
 		</p>
 	)
-})
+}
 
 export default SignInPage
 export { SignInForm, SignInGoogle, SignInFacebook, SignInLink }

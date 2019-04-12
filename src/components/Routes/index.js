@@ -25,24 +25,32 @@ const BumpInfo = Loadable({
 	loading: LoadableComponentSpinner
 })
 
-const UserSettings = Loadable({
-	loader: () => import("../../pages/Account/UserSettings"),
-	loading: LoadableComponentSpinner
-})
-const UserFeedback = Loadable({
-	loader: () => import("../../pages/Account/UserFeedback"),
-	loading: LoadableComponentSpinner
-})
 const UserItems = Loadable({
 	loader: () => import("../../pages/Account/UserItems"),
+	loading: LoadableComponentSpinner
+})
+const UserLiked = Loadable({
+	loader: () => import("../../pages/Account/UserLiked"),
+	loading: LoadableComponentSpinner
+})
+const UserSavedFilters = Loadable({
+	loader: () => import("../../pages/Account/UserSavedFilters"),
 	loading: LoadableComponentSpinner
 })
 const UserFollowing = Loadable({
 	loader: () => import("../../pages/Account/UserFollowing"),
 	loading: LoadableComponentSpinner
 })
-const UserLiked = Loadable({
-	loader: () => import("../../pages/Account/UserLiked"),
+const UserSavedDrops = Loadable({
+	loader: () => import("../../pages/Account/UserSavedDrops"),
+	loading: LoadableComponentSpinner
+})
+const UserFeedback = Loadable({
+	loader: () => import("../../pages/Account/UserFeedback"),
+	loading: LoadableComponentSpinner
+})
+const UserSettings = Loadable({
+	loader: () => import("../../pages/Account/UserSettings"),
 	loading: LoadableComponentSpinner
 })
 
@@ -310,7 +318,44 @@ const routes = [
 				label: "Oferty",
 				path: ROUTES.ACCOUNT_ITEMS,
 				component: UserItems,
-				isProtected: false
+				isProtected: false,
+				isDefault: true
+			},
+			{
+				id: "savedItems",
+				label: "Zapisane Przedmioty",
+				path: ROUTES.ACCOUNT_SAVED_ITEMS,
+				component: UserLiked,
+				isProtected: true,
+				category: "Zapisane",
+				shortLabel: "Przedmioty"
+			},
+			{
+				id: "savedFilters",
+				label: "Zapisane Filtry",
+				path: ROUTES.ACCOUNT_SAVED_FILTERS,
+				component: UserSavedFilters,
+				isProtected: true,
+				category: "Zapisane",
+				shortLabel: "Filtry"
+			},
+			{
+				id: "followedUsers",
+				label: "Obserwowani Użytkownicy",
+				path: ROUTES.ACCOUNT_SAVED_USERS,
+				component: UserFollowing,
+				isProtected: true,
+				category: "Zapisane",
+				shortLabel: "Użytkownicy"
+			},
+			{
+				id: "followedDrops",
+				label: "Obserwowane Dropy",
+				path: ROUTES.ACCOUNT_SAVED_DROPS,
+				component: UserSavedDrops,
+				isProtected: true,
+				category: "Zapisane",
+				shortLabel: "Dropy"
 			},
 			{
 				id: "feedback",
@@ -320,25 +365,12 @@ const routes = [
 				isProtected: false
 			},
 			{
-				id: "savedItems",
-				label: "Zapisane",
-				path: ROUTES.ACCOUNT_LIKED,
-				component: UserLiked,
-				isProtected: true
-			},
-			{
-				id: "followedUsers",
-				label: "Obserwowani",
-				path: ROUTES.ACCOUNT_FOLLOWING,
-				component: UserFollowing,
-				isProtected: true
-			},
-			{
 				id: "settings",
 				label: "Opcje / Edytuj profil",
 				path: ROUTES.ACCOUNT_SETTINGS,
 				component: UserSettings,
-				isProtected: true
+				isProtected: true,
+				isHidden: true
 			}
 		]
 	},

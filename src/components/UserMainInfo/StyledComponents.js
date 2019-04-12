@@ -2,20 +2,9 @@ import styled from "styled-components/macro"
 
 export const MainInfoContainer = styled.div`
 	display: grid;
-
 	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
-		grid-template-columns: max-content 1fr max-content;
-	}
-
-	gap: var(--spacing3);
-	overflow: hidden;
-
-	> :first-child {
-		margin: 0 auto;
-	}
-
-	@media (max-width: ${(p) => p.theme.breakpoints[0] - 1}px) {
-		text-align: center;
+		grid-auto-flow: columns;
+		grid-template-columns: 1fr max-content;
 	}
 `
 
@@ -50,4 +39,14 @@ export const InfoContainer = styled.div`
 	gap: var(--spacing2);
 	grid-auto-rows: min-content;
 	max-width: 600px;
+`
+
+export const TopContainer = styled.div`
+	display: grid;
+	grid-template-columns: min-content 1fr;
+	gap: var(--spacing3);
+	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
+		grid-template-columns: min-content 1fr;
+		gap: var(--spacing3);
+	}
 `

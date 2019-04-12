@@ -1,32 +1,38 @@
-import React from "react"
-import { RotateSpinLoader, BarLoader } from "react-css-loaders"
+import React, { useState, useEffect } from "react"
+import { BarLoader } from "react-css-loaders"
+import PropTypes from "prop-types"
+import styled from "styled-components"
 
 import EmptyState from "../EmptyState"
 
-class LoadingSpinner extends React.Component {
-	state = { isVisible: false }
+const SpinnerContainer = styled.div`
+	display: flex;
+	align-items: center;
+	justify-content: center;
 
-	componentDidMount() {
-		this.showAfterId = setTimeout(
-			() => this.setState({ isVisible: true }),
-			this.props.delay || 200
-		)
-	}
-	componentWillUnmount() {
-		clearTimeout(this.showAfterId)
-	}
-	render() {
-		return this.state.isVisible ? (
-			this.props.fixedHeight ? (
-				<RotateSpinLoader
-					size={this.props.size || 9}
-					color={this.props.color || "#999"}
-				/>
-			) : (
-				<BarLoader size={this.props.size || 9} color={this.props.color || "#cfcfcf"} />
-			)
-		) : null
-	}
+	height: ${(p) => p.size * 40}px;
+	max-height: 100%;
+`
+
+const LoadingSpinner = ({ size = 9, color = "#cfcfcf", delay = 200 }) => {
+	const [isVisible, setIsVisible] = useState(false)
+
+	useEffect(() => {
+		const timeoutId = setTimeout(() => setIsVisible(true), delay)
+		return () => clearTimeout(timeoutId)
+	}, [])
+
+	return isVisible ? (
+		<SpinnerContainer size={size}>
+			<BarLoader size={size} color={color || "#cfcfcf"} />
+		</SpinnerContainer>
+	) : null
+}
+
+LoadingSpinner.propTypes = {
+	size: PropTypes.number,
+	color: PropTypes.string,
+	delay: PropTypes.number
 }
 
 const LoadableComponentSpinner = ({ error, pastDelay, timedOut }) => {

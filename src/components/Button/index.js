@@ -64,7 +64,7 @@ const Button = styled.button`
 
 	height: ${(p) => (p.big ? "48px" : "40px")};
 	min-width: 0;
-	padding: 0 0.95rem;
+	padding: 0 var(--spacing3);
 	margin: 0;
 	border: 1px solid;
 
@@ -143,7 +143,6 @@ const LoaderButton = styled(LoaderButtonUnstyled)`
 `
 
 const FacebookButton = styled(Button)`
-	padding-left: var(--spacing2);
 	color: white;
 	background-color: ${(p) => (p.disabled ? "#7D8EB2" : "#3b5998")};
 	border-color: ${(p) => (p.disabled ? "#7D8EB2" : "#3b5998")};
@@ -156,7 +155,6 @@ const FacebookButton = styled(Button)`
 `
 
 const GoogleButton = styled(Button)`
-	padding-left: var(--spacing2);
 	color: white;
 	background-color: ${(p) => (p.disabled ? "#9FBFF4" : "#4285f4")};
 	border-color: ${(p) => (p.disabled ? "#9FBFF4" : "#4285f4")};

@@ -124,9 +124,10 @@ const SeparatorTextContent = css`
 	&::after {
 		color: #888;
 		content: "${(props) => props.text}";
-		background: #fbfbfb;
+		background: white;
 		padding: 0 var(--spacing1);
-		transform: translateY(-0.6rem)
+		position: absolute;
+		top: -11px;
 	}
 `
 
