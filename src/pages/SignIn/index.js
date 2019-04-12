@@ -74,7 +74,7 @@ class SignInFormBase extends Component {
 
 	onSubmit = async (values, actions) => {
 		const { email, password } = values
-		const { globalContext, firebase } = this.props
+		const { firebase } = this.props
 
 		try {
 			// Attempt signIn
@@ -83,11 +83,7 @@ class SignInFormBase extends Component {
 			actions.reset()
 			// Reset component
 			await this.setState({ error: null })
-			// Close modal if applicable
-			if (globalContext.isLoginModalVisible) {
-				globalContext.closeModal()
-			}
-			// Redirect
+
 			this.setState({ redirectToReferrer: true })
 		} catch (error) {
 			this.setState({ error })

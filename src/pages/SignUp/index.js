@@ -1,5 +1,5 @@
 import React, { Component } from "react"
-import { withRouter } from "react-router-dom"
+import { withRouter, Redirect } from "react-router-dom"
 import { Form, Field } from "react-final-form"
 import { compose } from "recompose"
 import styled from "styled-components/macro"
@@ -8,7 +8,6 @@ import { withFirebase } from "../../components/Firebase"
 import { StyledLink, FieldRow, Header } from "../../components/Basics"
 import { LoaderButton } from "../../components/Button"
 import { FormError, Input } from "../../components/FormElements"
-import { withGlobalContext } from "../../components/GlobalContext"
 
 import { SignInLink } from "../SignIn"
 
@@ -37,10 +36,10 @@ const SignUpPage = () => {
 }
 
 class SignUpFormBase extends Component {
-	state = { error: null }
+	state = { error: null, redirectToReferrer: false }
 
 	onSubmit = async ({ name, email, password }, actions) => {
-		const { firebase, history, globalContext } = this.props
+		const { firebase } = this.props
 
 		try {
 			// Create user for auth
@@ -60,13 +59,7 @@ class SignUpFormBase extends Component {
 			// Reset form
 			actions.reset()
 			// Reset component
-			await this.setState({ error: null })
-			// Close modal if applicable
-			if (globalContext.isLoginModalVisible) {
-				globalContext.closeModal()
-			}
-			// Redirect
-			history.push(ROUTES.ACCOUNT_SETTINGS.replace(":id", userId))
+			await this.setState({ error: null, redirectToReferrer: true })
 		} catch (error) {
 			if (error.code === AUTH_ERR.CODE_SOCIAL_ACCOUNT_EXISTS) {
 				error.message = AUTH_ERR.MSG_SOCIAL_ACCOUNT_EXISTS
@@ -76,9 +69,13 @@ class SignUpFormBase extends Component {
 	}
 
 	render() {
-		const { error } = this.state
+		const { error, redirectToReferrer } = this.state
 
-		return (
+		const { redirectTo } = this.props.location.state || { redirectTo: { pathname: "/" } }
+
+		return redirectToReferrer ? (
+			<Redirect to={redirectTo} />
+		) : (
 			<Container>
 				<Form
 					onSubmit={this.onSubmit}
@@ -167,25 +164,18 @@ class SignUpFormBase extends Component {
 
 export const SignUpForm = compose(
 	withRouter,
-	withFirebase,
-	withGlobalContext
+	withFirebase
 )(SignUpFormBase)
 
-export const SignUpLink = withGlobalContext(({ globalContext, ...rest }) => {
+export const SignUpLink = ({ ...props }) => {
 	return (
-		<p {...rest}>
+		<p {...props}>
 			Nie masz jeszcze konta?{" "}
-			{globalContext.isLoginModalVisible ? (
-				<button onClick={() => globalContext.openModal(ROUTES.SIGN_UP)}>
-					Utwórz konto
-				</button>
-			) : (
-				<StyledLink to={ROUTES.SIGN_UP} className="link">
-					Utwórz konto
-				</StyledLink>
-			)}
+			<StyledLink to={ROUTES.SIGN_UP} className="link">
+				Utwórz konto
+			</StyledLink>
 		</p>
 	)
-})
+}
 
 export default SignUpPage
