@@ -137,7 +137,7 @@ const Navigation = ({ authUser, firebase, currentBreakpoint, ...rest }) => {
 
 										<NavItem>
 											<StyledNavLink
-												to={ROUTES.ACCOUNT_LIKED.replace(":id", authUser.uid)}
+												to={ROUTES.ACCOUNT_SAVED_ITEMS.replace(":id", authUser.uid)}
 											>
 												Zapisane przedmioty
 											</StyledNavLink>
@@ -145,7 +145,7 @@ const Navigation = ({ authUser, firebase, currentBreakpoint, ...rest }) => {
 
 										<NavItem>
 											<StyledNavLink
-												to={ROUTES.ACCOUNT_FOLLOWING.replace(":id", authUser.uid)}
+												to={ROUTES.ACCOUNT_SAVED_USERS.replace(":id", authUser.uid)}
 											>
 												Obserwowani użytkownicy
 											</StyledNavLink>
