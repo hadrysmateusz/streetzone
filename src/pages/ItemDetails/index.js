@@ -25,7 +25,7 @@ import {
 	HorizontalContainer
 } from "../../components/StyledComponents"
 import { ItemContainer, InfoContainer, SectionContainer } from "./StyledComponents"
-// import { HeartButton } from "../SaveButton"
+import { SaveButton, TYPE } from "../../components/SaveButton"
 import formatDesigners from "../../utils/formatDesigners"
 import formatPrice from "../../utils/formatPrice"
 import formatSize from "../../utils/formatSize"
@@ -73,10 +73,11 @@ const ItemDetailsPage = ({ match, history }) => {
 				history.push(ROUTES.MARKETPLACE)
 				return
 			} catch (e) {
-				setIsDeleting(false)
 				alert("Usuwanie nie powiodło się")
 			}
 		}
+
+		setIsDeleting(false)
 	}
 
 	if (isLoading) return <LoadingSpinner />
@@ -160,7 +161,13 @@ const ItemDetailsPage = ({ match, history }) => {
 									<Button primary fullWidth>
 										Kontakt
 									</Button>
-									<Button fullWidth>Zapisz</Button>
+									<SaveButton
+										fullWidth
+										text="Zapisz"
+										savedText="Zapisano"
+										type={TYPE.ITEM}
+										id={item.id}
+									/>
 									<IconButton icon="ellipsis-h" />
 								</ButtonContainer>
 							)}

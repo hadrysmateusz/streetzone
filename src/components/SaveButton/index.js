@@ -7,25 +7,25 @@ import { compose } from "recompose"
 import { ROUTES } from "../../constants"
 import Modal from "../Modal"
 import { withGlobalContext } from "../GlobalContext"
+import { Button } from "../Button"
+
+export const TYPE = {
+	ITEM: "ITEM",
+	USER: "USER"
+}
+
+const TYPE_REQUIRED_ERR = "SaveButton needs a type"
 
 function getPropertyName(type) {
-	if (type === "item") {
+	if (type === TYPE.ITEM) {
 		return "savedItems"
-	} else if (type === "user") {
+	} else if (type === TYPE.USER) {
 		return "followedUsers"
 	} else {
-		throw new Error("The SaveButton needs a type")
+		return null
 	}
 }
 
-const activeSaveButton = css`
-	.filled {
-		display: block;
-	}
-	.outline {
-		display: none;
-	}
-`
 const HeartButtonContainer = styled.div`
 	background: rgba(255, 255, 255, 1);
 	padding: var(--spacing1);
@@ -40,17 +40,14 @@ const HeartButtonContainer = styled.div`
 
 	.filled {
 		color: ${(p) => p.theme.colors.accent};
-		display: none;
 	}
 
 	:hover {
 		transform: scale(1.1);
 	}
-
-	${(p) => p.active && activeSaveButton}
 `
 
-class SaveButtonBase extends Component {
+class SaveButtonLogicBase extends Component {
 	state = {
 		isSaved: false,
 		isLoginModalVisible: false
@@ -71,6 +68,11 @@ class SaveButtonBase extends Component {
 
 		// Get the property to modify based on type of button
 		const propertyName = getPropertyName(type)
+
+		if (!propertyName) {
+			this.setState({ error: TYPE_REQUIRED_ERR })
+			return
+		}
 
 		const isSaved =
 			authUser && authUser[propertyName] && authUser[propertyName].includes(id)
@@ -98,6 +100,11 @@ class SaveButtonBase extends Component {
 			// Get the property to modify based on type of button
 			const propertyName = getPropertyName(type)
 
+			if (!propertyName) {
+				this.setState({ error: TYPE_REQUIRED_ERR })
+				return
+			}
+
 			try {
 				// get the old list
 				const oldList = authUser[propertyName] || []
@@ -117,29 +124,71 @@ class SaveButtonBase extends Component {
 	}
 
 	render = () => {
-		return (
-			<HeartButtonContainer
-				className={this.props.className}
-				active={this.state.isSaved}
-				onClick={this.onClick}
-				scale={this.props.scale}
-			>
-				<div className="fa-layers fa-fw">
-					<FontAwesomeIcon className="outline" icon={["far", "heart"]} />
-					<FontAwesomeIcon className="filled" icon="heart" />
-				</div>
-				<Modal>
-					<h2>Zaloguj się</h2>
-				</Modal>
-			</HeartButtonContainer>
-		)
+		if (this.state.error) {
+			console.log(this.state.error)
+			return null
+		}
+
+		return this.props.children({
+			isSaved: this.state.isSaved,
+			onClick: this.onClick,
+			scale: this.props.scale
+		})
 	}
 }
 
-const HeartButton = compose(
+const SaveButtonLogic = compose(
 	withAuthentication,
 	withFirebase,
 	withGlobalContext
-)(SaveButtonBase)
+)(SaveButtonLogicBase)
 
-export { HeartButton }
+export const HeartButton = ({ type, id, ...props }) => {
+	return (
+		<SaveButtonLogic type={type} id={id}>
+			{({ isSaved, onClick, scale }) => {
+				return (
+					<HeartButtonContainer onClick={onClick} scale={scale} {...props}>
+						<div className="fa-layers fa-fw">
+							{isSaved ? (
+								<FontAwesomeIcon className="filled" icon="heart" />
+							) : (
+								<FontAwesomeIcon className="outline" icon={["far", "heart"]} />
+							)}
+						</div>
+						<Modal>
+							<h2>Zaloguj się</h2>
+						</Modal>
+					</HeartButtonContainer>
+				)
+			}}
+		</SaveButtonLogic>
+	)
+}
+
+export const SaveButton = ({
+	text = "Zapisz",
+	savedText = "Zapisano",
+	type,
+	id,
+	...props
+}) => {
+	return (
+		<SaveButtonLogic type={type} id={id}>
+			{({ isSaved, onClick }) => {
+				return (
+					<Button onClick={onClick} {...props}>
+						<div className="fa-layers fa-fw">
+							{isSaved ? (
+								<FontAwesomeIcon className="filled" icon="heart" size="xs" />
+							) : (
+								<FontAwesomeIcon className="outline" icon={["far", "heart"]} size="xs" />
+							)}
+						</div>{" "}
+						{isSaved ? savedText : text}
+					</Button>
+				)
+			}}
+		</SaveButtonLogic>
+	)
+}
