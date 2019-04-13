@@ -2,14 +2,11 @@ import React, { useState, useEffect } from "react"
 import styled from "styled-components/macro"
 import PropTypes from "prop-types"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { compose } from "recompose"
 
 import Modal from "../Modal"
 import { Button } from "../Button"
-import useAuthentication from "../../hooks/useAuthentication"
-import useFirebase from "../../hooks/useFirebase"
-import { withAuthentication } from "../UserSession"
-import { withFirebase } from "../Firebase"
+
+import { useAuthentication, useFirebase } from "../../hooks"
 
 export const TYPE = {
 	ITEM: "savedItems",
@@ -39,11 +36,11 @@ const HeartButtonContainer = styled.div`
 	}
 `
 
-const SaveButtonLogicBase = ({ authUser, firebase, id, type, children }) => {
+const SaveButtonLogic = ({ id, type, children }) => {
+	const firebase = useFirebase()
+	const [authUser, isAuthenticated] = useAuthentication(true)
 	const [isSaved, setIsSaved] = useState(false)
 	const [showModal, setShowModal] = useState(false)
-
-	const isAuthenticated = !!authUser
 
 	const checkIfSaved = () => {
 		const isSaved = isAuthenticated && authUser[type] && authUser[type].includes(id)
@@ -96,11 +93,6 @@ const SaveButtonLogicBase = ({ authUser, firebase, id, type, children }) => {
 		</Modal>
 	]
 }
-
-const SaveButtonLogic = compose(
-	withAuthentication,
-	withFirebase
-)(SaveButtonLogicBase)
 
 export const HeartButton = ({ type, id, scale, ...props }) => {
 	return (
