@@ -15,7 +15,7 @@ import {
 	SecondContainer,
 	TopContainer
 } from "./StyledComponents"
-import { HeartButton } from "../SaveButton"
+import { TYPE, SaveButton } from "../SaveButton"
 import { ROUTES } from "../../constants"
 import { TextBlock, HorizontalContainer } from "../StyledComponents"
 import SingleValueDisplay from "../SingleValueDisplay"
@@ -96,7 +96,12 @@ const MainInfo = ({ user, isAuthorized, userId, currentBreakpoint }) => {
 								<span>Wyślij wiadomość</span>
 							</Button>
 							<Button fullWidth={currentBreakpoint <= 1}>
-								<HeartButton id={userId} type="user" />
+								<SaveButton
+									id={userId}
+									type={TYPE.USER}
+									text="Obserwuj"
+									savedText="Obserwowany"
+								/>
 							</Button>
 							<Button>
 								<FontAwesomeIcon icon="ellipsis-h" size="lg" />

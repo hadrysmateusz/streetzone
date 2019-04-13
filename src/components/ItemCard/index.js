@@ -3,7 +3,7 @@ import { Link } from "react-router-dom"
 import Ratio from "react-ratio"
 
 import { withAuthentication } from "../UserSession"
-import { HeartButton } from "../SaveButton"
+import { HeartButton, TYPE } from "../SaveButton"
 import LoadingSpinner from "../LoadingSpinner"
 
 import { FirebaseContext } from "../Firebase"
@@ -85,7 +85,7 @@ const ItemCardBase = ({ item, ...rest }) => {
 								<Designers title={formattedDesigners}>{formattedDesigners}</Designers>
 								<Name title={name}>{name}</Name>
 							</InnerContainer>
-							<HeartButton id={id} type="item" scale={2} />
+							<HeartButton id={id} type={TYPE.ITEM} scale={2} />
 						</TopContainer>
 						<SecondaryContainer>
 							<Price title={price ? `Cena: ${price}` : null}>{formattedPrice}</Price>
@@ -118,7 +118,7 @@ const ItemCardMiniBase = ({ item, ...rest }) => {
 							<Designers title={formattedDesigners}>{formattedDesigners}</Designers>
 							<Name title={name}>{name}</Name>
 						</InnerContainer>
-						<HeartButton id={id} type="item" scale={2} />
+						<HeartButton id={id} type={TYPE.ITEM} scale={2} />
 					</TopContainer>
 					<SecondaryContainer>
 						<Price title={price ? `Cena: ${price}` : null}>{formattedPrice}</Price>
