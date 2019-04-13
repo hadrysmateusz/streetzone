@@ -50,6 +50,7 @@ const disabled = css`
 	border-color: var(--gray100);
 	background: var(--almost-white);
 	color: var(--gray50);
+	font-weight: normal;
 `
 
 const Button = styled.button`
@@ -67,6 +68,7 @@ const Button = styled.button`
 	padding: 0 var(--spacing3);
 	margin: 0;
 	border: 1px solid;
+	font-weight: bold;
 
 	text-transform: uppercase;
 	/* font-weight: 700; */
