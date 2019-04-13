@@ -9,7 +9,7 @@ import UserPreview from "../UserPreview"
 import { SmallTextBlock } from "../StyledComponents"
 import ItemsView from "../ItemsView"
 import { UpperGrid } from "./StyledComponents"
-import { HeartButton } from "../SaveButton"
+import { HeartButton, TYPE } from "../SaveButton"
 
 const MAX_ITEMS = 3
 
@@ -69,7 +69,7 @@ class FollowedUserCard extends Component {
 				<div>
 					<UpperGrid>
 						<UserPreview user={user} error={error} id={this.props.id} />
-						<HeartButton id={this.props.id} type="user" scale="2" />
+						<HeartButton id={this.props.id} type={TYPE.USER} scale="2" />
 					</UpperGrid>
 					{!error && (
 						<>

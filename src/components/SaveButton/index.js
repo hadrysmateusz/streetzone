@@ -1,35 +1,27 @@
-import React, { Component } from "react"
-import styled, { css } from "styled-components/macro"
+import React, { useState, useEffect } from "react"
+import styled from "styled-components/macro"
+import PropTypes from "prop-types"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { withFirebase } from "../Firebase"
-import { withAuthentication } from "../UserSession"
 import { compose } from "recompose"
-import { ROUTES } from "../../constants"
+
 import Modal from "../Modal"
-import { withGlobalContext } from "../GlobalContext"
 import { Button } from "../Button"
+import useAuthentication from "../../hooks/useAuthentication"
+import useFirebase from "../../hooks/useFirebase"
+import { withAuthentication } from "../UserSession"
+import { withFirebase } from "../Firebase"
 
 export const TYPE = {
-	ITEM: "ITEM",
-	USER: "USER"
+	ITEM: "savedItems",
+	USER: "followedUsers"
 }
 
-const TYPE_REQUIRED_ERR = "SaveButton needs a type"
-
-function getPropertyName(type) {
-	if (type === TYPE.ITEM) {
-		return "savedItems"
-	} else if (type === TYPE.USER) {
-		return "followedUsers"
-	} else {
-		return null
-	}
-}
+const INVALID_TYPE_ERR = "SaveButton needs a valid type"
 
 const HeartButtonContainer = styled.div`
 	background: rgba(255, 255, 255, 1);
 	padding: var(--spacing1);
-	color: ${(p) => p.theme.colors.black[0]};
+	color: var(--black0);
 	display: flex;
 	cursor: pointer;
 	justify-content: center;
@@ -39,7 +31,7 @@ const HeartButtonContainer = styled.div`
 	font-size: ${(p) => 10 * (p.scale || 1)}px;
 
 	.filled {
-		color: ${(p) => p.theme.colors.accent};
+		color: var(--accent50);
 	}
 
 	:hover {
@@ -47,106 +39,73 @@ const HeartButtonContainer = styled.div`
 	}
 `
 
-class SaveButtonLogicBase extends Component {
-	state = {
-		isSaved: false,
-		isLoginModalVisible: false
+const SaveButtonLogicBase = ({ authUser, firebase, id, type, children }) => {
+	const [isSaved, setIsSaved] = useState(false)
+	const [showModal, setShowModal] = useState(false)
+
+	const isAuthenticated = !!authUser
+
+	const checkIfSaved = () => {
+		const isSaved = isAuthenticated && authUser[type] && authUser[type].includes(id)
+
+		setIsSaved(isSaved)
 	}
 
-	componentDidMount = () => {
-		this.checkIfSaved()
-	}
+	const toggleSaved = async () => {
+		const wasSaved = isSaved
+		// Assume the operation will be successful and set state early
+		setIsSaved(!wasSaved)
 
-	componentDidUpdate = (prevProps) => {
-		if (prevProps.authUser !== this.props.authUser) {
-			this.checkIfSaved()
+		try {
+			// Get the old list
+			const oldList = authUser[type] || []
+			// Either delete or add to the list
+			const newList = wasSaved ? oldList.filter((a) => a !== id) : [...oldList, id]
+			// Update the db
+			await firebase.currentUser().update({ [type]: newList })
+		} catch (error) {
+			console.log(error)
+			// Revert the state change if there was an error
+			setIsSaved(wasSaved)
 		}
 	}
 
-	checkIfSaved = () => {
-		const { authUser, id, type } = this.props
-
-		// Get the property to modify based on type of button
-		const propertyName = getPropertyName(type)
-
-		if (!propertyName) {
-			this.setState({ error: TYPE_REQUIRED_ERR })
-			return
-		}
-
-		const isSaved =
-			authUser && authUser[propertyName] && authUser[propertyName].includes(id)
-
-		this.setState({ isSaved })
-	}
-
-	onClick = (e) => {
+	const onClick = (e) => {
 		e.preventDefault()
 
-		if (this.props.authUser) {
-			this.toggleSaved()
+		if (isAuthenticated) {
+			toggleSaved()
 		} else {
-			this.props.globalContext.openModal(ROUTES.SIGN_UP)
+			setShowModal(true)
 		}
 	}
 
-	toggleSaved = async () => {
-		const { id, authUser, firebase, type = "item" } = this.props
-		if (authUser) {
-			const wasSaved = this.state.isSaved
-			// Assume the operation will be successful and set state early
-			this.setState({ isSaved: !wasSaved })
+	useEffect(() => {
+		checkIfSaved()
+	}, [authUser, id, type])
 
-			// Get the property to modify based on type of button
-			const propertyName = getPropertyName(type)
-
-			if (!propertyName) {
-				this.setState({ error: TYPE_REQUIRED_ERR })
-				return
-			}
-
-			try {
-				// get the old list
-				const oldList = authUser[propertyName] || []
-
-				// either delete or add to the list
-				const newList = wasSaved ? oldList.filter((a) => a !== id) : [...oldList, id]
-
-				// update the db
-				await firebase.currentUser().update({ [propertyName]: newList })
-			} catch (error) {
-				console.log(error)
-			}
-
-			// This will make sure the state is correct regardless of the operation's success
-			this.checkIfSaved()
-		}
+	if (!Object.values(TYPE).includes(type)) {
+		console.error(INVALID_TYPE_ERR)
+		return null
 	}
 
-	render = () => {
-		if (this.state.error) {
-			console.log(this.state.error)
-			return null
-		}
-
-		return this.props.children({
-			isSaved: this.state.isSaved,
-			onClick: this.onClick,
-			scale: this.props.scale
-		})
-	}
+	return [
+		children({ isSaved, onClick }),
+		<Modal isOpen={showModal} onRequestClose={() => setShowModal(false)}>
+			Zaloguj się
+		</Modal>
+	]
 }
 
 const SaveButtonLogic = compose(
 	withAuthentication,
-	withFirebase,
-	withGlobalContext
+	withFirebase
 )(SaveButtonLogicBase)
 
-export const HeartButton = ({ type, id, ...props }) => {
+export const HeartButton = ({ type, id, scale, ...props }) => {
 	return (
 		<SaveButtonLogic type={type} id={id}>
-			{({ isSaved, onClick, scale }) => {
+			{({ isSaved, onClick }) => {
 				return (
 					<HeartButtonContainer onClick={onClick} scale={scale} {...props}>
 						<div className="fa-layers fa-fw">
@@ -156,9 +115,6 @@ export const HeartButton = ({ type, id, ...props }) => {
 								<FontAwesomeIcon className="outline" icon={["far", "heart"]} />
 							)}
 						</div>
-						<Modal>
-							<h2>Zaloguj się</h2>
-						</Modal>
 					</HeartButtonContainer>
 				)
 			}}
@@ -166,13 +122,7 @@ export const HeartButton = ({ type, id, ...props }) => {
 	)
 }
 
-export const SaveButton = ({
-	text = "Zapisz",
-	savedText = "Zapisano",
-	type,
-	id,
-	...props
-}) => {
+export const SaveButton = ({ text, savedText, type, id, ...props }) => {
 	return (
 		<SaveButtonLogic type={type} id={id}>
 			{({ isSaved, onClick }) => {
@@ -191,4 +141,23 @@ export const SaveButton = ({
 			}}
 		</SaveButtonLogic>
 	)
+}
+
+SaveButtonLogic.propTypes = {
+	id: PropTypes.string.isRequired,
+	type: PropTypes.string.isRequired,
+	children: PropTypes.func.isRequired
+}
+
+HeartButton.propTypes = {
+	id: PropTypes.string.isRequired,
+	type: PropTypes.string.isRequired,
+	scale: PropTypes.number
+}
+
+SaveButton.propTypes = {
+	id: PropTypes.string.isRequired,
+	type: PropTypes.string.isRequired,
+	text: PropTypes.string.isRequired,
+	savedText: PropTypes.string.isRequired
 }

@@ -8,7 +8,7 @@ import { ItemCardImage } from "../ItemCard"
 import UserPreview from "../UserPreview"
 import Button, { ButtonContainer, LoaderButton } from "../Button"
 import { Separator } from "../Basics"
-import { HeartButton } from "../SaveButton"
+import { HeartButton, TYPE } from "../SaveButton"
 
 import { DetailsContainer, OuterContainer } from "./StyledComponents"
 import { ROUTES } from "../../constants"
@@ -72,7 +72,7 @@ class DetailedItemCard extends React.Component {
 						</TextBlock>
 						<TextBlock size="m">{item.name}</TextBlock>
 					</div>
-					<HeartButton id={item.id} type="item" scale={2} />
+					<HeartButton id={item.id} type={TYPE.ITEM} scale={2} />
 					<Separator />
 
 					<div>
