@@ -51,7 +51,7 @@ const ItemDetailsPage = ({ match, history }) => {
 
 	useEffect(() => {
 		getItem()
-	}, [itemId, authUser])
+	}, [itemId, !!authUser])
 
 	const deleteItem = async () => {
 		setIsDeleting(true)
