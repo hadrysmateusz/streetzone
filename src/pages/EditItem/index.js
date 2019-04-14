@@ -15,11 +15,11 @@ import useAuthentication from "../../hooks/useAuthentication"
 import { formatItemDataForDb, MODE } from "../../utils/formatting/formatItemData"
 import { S_THUMB_POSTFIX, M_THUMB_POSTFIX, L_THUMB_POSTFIX } from "../../constants/const"
 
-const formatDataForEditForm = (price, description, files) => ({
+const formatDataForEditForm = (price, condition, description, files) => ({
 	price: Number.parseInt(price),
 	description: description || "",
-	files: files,
-	modifiedAt: Date.now()
+	condition,
+	files: files
 })
 
 const EditItemPage = ({ match, history }) => {
@@ -45,8 +45,17 @@ const EditItemPage = ({ match, history }) => {
 				})
 			})
 
+			console.log(item.condition)
+
 			// Format data for the form
-			const initialData = formatDataForEditForm(item.price, item.description, files)
+			const initialData = formatDataForEditForm(
+				item.price,
+				item.condition,
+				item.description,
+				files
+			)
+
+			console.log(initialData)
 
 			setInitialData(initialData)
 		} catch (err) {
@@ -58,7 +67,7 @@ const EditItemPage = ({ match, history }) => {
 		}
 	}
 
-	const onSubmit = async ({ files, price, description }) => {
+	const onSubmit = async ({ files, price, description, condition }) => {
 		try {
 			// Upload NEW files and get ALL refs
 			const newRefs = await Promise.all(
@@ -74,7 +83,7 @@ const EditItemPage = ({ match, history }) => {
 
 			// Format the data
 			const data = formatItemDataForDb(
-				{ price, description, attachments: newRefs },
+				{ price, description, condition, attachments: newRefs },
 				MODE.EDIT
 			)
 

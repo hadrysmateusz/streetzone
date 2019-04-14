@@ -7,16 +7,17 @@ import Button, { LoaderButton } from "../../components/Button"
 import { FieldRow, FieldLabel } from "../../components/Basics"
 import { Input, Textarea } from "../../components/FormElements"
 import { FileHandler } from "../../components/FileHandler"
+import DropdownFinalform from "../../components/DropdownFinalform"
 
 import validate from "./validate"
-import { ROUTES, CONST } from "../../constants"
+import { ITEM_SCHEMA, ROUTES, CONST } from "../../constants"
 
 const StyledForm = styled.form`
 	display: grid;
 	grid-template-columns: 1fr 1fr;
 	gap: var(--spacing3);
 	grid-template-areas:
-		"price price"
+		"price condition"
 		"description description"
 		"files files";
 `
@@ -43,6 +44,29 @@ const EditItemForm = ({ initialValues, onSubmit, history, isLoading }) => (
 											min="0"
 											step="1"
 											placeholder="Cena"
+											error={error}
+										/>
+									</>
+								)
+							}}
+						</Field>
+					</FieldRow>
+
+					{/* Condition */}
+					<FieldRow gridArea="condition">
+						<Field name="condition">
+							{({ input, meta }) => {
+								const error = meta.error && meta.touched ? meta.error : null
+								console.log(input)
+								return (
+									<>
+										<FieldLabel>Stan </FieldLabel>
+
+										<DropdownFinalform
+											{...input}
+											options={ITEM_SCHEMA.conditionOptions}
+											isSearchable={false}
+											placeholder="Stan"
 											error={error}
 										/>
 									</>

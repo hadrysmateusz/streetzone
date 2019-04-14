@@ -9,7 +9,7 @@ import { PageContainer } from "../../../components/Containers"
 import { TextBlock } from "../../../components/StyledComponents"
 import PageNav from "../PageNav"
 import useFirebase from "../../../hooks/useFirebase"
-import { Image, ShareButtons } from "../StyledComponents"
+import { ShareButtons, FluidImage } from "../StyledComponents"
 
 const OuterContainer = styled.div`
 	display: grid;
@@ -92,7 +92,7 @@ export const PureBlogPost = ({ post }) => {
 					<OuterContainer>
 						<Main>
 							{/* Header image */}
-							<Image url={post.mainImageURL} />
+							<FluidImage url={post.mainImageURL} />
 
 							<InnerContainer>
 								<InfoAside>
