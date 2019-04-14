@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react"
+import React from "react"
 import { Link } from "react-router-dom"
 import Ratio from "react-ratio"
 
@@ -6,10 +6,10 @@ import { withAuthentication } from "../UserSession"
 import { HeartButton, TYPE } from "../SaveButton"
 import LoadingSpinner from "../LoadingSpinner"
 
-import { FirebaseContext } from "../Firebase"
 import formatDesigners from "../../utils/formatDesigners"
 import formatPrice from "../../utils/formatPrice"
 import formatSize from "../../utils/formatSize"
+import { useImage } from "../../hooks"
 import {
 	MiniContainer,
 	Container,
@@ -24,30 +24,6 @@ import {
 	Size,
 	StyledIcon
 } from "./StyledComponents"
-
-const ERR_NO_IMAGE = "NO_IMAGE"
-
-export function useImage(imageId, size = "M") {
-	const firebase = useContext(FirebaseContext)
-	const [imageURL, setImageURL] = useState(null)
-	const [error, setError] = useState(null)
-
-	const fetchImage = async () => {
-		try {
-			const imageURL = await firebase.getImageURL(imageId, size)
-			setImageURL(imageURL)
-		} catch (error) {
-			setError(ERR_NO_IMAGE)
-			console.log(error)
-		}
-	}
-
-	useEffect(() => {
-		fetchImage()
-	}, [imageId])
-
-	return [imageURL, error]
-}
 
 export const ItemCardImage = ({ imageId }) => {
 	const [imageURL, error] = useImage(imageId)

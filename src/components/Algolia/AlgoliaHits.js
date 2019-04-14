@@ -8,10 +8,15 @@ import { ItemCard, ItemCardMini } from "../ItemCard"
 import { ItemsContainer } from "../ItemsView"
 import Button from "../Button"
 
-import { MiniContainer, ItemsLoaderContainer } from "./StyledComponents"
+import {
+	MiniContainer,
+	ItemsLoaderContainer,
+	InfiniteOwnerCardsContainer
+} from "./StyledComponents"
 import useDelayRender from "../../hooks/useDelayRender"
+import OwnerItemCard from "../OwnerItemCard"
 
-const ItemsLoader = ({ refine }) => {
+export const ItemsLoader = ({ refine }) => {
 	const shouldRender = useDelayRender(200)
 
 	return shouldRender ? (
@@ -22,7 +27,7 @@ const ItemsLoader = ({ refine }) => {
 	) : null
 }
 
-const AlgoliaInfiniteHits = connectInfiniteHits(({ hits, hasMore, refine }) => {
+export const AlgoliaInfiniteHits = connectInfiniteHits(({ hits, hasMore, refine }) => {
 	return (
 		<InfiniteScroll
 			hasMore={hasMore}
@@ -45,7 +50,7 @@ const AlgoliaInfiniteHits = connectInfiniteHits(({ hits, hasMore, refine }) => {
 	)
 })
 
-const AlgoliaMiniHits = connectHits(({ hits }) => (
+export const AlgoliaMiniHits = connectHits(({ hits }) => (
 	<ContainerDimensions>
 		{({ width }) => (
 			<MiniContainer containerWidth={width}>
@@ -57,4 +62,19 @@ const AlgoliaMiniHits = connectHits(({ hits }) => (
 	</ContainerDimensions>
 ))
 
-export { AlgoliaInfiniteHits, AlgoliaMiniHits, ItemsLoader }
+export const InfiniteOwnerCards = connectInfiniteHits(({ hits, hasMore, refine }) => {
+	return (
+		<InfiniteScroll
+			hasMore={hasMore}
+			loader={<ItemsLoader refine={refine} key="loader-component" />}
+			initialLoad={false}
+			loadMore={refine}
+		>
+			<InfiniteOwnerCardsContainer>
+				{hits.map((item) => (
+					<OwnerItemCard key={item.objectID} item={item} />
+				))}
+			</InfiniteOwnerCardsContainer>
+		</InfiniteScroll>
+	)
+})

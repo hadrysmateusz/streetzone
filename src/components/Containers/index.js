@@ -14,7 +14,7 @@ export const PageContainer = styled.section`
 	${pageContainerWidth}
 
 	--margin-y: var(--spacing3);
-	--padding-x: ${(p) => (p.extraWide ? "var(--spacing1)" : "var(--spacing3)")};
+	--padding-x: ${(p) => (p.extraWide ? "3px" : "var(--spacing3)")};
 
 	width: 100%;
 

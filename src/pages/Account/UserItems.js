@@ -1,19 +1,26 @@
 import React from "react"
 import { UncontrolledInstantSearchWrapper } from "../../components/InstantSearchWrapper"
 import { CONST } from "../../constants"
-import { AlgoliaInfiniteHits } from "../../components/Algolia/AlgoliaHits"
+import {
+	AlgoliaInfiniteHits,
+	InfiniteOwnerCards
+} from "../../components/Algolia/AlgoliaHits"
+import { VirtualMenu } from "../../components/Algolia/Virtual"
 import { Configure } from "react-instantsearch-core"
 
-const UserItems = () => {
+import { PageContainer } from "../../components/Containers"
+
+const UserItems = ({ isAuthorized, userId }) => {
 	return (
-		<div>
+		<PageContainer extraWide>
 			<UncontrolledInstantSearchWrapper
 				indexName={CONST.DEV_ITEMS_MARKETPLACE_DEFAULT_ALGOLIA_INDEX}
 			>
+				<VirtualMenu attribute="userId" defaultRefinement={userId} />
 				<Configure hitsPerPage={6} />
-				<AlgoliaInfiniteHits />
+				{isAuthorized ? <InfiniteOwnerCards /> : <AlgoliaInfiniteHits />}
 			</UncontrolledInstantSearchWrapper>
-		</div>
+		</PageContainer>
 	)
 }
 

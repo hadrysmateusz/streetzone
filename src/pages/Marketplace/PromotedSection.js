@@ -9,11 +9,12 @@ import { PageContainer } from "../../components/Containers"
 import { VirtualRange } from "../../components/Algolia/Virtual"
 import { CONST } from "../../constants"
 import { TextBlock } from "../../components/StyledComponents"
-import { ItemCard, useImage } from "../../components/ItemCard"
+import { ItemCard } from "../../components/ItemCard"
 import formatDesigners from "../../utils/formatDesigners"
 import formatPrice from "../../utils/formatPrice"
 import Button, { ButtonContainer } from "../../components/Button"
 import { overlayTextShadow } from "../../style-utils"
+import { useImage } from "../../hooks"
 
 const OuterContainer = styled.div`
 	padding: var(--spacing3) 0;

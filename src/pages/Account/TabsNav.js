@@ -10,6 +10,7 @@ import {
 	StyledNavLink,
 	OuterContainer
 } from "./TabsNav.styles"
+import { PageContainer } from "../../components/Containers"
 
 const DropdownNavItem = ({ label, routes }) => {
 	const [isOpen, setIsOpen] = useState(false)
@@ -55,39 +56,41 @@ export const AccountPageTabs = withBreakpoints(
 
 const TabsNav = ({ routes, isAuthorized = false }) => {
 	return (
-		<OuterContainer>
-			<Nav>
-				{Object.entries(routes).map(([key, value], i) => {
-					if (Array.isArray(value)) {
-						let subRoutes = []
-						value.forEach((route) => {
-							if ((isAuthorized || !route.isProtected) && !route.isHidden) {
-								subRoutes.push(
-									<StyledNavLink to={route.path} key={route.id}>
-										{route.shortLabel}
-									</StyledNavLink>
-								)
-							}
-						})
+		<PageContainer extraWide>
+			<OuterContainer>
+				<Nav>
+					{Object.entries(routes).map(([key, value], i) => {
+						if (Array.isArray(value)) {
+							let subRoutes = []
+							value.forEach((route) => {
+								if ((isAuthorized || !route.isProtected) && !route.isHidden) {
+									subRoutes.push(
+										<StyledNavLink to={route.path} key={route.id}>
+											{route.shortLabel}
+										</StyledNavLink>
+									)
+								}
+							})
 
-						return subRoutes.length > 0 ? (
-							<DropdownNavItem label={key} routes={subRoutes} />
-						) : null
-					} else {
-						return (
-							(isAuthorized || !value.isProtected) &&
-							!value.isHidden && (
-								<NavItem>
-									<StyledNavLink to={value.path} key={value.id}>
-										{value.label}
-									</StyledNavLink>
-								</NavItem>
+							return subRoutes.length > 0 ? (
+								<DropdownNavItem label={key} routes={subRoutes} />
+							) : null
+						} else {
+							return (
+								(isAuthorized || !value.isProtected) &&
+								!value.isHidden && (
+									<NavItem>
+										<StyledNavLink to={value.path} key={value.id}>
+											{value.label}
+										</StyledNavLink>
+									</NavItem>
+								)
 							)
-						)
-					}
-				})}
-			</Nav>
-		</OuterContainer>
+						}
+					})}
+				</Nav>
+			</OuterContainer>
+		</PageContainer>
 	)
 }
 

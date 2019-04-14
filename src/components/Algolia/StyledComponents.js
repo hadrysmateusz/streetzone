@@ -177,3 +177,11 @@ export const SizeCategoriesContainer = styled.div`
 	gap: var(--spacing1);
 	margin: var(--spacing1) 0 var(--spacing1) var(--spacing1);
 `
+
+export const InfiniteOwnerCardsContainer = styled.div`
+	display: grid;
+	gap: var(--spacing2);
+	@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
+		gap: var(--spacing3);
+	}
+`

@@ -1,5 +1,11 @@
 import styled from "styled-components/macro"
 
+export const Section = styled.div`
+	&:not(:last-child) {
+		border-bottom: 1px solid ${(p) => p.theme.colors.gray[75]};
+	}
+`
+
 export const OuterContainer = styled.div`
 	display: grid;
 	grid-template-columns: 1fr;
@@ -17,23 +23,11 @@ export const OuterContainer = styled.div`
 		grid-template-columns: 90px 1fr;
 	}
 	@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
-		grid-template-columns: 150px 1fr;
-	}
-	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
 		grid-template-columns: 200px 1fr;
 	}
-`
-
-export const Section = styled.div`
-	&:not(:last-child) {
-		border-bottom: 1px solid ${(p) => p.theme.colors.gray[75]};
+	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
+		grid-template-columns: 300px 1fr;
 	}
-`
-
-export const DetailsContainer = styled.div`
-	display: grid;
-	grid-auto-flow: row;
-	gap: var(--spacing2);
 `
 
 export const ImageContainer = styled.div`
@@ -60,4 +54,21 @@ export const Image = styled.div`
 	background-size: cover;
 	background-repeat: no-repeat;
 	background-position: center;
+`
+
+export const DetailsContainer = styled.div`
+	color: var(--gray0);
+	font-size: var(--font-size--xs);
+	@media (min-width: ${(p) => p.theme.breakpoints[0]}px) {
+		font-size: var(--font-size--s);
+	}
+`
+
+export const MainContainer = styled.div`
+	display: grid;
+	align-content: start;
+	gap: var(--spacing1);
+	@media (min-width: ${(p) => p.theme.breakpoints[0]}px) {
+		gap: var(--spacing2);
+	}
 `

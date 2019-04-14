@@ -23,7 +23,7 @@ const accent = css`
 	background: var(--accent50);
 	color: white;
 
-	text-shadow: 1px 1px var(--accent50);
+	text-shadow: 1px 1px rgba(0, 0, 0, 0.23), 0 0 5px rgba(0, 0, 0, 0.1);
 
 	:not([disabled]) {
 		:hover {
