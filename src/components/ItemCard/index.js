@@ -11,7 +11,6 @@ import formatPrice from "../../utils/formatPrice"
 import formatSize from "../../utils/formatSize"
 import { useImage } from "../../hooks"
 import {
-	MiniContainer,
 	Container,
 	ThumbnailContainer,
 	InfoContainer,
@@ -76,35 +75,4 @@ const ItemCardBase = ({ item, ...rest }) => {
 	)
 }
 
-const ItemCardMiniBase = ({ item, ...rest }) => {
-	const { id, name, price, designers, size } = item
-
-	const formattedDesigners = formatDesigners(designers)
-	const formattedPrice = formatPrice(price)
-	const formattedSize = formatSize(size)
-
-	return (
-		<MiniContainer {...rest}>
-			<Link to={`/i/${id}`}>
-				<ItemCardImage imageId={item.attachments[0]} />
-
-				<InfoContainer>
-					<TopContainer>
-						<InnerContainer>
-							<Designers title={formattedDesigners}>{formattedDesigners}</Designers>
-							<Name title={name}>{name}</Name>
-						</InnerContainer>
-						<HeartButton id={id} type={TYPE.ITEM} scale={2} />
-					</TopContainer>
-					<SecondaryContainer>
-						<Price title={price ? `Cena: ${price}` : null}>{formattedPrice}</Price>
-						<Size title={size ? `Rozmiar: ${formattedSize}` : null}>{formattedSize}</Size>
-					</SecondaryContainer>
-				</InfoContainer>
-			</Link>
-		</MiniContainer>
-	)
-}
-
 export const ItemCard = withAuthentication(ItemCardBase)
-export const ItemCardMini = withAuthentication(ItemCardMiniBase)

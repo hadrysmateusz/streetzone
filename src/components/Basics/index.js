@@ -172,3 +172,17 @@ export const InfoBlock = styled.div`
 		max-width: 550px;
 	}
 `
+
+export const ScrollableContainer = styled.div`
+	--x-spacing: ${(p) => p.xSpacing || "var(--spacing3)"};
+	--item-width: ${(p) => p.itemWidth || "200px"};
+	--gap: ${(p) => p.gap || "var(--spacing2)"};
+
+	display: grid;
+	overflow: auto;
+	grid-auto-flow: column;
+	grid-auto-columns: var(--item-width);
+	gap: var(--gap);
+	margin: 0 calc(-1 * var(--x-spacing));
+	padding: 0 var(--x-spacing);
+`

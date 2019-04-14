@@ -115,31 +115,6 @@ export const SearchBox = styled.div`
 	}
 `
 
-export const MiniContainer = styled.div`
-	display: grid;
-	overflow: auto;
-	grid-auto-rows: auto;
-	grid-template-columns: repeat(6, 46%);
-	grid-gap: var(--spacing1);
-
-	@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
-		grid-gap: var(--spacing2);
-		grid-template-columns: repeat(6, 30%);
-	}
-	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
-		grid-template-columns: repeat(6, 23%);
-	}
-	@media (min-width: ${(p) => p.theme.breakpoints[3]}px) {
-		grid-template-columns: repeat(6, 22%);
-	}
-	@media (min-width: ${(p) => p.theme.breakpoints[4]}px) {
-		grid-template-columns: 1fr 1fr 1fr;
-	}
-	@media (min-width: ${(p) => p.theme.breakpoints[5]}px) {
-		grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
-	}
-`
-
 export const ItemsLoaderContainer = styled.div`
 	text-align: center;
 `

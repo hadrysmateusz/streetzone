@@ -1,6 +1,7 @@
 import React, { Component } from "react"
 import { withRouter } from "react-router-dom"
 import { compose } from "recompose"
+import { Configure } from "react-instantsearch-core"
 
 import { withFirebase } from "../Firebase"
 import LoadingSpinner from "../LoadingSpinner"
@@ -8,88 +9,45 @@ import LoadingSpinner from "../LoadingSpinner"
 import UserPreview from "../UserPreview"
 import { SmallTextBlock } from "../StyledComponents"
 import ItemsView from "../ItemsView"
-import { UpperGrid } from "./StyledComponents"
 import { HeartButton, TYPE } from "../SaveButton"
+import { AlgoliaInfiniteHits, AlgoliaScrollableHits } from "../Algolia/AlgoliaHits"
+import { VirtualMenu } from "../Algolia/Virtual"
+import { UncontrolledInstantSearchWrapper } from "../InstantSearchWrapper"
+import { CONST } from "../../constants"
+import { useUserData } from "../../hooks"
+
+import { UpperGrid, OuterContainer } from "./StyledComponents"
 
 const MAX_ITEMS = 3
 
-class FollowedUserCard extends Component {
-	state = {
-		user: null,
-		isLoading: true,
-		error: null,
-		isFetchingItems: false
-	}
+const FollowedUserCard = ({ id }) => {
+	const [user, error] = useUserData(id)
 
-	getItems = async () => {
-		this.setState({ isFetchingItems: true })
+	console.log(user, error)
 
-		let items = []
-		let error = null
+	return user ? (
+		<OuterContainer>
+			<UpperGrid>
+				<UserPreview user={user} error={error} id={id} />
+				<HeartButton id={id} type={TYPE.USER} scale="2" />
+			</UpperGrid>
+			{!error && (
+				<>
+					<SmallTextBlock>Najnowsze Przedmioty</SmallTextBlock>
 
-		try {
-			const itemIds = this.state.user.items
-
-			// reverse to sort by newest
-			itemIds.reverse()
-
-			// get data from firestore
-			for (let i = 0; i < Math.min(itemIds.length, MAX_ITEMS); i++) {
-				const id = itemIds[i]
-				const item = await this.props.firebase.getItemData(id)
-				items.push(item)
-			}
-
-			// filter out items that don't exist anymore
-			items = items.filter((item) => Object.keys(item).length)
-
-			this.setState({ items })
-		} catch (e) {
-			this.setState({ error })
-		} finally {
-			this.setState({ isFetchingItems: false })
-		}
-	}
-
-	getUser = async () => {
-		let { id, firebase } = this.props
-		let { user, error } = await firebase.getUserData(id)
-		this.setState({ user, error, isLoading: false })
-	}
-
-	componentDidMount = async () => {
-		await this.getUser()
-		await this.getItems()
-	}
-
-	render() {
-		const { isLoading, user, error, items, isFetchingItems } = this.state
-		if (!isLoading) {
-			return (
-				<div>
-					<UpperGrid>
-						<UserPreview user={user} error={error} id={this.props.id} />
-						<HeartButton id={this.props.id} type={TYPE.USER} scale="2" />
-					</UpperGrid>
-					{!error && (
-						<>
-							<SmallTextBlock>Najnowsze Przedmioty</SmallTextBlock>
-							{!isFetchingItems && items ? (
-								<ItemsView items={items} />
-							) : (
-								<LoadingSpinner fixedHeight />
-							)}
-						</>
-					)}
-				</div>
-			)
-		} else {
-			return <LoadingSpinner fixedHeight />
-		}
-	}
+					<UncontrolledInstantSearchWrapper
+						indexName={CONST.DEV_ITEMS_MARKETPLACE_DEFAULT_ALGOLIA_INDEX}
+					>
+						<VirtualMenu attribute="userId" defaultRefinement={id} />
+						<Configure hitsPerPage={3} />
+						<AlgoliaScrollableHits />
+					</UncontrolledInstantSearchWrapper>
+				</>
+			)}
+		</OuterContainer>
+	) : (
+		<LoadingSpinner fixedHeight />
+	)
 }
 
-export default compose(
-	withRouter,
-	withFirebase
-)(FollowedUserCard)
+export default FollowedUserCard

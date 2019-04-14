@@ -4,15 +4,12 @@ import InfiniteScroll from "react-infinite-scroller"
 import ContainerDimensions from "react-container-dimensions"
 
 import LoadingSpinner from "../LoadingSpinner"
-import { ItemCard, ItemCardMini } from "../ItemCard"
+import { ItemCard } from "../ItemCard"
 import { ItemsContainer } from "../ItemsView"
 import Button from "../Button"
+import { ScrollableContainer } from "../Basics"
 
-import {
-	MiniContainer,
-	ItemsLoaderContainer,
-	InfiniteOwnerCardsContainer
-} from "./StyledComponents"
+import { ItemsLoaderContainer, InfiniteOwnerCardsContainer } from "./StyledComponents"
 import useDelayRender from "../../hooks/useDelayRender"
 import OwnerItemCard from "../OwnerItemCard"
 
@@ -50,14 +47,14 @@ export const AlgoliaInfiniteHits = connectInfiniteHits(({ hits, hasMore, refine 
 	)
 })
 
-export const AlgoliaMiniHits = connectHits(({ hits }) => (
+export const AlgoliaScrollableHits = connectHits(({ hits }) => (
 	<ContainerDimensions>
 		{({ width }) => (
-			<MiniContainer containerWidth={width}>
-				{hits.map((hit) => (
-					<ItemCardMini key={hit.objectID} item={hit} />
+			<ScrollableContainer containerWidth={width}>
+				{hits.map((item) => (
+					<ItemCard key={item.objectID} item={item} />
 				))}
-			</MiniContainer>
+			</ScrollableContainer>
 		)}
 	</ContainerDimensions>
 ))

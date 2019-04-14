@@ -17,7 +17,7 @@ import EmptyState from "../../components/EmptyState"
 import UserPreview from "../../components/UserPreview"
 import { translateCondition } from "../../constants/item_schema"
 import { PageContainer, GrayContainer } from "../../components/Containers"
-import { AlgoliaMiniHits } from "../../components/Algolia/AlgoliaHits"
+import { AlgoliaScrollableHits } from "../../components/Algolia/AlgoliaHits"
 import { VirtualMenu, VirtualRefinementList } from "../../components/Algolia/Virtual"
 import {
 	TextBlock,
@@ -192,7 +192,7 @@ const ItemDetailsPage = ({ match, history }) => {
 						defaultRefinement={item.designers}
 					/>
 					<VirtualMenu attribute="category" defaultRefinement={item.category} />
-					<AlgoliaMiniHits />
+					<AlgoliaScrollableHits />
 				</InstantSearch>
 				<TextBlock uppercase>Inne przedmioty sprzedającego</TextBlock>
 				<InstantSearch
@@ -202,7 +202,7 @@ const ItemDetailsPage = ({ match, history }) => {
 				>
 					<Configure hitsPerPage={3} />
 					<VirtualMenu attribute="userId" defaultRefinement={item.userId} />
-					<AlgoliaMiniHits />
+					<AlgoliaScrollableHits />
 				</InstantSearch>
 			</GrayContainer>
 		</>

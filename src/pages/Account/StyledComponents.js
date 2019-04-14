@@ -54,8 +54,11 @@ export const UserSettingsContainer = styled.div`
 
 export const FollowedUsersContainer = styled.div`
 	display: grid;
+	grid-template-columns: 100%;
 	@media (min-width: ${(p) => p.theme.breakpoints[5]}px) {
 		grid-template-columns: 1fr 1fr;
 	}
 	gap: var(--spacing3);
+	min-width: 0;
+	max-width: 100%;
 `

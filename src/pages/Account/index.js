@@ -1,38 +1,15 @@
-import React, { useEffect, useState } from "react"
+import React from "react"
 import { Route, Switch, Redirect, withRouter } from "react-router-dom"
 import { compose } from "recompose"
 
 import { withAuthentication } from "../../components/UserSession"
 import ErrorBoundary from "../../components/ErrorBoundary"
-
-import useFirebase from "../../hooks/useFirebase"
 import LoadingSpinner from "../../components/LoadingSpinner"
-import MainInfo from "./UserMainInfo"
+import { useUserData } from "../../hooks"
 
+import MainInfo from "./UserMainInfo"
 import { MainContainer } from "./StyledComponents"
 import { AccountPageTabs } from "./TabsNav"
-
-const useUserData = (userId, authUser, isAuthorized) => {
-	const firebase = useFirebase()
-	const [user, setUser] = useState(null)
-	const [error, setError] = useState(null)
-
-	const fetchUser = async () => {
-		if (isAuthorized) {
-			setUser(authUser)
-		} else {
-			const { user, error } = await firebase.getUserData(userId)
-			setUser(user)
-			setError(error)
-		}
-	}
-
-	useEffect(() => {
-		fetchUser()
-	}, [userId, authUser])
-
-	return [user, error]
-}
 
 const AccountPage = ({ routes, match, authUser }) => {
 	const userId = match.params.id

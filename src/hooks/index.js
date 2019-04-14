@@ -6,6 +6,7 @@ import useFirebase from "./useFirebase"
 import useFirestoreCollection from "./useFirestoreCollection"
 import useScrollPosition from "./useScrollPosition"
 import useImage from "./useImage"
+import useUserData from "./useUserData"
 
 export {
 	useAuthentication,
@@ -15,5 +16,6 @@ export {
 	useFirebase,
 	useFirestoreCollection,
 	useScrollPosition,
-	useImage
+	useImage,
+	useUserData
 }
