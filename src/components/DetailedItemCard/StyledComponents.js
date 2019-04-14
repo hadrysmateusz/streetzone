@@ -14,12 +14,10 @@ export const OuterContainer = styled.div`
 	box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.04);
 
 	@media (min-width: ${(p) => p.theme.breakpoints[0]}px) {
-		grid-template-columns: 90px 1fr;
+		grid-template-columns: 120px 1fr;
 	}
-	@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
-		grid-template-columns: 150px 1fr;
-	}
-	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
+
+	@media (min-width: ${(p) => p.theme.breakpoints[5]}px) {
 		grid-template-columns: 200px 1fr;
 	}
 `

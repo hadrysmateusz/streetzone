@@ -85,7 +85,7 @@ const OwnerItemCard = ({ item, history }) => {
 						</SingleValueDisplay>
 					</HorizontalContainer>
 				</div>
-				<Separator />
+
 				<div>
 					<ButtonContainer>
 						<Button accent fullWidth>
