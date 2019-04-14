@@ -87,8 +87,6 @@ class HomePage extends Component {
 		if (sortBy !== undefined) formattedState.sortBy = sortBy
 		if (range && range.price !== undefined) formattedState.price = range.price
 
-		// debugger
-
 		return formattedState
 	}
 
