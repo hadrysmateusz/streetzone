@@ -59,6 +59,5 @@ export const FollowedUsersContainer = styled.div`
 		grid-template-columns: 1fr 1fr;
 	}
 	gap: var(--spacing3);
-	min-width: 0;
-	max-width: 100%;
+	max-width: 620px;
 `

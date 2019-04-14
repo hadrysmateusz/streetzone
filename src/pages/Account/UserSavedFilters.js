@@ -1,7 +1,8 @@
 import React from "react"
+import { PageContainer } from "../../components/Containers"
 
 const UserSavedFilters = () => {
-	return <div>zapisane filtry</div>
+	return <PageContainer>zapisane filtry</PageContainer>
 }
 
 export default UserSavedFilters

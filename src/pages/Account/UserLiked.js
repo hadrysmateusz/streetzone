@@ -6,6 +6,7 @@ import LoadingSpinner from "../../components/LoadingSpinner"
 import { withAuthentication } from "../../components/UserSession"
 import { withFirebase } from "../../components/Firebase"
 import DetailedItemsView from "../../components/DetailedItemsView"
+import { PageContainer } from "../../components/Containers"
 
 class UserLiked extends Component {
 	state = {
@@ -35,12 +36,16 @@ class UserLiked extends Component {
 		if (this.state.error) throw this.state.error
 		const { isLoading, isFetchingItems, items } = this.state
 
-		return isLoading || isFetchingItems ? (
-			<LoadingSpinner />
-		) : items && items.length > 0 ? (
-			<DetailedItemsView items={items} />
-		) : (
-			<EmptyState state={UserNoLiked} />
+		return (
+			<PageContainer extraWide>
+				{isLoading || isFetchingItems ? (
+					<LoadingSpinner />
+				) : items && items.length > 0 ? (
+					<DetailedItemsView items={items} />
+				) : (
+					<EmptyState state={UserNoLiked} />
+				)}
+			</PageContainer>
 		)
 	}
 }

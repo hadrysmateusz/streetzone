@@ -1,16 +1,12 @@
-import React, { Component } from "react"
-import { withRouter } from "react-router-dom"
-import { compose } from "recompose"
+import React from "react"
 import { Configure } from "react-instantsearch-core"
 
-import { withFirebase } from "../Firebase"
 import LoadingSpinner from "../LoadingSpinner"
 
 import UserPreview from "../UserPreview"
 import { SmallTextBlock } from "../StyledComponents"
-import ItemsView from "../ItemsView"
 import { HeartButton, TYPE } from "../SaveButton"
-import { AlgoliaInfiniteHits, AlgoliaScrollableHits } from "../Algolia/AlgoliaHits"
+import { AlgoliaScrollableHits } from "../Algolia/AlgoliaHits"
 import { VirtualMenu } from "../Algolia/Virtual"
 import { UncontrolledInstantSearchWrapper } from "../InstantSearchWrapper"
 import { CONST } from "../../constants"
@@ -39,7 +35,7 @@ const FollowedUserCard = ({ id }) => {
 						indexName={CONST.DEV_ITEMS_MARKETPLACE_DEFAULT_ALGOLIA_INDEX}
 					>
 						<VirtualMenu attribute="userId" defaultRefinement={id} />
-						<Configure hitsPerPage={3} />
+						<Configure hitsPerPage={MAX_ITEMS} />
 						<AlgoliaScrollableHits />
 					</UncontrolledInstantSearchWrapper>
 				</>

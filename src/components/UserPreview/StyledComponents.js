@@ -15,7 +15,7 @@ export const InfoContainer = styled.div`
 `
 
 export const Container = styled.div`
-	margin: var(--spacing2) 0;
+	/* margin: var(--spacing2) 0; */
 	display: flex;
 	flex-direction: ${(p) => (p.vertical ? "column" : "row")};
 	${(p) => p.vertical && "align-items: center;"}
