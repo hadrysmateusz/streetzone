@@ -72,7 +72,7 @@ class DetailedItemCard extends React.Component {
 						</TextBlock>
 						<TextBlock size="m">{item.name}</TextBlock>
 					</div>
-					<HeartButton id={item.id} type={TYPE.ITEM} scale={2} />
+					{/* <HeartButton id={item.id} type={TYPE.ITEM} scale={2} /> */}
 					<Separator />
 
 					<div>

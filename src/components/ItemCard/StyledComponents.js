@@ -19,6 +19,11 @@ export const Container = styled.div`
 	${ContainerCommon}
 	position: relative;
 	height: 100%;
+
+	border: 1px solid var(--gray75);
+	border-radius: 5px;
+	overflow: hidden;
+	box-shadow: inset 0 0 5px 1px rgba(0, 0, 0, 0.03), 2px 2px 6px 1px rgba(0, 0, 0, 0.08);
 `
 
 export const MiniContainer = styled.div`
@@ -44,6 +49,7 @@ export const ThumbnailContainer = styled.div`
 
 export const InfoContainer = styled.div`
 	border-top: 1px solid ${(p) => p.theme.colors.gray[100]};
+	padding: 4px;
 `
 
 export const TopContainer = styled.div`
