@@ -119,7 +119,7 @@ const Navigation = ({ authUser, firebase, currentBreakpoint, location, ...rest }
 					{authUser ? (
 						<>
 							<NavItem>
-								<StyledNavLink to={ROUTES.ACCOUNT_BASE.replace(":id", authUser.uid)}>
+								<StyledNavLink to={ROUTES.ACCOUNT_ITEMS.replace(":id", authUser.uid)}>
 									{currentBreakpoint >= 1 && (
 										<UserNameContainer>{authUser.name}</UserNameContainer>
 									)}

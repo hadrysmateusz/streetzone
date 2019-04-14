@@ -35,12 +35,12 @@ const DropdownNavItem = ({ label, routes }) => {
 
 export const AccountPageTabs = withBreakpoints(
 	({ currentBreakpoint, routes, userId, ...rest }) => {
-		routes.forEach((route) => {
-			route.path = route.path.replace(":id", userId)
+		let routesWithIds = routes.map((route) => {
+			return { ...route, path: route.path.replace(":id", userId) }
 		})
 
 		if (currentBreakpoint < 2) {
-			routes = routes.reduce((acc, curr, i) => {
+			routesWithIds = routesWithIds.reduce((acc, curr, i) => {
 				if (!curr.category) {
 					return { ...acc, [curr.id]: curr }
 				} else {
@@ -50,7 +50,7 @@ export const AccountPageTabs = withBreakpoints(
 			}, {})
 		}
 
-		return <TabsNav routes={routes} {...rest} />
+		return <TabsNav routes={routesWithIds} {...rest} />
 	}
 )
 
