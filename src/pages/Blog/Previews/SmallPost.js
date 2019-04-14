@@ -7,13 +7,13 @@ import { TextBlock } from "../../../components/StyledComponents"
 import Button, { ButtonContainer } from "../../../components/Button"
 import { ROUTES } from "../../../constants"
 
-import { Image, SmallPostContainer } from "../StyledComponents"
+import { FluidImage, SmallPostContainer } from "../StyledComponents"
 
 const SmallPost = ({ id, mainImageURL, title, createdAt }) => {
 	return (
 		<Link to={ROUTES.BLOG_POST.replace(":id", id)}>
 			<SmallPostContainer>
-				<Image url={mainImageURL} />
+				<FluidImage url={mainImageURL} />
 				<div className="post-details">
 					<TextBlock serif size="l">
 						{title}

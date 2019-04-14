@@ -10,6 +10,7 @@ import { TextBlock, Text } from "../../../components/StyledComponents"
 import {
 	Post as PostContainer,
 	Image,
+	ImageContainer,
 	DetailsContainer,
 	MainContainer,
 	ShareButtons,
@@ -40,7 +41,9 @@ const BasicPost = ({
 	return (
 		<PostContainer>
 			<Link to={ROUTES.BLOG_POST.replace(":id", id)}>
-				<Image url={mainImageURL} />
+				<ImageContainer>
+					<Image url={mainImageURL} />
+				</ImageContainer>
 				<MainContainer>
 					<TextBlock uppercase color="gray0">
 						{section}

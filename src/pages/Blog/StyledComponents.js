@@ -60,14 +60,39 @@ export const Post = styled.div`
 	}
 `
 
-export const Image = styled.div`
+export const FluidImage = styled.div`
 	width: 100%;
 	height: 100%;
 	background-image: url("${(p) => p.url}");
 	background-size: cover;
 	background-repeat: no-repeat;
 	background-position: center;
+`
 
+export const ImageContainer = styled.div`
+	max-width: 100%;
+	max-height: 100%;
+
+	width: 100%;
+	height: 100%;
+
+	cursor: pointer;
+
+	display: flex;
+	justify-content: center;
+	align-items: flex-start;
+
+	overflow: hidden;
+`
+
+export const Image = styled.div`
+	width: 100%;
+	height: 0;
+	padding-bottom: 100%;
+	background-image: url("${(p) => p.url}");
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: center;
 `
 
 export const DetailsContainer = styled.div`
@@ -108,6 +133,7 @@ export const PromotedPostContainer = styled.div`
 	background: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.5)),
 		url(${(p) => p.image});
 	background-size: cover;
+	background-position: center;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
