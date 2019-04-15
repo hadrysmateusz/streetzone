@@ -61,3 +61,33 @@ export const FollowedUsersContainer = styled.div`
 	gap: var(--spacing3);
 	max-width: 620px;
 `
+
+export const FiltersPageContainer = styled.div`
+	display: grid;
+	grid-template-columns: 1fr;
+	@media (min-width: ${(p) => p.theme.breakpoints[0]}px) {
+		grid-template-columns: 1fr 1fr;
+	}
+`
+
+export const FiltersItemContainer = styled.div`
+	display: grid;
+	grid-template-columns: 1fr;
+	grid-template-rows: auto;
+	gap: var(--spacing3);
+	overflow: hidden;
+	padding: var(--spacing3);
+	justify-content: start;
+
+	background: var(--almost-white);
+	border: 1px solid var(--gray100);
+	box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.04);
+
+	@media (min-width: ${(p) => p.theme.breakpoints[0]}px) {
+		grid-template-columns: 120px 1fr;
+	}
+
+	@media (min-width: ${(p) => p.theme.breakpoints[5]}px) {
+		grid-template-columns: 200px 1fr;
+	}
+`
