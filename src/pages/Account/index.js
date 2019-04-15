@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 import { Route, Switch, Redirect, withRouter } from "react-router-dom"
 import { compose } from "recompose"
 
@@ -12,15 +12,26 @@ import { MainContainer } from "./StyledComponents"
 import { AccountPageTabs } from "./TabsNav"
 
 const AccountPage = ({ routes, match, authUser }) => {
+	const [forceRefetch, setForceRefetch] = useState(false)
 	const userId = match.params.id
 	const isAuthenticated = !!authUser
 	const isAuthorized = isAuthenticated && authUser.uid === userId
 
-	const [user, error] = useUserData(userId, authUser, isAuthorized)
+	const [user, error] = useUserData(
+		userId,
+		authUser,
+		isAuthorized,
+		forceRefetch,
+		setForceRefetch
+	)
+
+	const onForceRefresh = () => {
+		setForceRefetch(true)
+	}
 
 	if (error) throw error
 
-	const commonProps = { user, userId, isAuthorized }
+	const commonProps = { user, userId, isAuthorized, onForceRefresh }
 
 	return (
 		<ErrorBoundary>
