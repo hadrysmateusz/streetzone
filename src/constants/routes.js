@@ -29,6 +29,8 @@ export const NEW_ITEM = "/i/nowy"
 export const DELETE_ITEM = "/i/usun/:id"
 export const EDIT_ITEM = "/i/:id/edytuj"
 
+export const CHAT_NEW = "/wiadomosci/:id"
+
 export const FAQ = "/faq"
 export const PRIVACY_POLICY = "/polityka-prywatnosci"
 export const ABOUT = "/o-nas"

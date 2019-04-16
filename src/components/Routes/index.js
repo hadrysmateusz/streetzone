@@ -199,7 +199,16 @@ const AdminUsers = Loadable({
 	loading: LoadableComponentSpinner
 })
 
+const ChatNew = Loadable({
+	loader: () => import("../../pages/Chat/New"),
+	loading: LoadableComponentSpinner
+})
+
 const routes = [
+	{
+		path: ROUTES.CHAT_NEW,
+		component: ChatNew
+	},
 	{
 		path: ROUTES.ADMIN_BASE,
 		component: Admin,

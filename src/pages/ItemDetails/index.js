@@ -158,7 +158,12 @@ const ItemDetailsPage = ({ match, history }) => {
 								</>
 							) : (
 								<ButtonContainer noMargin>
-									<Button primary fullWidth>
+									<Button
+										as={Link}
+										to={ROUTES.CHAT_NEW.replace(":id", item.userId)}
+										primary
+										fullWidth
+									>
 										Kontakt
 									</Button>
 									<SaveButton
