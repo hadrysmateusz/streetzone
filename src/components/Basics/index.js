@@ -186,3 +186,18 @@ export const ScrollableContainer = styled.div`
 	margin: 0 calc(-1 * var(--x-spacing));
 	padding: 0 var(--x-spacing);
 `
+
+export const Submenu = styled.div`
+	background: white;
+
+	border: 1px solid var(--gray75);
+
+	display: grid;
+	padding: var(--spacing2) 0;
+	box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.05);
+
+	> * {
+		padding: var(--spacing2) 0;
+		width: 100%;
+	}
+`

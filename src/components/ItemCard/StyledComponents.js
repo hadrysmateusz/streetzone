@@ -19,6 +19,10 @@ export const Container = styled.div`
 	${ContainerCommon}
 	position: relative;
 	height: 100%;
+	transition: box-shadow 200ms ease;
+	:hover {
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.11);
+	}
 `
 
 export const MiniContainer = styled.div`

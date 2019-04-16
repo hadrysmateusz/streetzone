@@ -1,16 +1,17 @@
 import React, { useState } from "react"
 import { withBreakpoints } from "react-breakpoints"
+
 import Overlay from "../../components/Overlay"
+import { PageContainer } from "../../components/Containers"
+import { Submenu } from "../../components/Basics"
 
 import {
-	Submenu,
 	SubmenuContainer,
 	Nav,
 	NavItem,
 	StyledNavLink,
 	OuterContainer
 } from "./TabsNav.styles"
-import { PageContainer } from "../../components/Containers"
 
 const DropdownNavItem = ({ label, routes }) => {
 	const [isOpen, setIsOpen] = useState(false)
