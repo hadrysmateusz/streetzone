@@ -23,6 +23,7 @@ export const ACCOUNT_SAVED_USERS = ACCOUNT_BASE + "/obserwowani"
 export const ACCOUNT_SAVED_DROPS = ACCOUNT_BASE + "/dropy"
 export const ACCOUNT_FEEDBACK = ACCOUNT_BASE + "/opinie"
 export const ACCOUNT_SETTINGS = ACCOUNT_BASE + "/edytuj"
+export const ACCOUNT_CHAT = ACCOUNT_BASE + "/wiadomosci"
 
 export const ITEM_DETAILS = "/i/:id"
 export const NEW_ITEM = "/i/nowy"

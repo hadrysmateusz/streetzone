@@ -19,13 +19,15 @@ const validate = (values) => {
 	return errors
 }
 
-const NewChat = ({ match, history }) => {
+export const NewChat = ({ userId }) => {
 	const authUser = useAuthentication()
 	const firebase = useFirebase()
 
-	const userId = match.params.id
+	const onSubmit = async (values, actions) => {
+		const message = values.message
 
-	const onSubmit = async ({ message }) => {
+		actions.reset()
+
 		let roomSnap = await firebase
 			.currentUser()
 			.collection("rooms")
@@ -33,14 +35,12 @@ const NewChat = ({ match, history }) => {
 			.get()
 
 		let roomId
-
 		const messageId = shortid.generate()
+		const senderId = authUser.uid
+		const recipientId = userId
 
 		if (!roomSnap.exists) {
 			roomId = shortid.generate()
-
-			const senderId = authUser.uid
-			const recipientId = userId
 
 			// Create room if it doesn't exist yet
 			await firebase.db
@@ -53,14 +53,14 @@ const NewChat = ({ match, history }) => {
 				.user(senderId)
 				.collection("rooms")
 				.doc(recipientId)
-				.set({ id: roomId })
+				.set({ id: roomId, otherUserId: recipientId })
 
 			// Add room of sender to recipient
 			await firebase
 				.user(recipientId)
 				.collection("rooms")
 				.doc(senderId)
-				.set({ id: roomId })
+				.set({ id: roomId, otherUserId: senderId })
 		} else {
 			roomId = roomSnap.data().id
 		}
@@ -70,52 +70,54 @@ const NewChat = ({ match, history }) => {
 			.doc(roomId)
 			.collection("messages")
 			.doc(messageId)
-			.set({ id: messageId, createdAt: Date.now(), message })
+			.set({ id: messageId, createdAt: Date.now(), message, author: senderId })
 
-		const messagesSnap = await firebase.db
+		await firebase.db
 			.collection("rooms")
 			.doc(roomId)
 			.collection("messages")
 			.get()
-
-		debugger
-
-		const messages = messagesSnap.docs.map((message) => message.data())
-		console.log(messages)
 	}
+
+	return (
+		<Form
+			onSubmit={onSubmit}
+			validate={validate}
+			render={({ form, handleSubmit, submitting, pristine, values, ...rest }) => {
+				return (
+					<form onSubmit={handleSubmit}>
+						{/* Comment */}
+						<SmallTextBlock>Treść wiadomości</SmallTextBlock>
+						<Field name="message">
+							{({ input, meta }) => {
+								const error = meta.error && meta.touched ? meta.error : null
+								return <Textarea {...input} placeholder="Wiadomość" error={error} />
+							}}
+						</Field>
+
+						<ButtonContainer noMargin>
+							<LoaderButton
+								text="Wyślij"
+								type="submit"
+								isLoading={submitting}
+								disabled={submitting || pristine}
+								primary
+							/>
+						</ButtonContainer>
+					</form>
+				)
+			}}
+		/>
+	)
+}
+
+const NewChatPage = ({ match }) => {
+	const userId = match.params.id
 
 	return (
 		<PageContainer>
 			<UserPreview id={userId} />
-
-			<Form
-				onSubmit={onSubmit}
-				validate={validate}
-				render={({ form, handleSubmit, submitting, pristine, values, ...rest }) => {
-					return (
-						<form onSubmit={handleSubmit}>
-							{/* Comment */}
-							<SmallTextBlock>Treść wiadomości</SmallTextBlock>
-							<Field name="message">
-								{({ input, meta }) => {
-									const error = meta.error && meta.touched ? meta.error : null
-									return <Textarea {...input} placeholder="Wiadomość" error={error} />
-								}}
-							</Field>
-
-							<ButtonContainer noMargin>
-								<LoaderButton
-									text="Wyślij"
-									type="submit"
-									isLoading={submitting}
-									disabled={submitting || pristine}
-									primary
-								/>
-							</ButtonContainer>
-						</form>
-					)
-				}}
-			/>
+			<NewChat userId={userId} />
 		</PageContainer>
 	)
 }
@@ -125,4 +127,4 @@ const condition = (authUser) => !!authUser
 export default compose(
 	withRouter,
 	withAuthorization(condition)
-)(NewChat)
+)(NewChatPage)

@@ -53,6 +53,10 @@ const UserSettings = Loadable({
 	loader: () => import("../../pages/Account/UserSettings"),
 	loading: LoadableComponentSpinner
 })
+const UserChat = Loadable({
+	loader: () => import("../../pages/Account/UserChat"),
+	loading: LoadableComponentSpinner
+})
 
 const Designer = Loadable({
 	loader: () => import("../../pages/Designer"),
@@ -331,6 +335,20 @@ const routes = [
 				isDefault: true
 			},
 			{
+				id: "chat",
+				label: "Wiadomości",
+				path: ROUTES.ACCOUNT_CHAT,
+				component: UserChat,
+				isProtected: true
+			},
+			{
+				id: "feedback",
+				label: "Opinie",
+				path: ROUTES.ACCOUNT_FEEDBACK,
+				component: UserFeedback,
+				isProtected: false
+			},
+			{
 				id: "savedItems",
 				label: "Zapisane Przedmioty",
 				path: ROUTES.ACCOUNT_SAVED_ITEMS,
@@ -365,13 +383,6 @@ const routes = [
 				isProtected: true,
 				category: "Zapisane",
 				shortLabel: "Dropy"
-			},
-			{
-				id: "feedback",
-				label: "Opinie",
-				path: ROUTES.ACCOUNT_FEEDBACK,
-				component: UserFeedback,
-				isProtected: false
 			},
 			{
 				id: "settings",
