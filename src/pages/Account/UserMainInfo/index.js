@@ -91,7 +91,7 @@ const MainInfo = ({ user, isAuthorized, userId, currentBreakpoint }) => {
 							</>
 						) : (
 							<>
-								<Button primary fullWidth={currentBreakpoint <= 1}>
+								<Button as={Link} to={ROUTES.CHAT_NEW.replace(":id", userId)} primary>
 									<FontAwesomeIcon icon={["far", "envelope"]} size="lg" />
 									<span>Wyślij wiadomość</span>
 								</Button>
