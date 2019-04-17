@@ -429,6 +429,11 @@ exports.onChatMessageSent = functions.firestore
 		const userB = roomData.userB
 		const recipientId = userA !== senderId ? userA : userB
 
+		console.log("message data", messageData)
+		console.log("room data", roomData)
+		console.log("senderId", senderId)
+		console.log("recipientId", recipientId)
+
 		// Get the list of device notification tokens.
 		const getDeviceTokensPromise = db
 			.doc(`users/${recipientId}`)
@@ -458,9 +463,15 @@ exports.onChatMessageSent = functions.firestore
 		const payload = {
 			notification: {
 				title: `Wiadomość od ${senderData.name}`,
-				body: `${messageData.message}`,
-				icon: senderData.profileImageURL
+				body: ("" + messageData.message).trim()
 			}
+		}
+
+		const userIcon = senderData.profilePictureURLs
+			? senderData.profilePictureURLs[0]
+			: null
+		if (userIcon) {
+			payload.notification.icon = userIcon
 		}
 
 		// Send notifications to all tokens.
@@ -476,7 +487,11 @@ exports.onChatMessageSent = functions.firestore
 					error.code === "messaging/invalid-registration-token" ||
 					error.code === "messaging/registration-token-not-registered"
 				) {
-					tokensToRemove.push(tokensSnapshot.ref.doc(tokens[index]).remove())
+					console.log("docs:", tokensSnapshot.docs)
+					console.log("index:", index)
+					console.log("token:", tokensSnapshot.docs[index])
+					console.log("tokenRef:", tokensSnapshot.docs[index].ref)
+					tokensToRemove.push(tokensSnapshot.docs[index].ref.delete())
 				}
 			}
 		})

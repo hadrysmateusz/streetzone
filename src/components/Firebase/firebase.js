@@ -38,18 +38,56 @@ class Firebase {
 		// Messaging
 		this.messaging = app.messaging()
 
-		this.messaging
-			.requestPermission()
-			.then(() => {
-				console.log("got permission")
-				return this.messaging.getToken()
-			})
-			.then((token) => {
-				console.log("token", token)
-			})
-			.catch((e) => {
-				console.log("Error:", e)
-			})
+		this.messaging.usePublicVapidKey(
+			"BJgcHagtqijyfb4WcD8UhMUtWEElieyaGrNFz7Az01aEYgqcKaR4CKpzzXtxXb_9rnGMLxkkhdTSSyLNvvzClSU"
+		)
+
+		// this.messaging
+		// 	.requestPermission()
+		// 	.then(() => {
+		// 		console.log("got permission")
+		// 		return this.messaging.getToken()
+		// 	})
+		// 	.then((token) => {
+		// 		console.log("token", token)
+		// 		this.sendNotificationTokenToDb(token)
+		// 	})
+		// 	.catch((e) => {
+		// 		console.log("error", e)
+		// 	})
+
+		this.messaging.onTokenRefresh(() => {
+			console.log("token refreshed")
+			this.messaging
+				.getToken()
+				.then((token) => {
+					console.log("token", token)
+					this.sendNotificationTokenToDb(token)
+				})
+				.catch((e) => {
+					console.log("error", e)
+				})
+		})
+
+		this.messaging.onMessage(function(payload) {
+			console.log("Message received. ", payload)
+			// ...
+		})
+	}
+
+	// Messaging API
+	sendNotificationTokenToDb = (token) => {
+		if (!this.authUser()) return
+
+		const tokenRef = this.currentUser()
+			.collection("notificationTokens")
+			.doc(token)
+
+		console.log(!tokenRef.exists, tokenRef)
+
+		if (!tokenRef.exists) {
+			return tokenRef.set({ createdAt: Date.now() })
+		}
 	}
 
 	// Auth API
@@ -229,6 +267,20 @@ class Firebase {
 					emailVerified: authUser.emailVerified,
 					...dbUser
 				}
+
+				this.messaging
+					.requestPermission()
+					.then(() => {
+						console.log("got permission")
+						return this.messaging.getToken()
+					})
+					.then((token) => {
+						console.log("token", token)
+						this.sendNotificationTokenToDb(token)
+					})
+					.catch((e) => {
+						console.log("error", e)
+					})
 
 				next(authUser)
 			} else {
