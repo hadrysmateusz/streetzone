@@ -25,7 +25,7 @@ const ALGOLIA_ID = functions.config().algolia.app_id
 const ALGOLIA_ADMIN_KEY = functions.config().algolia.api_key
 
 // ===============================================================================
-// !!! REMEMBER TO ALSO CHANGE IN "SRC/CONSTANTS/CONST.JS" !!!
+// !!! REMEMBER TO ALSO CHANGE IN "SRC/CONSTANTS/CONST.JS" !!! (maybe also in .env)
 const DEV_ITEMS_MARKETPLACE_DEFAULT_ALGOLIA_INDEX = "dev_items"
 const DEV_ITEMS_MARKETPLACE_PRICE_ASC_ALGOLIA_INDEX = "dev_items_price_asc"
 const DEV_ITEMS_CUSTOM_ALGOLIA_INDEX = "dev_custom"
@@ -411,4 +411,74 @@ exports.processImage = functions
 			}
 			return
 		}
+	})
+
+// Send push notifications
+exports.onChatMessageSent = functions.firestore
+	.document(`rooms/{roomId}/messages/{messageId}`)
+	.onCreate(async (snap, context) => {
+		const roomId = context.params.roomId
+
+		const db = admin.firestore()
+		const messageData = snap.data()
+		const senderId = messageData.author
+
+		const roomSnap = await db.doc(`rooms/${roomId}`).get()
+		const roomData = roomSnap.data()
+		const userA = roomData.userA
+		const userB = roomData.userB
+		const recipientId = userA !== senderId ? userA : userB
+
+		// Get the list of device notification tokens.
+		const getDeviceTokensPromise = db
+			.doc(`users/${recipientId}`)
+			.collection("notificationTokens")
+			.get()
+
+		// Get the follower profile.
+		const getSenderData = db.doc(`users/${senderId}`).get()
+
+		const results = await Promise.all([getDeviceTokensPromise, getSenderData])
+		const tokensSnapshot = results[0]
+		const senderSnapshot = results[1]
+
+		// Check if there are any device tokens.
+		if (tokensSnapshot.empty) {
+			return console.log("There are no notification tokens to send to.")
+		} else {
+			console.log("There are", tokensSnapshot.size, "tokens to send notifications to.")
+		}
+
+		const tokens = tokensSnapshot.docs.map((doc) => doc.id)
+		const senderData = senderSnapshot.data()
+
+		console.log("Fetched sender profile", senderData)
+
+		// Notification details.
+		const payload = {
+			notification: {
+				title: `Wiadomość od ${senderData.name}`,
+				body: `${messageData.message}`,
+				icon: senderData.profileImageURL
+			}
+		}
+
+		// Send notifications to all tokens.
+		const response = await admin.messaging().sendToDevice(tokens, payload)
+		// For each message check if there was an error.
+		const tokensToRemove = []
+		response.results.forEach((result, index) => {
+			const error = result.error
+			if (error) {
+				console.error("Failure sending notification to", tokens[index], error)
+				// Cleanup the tokens who are not registered anymore.
+				if (
+					error.code === "messaging/invalid-registration-token" ||
+					error.code === "messaging/registration-token-not-registered"
+				) {
+					tokensToRemove.push(tokensSnapshot.ref.doc(tokens[index]).remove())
+				}
+			}
+		})
+		return Promise.all(tokensToRemove)
 	})
