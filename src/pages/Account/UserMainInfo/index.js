@@ -19,6 +19,7 @@ import { TextBlock, HorizontalContainer } from "../../../components/StyledCompon
 import SingleValueDisplay from "../../../components/SingleValueDisplay"
 import useContentToggle from "../../../hooks/useContentToggle"
 import { PageContainer } from "../../../components/Containers"
+import MoreButton from "../../../components/MoreButton"
 
 const MainInfo = ({ user, isAuthorized, userId, currentBreakpoint }) => {
 	const { getToggleProps, getContentProps } = useContentToggle(false)
@@ -100,11 +101,10 @@ const MainInfo = ({ user, isAuthorized, userId, currentBreakpoint }) => {
 									type={TYPE.USER}
 									text="Obserwuj"
 									savedText="Obserwowany"
-									fullWidth={currentBreakpoint <= 1}
 								/>
-								<Button>
-									<FontAwesomeIcon icon="ellipsis-h" size="lg" />
-								</Button>
+								<MoreButton title="Więcej">
+									<div>Zgłoś naruszenie</div>
+								</MoreButton>
 							</>
 						)}
 					</ButtonContainer>
