@@ -190,6 +190,8 @@ export const ScrollableContainer = styled.div`
 export const Submenu = styled.div`
 	background: white;
 
+	white-space: nowrap;
+
 	border: 1px solid var(--gray75);
 
 	display: grid;
