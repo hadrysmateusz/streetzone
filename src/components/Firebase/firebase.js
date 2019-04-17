@@ -3,6 +3,7 @@ import app from "firebase/app"
 import "firebase/auth"
 import "firebase/storage"
 import "firebase/firestore"
+import "firebase/messaging"
 import { S_THUMB_POSTFIX, M_THUMB_POSTFIX, L_THUMB_POSTFIX } from "../../constants/const"
 
 const config = {
@@ -33,6 +34,22 @@ class Firebase {
 
 		// Firestore (Database)
 		this.db = app.firestore()
+
+		// Messaging
+		this.messaging = app.messaging()
+
+		this.messaging
+			.requestPermission()
+			.then(() => {
+				console.log("got permission")
+				return this.messaging.getToken()
+			})
+			.then((token) => {
+				console.log("token", token)
+			})
+			.catch((e) => {
+				console.log("Error:", e)
+			})
 	}
 
 	// Auth API
