@@ -20,7 +20,7 @@ const OuterContainer = styled.div`
 	position: relative;
 `
 
-const MoreButton = ({ children, icon, title = "Więcej" }) => {
+const MoreButton = ({ children, icon = "ellipsis-h", title = "Więcej" }) => {
 	const [isOpen, setIsOpen] = useState(false)
 	const onClick = () => {
 		setIsOpen(!isOpen)
