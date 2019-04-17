@@ -29,6 +29,8 @@ export const StyledNavLink = styled(NavLink)`
 		color: black;
 		text-decoration: underline;
 	}
+
+	${(p) => p.alwaysBlack && "color: black;"}
 `
 
 // TODO: modify global styles to not overwrite the text-decoration

@@ -1,6 +1,7 @@
 import React from "react"
 import { withRouter } from "react-router-dom"
 import { compose } from "recompose"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 import { withAuthentication } from "../UserSession"
 import ProfilePicture from "../ProfilePicture"
@@ -118,6 +119,14 @@ const Navigation = ({ authUser, firebase, currentBreakpoint, location, ...rest }
 				<Nav alignRight>
 					{authUser ? (
 						<>
+							<NavItem>
+								<StyledNavLink
+									to={ROUTES.ACCOUNT_CHAT.replace(":id", authUser.uid)}
+									alwaysBlack
+								>
+									<FontAwesomeIcon icon={["far", "envelope"]} size="lg" fixedWidth />
+								</StyledNavLink>
+							</NavItem>
 							<NavItem>
 								<StyledNavLink to={ROUTES.ACCOUNT_ITEMS.replace(":id", authUser.uid)}>
 									{currentBreakpoint >= 1 && (
