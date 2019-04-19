@@ -18,28 +18,26 @@ const signedURLConfig = {
 	expires: "03-01-2500"
 }
 
-const GCP_STORAGE_BUCKET = "streetwear-app.appspot.com"
-const DATABASE_URL = "https://streetwear-app.firebaseio.com"
+const adminConfig = JSON.parse(process.env.FIREBASE_CONFIG)
+adminConfig.credential = admin.credential.cert(serviceAccount)
+admin.initializeApp(adminConfig)
 
-const ALGOLIA_ID = functions.config().algolia.app_id
-const ALGOLIA_ADMIN_KEY = functions.config().algolia.api_key
+const isProd = adminConfig.projectId.endsWith("-prod")
 
 // ===============================================================================
 // !!! REMEMBER TO ALSO CHANGE IN "SRC/CONSTANTS/CONST.JS" !!!
-const DEV_ITEMS_MARKETPLACE_DEFAULT_ALGOLIA_INDEX = "dev_items"
-const DEV_ITEMS_MARKETPLACE_PRICE_ASC_ALGOLIA_INDEX = "dev_items_price_asc"
-const DEV_ITEMS_CUSTOM_ALGOLIA_INDEX = "dev_custom"
-const DEV_BLOG_ALGOLIA_INDEX = "dev_posts"
-const DEV_DESIGNERS_ALGOLIA_INDEX = "dev_designers"
+const ITEMS_MARKETPLACE_DEFAULT_ALGOLIA_INDEX = isProd ? "prod_items" : "dev_items"
+const ITEMS_MARKETPLACE_PRICE_ASC_ALGOLIA_INDEX = isProd
+	? "prod_items_price_asc"
+	: "dev_items_price_asc"
+const ITEMS_CUSTOM_ALGOLIA_INDEX = isProd ? "prod_custom" : "dev_custom"
+const BLOG_ALGOLIA_INDEX = isProd ? "prod_posts" : "dev_posts"
+const DESIGNERS_ALGOLIA_INDEX = isProd ? "prod_designers" : "dev_designers"
 // ===============================================================================
 
+const ALGOLIA_ID = functions.config().algolia.app_id
+const ALGOLIA_ADMIN_KEY = functions.config().algolia.api_key
 const client = algoliasearch(ALGOLIA_ID, ALGOLIA_ADMIN_KEY)
-
-admin.initializeApp({
-	credential: admin.credential.cert(serviceAccount),
-	databaseURL: DATABASE_URL,
-	storageBucket: GCP_STORAGE_BUCKET
-})
 
 const bucket = admin.storage().bucket()
 
@@ -87,19 +85,19 @@ const algoliaDelete = (snap, context, indexName) => {
 exports.onItemCreated = functions.firestore
 	.document(`items/{id}`)
 	.onCreate((snap, context) => {
-		algoliaAdd(snap, context, DEV_ITEMS_MARKETPLACE_DEFAULT_ALGOLIA_INDEX)
+		algoliaAdd(snap, context, ITEMS_MARKETPLACE_DEFAULT_ALGOLIA_INDEX)
 	})
 
 exports.onItemUpdated = functions.firestore
 	.document(`items/{id}`)
 	.onUpdate((snap, context) => {
-		algoliaUpdate(snap, context, DEV_ITEMS_MARKETPLACE_DEFAULT_ALGOLIA_INDEX)
+		algoliaUpdate(snap, context, ITEMS_MARKETPLACE_DEFAULT_ALGOLIA_INDEX)
 	})
 
 exports.onItemDeleted = functions.firestore
 	.document(`items/{id}`)
 	.onDelete((snap, context) => {
-		algoliaDelete(snap, context, DEV_ITEMS_MARKETPLACE_DEFAULT_ALGOLIA_INDEX)
+		algoliaDelete(snap, context, ITEMS_MARKETPLACE_DEFAULT_ALGOLIA_INDEX)
 	})
 
 // ------------------------------------
@@ -109,19 +107,19 @@ exports.onItemDeleted = functions.firestore
 exports.onBlogPostCreated = functions.firestore
 	.document(`posts/{id}`)
 	.onCreate((snap, context) => {
-		algoliaAdd(snap, context, DEV_BLOG_ALGOLIA_INDEX)
+		algoliaAdd(snap, context, BLOG_ALGOLIA_INDEX)
 	})
 
 exports.onBlogPostUpdated = functions.firestore
 	.document(`posts/{id}`)
 	.onUpdate((snap, context) => {
-		algoliaUpdate(snap, context, DEV_BLOG_ALGOLIA_INDEX)
+		algoliaUpdate(snap, context, BLOG_ALGOLIA_INDEX)
 	})
 
 exports.onBlogPostDeleted = functions.firestore
 	.document(`posts/{id}`)
 	.onDelete((snap, context) => {
-		algoliaDelete(snap, context, DEV_BLOG_ALGOLIA_INDEX)
+		algoliaDelete(snap, context, BLOG_ALGOLIA_INDEX)
 	})
 
 // ------------------------------------
@@ -131,19 +129,19 @@ exports.onBlogPostDeleted = functions.firestore
 exports.onDesignerCreated = functions.firestore
 	.document(`designers/{id}`)
 	.onCreate((snap, context) => {
-		algoliaAdd(snap, context, DEV_DESIGNERS_ALGOLIA_INDEX)
+		algoliaAdd(snap, context, DESIGNERS_ALGOLIA_INDEX)
 	})
 
 exports.onDesignerUpdated = functions.firestore
 	.document(`designers/{id}`)
 	.onUpdate((snap, context) => {
-		algoliaUpdate(snap, context, DEV_DESIGNERS_ALGOLIA_INDEX)
+		algoliaUpdate(snap, context, DESIGNERS_ALGOLIA_INDEX)
 	})
 
 exports.onDesignerDeleted = functions.firestore
 	.document(`designers/{id}`)
 	.onDelete((snap, context) => {
-		algoliaDelete(snap, context, DEV_DESIGNERS_ALGOLIA_INDEX)
+		algoliaDelete(snap, context, DESIGNERS_ALGOLIA_INDEX)
 	})
 
 // ------------------------------------

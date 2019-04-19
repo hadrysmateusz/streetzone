@@ -15,6 +15,8 @@ const config = {
 	messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID
 }
 
+console.log(config)
+
 class Firebase {
 	constructor() {
 		app.initializeApp(config)
@@ -35,60 +37,60 @@ class Firebase {
 		// Firestore (Database)
 		this.db = app.firestore()
 
-		// // Messaging
-		// this.messaging = app.messaging()
+		// Messaging
+		this.messaging = app.messaging()
 
-		// this.messaging.usePublicVapidKey(
-		// 	"BJgcHagtqijyfb4WcD8UhMUtWEElieyaGrNFz7Az01aEYgqcKaR4CKpzzXtxXb_9rnGMLxkkhdTSSyLNvvzClSU"
-		// )
+		this.messaging.usePublicVapidKey(
+			"BJgcHagtqijyfb4WcD8UhMUtWEElieyaGrNFz7Az01aEYgqcKaR4CKpzzXtxXb_9rnGMLxkkhdTSSyLNvvzClSU"
+		)
 
-		// this.messaging
-		// 	.requestPermission()
-		// 	.then(() => {
-		// 		console.log("got permission")
-		// 		return this.messaging.getToken()
-		// 	})
-		// 	.then((token) => {
-		// 		console.log("token", token)
-		// 		this.sendNotificationTokenToDb(token)
-		// 	})
-		// 	.catch((e) => {
-		// 		console.log("error", e)
-		// 	})
+		this.messaging
+			.requestPermission()
+			.then(() => {
+				console.log("got permission")
+				return this.messaging.getToken()
+			})
+			.then((token) => {
+				console.log("token", token)
+				this.sendNotificationTokenToDb(token)
+			})
+			.catch((e) => {
+				console.log("error", e)
+			})
 
-		// this.messaging.onTokenRefresh(() => {
-		// 	console.log("token refreshed")
-		// 	this.messaging
-		// 		.getToken()
-		// 		.then((token) => {
-		// 			console.log("token", token)
-		// 			this.sendNotificationTokenToDb(token)
-		// 		})
-		// 		.catch((e) => {
-		// 			console.log("error", e)
-		// 		})
-		// })
+		this.messaging.onTokenRefresh(() => {
+			console.log("token refreshed")
+			this.messaging
+				.getToken()
+				.then((token) => {
+					console.log("token", token)
+					this.sendNotificationTokenToDb(token)
+				})
+				.catch((e) => {
+					console.log("error", e)
+				})
+		})
 
-		// this.messaging.onMessage(function(payload) {
-		// 	console.log("Message received. ", payload)
-		// 	// ...
-		// })
+		this.messaging.onMessage(function(payload) {
+			console.log("Message received. ", payload)
+			// ...
+		})
 	}
 
-	// // Messaging API
-	// sendNotificationTokenToDb = (token) => {
-	// 	if (!this.authUser()) return
+	// Messaging API
+	sendNotificationTokenToDb = (token) => {
+		if (!this.authUser()) return
 
-	// 	const tokenRef = this.currentUser()
-	// 		.collection("notificationTokens")
-	// 		.doc(token)
+		const tokenRef = this.currentUser()
+			.collection("notificationTokens")
+			.doc(token)
 
-	// 	console.log(!tokenRef.exists, tokenRef)
+		console.log(!tokenRef.exists, tokenRef)
 
-	// 	if (!tokenRef.exists) {
-	// 		return tokenRef.set({ createdAt: Date.now() })
-	// 	}
-	// }
+		if (!tokenRef.exists) {
+			return tokenRef.set({ createdAt: Date.now() })
+		}
+	}
 
 	// Auth API
 
@@ -268,19 +270,19 @@ class Firebase {
 					...dbUser
 				}
 
-				// this.messaging
-				// 	.requestPermission()
-				// 	.then(() => {
-				// 		console.log("got permission")
-				// 		return this.messaging.getToken()
-				// 	})
-				// 	.then((token) => {
-				// 		console.log("token", token)
-				// 		this.sendNotificationTokenToDb(token)
-				// 	})
-				// 	.catch((e) => {
-				// 		console.log("error", e)
-				// 	})
+				this.messaging
+					.requestPermission()
+					.then(() => {
+						console.log("got permission")
+						return this.messaging.getToken()
+					})
+					.then((token) => {
+						console.log("token", token)
+						this.sendNotificationTokenToDb(token)
+					})
+					.catch((e) => {
+						console.log("error", e)
+					})
 
 				next(authUser)
 			} else {

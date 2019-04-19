@@ -14,7 +14,7 @@ const UserItems = ({ isAuthorized, userId }) => {
 	return (
 		<PageContainer extraWide>
 			<UncontrolledInstantSearchWrapper
-				indexName={CONST.DEV_ITEMS_MARKETPLACE_DEFAULT_ALGOLIA_INDEX}
+				indexName={CONST.ITEMS_MARKETPLACE_DEFAULT_ALGOLIA_INDEX}
 			>
 				<VirtualMenu attribute="userId" defaultRefinement={userId} />
 				<Configure hitsPerPage={6} />

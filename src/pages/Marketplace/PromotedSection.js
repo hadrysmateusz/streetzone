@@ -126,7 +126,7 @@ const PromotedSection = () => {
 	return (
 		<OuterContainer>
 			<UncontrolledInstantSearchWrapper
-				indexName={CONST.DEV_ITEMS_MARKETPLACE_DEFAULT_ALGOLIA_INDEX}
+				indexName={CONST.ITEMS_MARKETPLACE_DEFAULT_ALGOLIA_INDEX}
 			>
 				<VirtualRange attribute="promotedAt" defaultRefinement={{ min: minDate }} />
 				<PageContainer noMargin>

@@ -118,7 +118,7 @@ class HomePage extends Component {
 
 		return (
 			<InstantSearchWrapper
-				indexName={CONST.DEV_ITEMS_MARKETPLACE_DEFAULT_ALGOLIA_INDEX}
+				indexName={CONST.ITEMS_MARKETPLACE_DEFAULT_ALGOLIA_INDEX}
 				onSearchStateChange={this.onSearchStateChange}
 				urlToState={this.urlToState}
 				defaultSearchState={DEFAULT_SEARCH_STATE}

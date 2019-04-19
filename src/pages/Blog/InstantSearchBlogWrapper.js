@@ -38,7 +38,7 @@ export class InstantSearchBlogWrapper extends Component {
 	render() {
 		return (
 			<InstantSearchWrapper
-				indexName={CONST.DEV_BLOG_ALGOLIA_INDEX}
+				indexName={CONST.BLOG_ALGOLIA_INDEX}
 				onSearchStateChange={this.onSearchStateChange}
 				urlToState={this.urlToState}
 				defaultSearchState={DEFAULT_SEARCH_STATE}

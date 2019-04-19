@@ -53,7 +53,7 @@ class InstantSearchDesignersWrapper extends React.Component {
 	render() {
 		return (
 			<InstantSearchWrapper
-				indexName={CONST.DEV_DESIGNERS_ALGOLIA_INDEX}
+				indexName={CONST.DESIGNERS_ALGOLIA_INDEX}
 				onSearchStateChange={this.onSearchStateChange}
 				urlToState={this.urlToState}
 				defaultSearchState={DEFAULT_SEARCH_STATE}

@@ -13,9 +13,12 @@ export const L_THUMB_POSTFIX = "_L_THUMB"
 
 // ===============================================================================
 // !!! REMEMBER TO ALSO CHANGE IN THE CLOUD FUNCTIONS DIRECTORY !!!
-export const DEV_ITEMS_MARKETPLACE_DEFAULT_ALGOLIA_INDEX = "dev_items"
-export const DEV_ITEMS_MARKETPLACE_PRICE_ASC_ALGOLIA_INDEX = "dev_items_price_asc"
-export const DEV_ITEMS_CUSTOM_ALGOLIA_INDEX = "dev_custom"
-export const DEV_BLOG_ALGOLIA_INDEX = "dev_posts"
-export const DEV_DESIGNERS_ALGOLIA_INDEX = "dev_designers"
+const isProd = process.env.NODE_ENV === "production"
+export const ITEMS_MARKETPLACE_DEFAULT_ALGOLIA_INDEX = isProd ? "prod_items" : "dev_items"
+export const ITEMS_MARKETPLACE_PRICE_ASC_ALGOLIA_INDEX = isProd
+	? "prod_items_price_asc"
+	: "dev_items_price_asc"
+export const ITEMS_CUSTOM_ALGOLIA_INDEX = isProd ? "prod_custom" : "dev_custom"
+export const BLOG_ALGOLIA_INDEX = isProd ? "prod_posts" : "dev_posts"
+export const DESIGNERS_ALGOLIA_INDEX = isProd ? "prod_designers" : "dev_designers"
 // ===============================================================================

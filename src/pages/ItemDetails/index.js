@@ -189,7 +189,7 @@ const ItemDetailsPage = ({ match, history }) => {
 				<InstantSearch
 					appId={process.env.REACT_APP_APP_ID}
 					apiKey={process.env.REACT_APP_ALGOLIA_API_KEY}
-					indexName={CONST.DEV_ITEMS_MARKETPLACE_DEFAULT_ALGOLIA_INDEX}
+					indexName={CONST.ITEMS_MARKETPLACE_DEFAULT_ALGOLIA_INDEX}
 				>
 					<Configure hitsPerPage={3} />
 					<VirtualRefinementList
@@ -203,7 +203,7 @@ const ItemDetailsPage = ({ match, history }) => {
 				<InstantSearch
 					appId={process.env.REACT_APP_APP_ID}
 					apiKey={process.env.REACT_APP_ALGOLIA_API_KEY}
-					indexName={CONST.DEV_ITEMS_MARKETPLACE_DEFAULT_ALGOLIA_INDEX}
+					indexName={CONST.ITEMS_MARKETPLACE_DEFAULT_ALGOLIA_INDEX}
 				>
 					<Configure hitsPerPage={3} />
 					<VirtualMenu attribute="userId" defaultRefinement={item.userId} />

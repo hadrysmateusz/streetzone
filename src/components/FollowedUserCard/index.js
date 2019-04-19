@@ -32,7 +32,7 @@ const FollowedUserCard = ({ id }) => {
 					<SmallTextBlock>Najnowsze Przedmioty</SmallTextBlock>
 
 					<UncontrolledInstantSearchWrapper
-						indexName={CONST.DEV_ITEMS_MARKETPLACE_DEFAULT_ALGOLIA_INDEX}
+						indexName={CONST.ITEMS_MARKETPLACE_DEFAULT_ALGOLIA_INDEX}
 					>
 						<VirtualMenu attribute="userId" defaultRefinement={id} />
 						<Configure hitsPerPage={MAX_ITEMS} />
