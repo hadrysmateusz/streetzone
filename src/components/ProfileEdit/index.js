@@ -68,22 +68,23 @@ class ProfileEdit extends Component {
 		const initialValues = this.state.initialValues
 		const file = values.file
 
-		// If file already has a ref there were no changes
-		if (file && file.isUploaded) return
-
-		// If there is no file, create empty ref
-		// otherwise upload the new file and use its ref
 		let newFileRef = null
 		let newURL_temp = null
-		if (file) {
-			// Upload the new file and return its ref
-			console.log("uploading file...")
-			const snapshot = await firebase.uploadFile(
-				`profile-pictures/${authUser.uid}`,
-				file.data
-			)
-			newFileRef = snapshot.ref.fullPath
-			newURL_temp = await firebase.getImageURL(newFileRef)
+
+		if (!file || !file.isUploaded) {
+			// If there is no file, create empty ref
+			// otherwise upload the new file and use its ref
+
+			if (file) {
+				// Upload the new file and return its ref
+				console.log("uploading file...")
+				const snapshot = await firebase.uploadFile(
+					`profile-pictures/${authUser.uid}`,
+					file.data
+				)
+				newFileRef = snapshot.ref.fullPath
+				newURL_temp = await firebase.getImageURL(newFileRef)
+			}
 		}
 
 		// Get ref of current profile picture
@@ -98,6 +99,8 @@ class ProfileEdit extends Component {
 			profilePictureRef: newFileRef,
 			profilePictureURLs: [newURL_temp]
 		}
+
+		console.log(data)
 
 		// Update the user with the new list of comments
 		await this.props.firebase.user(userId).update({ ...data })
