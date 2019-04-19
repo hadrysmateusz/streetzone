@@ -474,6 +474,8 @@ exports.onChatMessageSent = functions.firestore
 			payload.notification.icon = userIcon
 		}
 
+		console.log("payload", payload)
+
 		// Send notifications to all tokens.
 		const response = await admin.messaging().sendToDevice(tokens, payload)
 		// For each message check if there was an error.
