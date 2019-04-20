@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState, useRef } from "react"
 import moment from "moment"
-import styled from "styled-components"
+import styled from "styled-components/macro"
 
 import LoadingSpinner from "../../components/LoadingSpinner"
 import UserPreview from "../../components/UserPreview"
@@ -12,7 +12,14 @@ import { NewChat } from "../Chat/New"
 const RoomStyles = styled.div`
 	.messages {
 		display: grid;
+		max-height: 450px;
+		overflow-y: scroll;
 	}
+`
+
+const OuterContainer = styled.div`
+	display: grid;
+	grid-template-columns: 1fr 3fr;
 `
 
 const MessageStyles = styled.div`
@@ -55,6 +62,7 @@ const Message = ({ message, createdAt, author, user }) => {
 const Room = ({ id, otherUserId, user }) => {
 	const firebase = useFirebase()
 	const [messages, setMessages] = useState()
+	const containerRef = useRef()
 
 	useEffect(() => {
 		const unsubscribe = firebase.db
@@ -64,6 +72,11 @@ const Room = ({ id, otherUserId, user }) => {
 			.onSnapshot((snap) => {
 				const messages = snap.docs.map((room) => room.data())
 				setMessages(messages)
+
+				const elem = containerRef.current
+				console.log(containerRef)
+
+				elem.scrollTop = elem.scrollHeight
 			})
 
 		return unsubscribe
@@ -78,7 +91,7 @@ const Room = ({ id, otherUserId, user }) => {
 	) : (
 		<RoomStyles>
 			<UserPreview id={otherUserId} />
-			<div className="messages">
+			<div className="messages" ref={containerRef}>
 				{messages.map((message) => (
 					<Message {...message} user={user} />
 				))}
@@ -111,9 +124,14 @@ const UserChat = ({ user, userId, isAuthorized, onForceRefresh }) => {
 	) : (
 		<PageContainer maxWidth={5}>
 			{rooms.length === 0 && <EmptyState text="Nie masz jeszcze żadnych wiadomości" />}
-			{rooms.map((room) => {
-				return <Room {...room} user={user} />
-			})}
+			<OuterContainer>
+				<div className="sidebar">{rooms.map((room) => room.otherUserId)}</div>
+				<div className="chat-container">
+					{rooms.map((room) => {
+						return <Room {...room} user={user} />
+					})}
+				</div>
+			</OuterContainer>
 		</PageContainer>
 	)
 }

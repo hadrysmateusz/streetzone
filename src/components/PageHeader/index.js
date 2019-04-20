@@ -3,7 +3,7 @@ import { withRouter } from "react-router-dom"
 import { compose } from "recompose"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { withBreakpoints } from "react-breakpoints"
-import styled from "styled-components"
+import styled from "styled-components/macro"
 
 import { withAuthentication } from "../UserSession"
 import ProfilePicture from "../ProfilePicture"
@@ -26,12 +26,44 @@ import {
 	UserNameContainer
 } from "./StyledComponents"
 
+const Indicator = styled.div`
+	position: relative;
+	font-size: 2.4rem;
+
+	.number-display {
+		position: absolute;
+		bottom: 2px;
+		right: -2px;
+		border-radius: 50%;
+		background: var(--black0);
+		color: white;
+		font-size: 1rem;
+		font-weight: bold;
+		--size: 1.8rem;
+		width: var(--size);
+		height: var(--size);
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+`
+
 const Room = styled.div`
 	position: relative;
 	top: 100%;
 	padding: 10px;
-	border: 1px solid gray;
 `
+
+const RoomsContainer = styled.div`
+	position: absolute;
+	top: 100%;
+	right: 0;
+	border: 1px solid var(--gray75);
+	background: white;
+	min-width: 200px;
+`
+
+const OuterContainer = styled.div``
 
 const useRooms = () => {
 	const firebase = useFirebase()
@@ -63,53 +95,62 @@ const Message = ({ message }) => {
 	return <div>{message}</div>
 }
 
-const RoomManager = ({ id }) => {
+const MessagesManager = () => {
 	const firebase = useFirebase()
 	const authUser = useAuthentication()
-	const [messages, setMessages] = useState(null)
+	const [messages, setMessages] = useState({})
 
-	const fetchMessages = () => {
-		const unsubscribe = firebase.db
-			.collection("rooms")
-			.doc(id)
-			.collection("messages")
-			.where("unread", "==", true)
-			.onSnapshot((snap) => {
-				const __messages = snap.docs.map((roomSnap) => roomSnap.data())
-				setMessages(__messages)
-			})
-
-		return unsubscribe
+	const mergeMessages = (newMessages) => {
+		return setMessages({ ...messages, ...newMessages })
 	}
 
-	useEffect(() => {
-		const unsubscribe = fetchMessages()
-		return unsubscribe
-	}, [authUser])
-
-	return messages ? (
-		<Room>
-			{messages.map((message) => (
-				<Message {...message} />
-			))}
-		</Room>
-	) : null
-}
-
-const MessagesManager = () => {
 	const rooms = useRooms()
 
+	useEffect(() => {
+		if (rooms) {
+			const unsubscribeArr = rooms.map((room) => {
+				const unsubscribe = firebase.db
+					.collection("rooms")
+					.doc(room.id)
+					.collection("messages")
+					.where("unread", "==", true)
+					.onSnapshot((snap) => {
+						const __messages = {}
+						snap.docs.forEach((roomSnap) => {
+							__messages[roomSnap.id] = roomSnap.data()
+						})
+						mergeMessages(__messages)
+					})
+
+				return unsubscribe
+			})
+
+			const unsubscribeAll = () => {
+				unsubscribeArr.forEach((fn) => fn())
+			}
+
+			return unsubscribeAll
+		}
+	}, [rooms])
+
+	const messagesArr = Object.values(messages)
+	const messagesCount = messagesArr.length
+	const hasMessages = !!messages && messagesCount !== 0
+
 	return (
-		<>
-			<FontAwesomeIcon icon={["far", "envelope"]} size="lg" fixedWidth />
-			{rooms ? (
-				rooms.map((room) => {
-					return <RoomManager {...room} />
-				})
-			) : (
-				<div className="empty-state">Brak nowych wiadomości</div>
-			)}
-		</>
+		<OuterContainer>
+			<Indicator>
+				<FontAwesomeIcon icon={["far", "envelope"]} fixedWidth />
+				{hasMessages && <div className="number-display">{messagesCount}</div>}
+			</Indicator>
+			<RoomsContainer>
+				{hasMessages ? (
+					messagesArr.map((message) => <div>{message.message}</div>)
+				) : (
+					<div className="empty-state">Brak nowych wiadomości</div>
+				)}
+			</RoomsContainer>
+		</OuterContainer>
 	)
 }
 
