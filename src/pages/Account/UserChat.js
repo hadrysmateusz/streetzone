@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from "react"
 import moment from "moment"
 import styled from "styled-components/macro"
+import { withRouter, Link } from "react-router-dom"
 
 import LoadingSpinner from "../../components/LoadingSpinner"
 import UserPreview from "../../components/UserPreview"
@@ -80,7 +81,7 @@ const Room = ({ id, otherUserId, user }) => {
 			})
 
 		return unsubscribe
-	}, [])
+	}, [id, otherUserId])
 
 	if (messages) {
 		messages.sort((a, b) => a.createdAt - b.createdAt) /* put newest last */
@@ -101,9 +102,12 @@ const Room = ({ id, otherUserId, user }) => {
 	)
 }
 
-const UserChat = ({ user, userId, isAuthorized, onForceRefresh }) => {
+const UserChat = ({ user, userId, isAuthorized, onForceRefresh, match, location }) => {
 	const firebase = useFirebase()
 	const [rooms, setRooms] = useState()
+	const [currentRoom, setCurrentRoom] = useState()
+
+	const paramsString = location.search
 
 	const getRooms = async () => {
 		const currentUserRef = firebase.currentUser()
@@ -115,9 +119,24 @@ const UserChat = ({ user, userId, isAuthorized, onForceRefresh }) => {
 		setRooms(rooms)
 	}
 
+	const getCurrentRoom = () => {
+		var searchParams = new URLSearchParams(paramsString)
+
+		// get room id from url search parameter
+		const roomId = searchParams.has("room") ? searchParams.get("room") : null
+		// find room with correct id
+		const __currentRoom = rooms ? rooms.find((a) => a.id === roomId) : null
+
+		setCurrentRoom(__currentRoom)
+	}
+
 	useEffect(() => {
 		getRooms()
 	}, [user, userId])
+
+	useEffect(() => {
+		getCurrentRoom()
+	}, [paramsString, rooms])
 
 	return !rooms || !user ? (
 		<LoadingSpinner />
@@ -125,15 +144,19 @@ const UserChat = ({ user, userId, isAuthorized, onForceRefresh }) => {
 		<PageContainer maxWidth={5}>
 			{rooms.length === 0 && <EmptyState text="Nie masz jeszcze żadnych wiadomości" />}
 			<OuterContainer>
-				<div className="sidebar">{rooms.map((room) => room.otherUserId)}</div>
+				<div className="sidebar">
+					{rooms.map((room) => (
+						<div className="room-tab">
+							<Link to={`?room=${room.id}`}>{room.otherUserId}</Link>
+						</div>
+					))}
+				</div>
 				<div className="chat-container">
-					{rooms.map((room) => {
-						return <Room {...room} user={user} />
-					})}
+					{currentRoom && <Room {...currentRoom} user={user} />}
 				</div>
 			</OuterContainer>
 		</PageContainer>
 	)
 }
 
-export default UserChat
+export default withRouter(UserChat)
