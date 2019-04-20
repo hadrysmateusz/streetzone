@@ -57,7 +57,6 @@ const EditItemForm = ({ initialValues, onSubmit, history, isLoading }) => (
 						<Field name="condition">
 							{({ input, meta }) => {
 								const error = meta.error && meta.touched ? meta.error : null
-								console.log(input)
 								return (
 									<>
 										<FieldLabel>Stan </FieldLabel>

@@ -45,8 +45,6 @@ const EditItemPage = ({ match, history }) => {
 				})
 			})
 
-			console.log(item.condition)
-
 			// Format data for the form
 			const initialData = formatDataForEditForm(
 				item.price,
@@ -54,8 +52,6 @@ const EditItemPage = ({ match, history }) => {
 				item.description,
 				files
 			)
-
-			console.log(initialData)
 
 			setInitialData(initialData)
 		} catch (err) {
@@ -135,7 +131,6 @@ const condition = (authUser, pathParams) => {
 	if (!isAuthenticated) {
 		return
 	} else {
-		console.log(pathParams, pathParams.id)
 		const isAuthorized = authUser.items.includes(pathParams.id)
 		return isAuthorized
 	}

@@ -1,16 +1,21 @@
-import React from "react"
+import React, { useState, useEffect } from "react"
 import { withRouter } from "react-router-dom"
 import { compose } from "recompose"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { withBreakpoints } from "react-breakpoints"
+import styled from "styled-components"
 
 import { withAuthentication } from "../UserSession"
 import ProfilePicture from "../ProfilePicture"
 import { StyledNavLink } from "../Basics"
 import { withFirebase } from "../Firebase"
 import Logo from "../Logo"
+import Menu from "../FullscreenMenu"
 
 import { ROUTES } from "../../constants"
 import getProfilePictureURL from "../../utils/getProfilePictureURL"
+import { useScrollPosition, useFirebase, useAuthentication } from "../../hooks"
+
 import {
 	NavItem,
 	Submenu,
@@ -20,9 +25,93 @@ import {
 	PageHeaderOuter,
 	UserNameContainer
 } from "./StyledComponents"
-import useScrollPosition from "../../hooks/useScrollPosition"
-import { withBreakpoints } from "react-breakpoints"
-import Menu from "../FullscreenMenu"
+
+const Room = styled.div`
+	position: relative;
+	top: 100%;
+	padding: 10px;
+	border: 1px solid gray;
+`
+
+const useRooms = () => {
+	const firebase = useFirebase()
+	const authUser = useAuthentication()
+	const [rooms, setRooms] = useState(null)
+
+	const fetchRooms = () => {
+		const unsubscribe = firebase
+			.user(authUser.uid)
+			.collection("rooms")
+			.onSnapshot((snap) => {
+				const __rooms = snap.docs.map((roomSnap) => roomSnap.data())
+				setRooms(__rooms)
+			})
+
+		return unsubscribe
+	}
+
+	useEffect(() => {
+		if (!authUser) return
+		const unsubscribe = fetchRooms()
+		return unsubscribe
+	}, [authUser])
+
+	return rooms
+}
+
+const Message = ({ message }) => {
+	return <div>{message}</div>
+}
+
+const RoomManager = ({ id }) => {
+	const firebase = useFirebase()
+	const authUser = useAuthentication()
+	const [messages, setMessages] = useState(null)
+
+	const fetchMessages = () => {
+		const unsubscribe = firebase.db
+			.collection("rooms")
+			.doc(id)
+			.collection("messages")
+			.where("unread", "==", true)
+			.onSnapshot((snap) => {
+				const __messages = snap.docs.map((roomSnap) => roomSnap.data())
+				setMessages(__messages)
+			})
+
+		return unsubscribe
+	}
+
+	useEffect(() => {
+		const unsubscribe = fetchMessages()
+		return unsubscribe
+	}, [authUser])
+
+	return messages ? (
+		<Room>
+			{messages.map((message) => (
+				<Message {...message} />
+			))}
+		</Room>
+	) : null
+}
+
+const MessagesManager = () => {
+	const rooms = useRooms()
+
+	return (
+		<>
+			<FontAwesomeIcon icon={["far", "envelope"]} size="lg" fixedWidth />
+			{rooms ? (
+				rooms.map((room) => {
+					return <RoomManager {...room} />
+				})
+			) : (
+				<div className="empty-state">Brak nowych wiadomości</div>
+			)}
+		</>
+	)
+}
 
 const Navigation = ({ authUser, firebase, currentBreakpoint, location, ...rest }) => {
 	const scrollPosition = useScrollPosition()
@@ -124,7 +213,7 @@ const Navigation = ({ authUser, firebase, currentBreakpoint, location, ...rest }
 									to={ROUTES.ACCOUNT_CHAT.replace(":id", authUser.uid)}
 									alwaysBlack
 								>
-									<FontAwesomeIcon icon={["far", "envelope"]} size="lg" fixedWidth />
+									<MessagesManager />
 								</StyledNavLink>
 							</NavItem>
 							<NavItem>

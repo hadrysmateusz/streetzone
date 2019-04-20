@@ -126,7 +126,6 @@ const BlogEdit = ({ match }) => {
 					onSubmit={onSubmit}
 					validate={validate}
 					render={({ handleSubmit, submitting, pristine, form, values }) => {
-						console.log(values.section)
 						return (
 							<form onSubmit={handleSubmit}>
 								{values.section && values.section !== "Dropy" && (

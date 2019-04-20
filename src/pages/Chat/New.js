@@ -65,18 +65,19 @@ export const NewChat = ({ userId }) => {
 			roomId = roomSnap.data().id
 		}
 
+		// add message to room
 		await firebase.db
 			.collection("rooms")
 			.doc(roomId)
 			.collection("messages")
 			.doc(messageId)
-			.set({ id: messageId, createdAt: Date.now(), message, author: senderId })
-
-		await firebase.db
-			.collection("rooms")
-			.doc(roomId)
-			.collection("messages")
-			.get()
+			.set({
+				id: messageId,
+				createdAt: Date.now(),
+				message,
+				author: senderId,
+				unread: true
+			})
 	}
 
 	return (

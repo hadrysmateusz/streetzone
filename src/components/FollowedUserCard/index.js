@@ -19,8 +19,6 @@ const MAX_ITEMS = 3
 const FollowedUserCard = ({ id }) => {
 	const [user, error] = useUserData(id)
 
-	console.log(user, error)
-
 	return user ? (
 		<OuterContainer>
 			<UpperGrid>

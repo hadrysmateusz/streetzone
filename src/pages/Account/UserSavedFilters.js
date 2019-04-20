@@ -34,7 +34,6 @@ const FilterItem = ({ id, filterName, ...values }) => {
 		}
 	}, [values.designers])
 
-	console.log(designer)
 	return (
 		<Link to={encodeURL(values, ROUTES.MARKETPLACE)}>
 			<FiltersItemContainer>
@@ -42,7 +41,6 @@ const FilterItem = ({ id, filterName, ...values }) => {
 					{filterName}
 				</TextBlock>
 				{Object.entries(values).reduce((acc, [key, val], i) => {
-					console.log(key, val)
 					if (Array.isArray(val)) {
 						return [
 							...acc,
