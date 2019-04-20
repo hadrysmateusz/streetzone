@@ -6,8 +6,11 @@ import { withRouter, Link } from "react-router-dom"
 import LoadingSpinner from "../../components/LoadingSpinner"
 import UserPreview from "../../components/UserPreview"
 import { PageContainer } from "../../components/Containers"
-import { useFirebase } from "../../hooks"
 import EmptyState from "../../components/EmptyState"
+import ProfilePicture from "../../components/ProfilePicture"
+import getProfilePictureURL from "../../utils/getProfilePictureURL"
+import { useFirebase, useUserData } from "../../hooks"
+
 import { NewChat } from "../Chat/New"
 
 const RoomStyles = styled.div`
@@ -21,13 +24,21 @@ const RoomStyles = styled.div`
 const OuterContainer = styled.div`
 	display: grid;
 	grid-template-columns: 1fr 3fr;
+	border: 1px solid var(--gray75);
+
+	.sidebar {
+		border-right: 1px solid var(--gray75);
+	}
+	.chat-container {
+		padding: var(--spacing3);
+	}
 `
 
 const MessageStyles = styled.div`
 	padding: var(--spacing2);
 	margin: var(--spacing2);
 	border-radius: 6px;
-	background: var(--gray25);
+	background: var(--gray75);
 	width: auto;
 	min-width: 0;
 	max-width: 400px;
@@ -48,6 +59,23 @@ const MessageStyles = styled.div`
 	}
 `
 
+const RoomTabStyles = styled.div`
+	a {
+		display: flex;
+		align-items: center;
+		> * + * {
+			margin-left: var(--spacing2);
+		}
+	}
+	padding: var(--spacing3);
+
+	color: var(--black0);
+	font-weight: bold;
+	font-size: var(--font-size--s);
+	text-transform: uppercase;
+	border-bottom: 1px solid var(--gray75);
+`
+
 const Message = ({ message, createdAt, author, user }) => {
 	const formattedCreatedAt = moment(createdAt).format("DD.MM o HH:mm")
 	const isAuthor = author === user.uid
@@ -58,6 +86,21 @@ const Message = ({ message, createdAt, author, user }) => {
 			<pre className="message">{message}</pre>
 		</MessageStyles>
 	)
+}
+
+const RoomTab = ({ id, otherUserId }) => {
+	const [user, error] = useUserData(otherUserId)
+
+	console.log(user, error)
+
+	return !error && user ? (
+		<RoomTabStyles>
+			<Link to={`?room=${id}`}>
+				<ProfilePicture size="30px" url={getProfilePictureURL(user, "S")} inline />
+				<span className="name">{user.name}</span>
+			</Link>
+		</RoomTabStyles>
+	) : null
 }
 
 const Room = ({ id, otherUserId, user }) => {
@@ -146,9 +189,7 @@ const UserChat = ({ user, userId, isAuthorized, onForceRefresh, match, location 
 			<OuterContainer>
 				<div className="sidebar">
 					{rooms.map((room) => (
-						<div className="room-tab">
-							<Link to={`?room=${room.id}`}>{room.otherUserId}</Link>
-						</div>
+						<RoomTab {...room} />
 					))}
 				</div>
 				<div className="chat-container">
