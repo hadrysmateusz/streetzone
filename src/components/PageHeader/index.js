@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react"
-import { withRouter } from "react-router-dom"
+import { withRouter, Link } from "react-router-dom"
 import { compose } from "recompose"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { withBreakpoints } from "react-breakpoints"
@@ -14,7 +14,12 @@ import Menu from "../FullscreenMenu"
 
 import { ROUTES } from "../../constants"
 import getProfilePictureURL from "../../utils/getProfilePictureURL"
-import { useScrollPosition, useFirebase, useAuthentication } from "../../hooks"
+import {
+	useScrollPosition,
+	useFirebase,
+	useAuthentication,
+	useUserData
+} from "../../hooks"
 
 import {
 	NavItem,
@@ -63,6 +68,10 @@ const RoomsContainer = styled.div`
 	min-width: 200px;
 `
 
+const MessageStyles = styled.div`
+	padding: var(--spacing3);
+`
+
 const OuterContainer = styled.div``
 
 const useRooms = () => {
@@ -91,13 +100,23 @@ const useRooms = () => {
 	return rooms
 }
 
-const Message = ({ message }) => {
-	return <div>{message}</div>
+const Message = ({ message, author, createdAt, roomId }) => {
+	const [user, error] = useUserData(author)
+	const authUser = useAuthentication()
+
+	return !error && user ? (
+		<MessageStyles>
+			<Link to={ROUTES.ACCOUNT_CHAT.replace(":id", authUser.uid) + `?room=${roomId}`}>
+				<ProfilePicture size="30px" url={getProfilePictureURL(user, "S")} inline />
+				<span className="name">{user.name}</span>
+				<div className="message">{message}</div>
+			</Link>
+		</MessageStyles>
+	) : null
 }
 
 const MessagesManager = () => {
 	const firebase = useFirebase()
-	const authUser = useAuthentication()
 	const [messages, setMessages] = useState({})
 
 	const mergeMessages = (newMessages) => {
@@ -117,8 +136,9 @@ const MessagesManager = () => {
 					.where("author", "==", room.otherUserId)
 					.onSnapshot((snap) => {
 						const __messages = {}
-						snap.docs.forEach((roomSnap) => {
-							__messages[roomSnap.id] = roomSnap.data()
+						snap.docs.forEach((snap) => {
+							// add message along with room id to object for merging
+							__messages[snap.id] = { ...snap.data(), roomId: room.id }
 						})
 						mergeMessages(__messages)
 					})
@@ -146,7 +166,7 @@ const MessagesManager = () => {
 			</Indicator>
 			<RoomsContainer>
 				{hasMessages ? (
-					messagesArr.map((message) => <div>{message.message}</div>)
+					messagesArr.map((message) => <Message {...message} />)
 				) : (
 					<div className="empty-state">Brak nowych wiadomości</div>
 				)}

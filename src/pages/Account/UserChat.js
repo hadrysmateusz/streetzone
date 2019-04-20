@@ -16,8 +16,8 @@ import { NewChat } from "../Chat/New"
 const RoomStyles = styled.div`
 	.messages {
 		display: grid;
-		max-height: 450px;
 		overflow-y: scroll;
+		max-height: 400px;
 	}
 `
 
@@ -25,7 +25,7 @@ const OuterContainer = styled.div`
 	display: grid;
 	grid-template-columns: 1fr 3fr;
 	border: 1px solid var(--gray75);
-
+	margin-bottom: var(--spacing4);
 	.sidebar {
 		border-right: 1px solid var(--gray75);
 	}
@@ -158,8 +158,8 @@ const UserChat = ({ user, userId, isAuthorized, onForceRefresh, match, location 
 		if (!currentUserRef) return
 
 		const roomsSnap = await currentUserRef.collection("rooms").get()
-		const rooms = roomsSnap.docs.map((room) => room.data())
-		setRooms(rooms)
+		const __rooms = roomsSnap.docs.map((room) => room.data())
+		setRooms(__rooms)
 	}
 
 	const getCurrentRoom = () => {
