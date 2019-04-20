@@ -114,6 +114,7 @@ const MessagesManager = () => {
 					.doc(room.id)
 					.collection("messages")
 					.where("unread", "==", true)
+					.where("author", "==", room.otherUserId)
 					.onSnapshot((snap) => {
 						const __messages = {}
 						snap.docs.forEach((roomSnap) => {
