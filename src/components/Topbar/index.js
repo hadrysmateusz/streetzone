@@ -1,12 +1,14 @@
 import React from "react"
 import sortingOptions from "../../constants/sortingOptions"
 
-import FiltersToggle from "./FiltersToggle"
 import AlgoliaSortBy from "../Algolia/AlgoliaSortBy"
 import AlgoliaSearchBox from "../Algolia/AlgoliaSearchBox"
+
+import ViewSwitch from "./ViewSwitch"
+import FiltersToggle from "./FiltersToggle"
 import { Container } from "./StyledComponents"
 
-const Topbar = ({ toggleFilters, clearFilters }) => {
+const Topbar = ({ toggleFilters, clearFilters, setView }) => {
 	return (
 		<Container>
 			<div className="filter-container">
@@ -15,6 +17,10 @@ const Topbar = ({ toggleFilters, clearFilters }) => {
 
 			<div className="search-container">
 				<AlgoliaSearchBox />
+			</div>
+
+			<div className="view-switch-container">
+				<ViewSwitch setView={setView} />
 			</div>
 
 			<div className="sort-container">

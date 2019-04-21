@@ -9,14 +9,22 @@ export const Container = styled.div`
 		"filter sort";
 
 	@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
-		grid-template-columns: 1fr 180px;
-		grid-template-areas: "search sort";
+		grid-template-columns: 1fr 180px auto;
+		grid-template-areas: "search sort viewSwitch";
 		gap: var(--spacing2);
 		.filter-container {
 			display: none;
 		}
 	}
 
+	.view-switch-container {
+		grid-area: viewSwitch;
+		height: 100%;
+		display: none;
+		@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
+			display: block;
+		}
+	}
 	.search-container {
 		grid-area: search;
 		height: 100%;

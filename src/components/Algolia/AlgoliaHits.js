@@ -4,8 +4,8 @@ import InfiniteScroll from "react-infinite-scroller"
 import ContainerDimensions from "react-container-dimensions"
 
 import LoadingSpinner from "../LoadingSpinner"
-import { ItemCard } from "../ItemCard"
-import { ItemsContainer } from "../ItemsView"
+import { ItemCard, ItemCardHorizontal } from "../ItemCard"
+import { ItemsContainer, ItemsList } from "../ItemsView"
 import Button from "../Button"
 import { ScrollableContainer } from "../Basics"
 
@@ -24,28 +24,38 @@ export const ItemsLoader = ({ refine }) => {
 	) : null
 }
 
-export const AlgoliaInfiniteHits = connectInfiniteHits(({ hits, hasMore, refine }) => {
-	return (
-		<InfiniteScroll
-			hasMore={hasMore}
-			loader={<ItemsLoader refine={refine} key="loader-component" />}
-			initialLoad={false}
-			loadMore={refine}
-		>
-			<ContainerDimensions>
-				{({ width }) =>
-					width ? (
-						<ItemsContainer containerWidth={width}>
-							{hits.map((item) => (
-								<ItemCard key={item.objectID} item={item} />
-							))}
-						</ItemsContainer>
-					) : null
-				}
-			</ContainerDimensions>
-		</InfiniteScroll>
-	)
-})
+export const AlgoliaInfiniteHits = connectInfiniteHits(
+	({ hits, hasMore, refine, viewMode = "grid" }) => {
+		return (
+			<InfiniteScroll
+				hasMore={hasMore}
+				loader={<ItemsLoader refine={refine} key="loader-component" />}
+				initialLoad={false}
+				loadMore={refine}
+			>
+				{viewMode === "list" ? (
+					<ItemsList>
+						{hits.map((item) => (
+							<ItemCardHorizontal key={item.objectID} item={item} />
+						))}
+					</ItemsList>
+				) : viewMode === "grid" ? (
+					<ContainerDimensions>
+						{({ width }) =>
+							width ? (
+								<ItemsContainer containerWidth={width}>
+									{hits.map((item) => (
+										<ItemCard key={item.objectID} item={item} />
+									))}
+								</ItemsContainer>
+							) : null
+						}
+					</ContainerDimensions>
+				) : null}
+			</InfiniteScroll>
+		)
+	}
+)
 
 export const AlgoliaScrollableHits = connectHits(({ hits }) => (
 	<ContainerDimensions>

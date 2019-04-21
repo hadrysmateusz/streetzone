@@ -40,7 +40,8 @@ class HomePage extends Component {
 		searchState: null,
 		isLoading: true,
 		refreshAlgolia: false,
-		clearFilters: false
+		clearFilters: false,
+		viewMode: "list"
 	}
 
 	targetElement = null
@@ -105,6 +106,10 @@ class HomePage extends Component {
 		})
 	}
 
+	setView = (viewMode) => {
+		return this.setState({ viewMode })
+	}
+
 	componentWillUnmount() {
 		clearAllBodyScrollLocks()
 	}
@@ -132,6 +137,7 @@ class HomePage extends Component {
 							areFiltersOpen={areFiltersOpen}
 							toggleFilters={this.toggleFilters}
 							clearFilters={this.setClearFiltersFlag}
+							setView={this.setView}
 						/>
 
 						<CurrentFilters
@@ -151,7 +157,7 @@ class HomePage extends Component {
 									}}
 								/>
 							</Sidebar>
-							<AlgoliaResults />
+							<AlgoliaResults viewMode={this.state.viewMode} />
 						</MainGrid>
 					</GridContainer>
 				</PageContainer>

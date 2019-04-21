@@ -41,7 +41,7 @@ export const ItemCardImage = ({ imageId }) => {
 	)
 }
 
-const ItemCardBase = ({ item, ...rest }) => {
+export const ItemCard = ({ item, ...rest }) => {
 	const { id, name, price, designers, size } = item
 
 	const formattedDesigners = formatDesigners(designers)
@@ -75,4 +75,38 @@ const ItemCardBase = ({ item, ...rest }) => {
 	)
 }
 
-export const ItemCard = withAuthentication(ItemCardBase)
+export const ItemCardHorizontal = ({ item, ...rest }) => {
+	const { id, name, price, designers, size } = item
+
+	const formattedDesigners = formatDesigners(designers)
+	const formattedPrice = formatPrice(price)
+	const formattedSize = formatSize(size)
+
+	return (
+		<Ratio ratio={2 / 3}>
+			<Container {...rest}>
+				<Link to={`/i/${id}`}>
+					<ItemCardImage imageId={item.attachments[0]} />
+
+					<InfoContainer>
+						<TopContainer>
+							<InnerContainer>
+								<Designers title={formattedDesigners}>{formattedDesigners}</Designers>
+								<Name title={name}>{name}</Name>
+							</InnerContainer>
+							<HeartButton id={id} type={TYPE.ITEM} scale={2} />
+						</TopContainer>
+						<SecondaryContainer>
+							<Price title={price ? `Cena: ${price}` : null}>{formattedPrice}</Price>
+							<Size title={size ? `Rozmiar: ${formattedSize}` : null}>
+								{formattedSize}
+							</Size>
+						</SecondaryContainer>
+					</InfoContainer>
+				</Link>
+			</Container>
+		</Ratio>
+	)
+}
+
+export default ItemCard

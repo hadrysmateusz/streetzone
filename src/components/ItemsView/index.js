@@ -4,7 +4,7 @@ import ContainerDimensions from "react-container-dimensions"
 
 import { ItemCard } from "../ItemCard"
 
-const ItemsContainer = styled.div`
+export const ItemsContainer = styled.div`
 	display: grid;
 	grid-gap: 3px;
 
@@ -17,6 +17,11 @@ const ItemsContainer = styled.div`
 	@media (min-width: ${(p) => p.theme.breakpoints[0]}px) {
 		grid-gap: var(--spacing3);
 	}
+`
+
+export const ItemsList = styled.div`
+	display: grid;
+	gap: var(--spacing3);
 `
 
 const ItemsView = ({ items }) => {
@@ -34,5 +39,3 @@ const ItemsView = ({ items }) => {
 }
 
 export default ItemsView
-
-export { ItemsContainer }
