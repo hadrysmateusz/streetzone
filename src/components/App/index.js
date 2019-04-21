@@ -24,7 +24,7 @@ class App extends React.Component {
 		return (
 			<Router>
 				<div id="App-Element">
-					<Meta />
+					{/* <Meta /> */}
 					<AppContainer>
 						<PageHeader />
 						<div style={{ flex: 1 }}>
