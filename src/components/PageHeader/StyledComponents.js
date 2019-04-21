@@ -27,7 +27,13 @@ export const Nav = styled.nav`
 	display: grid;
 	grid-auto-flow: column;
 	grid-auto-columns: min-content;
-	gap: var(--spacing4);
+	gap: var(--spacing2);
+	@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
+		gap: var(--spacing3);
+	}
+	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
+		gap: var(--spacing4);
+	}
 	${(p) => p.alignRight && "justify-content: flex-end;"}
 	${(p) => p.centered && "justify-content: center;"}
 `

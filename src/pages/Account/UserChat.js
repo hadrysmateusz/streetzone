@@ -2,6 +2,8 @@ import React, { useEffect, useState, useRef } from "react"
 import moment from "moment"
 import styled from "styled-components/macro"
 import { withRouter, Link } from "react-router-dom"
+import { withBreakpoints } from "react-breakpoints"
+import { compose } from "recompose"
 
 import LoadingSpinner from "../../components/LoadingSpinner"
 import UserPreview from "../../components/UserPreview"
@@ -11,6 +13,7 @@ import getProfilePictureURL from "../../utils/getProfilePictureURL"
 import { useFirebase, useUserData } from "../../hooks"
 
 import { NewChat } from "../Chat/New"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 const RoomStyles = styled.div`
 	display: grid;
@@ -21,7 +24,16 @@ const RoomStyles = styled.div`
 
 	.top-container {
 		padding: var(--spacing3);
-		padding-bottom: var(--spacing2);
+		display: flex;
+
+		.back-button {
+			height: 100%;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			font-size: 1.7rem;
+			margin-right: var(--spacing3);
+		}
 	}
 
 	.bottom-container {
@@ -38,14 +50,18 @@ const RoomStyles = styled.div`
 `
 
 const OuterContainer = styled.div`
-	display: grid;
-	grid-template-columns: 1fr 3fr;
-	grid-template-rows: 100%;
+	@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
+		display: grid;
+		grid-template-columns: 1fr 3fr;
+		grid-template-rows: 100%;
+	}
+
 	border: 1px solid var(--gray75);
 	margin-bottom: var(--spacing4);
 	height: 650px;
 	.sidebar {
 		border-right: 1px solid var(--gray75);
+		min-width: 200px;
 	}
 	.chat-container {
 		.no-room-selected {
@@ -62,21 +78,25 @@ const OuterContainer = styled.div`
 	}
 `
 
-// const MessageOuterContainer = styled.div`
-// width: 100%;
-// display: flex;
-
-// `
+const MobileUserInfo = styled.div`
+	display: flex;
+	align-items: center;
+	text-transform: uppercase;
+	.name {
+		font-weight: bold;
+		margin-left: var(--spacing2);
+	}
+`
 
 const MessageStyles = styled.div`
 	padding: var(--spacing3);
 	border-radius: 4px;
 	width: auto;
 	min-width: 0;
-	max-width: 45%;
+	max-width: 90%;
 	color: ${(p) => (p.isAuthor ? "white" : "var(--black50)")};
 
-	background: ${(p) => (p.isAuthor ? "#1fc694" : "#f3f6ee")};
+	background: ${(p) => (p.isAuthor ? "#1fc694" : "#f2f3f1")};
 	justify-self: ${(p) => (p.isAuthor ? "end" : "start")};
 
 	.createdAt {
@@ -149,10 +169,11 @@ const RoomTab = ({ id, otherUserId }) => {
 	) : null
 }
 
-const Room = ({ id, otherUserId, user }) => {
+const Room = ({ id, otherUserId, user, isMobile }) => {
 	const firebase = useFirebase()
 	const [messages, setMessages] = useState()
 	const containerRef = useRef()
+	const [otherUser, error] = useUserData(otherUserId)
 
 	useEffect(() => {
 		const unsubscribe = firebase.db
@@ -181,7 +202,28 @@ const Room = ({ id, otherUserId, user }) => {
 	) : (
 		<RoomStyles>
 			<div className="top-container">
-				<UserPreview id={otherUserId} />
+				{isMobile ? (
+					<>
+						{/* This Link will clear the selected room  */}
+						<Link to="?">
+							<div className="back-button">
+								<FontAwesomeIcon icon="long-arrow-alt-left" />
+							</div>
+						</Link>
+						{!error && otherUser && (
+							<MobileUserInfo>
+								<ProfilePicture
+									size="30px"
+									url={getProfilePictureURL(otherUser, "S")}
+									inline
+								/>
+								<span className="name">{otherUser.name}</span>
+							</MobileUserInfo>
+						)}
+					</>
+				) : (
+					<UserPreview id={otherUserId} />
+				)}
 			</div>
 			<div className="messages" ref={containerRef}>
 				{messages.map((message) => (
@@ -195,7 +237,7 @@ const Room = ({ id, otherUserId, user }) => {
 	)
 }
 
-const UserChat = ({ user, userId, isAuthorized, onForceRefresh, match, location }) => {
+const UserChat = ({ user, userId, location, currentBreakpoint }) => {
 	const firebase = useFirebase()
 	const [rooms, setRooms] = useState()
 	const [currentRoom, setCurrentRoom] = useState()
@@ -232,26 +274,37 @@ const UserChat = ({ user, userId, isAuthorized, onForceRefresh, match, location 
 	}, [paramsString, rooms])
 
 	const hasRooms = rooms && rooms.length > 0
+	const isMobile = currentBreakpoint < 1
 
 	return !rooms || !user ? (
 		<LoadingSpinner />
 	) : (
-		<PageContainer maxWidth={5}>
+		<PageContainer maxWidth={5} extraWide>
 			{hasRooms ? (
-				<OuterContainer>
-					<div className="sidebar">
-						{rooms.map((room) => (
-							<RoomTab {...room} />
-						))}
-					</div>
-					<div className="chat-container">
+				isMobile ? (
+					<OuterContainer>
 						{currentRoom ? (
-							<Room {...currentRoom} user={user} />
+							<Room {...currentRoom} user={user} isMobile={isMobile} />
 						) : (
-							<div class="no-room-selected">Wybierz osobę z listy</div>
+							rooms.map((room) => <RoomTab {...room} />)
 						)}
-					</div>
-				</OuterContainer>
+					</OuterContainer>
+				) : (
+					<OuterContainer>
+						<div className="sidebar">
+							{rooms.map((room) => (
+								<RoomTab {...room} />
+							))}
+						</div>
+						<div className="chat-container">
+							{currentRoom ? (
+								<Room {...currentRoom} user={user} />
+							) : (
+								<div class="no-room-selected">Wybierz osobę z listy</div>
+							)}
+						</div>
+					</OuterContainer>
+				)
 			) : (
 				<div className="empty-state">Nie masz jeszcze żadnych wiadomości</div>
 			)}
@@ -259,4 +312,7 @@ const UserChat = ({ user, userId, isAuthorized, onForceRefresh, match, location 
 	)
 }
 
-export default withRouter(UserChat)
+export default compose(
+	withBreakpoints,
+	withRouter
+)(UserChat)
