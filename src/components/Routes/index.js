@@ -364,7 +364,8 @@ const routes = [
 				component: UserSavedFilters,
 				isProtected: true,
 				category: "Zapisane",
-				shortLabel: "Filtry"
+				shortLabel: "Filtry",
+				isHidden: true /* This feature isn't finished or necessary */
 			},
 			{
 				id: "followedUsers",
