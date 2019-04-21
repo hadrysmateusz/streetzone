@@ -36,7 +36,10 @@ import {
 	faLongArrowAltLeft,
 	faArrowRight,
 	faStar,
-	faChevronDown
+	faChevronDown,
+	faLongArrowAltUp,
+	faThLarge,
+	faThList
 } from "@fortawesome/free-solid-svg-icons"
 import {
 	faHeart as farHeart,
@@ -90,5 +93,8 @@ library.add(
 	faArrowRight,
 	farStar,
 	faStar,
-	faChevronDown
+	faChevronDown,
+	faLongArrowAltUp,
+	faThLarge,
+	faThList
 )

@@ -7,6 +7,7 @@ import {
 	enableBodyScroll,
 	clearAllBodyScrollLocks
 } from "body-scroll-lock"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 import { withFirebase } from "../../components/Firebase"
 import AlgoliaResults from "../../components/Algolia/AlgoliaResults"
@@ -154,7 +155,9 @@ class HomePage extends Component {
 						</MainGrid>
 					</GridContainer>
 				</PageContainer>
-				<ScrollToTop>↑</ScrollToTop>
+				<ScrollToTop>
+					<FontAwesomeIcon icon="long-arrow-alt-up" />
+				</ScrollToTop>
 			</InstantSearchWrapper>
 		)
 	}
