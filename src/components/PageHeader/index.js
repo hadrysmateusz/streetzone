@@ -1,9 +1,7 @@
-import React, { useState, useEffect } from "react"
-import { withRouter, Link } from "react-router-dom"
+import React from "react"
+import { withRouter } from "react-router-dom"
 import { compose } from "recompose"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { withBreakpoints } from "react-breakpoints"
-import styled from "styled-components/macro"
 
 import { withAuthentication } from "../UserSession"
 import ProfilePicture from "../ProfilePicture"
@@ -11,15 +9,11 @@ import { StyledNavLink } from "../Basics"
 import { withFirebase } from "../Firebase"
 import Logo from "../Logo"
 import Menu from "../FullscreenMenu"
+import MessagesManager from "../MessagesManager"
 
 import { ROUTES } from "../../constants"
 import getProfilePictureURL from "../../utils/getProfilePictureURL"
-import {
-	useScrollPosition,
-	useFirebase,
-	useAuthentication,
-	useUserData
-} from "../../hooks"
+import { useScrollPosition } from "../../hooks"
 
 import {
 	NavItem,
@@ -30,150 +24,6 @@ import {
 	PageHeaderOuter,
 	UserNameContainer
 } from "./StyledComponents"
-
-const Indicator = styled.div`
-	position: relative;
-	font-size: 2.4rem;
-
-	.number-display {
-		position: absolute;
-		bottom: 2px;
-		right: -2px;
-		border-radius: 50%;
-		background: var(--black0);
-		color: white;
-		font-size: 1rem;
-		font-weight: bold;
-		--size: 1.8rem;
-		width: var(--size);
-		height: var(--size);
-		display: flex;
-		justify-content: center;
-		align-items: center;
-	}
-`
-
-const Room = styled.div`
-	position: relative;
-	top: 100%;
-	padding: 10px;
-`
-
-const RoomsContainer = styled.div`
-	position: absolute;
-	top: 100%;
-	right: 0;
-	border: 1px solid var(--gray75);
-	background: white;
-	min-width: 200px;
-`
-
-const MessageStyles = styled.div`
-	padding: var(--spacing3);
-`
-
-const OuterContainer = styled.div``
-
-const useRooms = () => {
-	const firebase = useFirebase()
-	const authUser = useAuthentication()
-	const [rooms, setRooms] = useState(null)
-
-	const fetchRooms = () => {
-		const unsubscribe = firebase
-			.user(authUser.uid)
-			.collection("rooms")
-			.onSnapshot((snap) => {
-				const __rooms = snap.docs.map((roomSnap) => roomSnap.data())
-				setRooms(__rooms)
-			})
-
-		return unsubscribe
-	}
-
-	useEffect(() => {
-		if (!authUser) return
-		const unsubscribe = fetchRooms()
-		return unsubscribe
-	}, [authUser])
-
-	return rooms
-}
-
-const Message = ({ message, author, createdAt, roomId }) => {
-	const [user, error] = useUserData(author)
-	const authUser = useAuthentication()
-
-	return !error && user ? (
-		<MessageStyles>
-			<Link to={ROUTES.ACCOUNT_CHAT.replace(":id", authUser.uid) + `?room=${roomId}`}>
-				<ProfilePicture size="30px" url={getProfilePictureURL(user, "S")} inline />
-				<span className="name">{user.name}</span>
-				<div className="message">{message}</div>
-			</Link>
-		</MessageStyles>
-	) : null
-}
-
-const MessagesManager = () => {
-	const firebase = useFirebase()
-	const [messages, setMessages] = useState({})
-
-	const mergeMessages = (newMessages) => {
-		return setMessages({ ...messages, ...newMessages })
-	}
-
-	const rooms = useRooms()
-
-	useEffect(() => {
-		if (rooms) {
-			const unsubscribeArr = rooms.map((room) => {
-				const unsubscribe = firebase.db
-					.collection("rooms")
-					.doc(room.id)
-					.collection("messages")
-					.where("unread", "==", true)
-					.where("author", "==", room.otherUserId)
-					.onSnapshot((snap) => {
-						const __messages = {}
-						snap.docs.forEach((snap) => {
-							// add message along with room id to object for merging
-							__messages[snap.id] = { ...snap.data(), roomId: room.id }
-						})
-						mergeMessages(__messages)
-					})
-
-				return unsubscribe
-			})
-
-			const unsubscribeAll = () => {
-				unsubscribeArr.forEach((fn) => fn())
-			}
-
-			return unsubscribeAll
-		}
-	}, [rooms])
-
-	const messagesArr = Object.values(messages)
-	const messagesCount = messagesArr.length
-	const hasMessages = !!messages && messagesCount !== 0
-
-	return (
-		<OuterContainer>
-			<Indicator>
-				<FontAwesomeIcon icon={["far", "envelope"]} fixedWidth />
-				{hasMessages && <div className="number-display">{messagesCount}</div>}
-			</Indicator>
-			<RoomsContainer>
-				{hasMessages ? (
-					messagesArr.map((message) => <Message {...message} />)
-				) : (
-					<div className="empty-state">Brak nowych wiadomości</div>
-				)}
-			</RoomsContainer>
-		</OuterContainer>
-	)
-}
 
 const Navigation = ({ authUser, firebase, currentBreakpoint, location, ...rest }) => {
 	const scrollPosition = useScrollPosition()

@@ -181,21 +181,26 @@ const UserChat = ({ user, userId, isAuthorized, onForceRefresh, match, location 
 		getCurrentRoom()
 	}, [paramsString, rooms])
 
+	const hasRooms = rooms && rooms.length > 0
+
 	return !rooms || !user ? (
 		<LoadingSpinner />
 	) : (
 		<PageContainer maxWidth={5}>
-			{rooms.length === 0 && <EmptyState text="Nie masz jeszcze żadnych wiadomości" />}
-			<OuterContainer>
-				<div className="sidebar">
-					{rooms.map((room) => (
-						<RoomTab {...room} />
-					))}
-				</div>
-				<div className="chat-container">
-					{currentRoom && <Room {...currentRoom} user={user} />}
-				</div>
-			</OuterContainer>
+			{hasRooms ? (
+				<OuterContainer>
+					<div className="sidebar">
+						{rooms.map((room) => (
+							<RoomTab {...room} />
+						))}
+					</div>
+					<div className="chat-container">
+						{currentRoom && <Room {...currentRoom} user={user} />}
+					</div>
+				</OuterContainer>
+			) : (
+				<div className="empty-state">Nie masz jeszcze żadnych wiadomości</div>
+			)}
 		</PageContainer>
 	)
 }
