@@ -9,6 +9,7 @@ import { LoadableComponentSpinner } from "../LoadingSpinner"
 import ErrorBoundary from "../ErrorBoundary"
 
 import NotFound from "../../pages/NotFound"
+import { PageContainer } from "../Containers"
 
 const Home = Loadable({
 	loader: () => import("../../pages/Home"),
@@ -452,14 +453,10 @@ const routes = [
 ]
 
 const ErrorComponent = ({ error, errorInfo }) => (
-	<div>
+	<PageContainer>
 		<h2>Wystąpił problem</h2>
-		<details style={{ whiteSpace: "pre-wrap" }}>
-			{error && error.toString()}
-			<br />
-			{errorInfo.componentStack}
-		</details>
-	</div>
+		<p>Odśwież stronę lub spróbuj ponownie później</p>
+	</PageContainer>
 )
 
 const Routes = () => {
@@ -490,8 +487,10 @@ const Meta = () => {
 					key={i}
 					exact={route.exact === false ? false : true}
 					path={route.path}
-					render={() =>
-						route.title ? (
+					render={() => {
+						console.log(route.title)
+
+						return route.title ? (
 							<Helmet>
 								<title>{`${route.title} | ${CONST.BRAND_NAME}`}</title>
 							</Helmet>
@@ -500,7 +499,7 @@ const Meta = () => {
 								<title>{CONST.BRAND_NAME}</title>
 							</Helmet>
 						)
-					}
+					}}
 				/>
 			))}
 		</Switch>
