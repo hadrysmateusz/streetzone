@@ -13,39 +13,71 @@ import { useFirebase, useUserData } from "../../hooks"
 import { NewChat } from "../Chat/New"
 
 const RoomStyles = styled.div`
+	display: grid;
+	grid-template-rows: auto 1fr auto;
+	min-height: 0;
+	height: 100%;
+	max-height: 100%;
+
+	.top-container {
+		padding: var(--spacing3);
+		padding-bottom: var(--spacing2);
+	}
+
+	.bottom-container {
+		padding: var(--spacing3);
+		padding-top: var(--spacing2);
+	}
+
 	.messages {
+		padding: var(--spacing3);
 		display: grid;
-		overflow-y: scroll;
-		max-height: 400px;
+		gap: var(--spacing3);
+		overflow-y: auto;
 	}
 `
 
 const OuterContainer = styled.div`
 	display: grid;
 	grid-template-columns: 1fr 3fr;
+	grid-template-rows: 100%;
 	border: 1px solid var(--gray75);
 	margin-bottom: var(--spacing4);
-	min-height: 400px;
+	height: 650px;
 	.sidebar {
 		border-right: 1px solid var(--gray75);
 	}
 	.chat-container {
-		padding: var(--spacing3);
+		.no-room-selected {
+			background: var(--almost-white);
+			width: 100%;
+			height: 100%;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			color: var(--gray0);
+			user-select: none;
+			cursor: default;
+		}
 	}
 `
 
+// const MessageOuterContainer = styled.div`
+// width: 100%;
+// display: flex;
+
+// `
+
 const MessageStyles = styled.div`
 	padding: var(--spacing2);
-	margin: var(--spacing2);
-	border-radius: 6px;
-	background: var(--gray75);
+	border-radius: 4px;
 	width: auto;
 	min-width: 0;
-	max-width: 400px;
+	max-width: 45%;
 	color: white;
 
-	${(p) => p.isAuthor && "background: #1fc694;"}
-	${(p) => p.isAuthor && "justify-self: end;"}
+	background: ${(p) => (p.isAuthor ? "#1fc694" : "var(--gray0)")};
+	justify-self: ${(p) => (p.isAuthor ? "end" : "start")};
 
 	.createdAt {
 		font-size: var(--font-size--xs);
@@ -147,13 +179,17 @@ const Room = ({ id, otherUserId, user }) => {
 		<LoadingSpinner />
 	) : (
 		<RoomStyles>
-			<UserPreview id={otherUserId} />
+			<div className="top-container">
+				<UserPreview id={otherUserId} />
+			</div>
 			<div className="messages" ref={containerRef}>
 				{messages.map((message) => (
 					<Message {...message} user={user} roomId={id} />
 				))}
 			</div>
-			<NewChat userId={otherUserId} />
+			<div className="bottom-container">
+				<NewChat userId={otherUserId} />
+			</div>
 		</RoomStyles>
 	)
 }
@@ -208,7 +244,11 @@ const UserChat = ({ user, userId, isAuthorized, onForceRefresh, match, location 
 						))}
 					</div>
 					<div className="chat-container">
-						{currentRoom && <Room {...currentRoom} user={user} />}
+						{currentRoom ? (
+							<Room {...currentRoom} user={user} />
+						) : (
+							<div class="no-room-selected">Wybierz osobę z listy</div>
+						)}
 					</div>
 				</OuterContainer>
 			) : (
