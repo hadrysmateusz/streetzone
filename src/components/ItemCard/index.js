@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Ratio from "react-ratio";
 import moment from "moment";
+import {withBreakpoints} from "react-breakpoints"
 
 import { HeartButton, TYPE } from "../SaveButton";
 import LoadingSpinner from "../LoadingSpinner";
@@ -80,7 +81,7 @@ export const ItemCard = ({ item, ...rest }) => {
   );
 };
 
-export const ItemCardHorizontal = ({ item, ...rest }) => {
+export const ItemCardHorizontal = withBreakpoints(({ item, currentBreakpoint, ...rest }) => {
   const {
     id,
     name,
@@ -121,6 +122,6 @@ export const ItemCardHorizontal = ({ item, ...rest }) => {
       </Link>
     </HorizontalContainer>
   );
-};
+});
 
 export default ItemCard;

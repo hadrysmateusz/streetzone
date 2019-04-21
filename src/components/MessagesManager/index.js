@@ -73,7 +73,7 @@ const MessageStyles = styled.div`
 `
 
 const ManagerStyles = styled.div`
-	color: black;
+	color: var(--black75);
 	cursor: pointer;
 
 	.empty-state {
