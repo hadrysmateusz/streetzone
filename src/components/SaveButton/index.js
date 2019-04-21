@@ -18,7 +18,7 @@ const INVALID_TYPE_ERR = "SaveButton needs a valid type"
 const HeartButtonContainer = styled.div`
 	background: rgba(255, 255, 255, 1);
 	padding: var(--spacing1);
-	color: var(--black0);
+	color: inherit;
 	display: flex;
 	cursor: pointer;
 	justify-content: center;

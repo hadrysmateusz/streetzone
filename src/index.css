@@ -2,8 +2,9 @@
 	/* base font size for the rem units */
 	font-size: 10px;
 
+	--error0: #B42121;
 	--error50: #e63b27;
-	--error0: #ffdeda;
+	--error100: #ffdeda;
 
 	--black0: #06080a;
 	--black25: #17191b;

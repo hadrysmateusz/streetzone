@@ -15,6 +15,70 @@ const ContainerCommon = css`
 	}
 `
 
+export const HorizontalContainer = styled.div`
+	transition: box-shadow 200ms ease;
+	:hover {
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.11);
+	}
+	a {
+		border: 1px solid var(--gray75);
+		display: grid;
+		grid-template-rows: 100%;
+		grid-template-columns: 3fr 1fr;
+
+		.info-container {
+			padding: var(--spacing4);
+
+			.top-container {
+				display: flex;
+				font-size: var(--font-size--xs);
+				color: var(--gray0);
+				text-transform: uppercase;
+				margin-bottom: var(--spacing1);
+
+				.designers {
+					font-weight: bold;
+					margin-left: var(--spacing3)
+				}
+			}
+
+			.name {
+				font-size: var(--font-size--l);
+				font-family: var(--font-family--serif);
+				font-weight: bold;
+				color: var(--black0);
+			}
+
+			.createdAt {
+				font-size: var(--font-size--xs);
+				color: var(--gray0);
+				margin: var(--spacing2) 0;
+			}
+
+			.description {
+				max-width: 460px;
+				color: var(--black50);
+			}
+
+			.bottom-container {
+				display: flex;
+				justify-content: space-between;
+				margin-top: var(--spacing3);
+
+				.price {
+					color: var(--error0);
+					font-size: var(--font-size--m);
+					font-weight: bold;
+				}
+
+				.like-button {
+					color: var(--gray25);
+				}
+			}
+		}
+	}
+`
+
 export const Container = styled.div`
 	${ContainerCommon}
 	position: relative;

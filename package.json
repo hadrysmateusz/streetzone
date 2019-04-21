@@ -8,6 +8,7 @@
 		"@fortawesome/free-regular-svg-icons": "^5.8.1",
 		"@fortawesome/free-solid-svg-icons": "^5.8.1",
 		"@fortawesome/react-fontawesome": "^0.1.4",
+		"@sentry/browser": "^5.1.0",
 		"body-scroll-lock": "^2.6.1",
 		"clone-deep": "^4.0.1",
 		"deep-equal": "^1.0.1",
