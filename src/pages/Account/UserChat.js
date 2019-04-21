@@ -6,7 +6,6 @@ import { withRouter, Link } from "react-router-dom"
 import LoadingSpinner from "../../components/LoadingSpinner"
 import UserPreview from "../../components/UserPreview"
 import { PageContainer } from "../../components/Containers"
-import EmptyState from "../../components/EmptyState"
 import ProfilePicture from "../../components/ProfilePicture"
 import getProfilePictureURL from "../../utils/getProfilePictureURL"
 import { useFirebase, useUserData } from "../../hooks"
@@ -26,6 +25,7 @@ const OuterContainer = styled.div`
 	grid-template-columns: 1fr 3fr;
 	border: 1px solid var(--gray75);
 	margin-bottom: var(--spacing4);
+	min-height: 400px;
 	.sidebar {
 		border-right: 1px solid var(--gray75);
 	}
@@ -63,11 +63,11 @@ const RoomTabStyles = styled.div`
 	a {
 		display: flex;
 		align-items: center;
+		padding: var(--spacing3);
 		> * + * {
 			margin-left: var(--spacing2);
 		}
 	}
-	padding: var(--spacing3);
 
 	color: var(--black0);
 	font-weight: bold;
@@ -76,9 +76,22 @@ const RoomTabStyles = styled.div`
 	border-bottom: 1px solid var(--gray75);
 `
 
-const Message = ({ message, createdAt, author, user }) => {
+const Message = ({ id, roomId, message, createdAt, author, user, unread }) => {
+	const firebase = useFirebase()
 	const formattedCreatedAt = moment(createdAt).format("DD.MM o HH:mm")
 	const isAuthor = author === user.uid
+
+	useEffect(() => {
+		// mark message as read
+		if (unread && !isAuthor) {
+			firebase.db
+				.collection("rooms")
+				.doc(roomId)
+				.collection("messages")
+				.doc(id)
+				.update({ unread: false })
+		}
+	}, [])
 
 	return (
 		<MessageStyles isAuthor={isAuthor}>
@@ -137,7 +150,7 @@ const Room = ({ id, otherUserId, user }) => {
 			<UserPreview id={otherUserId} />
 			<div className="messages" ref={containerRef}>
 				{messages.map((message) => (
-					<Message {...message} user={user} />
+					<Message {...message} user={user} roomId={id} />
 				))}
 			</div>
 			<NewChat userId={otherUserId} />
