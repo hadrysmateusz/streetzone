@@ -69,14 +69,14 @@ const OuterContainer = styled.div`
 // `
 
 const MessageStyles = styled.div`
-	padding: var(--spacing2);
+	padding: var(--spacing3);
 	border-radius: 4px;
 	width: auto;
 	min-width: 0;
 	max-width: 45%;
-	color: white;
+	color: ${(p) => (p.isAuthor ? "white" : "var(--black50)")};
 
-	background: ${(p) => (p.isAuthor ? "#1fc694" : "var(--gray0)")};
+	background: ${(p) => (p.isAuthor ? "#1fc694" : "#f3f6ee")};
 	justify-self: ${(p) => (p.isAuthor ? "end" : "start")};
 
 	.createdAt {
@@ -87,7 +87,8 @@ const MessageStyles = styled.div`
 		white-space: pre-wrap;
 		word-wrap: break-word;
 		font-family: var(--font-family--sans-serif);
-		font-weight: bold;
+		margin: 0;
+		margin-top: var(--spacing2);
 	}
 `
 
