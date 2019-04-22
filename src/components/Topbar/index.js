@@ -8,7 +8,7 @@ import ViewSwitch from "./ViewSwitch"
 import FiltersToggle from "./FiltersToggle"
 import { Container } from "./StyledComponents"
 
-const Topbar = ({ toggleFilters, clearFilters, setView }) => {
+const Topbar = ({ toggleFilters, clearFilters, setView, searchQueryValue }) => {
 	return (
 		<Container>
 			<div className="filter-container">

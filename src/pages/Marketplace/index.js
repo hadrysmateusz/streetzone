@@ -138,6 +138,7 @@ class HomePage extends Component {
 							toggleFilters={this.toggleFilters}
 							clearFilters={this.setClearFiltersFlag}
 							setView={this.setView}
+							searchQueryValue={this.state.query}
 						/>
 
 						<CurrentFilters

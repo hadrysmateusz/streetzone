@@ -41,37 +41,16 @@ export const InstantSearchWrapper = withRouter(
 			setSearchState(state)
 		}, [location])
 
-		// const refresh = () => {
-		// 	setShouldRefresh(true)
-		// 	setShouldRefresh(false)
-		// }
-
-		// const shouldScroll = (oldState, newState) => {
-		// 	/* get copies of current and prev states and compare all values except for page
-		// to determine whether the component should scroll back to the top */
-		// 	const _oldState = { ...oldState, page: null }
-		// 	const _newState = { ...newState, page: null }
-		// 	const areEqual = equal(_newState, _oldState)
-		// 	if (!areEqual) {
-		// 		window.scrollTo(0, 0)
-		// 	}
-		// }
-
 		const handleSearchStateChange = async (newSearchState) => {
 			const formattedState = await onSearchStateChange(newSearchState)
 			const url = encodeURL(formattedState)
-			// debugger
 			history.push(url)
-
-			// update the searchState (to increase apparent performance)
-			// setSearchState(newSearchState)
 		}
 
 		const createStateFromURL = () => {
 			try {
 				const parsedSearch = decodeURL(location.search)
 				const formattedState = urlToState(parsedSearch)
-				// debugger
 				return formattedState
 			} catch (e) {
 				console.log(e)

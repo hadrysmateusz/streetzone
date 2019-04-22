@@ -19,8 +19,7 @@ class AlgoliaSearchBox extends React.Component {
 			const search = searchParams.get("search")
 
 			// decode and parse the search paramter
-			const convertedSearch = atob(search)
-			const parsedSearch = JSON.parse(convertedSearch)
+			const parsedSearch = JSON.parse(search)
 
 			this.setState({ inputValue: parsedSearch.query })
 		} catch (e) {
@@ -56,8 +55,7 @@ class AlgoliaSearchBox extends React.Component {
 				const search = searchParams.get("search")
 
 				// decode and parse the search paramter
-				const convertedSearch = atob(search)
-				const parsedSearch = JSON.parse(convertedSearch)
+				const parsedSearch = JSON.parse(search)
 
 				this.setState({ inputValue: parsedSearch.query })
 			} catch (e) {
