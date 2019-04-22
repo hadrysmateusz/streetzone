@@ -1,52 +1,106 @@
 import styled, { css } from "styled-components/macro"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { Text, TextBlock } from "../StyledComponents"
 
-const ContainerCommon = css`
-	overflow: hidden;
-	min-width: 0;
-	min-height: 0;
-	background: white;
+const gridStyles = css`
+	display: grid;
+	grid-template-rows: 160px 104px;
+	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
+		grid-template-rows: 200px 104px;
+		.category {
+			display: block;
+		}
+	}
+	grid-template-columns: 100%;
 
-	a {
-		display: flex;
-		flex-direction: column;
-		height: 100%;
+	.info-container {
+		padding: var(--spacing3);
+
+		.price {
+			font-size: var(--font-size--s);
+		}
+
+		.name {
+			font-size: var(--font-size--m);
+			overflow: hidden;
+		}
+
+		.bottom-container {
+			margin-top: var(--spacing2);
+		}
 	}
 `
 
-export const HorizontalContainer = styled.div`
+const listStyles = css`
+	display: grid;
+	grid-template-rows: 100%;
+	grid-template-columns: 1fr minmax(160px, 28%);
+	height: 264px;
+	.info-container {
+		padding: var(--spacing4);
+
+		.price {
+			font-size: var(--font-size--m);
+		}
+
+		.name {
+			font-size: var(--font-size--l);
+		}
+
+		.bottom-container {
+			margin-top: var(--spacing3);
+		}
+	}
+`
+
+export const Container = styled.div`
 	transition: box-shadow 200ms ease;
+	min-width: 0;
+
 	:hover {
 		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.11);
 	}
 	a {
 		border: 1px solid var(--gray75);
-		display: grid;
-		grid-template-rows: 100%;
-		grid-template-columns: 3fr 1fr;
+		overflow: hidden;
+
+		${(p) => (p.viewMode === "list" ? listStyles : p.viewMode === "grid" && gridStyles)}
 
 		.info-container {
-			padding: var(--spacing4);
-
 			.top-container {
-				display: flex;
+				display: grid;
+				grid-template-columns: auto auto 1fr;
 				font-size: var(--font-size--xs);
 				color: var(--gray0);
 				text-transform: uppercase;
 				margin-bottom: var(--spacing1);
+				white-space: nowrap;
+				overflow: ellipsis;
+
+				min-width: 0;
+				> * {
+					min-width: 0;
+					/* overflow: hidden; */
+				}
 
 				.designers {
 					font-weight: bold;
-					margin-left: var(--spacing3)
+					margin-left: var(--spacing3);
+				}
+
+				.size {
+					color: var(--black0);
+					text-align: right;
+					font-weight: bold;
 				}
 			}
 
 			.name {
-				font-size: var(--font-size--l);
 				font-family: var(--font-family--serif);
 				font-weight: bold;
 				color: var(--black0);
+				line-height: 1.5em;
+				max-height: 3em;
+				overflow: hidden;
 			}
 
 			.createdAt {
@@ -58,16 +112,17 @@ export const HorizontalContainer = styled.div`
 			.description {
 				max-width: 460px;
 				color: var(--black50);
+				max-height: 4.5em;
+				line-height: 1.5em;
+				overflow: hidden;
 			}
 
 			.bottom-container {
 				display: flex;
 				justify-content: space-between;
-				margin-top: var(--spacing3);
 
 				.price {
 					color: var(--error0);
-					font-size: var(--font-size--m);
 					font-weight: bold;
 				}
 
@@ -79,97 +134,28 @@ export const HorizontalContainer = styled.div`
 	}
 `
 
-export const Container = styled.div`
-	${ContainerCommon}
-	position: relative;
+export const FluidImage = styled.div`
+	width: 100%;
 	height: 100%;
-	transition: box-shadow 200ms ease;
-	:hover {
-		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.11);
-	}
-`
-
-export const MiniContainer = styled.div`
-	${ContainerCommon}
-	height: 240px;
+	background-image: url("${(p) => p.url}");
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: center;
 `
 
 export const ThumbnailContainer = styled.div`
 	min-height: 0; /* prevent content from overflowing container */
+	height: 100%;
 	flex: 1 1 100%;
-	max-width: 320px;
-	overflow: hidden;
+	/* overflow: hidden; */
 	justify-content: center;
 	align-items: center;
 	display: flex;
 
 	img {
-		object-fit: cover;
 		width: 100%;
-		height: 100%;
+		/* height: 100%; */
 	}
-`
-
-export const InfoContainer = styled.div`
-	border-top: 1px solid ${(p) => p.theme.colors.gray[100]};
-	padding: 4px;
-`
-
-export const TopContainer = styled.div`
-	padding: 15px 2px 12px 12px;
-	display: flex;
-	max-width: 100%;
-`
-
-export const SecondaryContainer = styled.div`
-	border-top: 1px solid ${(p) => p.theme.colors.gray[100]};
-	padding: 12px;
-
-	display: grid;
-	grid-auto-columns: minmax(min-content, 1fr);
-	grid-auto-flow: column;
-`
-
-export const InnerContainer = styled.div`
-	flex: 1;
-	min-width: 0;
-
-	> :first-child {
-		margin-bottom: var(--spacing1);
-	}
-`
-
-const itemBase = css`
-	white-space: nowrap;
-	text-overflow: ellipsis;
-	font-weight: 500;
-	overflow: hidden;
-	line-height: 1.2;
-	color: black;
-`
-
-export const Name = styled(TextBlock)`
-	${itemBase}
-`
-
-export const Designers = styled(TextBlock)`
-	${itemBase}
-	font-weight: bold;
-	text-transform: uppercase;
-	padding-right: var(--spacing2);
-	word-spacing: 0.12ch;
-`
-
-export const Price = styled(Text)`
-	${itemBase}
-	font-weight: bold;
-	text-align: left;
-`
-
-export const Size = styled(Text)`
-	${itemBase}
-	font-weight: bold;
-	text-align: right;
 `
 
 export const StyledIcon = styled(FontAwesomeIcon)`

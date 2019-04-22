@@ -10,7 +10,7 @@ export const ItemsContainer = styled.div`
 
 
 	${(p) => {
-		const cols = Math.min(Math.ceil(p.containerWidth / 280), 3)
+		const cols = Math.min(Math.ceil(p.containerWidth / 325), 3)
 		return `grid-template-columns: repeat(${cols}, 1fr);`
 	}}
 
