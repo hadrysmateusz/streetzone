@@ -38,17 +38,23 @@ const IconContainer = styled.div`
 	${(p) => p.isDisabled && "color: var(--gray25)"}
 `
 
-const Input = ({ icon, info, error, disabled, ...rest }) => {
+const Input = React.forwardRef(({ icon, info, error, disabled, ...rest }, ref) => {
 	return (
 		<FormElementContainer error={error} info={info}>
 			<InnerContainer>
 				<IconContainer isDisabled={disabled}>
 					{icon && <FontAwesomeIcon icon={icon} />}
 				</IconContainer>
-				<StyledInput hasIcon={!!icon} hasError={!!error} disabled={disabled} {...rest} />
+				<StyledInput
+					ref={ref}
+					hasIcon={!!icon}
+					hasError={!!error}
+					disabled={disabled}
+					{...rest}
+				/>
 			</InnerContainer>
 		</FormElementContainer>
 	)
-}
+})
 
 export default Input
