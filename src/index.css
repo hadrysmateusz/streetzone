@@ -2,7 +2,7 @@
 	/* base font size for the rem units */
 	font-size: 10px;
 
-	--glass: rgba(255, 255, 255, 0.95);
+	--glass: rgba(255, 255, 255, 0.93);
 
 	--error0: #b42121;
 	--error50: #e63b27;
