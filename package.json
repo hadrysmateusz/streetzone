@@ -74,13 +74,17 @@
 		"build": "react-scripts build",
 		"test": "react-scripts test",
 		"eject": "react-scripts eject",
-		"deploy-test": "yarn build && firebase deploy --only hosting",
-		"deploy-patch": "yarn build && yarn version --patch && firebase deploy --only hosting",
-		"deploy-minor": "yarn build && yarn version --minor && firebase deploy --only hosting",
-		"deploy-major": "yarn build && yarn version --major && firebase deploy --only hosting",
-		"deploy-functions": "firebase deploy --only functions",
 		"storybook": "start-storybook -p 9009 -s public",
-		"build-storybook": "build-storybook -s public"
+		"build-storybook": "build-storybook -s public",
+		"build:dev": "env-cmd .env.development yarn build",
+		"build:staging": "env-cmd .env.staging yarn build",
+		"build:prod": "yarn build",
+		"predeploy:dev": "yarn build:dev",
+		"deploy:dev": "firebase deploy --only hosting -P dev",
+		"predeploy:staging": "yarn build:staging",
+		"deploy:staging": "firebase deploy --only hosting -P staging",
+		"predeploy:prod": "yarn build:prod",
+		"deploy:prod": "firebase deploy --only hosting -P prod"
 	},
 	"eslintConfig": {
 		"extends": "react-app"
