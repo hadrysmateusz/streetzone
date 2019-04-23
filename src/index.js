@@ -15,8 +15,11 @@ import { THEME } from "./constants"
 import App from "./components/App"
 import { Firebase, FirebaseContext } from "./components/Firebase"
 
+console.log(process.env)
+
 Sentry.init({
-	dsn: "https://6d71f4345c1e4790900d8d309a1459d2@sentry.io/1442000"
+	dsn: "https://6d71f4345c1e4790900d8d309a1459d2@sentry.io/1442000",
+	environment: process.env.REACT_APP_ENV
 })
 
 ReactDOM.render(
