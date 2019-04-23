@@ -1,5 +1,5 @@
-import React from "react"
-import { Route, Switch } from "react-router-dom"
+import React, { useEffect } from "react"
+import { Route, Switch, withRouter } from "react-router-dom"
 import Loadable from "react-loadable"
 import { Helmet } from "react-helmet"
 
@@ -459,6 +459,18 @@ const ErrorComponent = ({ error, errorInfo }) => (
 	</PageContainer>
 )
 
+const ScrollToTop = withRouter(({ children, shouldScroll, location }) => {
+	// scroll to top on location
+	useEffect(() => {
+		// don't scroll if the route explicitly says not to
+		if (!shouldScroll) return
+
+		window.scrollTo(0, 0)
+	}, [location.pathname])
+
+	return children
+})
+
 const Routes = () => {
 	return (
 		<Switch>
@@ -468,9 +480,11 @@ const Routes = () => {
 					exact={route.exact === false ? false : true}
 					path={route.path}
 					render={(props) => (
-						<ErrorBoundary ErrorComponent={ErrorComponent}>
-							<route.component {...props} routes={route.routes} />
-						</ErrorBoundary>
+						<ScrollToTop shouldScroll={route.scrollToTop !== false}>
+							<ErrorBoundary ErrorComponent={ErrorComponent}>
+								<route.component {...props} routes={route.routes} />
+							</ErrorBoundary>
+						</ScrollToTop>
 					)}
 				/>
 			))}
