@@ -4,7 +4,7 @@ import { TextBlock } from "../StyledComponents"
 
 import SocialLoginCard from "./SocialLoginCard"
 import { SocialCardsContainer, SocialContainer } from "./StyledComponents"
-import SIGN_IN_METHODS from "./signInMethods"
+import SIGN_IN_METHODS from "../../constants/signInMethods"
 
 const SocialLoginManagement = ({ activeMethods, onlyOneLeft, onLink, onUnlink }) => {
 	return (
