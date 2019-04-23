@@ -25,9 +25,9 @@ export const FiltersContainer = styled.div`
 export const FilterInnerContainer = styled.div`
 	/* mobile */
 	@media (max-width: ${(p) => p.theme.breakpoints[1] - 1}px) {
-		flex: 1 1 100%;
-		overflow-y: scroll;
-		margin-bottom: var(--spacing5);
+		max-height: 100vh;
+		overflow-y: auto;
+		padding-bottom: 100px; /* make sure no content is inaccessible */
 	}
 `
 
@@ -36,12 +36,21 @@ export const ActionsContainer = styled.div`
 	max-width: 100vw;
 	width: 100%;
 
-	background: white;
+	/* background: white; */
 	padding: var(--spacing2);
 	box-sizing: border-box;
 	position: fixed;
 	bottom: 0;
 	left: 0;
+`
+
+export const MobileFiltersHeader = styled.header`
+	border-bottom: 1px solid var(--gray75);
+	padding: var(--spacing3);
+	display: grid;
+	grid-template-columns: 1fr min-content;
+	grid-auto-flow: column;
+	align-items: center;
 `
 
 export const FiltersHeader = styled.div`
@@ -69,13 +78,4 @@ export const ListItem = styled.div`
 export const CloseIconContainer = styled.span`
 	cursor: pointer;
 	padding: var(--spacing1);
-`
-
-export const MobileFiltersHeader = styled.header`
-	border-bottom: 1px solid var(--gray75);
-	padding: var(--spacing3);
-	display: grid;
-	grid-template-columns: 1fr min-content;
-	grid-auto-flow: column;
-	align-items: center;
 `

@@ -64,10 +64,12 @@ export class Filters extends Component {
 	}
 
 	render() {
+		const isMobile = this.props.currentBreakpoint < 1
+
 		return (
 			<FiltersContainer {...this.props}>
 				<FilterInnerContainer>
-					{this.props.currentBreakpoint < 1 && (
+					{isMobile && (
 						<MobileFiltersHeader>
 							<TextBlock size="m" bold>
 								Filtry
@@ -132,7 +134,7 @@ export class Filters extends Component {
 						</Section>
 					)}
 				</FilterInnerContainer>
-				{this.props.currentBreakpoint < 1 && (
+				{isMobile && (
 					<ActionsContainer>
 						<ButtonContainer noMargin>
 							<Button onClick={this.props.toggleFilters} fullWidth primary>
