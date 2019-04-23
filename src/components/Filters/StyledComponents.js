@@ -36,7 +36,7 @@ export const ActionsContainer = styled.div`
 	max-width: 100vw;
 	width: 100%;
 
-	/* background: white; */
+	background: white;
 	padding: var(--spacing2);
 	box-sizing: border-box;
 	position: fixed;

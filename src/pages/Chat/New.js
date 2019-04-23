@@ -96,13 +96,15 @@ export const NewChat = ({ userId }) => {
 							}}
 						</Field>
 
-						<ButtonContainer noMargin>
+						<ButtonContainer>
 							<LoaderButton
 								text="Wyślij"
 								type="submit"
 								isLoading={submitting}
 								disabled={submitting || pristine}
 								primary
+								big
+								fullWidth
 							/>
 						</ButtonContainer>
 					</form>
