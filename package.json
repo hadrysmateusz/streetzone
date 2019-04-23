@@ -12,6 +12,7 @@
 		"body-scroll-lock": "^2.6.1",
 		"clone-deep": "^4.0.1",
 		"deep-equal": "^1.0.1",
+		"env-cmd": "^8.0.2",
 		"filesize": "^3.6.1",
 		"final-form": "^4.12.0",
 		"firebase": "^5.8.6",
