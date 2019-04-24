@@ -16,6 +16,8 @@ import useFirebase from "../../../../hooks/useFirebase"
 import sectionOptions from "./section_options"
 
 import "react-datetime/css/react-datetime.css"
+import { LoaderButton, ButtonContainer } from "../../../../components/Button"
+import { css } from "styled-components"
 
 const StyledForm = styled(Form)`
 	display: grid;
@@ -34,6 +36,22 @@ const PreviewStyles = styled.div`
 	border: 1px solid var(--gray25);
 	padding: var(--spacing2);
 	margin-top: var(--spacing2);
+`
+
+const Section = styled.div`
+	margin: var(--spacing3) 0;
+	${(p) => p.flex && `display: flex;`}
+
+	.sub-section {
+		flex: 1 1 50%;
+		:not(:last-child) {
+			margin-right: var(--spacing2);
+		}
+	}
+
+	.header {
+		font-weight: bold;
+	}
 `
 
 const AddPost = () => {
@@ -88,143 +106,163 @@ const AddPost = () => {
 	return (
 		<PageContainer>
 			<StyledForm onSubmit={onSubmit}>
-				{({ values, form }) => {
+				{({ values, form, submitting, pristine }) => {
 					return (
 						<>
-							<Field name="section" type="select">
-								{({ input, meta }) => {
-									const error = meta.error && meta.touched ? meta.error : null
-									return (
-										<DropdownFinalform
-											{...input}
-											options={sectionOptions}
-											placeholder="Sekcja"
-											error={error}
-										/>
-									)
-								}}
-							</Field>
-							<Field name="mainContent">
-								{({ input, meta }) => {
-									const error = meta.error && meta.touched ? meta.error : null
-									const { value } = input
-									return (
-										<ContentEditorContainer>
-											<FileHandlerText {...input} error={error} />
-											<PreviewStyles>
-												<ReactMarkdown source={value} />
-											</PreviewStyles>
-										</ContentEditorContainer>
-									)
-								}}
-							</Field>
-							<Field
-								name="section"
-								subscribe={{ value: true }}
-								render={({ input: { value: section } }) => (
-									<div>
-										{section && section !== "Dropy" && (
-											<>
-												<Text size="s" bold>
-													Autor
-												</Text>
-												<Field name="author">
-													{({ input, meta }) => {
-														const error = meta.error && meta.touched ? meta.error : null
-														return (
-															<Input
-																{...input}
-																type="text"
-																placeholder="Author"
-																error={error}
-															/>
-														)
-													}}
-												</Field>
-											</>
-										)}
+							<Section>
+								<div className="header">Sekcja</div>
+								<Field name="section" type="select">
+									{({ input, meta }) => {
+										const error = meta.error && meta.touched ? meta.error : null
+										return (
+											<DropdownFinalform
+												{...input}
+												options={sectionOptions}
+												placeholder="Sekcja"
+												error={error}
+											/>
+										)
+									}}
+								</Field>
+							</Section>
 
-										<Text size="s" bold>
-											{section && section === "Dropy" ? "Nazwa przedmiotu" : "Tytuł"}
-										</Text>
-										<Field name="title">
+							<Section>
+								<div className="header">Treść</div>
+								<Field name="mainContent">
+									{({ input, meta }) => {
+										const error = meta.error && meta.touched ? meta.error : null
+										const { value } = input
+										return (
+											<ContentEditorContainer>
+												<FileHandlerText {...input} error={error} />
+												<PreviewStyles>
+													<ReactMarkdown source={value} />
+												</PreviewStyles>
+											</ContentEditorContainer>
+										)
+									}}
+								</Field>
+							</Section>
+
+							<Section>
+								<div className="header">Autor</div>
+								<Field name="author">
+									{({ input, meta }) => {
+										const error = meta.error && meta.touched ? meta.error : null
+										return (
+											<Input {...input} type="text" placeholder="Autor" error={error} />
+										)
+									}}
+								</Field>
+							</Section>
+
+							<Section>
+								<div className="header">
+									{values.section && values.section === "Dropy"
+										? "Nazwa przedmiotu"
+										: "Tytuł"}
+								</div>
+								<Field name="title">
+									{({ input, meta }) => {
+										const error = meta.error && meta.touched ? meta.error : null
+										return (
+											<Input
+												{...input}
+												type="text"
+												placeholder="Tytuł/Nazwa"
+												error={error}
+											/>
+										)
+									}}
+								</Field>
+							</Section>
+
+							{values.section === "Dropy" && (
+								<Section flex>
+									<div className="sub-section">
+										<div className="header">Data dropu</div>
+										<Field name="dropsAtDate">
 											{({ input, meta }) => {
 												const error = meta.error && meta.touched ? meta.error : null
 												return (
-													<Input
+													<Datetime
 														{...input}
-														type="text"
-														placeholder="Title"
 														error={error}
-													/>
-												)
-											}}
-										</Field>
-
-										{section === "Dropy" && (
-											<>
-												<Text size="s" bold>
-													Data dropu
-												</Text>
-												<Field name="dropsAtDate">
-													{({ input, meta }) => {
-														const error = meta.error && meta.touched ? meta.error : null
-														return (
-															<Datetime
-																{...input}
-																error={error}
-																input={false}
-																timeFormat={false}
-															/>
-														)
-													}}
-												</Field>
-
-												<Text size="s" bold>
-													Czas dropu
-												</Text>
-												<Field name="dropsAtTime">
-													{({ input, meta }) => {
-														const error = meta.error && meta.touched ? meta.error : null
-														return (
-															<Datetime
-																{...input}
-																error={error}
-																input={false}
-																timeFormat="HH:mm"
-																dateFormat={false}
-															/>
-														)
-													}}
-												</Field>
-											</>
-										)}
-
-										<Field name="mainImage">
-											{({ input, meta }) => {
-												return (
-													<>
-														<FileHandlerSingle {...input} error={meta.error} />
-													</>
-												)
-											}}
-										</Field>
-
-										<Field name="tags" type="select">
-											{({ input, meta }) => {
-												const error = meta.error && meta.touched ? meta.error : null
-												return (
-													<MultiTextInputFinalform
-														{...input}
-														placeholder="Tagi"
-														error={error}
+														input={false}
+														timeFormat={false}
 													/>
 												)
 											}}
 										</Field>
 									</div>
-								)}
-							/>
+
+									<div className="sub-section">
+										<div className="header">Czas dropu</div>
+										<Field name="dropsAtTime">
+											{({ input, meta }) => {
+												const error = meta.error && meta.touched ? meta.error : null
+												return (
+													<Datetime
+														{...input}
+														error={error}
+														input={false}
+														timeFormat="HH:mm"
+														dateFormat={false}
+													/>
+												)
+											}}
+										</Field>
+									</div>
+								</Section>
+							)}
+
+							<Section>
+								<div className="header">Zdjęcie</div>
+								<Field name="mainImage">
+									{({ input, meta }) => {
+										return (
+											<>
+												<FileHandlerSingle
+													{...input}
+													error={meta.error}
+													containerStyles={css`
+														width: 700px;
+														height: 380px;
+													`}
+												/>
+											</>
+										)
+									}}
+								</Field>
+							</Section>
+
+							<Section>
+								<div className="header">Tagi</div>
+								<Field name="tags" type="select">
+									{({ input, meta }) => {
+										const error = meta.error && meta.touched ? meta.error : null
+										return (
+											<MultiTextInputFinalform
+												{...input}
+												placeholder="Tagi"
+												error={error}
+											/>
+										)
+									}}
+								</Field>
+							</Section>
+
+							<ButtonContainer>
+								<LoaderButton
+									text="Gotowe"
+									type="submit"
+									big
+									fullWidth
+									primary
+									isLoading={submitting}
+									disabled={submitting || pristine}
+								/>
+							</ButtonContainer>
 						</>
 					)
 				}}
