@@ -47,11 +47,9 @@ class Firebase {
 			this.messaging
 				.requestPermission()
 				.then(() => {
-					// console.log("got permission")
 					return this.messaging.getToken()
 				})
 				.then((token) => {
-					// console.log("token", token)
 					this.sendNotificationTokenToDb(token)
 				})
 				.catch((e) => {
@@ -63,7 +61,6 @@ class Firebase {
 				this.messaging
 					.getToken()
 					.then((token) => {
-						// console.log("token", token)
 						this.sendNotificationTokenToDb(token)
 					})
 					.catch((e) => {
@@ -273,11 +270,9 @@ class Firebase {
 					this.messaging
 						.requestPermission()
 						.then(() => {
-							console.log("got permission")
 							return this.messaging.getToken()
 						})
 						.then((token) => {
-							console.log("token", token)
 							this.sendNotificationTokenToDb(token)
 						})
 						.catch((e) => {

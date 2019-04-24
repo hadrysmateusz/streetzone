@@ -175,8 +175,6 @@ const MessagesManager = () => {
 	const messagesCount = messagesArr.length
 	const hasMessages = !!messages && messagesCount > 0
 
-	console.log(messagesArr, rooms, hasMessages)
-
 	return (
 		<ManagerStyles>
 			<Indicator>

@@ -81,7 +81,6 @@ const Chat = ({ id, otherUserId, user, isMobile, closeMobileChat }) => {
 				setMessages(messages)
 
 				const elem = containerRef.current
-				console.log(containerRef)
 
 				elem.scrollTop = elem.scrollHeight
 			})

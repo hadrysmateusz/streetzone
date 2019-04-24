@@ -502,7 +502,6 @@ const Meta = () => {
 					exact={route.exact === false ? false : true}
 					path={route.path}
 					render={() => {
-						console.log(route.title)
 
 						return route.title ? (
 							<Helmet>
