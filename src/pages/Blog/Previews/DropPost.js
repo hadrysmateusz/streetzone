@@ -19,7 +19,7 @@ const DropPost = ({ id, mainImageURL, title, dropsAt }) => {
 						{title}
 					</TextBlock>
 					<TextBlock serif color="black75">
-						{moment(dropsAt).format("D.M.YY")}
+						{moment(Date.now()).to(moment(dropsAt))}
 					</TextBlock>
 					<ButtonContainer>
 						<Button>Czytaj więcej</Button>
