@@ -71,6 +71,11 @@ class ProfileEdit extends Component {
 		let newFileRef = null
 		let newURL_temp = null
 
+		if (values.email) {
+			// TODO: this requires re-authentication
+			firebase.updateEmail(values.email)
+		}
+
 		if (!file || !file.isUploaded) {
 			// If there is no file, create empty ref
 			// otherwise upload the new file and use its ref
