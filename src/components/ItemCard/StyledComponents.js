@@ -1,14 +1,12 @@
 import styled, { css } from "styled-components/macro"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { ellipsis } from "../../style-utils"
 
 const gridStyles = css`
 	display: grid;
 	grid-template-rows: 160px 104px;
 	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
 		grid-template-rows: 200px 104px;
-		.category {
-			display: block;
-		}
 	}
 	grid-template-columns: 100%;
 
@@ -67,30 +65,36 @@ export const Container = styled.div`
 
 		.info-container {
 			.top-container {
-				display: grid;
-				grid-template-columns: auto auto 1fr;
 				font-size: var(--font-size--xs);
 				color: var(--gray0);
 				text-transform: uppercase;
 				margin-bottom: var(--spacing1);
-				white-space: nowrap;
-				overflow: ellipsis;
+				display: flex;
 
-				min-width: 0;
+				/* add spacing between children */
+				> * + * {
+					padding-left: var(--spacing2);
+					@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
+						padding-left: var(--spacing3);
+					}
+				}
+
+				/* prevent children from taking up more space than they need */
 				> * {
-					min-width: 0;
-					/* overflow: hidden; */
+					${ellipsis}
+					flex: 0 1 auto;
 				}
 
 				.designers {
 					font-weight: bold;
-					margin-left: var(--spacing3);
 				}
 
 				.size {
 					color: var(--black0);
-					text-align: right;
 					font-weight: bold;
+
+					margin-left: auto; /* move the item to the right */
+					flex-shrink: 0;
 				}
 			}
 
