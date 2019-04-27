@@ -1,45 +1,14 @@
-import React, { useState, useCallback, useEffect } from "react"
+import React, { useState, useEffect } from "react"
 import PropTypes from "prop-types"
 import { useDropzone } from "react-dropzone"
-import styled from "styled-components/macro"
 
-import { FormElementContainer, commonStyles } from "../FormElements"
+import { FormElementContainer } from "../FormElements"
 import { CustomFile } from "."
 import { ButtonContainer, Button } from "../Button"
 import SmartFileItem from "./SmartFileItem"
-import { overlayCommon } from "../../style-utils"
 import { Overlay } from "./common"
 import useFirebase from "../../hooks/useFirebase"
-
-const FileHandlerContainer = styled.div`
-	${commonStyles.basicStyles}
-	min-height: 150px;
-
-	&[disabled] {
-		${commonStyles.disabledStyles}
-	}
-
-	&:not([disabled]) {
-		:hover {
-			/* only apply hover styles if the container is empty */
-			${(p) => p.isEmpty && commonStyles.hoverStyles}
-		}
-		:focus {
-			${commonStyles.focusStyles}
-		}
-	}
-
-	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-	gap: var(--spacing3);
-	padding: var(--spacing3);
-	position: relative;
-`
-
-const EmptyState = styled.div`
-	${overlayCommon}
-	${commonStyles.placeholderStyles}
-`
+import { FileHandlerContainer, EmptyState } from "./FileHandlerStyles"
 
 const LiveFileHandler = ({
 	info,
