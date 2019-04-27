@@ -25,8 +25,13 @@ const StyledForm = styled(Form)`
 
 const ContentEditorContainer = styled.div`
 	display: grid;
+	max-width: 100%;
 	grid-template-columns: 1fr 1fr;
 	gap: var(--spacing2);
+
+	> * {
+		min-width: 0;
+	}
 `
 
 const PreviewStyles = styled.div`
@@ -35,6 +40,10 @@ const PreviewStyles = styled.div`
 	border: 1px solid var(--gray25);
 	padding: var(--spacing2);
 	margin-top: var(--spacing2);
+	img {
+		max-width: 100%;
+		max-height: 900px;
+	}
 `
 
 const Section = styled.div`
@@ -262,8 +271,6 @@ const AddPost = () => {
 									disabled={submitting || pristine}
 								/>
 							</ButtonContainer>
-
-							<pre>{JSON.stringify(values, 0, 2)}</pre>
 						</>
 					)
 				}}
