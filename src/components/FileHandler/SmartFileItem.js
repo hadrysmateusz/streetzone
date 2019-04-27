@@ -88,6 +88,8 @@ const SmartFileItem = ({
 
 	useEffect(() => {
 		upload()
+
+		// TODO: remove item from storage to prevent stranded files
 	}, [])
 
 	return (

@@ -4,10 +4,10 @@ import Datetime from "react-datetime"
 import { Field, Form } from "react-final-form"
 import styled from "styled-components/macro"
 import ReactMarkdown from "react-markdown"
+import { Prompt } from "react-router-dom"
 
 import { PageContainer } from "../../../../components/Containers"
 import { Input } from "../../../../components/FormElements"
-import { Text } from "../../../../components/StyledComponents"
 import { LiveFileHandler, FileHandlerText } from "../../../../components/FileHandler"
 import DropdownFinalform from "../../../../components/DropdownFinalform"
 import MultiTextInputFinalform from "../../../../components/MultiTextInputFinalform"
@@ -17,7 +17,6 @@ import sectionOptions from "./section_options"
 
 import "react-datetime/css/react-datetime.css"
 import { LoaderButton, ButtonContainer } from "../../../../components/Button"
-import { css } from "styled-components"
 
 const StyledForm = styled(Form)`
 	display: grid;
@@ -109,6 +108,13 @@ const AddPost = () => {
 				{({ values, form, submitting, pristine }) => {
 					return (
 						<>
+							<Prompt
+								when={Object.values(values).length > 0}
+								message={(location) =>
+									"Zmiany nie zostały zapisane. Czy napewno chcesz wyjść?"
+								}
+							/>
+
 							<Section>
 								<div className="header">Sekcja</div>
 								<Field name="section" type="select">
