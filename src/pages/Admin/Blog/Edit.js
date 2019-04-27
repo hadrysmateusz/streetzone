@@ -10,6 +10,7 @@ import { FileHandlerSingle, CustomFile } from "../../../components/FileHandler"
 import useFirebase from "../../../hooks/useFirebase"
 import { Textarea, Input } from "../../../components/FormElements"
 import MultiTextInputFinalform from "../../../components/MultiTextInputFinalform"
+import { PageContainer } from "../../../components/Containers"
 
 import "react-datetime/css/react-datetime.css"
 import LoadingSpinner from "../../../components/LoadingSpinner"
@@ -109,7 +110,7 @@ const BlogEdit = ({ match }) => {
 	}
 
 	return (
-		<>
+		<PageContainer>
 			<TextBlock size="xl" bold>
 				Blog
 			</TextBlock>
@@ -223,7 +224,7 @@ const BlogEdit = ({ match }) => {
 					}}
 				/>
 			)}
-		</>
+		</PageContainer>
 	)
 }
 

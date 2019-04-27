@@ -12,6 +12,7 @@ import { Form, Field } from "react-final-form"
 import useFirebase from "../../../hooks/useFirebase"
 import useDesigners from "../../../hooks/useDesigners"
 import { FORM_ERR } from "../../../constants"
+import { PageContainer } from "../../../components/Containers"
 
 const Swatch = styled.div`
 	width: 40px;
@@ -205,7 +206,7 @@ const DesignersDb = () => {
 	const isEmpty = !designers || designers.length === 0
 
 	return (
-		<div>
+		<PageContainer>
 			<TextBlock size="xl" bold>
 				Designers
 			</TextBlock>
@@ -227,7 +228,7 @@ const DesignersDb = () => {
 					!isEmpty && designers.map((item) => <DesignerItem designer={item} />)
 				)}
 			</div>
-		</div>
+		</PageContainer>
 	)
 }
 

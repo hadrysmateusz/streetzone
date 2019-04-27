@@ -3,6 +3,7 @@ import React from "react"
 import LoadingSpinner from "../../../components/LoadingSpinner"
 import { withFirebase } from "../../../components/Firebase"
 import { TextBlock } from "../../../components/StyledComponents"
+import { PageContainer } from "../../../components/Containers"
 
 export class UsersManagement extends React.Component {
 	state = { users: [], foundUser: null, isLoading: true, inputValue: "", error: null }
@@ -46,7 +47,7 @@ export class UsersManagement extends React.Component {
 		return isLoading ? (
 			<LoadingSpinner />
 		) : (
-			<div>
+			<PageContainer>
 				{error && <div>{error.message}</div>}
 
 				<TextBlock size="xl" bold>
@@ -83,7 +84,7 @@ export class UsersManagement extends React.Component {
 						))}
 					</ul>
 				)}
-			</div>
+			</PageContainer>
 		)
 	}
 }

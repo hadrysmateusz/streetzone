@@ -1,15 +1,15 @@
 import React from "react"
 import { compose } from "recompose"
 import { Route, Switch, Link } from "react-router-dom"
+import { PageContainer } from "../../components/Containers"
 
 import { withAuthorization, withAuthentication } from "../../components/UserSession"
 import { withFirebase } from "../../components/Firebase"
-import { PageContainer } from "../../components/Containers"
 
 const AdminPage = ({ routes }) => {
 	return (
-		<PageContainer>
-			<div>
+		<>
+			<PageContainer>
 				<ul>
 					{routes.map(
 						(route) =>
@@ -20,7 +20,7 @@ const AdminPage = ({ routes }) => {
 							)
 					)}
 				</ul>
-			</div>
+			</PageContainer>
 			<Switch>
 				{routes.map((route) => (
 					<Route
@@ -31,7 +31,7 @@ const AdminPage = ({ routes }) => {
 					/>
 				))}
 			</Switch>
-		</PageContainer>
+		</>
 	)
 }
 

@@ -9,6 +9,7 @@ import { TextBlock } from "../../../components/StyledComponents"
 import useFirebase from "../../../hooks/useFirebase"
 import useFirestoreCollection from "../../../hooks/useFirestoreCollection"
 import { ROUTES } from "../../../constants"
+import { PageContainer } from "../../../components/Containers"
 
 const BlogImageContainer = styled.div`
 	img {
@@ -69,7 +70,7 @@ const BlogManagement = () => {
 	return !posts ? (
 		<LoadingSpinner fixedHeight />
 	) : (
-		<div>
+		<PageContainer>
 			<TextBlock size="xl" bold>
 				Blog
 			</TextBlock>
@@ -87,7 +88,7 @@ const BlogManagement = () => {
 					))}
 				</div>
 			)}
-		</div>
+		</PageContainer>
 	)
 }
 
