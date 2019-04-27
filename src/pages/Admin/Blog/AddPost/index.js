@@ -38,8 +38,8 @@ const PreviewStyles = styled.div`
 	width: 100%;
 	margin: 0 auto;
 	border: 1px solid var(--gray25);
-	padding: var(--spacing2);
-	margin-top: var(--spacing2);
+	padding: 0 var(--spacing2);
+
 	img {
 		max-width: 100%;
 		max-height: 900px;
@@ -164,7 +164,7 @@ const AddPost = () => {
 											<ContentEditorContainer>
 												<FileHandlerText {...input} error={error} />
 												<PreviewStyles>
-													<ReactMarkdown source={value} />
+													<ReactMarkdown source={value} escapeHtml={false} />
 												</PreviewStyles>
 											</ContentEditorContainer>
 										)
