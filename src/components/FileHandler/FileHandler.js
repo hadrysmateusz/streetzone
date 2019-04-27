@@ -145,12 +145,22 @@ const FileHandler = ({ info, error, itemErrors, disabled, value, onChange, ...re
 							return (
 								<FileItem
 									key={file.id}
-									onDelete={onDelete}
-									onSetMain={onSetMain}
 									id={file.id}
 									previewUrl={file.previewUrl}
 									isMain={isMain}
 									error={error}
+									actions={[
+										{
+											label: "Usuń",
+											handler: onDelete,
+											icon: "trash"
+										},
+										{
+											label: "Główne",
+											handler: onSetMain,
+											icon: ["far", "star"]
+										}
+									]}
 								/>
 							)
 					  })}

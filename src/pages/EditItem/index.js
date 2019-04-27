@@ -39,7 +39,7 @@ const EditItemPage = ({ match, history }) => {
 			// create CustomFile objects with the fetched previewUrls
 			const files = item.attachments.map((attachment, i) => {
 				return new CustomFile({
-					ref: attachment,
+					storageRef: attachment,
 					previewUrl: imageURLs[i],
 					isUploaded: true
 				})
@@ -69,7 +69,7 @@ const EditItemPage = ({ match, history }) => {
 			const newRefs = await Promise.all(
 				files.map(async (file) => {
 					// If file already has a ref, return it
-					if (file.ref) return file.ref
+					if (file.storageRef) return file.storageRef
 
 					// Upload the new files and return promise containing ref
 					const snapshot = await firebase.uploadFile("attachments", file.data)
@@ -87,17 +87,17 @@ const EditItemPage = ({ match, history }) => {
 			await firebase.item(match.params.id).update(data)
 
 			// Get just the old refs
-			let oldRefs = initialData.files.map((file) => file.ref)
+			let oldRefs = initialData.files.map((file) => file.storageRef)
 
 			// Old refs no longer present in new refs are marked for deletion
 			let refsToDelete = oldRefs.filter((oldRef) => !newRefs.includes(oldRef))
 
 			// Remove files associated with the marked refs
-			for (const ref of refsToDelete) {
-				await firebase.removeFile(ref)
-				await firebase.removeFile(ref + L_THUMB_POSTFIX)
-				await firebase.removeFile(ref + M_THUMB_POSTFIX)
-				await firebase.removeFile(ref + S_THUMB_POSTFIX)
+			for (const storageRef of refsToDelete) {
+				await firebase.removeFile(storageRef)
+				await firebase.removeFile(storageRef + L_THUMB_POSTFIX)
+				await firebase.removeFile(storageRef + M_THUMB_POSTFIX)
+				await firebase.removeFile(storageRef + S_THUMB_POSTFIX)
 			}
 
 			// Redirect to home page

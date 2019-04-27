@@ -39,7 +39,8 @@ import {
 	faChevronDown,
 	faLongArrowAltUp,
 	faThLarge,
-	faThList
+	faThList,
+	faClipboard
 } from "@fortawesome/free-solid-svg-icons"
 import {
 	faHeart as farHeart,
@@ -96,5 +97,6 @@ library.add(
 	faChevronDown,
 	faLongArrowAltUp,
 	faThLarge,
-	faThList
+	faThList,
+	faClipboard
 )

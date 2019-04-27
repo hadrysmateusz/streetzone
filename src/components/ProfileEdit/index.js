@@ -27,7 +27,7 @@ class ProfileEdit extends Component {
 
 		if (user.profilePictureURLs && user.profilePictureURLs.length > 0) {
 			const file = new CustomFile({
-				ref: user.profilePictureRef || null,
+				storageRef: user.profilePictureRef || null,
 				previewUrl: getProfilePictureURL(user, "L"),
 				isUploaded: true
 			})
@@ -44,7 +44,7 @@ class ProfileEdit extends Component {
 		if (authUser.profilePictureRef) {
 			try {
 				const file = new CustomFile({
-					ref: authUser.profilePictureRef || null,
+					storageRef: authUser.profilePictureRef || null,
 					previewUrl: getProfilePictureURL(authUser, "L"),
 					isUploaded: true
 				})

@@ -8,7 +8,7 @@ import ReactMarkdown from "react-markdown"
 import { PageContainer } from "../../../../components/Containers"
 import { Input } from "../../../../components/FormElements"
 import { Text } from "../../../../components/StyledComponents"
-import { FileHandlerSingle, FileHandlerText } from "../../../../components/FileHandler"
+import { LiveFileHandler, FileHandlerText } from "../../../../components/FileHandler"
 import DropdownFinalform from "../../../../components/DropdownFinalform"
 import MultiTextInputFinalform from "../../../../components/MultiTextInputFinalform"
 import useFirebase from "../../../../hooks/useFirebase"
@@ -127,6 +127,19 @@ const AddPost = () => {
 							</Section>
 
 							<Section>
+								<div className="header">Zdjęcie</div>
+								<Field name="mainImage">
+									{({ input, meta }) => {
+										return (
+											<>
+												<LiveFileHandler {...input} error={meta.error} />
+											</>
+										)
+									}}
+								</Field>
+							</Section>
+
+							<Section>
 								<div className="header">Treść</div>
 								<Field name="mainContent">
 									{({ input, meta }) => {
@@ -217,26 +230,6 @@ const AddPost = () => {
 							)}
 
 							<Section>
-								<div className="header">Zdjęcie</div>
-								<Field name="mainImage">
-									{({ input, meta }) => {
-										return (
-											<>
-												<FileHandlerSingle
-													{...input}
-													error={meta.error}
-													containerStyles={css`
-														width: 700px;
-														height: 380px;
-													`}
-												/>
-											</>
-										)
-									}}
-								</Field>
-							</Section>
-
-							<Section>
 								<div className="header">Tagi</div>
 								<Field name="tags" type="select">
 									{({ input, meta }) => {
@@ -263,6 +256,8 @@ const AddPost = () => {
 									disabled={submitting || pristine}
 								/>
 							</ButtonContainer>
+
+							<pre>{JSON.stringify(values, 0, 2)}</pre>
 						</>
 					)
 				}}

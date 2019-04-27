@@ -47,7 +47,7 @@ const BlogEdit = ({ match }) => {
 
 		// create CustomFile objects with the fetched previewUrls
 		const file = new CustomFile({
-			ref: data.mainImageRef,
+			storageRef: data.mainImageRef,
 			previewUrl: data.mainImageURL,
 			isUploaded: true
 		})
@@ -66,10 +66,10 @@ const BlogEdit = ({ match }) => {
 		actions
 	) => {
 		try {
-			let mainImageRef = mainImage.ref
+			let mainImageRef = mainImage.storageRef
 			let mainImageURL = mainImage.previewUrl
 
-			if (!mainImage.ref) {
+			if (!mainImage.storageRef) {
 				const imageId = shortid.generate()
 				const mainImageSnap = await firebase.uploadFile(
 					`blog-photos/${imageId}`,

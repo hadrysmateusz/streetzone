@@ -39,7 +39,14 @@ const IndicatorsContainer = styled.div`
 	gap: var(--spacing2);
 `
 
-const PureFileItem = ({ id, previewUrl, error, onDelete, onSetMain, isMain }) => {
+const PureFileItem = ({
+	id,
+	previewUrl,
+	error,
+	actions,
+	isMain = false,
+	uploadProgress
+}) => {
 	const hasError = !!error
 
 	return (
@@ -55,16 +62,18 @@ const PureFileItem = ({ id, previewUrl, error, onDelete, onSetMain, isMain }) =>
 					)}
 					{isMain && <IndicatorIcon color="var(--accent50)" icon="star" />}
 				</IndicatorsContainer>
-				<img src={previewUrl} alt="" />
+				{previewUrl ? (
+					<img src={previewUrl} alt="" />
+				) : uploadProgress ? (
+					uploadProgress + "%"
+				) : null}
 				<Overlay>
-					<IconContainer onClick={() => onSetMain(id)}>
-						<FontAwesomeIcon icon={["far", "star"]} size="2x" fixedWidth />
-						<TextBlock centered>Główne</TextBlock>
-					</IconContainer>
-					<IconContainer onClick={() => onDelete(id)}>
-						<FontAwesomeIcon icon="trash" size="2x" fixedWidth />
-						<TextBlock centered>Usuń</TextBlock>
-					</IconContainer>
+					{actions.map((action) => (
+						<IconContainer onClick={() => action.handler(id)}>
+							<FontAwesomeIcon icon={action.icon} size="2x" fixedWidth />
+							<TextBlock centered>{action.label}</TextBlock>
+						</IconContainer>
+					))}
 				</Overlay>
 				{hasError && <ErrorContainer>{error}</ErrorContainer>}
 			</Thumbnail>
@@ -77,12 +86,13 @@ PureFileItem.propTypes = {
 	previewUrl: PropTypes.string.isRequired,
 	isMain: PropTypes.bool,
 	error: PropTypes.string,
-	onDelete: PropTypes.func.isRequired,
-	onSetMain: PropTypes.func.isRequired
-}
-
-PureFileItem.defaultProps = {
-	isMain: false
+	actions: PropTypes.arrayOf(
+		PropTypes.shape({
+			label: PropTypes.string,
+			handler: PropTypes.func.isRequired,
+			icon: PropTypes.oneOfType([PropTypes.string, PropTypes.array])
+		})
+	)
 }
 
 export default PureFileItem
