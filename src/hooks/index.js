@@ -8,6 +8,7 @@ import useScrollPosition from "./useScrollPosition"
 import useImage from "./useImage"
 import useUserData from "./useUserData"
 import useDesigner from "./useDesigner"
+import useFlash from "./useFlash"
 
 export {
 	useAuthentication,
@@ -19,5 +20,6 @@ export {
 	useScrollPosition,
 	useImage,
 	useUserData,
-	useDesigner
+	useDesigner,
+	useFlash
 }

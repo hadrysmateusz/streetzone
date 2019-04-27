@@ -10,6 +10,7 @@ import AuthModal from "../AuthModal"
 import { Routes, Meta } from "../Routes"
 import PageHeader from "../PageHeader"
 import Footer from "../Footer"
+import FlashMessages from "../FlashMessages"
 
 const AppContainer = styled.div`
 	position: relative;
@@ -25,13 +26,15 @@ class App extends React.Component {
 			<Router>
 				<div id="App-Element">
 					{/* <Meta /> */}
-					<AppContainer>
-						<PageHeader />
-						<div style={{ flex: 1 }}>
-							<Routes />
-						</div>
-						<Footer />
-					</AppContainer>
+					<FlashMessages>
+						<AppContainer>
+							<PageHeader />
+							<div style={{ flex: 1 }}>
+								<Routes />
+							</div>
+							<Footer />
+						</AppContainer>
+					</FlashMessages>
 					<AuthModal />
 				</div>
 			</Router>

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react"
 import uuidv1 from "uuid/v1"
 
 import FileItem from "./FileItem"
-import useFirebase from "../../hooks/useFirebase"
+import { useFirebase, useFlash } from "../../hooks"
 
 const SmartFileItem = ({
 	onGetStorageRef,
@@ -17,15 +17,7 @@ const SmartFileItem = ({
 	const [progress, setProgress] = useState()
 	const [_error, setError] = useState()
 	const firebase = useFirebase()
-
-	// useEffect(() => {
-	// 	let __previewUrl = URL.createObjectURL(data)
-	// 	setPreviewUrl(__previewUrl)
-
-	// 	return () => {
-	// 		URL.revokeObjectURL(previewUrl)
-	// 	}
-	// }, [])
+	const flashMessage = useFlash()
 
 	// TODO: if the component gets unmounted without submitting the image doesn't get removed
 	const upload = async () => {
@@ -71,7 +63,7 @@ const SmartFileItem = ({
 				await navigator.clipboard.writeText(imageUrl)
 				console.log("Link dodano do schowka")
 
-				// flashMessage({type: "success", message: "Link dodano do schowka"})
+				flashMessage({ type: "success", textContent: "Link skopiowano do schowka" })
 			} catch (err) {
 				if ("permissions" in navigator) {
 					const result = await navigator.permissions.query({ name: "clipboard" })
