@@ -40,7 +40,8 @@ import {
 	faLongArrowAltUp,
 	faThLarge,
 	faThList,
-	faClipboard
+	faClipboard,
+	faCode
 } from "@fortawesome/free-solid-svg-icons"
 import {
 	faHeart as farHeart,
@@ -98,5 +99,6 @@ library.add(
 	faLongArrowAltUp,
 	faThLarge,
 	faThList,
-	faClipboard
+	faClipboard,
+	faCode
 )

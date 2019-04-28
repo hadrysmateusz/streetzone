@@ -6,6 +6,7 @@ import "react-datetime/css/react-datetime.css"
 
 import { LoaderButton, ButtonContainer } from "../../../../components/Button"
 import { PageContainer } from "../../../../components/Containers"
+import DisplayJSONButton from "../../../../components/DisplayJSONButton"
 import useFirebase from "../../../../hooks/useFirebase"
 import { formatPostDataForDb, MODE } from "../../../../utils/formatting/formatPostData"
 import { ROUTES, CONST } from "../../../../constants"
@@ -71,9 +72,8 @@ const AddPostForm = ({ onSubmit }) => {
 								isLoading={submitting}
 								disabled={submitting || pristine}
 							/>
+							<DisplayJSONButton big values={values} />
 						</ButtonContainer>
-
-						<pre>{JSON.stringify(values, 0, 2)}</pre>
 					</StyledForm>
 				)
 			}}

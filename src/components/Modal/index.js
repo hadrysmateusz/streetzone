@@ -16,17 +16,20 @@ const ModalContainer = styled.div`
 
 const ModalBox = styled.div`
 	box-sizing: content-box;
-	width: 280px;
 	background: white;
 	padding: var(--spacing4);
 	box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.45);
+	min-width: 250px;
+	max-width: 90vw;
 `
 
-const Modal = ({ isOpen, children, onRequestClose }) => {
+const Modal = ({ isOpen, children, onRequestClose, render }) => {
 	return isOpen ? (
 		<Portal>
 			<ModalContainer onClick={onRequestClose}>
-				<ModalBox onClick={(e) => e.stopPropagation()}>{children}</ModalBox>
+				<ModalBox onClick={(e) => e.stopPropagation()}>
+					{render ? render() : children}
+				</ModalBox>
 			</ModalContainer>
 		</Portal>
 	) : null
