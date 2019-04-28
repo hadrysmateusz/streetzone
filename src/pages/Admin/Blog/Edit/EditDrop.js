@@ -4,17 +4,17 @@ import shortid from "shortid"
 import Datetime from "react-datetime"
 import { Form, Field } from "react-final-form"
 
-import { TextBlock, Text } from "../../../components/StyledComponents"
-import { LoaderButton, ButtonContainer } from "../../../components/Button"
-import { FileHandlerSingle, CustomFile } from "../../../components/FileHandler"
-import useFirebase from "../../../hooks/useFirebase"
-import { Textarea, Input } from "../../../components/FormElements"
-import MultiTextInputFinalform from "../../../components/MultiTextInputFinalform"
-import { PageContainer } from "../../../components/Containers"
+import { TextBlock, Text } from "../../../../components/StyledComponents"
+import { LoaderButton, ButtonContainer } from "../../../../components/Button"
+import { FileHandlerSingle, CustomFile } from "../../../../components/FileHandler"
+import useFirebase from "../../../../hooks/useFirebase"
+import { Textarea, Input } from "../../../../components/FormElements"
+import MultiTextInputFinalform from "../../../../components/MultiTextInputFinalform"
+import { PageContainer } from "../../../../components/Containers"
 
 import "react-datetime/css/react-datetime.css"
-import LoadingSpinner from "../../../components/LoadingSpinner"
-import { FORM_ERR } from "../../../constants"
+import LoadingSpinner from "../../../../components/LoadingSpinner"
+import { FORM_ERR } from "../../../../constants"
 
 const validate = ({ author, title, section, mainContent, mainImage, dropsAt }) => {
 	const errors = {}

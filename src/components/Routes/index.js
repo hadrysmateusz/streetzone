@@ -174,13 +174,23 @@ const AdminBlog = Loadable({
 	loading: LoadableComponentSpinner
 })
 
-const AdminBlogEdit = Loadable({
-	loader: () => import("../../pages/Admin/Blog/Edit.js"),
+const AdminBlogEditPost = Loadable({
+	loader: () => import("../../pages/Admin/Blog/Edit/EditPost"),
+	loading: LoadableComponentSpinner
+})
+
+const AdminBlogEditDrop = Loadable({
+	loader: () => import("../../pages/Admin/Blog/Edit/EditDrop"),
 	loading: LoadableComponentSpinner
 })
 
 const AdminBlogAddPost = Loadable({
-	loader: () => import("../../pages/Admin/Blog/AddPost"),
+	loader: () => import("../../pages/Admin/Blog/Add/AddPost"),
+	loading: LoadableComponentSpinner
+})
+
+const AdminBlogAddDrop = Loadable({
+	loader: () => import("../../pages/Admin/Blog/Add/AddDrop"),
 	loading: LoadableComponentSpinner
 })
 
@@ -226,15 +236,27 @@ const routes = [
 				isNavigable: true
 			},
 			{
-				id: "blogEdit",
-				path: ROUTES.ADMIN_BLOG_EDIT,
-				component: AdminBlogEdit,
+				id: "blogEditPost",
+				path: ROUTES.ADMIN_BLOG_EDIT_POST,
+				component: AdminBlogEditPost,
 				isNavigable: false
 			},
 			{
-				id: "blogAdd",
-				path: ROUTES.ADMIN_BLOG_ADD,
+				id: "blogEditDrop",
+				path: ROUTES.ADMIN_BLOG_EDIT_DROP,
+				component: AdminBlogEditDrop,
+				isNavigable: false
+			},
+			{
+				id: "blogAddPost",
+				path: ROUTES.ADMIN_BLOG_ADD_POST,
 				component: AdminBlogAddPost,
+				isNavigable: false
+			},
+			{
+				id: "blogAddDrop",
+				path: ROUTES.ADMIN_BLOG_ADD_DROP,
+				component: AdminBlogAddDrop,
 				isNavigable: false
 			},
 			{
@@ -502,7 +524,6 @@ const Meta = () => {
 					exact={route.exact === false ? false : true}
 					path={route.path}
 					render={() => {
-
 						return route.title ? (
 							<Helmet>
 								<title>{`${route.title} | ${CONST.BRAND_NAME}`}</title>

@@ -22,14 +22,17 @@ const AdminPage = ({ routes }) => {
 				</ul>
 			</PageContainer>
 			<Switch>
-				{routes.map((route) => (
-					<Route
-						exact
-						path={route.path}
-						render={() => <route.component />}
-						key={route.id}
-					/>
-				))}
+				{routes.map((route) => {
+					console.log(route)
+					return (
+						<Route
+							exact
+							path={route.path}
+							render={() => <route.component />}
+							key={route.id}
+						/>
+					)
+				})}
 			</Switch>
 		</>
 	)
