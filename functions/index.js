@@ -31,7 +31,8 @@ const ITEMS_MARKETPLACE_PRICE_ASC_ALGOLIA_INDEX = isProd
 	? "prod_items_price_asc"
 	: "dev_items_price_asc"
 const ITEMS_CUSTOM_ALGOLIA_INDEX = isProd ? "prod_custom" : "dev_custom"
-const BLOG_ALGOLIA_INDEX = isProd ? "prod_posts" : "dev_posts"
+const BLOG_POST_ALGOLIA_INDEX = isProd ? "prod_posts" : "dev_posts"
+const BLOG_DROP_ALGOLIA_INDEX = isProd ? "prod_drops" : "dev_drops"
 const DESIGNERS_ALGOLIA_INDEX = isProd ? "prod_designers" : "dev_designers"
 // ===============================================================================
 
@@ -107,19 +108,41 @@ exports.onItemDeleted = functions.firestore
 exports.onBlogPostCreated = functions.firestore
 	.document(`posts/{id}`)
 	.onCreate((snap, context) => {
-		algoliaAdd(snap, context, BLOG_ALGOLIA_INDEX)
+		algoliaAdd(snap, context, BLOG_POST_ALGOLIA_INDEX)
 	})
 
 exports.onBlogPostUpdated = functions.firestore
 	.document(`posts/{id}`)
 	.onUpdate((snap, context) => {
-		algoliaUpdate(snap, context, BLOG_ALGOLIA_INDEX)
+		algoliaUpdate(snap, context, BLOG_POST_ALGOLIA_INDEX)
 	})
 
 exports.onBlogPostDeleted = functions.firestore
 	.document(`posts/{id}`)
 	.onDelete((snap, context) => {
-		algoliaDelete(snap, context, BLOG_ALGOLIA_INDEX)
+		algoliaDelete(snap, context, BLOG_POST_ALGOLIA_INDEX)
+	})
+
+// ------------------------------------
+// --------- Drops Events ---------
+// ------------------------------------
+
+exports.onDropCreated = functions.firestore
+	.document(`drops/{id}`)
+	.onCreate((snap, context) => {
+		algoliaAdd(snap, context, BLOG_DROP_ALGOLIA_INDEX)
+	})
+
+exports.onDropUpdated = functions.firestore
+	.document(`drops/{id}`)
+	.onUpdate((snap, context) => {
+		algoliaUpdate(snap, context, BLOG_DROP_ALGOLIA_INDEX)
+	})
+
+exports.onDropDeleted = functions.firestore
+	.document(`drops/{id}`)
+	.onDelete((snap, context) => {
+		algoliaDelete(snap, context, BLOG_DROP_ALGOLIA_INDEX)
 	})
 
 // ------------------------------------

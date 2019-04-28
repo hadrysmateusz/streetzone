@@ -281,6 +281,11 @@ class Firebase {
 	post = (id) => this.db.collection("posts").doc(id)
 	posts = () => this.db.collection("posts")
 
+	// Drops API
+
+	drop = (id) => this.db.collection("drops").doc(id)
+	drops = () => this.db.collection("drops")
+
 	// Designers API
 
 	designer = (id) => this.db.collection("designers").doc(id)
@@ -294,6 +299,16 @@ class Firebase {
 		const name = uuidv1()
 		const ref = this.file(`${bucket}/${name}`)
 		return ref.put(file)
+	}
+
+	// this method uses CustomFile class
+	batchUploadFiles = async (uploadPath, files) => {
+		return Promise.all(
+			files.map(async (file) => {
+				const snapshot = await this.uploadFile(uploadPath, file.data)
+				return snapshot.ref.fullPath
+			})
+		)
 	}
 
 	removeFile = async (ref) => {

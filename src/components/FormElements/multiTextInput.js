@@ -125,7 +125,7 @@ export class MultiTextInputControlled extends Component {
 	}
 	render() {
 		const { inputValue } = this.state
-		const { info, error, disabled, value } = this.props
+		const { info, error, disabled, value, placeholder } = this.props
 
 		return (
 			<FormElementContainer info={info} error={error}>
@@ -139,6 +139,7 @@ export class MultiTextInputControlled extends Component {
 					onInputChange={this.handleInputChange}
 					onKeyDown={this.handleKeyDown}
 					disabled={disabled}
+					placeholder={placeholder}
 				/>
 			</FormElementContainer>
 		)

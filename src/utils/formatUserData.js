@@ -1,3 +1,5 @@
+// DEPRECATED
+
 export default (input) => {
 	return {
 		name: input.name,

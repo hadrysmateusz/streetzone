@@ -43,6 +43,7 @@ const bodyTextBase = css`
 
 export const TextBlock = styled(Box)`
 	${bodyTextBase}
+
 	${(p) => p.centered && "text-align: center;"}
 `
 

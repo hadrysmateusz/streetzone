@@ -13,6 +13,7 @@ export const M_THUMB_POSTFIX = "_M_THUMB"
 export const L_THUMB_POSTFIX = "_L_THUMB"
 
 export const STORAGE_BUCKET_BLOG_ATTACHMENTS = "blog-attachments"
+export const STORAGE_BUCKET_ITEM_ATTACHMENTS = "attachments"
 
 // ===============================================================================
 // !!! REMEMBER TO ALSO CHANGE IN THE CLOUD FUNCTIONS DIRECTORY !!!
@@ -20,6 +21,7 @@ const env = process.env.REACT_APP_ENV
 export const ITEMS_MARKETPLACE_DEFAULT_ALGOLIA_INDEX = `${env}_items`
 export const ITEMS_MARKETPLACE_PRICE_ASC_ALGOLIA_INDEX = `${env}_items_price_asc`
 export const ITEMS_CUSTOM_ALGOLIA_INDEX = `${env}_custom`
-export const BLOG_ALGOLIA_INDEX = `${env}_posts`
+export const BLOG_POST_ALGOLIA_INDEX = `${env}_posts`
+export const BLOG_DROP_ALGOLIA_INDEX = `${env}_drops`
 export const DESIGNERS_ALGOLIA_INDEX = `${env}_designers`
 // ===============================================================================

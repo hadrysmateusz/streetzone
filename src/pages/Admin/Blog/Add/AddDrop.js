@@ -1,70 +1,151 @@
 import React from "react"
-import Datetime from "react-datetime"
-import { Field } from "react-final-form"
-import ReactMarkdown from "react-markdown"
 import { Prompt } from "react-router-dom"
-import shortid from "shortid"
+import { withRouter } from "react-router-dom"
+import { Form } from "react-final-form"
 import "react-datetime/css/react-datetime.css"
 
-import { Input } from "../../../../components/FormElements"
-import { LiveFileHandler, FileHandlerText } from "../../../../components/FileHandler"
-import DropdownFinalform from "../../../../components/DropdownFinalform"
-import MultiTextInputFinalform from "../../../../components/MultiTextInputFinalform"
 import { LoaderButton, ButtonContainer } from "../../../../components/Button"
 import { PageContainer } from "../../../../components/Containers"
+import DisplayJSONButton from "../../../../components/DisplayJSONButton"
 import useFirebase from "../../../../hooks/useFirebase"
+import {
+	formatDropDataForDb,
+	MODE,
+	dateFormat
+} from "../../../../utils/formatting/formatDropData"
+import { ROUTES, ITEM_SCHEMA, CONST } from "../../../../constants"
 
 import {
-	StyledForm,
-	Section,
-	ContentEditorContainer,
-	PreviewStyles
-} from "../StyledComponents"
-import categoryOptions from "./category_options"
+	TextFF,
+	DropdownFF,
+	FileHandlerFF,
+	MultiTextInputFF,
+	TextareaFF,
+	NumberFF
+} from "../FinalFormFields"
+import { StyledForm } from "../StyledComponents"
 
-const AddPost = () => {
+const AddPostForm = ({ onSubmit }) => {
+	return (
+		<Form
+			onSubmit={onSubmit}
+			render={({ form, handleSubmit, submitting, pristine, values, ...rest }) => {
+				return (
+					<StyledForm onSubmit={handleSubmit}>
+						<Prompt
+							when={Object.values(values).length > 0}
+							message={(location) =>
+								"Zmiany nie zostały zapisane. Czy napewno chcesz wyjść?"
+							}
+						/>
+
+						<TextFF label="Nazwa przedmiotu" placeholder="Nazwa" name="name" />
+
+						<TextareaFF
+							label="Opis"
+							placeholder="Kilka słów o przedmiocie. Jego historia itd."
+							name="description"
+						/>
+
+						{/* TODO: add input mask */}
+						<TextFF
+							label="Data i czas dropu"
+							placeholder={dateFormat}
+							name="dropsAtString"
+							info={`Przestrzegaj formatu ${dateFormat}`}
+						/>
+
+						<DropdownFF
+							label="Projektanci przedmiotu"
+							name="designers"
+							placeholder="Projektanci / Marki"
+							options={ITEM_SCHEMA.designerOptions}
+							isClearable={true}
+							isSearchable={true}
+							isMulti={true}
+							info="Jedna lub więcej w przypadku kolaboracji"
+						/>
+
+						<DropdownFF
+							label="Kategoria przedmiotu"
+							name="itemCategory"
+							options={ITEM_SCHEMA.categoryOptions}
+							isSearchable={false}
+							placeholder="Kategoria"
+						/>
+
+						<NumberFF
+							label="Cena przedmiotu"
+							placeholder="Cena (opcjonalne)"
+							name="price"
+							min="0"
+							step="1"
+						/>
+
+						<TextFF
+							label="Nakład przedmiotu"
+							placeholder="np. 500 sztuk, Limitowany (opcjonalne)"
+							name="howMany"
+							info="Dokładna liczba lub opis"
+						/>
+
+						<FileHandlerFF label="Zdjęcia" name="files" />
+
+						<MultiTextInputFF
+							label="Gdzie kupić?"
+							placeholder="Linki (zatwierdzaj Enterem) (Opcjonalne)"
+							name="buyAt"
+						/>
+
+						<ButtonContainer>
+							<LoaderButton
+								text="Gotowe"
+								type="submit"
+								big
+								fullWidth
+								primary
+								isLoading={submitting}
+								disabled={submitting || pristine}
+							/>
+							<DisplayJSONButton big values={values} />
+						</ButtonContainer>
+					</StyledForm>
+				)
+			}}
+		/>
+	)
+}
+
+const AddPost = ({ history }) => {
 	const firebase = useFirebase()
 
-	const onSubmit = async (
-		{ section, mainImage, title, author, mainContent, dropsAt, tags },
-		actions
-	) => {
+	const onSubmit = async (values, actions) => {
 		try {
-			const id = shortid.generate()
-			const imageId = shortid.generate()
+			const files = values.files
 
-			const mainImageSnap = await firebase.uploadFile(
-				`blog-photos/${imageId}`,
-				mainImage.data
+			// Upload files to storage and get their refs
+			const attachments = await firebase.batchUploadFiles(
+				CONST.STORAGE_BUCKET_BLOG_ATTACHMENTS,
+				files
 			)
-			const mainImageRef = mainImageSnap.ref.fullPath
-			const mainImageURL = await firebase.getImageURL(mainImageRef)
 
-			let data = {
-				id,
-				section,
-				createdAt: Date.now(),
-				editedAt: null,
-				title: title.trim(),
-				mainContent,
-				mainImageRef,
-				mainImageURL,
-				comments: [],
-				tags
-			}
+			// Get main image index
+			const mainImageIndex = files.findIndex((a) => a.isMain)
 
-			if (author) {
-				data.author = author
-			}
+			// Format the values for db
+			const formattedData = formatDropDataForDb(
+				{ ...values, mainImageIndex, attachments },
+				MODE.CREATE
+			)
 
-			if (dropsAt) {
-				data.dropsAt = dropsAt.valueOf()
-			}
-
-			await firebase.post(id).set(data)
+			// Add drop to database
+			await firebase.drop(formattedData.id).set(formattedData)
 
 			// Reset form
 			actions.reset()
+
+			// Redirect
+			history.push(ROUTES.ADMIN_BLOG)
 		} catch (error) {
 			alert("Wystąpił problem")
 			console.log(error)
@@ -78,171 +159,4 @@ const AddPost = () => {
 	)
 }
 
-const AddPostForm = ({ onSubmit }) => {
-	return (
-		<StyledForm onSubmit={onSubmit}>
-			{({ values, form, submitting, pristine }) => {
-				return (
-					<>
-						<Prompt
-							when={Object.values(values).length > 0}
-							message={(location) =>
-								"Zmiany nie zostały zapisane. Czy napewno chcesz wyjść?"
-							}
-						/>
-
-						<Section>
-							<div className="header">Sekcja</div>
-							<Field name="section" type="select">
-								{({ input, meta }) => {
-									const error = meta.error && meta.touched ? meta.error : null
-									return (
-										<DropdownFinalform
-											{...input}
-											options={categoryOptions}
-											placeholder="Sekcja"
-											error={error}
-										/>
-									)
-								}}
-							</Field>
-						</Section>
-
-						<Section>
-							<div className="header">Zdjęcie</div>
-							<Field name="mainImage">
-								{({ input, meta }) => {
-									return (
-										<>
-											<LiveFileHandler {...input} error={meta.error} />
-										</>
-									)
-								}}
-							</Field>
-						</Section>
-
-						<Section>
-							<div className="header">Treść</div>
-							<Field name="mainContent">
-								{({ input, meta }) => {
-									const error = meta.error && meta.touched ? meta.error : null
-									const { value } = input
-									return (
-										<ContentEditorContainer>
-											<FileHandlerText {...input} error={error} />
-											<PreviewStyles>
-												<ReactMarkdown source={value} escapeHtml={false} />
-											</PreviewStyles>
-										</ContentEditorContainer>
-									)
-								}}
-							</Field>
-						</Section>
-
-						<Section>
-							<div className="header">Autor</div>
-							<Field name="author">
-								{({ input, meta }) => {
-									const error = meta.error && meta.touched ? meta.error : null
-									return (
-										<Input {...input} type="text" placeholder="Autor" error={error} />
-									)
-								}}
-							</Field>
-						</Section>
-
-						<Section>
-							<div className="header">
-								{values.section && values.section === "Dropy"
-									? "Nazwa przedmiotu"
-									: "Tytuł"}
-							</div>
-							<Field name="title">
-								{({ input, meta }) => {
-									const error = meta.error && meta.touched ? meta.error : null
-									return (
-										<Input
-											{...input}
-											type="text"
-											placeholder="Tytuł/Nazwa"
-											error={error}
-										/>
-									)
-								}}
-							</Field>
-						</Section>
-
-						{values.section === "Dropy" && (
-							<Section flex>
-								<div className="sub-section">
-									<div className="header">Data dropu</div>
-									<Field name="dropsAtDate">
-										{({ input, meta }) => {
-											const error = meta.error && meta.touched ? meta.error : null
-											return (
-												<Datetime
-													{...input}
-													error={error}
-													input={false}
-													timeFormat={false}
-												/>
-											)
-										}}
-									</Field>
-								</div>
-
-								<div className="sub-section">
-									<div className="header">Czas dropu</div>
-									<Field name="dropsAtTime">
-										{({ input, meta }) => {
-											const error = meta.error && meta.touched ? meta.error : null
-											return (
-												<Datetime
-													{...input}
-													error={error}
-													input={false}
-													timeFormat="HH:mm"
-													dateFormat={false}
-												/>
-											)
-										}}
-									</Field>
-								</div>
-							</Section>
-						)}
-
-						<Section>
-							<div className="header">Tagi</div>
-							<Field name="tags" type="select">
-								{({ input, meta }) => {
-									const error = meta.error && meta.touched ? meta.error : null
-									return (
-										<MultiTextInputFinalform
-											{...input}
-											placeholder="Tagi"
-											error={error}
-										/>
-									)
-								}}
-							</Field>
-						</Section>
-
-						<ButtonContainer>
-							<LoaderButton
-								text="Gotowe"
-								type="submit"
-								big
-								fullWidth
-								primary
-								isLoading={submitting}
-								disabled={submitting || pristine}
-							/>
-						</ButtonContainer>
-					</>
-				)
-			}}
-		</StyledForm>
-	)
-}
-
-export default AddPost
+export default withRouter(AddPost)

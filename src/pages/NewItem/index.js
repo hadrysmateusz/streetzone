@@ -6,7 +6,7 @@ import { withFirebase } from "../../components/Firebase"
 import { PageContainer } from "../../components/Containers"
 import { formatItemDataForDb, MODE } from "../../utils/formatting/formatItemData"
 
-import { ROUTES } from "../../constants"
+import { ROUTES, CONST } from "../../constants"
 
 import NewItemForm from "./NewItemForm"
 
@@ -21,11 +21,9 @@ class NewItemPage extends Component {
 			const oldItems = authUser.items
 
 			// Upload files to storage and get their refs
-			const attachments = await Promise.all(
-				files.map(async (file) => {
-					const snapshot = await firebase.uploadFile("attachments", file.data)
-					return snapshot.ref.fullPath
-				})
+			const attachments = await firebase.batchUploadFiles(
+				CONST.STORAGE_BUCKET_ITEM_ATTACHMENTS,
+				files
 			)
 
 			// Get main image ref
