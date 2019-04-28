@@ -1,5 +1,6 @@
 import styled from "styled-components/macro"
-import { overlayCommon } from "../../../../style-utils"
+
+import { overlayCommon } from "../../../style-utils"
 
 export const StyledForm = styled.form`
 	display: grid;

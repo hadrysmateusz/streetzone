@@ -1,28 +1,25 @@
 import React from "react"
-import { Field } from "react-final-form"
-import ReactMarkdown from "react-markdown"
 import { Prompt } from "react-router-dom"
-import "react-datetime/css/react-datetime.css"
 import { withRouter } from "react-router-dom"
 import { Form } from "react-final-form"
+import "react-datetime/css/react-datetime.css"
 
-import { Input, Textarea } from "../../../../components/FormElements"
-import { LiveFileHandler, FileHandlerText } from "../../../../components/FileHandler"
-import DropdownFinalform from "../../../../components/DropdownFinalform"
-import MultiTextInputFinalform from "../../../../components/MultiTextInputFinalform"
 import { LoaderButton, ButtonContainer } from "../../../../components/Button"
 import { PageContainer } from "../../../../components/Containers"
 import useFirebase from "../../../../hooks/useFirebase"
 import { formatPostDataForDb, MODE } from "../../../../utils/formatting/formatPostData"
-import { ROUTES } from "../../../../constants"
+import { ROUTES, CONST } from "../../../../constants"
 
-import {
-	StyledForm,
-	Section,
-	ContentEditorContainer,
-	PreviewStyles
-} from "./StyledComponents"
 import categoryOptions from "./category_options"
+import {
+	TextFF,
+	DropdownFF,
+	LiveFileHandlerFF,
+	MarkdownEditorFF,
+	MultiTextInputFF,
+	TextareaFF
+} from "../FinalFormFields"
+import { StyledForm } from "../StyledComponents"
 
 const AddPostForm = ({ onSubmit }) => {
 	return (
@@ -38,111 +35,31 @@ const AddPostForm = ({ onSubmit }) => {
 							}
 						/>
 
-						<Section>
-							<div className="header">Autor</div>
-							<Field name="author">
-								{({ input, meta }) => {
-									const error = meta.error && meta.touched ? meta.error : null
-									return (
-										<Input {...input} type="text" placeholder="Autor" error={error} />
-									)
-								}}
-							</Field>
-						</Section>
+						<TextFF label="Autor" placeholder="Autor" name="author" />
 
-						<Section>
-							<div className="header">Tytuł</div>
-							<Field name="title">
-								{({ input, meta }) => {
-									const error = meta.error && meta.touched ? meta.error : null
-									return (
-										<Input {...input} type="text" placeholder="Tytuł" error={error} />
-									)
-								}}
-							</Field>
-						</Section>
+						<TextFF label="Tytuł" placeholder="Tytuł" name="title" />
 
-						<Section>
-							<div className="header">Kategoria</div>
-							<Field name="category" type="select">
-								{({ input, meta }) => {
-									const error = meta.error && meta.touched ? meta.error : null
-									return (
-										<DropdownFinalform
-											{...input}
-											options={categoryOptions}
-											placeholder="Kategoria"
-											error={error}
-										/>
-									)
-								}}
-							</Field>
-						</Section>
+						<DropdownFF label="Kategoria" name="category" options={categoryOptions} />
 
-						<Section>
-							<div className="header">Zdjęcia</div>
-							<Field name="files">
-								{({ input, meta }) => {
-									return (
-										<LiveFileHandler
-											{...input}
-											uploadPath="blog-attachments"
-											error={meta.error}
-										/>
-									)
-								}}
-							</Field>
-						</Section>
+						<LiveFileHandlerFF
+							label="Zdjęcia"
+							name="files"
+							uploadPath={CONST.STORAGE_BUCKET_BLOG_ATTACHMENTS}
+						/>
 
-						<Section>
-							<div className="header">Treść</div>
-							<Field name="mainContent">
-								{({ input, meta }) => {
-									const error = meta.error && meta.touched ? meta.error : null
-									const { value } = input
-									return (
-										<ContentEditorContainer>
-											<FileHandlerText {...input} error={error} />
-											<PreviewStyles>
-												<ReactMarkdown source={value} escapeHtml={false} />
-											</PreviewStyles>
-										</ContentEditorContainer>
-									)
-								}}
-							</Field>
-						</Section>
+						<MarkdownEditorFF label="Treść" name="mainContent" />
 
-						<Section>
-							<div className="header">Streszczenie</div>
-							<Field name="excerpt">
-								{({ input, meta }) => {
-									const error = meta.error && meta.touched ? meta.error : null
-									return (
-										<Textarea
-											{...input}
-											placeholder="Krótkie streszczenie zachęcające do przeczytania. Ewentualnie pierwsze zdanie lub dwa."
-											error={error}
-										/>
-									)
-								}}
-							</Field>
-						</Section>
+						<TextareaFF
+							label="Streszczenie"
+							placeholder="Krótkie streszczenie zachęcające do przeczytania. Ewentualnie pierwsze zdanie lub dwa."
+							name="excerpt"
+						/>
 
-						<Section>
-							<div className="header">Tagi</div>
-							<Field name="tags" type="select">
-								{({ input, meta }) => {
-									const error = meta.error && meta.touched ? meta.error : null
-									return (
-										<MultiTextInputFinalform
-											{...input}
-											placeholder="Tagi (zatwierdzaj Enterem)"
-											error={error}
-										/>
-									)
-								}}
-							</Field>
-						</Section>
+						<MultiTextInputFF
+							label="Tagi"
+							placeholder="Tagi (zatwierdzaj Enterem)"
+							name="tags"
+						/>
 
 						<ButtonContainer>
 							<LoaderButton

@@ -19,7 +19,7 @@ import {
 	Section,
 	ContentEditorContainer,
 	PreviewStyles
-} from "./StyledComponents"
+} from "../StyledComponents"
 import categoryOptions from "./category_options"
 
 const AddPost = () => {
