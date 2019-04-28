@@ -28,6 +28,10 @@ const List = styled.div`
 	grid-template-columns: 1fr 1fr;
 	gap: var(--spacing2);
 
+	> * {
+		overflow: hidden;
+	}
+
 	.buyAt {
 		list-style: none;
 		padding: 0;
