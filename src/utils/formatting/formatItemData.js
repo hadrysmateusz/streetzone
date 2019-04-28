@@ -18,8 +18,9 @@ export const REQUIRED = [
 	"category",
 	"price",
 	"condition",
-	"attachments",
-	"userId"
+	"userId",
+	"mainImageIndex",
+	"attachments"
 ]
 
 const formatNonEmptyArray = (val) => {
@@ -50,7 +51,7 @@ export const formatItemDataForDb = (data, mode, flagState = true) => {
 			// check if all required values are present
 			for (const field of REQUIRED) {
 				if (!data[field]) {
-					throw new Error("missing required data")
+					throw new Error("missing required data in: " + field)
 				}
 			}
 		}
@@ -63,6 +64,12 @@ export const formatItemDataForDb = (data, mode, flagState = true) => {
 		// attachments
 		if (isSet(data.attachments)) {
 			formatted.attachments = formatNonEmptyArray(data.attachments)
+		}
+
+		// mainImageIndex
+		if (isSet(data.mainImageIndex)) {
+			// the minimum/default index is 0
+			formatted.mainImageIndex = Math.max(0, formatInt(data.mainImageIndex))
 		}
 
 		// name

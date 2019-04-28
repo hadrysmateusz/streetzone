@@ -30,9 +30,9 @@ export const ItemCardImage = ({ imageId }) => {
 }
 
 export const ItemCard = withBreakpoints(({ item, currentBreakpoint, ...rest }) => {
-	const { id, name, price, designers, category, createdAt, size } = item
+	const { id, name, price, designers, category, size, attachments, mainImageIndex } = item
 
-	const [imageURL, error] = useImage(item.attachments[0])
+	const [imageURL, error] = useImage(attachments[mainImageIndex])
 
 	const formattedDesigners = formatDesigners(designers)
 	const formattedPrice = formatPrice(price)
@@ -62,9 +62,20 @@ export const ItemCard = withBreakpoints(({ item, currentBreakpoint, ...rest }) =
 
 export const ItemCardHorizontal = withBreakpoints(
 	({ item, currentBreakpoint, ...rest }) => {
-		const { id, name, price, designers, category, createdAt, description, size } = item
+		const {
+			id,
+			name,
+			price,
+			designers,
+			category,
+			createdAt,
+			description,
+			size,
+			attachments,
+			mainImageIndex
+		} = item
 
-		const [imageURL, error] = useImage(item.attachments[0])
+		const [imageURL, error] = useImage(attachments[mainImageIndex])
 
 		const formattedDesigners = formatDesigners(designers)
 		const formattedPrice = formatPrice(price)

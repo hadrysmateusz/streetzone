@@ -76,7 +76,7 @@ const BlogManagement = () => {
 			</TextBlock>
 
 			<ButtonContainer>
-				<Button primary as={Link} to={ROUTES.ADMIN_BLOG_ADD}>
+				<Button primary big fullWidth as={Link} to={ROUTES.ADMIN_BLOG_ADD}>
 					Dodaj posta
 				</Button>
 			</ButtonContainer>
