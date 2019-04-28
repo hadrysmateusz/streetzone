@@ -1,18 +1,20 @@
 import React from "react"
-import Datetime from "react-datetime"
 import { Field } from "react-final-form"
 import ReactMarkdown from "react-markdown"
 import { Prompt } from "react-router-dom"
-import shortid from "shortid"
 import "react-datetime/css/react-datetime.css"
+import { withRouter } from "react-router-dom"
+import { Form } from "react-final-form"
 
-import { Input } from "../../../../components/FormElements"
+import { Input, Textarea } from "../../../../components/FormElements"
 import { LiveFileHandler, FileHandlerText } from "../../../../components/FileHandler"
 import DropdownFinalform from "../../../../components/DropdownFinalform"
 import MultiTextInputFinalform from "../../../../components/MultiTextInputFinalform"
 import { LoaderButton, ButtonContainer } from "../../../../components/Button"
 import { PageContainer } from "../../../../components/Containers"
 import useFirebase from "../../../../hooks/useFirebase"
+import { formatPostDataForDb, MODE } from "../../../../utils/formatting/formatPostData"
+import { ROUTES } from "../../../../constants"
 
 import {
 	StyledForm,
@@ -20,14 +22,15 @@ import {
 	ContentEditorContainer,
 	PreviewStyles
 } from "./StyledComponents"
-import sectionOptions from "./section_options"
+import categoryOptions from "./category_options"
 
-const AddPostForm = ({onSubmit}) => {
+const AddPostForm = ({ onSubmit }) => {
 	return (
-		<StyledForm onSubmit={onSubmit}>
-			{({ values, form, submitting, pristine }) => {
+		<Form
+			onSubmit={onSubmit}
+			render={({ form, handleSubmit, submitting, pristine, values, ...rest }) => {
 				return (
-					<>
+					<StyledForm onSubmit={handleSubmit}>
 						<Prompt
 							when={Object.values(values).length > 0}
 							message={(location) =>
@@ -36,15 +39,39 @@ const AddPostForm = ({onSubmit}) => {
 						/>
 
 						<Section>
-							<div className="header">Sekcja</div>
-							<Field name="section" type="select">
+							<div className="header">Autor</div>
+							<Field name="author">
+								{({ input, meta }) => {
+									const error = meta.error && meta.touched ? meta.error : null
+									return (
+										<Input {...input} type="text" placeholder="Autor" error={error} />
+									)
+								}}
+							</Field>
+						</Section>
+
+						<Section>
+							<div className="header">Tytuł</div>
+							<Field name="title">
+								{({ input, meta }) => {
+									const error = meta.error && meta.touched ? meta.error : null
+									return (
+										<Input {...input} type="text" placeholder="Tytuł" error={error} />
+									)
+								}}
+							</Field>
+						</Section>
+
+						<Section>
+							<div className="header">Kategoria</div>
+							<Field name="category" type="select">
 								{({ input, meta }) => {
 									const error = meta.error && meta.touched ? meta.error : null
 									return (
 										<DropdownFinalform
 											{...input}
-											options={sectionOptions}
-											placeholder="Sekcja"
+											options={categoryOptions}
+											placeholder="Kategoria"
 											error={error}
 										/>
 									)
@@ -53,13 +80,15 @@ const AddPostForm = ({onSubmit}) => {
 						</Section>
 
 						<Section>
-							<div className="header">Zdjęcie</div>
-							<Field name="mainImage">
+							<div className="header">Zdjęcia</div>
+							<Field name="files">
 								{({ input, meta }) => {
 									return (
-										<>
-											<LiveFileHandler {...input} error={meta.error} />
-										</>
+										<LiveFileHandler
+											{...input}
+											uploadPath="blog-attachments"
+											error={meta.error}
+										/>
 									)
 								}}
 							</Field>
@@ -84,76 +113,20 @@ const AddPostForm = ({onSubmit}) => {
 						</Section>
 
 						<Section>
-							<div className="header">Autor</div>
-							<Field name="author">
+							<div className="header">Streszczenie</div>
+							<Field name="excerpt">
 								{({ input, meta }) => {
 									const error = meta.error && meta.touched ? meta.error : null
 									return (
-										<Input {...input} type="text" placeholder="Autor" error={error} />
-									)
-								}}
-							</Field>
-						</Section>
-
-						<Section>
-							<div className="header">
-								{values.section && values.section === "Dropy"
-									? "Nazwa przedmiotu"
-									: "Tytuł"}
-							</div>
-							<Field name="title">
-								{({ input, meta }) => {
-									const error = meta.error && meta.touched ? meta.error : null
-									return (
-										<Input
+										<Textarea
 											{...input}
-											type="text"
-											placeholder="Tytuł/Nazwa"
+											placeholder="Krótkie streszczenie zachęcające do przeczytania. Ewentualnie pierwsze zdanie lub dwa."
 											error={error}
 										/>
 									)
 								}}
 							</Field>
 						</Section>
-
-						{values.section === "Dropy" && (
-							<Section flex>
-								<div className="sub-section">
-									<div className="header">Data dropu</div>
-									<Field name="dropsAtDate">
-										{({ input, meta }) => {
-											const error = meta.error && meta.touched ? meta.error : null
-											return (
-												<Datetime
-													{...input}
-													error={error}
-													input={false}
-													timeFormat={false}
-												/>
-											)
-										}}
-									</Field>
-								</div>
-
-								<div className="sub-section">
-									<div className="header">Czas dropu</div>
-									<Field name="dropsAtTime">
-										{({ input, meta }) => {
-											const error = meta.error && meta.touched ? meta.error : null
-											return (
-												<Datetime
-													{...input}
-													error={error}
-													input={false}
-													timeFormat="HH:mm"
-													dateFormat={false}
-												/>
-											)
-										}}
-									</Field>
-								</div>
-							</Section>
-						)}
 
 						<Section>
 							<div className="header">Tagi</div>
@@ -163,7 +136,7 @@ const AddPostForm = ({onSubmit}) => {
 									return (
 										<MultiTextInputFinalform
 											{...input}
-											placeholder="Tagi"
+											placeholder="Tagi (zatwierdzaj Enterem)"
 											error={error}
 										/>
 									)
@@ -182,56 +155,45 @@ const AddPostForm = ({onSubmit}) => {
 								disabled={submitting || pristine}
 							/>
 						</ButtonContainer>
-					</>
+
+						<pre>{JSON.stringify(values, 0, 2)}</pre>
+					</StyledForm>
 				)
 			}}
-		</StyledForm>
+		/>
 	)
 }
 
-const AddPost = () => {
+const AddPost = ({ history }) => {
 	const firebase = useFirebase()
 
-	const onSubmit = async (
-		{ section, mainImage, title, author, mainContent, dropsAt, tags },
-		actions
-	) => {
+	const onSubmit = async (values, actions) => {
 		try {
-			const id = shortid.generate()
-			const imageId = shortid.generate()
+			const files = values.files
 
-			const mainImageSnap = await firebase.uploadFile(
-				`blog-photos/${imageId}`,
-				mainImage.data
+			// Get attachments' refs
+			const attachments = files.map((file) => file.ref)
+
+			// Get attachments' urls
+			const imageUrls = files.map((file) => file.url)
+
+			// Get main image index
+			const mainImageIndex = files.findIndex((a) => a.isMain)
+
+			// Format the values for db
+			const formattedData = formatPostDataForDb(
+				{ ...values, mainImageIndex, attachments, imageUrls },
+				MODE.CREATE
 			)
-			const mainImageRef = mainImageSnap.ref.fullPath
-			const mainImageURL = await firebase.getImageURL(mainImageRef)
 
-			let data = {
-				id,
-				section,
-				createdAt: Date.now(),
-				editedAt: null,
-				title: title.trim(),
-				mainContent,
-				mainImageRef,
-				mainImageURL,
-				comments: [],
-				tags
-			}
-
-			if (author) {
-				data.author = author
-			}
-
-			if (dropsAt) {
-				data.dropsAt = dropsAt.valueOf()
-			}
-
-			await firebase.post(id).set(data)
+			// Add post to database
+			await firebase.post(formattedData.id).set(formattedData)
 
 			// Reset form
 			actions.reset()
+
+			// Redirect
+			history.push(ROUTES.ADMIN_BLOG)
 		} catch (error) {
 			alert("Wystąpił problem")
 			console.log(error)
@@ -245,4 +207,4 @@ const AddPost = () => {
 	)
 }
 
-export default AddPost
+export default withRouter(AddPost)

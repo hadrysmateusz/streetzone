@@ -1,7 +1,7 @@
 import shortid from "shortid"
 
-import isNonEmptyArray from "../isNonEmptyArray"
 import isSet from "./isSet"
+import { formatFloat, formatInt, formatNonEmptyArray, formatString } from "./basicsUtils"
 
 export const MODE = {
 	CREATE: "CREATE",
@@ -22,26 +22,6 @@ export const REQUIRED = [
 	"mainImageIndex",
 	"attachments"
 ]
-
-const formatNonEmptyArray = (val) => {
-	if (isNonEmptyArray(val)) {
-		return val
-	} else {
-		throw new Error("a property expected a non-empty array")
-	}
-}
-
-const formatString = (val) => {
-	return "" + val.trim()
-}
-
-const formatFloat = (val) => {
-	return Number.parseFloat(val)
-}
-
-const formatInt = (val) => {
-	return Number.parseInt(val)
-}
 
 export const formatItemDataForDb = (data, mode, flagState = true) => {
 	let formatted = {}

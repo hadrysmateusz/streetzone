@@ -1,9 +1,10 @@
-import { Form } from "react-final-form"
 import styled from "styled-components/macro"
+import { overlayCommon } from "../../../../style-utils"
 
-export const StyledForm = styled(Form)`
+export const StyledForm = styled.form`
 	display: grid;
 	gap: var(--spacing3);
+	grid-template-columns: 100%;
 `
 
 export const ContentEditorContainer = styled.div`
@@ -22,6 +23,17 @@ export const PreviewStyles = styled.div`
 	margin: 0 auto;
 	border: 1px solid var(--gray25);
 	padding: 0 var(--spacing2);
+	position: relative;
+
+	:empty {
+		::before {
+			${overlayCommon}
+			content: "Podgląd";
+			color: var(--gray100);
+			font-size: 3.5rem;
+			font-weight: bold;
+		}
+	}
 
 	img {
 		max-width: 100%;
@@ -30,7 +42,6 @@ export const PreviewStyles = styled.div`
 `
 
 export const Section = styled.div`
-	margin: var(--spacing3) 0;
 	${(p) => p.flex && `display: flex;`}
 
 	.sub-section {

@@ -23,7 +23,6 @@ const AdminPage = ({ routes }) => {
 			</PageContainer>
 			<Switch>
 				{routes.map((route) => {
-					console.log(route)
 					return (
 						<Route
 							exact

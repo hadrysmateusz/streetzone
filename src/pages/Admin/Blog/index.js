@@ -27,7 +27,19 @@ const BlogPostContainer = styled.div`
 const BlogPost = ({ post }) => {
 	const firebase = useFirebase()
 
-	const { id, mainImageURL, title, author, isPromoted, section } = post
+	const {
+		id,
+		imageUrls,
+		mainImageIndex,
+		title,
+		author,
+		excerpt,
+		promotedAt,
+		category
+	} = post
+
+	const mainImageUrl = imageUrls[mainImageIndex]
+	const isPromoted = !!promotedAt
 
 	const onDelete = (id) => {
 		try {
@@ -44,18 +56,20 @@ const BlogPost = ({ post }) => {
 	return (
 		<BlogPostContainer>
 			<TextBlock color="gray0" uppercase>
-				{section}
+				{category}
 			</TextBlock>
 			<TextBlock bold size="l">
 				{title}
 			</TextBlock>
-			{author && <TextBlock color="#666">by {author}</TextBlock>}
+			<TextBlock color="#666">by {author}</TextBlock>
 			{isPromoted && <TextBlock bold>Is Promoted</TextBlock>}
+			<TextBlock color="#333">{excerpt}</TextBlock>
+
 			<BlogImageContainer>
-				<img src={mainImageURL} alt="" />
+				<img src={mainImageUrl} alt="" />
 			</BlogImageContainer>
 			<ButtonContainer>
-				<Button as={Link} to={ROUTES.ADMIN_BLOG_EDIT.replace(":id", post.id)}>
+				<Button as={Link} to={ROUTES.ADMIN_BLOG_EDIT_POST.replace(":id", post.id)}>
 					Edit
 				</Button>
 				<Button onClick={() => onDelete(id)}>Delete</Button>

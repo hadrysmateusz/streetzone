@@ -36,10 +36,12 @@ const components = {
 	DropdownIndicator: null
 }
 
-const createOption = (label) => ({
-	label,
-	value: label
-})
+const createOption = (label) => {
+	return {
+		label,
+		value: label
+	}
+}
 
 export class MultiTextInput extends Component {
 	state = {
@@ -112,8 +114,7 @@ export class MultiTextInputControlled extends Component {
 		switch (event.key) {
 			case "Enter":
 			case "Tab":
-				const newOption = createOption(inputValue)
-				this.props.customSetState(newOption)
+				this.props.customSetState(inputValue)
 				this.setState({ inputValue: "" })
 
 				event.preventDefault()
@@ -123,8 +124,9 @@ export class MultiTextInputControlled extends Component {
 		}
 	}
 	render() {
-		const { inputValue, value } = this.state
-		const { info, error, disabled, ...rest } = this.props
+		const { inputValue } = this.state
+		const { info, error, disabled, value } = this.props
+
 		return (
 			<FormElementContainer info={info} error={error}>
 				<StyledCreatableSelect
@@ -136,7 +138,7 @@ export class MultiTextInputControlled extends Component {
 					onChange={this.handleChange}
 					onInputChange={this.handleInputChange}
 					onKeyDown={this.handleKeyDown}
-					{...rest}
+					disabled={disabled}
 				/>
 			</FormElementContainer>
 		)

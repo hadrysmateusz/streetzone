@@ -4,10 +4,6 @@ export default [
 		label: "Wiedza"
 	},
 	{
-		value: "Dropy",
-		label: "Dropy"
-	},
-	{
 		value: "Artykuły",
 		label: "Artykuły"
 	}

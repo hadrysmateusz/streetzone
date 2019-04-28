@@ -5,15 +5,16 @@ import FileItem from "./FileItem"
 import { useFirebase, useFlash } from "../../hooks"
 
 const SmartFileItem = ({
-	onGetStorageRef,
+	onUpload,
 	onDelete,
 	onSetMain,
 	isMain,
 	id,
 	error,
-	data
+	data,
+	uploadPath,
+	previewUrl
 }) => {
-	const [imageUrl, setImageUrl] = useState()
 	const [progress, setProgress] = useState()
 	const [_error, setError] = useState()
 	const firebase = useFirebase()
@@ -21,9 +22,8 @@ const SmartFileItem = ({
 
 	// TODO: if the component gets unmounted without submitting the image doesn't get removed
 	const upload = async () => {
-		const bucket = "blog-post-images"
 		const name = uuidv1()
-		const uploadTask = firebase.file(`${bucket}/${name}`).put(data)
+		const uploadTask = firebase.file(`${uploadPath}/${name}`).put(data)
 
 		const unsubscribe = uploadTask.on(
 			"state_changed",
@@ -41,12 +41,13 @@ const SmartFileItem = ({
 			async function() {
 				// Handle successful uploads on complete
 
+				// get storage ref
 				const storageRef = uploadTask.snapshot.ref.fullPath
-				onGetStorageRef(id, storageRef)
 
 				// get image url and set it as imageUrl
 				const imageUrl = await firebase.getImageURL(storageRef)
-				setImageUrl(imageUrl)
+
+				onUpload(id, storageRef, imageUrl)
 			}
 		)
 
@@ -60,14 +61,13 @@ const SmartFileItem = ({
 	const onCopyLinkToClipboard = async (id) => {
 		if ("clipboard" in navigator) {
 			try {
-				await navigator.clipboard.writeText(imageUrl)
+				await navigator.clipboard.writeText(previewUrl)
 				console.log("Link dodano do schowka")
 
 				flashMessage({ type: "success", textContent: "Link skopiowano do schowka" })
 			} catch (err) {
 				if ("permissions" in navigator) {
 					const result = await navigator.permissions.query({ name: "clipboard" })
-					console.log(result)
 				} else {
 					console.log("Permission API isn't supported")
 				}
@@ -89,7 +89,7 @@ const SmartFileItem = ({
 			isMain={isMain}
 			id={id}
 			error={_error ? _error : error}
-			previewUrl={imageUrl}
+			previewUrl={previewUrl}
 			uploadProgress={progress}
 			actions={[
 				{

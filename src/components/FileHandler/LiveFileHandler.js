@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react"
-import PropTypes from "prop-types"
+import React, { useState } from "react"
 import { useDropzone } from "react-dropzone"
 
 import { FormElementContainer } from "../FormElements"
@@ -17,6 +16,7 @@ const LiveFileHandler = ({
 	disabled,
 	value,
 	onChange,
+	uploadPath,
 	...rest
 }) => {
 	const [items, setItems] = useState([])
@@ -26,11 +26,15 @@ const LiveFileHandler = ({
 		// Update internal state
 		setItems(newValue)
 
-		// Get only the storageRefs
-		const storageRefs = newValue.map((val) => val.storageRef)
+		// Get only the requiredValues
+		const formattedAttachments = newValue.map((val) => ({
+			ref: val.storageRef,
+			url: val.previewUrl,
+			isMain: val.isMain
+		}))
 
 		// Update external state
-		onChange(storageRefs)
+		onChange(formattedAttachments)
 	}
 
 	const onDrop = (acceptedFiles, rejectedFiles) => {
@@ -49,12 +53,13 @@ const LiveFileHandler = ({
 		_onChange(__items)
 	}
 
-	const onGetStorageRef = (id, storageRef) => {
+	const onUpload = (id, storageRef, previewUrl) => {
 		// Find
 		const __items = items.map((fileItem) => {
 			if (fileItem.id === id) {
 				fileItem.isUploaded = true
 				fileItem.storageRef = storageRef
+				fileItem.previewUrl = previewUrl
 			}
 
 			return fileItem
@@ -144,12 +149,14 @@ const LiveFileHandler = ({
 									key={file.id}
 									onDelete={onDelete}
 									onSetMain={onSetMain}
-									onGetStorageRef={onGetStorageRef}
+									onUpload={onUpload}
 									isMain={isMain}
 									id={file.id}
 									data={file.data}
 									storageRef={file.storageRef}
+									previewUrl={file.previewUrl}
 									error={error}
+									uploadPath={uploadPath}
 								/>
 							)
 					  })}

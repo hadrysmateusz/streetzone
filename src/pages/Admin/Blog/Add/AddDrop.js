@@ -20,7 +20,63 @@ import {
 	ContentEditorContainer,
 	PreviewStyles
 } from "./StyledComponents"
-import sectionOptions from "./section_options"
+import categoryOptions from "./category_options"
+
+const AddPost = () => {
+	const firebase = useFirebase()
+
+	const onSubmit = async (
+		{ section, mainImage, title, author, mainContent, dropsAt, tags },
+		actions
+	) => {
+		try {
+			const id = shortid.generate()
+			const imageId = shortid.generate()
+
+			const mainImageSnap = await firebase.uploadFile(
+				`blog-photos/${imageId}`,
+				mainImage.data
+			)
+			const mainImageRef = mainImageSnap.ref.fullPath
+			const mainImageURL = await firebase.getImageURL(mainImageRef)
+
+			let data = {
+				id,
+				section,
+				createdAt: Date.now(),
+				editedAt: null,
+				title: title.trim(),
+				mainContent,
+				mainImageRef,
+				mainImageURL,
+				comments: [],
+				tags
+			}
+
+			if (author) {
+				data.author = author
+			}
+
+			if (dropsAt) {
+				data.dropsAt = dropsAt.valueOf()
+			}
+
+			await firebase.post(id).set(data)
+
+			// Reset form
+			actions.reset()
+		} catch (error) {
+			alert("Wystąpił problem")
+			console.log(error)
+		}
+	}
+
+	return (
+		<PageContainer>
+			<AddPostForm onSubmit={onSubmit} />
+		</PageContainer>
+	)
+}
 
 const AddPostForm = ({ onSubmit }) => {
 	return (
@@ -43,7 +99,7 @@ const AddPostForm = ({ onSubmit }) => {
 									return (
 										<DropdownFinalform
 											{...input}
-											options={sectionOptions}
+											options={categoryOptions}
 											placeholder="Sekcja"
 											error={error}
 										/>
@@ -186,62 +242,6 @@ const AddPostForm = ({ onSubmit }) => {
 				)
 			}}
 		</StyledForm>
-	)
-}
-
-const AddPost = () => {
-	const firebase = useFirebase()
-
-	const onSubmit = async (
-		{ section, mainImage, title, author, mainContent, dropsAt, tags },
-		actions
-	) => {
-		try {
-			const id = shortid.generate()
-			const imageId = shortid.generate()
-
-			const mainImageSnap = await firebase.uploadFile(
-				`blog-photos/${imageId}`,
-				mainImage.data
-			)
-			const mainImageRef = mainImageSnap.ref.fullPath
-			const mainImageURL = await firebase.getImageURL(mainImageRef)
-
-			let data = {
-				id,
-				section,
-				createdAt: Date.now(),
-				editedAt: null,
-				title: title.trim(),
-				mainContent,
-				mainImageRef,
-				mainImageURL,
-				comments: [],
-				tags
-			}
-
-			if (author) {
-				data.author = author
-			}
-
-			if (dropsAt) {
-				data.dropsAt = dropsAt.valueOf()
-			}
-
-			await firebase.post(id).set(data)
-
-			// Reset form
-			actions.reset()
-		} catch (error) {
-			alert("Wystąpił problem")
-			console.log(error)
-		}
-	}
-
-	return (
-		<PageContainer>
-			<AddPostForm onSubmit={onSubmit} />
-		</PageContainer>
 	)
 }
 
