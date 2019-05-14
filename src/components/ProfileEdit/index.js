@@ -22,7 +22,8 @@ class ProfileEdit extends Component {
 			email: user.email,
 			city: user.city,
 			phone: user.phone,
-			info: user.info
+			info: user.info,
+			messengerLink: user.messengerLink
 		}
 
 		if (user.profilePictureURLs && user.profilePictureURLs.length > 0) {
@@ -95,6 +96,8 @@ class ProfileEdit extends Component {
 		// Get ref of current profile picture
 		const oldFileRef = authUser.profilePictureRef || null
 
+		console.log(values)
+
 		const data = {
 			name: values.name || initialValues.name || null,
 			email: values.email || initialValues.email || null,
@@ -102,7 +105,8 @@ class ProfileEdit extends Component {
 			phone: values.phone || null,
 			info: values.info || null,
 			profilePictureRef: newFileRef,
-			profilePictureURLs: [newURL_temp]
+			profilePictureURLs: [newURL_temp],
+			messengerLink: values.messengerLink || null
 		}
 
 		console.log(data)
