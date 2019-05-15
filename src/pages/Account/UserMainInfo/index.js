@@ -86,9 +86,6 @@ const MainInfo = ({ user, isAuthorized, userId, currentBreakpoint }) => {
 								>
 									<span>Edytuj Profil</span>
 								</Button>
-								<Button>
-									<FontAwesomeIcon icon="ellipsis-h" size="lg" />
-								</Button>
 							</>
 						) : (
 							<>
