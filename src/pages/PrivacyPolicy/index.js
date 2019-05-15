@@ -1,10 +1,11 @@
 import React from "react"
+import { PageContainer } from "../../components/Containers"
 
 const PrivacyPolicyPage = () => {
 	return (
-		<div>
+		<PageContainer>
 			<h2>Polityka Prywatności</h2>
-		</div>
+		</PageContainer>
 	)
 }
 
