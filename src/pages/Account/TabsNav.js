@@ -56,38 +56,46 @@ export const AccountPageTabs = withBreakpoints(
 )
 
 const TabsNav = ({ routes, isAuthorized = false }) => {
+	const routeEntries = Object.entries(routes)
+
+	const renderDropdown = (categoryName, routes) => {
+		let subRoutes = []
+		routes.forEach((route) => {
+			if ((isAuthorized || !route.isProtected) && !route.isHidden) {
+				subRoutes.push(
+					<StyledNavLink to={route.path} key={route.id}>
+						{route.shortLabel}
+					</StyledNavLink>
+				)
+			}
+		})
+
+		return subRoutes.length > 0 ? (
+			<DropdownNavItem label={categoryName} routes={subRoutes} key={categoryName} />
+		) : null
+	}
+
+	const renderSingleRoute = (route) => {
+		return (
+			(isAuthorized || !route.isProtected) &&
+			!route.isHidden && (
+				<NavItem key={route.id}>
+					<StyledNavLink to={route.path} key={route.id}>
+						{route.label}
+					</StyledNavLink>
+				</NavItem>
+			)
+		)
+	}
+
 	return (
 		<PageContainer extraWide>
 			<OuterContainer>
 				<Nav>
-					{Object.entries(routes).map(([key, value], i) => {
-						if (Array.isArray(value)) {
-							let subRoutes = []
-							value.forEach((route) => {
-								if ((isAuthorized || !route.isProtected) && !route.isHidden) {
-									subRoutes.push(
-										<StyledNavLink to={route.path} key={route.id}>
-											{route.shortLabel}
-										</StyledNavLink>
-									)
-								}
-							})
-
-							return subRoutes.length > 0 ? (
-								<DropdownNavItem label={key} routes={subRoutes} />
-							) : null
-						} else {
-							return (
-								(isAuthorized || !value.isProtected) &&
-								!value.isHidden && (
-									<NavItem>
-										<StyledNavLink to={value.path} key={value.id}>
-											{value.label}
-										</StyledNavLink>
-									</NavItem>
-								)
-							)
-						}
+					{routeEntries.map(([key, value]) => {
+						return Array.isArray(value)
+							? renderDropdown(key, value)
+							: renderSingleRoute(value)
 					})}
 				</Nav>
 			</OuterContainer>

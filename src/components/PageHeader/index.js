@@ -25,7 +25,7 @@ import {
 	UserNameContainer
 } from "./StyledComponents"
 
-const Navigation = ({ authUser, firebase, currentBreakpoint, location, ...rest }) => {
+const PageHeader = ({ authUser, firebase, currentBreakpoint, location, ...rest }) => {
 	const scrollPosition = useScrollPosition()
 
 	return (
@@ -210,4 +210,4 @@ export default compose(
 	withAuthentication,
 	withFirebase,
 	withBreakpoints
-)(Navigation)
+)(PageHeader)
