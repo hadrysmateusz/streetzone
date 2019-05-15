@@ -10,7 +10,7 @@ import getProfilePictureURL from "../../utils/getProfilePictureURL"
 import { useFirebase, useAuthentication, useUserData } from "../../hooks"
 
 export const Submenu = styled.div`
-	background: white;
+	background: var(--glass);
 
 	border: 1px solid var(--gray75);
 
@@ -27,7 +27,7 @@ export const SubmenuContainer = styled.div`
 	${(p) => `${p.align}: 0;`}
 	z-index: 81;
 
-	padding-top: var(--spacing3);
+	padding-top: 20px;
 
 	display: none;
 `

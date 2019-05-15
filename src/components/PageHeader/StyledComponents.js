@@ -56,7 +56,7 @@ export const SubmenuContainer = styled.div`
 	${(p) => `${p.align}: 0;`}
 	z-index: 81;
 
-	padding-top: var(--spacing3);
+	padding-top: 27px;
 
 	display: none;
 `

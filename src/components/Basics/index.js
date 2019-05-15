@@ -16,10 +16,13 @@ export const StyledNavLink = styled(NavLink)`
 	align-items: center;
 	background: none;
 	padding: 0;
-	color: var(--gray0);
+	color: var(--gray25);
 	cursor: pointer;
 
 	text-decoration: none;
+	text-transform: uppercase;
+	font-size: 12px;
+	font-weight: 600;
 
 	&:hover {
 		color: black;
