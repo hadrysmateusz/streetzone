@@ -2,7 +2,9 @@
 	/* base font size for the rem units */
 	font-size: 10px;
 
-	--color-messenger: #009ffe;
+	--color-messenger: #009bfa;
+	--color-facebook: #3c5a99;
+	--color-twitter: #1da1f2;
 
 	--glass: rgba(255, 255, 255, 0.93);
 
