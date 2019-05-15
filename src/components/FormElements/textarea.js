@@ -10,7 +10,6 @@ const StyledTextarea = styled(Textarea)`
 	resize: vertical;
 	min-height: calc(4 * 1.45em + 0.7em);
 	font-size: var(--font-size--s) !important;
-	/* font-family: var(--font-family--sans-serif); */
 	padding: var(--spacing2);
 
 	${commonStyles}
@@ -19,7 +18,7 @@ const StyledTextarea = styled(Textarea)`
 const Input = ({ icon, info, error, disabled, ...rest }) => {
 	return (
 		<FormElementContainer error={error} info={info}>
-			<StyledTextarea hasIcon={!!icon} hasError={!!error} disabled={disabled} {...rest} />
+			<StyledTextarea disabled={disabled} {...rest} />
 		</FormElementContainer>
 	)
 }
