@@ -2,6 +2,8 @@
 	/* base font size for the rem units */
 	font-size: 10px;
 
+	--color-messenger: #009ffe;
+
 	--glass: rgba(255, 255, 255, 0.93);
 
 	--error0: #b42121;

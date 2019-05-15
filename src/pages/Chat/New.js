@@ -8,10 +8,12 @@ import { useFirebase, useAuthentication } from "../../hooks"
 import { withAuthorization } from "../../components/UserSession"
 import { PageContainer } from "../../components/Containers"
 import { Form, Field } from "react-final-form"
-import { LoaderButton, ButtonContainer } from "../../components/Button"
-import { SmallTextBlock } from "../../components/StyledComponents"
+import { LoaderButton, ButtonContainer, Button } from "../../components/Button"
+import { SmallTextBlock, TextBlock } from "../../components/StyledComponents"
 import { Textarea } from "../../components/FormElements"
 import UserPreview from "../../components/UserPreview"
+import useUser from "../../hooks/useUser"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 const validate = (values) => {
 	const errors = {}
@@ -117,12 +119,29 @@ export const NewChat = ({ userId }) => {
 const NewChatPage = ({ match }) => {
 	const userId = match.params.id
 
-	return (
+	const [user, error] = useUser(userId)
+
+	if (error) throw new Error("Nie znaleziono użytkownika")
+
+	return user ? (
 		<PageContainer>
-			<UserPreview id={userId} />
+			<TextBlock size="m">Napisz do {user.name}</TextBlock>
+			<ButtonContainer>
+				{user.messengerLink && (
+					<Button as="a" href={user.messengerLink}>
+						<FontAwesomeIcon
+							icon={["fab", "facebook-messenger"]}
+							size="2x"
+							color="var(--color-messenger)"
+						/>
+						&nbsp; Na messengerze
+					</Button>
+				)}
+			</ButtonContainer>
+			<UserPreview user={user} />
 			<NewChat userId={userId} />
 		</PageContainer>
-	)
+	) : null
 }
 
 const condition = (authUser) => !!authUser
