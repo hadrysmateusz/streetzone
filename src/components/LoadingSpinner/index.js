@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react"
 import { BarLoader } from "react-css-loaders"
 import PropTypes from "prop-types"
-import styled from "styled-components"
+import styled from "styled-components/macro"
 
 import EmptyState from "../EmptyState"
 

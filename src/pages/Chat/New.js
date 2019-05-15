@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react"
-import styled from "styled-components"
+import styled from "styled-components/macro"
 import { compose } from "recompose"
 import { withRouter } from "react-router-dom"
 import shortid from "shortid"
