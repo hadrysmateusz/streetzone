@@ -5,7 +5,7 @@ const ScrollToTop = styled.button.attrs((p) => ({
 }))`
 	--size: 60px;
 	--offset: 15px;
-	--font-size: 1rem;
+	--font-size: 1.1rem;
 	background: ${(p) => p.theme.colors.black[25]};
 	color: white;
 	border: none;
@@ -33,7 +33,7 @@ const ScrollToTop = styled.button.attrs((p) => ({
 	@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
 		--size: 70px;
 		--offset: 30px;
-		--font-size: 1.3rem;
+		--font-size: 1.5rem;
 	}
 `
 
