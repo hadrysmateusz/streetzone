@@ -56,14 +56,16 @@ const MainInfo = ({ user, isAuthorized, userId, currentBreakpoint }) => {
 						{currentBreakpoint > 2 ? (
 							<TextBlock color="black50">{user.info}</TextBlock>
 						) : (
-							<>
-								<TextBlock color="gray0" size="xs" {...getToggleProps()}>
-									więcej informacji <FontAwesomeIcon icon="chevron-down" size="xs" />
-								</TextBlock>
-								<TextBlock color="black50" {...getContentProps()}>
-									{user.info}
-								</TextBlock>
-							</>
+							user.info && (
+								<>
+									<TextBlock color="gray0" size="xs" {...getToggleProps()}>
+										więcej informacji <FontAwesomeIcon icon="chevron-down" size="xs" />
+									</TextBlock>
+									<TextBlock color="black50" {...getContentProps()}>
+										{user.info}
+									</TextBlock>
+								</>
+							)
 						)}
 					</InfoContainer>
 				</TopContainer>
