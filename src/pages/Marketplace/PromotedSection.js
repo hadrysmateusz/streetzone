@@ -31,6 +31,8 @@ const TopContainer = styled.div`
 	display: grid;
 	gap: var(--spacing2);
 
+	grid-auto-rows: minmax(100px, 22vw);
+
 	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
 		grid-template-columns: 2fr 1fr;
 		grid-template-rows: 1fr 1fr;
