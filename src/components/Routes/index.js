@@ -463,7 +463,7 @@ const routes = [
 		title: "Regulamin"
 	},
 	{
-		path: ROUTES.BUMP_INFO,
+		path: ROUTES.PROMOTING_INFO,
 		component: BumpInfo,
 		title: "Promowanie"
 	},

@@ -37,7 +37,7 @@ export const PRIVACY_POLICY = "/polityka-prywatnosci"
 export const ABOUT = "/o-nas"
 export const CONTACT = "/kontakt"
 export const TERMS = "/regulamin"
-export const BUMP_INFO = "/promowanie"
+export const PROMOTING_INFO = "/promowanie"
 export const BUG_REPORT = "/zglos_problem"
 export const REQUEST_DESIGNER = "/req_des"
 

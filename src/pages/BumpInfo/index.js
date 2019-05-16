@@ -1,10 +1,11 @@
 import React from "react"
+import { PageContainer } from "../../components/Containers"
 
 const BumpInfoPage = () => {
 	return (
-		<div>
+		<PageContainer>
 			<h1>Promowanie</h1>
-		</div>
+		</PageContainer>
 	)
 }
 
