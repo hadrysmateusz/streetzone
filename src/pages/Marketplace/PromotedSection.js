@@ -75,6 +75,8 @@ const BottomContainer = styled.div`
 const InnerContainer = connectHits(({ hits }) => {
 	const main = hits.slice(0, 3)
 	const other = hits.slice(3)
+	const hasMain = main && main.length > 0
+	const hasOther = other && other.length > 0
 	return (
 		<InnerContainerContainer>
 			<TextBlock bold uppercase>
@@ -87,11 +89,13 @@ const InnerContainer = connectHits(({ hits }) => {
 					<PromotedItem item={hit} />
 				))}
 			</TopContainer>
-			<BottomContainer>
-				{other.map((hit) => (
-					<ItemCard item={hit} />
-				))}
-			</BottomContainer>
+			{hasOther && (
+				<BottomContainer>
+					{other.map((hit) => (
+						<ItemCard item={hit} />
+					))}
+				</BottomContainer>
+			)}
 		</InnerContainerContainer>
 	)
 })
