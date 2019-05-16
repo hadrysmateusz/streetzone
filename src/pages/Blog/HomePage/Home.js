@@ -18,9 +18,11 @@ import {
 } from "../StyledComponents"
 import { PromotedPost, DropPost, SmallPost } from "../Previews"
 import Sidebar from "./Sidebar"
-import { ROUTES } from "../../../constants"
+import route from "../../../utils/route"
 import PageNav from "../PageNav"
 import InfinitePosts from "../InfinitePostsList"
+
+const NUMBER_OF_PROMOTED_POSTS = 2
 
 const Section = ({ title, hasMore, children, linkTo }) => {
 	return (
@@ -48,9 +50,9 @@ export class BlogHomePage extends Component {
 	getDrops = async () => {
 		this.setState({ isLoading: true })
 		let query = this.props.firebase
-			.posts()
-			.where("section", "==", "Dropy")
-			.limit(2)
+			.drops()
+			.orderBy("createdAt", "desc")
+			.limit(3)
 		const snapshot = await query.get()
 		let drops = snapshot.docs.map((doc) => doc.data())
 		await this.setState({ drops, isLoading: false })
@@ -61,6 +63,7 @@ export class BlogHomePage extends Component {
 		let query = this.props.firebase
 			.posts()
 			.where("tags", "array-contains", "Pielęgnacja")
+			.orderBy("createdAt", "desc")
 			.limit(3)
 		const snapshot = await query.get()
 		let carePosts = snapshot.docs.map((doc) => doc.data())
@@ -71,8 +74,8 @@ export class BlogHomePage extends Component {
 		this.setState({ isLoading: true })
 		let query = this.props.firebase
 			.posts()
-			.where("isPromoted", "==", true)
-			.limit(3)
+			.orderBy("promotedAt", "desc")
+			.limit(NUMBER_OF_PROMOTED_POSTS)
 		const snapshot = await query.get()
 		let promotedPosts = snapshot.docs.map((doc) => doc.data())
 		await this.setState({ promotedPosts, isLoading: false })
@@ -96,9 +99,9 @@ export class BlogHomePage extends Component {
 				) : (
 					<InstantSearchBlogWrapper>
 						<PromotedContainer>
-							<PromotedPost {...promotedPosts[0]} />
-							<PromotedPost {...promotedPosts[1]} />
-							<PromotedPost {...promotedPosts[2]} />
+							{promotedPosts.map((post) => (
+								<PromotedPost {...post} />
+							))}
 						</PromotedContainer>
 						<PageNav />
 						<MainGrid>
@@ -107,7 +110,7 @@ export class BlogHomePage extends Component {
 								<Section
 									title="Nadchodzące Dropy"
 									hasMore
-									linkTo={ROUTES.BLOG_SECTION.replace(":section", "Dropy")}
+									linkTo={route("BLOG_SECTION", { section: "Dropy" })}
 								>
 									{drops.map((post) => (
 										<DropPost {...post} />
@@ -116,10 +119,7 @@ export class BlogHomePage extends Component {
 								<Section
 									title="Czyszczenie i pielęgnacja"
 									hasMore
-									linkTo={ROUTES.BLOG_TAG.replace(":section", "Wiedza").replace(
-										":tag",
-										"Pielęgnacja"
-									)}
+									linkTo={route("BLOG_TAG", { section: "Wiedza", tag: "Pielęgnacja" })}
 								>
 									{carePosts.map((post) => (
 										<SmallPost {...post} />

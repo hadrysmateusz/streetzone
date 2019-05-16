@@ -11,18 +11,21 @@ import { PromotedPostContainer } from "../StyledComponents"
 
 const PromotedPost = ({
 	title,
-	section,
+	category,
 	author,
 	createdAt,
 	dropsAt,
-	mainImageURL,
+	mainImageIndex,
+	imageUrls,
 	id
 }) => {
-	const date = moment(section === "Dropy" ? dropsAt : createdAt).format("D.M.YY")
+	const date = moment(category === "Dropy" ? dropsAt : createdAt).format("D.M.YY")
+
+	const imageUrl = imageUrls[mainImageIndex]
 
 	return (
 		<Link to={ROUTES.BLOG_POST.replace(":id", id)}>
-			<PromotedPostContainer image={mainImageURL}>
+			<PromotedPostContainer image={imageUrl}>
 				<TextBlock
 					uppercase
 					css={css`
@@ -30,7 +33,7 @@ const PromotedPost = ({
 					`}
 					color="gray100"
 				>
-					{section}
+					{category}
 				</TextBlock>
 				<TextBlock serif size="l">
 					{title}
@@ -51,8 +54,9 @@ const PromotedPost = ({
 
 PromotedPost.propTypes = {
 	id: PropTypes.string.isRequired,
-	mainImageURL: PropTypes.string.isRequired,
-	section: PropTypes.string.isRequired,
+	mainImageIndex: PropTypes.number.isRequired,
+	imageUrls: PropTypes.array.isRequired,
+	category: PropTypes.string.isRequired,
 	title: PropTypes.string.isRequired,
 	dropsAt: PropTypes.number,
 	createdAt: PropTypes.number,

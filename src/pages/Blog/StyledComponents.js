@@ -117,20 +117,16 @@ export const PromotedContainer = styled.div`
 	gap: var(--spacing2);
 
 	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
-		grid-template-columns: 2fr 1fr;
-		grid-template-rows: 1fr 1fr;
+		grid-template-columns: 1fr 1fr;
 		gap: var(--spacing3);
-		height: 440px;
-		> *:first-child {
-			grid-row: span 2;
-		}
 	}
 `
 
 export const PromotedPostContainer = styled.div`
 	width: 100%;
-	height: 100%;
-	background: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.5)),
+	height: 40vw;
+	max-height: 500px;
+	background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 65%, rgba(0, 0, 0, 0.65) 100%),
 		url(${(p) => p.image});
 	background-size: cover;
 	background-position: center;
