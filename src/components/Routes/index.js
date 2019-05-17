@@ -69,7 +69,6 @@ const UserChat = Loadable({
 	loading: LoadableComponentSpinner
 })
 
-
 // ===== MARKETPLACE =====
 const Marketplace = Loadable({
 	loader: () => import("../../pages/Marketplace"),
@@ -91,7 +90,6 @@ const NewItem = Loadable({
 	loader: () => import("../../pages/NewItem"),
 	loading: LoadableComponentSpinner
 })
-
 
 // ===== BLOG =====
 const BlogBase = Loadable({
@@ -118,7 +116,6 @@ const BlogKnowledge = Loadable({
 	loader: () => import("../../pages/Blog/HomePage/Knowledge"),
 	loading: LoadableComponentSpinner
 })
-
 
 // ===== ADMIN =====
 const Admin = Loadable({
@@ -308,10 +305,6 @@ const routes = [
 	{
 		path: ROUTES.REQUEST_DESIGNER,
 		component: RequestDesigner
-	},
-	{
-		path: ROUTES.DESIGNER,
-		component: Designer
 	},
 	{
 		path: ROUTES.SIGN_UP,
@@ -517,10 +510,10 @@ const Meta = () => {
 								<title>{`${route.title} | ${CONST.BRAND_NAME}`}</title>
 							</Helmet>
 						) : (
-								<Helmet>
-									<title>{CONST.BRAND_NAME}</title>
-								</Helmet>
-							)
+							<Helmet>
+								<title>{CONST.BRAND_NAME}</title>
+							</Helmet>
+						)
 					}}
 				/>
 			))}
