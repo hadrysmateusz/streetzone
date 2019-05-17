@@ -3,8 +3,9 @@ import { ellipsis, overlayTextShadow } from "../../style-utils"
 
 export const PostsContainer = styled.div`
 	display: grid;
+	grid-template-columns: 100%;
 	gap: 10px;
-	@media (max-width: ${(p) => p.theme.breakpoints[0] - 1}px) {
+	@media (max-width: ${(p) => p.theme.breakpoints[2] - 1}px) {
 		margin: 0 calc(var(--spacing3) * -1);
 	}
 `
@@ -54,7 +55,7 @@ export const Post = styled.div`
 			grid-template-columns: 200px 1fr;
 		}
 		@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
-			grid-template-columns: 300px 1fr;
+			grid-template-columns: 275px 1fr;
 			gap: var(--spacing4);
 		}
 	}
@@ -106,6 +107,7 @@ export const DetailsContainer = styled.div`
 export const MainContainer = styled.div`
 	display: grid;
 	align-content: start;
+	padding-top: var(--spacing2);
 	gap: var(--spacing1);
 	@media (min-width: ${(p) => p.theme.breakpoints[0]}px) {
 		gap: var(--spacing2);

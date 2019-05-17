@@ -23,7 +23,7 @@ const BasicPost = ({
 	excerpt,
 	mainImageIndex,
 	imageUrls,
-	section,
+	category,
 	title,
 	author,
 	createdAt,
@@ -41,9 +41,9 @@ const BasicPost = ({
 				</ImageContainer>
 				<MainContainer>
 					<TextBlock uppercase color="gray0">
-						{section}
+						{category}
 					</TextBlock>
-					<TextBlock size="l" serif bold as="h3">
+					<TextBlock size="l" serif bold>
 						{title}
 					</TextBlock>
 					<DetailsContainer>
@@ -85,7 +85,7 @@ BasicPost.propTypes = {
 	mainContent: PropTypes.string.isRequired,
 	mainImageIndex: PropTypes.number.isRequired,
 	imageUrls: PropTypes.array.isRequired,
-	section: PropTypes.string.isRequired,
+	category: PropTypes.string.isRequired,
 	title: PropTypes.string.isRequired,
 	tags: PropTypes.array.isRequired,
 	createdAt: PropTypes.number.isRequired,
