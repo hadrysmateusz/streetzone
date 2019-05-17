@@ -11,21 +11,31 @@ import ErrorBoundary from "../ErrorBoundary"
 import NotFound from "../../pages/NotFound"
 import { PageContainer } from "../Containers"
 
+// ===== HOME PAGE =====
 const Home = Loadable({
 	loader: () => import("../../pages/Home"),
 	loading: LoadableComponentSpinner
 })
 
-const BugReport = Loadable({
-	loader: () => import("../../pages/BugReport"),
+// ===== AUTH FLOW =====
+const SignUp = Loadable({
+	loader: () => import("../../pages/SignUp"),
+	loading: LoadableComponentSpinner
+})
+const SignIn = Loadable({
+	loader: () => import("../../pages/SignIn"),
+	loading: LoadableComponentSpinner
+})
+const PasswordForget = Loadable({
+	loader: () => import("../../pages/PasswordForget"),
 	loading: LoadableComponentSpinner
 })
 
-const BumpInfo = Loadable({
-	loader: () => import("../../pages/BumpInfo"),
+// ===== ACCOUNT ======
+const Account = Loadable({
+	loader: () => import("../../pages/Account"),
 	loading: LoadableComponentSpinner
 })
-
 const UserItems = Loadable({
 	loader: () => import("../../pages/Account/UserItems"),
 	loading: LoadableComponentSpinner
@@ -59,166 +69,138 @@ const UserChat = Loadable({
 	loading: LoadableComponentSpinner
 })
 
-const Designer = Loadable({
-	loader: () => import("../../pages/Designer"),
+
+// ===== MARKETPLACE =====
+const Marketplace = Loadable({
+	loader: () => import("../../pages/Marketplace"),
 	loading: LoadableComponentSpinner
 })
-
+const Designers = Loadable({
+	loader: () => import("../../pages/Designers"),
+	loading: LoadableComponentSpinner
+})
+const ItemDetails = Loadable({
+	loader: () => import("../../pages/ItemDetails"),
+	loading: LoadableComponentSpinner
+})
+const EditItem = Loadable({
+	loader: () => import("../../pages/EditItem"),
+	loading: LoadableComponentSpinner
+})
 const NewItem = Loadable({
 	loader: () => import("../../pages/NewItem"),
 	loading: LoadableComponentSpinner
 })
 
-const SignUp = Loadable({
-	loader: () => import("../../pages/SignUp"),
-	loading: LoadableComponentSpinner
-})
 
-const SignIn = Loadable({
-	loader: () => import("../../pages/SignIn"),
-	loading: LoadableComponentSpinner
-})
-
-const PasswordForget = Loadable({
-	loader: () => import("../../pages/PasswordForget"),
-	loading: LoadableComponentSpinner
-})
-
-const Marketplace = Loadable({
-	loader: () => import("../../pages/Marketplace"),
-	loading: LoadableComponentSpinner
-})
-
-const Account = Loadable({
-	loader: () => import("../../pages/Account"),
-	loading: LoadableComponentSpinner
-})
-
-const EditItem = Loadable({
-	loader: () => import("../../pages/EditItem"),
-	loading: LoadableComponentSpinner
-})
-
-const ItemDetails = Loadable({
-	loader: () => import("../../pages/ItemDetails"),
-	loading: LoadableComponentSpinner
-})
-
-const FAQ = Loadable({
-	loader: () => import("../../pages/FAQ"),
-	loading: LoadableComponentSpinner
-})
-
-const PrivacyPolicy = Loadable({
-	loader: () => import("../../pages/PrivacyPolicy"),
-	loading: LoadableComponentSpinner
-})
-
-const About = Loadable({
-	loader: () => import("../../pages/About"),
-	loading: LoadableComponentSpinner
-})
-
-const Contact = Loadable({
-	loader: () => import("../../pages/Contact"),
-	loading: LoadableComponentSpinner
-})
-
-const Terms = Loadable({
-	loader: () => import("../../pages/Terms"),
-	loading: LoadableComponentSpinner
-})
-
-const RequestDesigner = Loadable({
-	loader: () => import("../../pages/RequestDesigner"),
-	loading: LoadableComponentSpinner
-})
-
-const Designers = Loadable({
-	loader: () => import("../../pages/Designers"),
-	loading: LoadableComponentSpinner
-})
-
-const BlogHome = Loadable({
-	loader: () => import("../../pages/Blog/HomePage/Home"),
-	loading: LoadableComponentSpinner
-})
-
-const BlogSection = Loadable({
-	loader: () => import("../../pages/Blog/HomePage/Section"),
-	loading: LoadableComponentSpinner
-})
-
+// ===== BLOG =====
 const BlogBase = Loadable({
 	loader: () => import("../../pages/Blog/"),
 	loading: LoadableComponentSpinner
 })
-
 const BlogPost = Loadable({
 	loader: () => import("../../pages/Blog/PostPage"),
 	loading: LoadableComponentSpinner
 })
-
-const BlogTag = Loadable({
-	loader: () => import("../../pages/Blog/HomePage/Tag"),
+const BlogHome = Loadable({
+	loader: () => import("../../pages/Blog/HomePage/Home"),
+	loading: LoadableComponentSpinner
+})
+const BlogDrops = Loadable({
+	loader: () => import("../../pages/Blog/HomePage/Drops"),
+	loading: LoadableComponentSpinner
+})
+const BlogArticles = Loadable({
+	loader: () => import("../../pages/Blog/HomePage/Articles"),
+	loading: LoadableComponentSpinner
+})
+const BlogKnowledge = Loadable({
+	loader: () => import("../../pages/Blog/HomePage/Knowledge"),
 	loading: LoadableComponentSpinner
 })
 
+
+// ===== ADMIN =====
 const Admin = Loadable({
 	loader: () => import("../../pages/Admin"),
 	loading: LoadableComponentSpinner
 })
-
 const AdminBlog = Loadable({
 	loader: () => import("../../pages/Admin/Blog"),
 	loading: LoadableComponentSpinner
 })
-
 const AdminBlogEditPost = Loadable({
 	loader: () => import("../../pages/Admin/Blog/Edit/EditPost"),
 	loading: LoadableComponentSpinner
 })
-
 const AdminBlogEditDrop = Loadable({
 	loader: () => import("../../pages/Admin/Blog/Edit/EditDrop"),
 	loading: LoadableComponentSpinner
 })
-
 const AdminBlogAddPost = Loadable({
 	loader: () => import("../../pages/Admin/Blog/Add/AddPost"),
 	loading: LoadableComponentSpinner
 })
-
 const AdminBlogAddDrop = Loadable({
 	loader: () => import("../../pages/Admin/Blog/Add/AddDrop"),
 	loading: LoadableComponentSpinner
 })
-
 const AdminDesigners = Loadable({
 	loader: () => import("../../pages/Admin/Designers"),
 	loading: LoadableComponentSpinner
 })
-
 const AdminDesignerEdit = Loadable({
 	loader: () => import("../../pages/Admin/DesignerEdit"),
 	loading: LoadableComponentSpinner
 })
-
 const AdminItems = Loadable({
 	loader: () => import("../../pages/Admin/Items"),
 	loading: LoadableComponentSpinner
 })
-
 const AdminUsers = Loadable({
 	loader: () => import("../../pages/Admin/Users"),
 	loading: LoadableComponentSpinner
 })
 
+// ===== MISC =====
 const ChatNew = Loadable({
 	loader: () => import("../../pages/Chat/New"),
 	loading: LoadableComponentSpinner
 })
+const FAQ = Loadable({
+	loader: () => import("../../pages/FAQ"),
+	loading: LoadableComponentSpinner
+})
+const PrivacyPolicy = Loadable({
+	loader: () => import("../../pages/PrivacyPolicy"),
+	loading: LoadableComponentSpinner
+})
+const About = Loadable({
+	loader: () => import("../../pages/About"),
+	loading: LoadableComponentSpinner
+})
+const Contact = Loadable({
+	loader: () => import("../../pages/Contact"),
+	loading: LoadableComponentSpinner
+})
+const Terms = Loadable({
+	loader: () => import("../../pages/Terms"),
+	loading: LoadableComponentSpinner
+})
+const RequestDesigner = Loadable({
+	loader: () => import("../../pages/RequestDesigner"),
+	loading: LoadableComponentSpinner
+})
+const BugReport = Loadable({
+	loader: () => import("../../pages/BugReport"),
+	loading: LoadableComponentSpinner
+})
+const BumpInfo = Loadable({
+	loader: () => import("../../pages/BumpInfo"),
+	loading: LoadableComponentSpinner
+})
 
+// ===== CONFIG OBJECT =====
 const routes = [
 	{
 		path: ROUTES.CHAT_NEW,
@@ -289,29 +271,35 @@ const routes = [
 		path: ROUTES.BLOG_BASE,
 		component: BlogBase,
 		exact: false,
+		title: "Blog",
 		routes: [
 			{
-				id: "home",
-				path: ROUTES.BLOG_HOME,
-				component: BlogHome
-			},
-			{
-				id: "section",
-				path: ROUTES.BLOG_SECTION,
-				component: BlogSection
-			},
-			{
-				id: "tag",
-				path: ROUTES.BLOG_TAG,
-				component: BlogTag
-			},
-			{
-				id: "post",
 				path: ROUTES.BLOG_POST,
 				component: BlogPost
+			},
+			{
+				path: ROUTES.BLOG_HOME,
+				component: BlogHome,
+				exact: false,
+				routes: [
+					{
+						id: "drops",
+						path: ROUTES.BLOG_DROPS,
+						component: BlogDrops
+					},
+					{
+						id: "articles",
+						path: ROUTES.BLOG_ARTICLES,
+						component: BlogArticles
+					},
+					{
+						id: "knowledge",
+						path: ROUTES.BLOG_KNOWLEDGE,
+						component: BlogKnowledge
+					}
+				]
 			}
-		],
-		title: "Blog"
+		]
 	},
 	{
 		path: ROUTES.DESIGNERS,
@@ -529,10 +517,10 @@ const Meta = () => {
 								<title>{`${route.title} | ${CONST.BRAND_NAME}`}</title>
 							</Helmet>
 						) : (
-							<Helmet>
-								<title>{CONST.BRAND_NAME}</title>
-							</Helmet>
-						)
+								<Helmet>
+									<title>{CONST.BRAND_NAME}</title>
+								</Helmet>
+							)
 					}}
 				/>
 			))}
