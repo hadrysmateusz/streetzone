@@ -6,15 +6,24 @@ import { compose } from "recompose"
 import { Text } from "../../../components/StyledComponents"
 import { Dropdown } from "../../../components/FormElements"
 import Separator from "../../../components/Separator"
-import route from "../../../utils/route"
 
+import route from "../../../utils/route"
+import * as BLOG_SECTIONS from "../../../constants/blog_sections"
+
+import PageNav from "../PageNav"
 import { SidebarContainer, SectionNavContainer } from "../StyledComponents"
 
-const NavItem = ({ to, name, current }) => {
+const NavItem = ({ to, section, current }) => {
 	return (
 		<NavLink to={to}>
-			<Text size="l" uppercase bold serif color={current === name ? "black25" : "gray0"}>
-				{name}
+			<Text
+				size="l"
+				uppercase
+				bold
+				serif
+				color={current === section.id ? "black25" : "gray0"}
+			>
+				{section.label}
 			</Text>
 		</NavLink>
 	)
@@ -23,16 +32,32 @@ const NavItem = ({ to, name, current }) => {
 const SectionNav = ({ currentSection }) => {
 	return (
 		<SectionNavContainer>
-			<NavItem to={route("BLOG_HOME")} name="Wszystko" current={currentSection} />
-			<NavItem to={route("BLOG_ARTICLES")} name="Artykuły" current={currentSection} />
-			<NavItem to={route("BLOG_DROPS")} name="Dropy" current={currentSection} />
-			<NavItem to={route("BLOG_KNOWLEDGE")} name="Wiedza" current={currentSection} />
+			<NavItem
+				to={route("BLOG_HOME")}
+				section={BLOG_SECTIONS.HOME}
+				current={currentSection}
+			/>
+			<NavItem
+				to={route("BLOG_DROPS")}
+				section={BLOG_SECTIONS.DROPS}
+				current={currentSection}
+			/>
+			<NavItem
+				to={route("BLOG_ARTICLES")}
+				section={BLOG_SECTIONS.ARTICLES}
+				current={currentSection}
+			/>
+			<NavItem
+				to={route("BLOG_KNOWLEDGE")}
+				section={BLOG_SECTIONS.KNOWLEDGE}
+				current={currentSection}
+			/>
 		</SectionNavContainer>
 	)
 }
 
-const Sidebar = ({ match, history, items, currentBreakpoint, slot }) => {
-	let currentSection = match.params.section ? match.params.section : "Wszystko"
+const Sidebar = ({ match, location, history, items, currentBreakpoint, slot }) => {
+	let currentSection = location.pathname.split("/")[2]
 
 	let options = [
 		{
@@ -55,6 +80,7 @@ const Sidebar = ({ match, history, items, currentBreakpoint, slot }) => {
 		<SidebarContainer>
 			{currentBreakpoint >= 2 ? (
 				<>
+					<PageNav />
 					<SectionNav currentSection={currentSection} />
 					<Separator spacing="var(--spacing3)" />
 					{slot}

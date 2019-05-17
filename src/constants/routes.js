@@ -1,12 +1,14 @@
+import * as BLOG_SECTIONS from "./blog_sections"
+
 export const HOME = "/"
 
 export const BLOG_BASE = "/czytaj"
 export const BLOG_POST = BLOG_BASE + "/p/:id"
 export const BLOG_DROP = BLOG_BASE + "/drop/:id"
-export const BLOG_HOME = BLOG_BASE + "/wszystko"
-export const BLOG_DROPS = BLOG_BASE + "/dropy"
-export const BLOG_ARTICLES = BLOG_BASE + "/artykuly"
-export const BLOG_KNOWLEDGE = BLOG_BASE + "/wiedza"
+export const BLOG_HOME = BLOG_BASE + "/" + BLOG_SECTIONS.HOME.id
+export const BLOG_DROPS = BLOG_BASE + "/" + BLOG_SECTIONS.DROPS.id
+export const BLOG_ARTICLES = BLOG_BASE + "/" + BLOG_SECTIONS.ARTICLES.id
+export const BLOG_KNOWLEDGE = BLOG_BASE + "/" + BLOG_SECTIONS.KNOWLEDGE.id
 
 export const MARKETPLACE = "/kupuj"
 export const DESIGNER = "/marki/:id"

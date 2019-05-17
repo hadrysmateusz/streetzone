@@ -10,7 +10,6 @@ import { Results } from "../../../components/Algolia/Helpers"
 import InstantSearchBlogWrapper from "../InstantSearchBlogWrapper"
 import { MainGrid, ContentArea, PromotedContainer } from "../StyledComponents"
 import Sidebar from "./Sidebar"
-import PageNav from "../PageNav"
 import { PromotedPost } from "../Previews"
 
 const OuterContainer = styled.div`
@@ -42,7 +41,6 @@ const BlogPageTemplate = ({
 		<PageContainer>
 			<InstantSearchBlogWrapper>
 				<PromotedSection indexName={promotedSectionIndex} limit={promotedSectionLimit} />
-				<PageNav />
 				<MainGrid>
 					<Sidebar slot={sidebarSlot} />
 					<ContentArea>{contentSlot}</ContentArea>
