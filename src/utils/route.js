@@ -12,7 +12,6 @@ export default (name, routeParams, searchParams) => {
 		entries.forEach(([paramName, paramVal]) => {
 			const toFind = `:${paramName}`
 			const replaceWith = encodeURIComponent(paramVal)
-			debugger
 			route = route.replace(toFind, replaceWith)
 		})
 	}
