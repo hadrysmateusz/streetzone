@@ -6,7 +6,8 @@ import { connectRefinementList } from "react-instantsearch-dom"
 
 import { Text } from "../../../components/StyledComponents"
 import { Dropdown } from "../../../components/FormElements"
-import { ROUTES } from "../../../constants"
+import Separator from "../../../components/Separator"
+import route from "../../../utils/route"
 import { withProps } from "../../../HOCs"
 
 import {
@@ -17,13 +18,10 @@ import {
 
 const TagsNavSmart = ({ currentSection, items }) => {
 	return items.map((item) => {
-		let route = ROUTES.BLOG_TAG.replace(":section", currentSection).replace(
-			":tag",
-			encodeURIComponent(item.value)
-		)
+		let _route = route("BLOG_TAG", { section: currentSection, tag: item.value })
 
 		return (
-			<NavLink to={route}>
+			<NavLink to={_route}>
 				{item.label}{" "}
 				<Text italic color="gray0">
 					({item.count})
@@ -44,7 +42,7 @@ const TagsNav = ({ ...props }) => {
 const SectionNav = ({ currentSection }) => {
 	return (
 		<SectionNavContainer>
-			<NavLink to={ROUTES.BLOG_HOME}>
+			<NavLink to={route("BLOG_HOME")}>
 				<Text
 					size="l"
 					uppercase
@@ -55,9 +53,7 @@ const SectionNav = ({ currentSection }) => {
 					Wszystko
 				</Text>
 			</NavLink>
-			<NavLink
-				to={ROUTES.BLOG_SECTION.replace(":section", encodeURIComponent("Artykuły"))}
-			>
+			<NavLink to={route("BLOG_SECTION", { section: "Artykuły" })}>
 				<Text
 					size="l"
 					uppercase
@@ -68,7 +64,7 @@ const SectionNav = ({ currentSection }) => {
 					Artykuły
 				</Text>
 			</NavLink>
-			<NavLink to={ROUTES.BLOG_SECTION.replace(":section", encodeURIComponent("Dropy"))}>
+			<NavLink to={route("BLOG_SECTION", { section: "Dropy" })}>
 				<Text
 					size="l"
 					uppercase
@@ -79,7 +75,7 @@ const SectionNav = ({ currentSection }) => {
 					Dropy
 				</Text>
 			</NavLink>
-			<NavLink to={ROUTES.BLOG_SECTION.replace(":section", encodeURIComponent("Wiedza"))}>
+			<NavLink to={route("BLOG_SECTION", { section: "Wiedza" })}>
 				<Text
 					size="l"
 					uppercase
@@ -119,6 +115,7 @@ const Sidebar = ({ match, history, items, currentBreakpoint }) => {
 			{currentBreakpoint >= 2 ? (
 				<>
 					<SectionNav currentSection={currentSection} />
+					<Separator spacing="var(--spacing3)" />
 					<TagsNav currentSection={currentSection} items={items} />
 				</>
 			) : (
@@ -129,16 +126,9 @@ const Sidebar = ({ match, history, items, currentBreakpoint }) => {
 					onChange={(data) => {
 						const [type, value] = data.value.split("-")
 						if (type === "section") {
-							history.push(
-								ROUTES.BLOG_SECTION.replace(":section", encodeURIComponent(value))
-							)
+							history.push(route("BLOG_SECTION", { section: value }))
 						} else if (type === "tag") {
-							history.push(
-								ROUTES.BLOG_TAG.replace(
-									":section",
-									encodeURIComponent(currentSection)
-								).replace(":tag", value)
-							)
+							history.push(route("BLOG_TAG", { section: currentSection, tag: value }))
 						} else {
 							console.log("ERROR")
 						}

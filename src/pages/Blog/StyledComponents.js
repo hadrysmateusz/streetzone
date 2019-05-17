@@ -174,13 +174,17 @@ export const SectionContainer = styled.section`
 		grid-auto-flow: column;
 		@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
 			grid-auto-flow: column;
-			grid-auto-columns: 1fr;
+			grid-template-columns: repeat(3, 1fr);
 			gap: var(--spacing3);
 		}
 	}
 `
 
 export const SmallPostContainer = styled.div`
+	background: white;
+	border: 1px solid var(--gray75);
+	border-radius: 3px;
+	padding: var(--spacing3);
 	overflow: hidden;
 	display: grid;
 	grid-template-rows: 180px auto;

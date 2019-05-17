@@ -1,4 +1,3 @@
-import removeMarkdown from "remove-markdown"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import React from "react"
 import { Link } from "react-router-dom"
@@ -21,28 +20,24 @@ import { ROUTES } from "../../../constants"
 
 const BasicPost = ({
 	id,
-	mainContent,
-	mainImageURL,
+	excerpt,
+	mainImageIndex,
+	imageUrls,
 	section,
 	title,
 	author,
 	createdAt,
-	dropsAt,
 	tags
 }) => {
-	let excerpt = removeMarkdown(mainContent, { gfm: true })
-	excerpt = excerpt.replace(/\\n/g, "\n")
-	const length = 90
-	excerpt = excerpt.length < length ? excerpt : excerpt.substring(0, length)
-	excerpt += "..."
 
-	const date = moment(section === "Dropy" ? dropsAt : createdAt).format("D.M.YY")
+	const date = moment(createdAt).format("D.M.YY")
+	const imageUrl = imageUrls[mainImageIndex]
 
 	return (
 		<PostContainer>
 			<Link to={ROUTES.BLOG_POST.replace(":id", id)}>
 				<ImageContainer>
-					<Image url={mainImageURL} />
+					<Image url={imageUrl} />
 				</ImageContainer>
 				<MainContainer>
 					<TextBlock uppercase color="gray0">
@@ -88,13 +83,13 @@ const BasicPost = ({
 BasicPost.propTypes = {
 	id: PropTypes.string.isRequired,
 	mainContent: PropTypes.string.isRequired,
-	mainImageURL: PropTypes.string.isRequired,
+	mainImageIndex: PropTypes.number.isRequired,
+	imageUrls: PropTypes.array.isRequired,
 	section: PropTypes.string.isRequired,
 	title: PropTypes.string.isRequired,
 	tags: PropTypes.array.isRequired,
-	dropsAt: PropTypes.number,
-	createdAt: PropTypes.number,
-	author: PropTypes.string
+	createdAt: PropTypes.number.isRequired,
+	author: PropTypes.string.isRequired
 }
 
 export default BasicPost

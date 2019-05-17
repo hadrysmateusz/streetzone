@@ -14,12 +14,11 @@ const PromotedPost = ({
 	category,
 	author,
 	createdAt,
-	dropsAt,
 	mainImageIndex,
 	imageUrls,
 	id
 }) => {
-	const date = moment(category === "Dropy" ? dropsAt : createdAt).format("D.M.YY")
+	const date = moment(createdAt).format("D.M.YY")
 
 	const imageUrl = imageUrls[mainImageIndex]
 
@@ -58,8 +57,7 @@ PromotedPost.propTypes = {
 	imageUrls: PropTypes.array.isRequired,
 	category: PropTypes.string.isRequired,
 	title: PropTypes.string.isRequired,
-	dropsAt: PropTypes.number,
-	createdAt: PropTypes.number,
+	createdAt: PropTypes.number.isRequired,
 	author: PropTypes.string
 }
 

@@ -4,26 +4,24 @@ import moment from "moment"
 import PropTypes from "prop-types"
 
 import { TextBlock } from "../../../components/StyledComponents"
-import Button, { ButtonContainer } from "../../../components/Button"
-import { ROUTES } from "../../../constants"
+import route from "../../../utils/route"
 
 import { SmallPostContainer, FluidImage } from "../StyledComponents"
 
-const DropPost = ({ id, mainImageURL, title, dropsAt }) => {
+const DropPost = ({ id, mainImageIndex, imageUrls, name, dropsAtApproxTimestamp }) => {
+	const imageUrl = imageUrls[mainImageIndex]
+
 	return (
-		<Link to={ROUTES.BLOG_POST.replace(":id", id)}>
+		<Link to={route("BLOG_POST", { id })}>
 			<SmallPostContainer>
-				<FluidImage url={mainImageURL} />
+				<FluidImage url={imageUrl} />
 				<div className="post-details">
-					<TextBlock serif size="l">
-						{title}
+					<TextBlock serif bold size="m">
+						{name}
 					</TextBlock>
 					<TextBlock serif color="black75">
-						{moment().to(moment(dropsAt))}
+						{moment().to(moment(dropsAtApproxTimestamp))}
 					</TextBlock>
-					<ButtonContainer>
-						<Button>Czytaj więcej</Button>
-					</ButtonContainer>
 				</div>
 			</SmallPostContainer>
 		</Link>
@@ -32,9 +30,10 @@ const DropPost = ({ id, mainImageURL, title, dropsAt }) => {
 
 DropPost.propTypes = {
 	id: PropTypes.string.isRequired,
-	mainImageURL: PropTypes.string.isRequired,
-	title: PropTypes.string.isRequired,
-	dropsAt: PropTypes.number.isRequired
+	mainImageIndex: PropTypes.number.isRequired,
+	imageUrls: PropTypes.array.isRequired,
+	name: PropTypes.string.isRequired,
+	dropsAtApproxTimestamp: PropTypes.number.isRequired
 }
 
 export default DropPost

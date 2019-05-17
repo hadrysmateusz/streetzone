@@ -51,7 +51,7 @@ export class BlogHomePage extends Component {
 		this.setState({ isLoading: true })
 		let query = this.props.firebase
 			.drops()
-			.orderBy("createdAt", "desc")
+			// .orderBy("createdAt", "desc")
 			.limit(3)
 		const snapshot = await query.get()
 		let drops = snapshot.docs.map((doc) => doc.data())
@@ -63,7 +63,7 @@ export class BlogHomePage extends Component {
 		let query = this.props.firebase
 			.posts()
 			.where("tags", "array-contains", "Pielęgnacja")
-			.orderBy("createdAt", "desc")
+			// .orderBy("createdAt", "desc")
 			.limit(3)
 		const snapshot = await query.get()
 		let carePosts = snapshot.docs.map((doc) => doc.data())
@@ -74,7 +74,7 @@ export class BlogHomePage extends Component {
 		this.setState({ isLoading: true })
 		let query = this.props.firebase
 			.posts()
-			.orderBy("promotedAt", "desc")
+			// .orderBy("promotedAt", "desc")
 			.limit(NUMBER_OF_PROMOTED_POSTS)
 		const snapshot = await query.get()
 		let promotedPosts = snapshot.docs.map((doc) => doc.data())
@@ -90,6 +90,10 @@ export class BlogHomePage extends Component {
 	render() {
 		const { isLoading, promotedPosts, drops, carePosts } = this.state
 
+		const hasPromotedPosts = promotedPosts && promotedPosts.length > 0
+		const hasDrops = drops && drops.length > 0
+		const hasCarePosts = carePosts && carePosts.length > 0
+
 		// const selectedSection = decodeURIComponent(match.params.section)
 
 		return (
@@ -98,33 +102,39 @@ export class BlogHomePage extends Component {
 					<LoadingSpinner />
 				) : (
 					<InstantSearchBlogWrapper>
-						<PromotedContainer>
-							{promotedPosts.map((post) => (
-								<PromotedPost {...post} />
-							))}
-						</PromotedContainer>
+						{hasPromotedPosts && (
+							<PromotedContainer>
+								{promotedPosts.map((post) => (
+									<PromotedPost {...post} />
+								))}
+							</PromotedContainer>
+						)}
 						<PageNav />
 						<MainGrid>
 							<Sidebar />
 							<ContentArea>
-								<Section
-									title="Nadchodzące Dropy"
-									hasMore
-									linkTo={route("BLOG_SECTION", { section: "Dropy" })}
-								>
-									{drops.map((post) => (
-										<DropPost {...post} />
-									))}
-								</Section>
-								<Section
-									title="Czyszczenie i pielęgnacja"
-									hasMore
-									linkTo={route("BLOG_TAG", { section: "Wiedza", tag: "Pielęgnacja" })}
-								>
-									{carePosts.map((post) => (
-										<SmallPost {...post} />
-									))}
-								</Section>
+								{hasDrops && (
+									<Section
+										title="Nadchodzące Dropy"
+										hasMore
+										linkTo={route("BLOG_SECTION", { section: "Dropy" })}
+									>
+										{drops.map((post) => (
+											<DropPost {...post} />
+										))}
+									</Section>
+								)}
+								{hasCarePosts && (
+									<Section
+										title="Czyszczenie i pielęgnacja"
+										hasMore
+										linkTo={route("BLOG_TAG", { section: "Wiedza", tag: "Pielęgnacja" })}
+									>
+										{carePosts.map((post) => (
+											<SmallPost {...post} />
+										))}
+									</Section>
+								)}
 								<InfinitePosts />
 							</ContentArea>
 						</MainGrid>
