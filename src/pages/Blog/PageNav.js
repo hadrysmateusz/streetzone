@@ -21,6 +21,7 @@ const PageNav = ({ match }) => {
 	const section = match.params.section ? match.params.section : "Wszystko"
 	const tag = match.params.tag ? match.params.tag : null
 
+	// TODO: set correct routes in links
 	return (
 		<NavContainer>
 			<Link to={ROUTES.HOME}>Główna</Link>
@@ -28,13 +29,13 @@ const PageNav = ({ match }) => {
 				<IconContainer>&gt;</IconContainer>Czytaj
 			</Link>
 			{section && (
-				<Link to={ROUTES.BLOG_SECTION.replace(":section", section).replace(":tag", tag)}>
+				<Link to={ROUTES.BLOG_HOME}>
 					<IconContainer>&gt;</IconContainer>
 					{section}
 				</Link>
 			)}
 			{tag && (
-				<Link to={ROUTES.BLOG_TAG.replace(":section", section).replace(":tag", tag)}>
+				<Link to={ROUTES.BLOG_HOME}>
 					<IconContainer>&gt;</IconContainer>
 					{tag}
 				</Link>

@@ -121,13 +121,14 @@ export const PromotedContainer = styled.div`
 	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
 		grid-template-columns: 1fr 1fr;
 		gap: var(--spacing3);
+		height: 40vw;
+		max-height: 500px;
 	}
 `
 
 export const PromotedPostContainer = styled.div`
 	width: 100%;
-	height: 40vw;
-	max-height: 500px;
+	height: 100%;
 	background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 65%, rgba(0, 0, 0, 0.65) 100%),
 		url(${(p) => p.image});
 	background-size: cover;
@@ -149,7 +150,7 @@ export const MainGrid = styled.div`
 	gap: var(--spacing3);
 
 	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
-		grid-template-columns: minmax(180px,1fr) 4fr;
+		grid-template-columns: minmax(180px, 1fr) 4fr;
 	}
 	@media (min-width: ${(p) => p.theme.breakpoints[5]}px) {
 		gap: var(--spacing4);
@@ -162,7 +163,7 @@ export const ContentArea = styled.main`
 	min-width: 0;
 `
 
-export const SectionContainer = styled.section`
+export const GroupContainer = styled.section`
 	margin-bottom: var(--spacing4);
 
 	header {

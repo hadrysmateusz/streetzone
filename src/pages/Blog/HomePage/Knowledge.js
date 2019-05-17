@@ -1,9 +1,31 @@
 import React from "react"
 
-const Knowledge = () => {
+import { CONST } from "../../../constants"
+import { TextBlock } from "../../../components/StyledComponents"
+
+import BlogPageTemplate from "./BlogPageTemplate"
+
+import InfinitePosts from "../InfinitePostsList"
+
+const Content = () => {
 	return (
-			<h2>Knowledge</h2>
+		<>
+			<TextBlock size="xl" bold>
+				Wiedza
+			</TextBlock>
+			<InfinitePosts />
+		</>
 	)
 }
 
-export default Knowledge
+const BlogHomePage = () => {
+	return (
+		<BlogPageTemplate
+			promotedSectionLimit={2}
+			promotedSectionIndex={CONST.BLOG_POST_ALGOLIA_INDEX}
+			contentSlot={<Content />}
+		/>
+	)
+}
+
+export default BlogHomePage

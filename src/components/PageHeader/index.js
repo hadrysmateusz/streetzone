@@ -43,21 +43,15 @@ const PageHeader = ({ authUser, firebase, currentBreakpoint, location, ...rest }
 										</StyledNavLink>
 									</NavItem>
 									<NavItem>
-										<StyledNavLink to={ROUTES.BLOG_SECTION.replace(":section", "Dropy")}>
+										<StyledNavLink to={ROUTES.BLOG_DROPS}>
 											Nadchodzące dropy
 										</StyledNavLink>
 									</NavItem>
 									<NavItem>
-										<StyledNavLink
-											to={ROUTES.BLOG_SECTION.replace(":section", "Artykuły")}
-										>
-											Artykuły
-										</StyledNavLink>
+										<StyledNavLink to={ROUTES.BLOG_ARTICLES}>Artykuły</StyledNavLink>
 									</NavItem>
 									<NavItem>
-										<StyledNavLink to={ROUTES.BLOG_SECTION.replace(":section", "Wiedza")}>
-											Wiedza
-										</StyledNavLink>
+										<StyledNavLink to={ROUTES.BLOG_KNOWLEDGE}>Wiedza</StyledNavLink>
 									</NavItem>
 								</Submenu>
 							</SubmenuContainer>

@@ -1,9 +1,33 @@
 import React from "react"
 
-const Drops = () => {
+import { CONST } from "../../../constants"
+import { TextBlock } from "../../../components/StyledComponents"
+
+import BlogPageTemplate from "./BlogPageTemplate"
+
+const Content = () => {
 	return (
-			<h2>Drops</h2>
+		<>
+			<TextBlock size="xl" bold>
+				Dropy
+			</TextBlock>
+		</>
 	)
 }
 
-export default Drops
+const Sidebar = () => {
+	return <div>Filters Placeholder</div>
+}
+
+const BlogHomePage = () => {
+	return (
+		<BlogPageTemplate
+			promotedSectionLimit={2}
+			promotedSectionIndex={CONST.BLOG_DROP_ALGOLIA_INDEX}
+			contentSlot={<Content />}
+			sidebarSlot={<Sidebar />}
+		/>
+	)
+}
+
+export default BlogHomePage

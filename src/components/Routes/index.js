@@ -93,11 +93,15 @@ const NewItem = Loadable({
 
 // ===== BLOG =====
 const BlogBase = Loadable({
-	loader: () => import("../../pages/Blog/"),
+	loader: () => import("../../pages/Blog"),
 	loading: LoadableComponentSpinner
 })
 const BlogPost = Loadable({
 	loader: () => import("../../pages/Blog/PostPage"),
+	loading: LoadableComponentSpinner
+})
+const BlogDrop = Loadable({
+	loader: () => import("../../pages/Blog/DropPage"),
 	loading: LoadableComponentSpinner
 })
 const BlogHome = Loadable({
@@ -271,30 +275,35 @@ const routes = [
 		title: "Blog",
 		routes: [
 			{
+				id: "home",
+				path: ROUTES.BLOG_HOME,
+				component: BlogHome
+			},
+			{
+				id: "post",
 				path: ROUTES.BLOG_POST,
 				component: BlogPost
 			},
 			{
-				path: ROUTES.BLOG_HOME,
-				component: BlogHome,
-				exact: false,
-				routes: [
-					{
-						id: "drops",
-						path: ROUTES.BLOG_DROPS,
-						component: BlogDrops
-					},
-					{
-						id: "articles",
-						path: ROUTES.BLOG_ARTICLES,
-						component: BlogArticles
-					},
-					{
-						id: "knowledge",
-						path: ROUTES.BLOG_KNOWLEDGE,
-						component: BlogKnowledge
-					}
-				]
+				id: "drop",
+				path: ROUTES.BLOG_DROP,
+				component: BlogDrop
+			},
+
+			{
+				id: "drops",
+				path: ROUTES.BLOG_DROPS,
+				component: BlogDrops
+			},
+			{
+				id: "articles",
+				path: ROUTES.BLOG_ARTICLES,
+				component: BlogArticles
+			},
+			{
+				id: "knowledge",
+				path: ROUTES.BLOG_KNOWLEDGE,
+				component: BlogKnowledge
 			}
 		]
 	},
