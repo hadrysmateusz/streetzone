@@ -26,7 +26,9 @@ const Separator = styled(SeparatorBase)`
 		grid-auto-flow: column;
 		align-items: center;
 		gap: var(--spacing1);
-		padding: 0 var(--spacing1);
+		:not(:empty) {
+			padding: 0 var(--spacing1);
+		}
 		color: ${(p) => p.theme.colors.gray[25]};
 	}
 `
