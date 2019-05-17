@@ -25,7 +25,7 @@ import {
 } from "../FinalFormFields"
 import { StyledForm } from "../StyledComponents"
 
-const AddPostForm = ({ onSubmit }) => {
+const AddDropForm = ({ onSubmit }) => {
 	return (
 		<Form
 			onSubmit={onSubmit}
@@ -52,7 +52,7 @@ const AddPostForm = ({ onSubmit }) => {
 							label="Data i czas dropu"
 							placeholder={dateFormat}
 							name="dropsAtString"
-							info={`Przestrzegaj formatu ${dateFormat}`}
+							info={"Przestrzegaj formatu" + dateFormat}
 						/>
 
 						<DropdownFF
@@ -116,7 +116,7 @@ const AddPostForm = ({ onSubmit }) => {
 	)
 }
 
-const AddPost = ({ history }) => {
+const AddDrop = ({ history }) => {
 	const firebase = useFirebase()
 
 	const onSubmit = async (values, actions) => {
@@ -129,12 +129,19 @@ const AddPost = ({ history }) => {
 				files
 			)
 
+			const urlPromises = attachments.map((storageRef) =>
+				firebase.getImageURL(storageRef)
+			)
+			const imageUrls = await Promise.all(urlPromises)
+
+			debugger
+
 			// Get main image index
 			const mainImageIndex = files.findIndex((a) => a.isMain)
 
 			// Format the values for db
 			const formattedData = formatDropDataForDb(
-				{ ...values, mainImageIndex, attachments },
+				{ ...values, mainImageIndex, attachments, imageUrls },
 				MODE.CREATE
 			)
 
@@ -154,9 +161,9 @@ const AddPost = ({ history }) => {
 
 	return (
 		<PageContainer>
-			<AddPostForm onSubmit={onSubmit} />
+			<AddDropForm onSubmit={onSubmit} />
 		</PageContainer>
 	)
 }
 
-export default withRouter(AddPost)
+export default withRouter(AddDrop)
