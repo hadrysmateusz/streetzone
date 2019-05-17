@@ -146,10 +146,14 @@ export const PromotedPostContainer = styled.div`
 
 export const MainGrid = styled.div`
 	display: grid;
+	gap: var(--spacing3);
+
 	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
-		grid-template-columns: 1fr 4fr;
+		grid-template-columns: minmax(180px,1fr) 4fr;
 	}
-	gap: var(--spacing4);
+	@media (min-width: ${(p) => p.theme.breakpoints[5]}px) {
+		gap: var(--spacing4);
+	}
 `
 
 export const SidebarContainer = styled.aside``
