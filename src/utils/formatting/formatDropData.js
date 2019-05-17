@@ -17,6 +17,7 @@ export const REQUIRED = [
 	"designers",
 	"itemCategory",
 	"attachments",
+	"imageUrls",
 	"mainImageIndex"
 ]
 
@@ -83,6 +84,11 @@ export const formatDropDataForDb = (data, mode, flagState = true) => {
 		// attachments
 		if (isSet(data.attachments)) {
 			formatted.attachments = formatNonEmptyArray(data.attachments)
+		}
+
+		// imageUrls
+		if (isSet(data.imageUrls)) {
+			formatted.imageUrls = formatNonEmptyArray(data.imageUrls)
 		}
 
 		// mainImageIndex
