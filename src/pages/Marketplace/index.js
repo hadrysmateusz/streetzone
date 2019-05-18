@@ -17,7 +17,7 @@ import ScrollToTop from "../../components/ScrollToTop"
 import Filters from "../../components/Filters"
 import Topbar from "../../components/Topbar"
 import InstantSearchWrapper from "../../components/InstantSearchWrapper"
-import { PageContainer } from "../../components/Containers"
+import { PageContainer, MainPageContainer } from "../../components/Containers"
 
 import PromotedSection from "./PromotedSection"
 import Header from "./Header"
@@ -129,42 +129,44 @@ class HomePage extends Component {
 				urlToState={this.urlToState}
 				defaultSearchState={DEFAULT_SEARCH_STATE}
 			>
-				<Header />
-				<PromotedSection />
-				<PageContainer extraWide>
-					<GridContainer>
-						<Topbar
-							areFiltersOpen={areFiltersOpen}
-							toggleFilters={this.toggleFilters}
-							clearFilters={this.setClearFiltersFlag}
-							setView={this.setView}
-							searchQueryValue={this.state.query}
-						/>
+				<MainPageContainer>
+					<Header />
+					<PromotedSection />
+					<PageContainer extraWide>
+						<GridContainer>
+							<Topbar
+								areFiltersOpen={areFiltersOpen}
+								toggleFilters={this.toggleFilters}
+								clearFilters={this.setClearFiltersFlag}
+								setView={this.setView}
+								searchQueryValue={this.state.query}
+							/>
 
-						<CurrentFilters
-							clearFilters={{
-								value: this.state.clearFilters,
-								update: this.setClearFiltersFlag
-							}}
-						/>
+							<CurrentFilters
+								clearFilters={{
+									value: this.state.clearFilters,
+									update: this.setClearFiltersFlag
+								}}
+							/>
 
-						<MainGrid>
-							<Sidebar hidden={!areFiltersOpen && !(currentBreakpoint > 0)}>
-								<Filters
-									toggleFilters={this.toggleFilters}
-									clearFilters={{
-										value: this.state.clearFilters,
-										update: this.setClearFiltersFlag
-									}}
-								/>
-							</Sidebar>
-							<AlgoliaResults viewMode={this.state.viewMode} />
-						</MainGrid>
-					</GridContainer>
-				</PageContainer>
-				<ScrollToTop>
-					<FontAwesomeIcon icon="long-arrow-alt-up" />
-				</ScrollToTop>
+							<MainGrid>
+								<Sidebar hidden={!areFiltersOpen && !(currentBreakpoint > 0)}>
+									<Filters
+										toggleFilters={this.toggleFilters}
+										clearFilters={{
+											value: this.state.clearFilters,
+											update: this.setClearFiltersFlag
+										}}
+									/>
+								</Sidebar>
+								<AlgoliaResults viewMode={this.state.viewMode} />
+							</MainGrid>
+						</GridContainer>
+					</PageContainer>
+					<ScrollToTop>
+						<FontAwesomeIcon icon="long-arrow-alt-up" />
+					</ScrollToTop>
+				</MainPageContainer>
 			</InstantSearchWrapper>
 		)
 	}

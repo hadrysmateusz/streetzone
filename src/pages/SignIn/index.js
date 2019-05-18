@@ -4,7 +4,7 @@ import { Form, Field } from "react-final-form"
 import { compose } from "recompose"
 import styled from "styled-components/macro"
 
-import { CenteredContainer } from "../../components/Containers"
+import { CenteredContainer, MainPageContainer } from "../../components/Containers"
 import { StyledLink, FieldRow, Header, Separator } from "../../components/Basics"
 import { FormError, Input } from "../../components/FormElements"
 import { FacebookButton, GoogleButton, LoaderButton } from "../../components/Button"
@@ -29,18 +29,20 @@ const SocialButtonsContainer = styled.div`
 
 const SignInPage = () => {
 	return (
-		<CenteredContainer>
-			<Header>Zaloguj się</Header>
-			<SocialButtonsContainer>
-				<SignInGoogle />
-				<SignInFacebook />
-			</SocialButtonsContainer>
-			<Separator text="lub" />
-			<SignInForm />
-			<PasswordForgetLink />
-			<Separator />
-			<SignUpLink />
-		</CenteredContainer>
+		<MainPageContainer>
+			<CenteredContainer>
+				<Header>Zaloguj się</Header>
+				<SocialButtonsContainer>
+					<SignInGoogle />
+					<SignInFacebook />
+				</SocialButtonsContainer>
+				<Separator text="lub" />
+				<SignInForm />
+				<PasswordForgetLink />
+				<Separator />
+				<SignUpLink />
+			</CenteredContainer>
+		</MainPageContainer>
 	)
 }
 

@@ -3,7 +3,7 @@ import styled from "styled-components/macro"
 import { ROUTES } from "../../constants"
 import { StyledLink } from "../../components/Basics"
 import { encodeURL } from "../../utils/algoliaURLutils"
-import { PageContainer } from "../../components/Containers"
+import { PageContainer, MainPageContainer } from "../../components/Containers"
 import { TextBlock } from "../../components/StyledComponents"
 
 import cloneDeep from "clone-deep"
@@ -219,17 +219,19 @@ const DesignersPage = () => {
 
 	return (
 		<InstantSearchDesignersWrapper>
-			<PageContainer>
-				<TextBlock centered serif size="l">
-					Projektanci
-				</TextBlock>
+			<MainPageContainer>
+				<PageContainer>
+					<TextBlock centered serif size="l">
+						Projektanci
+					</TextBlock>
 
-				<DesignersList />
+					<DesignersList />
 
-				{/* {designers.map((designer) => (
+					{/* {designers.map((designer) => (
 							<DesignerLink value={designer.label} />
 						))} */}
-			</PageContainer>
+				</PageContainer>
+			</MainPageContainer>
 		</InstantSearchDesignersWrapper>
 	)
 }

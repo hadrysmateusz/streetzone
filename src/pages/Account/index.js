@@ -5,6 +5,7 @@ import { compose } from "recompose"
 import { withAuthentication } from "../../components/UserSession"
 import ErrorBoundary from "../../components/ErrorBoundary"
 import LoadingSpinner from "../../components/LoadingSpinner"
+import { MainPageContainer } from "../../components/Containers"
 import { useUserData } from "../../hooks"
 
 import MainInfo from "./UserMainInfo"
@@ -34,49 +35,52 @@ const AccountPage = ({ routes, match, authUser }) => {
 	const commonProps = { user, userId, isAuthorized, onForceRefresh }
 
 	return (
-		<ErrorBoundary>
-			<MainContainer>
-				{user ? (
-					<>
-						<MainInfo {...commonProps} />
-						<div>
-							<AccountPageTabs
-								routes={routes}
-								isAuthorized={isAuthorized}
-								userId={userId}
-							/>
-
-							<Switch>
-								{routes.map(
-									(route, i) =>
-										(isAuthorized || !route.isProtected) && (
-											<Route
-												exact
-												path={route.path}
-												render={() => <route.component {...commonProps} />}
-												key={i}
-											/>
-										)
-								)}
-								{/* If no route matches redirect to items subroute */}
-								<Route
-									path="*"
-									render={() => (
-										<Redirect
-											to={routes
-												.find((r) => r.id === "items")
-												.path.replace(":id", userId)}
-										/>
-									)}
+		<MainPageContainer>
+			<ErrorBoundary>
+				<MainContainer>
+					{user ? (
+						<>
+							<MainInfo {...commonProps} />
+							<div>
+								<AccountPageTabs
+									routes={routes}
+									isAuthorized={isAuthorized}
+									userId={userId}
 								/>
-							</Switch>
-						</div>
-					</>
-				) : (
-					<LoadingSpinner />
-				)}
-			</MainContainer>
-		</ErrorBoundary>
+								<div className="subroute-container">
+									<Switch>
+										{routes.map(
+											(route, i) =>
+												(isAuthorized || !route.isProtected) && (
+													<Route
+														exact
+														path={route.path}
+														render={() => <route.component {...commonProps} />}
+														key={i}
+													/>
+												)
+										)}
+										{/* If no route matches redirect to items subroute */}
+										<Route
+											path="*"
+											render={() => (
+												<Redirect
+													to={routes
+														.find((r) => r.id === "items")
+														.path.replace(":id", userId)}
+												/>
+											)}
+										/>
+									</Switch>
+								</div>
+							</div>
+						</>
+					) : (
+						<LoadingSpinner />
+					)}
+				</MainContainer>
+			</ErrorBoundary>
+		</MainPageContainer>
 	)
 }
 

@@ -1,11 +1,13 @@
 import React from "react"
-import { PageContainer } from "../../components/Containers"
+import { MainPageContainer, PageContainer } from "../../components/Containers"
 
 const BugReportPage = () => {
 	return (
-		<PageContainer>
-			<h2>Zgłoś problem</h2>
-		</PageContainer>
+		<MainPageContainer>
+			<PageContainer>
+				<h2>Zgłoś problem</h2>
+			</PageContainer>
+		</MainPageContainer>
 	)
 }
 

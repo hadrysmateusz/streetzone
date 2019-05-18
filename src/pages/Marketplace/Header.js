@@ -13,6 +13,7 @@ const OuterContainer = styled.div`
 	> * {
 		height: 100%;
 	}
+	margin-bottom: var(--spacing3);
 `
 
 const Logo = styled.img`
@@ -48,7 +49,7 @@ const Header = compose(
 
 	return designer ? (
 		<OuterContainer {...designer}>
-			<PageContainer>
+			<PageContainer noMargin>
 				<InnerContainer>
 					{/* <LogoContainer url={designer.logoURL} /> */}
 					<Logo src={designer.logoURL} alt={`logo ${designer.label}`} />

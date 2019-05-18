@@ -8,14 +8,16 @@ import { LoaderButton, ButtonContainer } from "../../components/Button"
 import { FormError, Input } from "../../components/FormElements"
 
 import { ROUTES, FORM_ERR, REGEX } from "../../constants"
-import { CenteredContainer } from "../../components/Containers"
+import { CenteredContainer, MainPageContainer } from "../../components/Containers"
 
 const PasswordForgetPage = () => {
 	return (
-		<CenteredContainer>
-			<Header>Zresetuj hasło</Header>
-			<PasswordForgetForm />
-		</CenteredContainer>
+		<MainPageContainer>
+			<CenteredContainer>
+				<Header>Zresetuj hasło</Header>
+				<PasswordForgetForm />
+			</CenteredContainer>
+		</MainPageContainer>
 	)
 }
 

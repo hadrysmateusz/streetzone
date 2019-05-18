@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react"
-import PropTypes from "prop-types"
 import { Link } from "react-router-dom"
 import { InstantSearch, Configure } from "react-instantsearch-dom"
 import moment from "moment"
@@ -16,7 +15,11 @@ import Button, {
 import EmptyState from "../../components/EmptyState"
 import UserPreview from "../../components/UserPreview"
 import { translateCondition } from "../../constants/item_schema"
-import { PageContainer, GrayContainer } from "../../components/Containers"
+import {
+	PageContainer,
+	GrayContainer,
+	MainPageContainer
+} from "../../components/Containers"
 import { AlgoliaScrollableHits } from "../../components/Algolia/AlgoliaHits"
 import { VirtualMenu, VirtualRefinementList } from "../../components/Algolia/Virtual"
 import {
@@ -93,8 +96,8 @@ const ItemDetailsPage = ({ match, history }) => {
 	const formattedSize = formatSize(item.size)
 
 	return (
-		<>
-			<PageContainer maxWidth={5}>
+		<MainPageContainer>
+			<PageContainer>
 				<ItemContainer>
 					<ImageGallery item={item} />
 					<InfoContainer>
@@ -210,7 +213,7 @@ const ItemDetailsPage = ({ match, history }) => {
 					<AlgoliaScrollableHits />
 				</InstantSearch>
 			</GrayContainer>
-		</>
+		</MainPageContainer>
 	)
 }
 

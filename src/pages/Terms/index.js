@@ -1,11 +1,13 @@
 import React from "react"
-import { PageContainer } from "../../components/Containers"
+import { PageContainer, MainPageContainer } from "../../components/Containers"
 
 const TermsPage = () => {
 	return (
-		<PageContainer>
-			<h2>Regulamin</h2>
-		</PageContainer>
+		<MainPageContainer>
+			<PageContainer>
+				<h2>Regulamin</h2>
+			</PageContainer>
+		</MainPageContainer>
 	)
 }
 

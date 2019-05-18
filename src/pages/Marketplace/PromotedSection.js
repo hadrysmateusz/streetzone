@@ -21,7 +21,7 @@ import { useImage } from "../../hooks"
 const NUMBER_OF_PROMOTED_ITEMS = 3
 
 const OuterContainer = styled.div`
-	padding: var(--spacing3) 0;
+	margin-bottom: var(--spacing3);
 `
 
 const InnerContainerContainer = styled.div``

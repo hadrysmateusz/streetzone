@@ -4,7 +4,7 @@ import { withRouter } from "react-router-dom"
 
 import { withAuthorization, withAuthentication } from "../../components/UserSession"
 import LoadingSpinner from "../../components/LoadingSpinner"
-import { PageContainer } from "../../components/Containers"
+import { PageContainer, MainPageContainer } from "../../components/Containers"
 import { CustomFile } from "../../components/FileHandler"
 import useFirebase from "../../hooks/useFirebase"
 import EmptyState from "../../components/EmptyState"
@@ -114,15 +114,17 @@ const EditItemPage = ({ match, history }) => {
 	}, [match, authUser])
 
 	return (
-		<PageContainer maxWidth={2}>
-			{error ? (
-				<EmptyState text={error.message} />
-			) : !initialData ? (
-				<LoadingSpinner />
-			) : (
-				<EditItemForm initialValues={initialData} onSubmit={onSubmit} />
-			)}
-		</PageContainer>
+		<MainPageContainer>
+			<PageContainer maxWidth={2}>
+				{error ? (
+					<EmptyState text={error.message} />
+				) : !initialData ? (
+					<LoadingSpinner />
+				) : (
+					<EditItemForm initialValues={initialData} onSubmit={onSubmit} />
+				)}
+			</PageContainer>
+		</MainPageContainer>
 	)
 }
 
