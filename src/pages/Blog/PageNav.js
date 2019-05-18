@@ -4,7 +4,7 @@ import { ROUTES } from "../../constants"
 import styled from "styled-components/macro"
 
 const NavContainer = styled.div`
-	margin: var(--spacing3) 0;
+	margin: var(--spacing2) 0;
 	text-transform: uppercase;
 	font-size: var(--font-size--xs);
 	color: var(--gray0);

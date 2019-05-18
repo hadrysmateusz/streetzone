@@ -16,7 +16,7 @@ const OuterContainer = styled.div`
 	padding: var(--spacing3) 0;
 `
 
-const PromotedSection = ({ indexName, limit }) => {
+const PromotedSection = ({ indexName, limit, component: C = PromotedPost }) => {
 	return (
 		<OuterContainer>
 			<UncontrolledInstantSearchWrapper indexName={indexName}>
@@ -24,7 +24,7 @@ const PromotedSection = ({ indexName, limit }) => {
 				<VirtualToggle attribute="isArchived" defaultRefinement={false} />
 				{/* <VirtualToggle attribute="isPromoted" defaultRefinement={true} /> */}
 				<PromotedContainer>
-					<Results>{(posts) => posts.map((post) => <PromotedPost {...post} />)}</Results>
+					<Results>{(posts) => posts.map((post) => <C {...post} />)}</Results>
 				</PromotedContainer>
 			</UncontrolledInstantSearchWrapper>
 		</OuterContainer>
@@ -34,13 +34,18 @@ const PromotedSection = ({ indexName, limit }) => {
 const BlogPageTemplate = ({
 	promotedSectionLimit,
 	promotedSectionIndex,
+	promotedSectionComponent,
 	sidebarSlot,
 	contentSlot
 }) => {
 	return (
 		<PageContainer>
 			<InstantSearchBlogWrapper>
-				<PromotedSection indexName={promotedSectionIndex} limit={promotedSectionLimit} />
+				<PromotedSection
+					indexName={promotedSectionIndex}
+					limit={promotedSectionLimit}
+					component={promotedSectionComponent}
+				/>
 				<MainGrid>
 					<Sidebar slot={sidebarSlot} />
 					<ContentArea>{contentSlot}</ContentArea>

@@ -1,4 +1,4 @@
-import styled from "styled-components/macro"
+import styled, { css } from "styled-components/macro"
 import { ellipsis, overlayTextShadow } from "../../style-utils"
 
 export const PostsContainer = styled.div`
@@ -126,23 +126,33 @@ export const PromotedContainer = styled.div`
 	}
 `
 
-export const PromotedPostContainer = styled.div`
+const promotedCommon = css`
 	width: 100%;
 	height: 100%;
-	background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 65%, rgba(0, 0, 0, 0.65) 100%),
-		url(${(p) => p.image});
 	background-size: cover;
 	background-position: center;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	justify-content: flex-end;
-	color: white;
-	${overlayTextShadow}
 	padding: var(--spacing3) 0;
 	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
 		padding: var(--spacing4) 0;
 	}
+`
+
+export const PromotedPostContainer = styled.div`
+	background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 70%, rgba(0, 0, 0, 0.65) 100%),
+		url(${(p) => p.image});
+	color: white;
+	${overlayTextShadow}
+	${promotedCommon}
+`
+
+export const PromotedDropContainer = styled.div`
+	background: url(${(p) => p.image});
+	color: var(--black75);
+	${promotedCommon}
 `
 
 export const MainGrid = styled.div`
