@@ -152,7 +152,8 @@ export const PromotedPostContainer = styled.div`
 export const PromotedDropContainer = styled.div`
 	background: url(${(p) => p.image});
 	color: var(--black75);
-	${promotedCommon}
+	border: 1px solid var(--gray75);
+	${promotedCommon};
 `
 
 export const MainGrid = styled.div`

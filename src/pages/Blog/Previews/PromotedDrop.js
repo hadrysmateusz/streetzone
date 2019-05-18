@@ -9,11 +9,11 @@ import { ROUTES } from "../../../constants"
 import { PromotedDropContainer } from "../StyledComponents"
 
 const PromotedPost = ({
-	name,
-	dropsAtApproxTimestamp,
+	id,
 	mainImageIndex,
 	imageUrls,
-	id
+	name,
+	dropsAtApproxTimestamp
 }) => {
 	const date = moment().to(moment(dropsAtApproxTimestamp))
 	const imageUrl = imageUrls[mainImageIndex]
@@ -21,7 +21,7 @@ const PromotedPost = ({
 	return (
 		<Link to={ROUTES.BLOG_POST.replace(":id", id)}>
 			<PromotedDropContainer image={imageUrl}>
-				<TextBlock serif bold size="l">
+				<TextBlock serif size="l">
 					{name}
 				</TextBlock>
 				{date && <TextBlock serif>{date}</TextBlock>}
@@ -34,10 +34,8 @@ PromotedPost.propTypes = {
 	id: PropTypes.string.isRequired,
 	mainImageIndex: PropTypes.number.isRequired,
 	imageUrls: PropTypes.array.isRequired,
-	category: PropTypes.string.isRequired,
-	title: PropTypes.string.isRequired,
-	createdAt: PropTypes.number.isRequired,
-	author: PropTypes.string
+	name: PropTypes.string.isRequired,
+	dropsAtApproxTimestamp: PropTypes.number.isRequired
 }
 
 export default PromotedPost
