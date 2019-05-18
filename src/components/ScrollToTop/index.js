@@ -6,16 +6,16 @@ const ScrollToTop = styled.button.attrs((p) => ({
 	--size: 60px;
 	--offset: 15px;
 	--font-size: 1.1rem;
-	background: ${(p) => p.theme.colors.black[25]};
-	color: white;
-	border: none;
+	background: rgba(255, 255, 255, 0.88);
+	border: 1px solid var(--gray75);
+	color: var(--black75);
 	outline: none;
 	box-shadow: none;
 	border-radius: 50%;
-	box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.48);
+	box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.28);
 	cursor: pointer;
 	:hover {
-		background: black;
+		background: white;
 	}
 	position: sticky;
 	float: right;
@@ -31,7 +31,6 @@ const ScrollToTop = styled.button.attrs((p) => ({
 	width: var(--size);
 	height: var(--size);
 	@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
-		--size: 70px;
 		--offset: 30px;
 		--font-size: 1.5rem;
 	}
