@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React from "react"
 import styled from "styled-components/macro"
 import { Link } from "react-router-dom"
 
@@ -26,44 +26,13 @@ const LogoContainer = styled.div`
 		justify-content: center;`}
 `
 
-const options = [
-	{
-		path: process.env.PUBLIC_URL + "/img/logo/slice3.png",
-		width: 130
-	},
-	{
-		path: process.env.PUBLIC_URL + "/img/logo/slice4.png",
-		width: 130
-	},
-	{
-		path: process.env.PUBLIC_URL + "/img/logo/slice5.png",
-		width: 130
-	},
-	{
-		path: process.env.PUBLIC_URL + "/img/logo/slice6.png",
-		width: 130
-	},
-	{
-		path: process.env.PUBLIC_URL + "/img/logo/slice7.png",
-		width: 130
-	}
-]
+const PATH = process.env.PUBLIC_URL + "/img/StreetZoneLogo.png"
 
 const Logo = ({ centered }) => {
-	const [index, setIndex] = useState(0)
-
-	const onClick = (e) => {
-		e.stopPropagation()
-		e.preventDefault()
-		setIndex((index) => (index + 1) % options.length)
-	}
-
-	const { path, width } = options[index]
-
 	return (
-		<Link to={ROUTES.HOME} onClick={onClick}>
+		<Link to={ROUTES.HOME}>
 			<LogoContainer centered={centered}>
-				<img src={path} alt={`Logo ${CONST.BRAND_NAME}`} width={width} />
+				<img src={PATH} alt={`Logo ${CONST.BRAND_NAME}`} width={130} />
 			</LogoContainer>
 		</Link>
 	)
