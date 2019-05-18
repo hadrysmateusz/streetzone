@@ -352,14 +352,8 @@ const routes = [
 				label: "Wiadomości",
 				path: ROUTES.ACCOUNT_CHAT,
 				component: UserChat,
-				isProtected: true
-			},
-			{
-				id: "feedback",
-				label: "Opinie",
-				path: ROUTES.ACCOUNT_FEEDBACK,
-				component: UserFeedback,
-				isProtected: false
+				isProtected: true,
+				isHiddenOnMobile: true
 			},
 			{
 				id: "savedItems",
@@ -397,6 +391,13 @@ const routes = [
 				isProtected: true,
 				category: "Zapisane",
 				shortLabel: "Dropy"
+			},
+			{
+				id: "feedback",
+				label: "Opinie",
+				path: ROUTES.ACCOUNT_FEEDBACK,
+				component: UserFeedback,
+				isProtected: false
 			},
 			{
 				id: "settings",

@@ -40,7 +40,9 @@ export const AccountPageTabs = withBreakpoints(
 			return { ...route, path: route.path.replace(":id", userId) }
 		})
 
-		if (currentBreakpoint < 2) {
+		const isMobile = currentBreakpoint < 2
+
+		if (isMobile) {
 			routesWithIds = routesWithIds.reduce((acc, curr, i) => {
 				if (!curr.category) {
 					return { ...acc, [curr.id]: curr }
@@ -51,11 +53,11 @@ export const AccountPageTabs = withBreakpoints(
 			}, {})
 		}
 
-		return <TabsNav routes={routesWithIds} {...rest} />
+		return <TabsNav routes={routesWithIds} isMobile={isMobile} {...rest} />
 	}
 )
 
-const TabsNav = ({ routes, isAuthorized = false }) => {
+const TabsNav = ({ routes, isMobile, isAuthorized = false }) => {
 	const routeEntries = Object.entries(routes)
 
 	const renderDropdown = (categoryName, routes) => {
@@ -78,6 +80,7 @@ const TabsNav = ({ routes, isAuthorized = false }) => {
 	const renderSingleRoute = (route) => {
 		return (
 			(isAuthorized || !route.isProtected) &&
+			(!isMobile || !route.isHiddenOnMobile) &&
 			!route.isHidden && (
 				<NavItem key={route.id}>
 					<StyledNavLink to={route.path} key={route.id}>
