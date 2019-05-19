@@ -8,6 +8,15 @@ import { Toggle, ClearFiltersSubButton, FiltersToggleContainer } from "./StyledC
 import { ROUTES } from "../../constants"
 import { withBreakpoints } from "react-breakpoints"
 
+export const FiltersToggleButton = ({ onClick }) => {
+	return (
+		<Toggle onClick={onClick}>
+			<FontAwesomeIcon icon="filter" />
+			<span>Filtry</span>
+		</Toggle>
+	)
+}
+
 const FiltersToggle = compose(
 	withRouter,
 	connectCurrentRefinements,
