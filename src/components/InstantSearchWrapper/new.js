@@ -1,27 +1,12 @@
 import React, { useState, useEffect, useCallback } from "react"
-// import equal from "deep-equal"
 import { withRouter } from "react-router-dom"
 import { InstantSearch } from "react-instantsearch-dom"
 import { decodeURL, encodeURL } from "../../utils/algoliaURLutils"
 import cloneDeep from "clone-deep"
 
-export const UncontrolledInstantSearchWrapper = ({ indexName, children, ...rest }) => {
-	return (
-		<InstantSearch
-			appId={process.env.REACT_APP_APP_ID}
-			apiKey={process.env.REACT_APP_ALGOLIA_API_KEY}
-			indexName={indexName}
-			{...rest}
-		>
-			{children}
-		</InstantSearch>
-	)
-}
-
 export const InstantSearchWrapper = withRouter(
 	({ indexName, initialState, allowedKeys, children, history, location, ...rest }) => {
 		const [searchState, setSearchState] = useState(initialState)
-		const [shouldRefresh, setShouldRefresh] = useState(false)
 		const [isFirstRender, setIsFirstRender] = useState(true)
 
 		const urlToState = (parsedSearch) => {
@@ -139,7 +124,6 @@ export const InstantSearchWrapper = withRouter(
 				searchState={searchState}
 				onSearchStateChange={handleSearchStateChange}
 				createURL={decodeURL}
-				refresh={shouldRefresh}
 				{...rest}
 			>
 				{children}

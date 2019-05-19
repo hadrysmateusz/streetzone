@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react"
-// import equal from "deep-equal"
 import { withRouter } from "react-router-dom"
 import { InstantSearch } from "react-instantsearch-dom"
 import { decodeURL, encodeURL } from "../../utils/algoliaURLutils"

@@ -1,12 +1,9 @@
 import React from "react"
-import { Configure } from "react-instantsearch-dom"
 
 import { CONST } from "../../../constants"
 import route from "../../../utils/route"
 
-import { UncontrolledInstantSearchWrapper } from "../../../components/InstantSearchWrapper"
-import { VirtualToggle, VirtualMenu } from "../../../components/Algolia/Virtual"
-import { Results } from "../../../components/Algolia/Helpers"
+import StatelessSearchWrapper from "../../../components/InstantSearchWrapper/stateless"
 
 import BlogPageTemplate from "./BlogPageTemplate"
 import Group from "./Group"
@@ -25,23 +22,21 @@ const ThematicGroup = ({
 	component: C
 }) => {
 	return (
-		<UncontrolledInstantSearchWrapper indexName={index}>
-			<Configure hitsPerPage={limit} />
-			<VirtualToggle attribute="isArchived" defaultRefinement={false} />
-			{refinements && refinements}
-
-			<Results>
-				{(results) =>
-					results && results.length > 0 ? (
-						<Group title={title} hasMore linkTo={linkTo}>
-							{results.map((res) => (
-								<C {...res} />
-							))}
-						</Group>
-					) : null
-				}
-			</Results>
-		</UncontrolledInstantSearchWrapper>
+		<StatelessSearchWrapper
+			indexName={index}
+			limit={limit}
+			refinements={{ isArchived: false, ...refinements }}
+		>
+			{(results) => {
+				return results.length > 0 ? (
+					<Group title={title} hasMore linkTo={linkTo}>
+						{results.map((res) => (
+							<C {...res} />
+						))}
+					</Group>
+				) : null
+			}}
+		</StatelessSearchWrapper>
 	)
 }
 
@@ -55,15 +50,11 @@ const Content = () => {
 				component={DropPost}
 			/>
 			<ThematicGroup
-				index={CONST.BLOG_DROP_ALGOLIA_INDEX}
+				index={CONST.BLOG_POST_ALGOLIA_INDEX}
 				title="Czyszczenie i Pielęgnacja"
 				linkTo={route("BLOG_ARTICLES", null, { tag: "Czyszczenie i Pielęgnacja" })}
 				component={SmallPost}
-				refinements={
-					<>
-						<VirtualMenu attribute="tags" defaultRefinement="Czyszczenie i Pielęgnacja" />
-					</>
-				}
+				refinements={{ tags: ["Czyszczenie i Pielęgnacja"] }}
 			/>
 			<InfinitePosts />
 		</>

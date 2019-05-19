@@ -3,40 +3,22 @@ import styled from "styled-components/macro"
 export const Container = styled.div`
 	display: grid;
 	gap: var(--spacing1);
-	grid-auto-columns: 1fr 1fr;
-	grid-template-areas:
-		"search search"
-		"filter sort";
+	grid-template-columns: 1fr 1fr;
 
+	/* mobile-only */
+	@media (max-width: ${(p) => p.theme.breakpoints[1] - 1}px) {
+		.search-container {
+			grid-column: span 2;
+		}
+	}
+
+	/* > mobile */
 	@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
-		grid-template-columns: 1fr 180px auto;
-		grid-template-areas: "search sort viewSwitch";
+		grid-template-columns: 1fr 180px;
 		gap: var(--spacing2);
-		.filter-container {
+		.filters-toggle-container {
 			display: none;
 		}
-	}
-
-	.view-switch-container {
-		grid-area: viewSwitch;
-		height: 100%;
-		display: none;
-		@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
-			display: block;
-		}
-	}
-	.search-container {
-		grid-area: search;
-		height: 100%;
-	}
-	.sort-container {
-		grid-area: sort;
-		height: 100%;
-	}
-	.filter-container {
-		grid-area: filter;
-		width: 100%;
-		height: 100%;
 	}
 `
 
