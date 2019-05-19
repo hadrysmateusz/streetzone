@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react"
+import React, { useState, useEffect, useCallback } from "react"
 // import equal from "deep-equal"
 import { withRouter } from "react-router-dom"
 import { InstantSearch } from "react-instantsearch-dom"
@@ -19,21 +19,13 @@ export const UncontrolledInstantSearchWrapper = ({ indexName, children, ...rest 
 }
 
 export const InstantSearchWrapper = withRouter(
-	({
-		indexName,
-		defaultSearchState,
-		allowedKeys,
-		children,
-		history,
-		location,
-		...rest
-	}) => {
-		const [searchState, setSearchState] = useState(defaultSearchState)
+	({ indexName, initialState, allowedKeys, children, history, location, ...rest }) => {
+		const [searchState, setSearchState] = useState(initialState)
 		const [shouldRefresh, setShouldRefresh] = useState(false)
 		const [isFirstRender, setIsFirstRender] = useState(true)
 
 		const urlToState = (parsedSearch) => {
-			let state = cloneDeep(defaultSearchState)
+			let state = cloneDeep(initialState)
 
 			const makeSureIsObject = (key) => {
 				if (!state[key]) {
@@ -44,17 +36,9 @@ export const InstantSearchWrapper = withRouter(
 			try {
 				for (const [key, val] of Object.entries(parsedSearch)) {
 					// these three always have the same names
-					if (key === "sortBy") {
+					if (["sortBy", "query", "page"].includes(key)) {
 						// TODO: only allow sorting by whitelisted keys
 						state.sortBy = val
-						continue
-					}
-					if (key === "query") {
-						state.query = val
-						continue
-					}
-					if (key === "page") {
-						state.page = val
 						continue
 					}
 
@@ -74,16 +58,14 @@ export const InstantSearchWrapper = withRouter(
 
 					// all objects correspond to range fields
 					// has to be after array as arrays are also objects
-					/* TODO: original implementation involved deleting state.range if no value was present
-          make sure this won't cause issues */
 					if (typeof val === "object") {
 						makeSureIsObject("range")
 						state.range[key] = val
 						continue
 					}
 
-					// getting here means an unhandled key - throw an error
-					throw new Error(`Unhandled key ${key}`)
+					// any unhandled key should just be ignored
+					// TODO: consider reporting unhandled keys to Sentry
 				}
 
 				// if all values are handled correctly return state object
@@ -93,7 +75,7 @@ export const InstantSearchWrapper = withRouter(
 				console.error(error)
 
 				// in case of error return default state
-				return cloneDeep(defaultSearchState)
+				return cloneDeep(initialState)
 			}
 		}
 
@@ -109,7 +91,7 @@ export const InstantSearchWrapper = withRouter(
 			for (const [key, val] of Object.entries(state)) {
 				if (["sortBy", "page", "query"].includes(key)) {
 					// if new value is equal to default one, don't clutter the url with it
-					if (val === defaultSearchState[key]) continue
+					if (val === initialState[key]) continue
 					formattedState[key] = val
 					continue
 				}
@@ -137,7 +119,7 @@ export const InstantSearchWrapper = withRouter(
 			history.push(url)
 		}
 
-		const createStateFromURL = useMemo(() => {
+		const createStateFromURL = useCallback(() => {
 			try {
 				const parsedSearch = decodeURL(location.search)
 				const formattedState = urlToState(parsedSearch)
@@ -145,9 +127,9 @@ export const InstantSearchWrapper = withRouter(
 			} catch (e) {
 				console.log(e)
 				// if there was a problem while parsing, use default state instead
-				return defaultSearchState
+				return initialState
 			}
-		}, [defaultSearchState, allowedKeys, location.search])
+		}, [initialState, allowedKeys, location.search])
 
 		return (
 			<InstantSearch
