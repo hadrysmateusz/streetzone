@@ -107,8 +107,6 @@ const InnerContainer = connectHits(({ hits }) => {
 		? NUMBER_OF_PROMOTED_ITEMS
 		: NUMBER_OF_PROMOTED_ITEMS - main.length
 
-	console.log(Array(nToFill).fill())
-
 	return (
 		<InnerContainerContainer>
 			<TextBlock bold uppercase>
