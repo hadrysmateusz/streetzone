@@ -33,7 +33,9 @@ const ITEMS_MARKETPLACE_PRICE_ASC_ALGOLIA_INDEX = isProd
 const ITEMS_CUSTOM_ALGOLIA_INDEX = isProd ? "prod_custom" : "dev_custom"
 const BLOG_POST_ALGOLIA_INDEX = isProd ? "prod_posts" : "dev_posts"
 const BLOG_DROP_ALGOLIA_INDEX = isProd ? "prod_drops" : "dev_drops"
+const BLOG_DROP_NEWEST_ALGOLIA_INDEX = isProd ? "prod_drops_newest" : "dev_drops_newest"
 const DESIGNERS_ALGOLIA_INDEX = isProd ? "prod_designers" : "dev_designers"
+
 // ===============================================================================
 
 const ALGOLIA_ID = functions.config().algolia.app_id
