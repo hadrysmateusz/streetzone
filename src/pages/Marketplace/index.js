@@ -1,7 +1,6 @@
-import React, { Component } from "react"
+import React, { Component, useState, useEffect } from "react"
 import { withBreakpoints } from "react-breakpoints"
 import { compose } from "recompose"
-import cloneDeep from "clone-deep"
 import {
 	disableBodyScroll,
 	enableBodyScroll,
@@ -32,101 +31,153 @@ const DEFAULT_SEARCH_STATE = {
 	page: 1
 }
 
-class HomePage extends Component {
-	state = {
-		areFiltersOpen: this.props.currentBreakpoint > 1,
-		clearFilters: false,
-		viewMode: "list"
+const MarketplacePage = ({ currentBreakpoint }) => {
+	const [areFiltersOpen, setAreFiltersOpen] = useState(false)
+	const [clearFilters, setClearFilters] = useState(false)
+
+	const toggleFilters = () => {
+		setAreFiltersOpen((state) => !state)
 	}
 
-	targetElement = null
+	return (
+		<InstantSearchWrapper
+			indexName={CONST.ITEMS_MARKETPLACE_DEFAULT_ALGOLIA_INDEX}
+			initialState={DEFAULT_SEARCH_STATE}
+			allowedKeys={["category", "designers", "price", "size"]}
+		>
+			<MainPageContainer>
+				<Header />
+				<PromotedSection />
+				<PageContainer extraWide>
+					<GridContainer>
+						<Topbar toggleFilters={toggleFilters} clearFilters={setClearFilters} />
 
-	setClearFiltersFlag = (to) => this.setState({ clearFilters: to })
+						<CurrentFilters
+							clearFilters={{
+								value: clearFilters,
+								update: setClearFilters
+							}}
+						/>
 
-	componentDidMount() {
-		this.targetElement = document.querySelector("#filters-container")
-	}
-
-	toggleFilters = () => {
-		const wasOpen = this.state.areFiltersOpen
-		if (wasOpen) {
-			enableBodyScroll(this.targetElement)
-		} else {
-			disableBodyScroll(this.targetElement)
-		}
-
-		this.setState((state) => {
-			const { areFiltersOpen } = state
-			return { areFiltersOpen: !areFiltersOpen }
-		})
-	}
-
-	setView = (viewMode) => {
-		return this.setState({ viewMode })
-	}
-
-	componentWillUnmount() {
-		clearAllBodyScrollLocks()
-	}
-
-	render() {
-		const { areFiltersOpen } = this.state
-		const { currentBreakpoint } = this.props
-
-		if (currentBreakpoint > 0) {
-			enableBodyScroll(this.targetElement)
-		}
-
-		return (
-			<InstantSearchWrapper
-				indexName={CONST.ITEMS_MARKETPLACE_DEFAULT_ALGOLIA_INDEX}
-				initialState={DEFAULT_SEARCH_STATE}
-				allowedKeys={["category", "designers", "price", "size"]}
-			>
-				<MainPageContainer>
-					<Header />
-					<PromotedSection />
-					<PageContainer extraWide>
-						<GridContainer>
-							<Topbar
-								areFiltersOpen={areFiltersOpen}
-								toggleFilters={this.toggleFilters}
-								clearFilters={this.setClearFiltersFlag}
-								setView={this.setView}
-								searchQueryValue={this.state.query}
-							/>
-
-							<CurrentFilters
-								clearFilters={{
-									value: this.state.clearFilters,
-									update: this.setClearFiltersFlag
-								}}
-							/>
-
-							<MainGrid>
-								<Sidebar hidden={!areFiltersOpen && !(currentBreakpoint > 0)}>
-									<Filters
-										toggleFilters={this.toggleFilters}
-										clearFilters={{
-											value: this.state.clearFilters,
-											update: this.setClearFiltersFlag
-										}}
-									/>
-								</Sidebar>
-								<AlgoliaResults viewMode={this.state.viewMode} />
-							</MainGrid>
-						</GridContainer>
-					</PageContainer>
-					<ScrollToTop>
-						<FontAwesomeIcon icon="long-arrow-alt-up" />
-					</ScrollToTop>
-				</MainPageContainer>
-			</InstantSearchWrapper>
-		)
-	}
+						<MainGrid>
+							<Sidebar hidden={!areFiltersOpen && !(currentBreakpoint > 0)}>
+								<Filters
+									toggleFilters={toggleFilters}
+									clearFilters={{
+										value: clearFilters,
+										update: setClearFilters
+									}}
+								/>
+							</Sidebar>
+							<AlgoliaResults />
+						</MainGrid>
+					</GridContainer>
+				</PageContainer>
+				<ScrollToTop>
+					<FontAwesomeIcon icon="long-arrow-alt-up" />
+				</ScrollToTop>
+			</MainPageContainer>
+		</InstantSearchWrapper>
+	)
 }
 
-export default compose(
-	withBreakpoints,
-	withFirebase
-)(HomePage)
+export default withBreakpoints(MarketplacePage)
+
+// class HomePage extends Component {
+// 	state = {
+// 		areFiltersOpen: this.props.currentBreakpoint > 1,
+// 		clearFilters: false,
+// 		viewMode: "list"
+// 	}
+
+// 	targetElement = null
+
+// 	setClearFiltersFlag = (to) => this.setState({ clearFilters: to })
+
+// 	componentDidMount() {
+// 		this.targetElement = document.querySelector("#filters-container")
+// 	}
+
+// 	toggleFilters = () => {
+// 		const wasOpen = this.state.areFiltersOpen
+// 		if (wasOpen) {
+// 			enableBodyScroll(this.targetElement)
+// 		} else {
+// 			disableBodyScroll(this.targetElement)
+// 		}
+
+// 		this.setState((state) => {
+// 			const { areFiltersOpen } = state
+// 			return { areFiltersOpen: !areFiltersOpen }
+// 		})
+// 	}
+
+// 	setView = (viewMode) => {
+// 		return this.setState({ viewMode })
+// 	}
+
+// 	componentWillUnmount() {
+// 		clearAllBodyScrollLocks()
+// 	}
+
+// 	render() {
+// 		const { areFiltersOpen } = this.state
+// 		const { currentBreakpoint } = this.props
+
+// 		if (currentBreakpoint > 0) {
+// 			enableBodyScroll(this.targetElement)
+// 		}
+
+// 		return (
+// 			<InstantSearchWrapper
+// 				indexName={CONST.ITEMS_MARKETPLACE_DEFAULT_ALGOLIA_INDEX}
+// 				initialState={DEFAULT_SEARCH_STATE}
+// 				allowedKeys={["category", "designers", "price", "size"]}
+// 			>
+// 				<MainPageContainer>
+// 					<Header />
+// 					<PromotedSection />
+// 					<PageContainer extraWide>
+// 						<GridContainer>
+// 							<Topbar
+// 								areFiltersOpen={areFiltersOpen}
+// 								toggleFilters={this.toggleFilters}
+// 								clearFilters={this.setClearFiltersFlag}
+// 								setView={this.setView}
+// 								searchQueryValue={this.state.query}
+// 							/>
+
+// 							<CurrentFilters
+// 								clearFilters={{
+// 									value: this.state.clearFilters,
+// 									update: this.setClearFiltersFlag
+// 								}}
+// 							/>
+
+// 							<MainGrid>
+// 								<Sidebar hidden={!areFiltersOpen && !(currentBreakpoint > 0)}>
+// 									<Filters
+// 										toggleFilters={this.toggleFilters}
+// 										clearFilters={{
+// 											value: this.state.clearFilters,
+// 											update: this.setClearFiltersFlag
+// 										}}
+// 									/>
+// 								</Sidebar>
+// 								<AlgoliaResults viewMode={this.state.viewMode} />
+// 							</MainGrid>
+// 						</GridContainer>
+// 					</PageContainer>
+// 					<ScrollToTop>
+// 						<FontAwesomeIcon icon="long-arrow-alt-up" />
+// 					</ScrollToTop>
+// 				</MainPageContainer>
+// 			</InstantSearchWrapper>
+// 		)
+// 	}
+// }
+
+// export default compose(
+// 	withBreakpoints,
+// 	withFirebase
+// )(HomePage)

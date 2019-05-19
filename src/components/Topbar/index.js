@@ -4,11 +4,11 @@ import sortingOptions from "../../constants/sortingOptions"
 import AlgoliaSortBy from "../Algolia/AlgoliaSortBy"
 import AlgoliaSearchBox from "../Algolia/AlgoliaSearchBox"
 
-import ViewSwitch from "./ViewSwitch"
+// import ViewSwitch from "./ViewSwitch"
 import FiltersToggle from "./FiltersToggle"
 import { Container } from "./StyledComponents"
 
-const Topbar = ({ toggleFilters, clearFilters, setView, searchQueryValue }) => {
+const Topbar = ({ toggleFilters, clearFilters }) => {
 	return (
 		<Container>
 			<div className="filter-container">
@@ -19,9 +19,9 @@ const Topbar = ({ toggleFilters, clearFilters, setView, searchQueryValue }) => {
 				<AlgoliaSearchBox />
 			</div>
 
-			<div className="view-switch-container">
+			{/* <div className="view-switch-container">
 				<ViewSwitch setView={setView} />
-			</div>
+			</div> */}
 
 			<div className="sort-container">
 				<AlgoliaSortBy
