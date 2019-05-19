@@ -38,7 +38,7 @@ export const InstantSearchWrapper = withRouter(
 					// these three always have the same names
 					if (["sortBy", "query", "page"].includes(key)) {
 						// TODO: only allow sorting by whitelisted keys
-						state.sortBy = val
+						state[key] = val
 						continue
 					}
 
