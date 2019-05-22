@@ -9,7 +9,6 @@ import { UncontrolledInstantSearchWrapper } from "../../components/InstantSearch
 import { PageContainer } from "../../components/Containers"
 import { VirtualRange } from "../../components/Algolia/Virtual"
 import { CONST } from "../../constants"
-import route from "../../utils/route"
 import { TextBlock } from "../../components/StyledComponents"
 import { ItemCard } from "../../components/ItemCard"
 import formatDesigners from "../../utils/formatDesigners"
@@ -17,6 +16,7 @@ import formatPrice from "../../utils/formatPrice"
 import Button, { ButtonContainer } from "../../components/Button"
 import { overlayTextShadow } from "../../style-utils"
 import { useImage } from "../../hooks"
+import { mapN, route } from "../../utils"
 
 const NUMBER_OF_PROMOTED_ITEMS = 3
 
@@ -110,7 +110,7 @@ const InnerContainer = connectHits(({ hits }) => {
 	return (
 		<InnerContainerContainer>
 			<TextBlock bold uppercase>
-				<span role="img" aria-label="asdf">
+				<span role="img" aria-label="promowane">
 					🔥 Promowane
 				</span>
 			</TextBlock>
@@ -118,11 +118,9 @@ const InnerContainer = connectHits(({ hits }) => {
 				{main.map((hit) => (
 					<PromotedItem item={hit} />
 				))}
-				{Array(nToFill)
-					.fill()
-					.map(() => (
-						<PromotedPlaceholder />
-					))}
+				{mapN(nToFill, () => (
+					<PromotedPlaceholder />
+				))}
 			</TopContainer>
 			{hasOther && (
 				<BottomContainer>
