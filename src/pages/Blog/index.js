@@ -3,7 +3,7 @@ import { Route, Switch, Redirect, withRouter } from "react-router-dom"
 import route from "../../utils/route"
 import { MainPageContainer } from "../../components/Containers"
 
-const Blog = ({ routes, location, match }) => {
+const Blog = ({ routes }) => {
 	return (
 		<MainPageContainer>
 			<Switch>
