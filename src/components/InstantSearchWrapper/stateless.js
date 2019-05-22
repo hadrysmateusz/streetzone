@@ -27,7 +27,7 @@ const StatelessSearchWrapper = (props) => {
 				))}
 
 			{/* Hide archived results unless told otherwise */}
-			{hideArchived && <VirtualToggle attribute="isArchived" value={false} />}
+			{hideArchived && <VirtualToggle attribute="isArchived" defaultRefinement={false} />}
 
 			{/* render children (also provide them with results) */}
 			<Results>{children}</Results>
