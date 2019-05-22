@@ -33,7 +33,11 @@ export const VirtualRefinement = ({ attribute, value }) => {
 		case "object":
 			return <VirtualRange {...cProps} />
 		case "boolean":
-			return <VirtualToggle {...cProps} />
+			// this has to be done this way because of ToggleRefinement's weird api
+			// value sets whether we're looking for true or false and defaultRefinement sets whether we want to apply this search or not)
+			return (
+				<VirtualToggle attribute={attribute} value={value} defaultRefinement={true} />
+			)
 		default:
 			return <VirtualMenu {...cProps} />
 	}
