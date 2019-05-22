@@ -3,14 +3,9 @@ import { InstantSearch, Configure } from "react-instantsearch-dom"
 import { VirtualSortBy, VirtualToggle } from "../Algolia/Virtual"
 import { Results, VirtualRefinement } from "../Algolia/Helpers"
 
-const StatelessSearchWrapper = ({
-	indexName,
-	refinements,
-	limit,
-	sortBy,
-	children,
-	showArchived = false
-}) => {
+const StatelessSearchWrapper = (props) => {
+	console.log("props", props)
+	const { indexName, refinements, limit, sortBy, children, showArchived = false } = props
 	const hideArchived = !showArchived
 
 	return (
@@ -26,9 +21,10 @@ const StatelessSearchWrapper = ({
 			{sortBy && <VirtualSortBy defaultRefinement={sortBy} />}
 
 			{/* apply necessary refinements */}
-			{Object.entries(refinements).map(([key, value]) => (
-				<VirtualRefinement attribute={key} value={value} />
-			))}
+			{refinements &&
+				Object.entries(refinements).map(([key, value]) => (
+					<VirtualRefinement attribute={key} value={value} />
+				))}
 
 			{/* Hide archived results unless told otherwise */}
 			{hideArchived && <VirtualToggle attribute="isArchived" value={false} />}
