@@ -1,11 +1,23 @@
 import React, { useState, useEffect, useCallback } from "react"
 import { withRouter } from "react-router-dom"
-import { InstantSearch } from "react-instantsearch-dom"
-import { decodeURL, encodeURL } from "../../utils/algoliaURLutils"
+import { InstantSearch, Configure } from "react-instantsearch-dom"
 import cloneDeep from "clone-deep"
 
+import { decodeURL, encodeURL } from "../../utils/algoliaURLutils"
+import { VirtualToggle } from "../Algolia/Virtual"
+
 export const SearchWrapper = withRouter(
-	({ indexName, initialState, allowedKeys, children, history, location, ...rest }) => {
+	({
+		hitsPerPage,
+		indexName,
+		initialState,
+		allowedKeys,
+		children,
+		history,
+		location,
+		showArchived = false,
+		...rest
+	}) => {
 		const [searchState, setSearchState] = useState(initialState)
 		const [isFirstRender, setIsFirstRender] = useState(true)
 
@@ -126,6 +138,14 @@ export const SearchWrapper = withRouter(
 				createURL={decodeURL}
 				{...rest}
 			>
+				{/* set number of results per page */}
+				{hitsPerPage && <Configure hitsPerPage={hitsPerPage} />}
+
+				{/* Hide archived results unless told otherwise */}
+				{!showArchived && (
+					<VirtualToggle attribute="isArchived" defaultRefinement={false} />
+				)}
+
 				{children}
 			</InstantSearch>
 		)
