@@ -1,13 +1,13 @@
 import React from "react"
+import styled from "styled-components/macro"
 
 import { CONST } from "../../../constants"
 import route from "../../../utils/route"
 
 import StatelessSearchWrapper from "../../../components/InstantSearchWrapper/stateless"
 
-import BlogPageTemplate from "./BlogPageTemplate"
 import Group from "./Group"
-import TagsNav from "./TagsNav"
+import PromotedSection from "./PromotedSection"
 
 import InfinitePosts from "../InfinitePostsList"
 import { TagsNavContainer } from "../StyledComponents"
@@ -61,22 +61,11 @@ const Content = () => {
 	)
 }
 
-const Sidebar = () => {
-	return (
-		<TagsNavContainer>
-			<TagsNav />
-		</TagsNavContainer>
-	)
-}
-
 const BlogHomePage = () => {
 	return (
-		<BlogPageTemplate
-			promotedSectionLimit={2}
-			promotedSectionIndex={CONST.BLOG_POST_ALGOLIA_INDEX}
-			contentSlot={<Content />}
-			sidebarSlot={<Sidebar />}
-		/>
+		<>
+			<PromotedSection />
+		</>
 	)
 }
 
