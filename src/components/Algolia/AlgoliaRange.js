@@ -8,8 +8,6 @@ import { RangeContainer } from "./StyledComponents"
 const AlgoliaRange = (props) => {
 	const delay = 400
 
-	console.log(props)
-
 	const [min, setMin] = useState("")
 	const [max, setMax] = useState("")
 

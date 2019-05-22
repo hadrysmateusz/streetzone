@@ -4,7 +4,7 @@ import { InstantSearch } from "react-instantsearch-dom"
 import { decodeURL, encodeURL } from "../../utils/algoliaURLutils"
 import cloneDeep from "clone-deep"
 
-export const InstantSearchWrapper = withRouter(
+export const SearchWrapper = withRouter(
 	({ indexName, initialState, allowedKeys, children, history, location, ...rest }) => {
 		const [searchState, setSearchState] = useState(initialState)
 		const [isFirstRender, setIsFirstRender] = useState(true)
@@ -132,4 +132,4 @@ export const InstantSearchWrapper = withRouter(
 	}
 )
 
-export default InstantSearchWrapper
+export default SearchWrapper

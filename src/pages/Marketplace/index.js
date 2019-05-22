@@ -1,10 +1,6 @@
-import React, { useState, useEffect, useRef } from "react"
+import React, { useState, useRef } from "react"
 import { withBreakpoints } from "react-breakpoints"
-import {
-	disableBodyScroll,
-	enableBodyScroll,
-	clearAllBodyScrollLocks
-} from "body-scroll-lock"
+import { disableBodyScroll, enableBodyScroll } from "body-scroll-lock"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 import AlgoliaResults from "../../components/Algolia/AlgoliaResults"
@@ -12,7 +8,7 @@ import CurrentFilters from "../../components/CurrentFilters"
 import sortingOptions from "../../constants/sortingOptions"
 import ScrollToTop from "../../components/ScrollToTop"
 import Topbar from "../../components/Topbar"
-import InstantSearchWrapper from "../../components/InstantSearchWrapper/new"
+import { SearchWrapper } from "../../components/InstantSearchWrapper"
 import { PageContainer, MainPageContainer } from "../../components/Containers"
 
 import PromotedSection from "./PromotedSection"
@@ -51,7 +47,7 @@ const MarketplacePage = ({ currentBreakpoint }) => {
 	}
 
 	return (
-		<InstantSearchWrapper
+		<SearchWrapper
 			indexName={CONST.ITEMS_MARKETPLACE_DEFAULT_ALGOLIA_INDEX}
 			initialState={DEFAULT_SEARCH_STATE}
 			allowedKeys={["category", "designers", "price", "size"]}
@@ -89,7 +85,7 @@ const MarketplacePage = ({ currentBreakpoint }) => {
 					<FontAwesomeIcon icon="long-arrow-alt-up" />
 				</ScrollToTop>
 			</MainPageContainer>
-		</InstantSearchWrapper>
+		</SearchWrapper>
 	)
 }
 
