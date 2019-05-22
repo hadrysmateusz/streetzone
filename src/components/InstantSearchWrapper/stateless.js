@@ -1,11 +1,11 @@
 import React from "react"
 import { InstantSearch, Configure } from "react-instantsearch-dom"
-import { VirtualSortBy, VirtualToggle } from "../Algolia/Virtual"
+import { VirtualToggle } from "../Algolia/Virtual"
 import { Results, VirtualRefinement } from "../Algolia/Helpers"
 
 const StatelessSearchWrapper = (props) => {
 	console.log("props", props)
-	const { indexName, refinements, limit, sortBy, children, showArchived = false } = props
+	const { indexName, refinements, limit, children, showArchived = false } = props
 	const hideArchived = !showArchived
 
 	return (
@@ -16,9 +16,6 @@ const StatelessSearchWrapper = (props) => {
 		>
 			{/* limit number of results */}
 			{limit && <Configure hitsPerPage={limit} />}
-
-			{/* order the results */}
-			{sortBy && <VirtualSortBy defaultRefinement={sortBy} />}
 
 			{/* apply necessary refinements */}
 			{refinements &&
