@@ -1,25 +1,27 @@
+import useFirestoreCollection from "./useFirestoreCollection"
 import useAuthentication from "./useAuthentication"
+import useScrollPosition from "./useScrollPosition"
 import useContentToggle from "./useContentToggle"
 import useDelayRender from "./useDelayRender"
 import useDesigners from "./useDesigners"
 import useFirebase from "./useFirebase"
-import useFirestoreCollection from "./useFirestoreCollection"
-import useScrollPosition from "./useScrollPosition"
-import useImage from "./useImage"
-import useUserData from "./useUserData"
 import useDesigner from "./useDesigner"
+import useUserData from "./useUserData"
+import useImage from "./useImage"
 import useFlash from "./useFlash"
+import useTabs from "./useTabs"
 
 export {
+	useFirestoreCollection,
+	useScrollPosition,
 	useAuthentication,
 	useContentToggle,
 	useDelayRender,
 	useDesigners,
 	useFirebase,
-	useFirestoreCollection,
-	useScrollPosition,
-	useImage,
 	useUserData,
 	useDesigner,
-	useFlash
+	useImage,
+	useFlash,
+	useTabs
 }

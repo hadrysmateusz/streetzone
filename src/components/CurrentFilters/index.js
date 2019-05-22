@@ -23,7 +23,7 @@ const Item = styled.div`
 	margin: var(--spacing1);
 `
 
-const CurrentFiltersView = ({ items, history, clearFilters, refine }) => {
+const CurrentFiltersView = ({ items, history, clear, refine }) => {
 	return items && items.length > 0 ? (
 		<Container>
 			{items.map((item) => {
@@ -41,7 +41,7 @@ const CurrentFiltersView = ({ items, history, clearFilters, refine }) => {
 				<ClearFiltersSubButton
 					onClick={() => {
 						history.push(ROUTES.MARKETPLACE)
-						clearFilters.update(true)
+						clear.update(true)
 					}}
 				>
 					Wyczyść wszystko

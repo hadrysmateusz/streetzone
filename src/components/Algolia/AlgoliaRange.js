@@ -1,79 +1,75 @@
-import React from "react"
+import React, { useState, useEffect, useRef } from "react"
 import { connectRange } from "react-instantsearch-dom"
 
 import { AdaptiveFoldable } from "../Foldable"
 
 import { RangeContainer } from "./StyledComponents"
 
-class AlgoliaRange extends React.Component {
-	delay = 400
+const AlgoliaRange = (props) => {
+	const delay = 400
 
-	state = {
-		min: this.props.currentRefinement.min || "",
-		max: this.props.currentRefinement.max || ""
+	console.log(props)
+
+	const [min, setMin] = useState("")
+	const [max, setMax] = useState("")
+
+	const timeoutId = useRef()
+	const minRef = useRef()
+	const maxRef = useRef()
+
+	const reset = () => {
+		setMin("")
+		setMax("")
 	}
 
-	resetState = () => {
-		this.setState({ min: "", max: "" })
-	}
-
-	componentDidUpdate = async (prevProps, prevState) => {
-		if (this.props.forceClear.value) {
-			this.props.forceClear.update(false)
-			this.resetState()
+	useEffect(() => {
+		if (props.clear.value) {
+			props.clear.update(false)
+			reset()
 		}
-	}
+	}, [props.clear, reset])
 
-	onChange = (e) => {
-		// get the currentTarget from the synthetic event before its inaccessible
-		const { name, value } = e.currentTarget
+	const onChange = () => {
+		// get the value from ref
+		const _min = minRef.current.value
+		const _max = maxRef.current.value
 
 		// update the internal state
-		this.setState({ [name]: value })
+		setMin(_min)
+		setMax(_max)
 
 		// the timeout makes it so the query only gets updated when you stop typing
-		clearTimeout(this.rateLimitedRefine)
-		this.rateLimitedRefine = setTimeout(() => {
-			this.props.refine({
-				min: Math.max(this.state.min, this.props.min) || this.props.min,
-				max: Math.min(this.state.max, this.props.max) || this.props.max
+		clearTimeout(timeoutId.current)
+		timeoutId.current = setTimeout(() => {
+			props.refine({
+				min: Math.max(_min, props.min) || props.min,
+				max: Math.min(_max, props.max) || props.max
 			})
-		}, this.delay)
+		}, delay)
 	}
 
-	render() {
-		const { ...rest } = this.props
-		return (
-			<AdaptiveFoldable
-				{...rest}
-				showClear={this.state.min || this.state.max}
-				resetState={this.resetState}
-			>
-				<RangeContainer>
-					<input
-						type="number"
-						placeholder={this.props.min}
-						name="min"
-						step={1}
-						min={0}
-						max={99999}
-						onChange={this.onChange}
-						value={this.state.min}
-					/>
-					<input
-						type="number"
-						placeholder={this.props.max}
-						name="max"
-						step={1}
-						min={0}
-						max={99999}
-						onChange={this.onChange}
-						value={this.state.max}
-					/>
-				</RangeContainer>
-			</AdaptiveFoldable>
-		)
-	}
+	return (
+		<AdaptiveFoldable {...props} showClear={min || max} resetState={reset}>
+			<RangeContainer>
+				<input
+					type="number"
+					placeholder={props.min}
+					name="min"
+					ref={minRef}
+					onChange={onChange}
+					value={min}
+				/>
+				<input
+					type="number"
+					placeholder={props.max}
+					name="max"
+					ref={maxRef}
+					onChange={onChange}
+					value={max}
+				/>
+			</RangeContainer>
+		</AdaptiveFoldable>
+	)
 }
 
 export default connectRange(AlgoliaRange)
