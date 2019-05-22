@@ -89,7 +89,7 @@ export const formatPostDataForDb = (data, mode, flagState = true) => {
 		formatted.createdAt = Date.now()
 		formatted.editedAt = Date.now()
 		/* has to be null, otherwise it would show up in promoted section */
-		formatted.promotedAt = null
+		formatted.isPromoted = false
 
 		formatted.isArchived = false
 	}
@@ -99,14 +99,7 @@ export const formatPostDataForDb = (data, mode, flagState = true) => {
 	}
 
 	if (mode === MODE.PROMOTE) {
-		if (flagState) {
-			/* if flag is true set promotedAt current date 
-      to easily manage and order many promoted posts */
-			formatted.promotedAt = Date.now()
-		} else {
-			/* otherwise set to null to remove from promoted */
-			formatted.promotedAt = null
-		}
+		formatted.isPromoted = flagState
 	}
 
 	if (mode === MODE.ARCHIVE) {
