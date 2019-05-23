@@ -162,10 +162,10 @@ export const PromotedPostMobileContainer = styled.div`
 	}
 	.info {
 		border-left: 3px solid ${(p) => getCategoryColor(p.category)};
-		margin: var(--spacing1) 0;
 		padding-left: var(--spacing2);
-		color: var(--almost-white);
 		line-height: 1.4;
+		margin: var(--spacing1) 0;
+		color: var(--almost-white);
 	}
 `
 

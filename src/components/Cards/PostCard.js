@@ -7,18 +7,16 @@ import { route } from "../../utils"
 
 import {
 	Name,
-	Designers,
-	TopContainer,
+	PostCategory,
+	DateContainer,
 	MiddleContainer,
 	BottomContainer,
-	DateContainer,
 	InfoContainer,
 	FluidImage
 } from "./Common"
 
-const Container = styled.div`
+export const Container = styled.div`
 	min-width: 0; /* this has to be on the outermost component*/
-	max-width: 300px;
 
 	a {
 		border: 1px solid var(--gray75);
@@ -32,41 +30,28 @@ const Container = styled.div`
 	}
 `
 
-export const SmallDropCard = ({
+export const PostCard = ({
 	id,
-	name,
-	designers,
-	itemCategory,
+	title,
+	category,
 	imageUrls,
 	mainImageIndex,
-	dropsAtApproxTimestamp
+	createdAt
 }) => {
 	const imageURL = imageUrls[mainImageIndex]
-	const date = moment(dropsAtApproxTimestamp).format("LL")
+	const date = moment(createdAt).format("LL")
 
 	return (
 		<Container>
 			<Link to={route("ITEM_DETAILS", { id })}>
 				{imageURL && <FluidImage url={imageURL} />}
 				<InfoContainer>
-					<TopContainer>
-						<div>{itemCategory}</div>
-						<Designers value={designers} />
-						{/* <Size className="align-right" value={size} /> */}
-					</TopContainer>
 					<MiddleContainer>
-						<Name>{name}</Name>
+						<Name>{title}</Name>
 					</MiddleContainer>
 					<BottomContainer>
-						<DateContainer>{date}</DateContainer>
-						{/* <HeartButton
-							css={`
-								color: var(--gray25);
-							`}
-							id={id}
-							type={TYPE.ITEM}
-							scale={1.5}
-						/> */}
+						<PostCategory category={category}>{category}</PostCategory>
+						<DateContainer>&nbsp;&nbsp;/&nbsp;&nbsp;{date}</DateContainer>
 					</BottomContainer>
 				</InfoContainer>
 			</Link>

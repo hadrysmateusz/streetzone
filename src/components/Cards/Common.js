@@ -5,7 +5,7 @@ import formatSize from "../../utils/formatSize"
 import formatPrice from "../../utils/formatPrice"
 
 import styled from "styled-components/macro"
-import { ellipsis } from "../../style-utils"
+import { ellipsis, getCategoryColor } from "../../style-utils"
 
 export const InfoContainer = styled.div`
 	padding: var(--spacing2);
@@ -62,6 +62,17 @@ export const Name = styled.div`
 export const DateContainer = styled.div`
 	font-size: var(--font-size--xs);
 	color: var(--gray0);
+`
+
+export const PostCategory = styled.div`
+	font-size: var(--font-size--xs);
+	color: var(--gray0);
+	font-weight: bold;
+	text-transform: uppercase;
+
+	border-left: 3px solid ${(p) => getCategoryColor(p.category)};
+	padding-left: var(--spacing2);
+	line-height: 1.4;
 `
 
 export const Designers = ({ value }) => (

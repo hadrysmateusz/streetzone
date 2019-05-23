@@ -5,11 +5,10 @@ import route from "../../../utils/route"
 
 import { PageContainer } from "../../../components/Containers"
 import { StatelessSearchWrapper } from "../../../components/InstantSearchWrapper"
-import { SmallDropCard, SmallItemCard } from "../../../components/Cards"
+import { SmallDropCard, SmallItemCard, PostCard } from "../../../components/Cards"
 
 import Group from "./Group"
 import PromotedSection from "./PromotedSection"
-import { SmallPost } from "../Previews"
 
 const ThematicGroup = ({
 	limit = 3,
@@ -63,8 +62,8 @@ const BlogHomePage = () => {
 					index={CONST.BLOG_POST_ALGOLIA_INDEX}
 					title="Czyszczenie i Pielęgnacja"
 					linkTo={route("BLOG_ARTICLES", null, { tag: "Czyszczenie i Pielęgnacja" })}
-					component={SmallPost}
-					refinements={{ tags: ["Czyszczenie i Pielęgnacja"] }}
+					refinements={{ tags: ["Czyszczenie", "Pielęgnacja"] }}
+					component={PostCard}
 				/>
 			</PageContainer>
 		</>
