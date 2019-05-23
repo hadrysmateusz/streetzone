@@ -73,6 +73,6 @@ export const getCategoryColor = (category) => {
 		case CATEGORIES.TECH:
 			return "#cce8ef"
 		default:
-			return "gray"
+			return "#c4c4c4"
 	}
 }
