@@ -1,5 +1,4 @@
 import React from "react"
-import styled from "styled-components/macro"
 
 import { CONST } from "../../../constants"
 import route from "../../../utils/route"
@@ -40,26 +39,26 @@ const ThematicGroup = ({
 	)
 }
 
-const Content = () => {
-	return (
-		<>
-			<ThematicGroup
-				index={CONST.BLOG_DROP_ALGOLIA_INDEX}
-				title="Nadchodzące Dropy"
-				linkTo={route("BLOG_DROPS")}
-				component={DropPost}
-			/>
-			<ThematicGroup
-				index={CONST.BLOG_POST_ALGOLIA_INDEX}
-				title="Czyszczenie i Pielęgnacja"
-				linkTo={route("BLOG_ARTICLES", null, { tag: "Czyszczenie i Pielęgnacja" })}
-				component={SmallPost}
-				refinements={{ tags: ["Czyszczenie i Pielęgnacja"] }}
-			/>
-			<InfinitePosts />
-		</>
-	)
-}
+// const Content = () => {
+// 	return (
+// 		<>
+// 			<ThematicGroup
+// 				index={CONST.BLOG_DROP_ALGOLIA_INDEX}
+// 				title="Nadchodzące Dropy"
+// 				linkTo={route("BLOG_DROPS")}
+// 				component={DropPost}
+// 			/>
+// 			<ThematicGroup
+// 				index={CONST.BLOG_POST_ALGOLIA_INDEX}
+// 				title="Czyszczenie i Pielęgnacja"
+// 				linkTo={route("BLOG_ARTICLES", null, { tag: "Czyszczenie i Pielęgnacja" })}
+// 				component={SmallPost}
+// 				refinements={{ tags: ["Czyszczenie i Pielęgnacja"] }}
+// 			/>
+// 			<InfinitePosts />
+// 		</>
+// 	)
+// }
 
 const BlogHomePage = () => {
 	return (

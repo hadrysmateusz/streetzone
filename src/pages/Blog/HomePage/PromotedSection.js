@@ -6,6 +6,7 @@ import { CONST } from "../../../constants"
 
 import { StatelessSearchWrapper } from "../../../components/InstantSearchWrapper"
 import Carousel from "../../../components/Carousel"
+import { PageContainer } from "../../../components/Containers"
 
 import { PromotedPost } from "../Previews"
 
@@ -38,11 +39,13 @@ const MobilePromotedSection = ({ results }) => {
 const DesktopPromotedSection = ({ results }) => {
 	console.log("results", results)
 	return (
-		<DesktopContainer>
-			{results.map((result) => (
-				<PromotedPost key={result.id} {...result} />
-			))}
-		</DesktopContainer>
+		<PageContainer>
+			<DesktopContainer>
+				{results.map((result) => (
+					<PromotedPost key={result.id} {...result} />
+				))}
+			</DesktopContainer>
+		</PageContainer>
 	)
 }
 
@@ -50,11 +53,7 @@ const PromotedSection = withBreakpoints(({ currentBreakpoint }) => {
 	const isMobile = currentBreakpoint <= 1
 
 	return (
-		<StatelessSearchWrapper
-			limit={3}
-			indexName={CONST.BLOG_POST_ALGOLIA_INDEX}
-			refinements={{ isPromoted: true }}
-		>
+		<StatelessSearchWrapper limit={3} indexName={CONST.BLOG_POST_ALGOLIA_INDEX}>
 			{(results) =>
 				isMobile ? (
 					<MobilePromotedSection results={results} />
