@@ -136,9 +136,6 @@ const promotedCommon = css`
 	align-items: center;
 	justify-content: flex-end;
 	padding: var(--spacing3) 0;
-	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
-		padding: var(--spacing4) 0;
-	}
 `
 
 export const PromotedPostMobileContainer = styled.div`
@@ -223,10 +220,21 @@ export const GroupContainer = styled.section`
 		overflow: auto;
 		width: auto;
 		grid-auto-flow: column;
+
 		@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
 			grid-auto-flow: column;
 			grid-template-columns: repeat(3, 1fr);
-			gap: var(--spacing3);
+		}
+
+		/* make the content go from edge to edge on mobile*/
+		@media (max-width: ${(p) => p.theme.breakpoints[1] - 1}px) {
+			margin: 0 calc(-1 * var(--spacing3));
+			padding: 0 var(--spacing3);
+			&::after {
+				content: "";
+				display: block;
+				width: var(--spacing2);
+			}
 		}
 	}
 `
