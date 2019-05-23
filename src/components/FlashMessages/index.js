@@ -42,7 +42,7 @@ const MessageContainer = styled.div`
 
 	margin-bottom: var(--spacing3);
 	background: var(--black50);
-	border: 1px solid var(--black100);
+	${"" /* border: 1px solid var(--black100); */}
 	padding: var(--spacing1) var(--spacing2);
 	color: white;
 	animation-name: ${fadein}, ${fadeout};
