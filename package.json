@@ -46,6 +46,7 @@
 		"react-scripts": "2.1.8",
 		"react-select": "^2.4.2",
 		"react-star-ratings": "^2.3.0",
+		"react-swipeable-views": "^0.13.3",
 		"react-textarea-autosize": "^7.1.0",
 		"rebass": "^3.0.1",
 		"recompose": "^0.30.0",
