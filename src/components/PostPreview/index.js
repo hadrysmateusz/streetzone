@@ -2,7 +2,6 @@ import React from "react"
 import { Link } from "react-router-dom"
 import moment from "moment"
 
-import { TextBlock, Text } from "../StyledComponents"
 import Share from "../Share"
 
 import {
