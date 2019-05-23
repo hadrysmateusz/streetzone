@@ -27,7 +27,7 @@ const StatelessSearchWrapper = (props) => {
 					attribute="isArchived"
 					value={false}
 					defaultRefinement={true}
-					label="Hide Archived Posts"
+					label="Hide Archived"
 				/>
 			)}
 

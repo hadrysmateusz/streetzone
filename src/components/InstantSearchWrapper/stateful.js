@@ -8,8 +8,8 @@ import { VirtualToggle } from "../Algolia/Virtual"
 
 export const SearchWrapper = withRouter(
 	({
-		hitsPerPage,
 		indexName,
+		hitsPerPage = 10,
 		initialState,
 		allowedKeys,
 		children,
@@ -18,11 +18,20 @@ export const SearchWrapper = withRouter(
 		showArchived = false,
 		...rest
 	}) => {
-		const [searchState, setSearchState] = useState(initialState)
+		// use default values and prop overrides to construct initial state
+		const [_initialState] = useState({
+			query: "",
+			page: 1,
+			refinementList: {},
+			sortBy: indexName,
+			hitsPerPage,
+			...initialState
+		})
+		const [searchState, setSearchState] = useState(_initialState)
 		const [isFirstRender, setIsFirstRender] = useState(true)
 
 		const urlToState = (parsedSearch) => {
-			let state = cloneDeep(initialState)
+			let state = cloneDeep(_initialState)
 
 			const makeSureIsObject = (key) => {
 				if (!state[key]) {
@@ -72,7 +81,7 @@ export const SearchWrapper = withRouter(
 				console.error(error)
 
 				// in case of error return default state
-				return cloneDeep(initialState)
+				return cloneDeep(_initialState)
 			}
 		}
 
@@ -88,7 +97,7 @@ export const SearchWrapper = withRouter(
 			for (const [key, val] of Object.entries(state)) {
 				if (["sortBy", "page", "query"].includes(key)) {
 					// if new value is equal to default one, don't clutter the url with it
-					if (val === initialState[key]) continue
+					if (val === _initialState[key]) continue
 					formattedState[key] = val
 					continue
 				}
@@ -119,14 +128,17 @@ export const SearchWrapper = withRouter(
 		const createStateFromURL = useCallback(() => {
 			try {
 				const parsedSearch = decodeURL(location.search)
+				if (!parsedSearch) throw new Error("empty search string")
 				const formattedState = urlToState(parsedSearch)
 				return formattedState
 			} catch (e) {
 				console.log(e)
 				// if there was a problem while parsing, use default state instead
-				return initialState
+				return _initialState
 			}
-		}, [initialState, allowedKeys, location.search])
+		}, [_initialState, allowedKeys, location.search])
+
+		console.log("searchState", searchState)
 
 		return (
 			<InstantSearch
@@ -138,12 +150,14 @@ export const SearchWrapper = withRouter(
 				createURL={decodeURL}
 				{...rest}
 			>
-				{/* set number of results per page */}
-				{hitsPerPage && <Configure hitsPerPage={hitsPerPage} />}
-
 				{/* Hide archived results unless told otherwise */}
 				{!showArchived && (
-					<VirtualToggle attribute="isArchived" value={false} defaultRefinement={true} />
+					<VirtualToggle
+						attribute="isArchived"
+						value={false}
+						defaultRefinement={true}
+						label="Hide archived"
+					/>
 				)}
 
 				{children}
