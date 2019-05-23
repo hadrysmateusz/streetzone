@@ -4,13 +4,13 @@ import styled from "styled-components/macro"
 import { CONST } from "../../../constants"
 import route from "../../../utils/route"
 
+import { PageContainer } from "../../../components/Containers"
 import StatelessSearchWrapper from "../../../components/InstantSearchWrapper/stateless"
 
 import Group from "./Group"
 import PromotedSection from "./PromotedSection"
 
 import InfinitePosts from "../InfinitePostsList"
-import { TagsNavContainer } from "../StyledComponents"
 import { DropPost, SmallPost } from "../Previews"
 
 const ThematicGroup = ({
@@ -65,6 +65,7 @@ const BlogHomePage = () => {
 	return (
 		<>
 			<PromotedSection />
+			<PageContainer />
 		</>
 	)
 }

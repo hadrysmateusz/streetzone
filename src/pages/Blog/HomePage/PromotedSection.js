@@ -4,36 +4,43 @@ import { withBreakpoints } from "react-breakpoints"
 
 import { CONST } from "../../../constants"
 
-import StatelessSearchWrapper from "../../../components/InstantSearchWrapper/stateless"
+import { StatelessSearchWrapper } from "../../../components/InstantSearchWrapper"
+import Carousel from "../../../components/Carousel"
 
 import { PromotedPost } from "../Previews"
 
 const DesktopContainer = styled.div`
 	margin-top: var(--spacing3);
 	display: grid;
-	gap: var(--spacing2);
-
-	grid-auto-rows: minmax(100px, 22vw);
-
-	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
-		grid-template-columns: 2fr 1fr;
-		grid-template-rows: 1fr 1fr;
-		gap: var(--spacing3);
-		height: 440px;
-		> *:first-child {
-			grid-row: span 2;
-		}
+	grid-template-columns: 2fr 1fr;
+	grid-template-rows: 1fr 1fr;
+	gap: var(--spacing3);
+	height: 440px;
+	> *:first-child {
+		grid-row: span 2;
 	}
 `
 
-const MobilePromotedSection = ({ results }) => {}
+const MobileContainer = styled.div`
+	height: 28vh;
+`
+
+const MobilePromotedSection = ({ results }) => {
+	return (
+		<MobileContainer>
+			<Carousel nOfElements={results.length}>
+				{() => results.map((result) => <PromotedPost key={result.id} {...result} />)}
+			</Carousel>
+		</MobileContainer>
+	)
+}
 
 const DesktopPromotedSection = ({ results }) => {
 	console.log("results", results)
 	return (
 		<DesktopContainer>
 			{results.map((result) => (
-				<PromotedPost {...result} />
+				<PromotedPost key={result.id} {...result} />
 			))}
 		</DesktopContainer>
 	)

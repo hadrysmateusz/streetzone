@@ -1,5 +1,5 @@
 import styled, { css } from "styled-components/macro"
-import { ellipsis, overlayTextShadow } from "../../style-utils"
+import { ellipsis, overlayTextShadow, getCategoryColor } from "../../style-utils"
 
 export const PostsContainer = styled.div`
 	display: grid;
@@ -141,9 +141,42 @@ const promotedCommon = css`
 	}
 `
 
-export const PromotedPostContainer = styled.div`
-	background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 70%, rgba(0, 0, 0, 0.65) 100%),
-		url(${(p) => p.image});
+export const PromotedPostMobileContainer = styled.div`
+	background: linear-gradient(
+			to bottom,
+			rgba(0, 0, 0, 0) 42%,
+			rgba(0, 0, 0, 0.25) 62%,
+			rgba(0, 0, 0, 0.8) 100%
+		),
+		url(${(p) => p.image}), var(--gray100);
+	color: white;
+	${overlayTextShadow}
+	${promotedCommon}
+
+	.title {
+		font-family: var(--font-family--serif);
+		font-size: var(--font-size--m);
+		font-weight: bold;
+		max-width: 75vw;
+		text-align: center;
+	}
+	.info {
+		border-left: 3px solid ${(p) => getCategoryColor(p.category)};
+		margin: var(--spacing1) 0;
+		padding-left: var(--spacing2);
+		color: var(--almost-white);
+		line-height: 1.4;
+	}
+`
+
+export const PromotedPostDesktopContainer = styled.div`
+	background: linear-gradient(
+			to bottom,
+			rgba(0, 0, 0, 0) 45%,
+			rgba(0, 0, 0, 0.25) 70%,
+			rgba(0, 0, 0, 0.8) 100%
+		),
+		url(${(p) => p.image}), var(--gray100);
 	color: white;
 	${overlayTextShadow}
 	${promotedCommon}
