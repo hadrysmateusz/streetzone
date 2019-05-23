@@ -20,10 +20,12 @@ const DesktopContainer = styled.div`
 	> *:first-child {
 		grid-row: span 2;
 	}
+	margin-bottom: var(--spacing3);
 `
 
 const MobileContainer = styled.div`
 	height: 28vh;
+	margin-bottom: var(--spacing3);
 `
 
 const MobilePromotedSection = ({ results }) => {
