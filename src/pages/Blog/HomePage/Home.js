@@ -21,12 +21,9 @@ const ThematicGroup = ({
 	component: C
 }) => {
 	return (
-		<StatelessSearchWrapper
-			indexName={index}
-			limit={limit}
-			refinements={{ isArchived: false, ...refinements }}
-		>
+		<StatelessSearchWrapper indexName={index} limit={limit} refinements={refinements}>
 			{(results) => {
+				console.log(`group ${title} results: `, results)
 				return results.length > 0 ? (
 					<Group title={title} hasMore linkTo={linkTo}>
 						{results.map((res) => (
@@ -39,32 +36,26 @@ const ThematicGroup = ({
 	)
 }
 
-// const Content = () => {
-// 	return (
-// 		<>
-// 			<ThematicGroup
-// 				index={CONST.BLOG_DROP_ALGOLIA_INDEX}
-// 				title="Nadchodzące Dropy"
-// 				linkTo={route("BLOG_DROPS")}
-// 				component={DropPost}
-// 			/>
-// 			<ThematicGroup
-// 				index={CONST.BLOG_POST_ALGOLIA_INDEX}
-// 				title="Czyszczenie i Pielęgnacja"
-// 				linkTo={route("BLOG_ARTICLES", null, { tag: "Czyszczenie i Pielęgnacja" })}
-// 				component={SmallPost}
-// 				refinements={{ tags: ["Czyszczenie i Pielęgnacja"] }}
-// 			/>
-// 			<InfinitePosts />
-// 		</>
-// 	)
-// }
-
 const BlogHomePage = () => {
 	return (
 		<>
 			<PromotedSection />
-			<PageContainer />
+			<PageContainer>
+				<ThematicGroup
+					index={CONST.BLOG_DROP_ALGOLIA_INDEX}
+					title="Nadchodzące Dropy"
+					linkTo={route("BLOG_DROPS")}
+					component={DropPost}
+				/>
+				<ThematicGroup
+					index={CONST.BLOG_POST_ALGOLIA_INDEX}
+					title="Czyszczenie i Pielęgnacja"
+					linkTo={route("BLOG_ARTICLES", null, { tag: "Czyszczenie i Pielęgnacja" })}
+					component={SmallPost}
+					refinements={{ tags: ["Czyszczenie i Pielęgnacja"] }}
+				/>
+				{/* <InfinitePosts /> */}
+			</PageContainer>
 		</>
 	)
 }
