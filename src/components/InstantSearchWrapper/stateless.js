@@ -4,9 +4,7 @@ import { VirtualToggle } from "../Algolia/Virtual"
 import { Results, VirtualRefinement } from "../Algolia/Helpers"
 
 const StatelessSearchWrapper = (props) => {
-	console.log("props", props)
 	const { indexName, refinements, limit, children, showArchived = false } = props
-	const hideArchived = !showArchived
 
 	return (
 		<InstantSearch
@@ -20,12 +18,17 @@ const StatelessSearchWrapper = (props) => {
 			{/* apply necessary refinements */}
 			{refinements &&
 				Object.entries(refinements).map(([key, value]) => (
-					<VirtualRefinement attribute={key} value={value} />
+					<VirtualRefinement key={key} attribute={key} value={value} />
 				))}
 
 			{/* Hide archived results unless told otherwise */}
-			{hideArchived && (
-				<VirtualToggle attribute="isArchived" value={false} defaultRefinement={true} />
+			{!showArchived && (
+				<VirtualToggle
+					attribute="isArchived"
+					value={false}
+					defaultRefinement={true}
+					label="Hide Archived Posts"
+				/>
 			)}
 
 			{/* render children (also provide them with results) */}
