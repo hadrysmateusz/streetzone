@@ -24,9 +24,14 @@ const Item = styled.div`
 `
 
 const CurrentFiltersView = ({ items, history, clear, refine }) => {
+	// ignore the isArchived refinement
+	items = items.filter((a) => a.attribute !== "isArchived")
+
 	return items && items.length > 0 ? (
 		<Container>
 			{items.map((item) => {
+				console.log(item)
+
 				if (item.attribute === "price") {
 					return <Item>Cena</Item>
 				} else if (item.attribute === "size") {
