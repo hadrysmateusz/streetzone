@@ -65,6 +65,7 @@ export const SmallItemCard = ({
 							<HeartButton
 								css={`
 									color: var(--gray25);
+									padding-right: 0;
 								`}
 								id={id}
 								type={TYPE.ITEM}
