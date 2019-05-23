@@ -5,7 +5,7 @@ import route from "../../../utils/route"
 
 import { PageContainer } from "../../../components/Containers"
 import { StatelessSearchWrapper } from "../../../components/InstantSearchWrapper"
-import { SmallDropCard } from "../../../components/Cards"
+import { SmallDropCard, SmallItemCard } from "../../../components/Cards"
 
 import Group from "./Group"
 import PromotedSection from "./PromotedSection"
@@ -17,10 +17,16 @@ const ThematicGroup = ({
 	title,
 	refinements,
 	linkTo,
+	showArchived,
 	component: C
 }) => {
 	return (
-		<StatelessSearchWrapper indexName={index} limit={limit} refinements={refinements}>
+		<StatelessSearchWrapper
+			showArchived={showArchived}
+			indexName={index}
+			limit={limit}
+			refinements={refinements}
+		>
 			{(results) => {
 				console.log(`group ${title} results: `, results)
 				return results.length > 0 ? (
@@ -40,6 +46,13 @@ const BlogHomePage = () => {
 		<>
 			<PromotedSection />
 			<PageContainer>
+				<ThematicGroup
+					index={CONST.ITEMS_MARKETPLACE_DEFAULT_ALGOLIA_INDEX}
+					title="Przedmioty Test"
+					linkTo={route("BLOG_DROPS")}
+					component={SmallItemCard}
+					showArchived
+				/>
 				<ThematicGroup
 					index={CONST.BLOG_DROP_ALGOLIA_INDEX}
 					title="Nadchodzące Dropy"

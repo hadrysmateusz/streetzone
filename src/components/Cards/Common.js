@@ -2,6 +2,7 @@ import React from "react"
 
 import formatDesigners from "../../utils/formatDesigners"
 import formatSize from "../../utils/formatSize"
+import formatPrice from "../../utils/formatPrice"
 
 import styled from "styled-components/macro"
 import { ellipsis } from "../../style-utils"
@@ -13,7 +14,12 @@ export const InfoContainer = styled.div`
 	}
 `
 
-export const BottomContainer = styled.div``
+export const BottomContainer = styled.div`
+	display: flex;
+	.align-right {
+		margin-left: auto;
+	}
+`
 
 export const MiddleContainer = styled.div`
 	padding-top: var(--spacing1);
@@ -38,9 +44,6 @@ export const TopContainer = styled.div`
 		@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
 			padding-left: var(--spacing3);
 		}
-	}
-	.align-right {
-		margin-left: auto; /* move the item to the right */
 	}
 `
 
@@ -73,15 +76,26 @@ export const Designers = ({ value }) => (
 
 export const Size = ({ value }) => (
 	<div
-		className="align-right"
 		css={`
+			margin-left: auto;
 			color: var(--black0);
 			font-weight: bold;
-
 			flex-shrink: 0;
 		`}
 	>
 		{formatSize(value)}
+	</div>
+)
+
+export const Price = ({ value }) => (
+	<div
+		css={`
+			color: var(--error0);
+			font-weight: bold;
+			flex-shrink: 0;
+		`}
+	>
+		{formatPrice(value)}
 	</div>
 )
 

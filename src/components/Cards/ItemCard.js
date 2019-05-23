@@ -3,22 +3,25 @@ import { Link } from "react-router-dom"
 import styled from "styled-components/macro"
 import moment from "moment"
 
+import { HeartButton, TYPE } from "../SaveButton"
+
 import { route } from "../../utils"
+import { useImage } from "../../hooks"
 
 import {
 	Name,
 	Designers,
+	Size,
+	Price,
 	TopContainer,
 	MiddleContainer,
 	BottomContainer,
-	DateContainer,
 	InfoContainer,
 	FluidImage
 } from "./Common"
 
-const Container = styled.div`
+export const SmallContainer = styled.div`
 	min-width: 0; /* this has to be on the outermost component*/
-	max-width: 300px;
 
 	a {
 		border: 1px solid var(--gray75);
@@ -32,45 +35,45 @@ const Container = styled.div`
 	}
 `
 
-export const SmallDropCard = ({
+export const SmallItemCard = ({
 	id,
 	name,
 	designers,
-	itemCategory,
-	imageUrls,
-	mainImageIndex,
-	dropsAtApproxTimestamp
+	size,
+	price,
+	attachments,
+	mainImageIndex
 }) => {
-	const imageURL = imageUrls[mainImageIndex]
-
-	const date = moment(dropsAtApproxTimestamp).format("LL")
+	const imageURL = useImage(attachments[mainImageIndex])
 
 	return (
-		<Container>
+		<SmallContainer>
 			<Link to={route("ITEM_DETAILS", { id })}>
 				{imageURL && <FluidImage url={imageURL} />}
 				<InfoContainer>
 					<TopContainer>
-						<div>{itemCategory}</div>
+						{/* <div>{itemCategory}</div> */}
 						<Designers value={designers} />
-						{/* <Size className="align-right" value={size} /> */}
+						<Size value={size} />
 					</TopContainer>
 					<MiddleContainer>
 						<Name>{name}</Name>
 					</MiddleContainer>
 					<BottomContainer>
-						<DateContainer>{date}</DateContainer>
-						{/* <HeartButton
-							css={`
-								color: var(--gray25);
-							`}
-							id={id}
-							type={TYPE.ITEM}
-							scale={1.5}
-						/> */}
+						<Price value={price} />
+						<div className="align-right">
+							<HeartButton
+								css={`
+									color: var(--gray25);
+								`}
+								id={id}
+								type={TYPE.ITEM}
+								scale={1.5}
+							/>
+						</div>
 					</BottomContainer>
 				</InfoContainer>
 			</Link>
-		</Container>
+		</SmallContainer>
 	)
 }

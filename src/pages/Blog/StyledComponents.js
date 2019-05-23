@@ -223,7 +223,7 @@ export const GroupContainer = styled.section`
 		overflow: auto;
 		width: auto;
 		grid-auto-flow: column;
-		@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
+		@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
 			grid-auto-flow: column;
 			grid-template-columns: repeat(3, 1fr);
 			gap: var(--spacing3);
