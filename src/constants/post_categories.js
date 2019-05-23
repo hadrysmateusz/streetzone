@@ -1,0 +1,6 @@
+export const SNEAKERS = "Sneakers"
+export const STREETWEAR = "Streetwear"
+export const REVIEW = "Recenzje"
+export const EVENT = "Wydarzenia"
+export const VIDEO = "Video"
+export const TECH = "Technologicznie"
