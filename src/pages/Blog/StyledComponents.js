@@ -1,15 +1,6 @@
 import styled, { css } from "styled-components/macro"
 import { ellipsis, overlayTextShadow, getCategoryColor } from "../../style-utils"
 
-export const PostsContainer = styled.div`
-	display: grid;
-	grid-template-columns: 100%;
-	gap: 10px;
-	@media (max-width: ${(p) => p.theme.breakpoints[2] - 1}px) {
-		margin: 0 calc(var(--spacing3) * -1);
-	}
-`
-
 export const ShareButtons = styled.div`
 	display: grid;
 	grid-template-columns: repeat(auto-fill, min-content);

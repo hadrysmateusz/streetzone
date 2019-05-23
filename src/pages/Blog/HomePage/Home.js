@@ -7,11 +7,12 @@ import route from "../../../utils/route"
 
 import { PageContainer } from "../../../components/Containers"
 import { SearchWrapper } from "../../../components/InstantSearchWrapper"
-import { SmallDropCard, SmallItemCard, PostCard } from "../../../components/Cards"
+import { SmallDropCard, PostCard } from "../../../components/Cards"
 
 import PromotedSection from "./PromotedSection"
 import ThematicGroup from "./ThematicGroup"
 import Sidebar from "./Sidebar"
+import InfinitePosts from "../InfinitePostsList"
 
 const Layout = styled.div`
 	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
@@ -37,12 +38,6 @@ const BlogHomePage = withBreakpoints(({ currentBreakpoint }) => {
 						{/* Main Content */}
 						<main>
 							<ThematicGroup
-								index={CONST.ITEMS_MARKETPLACE_DEFAULT_ALGOLIA_INDEX}
-								title="Przedmioty Test"
-								linkTo={route("BLOG_DROPS")}
-								component={SmallItemCard}
-							/>
-							<ThematicGroup
 								index={CONST.BLOG_DROP_ALGOLIA_INDEX}
 								title="Nadchodzące Dropy"
 								linkTo={route("BLOG_DROPS")}
@@ -57,6 +52,7 @@ const BlogHomePage = withBreakpoints(({ currentBreakpoint }) => {
 								refinements={{ tags: ["Czyszczenie", "Pielęgnacja"] }}
 								component={PostCard}
 							/>
+							<InfinitePosts />
 						</main>
 						{/* Sidebar */}
 						{!isMobile && <Sidebar />}
