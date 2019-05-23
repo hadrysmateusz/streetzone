@@ -4,13 +4,12 @@ import { CONST } from "../../../constants"
 import route from "../../../utils/route"
 
 import { PageContainer } from "../../../components/Containers"
-import StatelessSearchWrapper from "../../../components/InstantSearchWrapper/stateless"
+import { StatelessSearchWrapper } from "../../../components/InstantSearchWrapper"
+import { SmallDropCard } from "../../../components/Cards"
 
 import Group from "./Group"
 import PromotedSection from "./PromotedSection"
-
-import InfinitePosts from "../InfinitePostsList"
-import { DropPost, SmallPost } from "../Previews"
+import { SmallPost } from "../Previews"
 
 const ThematicGroup = ({
 	limit = 3,
@@ -45,7 +44,7 @@ const BlogHomePage = () => {
 					index={CONST.BLOG_DROP_ALGOLIA_INDEX}
 					title="Nadchodzące Dropy"
 					linkTo={route("BLOG_DROPS")}
-					component={DropPost}
+					component={SmallDropCard}
 				/>
 				<ThematicGroup
 					index={CONST.BLOG_POST_ALGOLIA_INDEX}
@@ -54,7 +53,6 @@ const BlogHomePage = () => {
 					component={SmallPost}
 					refinements={{ tags: ["Czyszczenie i Pielęgnacja"] }}
 				/>
-				{/* <InfinitePosts /> */}
 			</PageContainer>
 		</>
 	)
