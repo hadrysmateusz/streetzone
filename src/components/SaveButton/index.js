@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import Modal from "../Modal"
 import { Button } from "../Button"
 
-import { useAuthentication, useFirebase } from "../../hooks"
+import { useAuthentication, useFirebase, useFlash } from "../../hooks"
 
 export const TYPE = {
 	ITEM: "savedItems",
@@ -41,6 +41,7 @@ const SaveButtonLogic = ({ id, type, children }) => {
 	const [authUser, isAuthenticated] = useAuthentication(true)
 	const [isSaved, setIsSaved] = useState(false)
 	const [showModal, setShowModal] = useState(false)
+	const flashMessage = useFlash()
 
 	const checkIfSaved = () => {
 		const isSaved = isAuthenticated && authUser[type] && authUser[type].includes(id)
@@ -60,6 +61,11 @@ const SaveButtonLogic = ({ id, type, children }) => {
 			const newList = wasSaved ? oldList.filter((a) => a !== id) : [...oldList, id]
 			// Update the db
 			await firebase.currentUser().update({ [type]: newList })
+
+			flashMessage({
+				type: "success",
+				textContent: wasSaved ? "Usunięto z zapisanych" : "Zapisano!"
+			})
 		} catch (error) {
 			console.log(error)
 			// Revert the state change if there was an error
