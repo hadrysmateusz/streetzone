@@ -26,7 +26,7 @@ const TagsNav = ({ items }) => {
 				let to = route("BLOG_ARTICLES", null, { tag: item.value })
 
 				return (
-					<NavLink to={to}>
+					<NavLink to={to} key={item.value}>
 						<Tag> {item.label}</Tag>
 					</NavLink>
 				)
