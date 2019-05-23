@@ -143,7 +143,7 @@ export const SearchWrapper = withRouter(
 
 				{/* Hide archived results unless told otherwise */}
 				{!showArchived && (
-					<VirtualToggle attribute="isArchived" defaultRefinement={false} />
+					<VirtualToggle attribute="isArchived" value={false} defaultRefinement={true} />
 				)}
 
 				{children}
