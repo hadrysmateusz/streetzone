@@ -8,7 +8,9 @@ import {
 import { withBreakpoints } from "react-breakpoints"
 import { Portal } from "react-portal"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { PageHeaderContainer } from "../PageHeader/StyledComponents"
+
+import Header from "./Header"
+import { CONST } from "../../constants"
 
 export const FullscreenContainer = styled.div`
 	width: 100%;
@@ -25,8 +27,8 @@ export const FullscreenContainer = styled.div`
 
 const IconContainer = styled.div`
 	padding: var(--spacing3);
-	margin-left: calc(0px - var(--spacing3));
-	width: 50px;
+	padding-left: 0;
+	margin-right: calc(0px - var(--spacing3));
 	cursor: pointer;
 `
 
@@ -38,6 +40,9 @@ export const MenuNavItem = styled.div`
 	font-size: var(--font-size--m);
 	padding: var(--spacing3);
 	border-top: 1px solid var(--gray75);
+	&:first-child {
+		border-top: none;
+	}
 	&:last-child {
 		border-bottom: 1px solid var(--gray75);
 	}
@@ -68,28 +73,28 @@ const Menu = ({ children, currentBreakpoint }) => {
 	}
 
 	return (
-		<div>
+		<>
 			<IconContainer onClick={toggle}>
 				<FontAwesomeIcon icon="bars" size="lg" />
 			</IconContainer>
 			{isOpen && (
 				<Portal>
 					<FullscreenContainer ref={menuRef}>
-						<PageHeaderContainer>
-							<IconContainer onClick={toggle}>
-								<FontAwesomeIcon icon="times" size="lg" />
-							</IconContainer>
-						</PageHeaderContainer>
+						<Header text={CONST.BRAND_NAME} onClose={toggle} />
 
 						<div>
-							{React.Children.map(children, (child) =>
-								child ? <MenuNavItem onClick={switchRoute}>{child}</MenuNavItem> : null
+							{React.Children.map(children, (child, i) =>
+								child ? (
+									<MenuNavItem key={i} onClick={switchRoute}>
+										{child}
+									</MenuNavItem>
+								) : null
 							)}
 						</div>
 					</FullscreenContainer>
 				</Portal>
 			)}
-		</div>
+		</>
 	)
 }
 

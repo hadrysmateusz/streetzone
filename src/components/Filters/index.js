@@ -1,10 +1,9 @@
 import React, { forwardRef } from "react"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { withBreakpoints } from "react-breakpoints"
 import { compose } from "recompose"
 
 import { Button, ButtonContainer } from "../Button"
-import { TextBlock } from "../StyledComponents"
+import Header from "../FullscreenMenu/Header"
 
 import { useTabs } from "../../hooks"
 import { withProps } from "../../HOCs"
@@ -12,10 +11,8 @@ import { withProps } from "../../HOCs"
 import {
 	FiltersContainer,
 	FilterInnerContainer,
-	CloseIconContainer,
 	Section,
-	ActionsContainer,
-	MobileFiltersHeader
+	ActionsContainer
 } from "./StyledComponents"
 import ClearAllFiltersButton from "./ClearAllFiltersButton"
 
@@ -28,16 +25,7 @@ const FiltersBase = forwardRef((props, ref) => {
 	return (
 		<FiltersContainer ref={ref}>
 			<FilterInnerContainer>
-				{isMobile && (
-					<MobileFiltersHeader>
-						<TextBlock size="m" bold>
-							Filtry
-						</TextBlock>
-						<CloseIconContainer onClick={toggle}>
-							<FontAwesomeIcon icon="times" />
-						</CloseIconContainer>
-					</MobileFiltersHeader>
-				)}
+				{isMobile && <Header title="Filtry" onClose={toggle} />}
 
 				{children({ openTab, switchTab, tabs, isMobile })}
 			</FilterInnerContainer>
