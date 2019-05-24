@@ -48,6 +48,8 @@
 
 	--font-family--serif: "Playfair Display";
 	--font-family--sans-serif: "Open Sans";
+
+	--page-header-height: 60px;
 }
 
 body {
