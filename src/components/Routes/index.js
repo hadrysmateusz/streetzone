@@ -201,6 +201,78 @@ const BumpInfo = Loadable({
 	loading: LoadableComponentSpinner
 })
 
+// ===== ACCOUNT ROUTES CONFIG =====
+export const ACCOUNT_ROUTES = [
+	{
+		id: "items",
+		label: "Oferty",
+		path: ROUTES.ACCOUNT_ITEMS,
+		component: UserItems,
+		isProtected: false,
+		isDefault: true
+	},
+	{
+		id: "chat",
+		label: "Wiadomości",
+		path: ROUTES.ACCOUNT_CHAT,
+		component: UserChat,
+		isProtected: true,
+		isHiddenOnMobile: true
+	},
+	{
+		id: "savedItems",
+		label: "Zapisane Przedmioty",
+		path: ROUTES.ACCOUNT_SAVED_ITEMS,
+		component: UserLiked,
+		isProtected: true,
+		category: "Zapisane",
+		shortLabel: "Przedmioty"
+	},
+	{
+		id: "savedFilters",
+		label: "Zapisane Filtry",
+		path: ROUTES.ACCOUNT_SAVED_FILTERS,
+		component: UserSavedFilters,
+		isProtected: true,
+		category: "Zapisane",
+		shortLabel: "Filtry",
+		isHidden: true /* This feature isn't finished or necessary */
+	},
+	{
+		id: "followedUsers",
+		label: "Obserwowani Użytkownicy",
+		path: ROUTES.ACCOUNT_SAVED_USERS,
+		component: UserFollowing,
+		isProtected: true,
+		category: "Zapisane",
+		shortLabel: "Użytkownicy"
+	},
+	{
+		id: "followedDrops",
+		label: "Obserwowane Dropy",
+		path: ROUTES.ACCOUNT_SAVED_DROPS,
+		component: UserSavedDrops,
+		isProtected: true,
+		category: "Zapisane",
+		shortLabel: "Dropy"
+	},
+	{
+		id: "feedback",
+		label: "Opinie",
+		path: ROUTES.ACCOUNT_FEEDBACK,
+		component: UserFeedback,
+		isProtected: false
+	},
+	{
+		id: "settings",
+		label: "Opcje / Edytuj profil",
+		path: ROUTES.ACCOUNT_SETTINGS,
+		component: UserSettings,
+		isProtected: true,
+		isHidden: true
+	}
+]
+
 // ===== CONFIG OBJECT =====
 const routes = [
 	{
@@ -338,76 +410,7 @@ const routes = [
 		path: ROUTES.ACCOUNT_BASE,
 		component: Account,
 		exact: false,
-		routes: [
-			{
-				id: "items",
-				label: "Oferty",
-				path: ROUTES.ACCOUNT_ITEMS,
-				component: UserItems,
-				isProtected: false,
-				isDefault: true
-			},
-			{
-				id: "chat",
-				label: "Wiadomości",
-				path: ROUTES.ACCOUNT_CHAT,
-				component: UserChat,
-				isProtected: true,
-				isHiddenOnMobile: true
-			},
-			{
-				id: "savedItems",
-				label: "Zapisane Przedmioty",
-				path: ROUTES.ACCOUNT_SAVED_ITEMS,
-				component: UserLiked,
-				isProtected: true,
-				category: "Zapisane",
-				shortLabel: "Przedmioty"
-			},
-			{
-				id: "savedFilters",
-				label: "Zapisane Filtry",
-				path: ROUTES.ACCOUNT_SAVED_FILTERS,
-				component: UserSavedFilters,
-				isProtected: true,
-				category: "Zapisane",
-				shortLabel: "Filtry",
-				isHidden: true /* This feature isn't finished or necessary */
-			},
-			{
-				id: "followedUsers",
-				label: "Obserwowani Użytkownicy",
-				path: ROUTES.ACCOUNT_SAVED_USERS,
-				component: UserFollowing,
-				isProtected: true,
-				category: "Zapisane",
-				shortLabel: "Użytkownicy"
-			},
-			{
-				id: "followedDrops",
-				label: "Obserwowane Dropy",
-				path: ROUTES.ACCOUNT_SAVED_DROPS,
-				component: UserSavedDrops,
-				isProtected: true,
-				category: "Zapisane",
-				shortLabel: "Dropy"
-			},
-			{
-				id: "feedback",
-				label: "Opinie",
-				path: ROUTES.ACCOUNT_FEEDBACK,
-				component: UserFeedback,
-				isProtected: false
-			},
-			{
-				id: "settings",
-				label: "Opcje / Edytuj profil",
-				path: ROUTES.ACCOUNT_SETTINGS,
-				component: UserSettings,
-				isProtected: true,
-				isHidden: true
-			}
-		]
+		routes: ACCOUNT_ROUTES
 	},
 	{
 		path: ROUTES.NEW_ITEM,
