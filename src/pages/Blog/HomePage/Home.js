@@ -3,7 +3,7 @@ import styled from "styled-components/macro"
 import { withBreakpoints } from "react-breakpoints"
 
 import { CONST } from "../../../constants"
-import route from "../../../utils/route"
+import { route } from "../../../utils"
 
 import { PageContainer } from "../../../components/Containers"
 import { SearchWrapper } from "../../../components/InstantSearchWrapper"
@@ -12,6 +12,7 @@ import { SmallDropCard, PostCard } from "../../../components/Cards"
 import PromotedSection from "./PromotedSection"
 import ThematicGroup from "./ThematicGroup"
 import Sidebar from "./Sidebar"
+import CategoryNav from "./CategoryNav"
 import InfinitePosts from "../InfinitePostsList"
 
 const Layout = styled.div`
@@ -37,6 +38,7 @@ const BlogHomePage = withBreakpoints(({ currentBreakpoint }) => {
 					<Layout>
 						{/* Main Content */}
 						<main>
+							<CategoryNav />
 							<ThematicGroup
 								index={CONST.BLOG_DROP_ALGOLIA_INDEX}
 								title="Nadchodzące Dropy"

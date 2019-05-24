@@ -1,6 +1,8 @@
-export const SNEAKERS = "Sneakers"
-export const STREETWEAR = "Streetwear"
-export const REVIEW = "Recenzje"
-export const EVENT = "Wydarzenia"
-export const VIDEO = "Video"
-export const TECH = "Technologicznie"
+export default Object.freeze({
+	SNEAKERS: "Sneakers",
+	STREETWEAR: "Streetwear",
+	REVIEW: "Recenzje",
+	EVENT: "Wydarzenia",
+	VIDEO: "Video",
+	TECH: "Technologicznie"
+})

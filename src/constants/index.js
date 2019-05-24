@@ -7,7 +7,7 @@ import * as ITEM_SCHEMA from "./item_schema"
 import * as BLOG_SECTIONS from "./blog_sections"
 import THEME from "./theme"
 import * as FEATURES from "./features"
-import * as POST_CATEGORIES from "./post_categories"
+import POST_CATEGORIES from "./post_categories"
 
 export {
 	ROUTES,
