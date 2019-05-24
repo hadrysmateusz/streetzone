@@ -116,6 +116,10 @@ const BlogTag = Loadable({
 	loader: () => import("../../pages/Blog/HomePage/Tag"),
 	loading: LoadableComponentSpinner
 })
+const BlogCategory = Loadable({
+	loader: () => import("../../pages/Blog/HomePage/Category"),
+	loading: LoadableComponentSpinner
+})
 
 // ===== ADMIN =====
 const Admin = Loadable({
@@ -356,6 +360,11 @@ const routes = [
 				id: "tag",
 				path: ROUTES.BLOG_TAG,
 				component: BlogTag
+			},
+			{
+				id: "category",
+				path: ROUTES.BLOG_CATEGORY,
+				component: BlogCategory
 			}
 		]
 	},
