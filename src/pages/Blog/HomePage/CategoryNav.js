@@ -10,6 +10,10 @@ const Container = styled.nav`
 	display: flex;
 	flex-wrap: wrap;
 
+	@media (max-width: ${(p) => p.theme.breakpoints[1] - 1}px) {
+		justify-content: center;
+	}
+
 	margin-bottom: var(--spacing4);
 `
 
