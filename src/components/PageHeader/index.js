@@ -48,7 +48,7 @@ const PageHeaderMobile = ({ authUser, firebase, location }) => {
 					<StyledNavLink
 						to={{ pathname: ROUTES.SIGN_IN, state: { redirectTo: location } }}
 					>
-						Zaloguj / Zarejestruj się
+						Zaloguj się
 					</StyledNavLink>
 				)}
 				<Menu>
