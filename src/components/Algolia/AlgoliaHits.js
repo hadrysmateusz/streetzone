@@ -7,6 +7,7 @@ import { withBreakpoints } from "react-breakpoints"
 
 import LoadingSpinner from "../LoadingSpinner"
 import { ItemCard, ItemCardHorizontal } from "../ItemCard"
+import { SmallItemCard } from "../Cards"
 import { ItemsContainer, ItemsList } from "../ItemsView"
 import Button from "../Button"
 import { ScrollableContainer } from "../Basics"
@@ -54,7 +55,7 @@ export const AlgoliaInfiniteHits = compose(
 						width ? (
 							<ItemsContainer containerWidth={width}>
 								{hits.map((item) => (
-									<ItemCard key={item.objectID} item={item} />
+									<SmallItemCard key={item.objectID} {...item} />
 								))}
 							</ItemsContainer>
 						) : null
