@@ -1,4 +1,5 @@
 import styled from "styled-components/macro"
+import { NavLink } from "react-router-dom"
 
 export const HEADER_HEIGHT = "60px"
 
@@ -39,14 +40,39 @@ export const Nav = styled.nav`
 `
 
 export const Submenu = styled.div`
-	background: white;
-
-	border: 1px solid var(--gray75);
+	background: var(--black25);
 
 	display: grid;
-	gap: var(--spacing2);
-	padding: var(--spacing3);
-	box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.05);
+	padding: var(--spacing2) 0;
+	${"" /* gap: var(--spacing2); */}
+	${"" /* padding: var(--spacing3); */}
+	box-shadow: 0 5px 10px -2px rgba(0, 0, 0, 0.3);
+`
+
+export const SubmenuLink = styled(NavLink)`
+	display: flex;
+	align-items: center;
+	background: none;
+	padding: var(--spacing2) var(--spacing3);
+	color: var(--almost-white);
+	cursor: pointer;
+
+	text-decoration: none;
+	text-transform: uppercase;
+	font-size: 12px;
+	font-weight: 600;
+
+	&:hover {
+		color: white;
+		background: var(--black50);
+	}
+
+	&.active {
+		color: white;
+		text-decoration: underline;
+	}
+
+	${(p) => p.alwaysBlack && "color: black;"}
 `
 
 export const SubmenuContainer = styled.div`
@@ -56,7 +82,7 @@ export const SubmenuContainer = styled.div`
 	${(p) => `${p.align}: 0;`}
 	z-index: 81;
 
-	padding-top: 27px;
+	padding-top: 12px;
 
 	display: none;
 `

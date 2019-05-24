@@ -24,7 +24,8 @@ import {
 	Nav,
 	PageHeaderContainer,
 	PageHeaderOuter,
-	UserNameContainer
+	UserNameContainer,
+	SubmenuLink
 } from "./StyledComponents"
 
 const PageHeader = ({ authUser, firebase, currentBreakpoint, location, ...rest }) => {
@@ -40,20 +41,18 @@ const PageHeader = ({ authUser, firebase, currentBreakpoint, location, ...rest }
 							<SubmenuContainer align="left">
 								<Submenu>
 									<NavItem>
-										<StyledNavLink to={ROUTES.BLOG_HOME} exact>
+										<SubmenuLink to={ROUTES.BLOG_HOME} exact>
 											Wszystko
-										</StyledNavLink>
+										</SubmenuLink>
 									</NavItem>
 									<NavItem>
-										<StyledNavLink to={ROUTES.BLOG_DROPS}>
-											Nadchodzące dropy
-										</StyledNavLink>
+										<SubmenuLink to={ROUTES.BLOG_DROPS}>Nadchodzące dropy</SubmenuLink>
 									</NavItem>
 									<NavItem>
-										<StyledNavLink to={ROUTES.BLOG_ARTICLES}>Artykuły</StyledNavLink>
+										<SubmenuLink to={ROUTES.BLOG_ARTICLES}>Artykuły</SubmenuLink>
 									</NavItem>
 									<NavItem>
-										<StyledNavLink to={ROUTES.BLOG_KNOWLEDGE}>Wiedza</StyledNavLink>
+										<SubmenuLink to={ROUTES.BLOG_KNOWLEDGE}>Wiedza</SubmenuLink>
 									</NavItem>
 								</Submenu>
 							</SubmenuContainer>
@@ -65,12 +64,10 @@ const PageHeader = ({ authUser, firebase, currentBreakpoint, location, ...rest }
 							<SubmenuContainer align="left">
 								<Submenu>
 									<NavItem>
-										<StyledNavLink to={ROUTES.MARKETPLACE}>Tablica</StyledNavLink>
+										<SubmenuLink to={ROUTES.MARKETPLACE}>Tablica</SubmenuLink>
 									</NavItem>
 									<NavItem>
-										<StyledNavLink to={ROUTES.DESIGNERS}>
-											Projektanci / Marki
-										</StyledNavLink>
+										<SubmenuLink to={ROUTES.DESIGNERS}>Projektanci / Marki</SubmenuLink>
 									</NavItem>
 								</Submenu>
 							</SubmenuContainer>
@@ -140,17 +137,17 @@ const PageHeader = ({ authUser, firebase, currentBreakpoint, location, ...rest }
 										{ACCOUNT_ROUTES.map((rt) =>
 											rt.isHidden ? null : (
 												<NavItem>
-													<StyledNavLink to={rt.path.replace(":id", authUser.uid)}>
+													<SubmenuLink to={rt.path.replace(":id", authUser.uid)}>
 														{rt.label}
-													</StyledNavLink>
+													</SubmenuLink>
 												</NavItem>
 											)
 										)}
 
 										<NavItem>
-											<StyledNavLink as="a" onClick={firebase.signOut}>
+											<SubmenuLink as="a" onClick={firebase.signOut}>
 												Wyloguj
-											</StyledNavLink>
+											</SubmenuLink>
 										</NavItem>
 									</Submenu>
 								</SubmenuContainer>
