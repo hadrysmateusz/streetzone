@@ -112,12 +112,8 @@ const BlogDrops = Loadable({
 	loader: () => import("../../pages/Blog/HomePage/Drops"),
 	loading: LoadableComponentSpinner
 })
-const BlogArticles = Loadable({
-	loader: () => import("../../pages/Blog/HomePage/Articles"),
-	loading: LoadableComponentSpinner
-})
-const BlogKnowledge = Loadable({
-	loader: () => import("../../pages/Blog/HomePage/Knowledge"),
+const BlogTag = Loadable({
+	loader: () => import("../../pages/Blog/HomePage/Tag"),
 	loading: LoadableComponentSpinner
 })
 
@@ -357,27 +353,20 @@ const routes = [
 				component: BlogPost
 			},
 			{
-				id: "drop",
-				path: ROUTES.BLOG_DROP,
-				component: BlogDrop
-			},
-
-			{
-				id: "drops",
-				path: ROUTES.BLOG_DROPS,
-				component: BlogDrops
-			},
-			{
-				id: "articles",
-				path: ROUTES.BLOG_ARTICLES,
-				component: BlogArticles
-			},
-			{
-				id: "knowledge",
-				path: ROUTES.BLOG_KNOWLEDGE,
-				component: BlogKnowledge
+				id: "tag",
+				path: ROUTES.BLOG_TAG,
+				component: BlogTag
 			}
 		]
+	},
+	{
+		path: ROUTES.DROPS,
+		component: BlogDrops
+	},
+	{
+		id: "drop",
+		path: ROUTES.DROP_DETAILS,
+		component: BlogDrop
 	},
 	{
 		path: ROUTES.DESIGNERS,

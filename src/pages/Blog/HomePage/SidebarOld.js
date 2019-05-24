@@ -32,7 +32,7 @@ const NavItem = ({ to, section, current }) => {
 const SectionNav = ({ currentSection }) => {
 	return (
 		<SectionNavContainer>
-			<NavItem
+			{/* <NavItem
 				to={route("BLOG_HOME")}
 				section={BLOG_SECTIONS.HOME}
 				current={currentSection}
@@ -51,7 +51,7 @@ const SectionNav = ({ currentSection }) => {
 				to={route("BLOG_KNOWLEDGE")}
 				section={BLOG_SECTIONS.KNOWLEDGE}
 				current={currentSection}
-			/>
+			/> */}
 		</SectionNavContainer>
 	)
 }

@@ -1,19 +1,20 @@
-import * as BLOG_SECTIONS from "./blog_sections"
-
 export const HOME = "/"
 
 export const BLOG_BASE = "/czytaj"
+export const BLOG_HOME = BLOG_BASE + "/h"
 export const BLOG_POST = BLOG_BASE + "/p/:id"
-export const BLOG_DROP = BLOG_BASE + "/drop/:id"
-export const BLOG_HOME = BLOG_BASE + "/" + BLOG_SECTIONS.HOME.id
-export const BLOG_DROPS = BLOG_BASE + "/" + BLOG_SECTIONS.DROPS.id
-export const BLOG_ARTICLES = BLOG_BASE + "/" + BLOG_SECTIONS.ARTICLES.id
-export const BLOG_KNOWLEDGE = BLOG_BASE + "/" + BLOG_SECTIONS.KNOWLEDGE.id
+export const BLOG_TAG = BLOG_BASE + "/t/:tag"
 
 export const DROPS = "/dropy"
+export const DROP_DETAILS = DROPS + "/d/:id"
 
 export const MARKETPLACE = "/kupuj"
 export const DESIGNER = "/marki/:id"
+
+export const ITEM_DETAILS = "/i/:id"
+export const NEW_ITEM = "/i/nowy"
+export const DELETE_ITEM = "/i/usun/:id"
+export const EDIT_ITEM = "/i/:id/edytuj"
 
 export const DESIGNERS = "/marki"
 
@@ -30,11 +31,6 @@ export const ACCOUNT_SAVED_DROPS = ACCOUNT_BASE + "/dropy"
 export const ACCOUNT_FEEDBACK = ACCOUNT_BASE + "/opinie"
 export const ACCOUNT_SETTINGS = ACCOUNT_BASE + "/edytuj"
 export const ACCOUNT_CHAT = ACCOUNT_BASE + "/wiadomosci"
-
-export const ITEM_DETAILS = "/i/:id"
-export const NEW_ITEM = "/i/nowy"
-export const DELETE_ITEM = "/i/usun/:id"
-export const EDIT_ITEM = "/i/:id/edytuj"
 
 export const CHAT_NEW = "/wiadomosci/:id"
 

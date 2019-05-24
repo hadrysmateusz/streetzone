@@ -23,7 +23,7 @@ const TagsNav = ({ items }) => {
 	return (
 		<Container>
 			{items.map((item) => {
-				let to = route("BLOG_ARTICLES", null, { tag: item.value })
+				let to = route("BLOG_TAG", { tag: item.value })
 
 				return (
 					<NavLink to={to} key={item.value}>

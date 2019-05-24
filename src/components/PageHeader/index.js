@@ -86,9 +86,6 @@ const PageHeaderDesktop = ({ authUser, firebase, location }) => {
 									Wszystko
 								</SubmenuLink>
 							</NavItem>
-							<NavItem>
-								<SubmenuLink to={ROUTES.BLOG_ARTICLES}>Artykuły</SubmenuLink>
-							</NavItem>
 						</Submenu>
 					</SubmenuContainer>
 				</NavItem>
