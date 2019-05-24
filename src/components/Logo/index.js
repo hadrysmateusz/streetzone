@@ -5,17 +5,25 @@ import { Link } from "react-router-dom"
 import { CONST, ROUTES } from "../../constants"
 
 const LogoContainer = styled.div`
-	font-size: var(--font-size--l);
+	display: flex;
+	align-items: center;
+
+	font-size: var(--font-size--m);
 	font-weight: bold;
-	font-family: "Playfair Display";
 
 	flex: 1;
 	user-select: none;
 	position: relative;
 	white-space: nowrap;
+	img {
+		width: 100px;
+	}
 
 	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
-		font-size: var(--font-size--xl);
+		font-size: var(--font-size--l);
+		img {
+			width: 120px;
+		}
 	}
 
 	color: ${(p) => p.theme.colors.black[75]};
@@ -32,7 +40,7 @@ const Logo = ({ centered }) => {
 	return (
 		<Link to={ROUTES.HOME}>
 			<LogoContainer centered={centered}>
-				<img src={PATH} alt={`Logo ${CONST.BRAND_NAME}`} width={130} />
+				<img src={PATH} alt={`Logo ${CONST.BRAND_NAME}`} />
 			</LogoContainer>
 		</Link>
 	)

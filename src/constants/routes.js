@@ -10,6 +10,8 @@ export const BLOG_DROPS = BLOG_BASE + "/" + BLOG_SECTIONS.DROPS.id
 export const BLOG_ARTICLES = BLOG_BASE + "/" + BLOG_SECTIONS.ARTICLES.id
 export const BLOG_KNOWLEDGE = BLOG_BASE + "/" + BLOG_SECTIONS.KNOWLEDGE.id
 
+export const DROPS = "/dropy"
+
 export const MARKETPLACE = "/kupuj"
 export const DESIGNER = "/marki/:id"
 
