@@ -3,6 +3,8 @@ import { ROUTES } from "../constants"
 export default (name, routeParams, searchParams) => {
 	let route = ROUTES[name]
 
+	console.log(ROUTES, name)
+
 	if (!route) {
 		throw new Error(`Route (${name}) doesn't exist`)
 	}

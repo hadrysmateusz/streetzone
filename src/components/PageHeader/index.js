@@ -12,7 +12,9 @@ import Menu from "../FullscreenMenu"
 import MessagesManager from "../MessagesManager"
 
 import { ROUTES } from "../../constants"
+import { ACCOUNT_ROUTES } from "../Routes"
 import getProfilePictureURL from "../../utils/getProfilePictureURL"
+import { route } from "../../utils"
 import { useScrollPosition } from "../../hooks"
 
 import {
@@ -135,45 +137,15 @@ const PageHeader = ({ authUser, firebase, currentBreakpoint, location, ...rest }
 								</StyledNavLink>
 								<SubmenuContainer align="right">
 									<Submenu>
-										<NavItem>
-											<StyledNavLink
-												to={ROUTES.ACCOUNT_ITEMS.replace(":id", authUser.uid)}
-											>
-												Twoje przedmioty
-											</StyledNavLink>
-										</NavItem>
-
-										<NavItem>
-											<StyledNavLink
-												to={ROUTES.ACCOUNT_SAVED_ITEMS.replace(":id", authUser.uid)}
-											>
-												Zapisane przedmioty
-											</StyledNavLink>
-										</NavItem>
-
-										<NavItem>
-											<StyledNavLink
-												to={ROUTES.ACCOUNT_SAVED_USERS.replace(":id", authUser.uid)}
-											>
-												Obserwowani użytkownicy
-											</StyledNavLink>
-										</NavItem>
-
-										<NavItem>
-											<StyledNavLink
-												to={ROUTES.ACCOUNT_FEEDBACK.replace(":id", authUser.uid)}
-											>
-												Opinie i komentarze
-											</StyledNavLink>
-										</NavItem>
-
-										<NavItem>
-											<StyledNavLink
-												to={ROUTES.ACCOUNT_SETTINGS.replace(":id", authUser.uid)}
-											>
-												Opcje / Edytuj profil
-											</StyledNavLink>
-										</NavItem>
+										{ACCOUNT_ROUTES.map((rt) =>
+											rt.isHidden ? null : (
+												<NavItem>
+													<StyledNavLink to={rt.path.replace(":id", authUser.uid)}>
+														{rt.label}
+													</StyledNavLink>
+												</NavItem>
+											)
+										)}
 
 										<NavItem>
 											<StyledNavLink as="a" onClick={firebase.signOut}>
