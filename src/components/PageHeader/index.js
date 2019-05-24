@@ -38,7 +38,19 @@ const PageHeaderMobile = ({ authUser, firebase, location }) => {
 				{/* <StyledNavLink to={ROUTES.SEARCH} exact>
 					<FontAwesomeIcon icon="search" />
 				</StyledNavLink> */}
-				<ProfilePicture size={"26px"} url={getProfilePictureURL(authUser, "S")} inline />
+				{authUser ? (
+					<ProfilePicture
+						size={"26px"}
+						url={getProfilePictureURL(authUser, "S")}
+						inline
+					/>
+				) : (
+					<StyledNavLink
+						to={{ pathname: ROUTES.SIGN_IN, state: { redirectTo: location } }}
+					>
+						Zaloguj / Zarejestruj się
+					</StyledNavLink>
+				)}
 				<Menu>
 					<StyledNavLink to={ROUTES.HOME} exact>
 						Strona główna
