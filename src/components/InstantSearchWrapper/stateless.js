@@ -6,6 +6,8 @@ import { Results, VirtualRefinement } from "../Algolia/Helpers"
 const StatelessSearchWrapper = (props) => {
 	const { indexName, refinements, limit, children, showArchived = false } = props
 
+	const isRenderFn = typeof children === "function"
+
 	return (
 		<InstantSearch
 			appId={process.env.REACT_APP_APP_ID}
@@ -31,8 +33,8 @@ const StatelessSearchWrapper = (props) => {
 				/>
 			)}
 
-			{/* render children (also provide them with results) */}
-			<Results>{children}</Results>
+			{/* render children (using renderProps if applicable) */}
+			{isRenderFn ? <Results>{children}</Results> : children}
 		</InstantSearch>
 	)
 }
