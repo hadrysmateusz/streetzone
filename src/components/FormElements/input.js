@@ -39,15 +39,19 @@ const IconContainer = styled.div`
 `
 
 const Input = React.forwardRef(({ icon, info, error, disabled, ...rest }, ref) => {
+	const hasIcon = !!icon
+
 	return (
 		<FormElementContainer error={error} info={info}>
 			<InnerContainer>
-				<IconContainer isDisabled={disabled}>
-					{icon && <FontAwesomeIcon icon={icon} />}
-				</IconContainer>
+				{hasIcon && (
+					<IconContainer isDisabled={disabled}>
+						{icon && <FontAwesomeIcon icon={icon} />}
+					</IconContainer>
+				)}
 				<StyledInput
 					ref={ref}
-					hasIcon={!!icon}
+					hasIcon={hasIcon}
 					hasError={!!error}
 					disabled={disabled}
 					{...rest}
