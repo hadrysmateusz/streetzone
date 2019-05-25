@@ -1,5 +1,4 @@
 import React from "react"
-import styled from "styled-components/macro"
 import { withBreakpoints } from "react-breakpoints"
 import { compose } from "recompose"
 import { withRouter } from "react-router"
@@ -10,15 +9,8 @@ import { PageContainer } from "../../../components/Containers"
 import { StatelessSearchWrapper } from "../../../components/InstantSearchWrapper"
 
 import Sidebar from "./Sidebar"
+import { Layout } from "./Common"
 import InfinitePosts from "../InfinitePostsList"
-
-const Layout = styled.div`
-	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
-		display: grid;
-		grid-template-columns: 1fr minmax(220px, 25%);
-		gap: var(--spacing3);
-	}
-`
 
 const BlogCategoryPage = ({ currentBreakpoint, match }) => {
 	const isMobile = currentBreakpoint <= 1
