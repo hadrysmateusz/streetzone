@@ -9,7 +9,7 @@ import { PageContainer } from "../../../components/Containers"
 import { StatelessSearchWrapper } from "../../../components/InstantSearchWrapper"
 
 import Sidebar from "./Sidebar"
-import { Layout } from "./Common"
+import { Layout, Heading } from "./Common"
 import InfinitePosts from "../InfinitePostsList"
 
 const BlogCategoryPage = ({ currentBreakpoint, match }) => {
@@ -28,6 +28,7 @@ const BlogCategoryPage = ({ currentBreakpoint, match }) => {
 					<Layout>
 						{/* Main Content */}
 						<main>
+							<Heading category={category}>{category}</Heading>
 							<InfinitePosts />
 						</main>
 						{/* Sidebar */}

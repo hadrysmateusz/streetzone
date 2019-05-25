@@ -4,6 +4,23 @@ import { StatelessSearchWrapper } from "../../../components/InstantSearchWrapper
 
 import Group from "./Group"
 
+export const DumbThematicGroup = ({
+	results,
+	title,
+	linkTo,
+	hasMore = true,
+	component: C
+}) => {
+	console.log("RES", results)
+	return results.length > 0 ? (
+		<Group title={title} hasMore={hasMore} linkTo={linkTo}>
+			{results.map((res) => (
+				<C {...res} />
+			))}
+		</Group>
+	) : null
+}
+
 export default ({
 	limit = 3,
 	index,
@@ -11,7 +28,8 @@ export default ({
 	refinements,
 	linkTo,
 	showArchived,
-	component: C
+	hasMore,
+	component
 }) => {
 	return (
 		<StatelessSearchWrapper
@@ -21,14 +39,15 @@ export default ({
 			refinements={refinements}
 		>
 			{(results) => {
-				console.log(`group ${title} results: `, results)
-				return results.length > 0 ? (
-					<Group title={title} hasMore linkTo={linkTo}>
-						{results.map((res) => (
-							<C {...res} />
-						))}
-					</Group>
-				) : null
+				return (
+					<DumbThematicGroup
+						results={results}
+						title={title}
+						linkTo={linkTo}
+						hasMore={hasMore}
+						component={component}
+					/>
+				)
 			}}
 		</StatelessSearchWrapper>
 	)

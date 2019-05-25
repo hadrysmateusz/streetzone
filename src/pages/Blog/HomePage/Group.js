@@ -9,9 +9,11 @@ const Group = ({ title, hasMore, children, linkTo }) => {
 	return (
 		<GroupContainer>
 			<header>
-				<TextBlock bold uppercase size="m">
-					{title}
-				</TextBlock>
+				{title && (
+					<TextBlock bold uppercase size="m">
+						{title}
+					</TextBlock>
+				)}
 				{hasMore && (
 					<Link to={linkTo}>
 						<TextBlock color="gray0">
