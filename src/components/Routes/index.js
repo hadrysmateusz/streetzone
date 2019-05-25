@@ -164,6 +164,10 @@ const AdminUsers = Loadable({
 })
 
 // ===== MISC =====
+const Search = Loadable({
+	loader: () => import("../../pages/Search"),
+	loading: LoadableComponentSpinner
+})
 const ChatNew = Loadable({
 	loader: () => import("../../pages/Chat/New"),
 	loading: LoadableComponentSpinner
@@ -384,6 +388,10 @@ const routes = [
 	{
 		path: ROUTES.REQUEST_DESIGNER,
 		component: RequestDesigner
+	},
+	{
+		path: ROUTES.SEARCH,
+		component: Search
 	},
 	{
 		path: ROUTES.SIGN_UP,

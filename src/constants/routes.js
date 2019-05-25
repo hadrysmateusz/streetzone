@@ -35,6 +35,8 @@ export const ACCOUNT_CHAT = ACCOUNT_BASE + "/wiadomosci"
 
 export const CHAT_NEW = "/wiadomosci/:id"
 
+export const SEARCH = "/szukaj"
+
 export const FAQ = "/faq"
 export const PRIVACY_POLICY = "/polityka-prywatnosci"
 export const ABOUT = "/o-nas"
