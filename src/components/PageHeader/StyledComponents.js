@@ -109,12 +109,6 @@ export const NavItem = styled.div`
 	color: var(--gray0);
 	display: block;
 
-	${(p) =>
-		p.account &&
-		`background: var(--gray100);
-		padding: var(--spacing1) var(--spacing2);
-		border-radius: 5px;`}
-
 	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
 		:hover > ${SubmenuContainer} {
 			display: block;

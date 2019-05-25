@@ -3,6 +3,7 @@ import { withRouter } from "react-router-dom"
 import { compose } from "recompose"
 import { withBreakpoints } from "react-breakpoints"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import styled from "styled-components/macro"
 
 import { withAuthentication } from "../UserSession"
 import ProfilePicture from "../ProfilePicture"
@@ -30,36 +31,61 @@ import {
 	SubmenuLink
 } from "./StyledComponents"
 
+const IconContainer = styled.div`
+	padding: var(--spacing3);
+	padding-left: 0;
+	margin-right: calc(0px - var(--spacing3));
+	cursor: pointer;
+	font-size: 1.9rem;
+	color: var(--black0);
+`
+
 const PageHeaderMobile = ({ authUser, firebase, location }) => {
 	return (
 		<PageHeaderContainerMobile>
 			<Logo />
 			<div className="align-right">
-				{/* <StyledNavLink to={ROUTES.SEARCH} exact>
-					<FontAwesomeIcon icon="search" />
-				</StyledNavLink> */}
-				{authUser ? (
-					<ProfilePicture
-						size={"26px"}
-						url={getProfilePictureURL(authUser, "S")}
-						inline
-					/>
-				) : (
+				{authUser && (
+					<NavItem>
+						<StyledNavLink to={ROUTES.ACCOUNT_CHAT.replace(":id", authUser.uid)}>
+							<MessagesManager />
+						</StyledNavLink>
+					</NavItem>
+				)}
+
+				{!authUser && (
 					<StyledNavLink
 						to={{ pathname: ROUTES.SIGN_IN, state: { redirectTo: location } }}
 					>
 						Zaloguj się
 					</StyledNavLink>
 				)}
+
+				<StyledNavLink to={route("SEARCH")} exact>
+					<IconContainer>
+						<FontAwesomeIcon icon="search" />
+					</IconContainer>
+				</StyledNavLink>
+
+				{authUser && (
+					<StyledNavLink to={ROUTES.ACCOUNT_BASE.replace(":id", authUser.uid)}>
+						<ProfilePicture
+							size={"26px"}
+							url={getProfilePictureURL(authUser, "S")}
+							inline
+						/>
+					</StyledNavLink>
+				)}
+
 				<Menu>
 					<StyledNavLink to={ROUTES.HOME} exact>
 						Strona główna
 					</StyledNavLink>
 					<StyledNavLink to={ROUTES.BLOG_BASE}>Czytaj</StyledNavLink>
-					<StyledNavLink to={ROUTES.DROPS}>Dropy</StyledNavLink>
 					<StyledNavLink to={ROUTES.MARKETPLACE} exact>
 						Kupuj
 					</StyledNavLink>
+					<StyledNavLink to={ROUTES.DROPS}>Dropy</StyledNavLink>
 					<StyledNavLink to={ROUTES.NEW_ITEM}>Sprzedawaj</StyledNavLink>
 
 					{authUser && [
@@ -103,10 +129,6 @@ const PageHeaderDesktop = ({ authUser, firebase, location }) => {
 				</NavItem>
 
 				<NavItem>
-					<StyledNavLink to={ROUTES.DROPS}>Dropy</StyledNavLink>
-				</NavItem>
-
-				<NavItem>
 					<StyledNavLink to={ROUTES.MARKETPLACE} exact>
 						Kupuj
 					</StyledNavLink>
@@ -121,6 +143,30 @@ const PageHeaderDesktop = ({ authUser, firebase, location }) => {
 						</Submenu>
 					</SubmenuContainer>
 				</NavItem>
+
+				<NavItem>
+					<StyledNavLink to={ROUTES.DROPS}>Dropy</StyledNavLink>
+					<SubmenuContainer align="left">
+						<Submenu>
+							<NavItem>
+								<SubmenuLink to={route("DROPS", null, { sort: "Nowe" })}>
+									Nowe
+								</SubmenuLink>
+							</NavItem>
+							<NavItem>
+								<SubmenuLink to={route("DROPS", null, { sort: "Nadchodzace" })}>
+									Nadchodzące
+								</SubmenuLink>
+							</NavItem>
+							<NavItem>
+								<SubmenuLink to={route("DROPS", null, { sort: "Archiwum" })}>
+									Archiwum
+								</SubmenuLink>
+							</NavItem>
+						</Submenu>
+					</SubmenuContainer>
+				</NavItem>
+
 				<NavItem>
 					<StyledNavLink to={ROUTES.NEW_ITEM}>Sprzedawaj</StyledNavLink>
 				</NavItem>
@@ -130,10 +176,14 @@ const PageHeaderDesktop = ({ authUser, firebase, location }) => {
 				{authUser ? (
 					<>
 						<NavItem>
-							<StyledNavLink
-								to={ROUTES.ACCOUNT_CHAT.replace(":id", authUser.uid)}
-								alwaysBlack
-							>
+							<StyledNavLink to={route("SEARCH")} exact>
+								<IconContainer>
+									<FontAwesomeIcon icon="search" />
+								</IconContainer>
+							</StyledNavLink>{" "}
+						</NavItem>
+						<NavItem>
+							<StyledNavLink to={ROUTES.ACCOUNT_CHAT.replace(":id", authUser.uid)}>
 								<MessagesManager />
 							</StyledNavLink>
 						</NavItem>
