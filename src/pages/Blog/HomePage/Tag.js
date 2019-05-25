@@ -1,36 +1,53 @@
 import React from "react"
-import { withRouter } from "react-router-dom"
+import styled from "styled-components/macro"
+import { withBreakpoints } from "react-breakpoints"
+import { compose } from "recompose"
+import { withRouter } from "react-router"
 
-import { MainGrid, ContentArea } from "../StyledComponents"
-import InfinitePosts from "../InfinitePostsList"
-import Sidebar from "./Sidebar"
-import InstantSearchBlogWrapper from "../InstantSearchBlogWrapper"
-import { VirtualMenu } from "../../../components/Algolia/Virtual"
+import { CONST } from "../../../constants"
+
 import { PageContainer } from "../../../components/Containers"
-import PageNav from "../PageNav"
+import { StatelessSearchWrapper } from "../../../components/InstantSearchWrapper"
 
-const BlogTagPage = ({ match }) => {
-	const selectedTag = decodeURIComponent(match.params.tag)
-	const currentSection = decodeURIComponent(match.params.section)
-	const shouldFilterSection = currentSection && currentSection !== "Wszystko"
+import Sidebar from "./Sidebar"
+import InfinitePosts from "../InfinitePostsList"
+
+const Layout = styled.div`
+	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
+		display: grid;
+		grid-template-columns: 1fr minmax(220px, 25%);
+		gap: var(--spacing3);
+	}
+`
+
+const BlogTagPage = ({ currentBreakpoint, match }) => {
+	const isMobile = currentBreakpoint <= 1
+
+	const { tag } = match.params
 
 	return (
-		<PageContainer>
-			<InstantSearchBlogWrapper>
-				{shouldFilterSection && (
-					<VirtualMenu attribute="section" defaultRefinement={currentSection} />
-				)}
-				<VirtualMenu attribute="tags" defaultRefinement={selectedTag} />
-				<PageNav />
-				<MainGrid>
-					<Sidebar />
-					<ContentArea>
-						<InfinitePosts />
-					</ContentArea>
-				</MainGrid>
-			</InstantSearchBlogWrapper>
-		</PageContainer>
+		<>
+			<StatelessSearchWrapper
+				indexName={CONST.BLOG_POST_ALGOLIA_INDEX}
+				refinements={{ tags: [tag] }}
+				hitsPerPage={6}
+			>
+				<PageContainer>
+					<Layout>
+						{/* Main Content */}
+						<main>
+							<InfinitePosts />
+						</main>
+						{/* Sidebar */}
+						{!isMobile && <Sidebar />}
+					</Layout>
+				</PageContainer>
+			</StatelessSearchWrapper>
+		</>
 	)
 }
 
-export default withRouter(BlogTagPage)
+export default compose(
+	withBreakpoints,
+	withRouter
+)(BlogTagPage)
