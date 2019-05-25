@@ -14,7 +14,9 @@ const AlgoliaSearchBox = ({
 	history,
 	refine,
 	currentRefinement,
-	currentBreakpoint
+	currentBreakpoint,
+	placeholderLong,
+	placeholder
 }) => {
 	const DELAY = 350
 
@@ -56,8 +58,7 @@ const AlgoliaSearchBox = ({
 		refine()
 	}
 
-	const placeholderText =
-		currentBreakpoint > 0 ? "Szukaj po nazwie, marce, itd." : "Szukaj"
+	const placeholderText = currentBreakpoint > 0 ? placeholderLong : placeholder
 
 	return (
 		<Input

@@ -11,7 +11,10 @@ const Topbar = ({ toggleFilters, clearFilters }) => {
 	return (
 		<Container>
 			<div className="search-container">
-				<AlgoliaSearchBox />
+				<AlgoliaSearchBox
+					placeholder="Szukaj"
+					placeholderLong="Szukaj po nazwie, marce, itd."
+				/>
 			</div>
 
 			<div className="filters-toggle-container">

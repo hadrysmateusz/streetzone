@@ -20,7 +20,10 @@ const SearchPage = ({ currentBreakpoint, match }) => {
 				<TextBlock size="xl" bold>
 					Szukaj
 				</TextBlock>
-				<AlgoliaSearchBox />
+				<AlgoliaSearchBox
+					placeholder="Szukaj"
+					placeholderLong="Szukaj na tablicy, blogu i w dropach"
+				/>
 
 				<Index indexName={CONST.ITEMS_MARKETPLACE_DEFAULT_ALGOLIA_INDEX}>
 					<TextBlock size="xl" bold>
