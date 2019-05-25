@@ -67,6 +67,8 @@ const AlgoliaSearchBox = ({
 			placeholder={placeholderText}
 			onChange={onChange}
 			ref={inputRef}
+			rightSlot={<StyledPoweredBy />}
+			rightSlotWidth="100px"
 		/>
 	)
 }

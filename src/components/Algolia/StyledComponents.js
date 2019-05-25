@@ -137,7 +137,7 @@ export const StyledPoweredBy = styled(PoweredBy)`
 	margin: 0;
 	margin-top: 3px;
 	height: 100%;
-	transform: scale(0.88) translateX(10px);
+	transform: scale(0.83) translateY(3px);
 
 	.ais-PoweredBy-text {
 		display: none;
