@@ -1,5 +1,4 @@
 import styled from "styled-components/macro"
-import { PoweredBy } from "react-instantsearch-dom"
 
 import { resetButtonStyles, ellipsis } from "../../style-utils"
 
@@ -102,11 +101,6 @@ export const SearchBox = styled.div`
 		width: 34px;
 	}
 
-	.powered-by-container {
-		transform: scale(0.84);
-		margin-top: 2px;
-	}
-
 	input {
 		border: none;
 		flex: 1;
@@ -133,20 +127,6 @@ export const ResultsContainer = styled.main`
 	flex: 1;
 	max-width: 1080px;
 	margin: 0 auto;
-`
-
-export const StyledPoweredBy = styled(PoweredBy)`
-	margin: 0;
-	margin-top: 3px;
-	height: 100%;
-	transform: scale(0.83) translateY(3px);
-
-	.ais-PoweredBy-text {
-		display: none;
-	}
-	.ais-PoweredBy-logo {
-		margin-bottom: -7px;
-	}
 `
 
 export const SizeCategoriesContainer = styled.div`

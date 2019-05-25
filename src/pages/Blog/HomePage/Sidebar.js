@@ -1,6 +1,7 @@
 import React from "react"
 import styled from "styled-components/macro"
 import { getCategoryColor } from "../../../style-utils"
+import { PoweredByBox } from "../../../components/Algolia/PoweredBy"
 
 import TagsNav from "./TagsNav"
 
@@ -30,6 +31,7 @@ const SidebarSection = ({ title, children }) => {
 const Sidebar = () => {
 	return (
 		<SidebarContainer>
+			<PoweredByBox />
 			<SidebarSection title="Popularne Tagi">
 				<TagsNav />
 			</SidebarSection>

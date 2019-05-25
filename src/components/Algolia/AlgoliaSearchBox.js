@@ -7,7 +7,7 @@ import { withBreakpoints } from "react-breakpoints"
 
 import { Input } from "../FormElements"
 import { decodeURL } from "../../utils/algoliaURLutils"
-import { SearchBox, StyledPoweredBy } from "./StyledComponents"
+import { PoweredBy } from "./PoweredBy"
 
 const AlgoliaSearchBox = ({
 	location,
@@ -67,7 +67,7 @@ const AlgoliaSearchBox = ({
 			placeholder={placeholderText}
 			onChange={onChange}
 			ref={inputRef}
-			rightSlot={<StyledPoweredBy />}
+			rightSlot={<PoweredBy small />}
 			rightSlotWidth="100px"
 		/>
 	)
