@@ -1,6 +1,6 @@
 import React from "react"
 
-import { StatelessSearchWrapper } from "../../../components/InstantSearchWrapper"
+import { StatelessSearchWrapper } from "../InstantSearchWrapper"
 
 import Group from "./Group"
 

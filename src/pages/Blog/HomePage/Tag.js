@@ -11,10 +11,10 @@ import { SmallDropCard } from "../../../components/Cards"
 import { PageContainer } from "../../../components/Containers"
 import { StatelessSearchWrapper } from "../../../components/InstantSearchWrapper"
 import { Results } from "../../../components/Algolia/Helpers"
+import { DumbThematicGroup } from "../../../components/ThematicGroup"
 
 import Sidebar from "./Sidebar"
 import { Layout, Heading } from "./Common"
-import { DumbThematicGroup } from "./ThematicGroup"
 import InfinitePosts from "../InfinitePostsList"
 
 const BlogTagPage = ({ currentBreakpoint, match }) => {
@@ -24,7 +24,11 @@ const BlogTagPage = ({ currentBreakpoint, match }) => {
 
 	return (
 		<>
-			<StatelessSearchWrapper indexName={CONST.BLOG_POST_ALGOLIA_INDEX} hitsPerPage={6}>
+			<StatelessSearchWrapper
+				indexName={CONST.BLOG_POST_ALGOLIA_INDEX}
+				hitsPerPage={6}
+				refinements={{ tags: [tag] }}
+			>
 				<PageContainer>
 					<Layout>
 						{/* Main Content */}

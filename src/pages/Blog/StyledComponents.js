@@ -195,41 +195,6 @@ export const ContentArea = styled.main`
 	min-width: 0;
 `
 
-export const GroupContainer = styled.section`
-	margin-bottom: var(--spacing4);
-
-	header {
-		display: flex;
-		justify-content: space-between;
-		margin-bottom: var(--spacing3);
-	}
-
-	.content {
-		display: grid;
-		gap: var(--spacing2);
-		grid-auto-columns: 70%;
-		overflow: auto;
-		width: auto;
-		grid-auto-flow: column;
-
-		@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
-			grid-auto-flow: column;
-			grid-template-columns: repeat(3, 1fr);
-		}
-
-		/* make the content go from edge to edge on mobile*/
-		@media (max-width: ${(p) => p.theme.breakpoints[1] - 1}px) {
-			margin: 0 calc(-1 * var(--spacing3));
-			padding: 0 var(--spacing3);
-			&::after {
-				content: "";
-				display: block;
-				width: var(--spacing2);
-			}
-		}
-	}
-`
-
 export const SmallPostContainer = styled.div`
 	background: white;
 	border: 1px solid var(--gray75);
