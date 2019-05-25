@@ -1,7 +1,7 @@
 import styled from "styled-components/macro"
 import { PoweredBy } from "react-instantsearch-dom"
 
-import { resetButtonStyles } from "../../style-utils"
+import { resetButtonStyles, ellipsis } from "../../style-utils"
 
 export const BoxItem = styled.div`
 	border: 1px solid var(--gray75);
@@ -45,6 +45,7 @@ export const OptionsContainer = styled.div`
 export const FilterItem = styled.div`
 	display: flex;
 	align-items: center;
+	min-width: 0;
 
 	* {
 		cursor: pointer;
@@ -58,6 +59,7 @@ export const FilterItem = styled.div`
 		color: ${(p) => p.theme.colors.black[75]};
 		cursor: pointer;
 		width: 100%;
+		${ellipsis}
 	}
 `
 
