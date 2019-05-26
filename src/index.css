@@ -44,12 +44,23 @@
 	--font-size--xl: 3.2rem;
 	--font-size--xxl: 4.8rem;
 
-	--form-element-height: 40px;
-
 	--font-family--serif: "Playfair Display";
 	--font-family--sans-serif: "Open Sans";
 
+	--form-element-height: 40px;
 	--page-header-height: 60px;
+
+	/* new aliases */
+
+	--ff-serif: var(--font-family--serif);
+	--ff-sans: var(--font-family--sans-serif);
+
+	--fs-xs: var(--font-size--xs);
+	--fs-s: var(--font-size--s);
+	--fs-m: var(--font-size--m);
+	--fs-l: var(--font-size--l);
+	--fs-xl: var(--font-size--xl);
+	--fs-xxl: var(--font-size--xxl);
 }
 
 body {
