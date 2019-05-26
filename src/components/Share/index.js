@@ -2,6 +2,8 @@ import React from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import styled from "styled-components/macro"
 
+import { TextBlock } from "../StyledComponents"
+
 const ShareContainer = styled.div`
 	display: grid;
 	grid-template-columns: repeat(auto-fill, min-content);
@@ -21,19 +23,26 @@ const ShareContainer = styled.div`
 	}
 `
 
-const Share = () => {
+const Share = ({ withHeader }) => {
 	return (
-		<ShareContainer>
-			<div title="Udostępnij na Twitterze">
-				<FontAwesomeIcon icon={["fab", "twitter"]} />
-			</div>
-			<div title="Udostępnij na Facebooku">
-				<FontAwesomeIcon icon={["fab", "facebook-square"]} />
-			</div>
-			<div title="Udostępnij na Instagramie">
-				<FontAwesomeIcon icon={["fab", "instagram"]} />
-			</div>
-		</ShareContainer>
+		<>
+			{withHeader && (
+				<TextBlock size="xs" uppercase color="gray0">
+					Udostępnij
+				</TextBlock>
+			)}
+			<ShareContainer>
+				<div title="Udostępnij na Twitterze">
+					<FontAwesomeIcon icon={["fab", "twitter"]} />
+				</div>
+				<div title="Udostępnij na Facebooku">
+					<FontAwesomeIcon icon={["fab", "facebook-square"]} />
+				</div>
+				<div title="Udostępnij na Instagramie">
+					<FontAwesomeIcon icon={["fab", "instagram"]} />
+				</div>
+			</ShareContainer>
+		</>
 	)
 }
 
