@@ -37,7 +37,6 @@ const BlogTagPage = ({ currentBreakpoint, match }) => {
 							<Index indexName={CONST.BLOG_DROP_ALGOLIA_INDEX}>
 								<Results>
 									{(results) => {
-										console.log("ress", results)
 										return !results || results.length === 0 ? null : (
 											<>
 												<TextBlock size="xl" bold>

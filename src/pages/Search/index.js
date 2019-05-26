@@ -1,5 +1,5 @@
 import React from "react"
-import { Index } from "react-instantsearch-dom"
+import { connectStateResults } from "react-instantsearch-dom"
 
 import { CONST } from "../../constants"
 
@@ -7,15 +7,20 @@ import { TextBlock } from "../../components/StyledComponents"
 import { SmallDropCard, SmallItemCard } from "../../components/Cards"
 import { PageContainer } from "../../components/Containers"
 import { StatelessSearchWrapper } from "../../components/InstantSearchWrapper"
-import { Results } from "../../components/Algolia/Helpers"
 import AlgoliaSearchBox from "../../components/Algolia/AlgoliaSearchBox"
-import { DumbThematicGroup } from "../../components/ThematicGroup"
+import IndexResults from "../../components/Algolia/IndexResults"
 
 import InfinitePosts from "../Blog/InfinitePostsList"
+import { Layout } from "../Blog/HomePage/Common"
+
+const SearchState = connectStateResults(({ searchState, children }) => {
+	const isQueryEmpty = !searchState || (searchState && !searchState.query)
+	return isQueryEmpty ? null : children
+})
 
 const SearchPage = ({ currentBreakpoint, match }) => {
 	return (
-		<StatelessSearchWrapper indexName={CONST.BLOG_POST_ALGOLIA_INDEX} hitsPerPage={6}>
+		<StatelessSearchWrapper indexName={CONST.BLOG_POST_ALGOLIA_INDEX}>
 			<PageContainer>
 				<TextBlock size="xl" bold>
 					Szukaj
@@ -25,43 +30,31 @@ const SearchPage = ({ currentBreakpoint, match }) => {
 					placeholderLong="Szukaj na tablicy, blogu i w dropach"
 				/>
 
-				<Index indexName={CONST.ITEMS_MARKETPLACE_DEFAULT_ALGOLIA_INDEX}>
-					<TextBlock size="xl" bold>
-						Tablica
-					</TextBlock>
-					<Results>
-						{(results) => (
-							<DumbThematicGroup
-								results={results}
-								hasMore={false}
+				<Layout>
+					<div>
+						<SearchState>
+							<IndexResults
+								indexName={CONST.ITEMS_MARKETPLACE_DEFAULT_ALGOLIA_INDEX}
+								title="Tablica"
 								component={SmallItemCard}
+								limit={10}
 							/>
-						)}
-					</Results>
-				</Index>
 
-				<Index indexName={CONST.BLOG_DROP_ALGOLIA_INDEX}>
-					<TextBlock size="xl" bold>
-						Dropy
-					</TextBlock>
-					<Results>
-						{(results) => (
-							<DumbThematicGroup
-								results={results}
-								hasMore={false}
+							<IndexResults
+								indexName={CONST.BLOG_DROP_ALGOLIA_INDEX}
+								title="Dropy"
 								component={SmallDropCard}
+								limi={4}
 							/>
-						)}
-					</Results>
-				</Index>
 
-				<Index indexName={CONST.BLOG_POST_ALGOLIA_INDEX}>
-					<TextBlock size="xl" bold>
-						Artykuły
-					</TextBlock>
-
-					<InfinitePosts />
-				</Index>
+							<IndexResults
+								indexName={CONST.BLOG_POST_ALGOLIA_INDEX}
+								title="Artykuły"
+								render={<InfinitePosts />}
+							/>
+						</SearchState>
+					</div>
+				</Layout>
 			</PageContainer>
 		</StatelessSearchWrapper>
 	)
