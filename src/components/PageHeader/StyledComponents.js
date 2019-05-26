@@ -12,7 +12,6 @@ const pageHeaderContainerCommon = css`
 export const PageHeaderContainerDesktop = styled.header`
 	${pageHeaderContainerCommon}
 	display: grid;
-	align-items: center;
 	grid-template-columns: auto 1fr auto;
 `
 
@@ -43,13 +42,43 @@ export const PageHeaderOuter = styled.div`
 	${(p) => p.scrollPosition !== 0 && "border-color: var(--gray75);"}
 `
 
+export const SubmenuContainer = styled.div`
+	position: absolute;
+	top: 100%;
+	${(p) => `${p.align}: 0;`}
+	z-index: 81;
+	display: none;
+`
+
+export const NavItem = styled.div`
+	user-select: none;
+	position: relative;
+	white-space: nowrap;
+	color: var(--gray0);
+	display: block;
+
+	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
+		:hover > ${SubmenuContainer} {
+			display: block;
+		}
+	}
+
+	> :first-child {
+		height: 100%;
+	}
+`
+
 export const Nav = styled.nav`
 	display: grid;
 	grid-auto-flow: column;
 	grid-auto-columns: min-content;
+	grid-template-rows: 100%;
 	gap: var(--spacing2);
 	${(p) => p.main && "padding-left: var(--spacing4);"}
 
+	> * {
+		height: 100%;
+	}
 
 	@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
 		gap: var(--spacing3);
@@ -91,33 +120,6 @@ export const SubmenuLink = styled(NavLink)`
 	}
 
 	${(p) => p.alwaysBlack && "color: black;"}
-`
-
-export const SubmenuContainer = styled.div`
-	position: absolute;
-	top: 100%;
-	${(p) => `${p.align}: 0;`}
-	z-index: 81;
-	padding-top: 12px;
-	display: none;
-`
-
-export const NavItem = styled.div`
-	user-select: none;
-	position: relative;
-	white-space: nowrap;
-	color: var(--gray0);
-	display: block;
-
-	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
-		:hover > ${SubmenuContainer} {
-			display: block;
-		}
-	}
-
-	> :first-child {
-		height: 100%;
-	}
 `
 
 export const UserNameContainer = styled.div`

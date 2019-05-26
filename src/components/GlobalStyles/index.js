@@ -51,7 +51,11 @@ const GlobalStyle = createGlobalStyle`
 	--font-family--sans-serif: "Open Sans";
 
 	--form-element-height: 40px;
-	--page-header-height: 60px;
+
+	--page-header-height: 52px;
+	@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
+		--page-header-height: 60px;
+	}
 
 	/* new aliases */
 

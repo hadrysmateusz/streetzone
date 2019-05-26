@@ -7,6 +7,7 @@ import { CONST, ROUTES } from "../../constants"
 const LogoContainer = styled.div`
 	display: flex;
 	align-items: center;
+	height: 100%;
 
 	font-size: var(--font-size--m);
 	font-weight: bold;
@@ -17,6 +18,10 @@ const LogoContainer = styled.div`
 	white-space: nowrap;
 	img {
 		width: 100px;
+		transition: transform 200ms ease;
+		:hover {
+			transform: rotate(-2deg);
+		}
 	}
 
 	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {

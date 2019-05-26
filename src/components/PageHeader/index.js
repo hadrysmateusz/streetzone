@@ -32,9 +32,6 @@ import {
 } from "./StyledComponents"
 
 const IconContainer = styled.div`
-	padding: var(--spacing3);
-	padding-left: 0;
-	margin-right: calc(0px - var(--spacing3));
 	cursor: pointer;
 	font-size: 1.9rem;
 	color: var(--black0);

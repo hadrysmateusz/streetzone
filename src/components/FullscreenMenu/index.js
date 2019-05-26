@@ -26,9 +26,7 @@ export const FullscreenContainer = styled.div`
 `
 
 const IconContainer = styled.div`
-	padding: var(--spacing3);
 	padding-left: 0;
-	margin-right: calc(0px - var(--spacing3));
 	cursor: pointer;
 	font-size: 2.15rem;
 `
