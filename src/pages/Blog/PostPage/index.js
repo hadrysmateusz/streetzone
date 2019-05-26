@@ -1,37 +1,42 @@
 import React, { useState, useEffect } from "react"
 import moment from "moment"
 import { withRouter, Link } from "react-router-dom"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import styled from "styled-components/macro"
 import ReactMarkdown from "react-markdown"
 
 import { PageContainer } from "../../../components/Containers"
 import { TextBlock } from "../../../components/StyledComponents"
+import Tags from "../../../components/Tags"
 import LoadingSpinner from "../../../components/LoadingSpinner"
+import Share from "../../../components/Share"
 
 import { useFirebase } from "../../../hooks"
 import { ellipsis, getCategoryColor } from "../../../style-utils"
 import { route } from "../../../utils"
 
-import { ShareButtons, FluidImage } from "../StyledComponents"
+import { FluidImage } from "../StyledComponents"
 import { Layout } from "../HomePage/Common"
 import PageNav from "../PageNav"
 import { withBreakpoints } from "react-breakpoints"
 
 const Main = styled.main`
 	display: grid;
-	grid-template-rows: 520px 1fr;
+	grid-template-rows: max-content 1fr;
 	gap: var(--spacing3);
 `
 
 const InnerContainer = styled.div`
 	display: grid;
-	grid-template-columns: 150px 1fr;
 	gap: var(--spacing3);
+	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
+		grid-template-columns: 150px 1fr;
+	}
 `
 
 const Article = styled.article`
-	font-size: var(--font-size--m);
+	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
+		font-size: var(--font-size--m);
+	}
 	max-width: 100%;
 	img {
 		max-width: 100%;
@@ -48,40 +53,67 @@ const InfoAside = styled.aside`
 
 const Aside = styled.aside``
 
+const CommonContainer = styled.div`
+	--header-box-height: 260px;
+`
+
+const OuterContainer = styled.div`
+	position: relative;
+	z-index: 4;
+	padding-top: var(--header-box-height);
+`
+
+const SecondaryOuterContainer = styled.div`
+	background: white;
+	padding: var(--spacing3) 0;
+`
+
 const HeaderBox = styled.div`
 	background: var(--black25);
 	color: white;
-	padding: var(--spacing3) 0;
-	margin-bottom: var(--spacing3);
+
+	height: var(--header-box-height);
+
+	position: fixed;
+	width: 100%;
+	z-index: 3;
 
 	--inner-width: 750px;
 
 	> ${PageContainer} {
-		text-align-center;
+		height: 100%;
 		display: flex;
+		justify-content: center;
 		flex-direction: column;
 		align-items: center;
+		text-align: center;
 		${ellipsis}
 
 		.excerpt {
 			color: var(--gray100);
 			max-width: var(--inner-width);
 			overflow: hidden;
-			margin-bottom: var(--spacing3)
+			margin-bottom: var(--spacing3);
+			white-space: normal;
 		}
 
 		.title {
-			font-family: var(--font-family--serif);
-			font-size: var(--font-size--xl);
-			margin: var(--spacing1) 0 ;
+			font-family: var(--ff-serif);
+			font-size: var(--fs-l);
+			font-weight: bold;
+			@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
+				font-size: var(--fs-xl);
+			}
+			margin: var(--spacing1) 0;
 			max-width: var(--inner-width);
+			white-space: normal;
 		}
 
 		.category {
 			padding-left: var(--spacing2);
 			text-transform: uppercase;
-			border-left: 3px solid ${(p) =>
-				p.category ? getCategoryColor(p.category) : "var(--gray50)"};
+			border-left: 3px solid
+				${(p) => (p.category ? getCategoryColor(p.category) : "var(--gray50)")};
 		}
 
 		.date {
@@ -91,37 +123,17 @@ const HeaderBox = styled.div`
 	}
 `
 
-const TagsContainer = styled.div`
-	display: flex;
-	flex-wrap: wrap;
-	> :not(:last-child) {
-		margin-right: var(--spacing2);
-	}
+const MainImageContainer = styled.div`
+	position: relative;
 	> * {
-		margin-bottom: var(--spacing2);
+		height: 0;
+		padding-top: 56%;
 	}
-	margin-bottom: calc(-1 * var(--spacing2));
-	margin-top: var(--spacing2);
+	@media (max-width: ${(p) => p.theme.breakpoints[2] - 1}px) {
+		margin: calc(-1 * var(--spacing3));
+		margin-bottom: 0;
+	}
 `
-
-const TagContainer = styled.div`
-	background: white;
-	border: 1px solid var(--gray75);
-	padding: var(--spacing1) var(--spacing2);
-	text-align: center;
-	text-transform: uppercase;
-	font-size: var(--fs-xs);
-	white-space: nowrap;
-	overflow: hidden;
-`
-
-const Tag = ({ tag }) => {
-	return (
-		<TagContainer>
-			<Link to={route("BLOG_TAG", { tag })}>{tag}</Link>
-		</TagContainer>
-	)
-}
 
 const usePost = (id) => {
 	const [post, setPost] = useState(null)
@@ -166,7 +178,7 @@ export const PureBlogPost = withBreakpoints(
 		const isMobile = currentBreakpoint <= 1
 
 		return (
-			<>
+			<CommonContainer>
 				<HeaderBox category={category}>
 					<PageContainer>
 						{/* Page Nav */}
@@ -186,62 +198,61 @@ export const PureBlogPost = withBreakpoints(
 					</PageContainer>
 				</HeaderBox>
 
-				<PageContainer>
-					<Layout>
-						<Main>
-							{/* Header image */}
-							<FluidImage url={imageUrl} />
+				<OuterContainer>
+					<SecondaryOuterContainer>
+						<PageContainer>
+							<Layout>
+								<Main>
+									{/* Header image */}
+									<MainImageContainer>
+										<FluidImage url={imageUrl} />
+									</MainImageContainer>
 
-							<InnerContainer>
+									<InnerContainer>
+										{!isMobile && (
+											<InfoAside>
+												{/* Share buttons */}
+												<Share />
+												{/* Info */}
+												<Info>
+													<div>
+														Dodano <b>{moment(createdAt).format("DD-MM-YY")}</b>
+													</div>
+													<div>
+														przez <b>{author}</b>
+													</div>
+													<div>
+														w <b>{category}</b>
+													</div>
+												</Info>
+												{/* Tags */}
+												<Tags tags={tags} />
+											</InfoAside>
+										)}
+										<Article>
+											{isMobile && <Share withHeader />}
+											<ReactMarkdown source={mainContent} />
+											{isMobile && [
+												<TextBlock size="m" bold uppercase>
+													Tagi
+												</TextBlock>,
+												<Tags tags={tags} />
+											]}
+										</Article>
+									</InnerContainer>
+								</Main>
 								{!isMobile && (
-									<InfoAside>
-										{/* Share buttons */}
-										<ShareButtons>
-											<div title="Udostępnij na Twitterze">
-												<FontAwesomeIcon icon={["fab", "twitter"]} />
-											</div>
-											<div title="Udostępnij na Facebooku">
-												<FontAwesomeIcon icon={["fab", "facebook-square"]} />
-											</div>
-											<div title="Udostępnij na Instagramie">
-												<FontAwesomeIcon icon={["fab", "instagram"]} />
-											</div>
-										</ShareButtons>
-										{/* Info */}
-										<Info>
-											<div>
-												Dodano <b>{moment(createdAt).format("DD-MM-YY")}</b>
-											</div>
-											<div>
-												przez <b>{author}</b>
-											</div>
-											<div>
-												w <b>{category}</b>
-											</div>
-										</Info>
-										{/* Tags */}
-										<TagsContainer>
-											{tags.map((tag) => (
-												<Tag tag={tag} />
-											))}
-										</TagsContainer>
-									</InfoAside>
+									<Aside>
+										<TextBlock size="l" bold>
+											Podobne Artykuły
+										</TextBlock>
+									</Aside>
 								)}
-								<Article>
-									<ReactMarkdown source={mainContent} />
-								</Article>
-							</InnerContainer>
-						</Main>
-						{!isMobile && (
-							<Aside>
-								<TextBlock size="l" bold>
-									Podobne Artykuły
-								</TextBlock>
-							</Aside>
-						)}
-					</Layout>
-				</PageContainer>
-			</>
+							</Layout>
+						</PageContainer>
+					</SecondaryOuterContainer>
+				</OuterContainer>
+			</CommonContainer>
 		)
 	}
 )

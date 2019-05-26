@@ -19,6 +19,10 @@ const OuterContainer = styled.div`
 	justify-content: space-between;
 	color: white;
 	background: var(--black25);
+
+	${"" /* Stay above fixed elements like the blog header */}
+	position: relative;
+	z-index: 72;
 `
 
 const IconContainer = styled.div`

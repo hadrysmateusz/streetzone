@@ -27,7 +27,6 @@ export const PageContainer = styled.section`
 
 export const MainPageContainer = styled.div`
 	min-height: 95vh;
-	padding-bottom: var(--spacing3);
 `
 
 const OuterGrayContainer = styled.section`
