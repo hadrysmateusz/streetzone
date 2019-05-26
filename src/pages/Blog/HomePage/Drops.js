@@ -7,7 +7,7 @@ import {
 } from "body-scroll-lock"
 import styled from "styled-components/macro"
 
-import { PageContainer } from "../../../components/Containers"
+import { PageContainer, MainPageContainer } from "../../../components/Containers"
 import {
 	SearchWrapper,
 	StatelessSearchWrapper
@@ -86,7 +86,7 @@ const DropsPage = withBreakpoints(({ currentBreakpoint }) => {
 	const isMobile = currentBreakpoint <= 1
 
 	return (
-		<>
+		<MainPageContainer>
 			{!isMobile && (
 				<PageContainer>
 					<PromotedSection
@@ -114,7 +114,7 @@ const DropsPage = withBreakpoints(({ currentBreakpoint }) => {
 					</Layout>
 				</PageContainer>
 			</SearchWrapper>
-		</>
+		</MainPageContainer>
 	)
 })
 

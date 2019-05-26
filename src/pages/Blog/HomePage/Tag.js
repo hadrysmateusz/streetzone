@@ -33,27 +33,40 @@ const BlogTagPage = ({ currentBreakpoint, match }) => {
 					<Layout>
 						{/* Main Content */}
 						<main>
-							<Heading>Otagowane: {tag}</Heading>
+							<Heading>{tag}</Heading>
 							<Index indexName={CONST.BLOG_DROP_ALGOLIA_INDEX}>
-								<TextBlock size="xl" bold>
-									Dropy
-								</TextBlock>
 								<Results>
-									{(results) => (
-										<DumbThematicGroup
-											results={results}
-											hasMore={false}
-											component={SmallDropCard}
-										/>
-									)}
+									{(results) => {
+										console.log("ress", results)
+										return !results || results.length === 0 ? null : (
+											<>
+												<TextBlock size="xl" bold>
+													Dropy
+												</TextBlock>
+												<DumbThematicGroup
+													results={results}
+													hasMore={false}
+													component={SmallDropCard}
+												/>
+											</>
+										)
+									}}
 								</Results>
 							</Index>
 							<Index indexName={CONST.BLOG_POST_ALGOLIA_INDEX}>
-								<TextBlock size="xl" bold>
-									Artykuły
-								</TextBlock>
+								<Results>
+									{(results) =>
+										!results || results.length === 0 ? null : (
+											<>
+												<TextBlock size="xl" bold>
+													Artykuły
+												</TextBlock>
 
-								<InfinitePosts />
+												<InfinitePosts />
+											</>
+										)
+									}
+								</Results>
 							</Index>
 						</main>
 						{/* Sidebar */}
