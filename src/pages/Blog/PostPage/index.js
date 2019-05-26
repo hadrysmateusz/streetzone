@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"
 import moment from "moment"
-import { withRouter } from "react-router-dom"
+import { withRouter, Link } from "react-router-dom"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import styled from "styled-components/macro"
 import ReactMarkdown from "react-markdown"
@@ -10,6 +10,7 @@ import { TextBlock } from "../../../components/StyledComponents"
 
 import { useFirebase } from "../../../hooks"
 import { ellipsis, getCategoryColor } from "../../../style-utils"
+import { route } from "../../../utils"
 
 import { ShareButtons, FluidImage } from "../StyledComponents"
 import { Layout } from "../HomePage/Common"
@@ -43,8 +44,6 @@ const InfoAside = styled.aside`
 	gap: var(--spacing2);
 	align-content: start;
 `
-
-const TagsContainer = styled.div``
 
 const Aside = styled.aside``
 
@@ -90,6 +89,37 @@ const HeaderBox = styled.div`
 		}
 	}
 `
+
+const TagsContainer = styled.div`
+	display: flex;
+	flex-wrap: wrap;
+	> :not(:last-child) {
+		margin-right: var(--spacing2);
+	}
+	> * {
+		margin-bottom: var(--spacing2);
+	}
+	margin-bottom: calc(-1 * var(--spacing2));
+`
+
+const TagContainer = styled.div`
+	background: white;
+	border: 1px solid var(--gray75);
+	padding: var(--spacing1) var(--spacing2);
+	text-align: center;
+	text-transform: uppercase;
+	font-size: var(--fs-xs);
+	white-space: nowrap;
+	overflow: hidden;
+`
+
+const Tag = ({ tag }) => {
+	return (
+		<TagContainer>
+			<Link to={route("BLOG_TAG", { tag })}>{tag}</Link>
+		</TagContainer>
+	)
+}
 
 const usePost = (id) => {
 	const [post, setPost] = useState(null)
@@ -178,9 +208,7 @@ export const PureBlogPost = withBreakpoints(({ currentBreakpoint, post }) => {
 								{/* Tags */}
 								<TagsContainer>
 									{post.tags.map((tag) => (
-										<TextBlock uppercase color="gray25" size="xs">
-											{tag}
-										</TextBlock>
+										<Tag tag={tag} />
 									))}
 								</TagsContainer>
 							</InfoAside>
