@@ -11,11 +11,10 @@ export const DumbThematicGroup = ({
 	hasMore = true,
 	component: C
 }) => {
-	console.log("RES", results)
 	return results.length > 0 ? (
 		<Group title={title} hasMore={hasMore} linkTo={linkTo}>
 			{results.map((res) => (
-				<C {...res} />
+				<C {...res} key={res.id} />
 			))}
 		</Group>
 	) : null

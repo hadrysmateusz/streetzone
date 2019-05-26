@@ -6,6 +6,8 @@ import cloneDeep from "clone-deep"
 import { decodeURL, encodeURL } from "../../utils/algoliaURLutils"
 import { VirtualToggle } from "../Algolia/Virtual"
 
+const EMPTY_SEARCH_ERR = "empty search string"
+
 export const SearchWrapper = withRouter(
 	({
 		indexName,
@@ -132,13 +134,14 @@ export const SearchWrapper = withRouter(
 				const formattedState = urlToState(parsedSearch)
 				return formattedState
 			} catch (e) {
-				console.log(e)
+				// EMPTY_SEARCH_ERR is harmless, don't report it
+				if (e.message !== EMPTY_SEARCH_ERR) {
+					console.log(e)
+				}
 				// if there was a problem while parsing, use default state instead
 				return _initialState
 			}
 		}, [_initialState, allowedKeys, location.search])
-
-		console.log("searchState", searchState)
 
 		return (
 			<InstantSearch

@@ -50,7 +50,7 @@ const PostPreview = ({
 					{hasTags && (
 						<TagsContainer>
 							{tags.slice(0, 3).map((tag) => (
-								<div>{"#" + tag}</div>
+								<div key={tag}>{"#" + tag}</div>
 							))}
 						</TagsContainer>
 					)}

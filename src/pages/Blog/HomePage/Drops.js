@@ -67,7 +67,6 @@ const OuterContainer = styled.div`
 `
 
 const PromotedSection = ({ indexName, limit, component: C = PromotedPost }) => {
-	console.log("limit", limit)
 	return (
 		<OuterContainer>
 			<StatelessSearchWrapper indexName={indexName} limit={limit}>

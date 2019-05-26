@@ -39,7 +39,6 @@ const MobilePromotedSection = ({ results }) => {
 }
 
 const DesktopPromotedSection = ({ results }) => {
-	console.log("results", results)
 	return (
 		<PageContainer>
 			<DesktopContainer>

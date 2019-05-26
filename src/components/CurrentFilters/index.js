@@ -30,8 +30,6 @@ const CurrentFiltersView = ({ items, history, clear, refine }) => {
 	return items && items.length > 0 ? (
 		<Container>
 			{items.map((item) => {
-				console.log(item)
-
 				if (item.attribute === "price") {
 					return <Item>Cena</Item>
 				} else if (item.attribute === "size") {

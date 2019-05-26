@@ -27,7 +27,7 @@ const InfinitePosts = connectInfiniteHits(({ hits, hasMore, refine, ...rest }) =
 		>
 			<PostsContainer>
 				{hits.map((post) => (
-					<PostPreview {...post} />
+					<PostPreview {...post} key={post.id} />
 				))}
 			</PostsContainer>
 		</InfiniteScroll>
