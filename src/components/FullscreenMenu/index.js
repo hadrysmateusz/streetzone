@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react"
-import styled from "styled-components/macro"
+import styled, { keyframes } from "styled-components/macro"
 import {
 	disableBodyScroll,
 	enableBodyScroll,
@@ -12,6 +12,16 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import Header from "./Header"
 import { CONST } from "../../constants"
 
+const slidein = keyframes`
+	from  {
+		transform: translateX(100%);
+
+	}
+	to {
+		transform: translateX(0);
+	}
+`
+
 export const FullscreenContainer = styled.div`
 	width: 100%;
 	max-width: 100vw;
@@ -23,6 +33,7 @@ export const FullscreenContainer = styled.div`
 	bottom: 0;
 	height: 100vh;
 	background: white;
+	animation: ${slidein} 150ms;
 `
 
 const IconContainer = styled.div`
