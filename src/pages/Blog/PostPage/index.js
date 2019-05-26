@@ -7,15 +7,14 @@ import ReactMarkdown from "react-markdown"
 
 import { PageContainer } from "../../../components/Containers"
 import { TextBlock } from "../../../components/StyledComponents"
-import PageNav from "../PageNav"
-import useFirebase from "../../../hooks/useFirebase"
-import { ShareButtons, FluidImage } from "../StyledComponents"
 
-const OuterContainer = styled.div`
-	display: grid;
-	grid-template-columns: 1fr 280px;
-	gap: var(--spacing4);
-`
+import { useFirebase } from "../../../hooks"
+import { ellipsis, getCategoryColor } from "../../../style-utils"
+
+import { ShareButtons, FluidImage } from "../StyledComponents"
+import { Layout } from "../HomePage/Common"
+import PageNav from "../PageNav"
+import { withBreakpoints } from "react-breakpoints"
 
 const Main = styled.main`
 	display: grid;
@@ -31,6 +30,10 @@ const InnerContainer = styled.div`
 
 const Article = styled.article`
 	font-size: var(--font-size--m);
+	max-width: 100%;
+	img {
+		max-width: 100%;
+	}
 `
 
 const Info = styled.div``
@@ -44,6 +47,49 @@ const InfoAside = styled.aside`
 const TagsContainer = styled.div``
 
 const Aside = styled.aside``
+
+const HeaderBox = styled.div`
+	background: var(--black25);
+	color: white;
+	padding: var(--spacing3) 0;
+	margin-bottom: var(--spacing3);
+
+	--inner-width: 750px;
+
+	> ${PageContainer} {
+		text-align-center;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		${ellipsis}
+
+		.excerpt {
+			color: var(--gray100);
+			max-width: var(--inner-width);
+			overflow: hidden;
+			margin-bottom: var(--spacing3)
+		}
+
+		.title {
+			font-family: var(--font-family--serif);
+			font-size: var(--font-size--xl);
+			margin: var(--spacing1) 0 ;
+			max-width: var(--inner-width);
+		}
+
+		.category {
+			padding-left: var(--spacing2);
+			text-transform: uppercase;
+			border-left: 3px solid ${(p) =>
+				p.category ? getCategoryColor(p.category) : "var(--gray50)"};
+		}
+
+		.date {
+			font-size: var(--font-size--xs);
+			color: var(--gray75);
+		}
+	}
+`
 
 const usePost = (id) => {
 	const [post, setPost] = useState(null)
@@ -71,80 +117,90 @@ const usePost = (id) => {
 	return post
 }
 
-export const PureBlogPost = ({ post }) => {
+export const PureBlogPost = withBreakpoints(({ currentBreakpoint, post }) => {
+	if (!post) return null
+	const imageUrl = post.imageUrls[post.mainImageIndex]
+	const isMobile = currentBreakpoint <= 1
+
 	return (
-		<PageContainer maxWidth={5}>
-			{post && (
-				<>
+		<>
+			<HeaderBox category={post.category}>
+				<PageContainer>
 					{/* Page Nav */}
-					<PageNav />
+					{/* <PageNav /> */}
+
+					{/* Category */}
+					<div className="category">{post.category}</div>
 
 					{/* Title */}
-					<TextBlock serif size="xxl">
-						{post.title}
-					</TextBlock>
+					<div className="title">{post.title}</div>
 
-					{/* Subtitle */}
-					<TextBlock size="m" color="gray25">
-						{post.mainContent.slice(0, post.mainContent.indexOf(".")).slice(0, 180)}
-					</TextBlock>
+					{/* Excerpt */}
+					<div className="excerpt">{post.excerpt}</div>
 
-					<OuterContainer>
-						<Main>
-							{/* Header image */}
-							<FluidImage url={post.mainImageURL} />
+					{/* Crated Date */}
+					<div className="date">{moment(post.createdAt).format("LL")}</div>
+				</PageContainer>
+			</HeaderBox>
 
-							<InnerContainer>
-								<InfoAside>
-									{/* Share buttons */}
-									<ShareButtons>
-										<div title="Udostępnij na Twitterze">
-											<FontAwesomeIcon icon={["fab", "twitter"]} />
-										</div>
-										<div title="Udostępnij na Facebooku">
-											<FontAwesomeIcon icon={["fab", "facebook-square"]} />
-										</div>
-										<div title="Udostępnij na Instagramie">
-											<FontAwesomeIcon icon={["fab", "instagram"]} />
-										</div>
-									</ShareButtons>
-									{/* Info */}
-									<Info>
-										<div>
-											Dodano <b>{moment(post.createdAt).format("D.M.YY")}</b>
-										</div>
-										<div>
-											przez <b>{post.author}</b>
-										</div>
-										<div>
-											w <b>{post.section}</b>
-										</div>
-									</Info>
-									{/* Tags */}
-									<TagsContainer>
-										{post.tags.map((tag) => (
-											<TextBlock uppercase color="gray25" size="xs">
-												{tag}
-											</TextBlock>
-										))}
-									</TagsContainer>
-								</InfoAside>
-								<Article>
-									<ReactMarkdown source={post.mainContent} />
-								</Article>
-							</InnerContainer>
-						</Main>
+			<PageContainer>
+				<Layout>
+					<Main>
+						{/* Header image */}
+						<FluidImage url={imageUrl} />
+
+						<InnerContainer>
+							<InfoAside>
+								{/* Share buttons */}
+								<ShareButtons>
+									<div title="Udostępnij na Twitterze">
+										<FontAwesomeIcon icon={["fab", "twitter"]} />
+									</div>
+									<div title="Udostępnij na Facebooku">
+										<FontAwesomeIcon icon={["fab", "facebook-square"]} />
+									</div>
+									<div title="Udostępnij na Instagramie">
+										<FontAwesomeIcon icon={["fab", "instagram"]} />
+									</div>
+								</ShareButtons>
+								{/* Info */}
+								<Info>
+									<div>
+										Dodano <b>{moment(post.createdAt).format("D.M.YY")}</b>
+									</div>
+									<div>
+										przez <b>{post.author}</b>
+									</div>
+									<div>
+										w <b>{post.section}</b>
+									</div>
+								</Info>
+								{/* Tags */}
+								<TagsContainer>
+									{post.tags.map((tag) => (
+										<TextBlock uppercase color="gray25" size="xs">
+											{tag}
+										</TextBlock>
+									))}
+								</TagsContainer>
+							</InfoAside>
+							<Article>
+								<ReactMarkdown source={post.mainContent} />
+							</Article>
+						</InnerContainer>
+					</Main>
+					{!isMobile && (
 						<Aside>
 							<TextBlock size="l" bold>
 								Podobne Artykuły
 							</TextBlock>
 						</Aside>
-					</OuterContainer>
-				</>
-			)}
-		</PageContainer>
+					)}
+				</Layout>
+			</PageContainer>
+		</>
 	)
-}
+})
 
 const BlogPost = withRouter(({ match }) => {
 	const post = usePost(match.params.id)
