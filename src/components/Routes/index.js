@@ -9,7 +9,7 @@ import { LoadableComponentSpinner } from "../LoadingSpinner"
 import ErrorBoundary from "../ErrorBoundary"
 
 import NotFound from "../../pages/NotFound"
-import { PageContainer } from "../Containers"
+import { PageContainer, MainPageContainer } from "../Containers"
 
 // ===== HOME PAGE =====
 const Home = Loadable({
@@ -502,11 +502,13 @@ const Routes = () => {
 					exact={route.exact === false ? false : true}
 					path={route.path}
 					render={(props) => (
-						<ScrollToTop shouldScroll={route.scrollToTop !== false}>
-							<ErrorBoundary ErrorComponent={ErrorComponent}>
-								<route.component {...props} routes={route.routes} />
-							</ErrorBoundary>
-						</ScrollToTop>
+						<MainPageContainer>
+							<ScrollToTop shouldScroll={route.scrollToTop !== false}>
+								<ErrorBoundary ErrorComponent={ErrorComponent}>
+									<route.component {...props} routes={route.routes} />
+								</ErrorBoundary>
+							</ScrollToTop>
+						</MainPageContainer>
 					)}
 				/>
 			))}

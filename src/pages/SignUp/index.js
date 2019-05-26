@@ -14,7 +14,7 @@ import { SignInLink } from "../SignIn"
 import { ROUTES, AUTH_ERR } from "../../constants"
 import formatUserData from "../../utils/formatUserData"
 import validate from "./validate"
-import { CenteredContainer, MainPageContainer } from "../../components/Containers"
+import { CenteredContainer } from "../../components/Containers"
 
 const StyledForm = styled.form`
 	display: grid;
@@ -23,12 +23,10 @@ const StyledForm = styled.form`
 
 const SignUpPage = () => {
 	return (
-		<MainPageContainer>
-			<CenteredContainer>
-				<Header>Utwórz konto</Header>
-				<SignUpForm />
-			</CenteredContainer>
-		</MainPageContainer>
+		<CenteredContainer>
+			<Header>Utwórz konto</Header>
+			<SignUpForm />
+		</CenteredContainer>
 	)
 }
 

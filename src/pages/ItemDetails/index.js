@@ -15,11 +15,7 @@ import Button, {
 import EmptyState from "../../components/EmptyState"
 import UserPreview from "../../components/UserPreview"
 import { translateCondition } from "../../constants/item_schema"
-import {
-	PageContainer,
-	GrayContainer,
-	MainPageContainer
-} from "../../components/Containers"
+import { PageContainer, GrayContainer } from "../../components/Containers"
 import { AlgoliaScrollableHits } from "../../components/Algolia/AlgoliaHits"
 import { VirtualMenu, VirtualRefinementList } from "../../components/Algolia/Virtual"
 import {
@@ -96,7 +92,7 @@ const ItemDetailsPage = ({ match, history }) => {
 	const formattedSize = formatSize(item.size)
 
 	return (
-		<MainPageContainer>
+		<>
 			<PageContainer>
 				<ItemContainer>
 					<ImageGallery item={item} />
@@ -213,7 +209,7 @@ const ItemDetailsPage = ({ match, history }) => {
 					<AlgoliaScrollableHits />
 				</InstantSearch>
 			</GrayContainer>
-		</MainPageContainer>
+		</>
 	)
 }
 

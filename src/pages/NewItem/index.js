@@ -3,7 +3,7 @@ import { compose } from "recompose"
 
 import { withAuthorization, withAuthentication } from "../../components/UserSession"
 import { withFirebase } from "../../components/Firebase"
-import { PageContainer, MainPageContainer } from "../../components/Containers"
+import { PageContainer } from "../../components/Containers"
 import { formatItemDataForDb, MODE } from "../../utils/formatting/formatItemData"
 
 import { ROUTES, CONST } from "../../constants"
@@ -53,11 +53,9 @@ class NewItemPage extends Component {
 
 	render() {
 		return (
-			<MainPageContainer>
-				<PageContainer maxWidth={2}>
-					<NewItemForm onSubmit={this.onSubmit} />
-				</PageContainer>
-			</MainPageContainer>
+			<PageContainer maxWidth={2}>
+				<NewItemForm onSubmit={this.onSubmit} />
+			</PageContainer>
 		)
 	}
 }

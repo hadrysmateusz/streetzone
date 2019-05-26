@@ -1,14 +1,14 @@
 import React from "react"
 import { compose } from "recompose"
 import { Route, Switch, Link } from "react-router-dom"
-import { PageContainer, MainPageContainer } from "../../components/Containers"
+import { PageContainer } from "../../components/Containers"
 
 import { withAuthorization, withAuthentication } from "../../components/UserSession"
 import { withFirebase } from "../../components/Firebase"
 
 const AdminPage = ({ routes }) => {
 	return (
-		<MainPageContainer>
+		<>
 			<PageContainer>
 				<ul>
 					{routes.map(
@@ -33,7 +33,7 @@ const AdminPage = ({ routes }) => {
 					)
 				})}
 			</Switch>
-		</MainPageContainer>
+		</>
 	)
 }
 

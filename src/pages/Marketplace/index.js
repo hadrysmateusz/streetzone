@@ -9,7 +9,7 @@ import sortingOptions from "../../constants/sortingOptions"
 import ScrollToTop from "../../components/ScrollToTop"
 import Topbar from "../../components/Topbar"
 import { SearchWrapper } from "../../components/InstantSearchWrapper"
-import { PageContainer, MainPageContainer } from "../../components/Containers"
+import { PageContainer } from "../../components/Containers"
 
 import PromotedSection from "./PromotedSection"
 import Header from "./Header"
@@ -52,39 +52,37 @@ const MarketplacePage = ({ currentBreakpoint }) => {
 			initialState={DEFAULT_SEARCH_STATE}
 			allowedKeys={["category", "designers", "price", "size"]}
 		>
-			<MainPageContainer>
-				<Header />
-				<PromotedSection />
-				<PageContainer extraWide>
-					<GridContainer>
-						<Topbar toggleFilters={toggleFilters} clearFilters={setClearFilters} />
+			<Header />
+			<PromotedSection />
+			<PageContainer extraWide>
+				<GridContainer>
+					<Topbar toggleFilters={toggleFilters} clearFilters={setClearFilters} />
 
-						<CurrentFilters
-							toggle={toggleFilters}
-							clear={{
-								value: clearFilters,
-								update: setClearFilters
-							}}
-						/>
+					<CurrentFilters
+						toggle={toggleFilters}
+						clear={{
+							value: clearFilters,
+							update: setClearFilters
+						}}
+					/>
 
-						<MainGrid>
-							<Sidebar hidden={!areFiltersOpen && !(currentBreakpoint > 0)}>
-								<Filters
-									toggle={toggleFilters}
-									clear={{
-										value: clearFilters,
-										update: setClearFilters
-									}}
-								/>
-							</Sidebar>
-							<AlgoliaResults />
-						</MainGrid>
-					</GridContainer>
-				</PageContainer>
-				<ScrollToTop>
-					<FontAwesomeIcon icon="long-arrow-alt-up" />
-				</ScrollToTop>
-			</MainPageContainer>
+					<MainGrid>
+						<Sidebar hidden={!areFiltersOpen && !(currentBreakpoint > 0)}>
+							<Filters
+								toggle={toggleFilters}
+								clear={{
+									value: clearFilters,
+									update: setClearFilters
+								}}
+							/>
+						</Sidebar>
+						<AlgoliaResults />
+					</MainGrid>
+				</GridContainer>
+			</PageContainer>
+			<ScrollToTop>
+				<FontAwesomeIcon icon="long-arrow-alt-up" />
+			</ScrollToTop>
 		</SearchWrapper>
 	)
 }

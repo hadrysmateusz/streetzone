@@ -5,7 +5,7 @@ import shortid from "shortid"
 
 import { useFirebase, useAuthentication } from "../../hooks"
 import { withAuthorization } from "../../components/UserSession"
-import { PageContainer, MainPageContainer } from "../../components/Containers"
+import { PageContainer } from "../../components/Containers"
 import { Form, Field } from "react-final-form"
 import { LoaderButton, ButtonContainer, Button } from "../../components/Button"
 import { SmallTextBlock, TextBlock } from "../../components/StyledComponents"
@@ -123,25 +123,23 @@ const NewChatPage = ({ match }) => {
 	if (error) throw new Error("Nie znaleziono użytkownika")
 
 	return user ? (
-		<MainPageContainer>
-			<PageContainer>
-				<TextBlock size="m">Napisz do {user.name}</TextBlock>
-				<ButtonContainer>
-					{user.messengerLink && (
-						<Button as="a" href={user.messengerLink}>
-							<FontAwesomeIcon
-								icon={["fab", "facebook-messenger"]}
-								size="2x"
-								color="var(--color-messenger)"
-							/>
-							&nbsp; Na messengerze
-						</Button>
-					)}
-				</ButtonContainer>
-				<UserPreview user={user} />
-				<NewChat userId={userId} />
-			</PageContainer>
-		</MainPageContainer>
+		<PageContainer>
+			<TextBlock size="m">Napisz do {user.name}</TextBlock>
+			<ButtonContainer>
+				{user.messengerLink && (
+					<Button as="a" href={user.messengerLink}>
+						<FontAwesomeIcon
+							icon={["fab", "facebook-messenger"]}
+							size="2x"
+							color="var(--color-messenger)"
+						/>
+						&nbsp; Na messengerze
+					</Button>
+				)}
+			</ButtonContainer>
+			<UserPreview user={user} />
+			<NewChat userId={userId} />
+		</PageContainer>
 	) : null
 }
 
