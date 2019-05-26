@@ -20,13 +20,13 @@ import { withBreakpoints } from "react-breakpoints"
 const Main = styled.main`
 	display: grid;
 	grid-template-rows: 520px 1fr;
-	gap: var(--spacing4);
+	gap: var(--spacing3);
 `
 
 const InnerContainer = styled.div`
 	display: grid;
 	grid-template-columns: 150px 1fr;
-	gap: var(--spacing4);
+	gap: var(--spacing3);
 `
 
 const Article = styled.article`
@@ -100,6 +100,7 @@ const TagsContainer = styled.div`
 		margin-bottom: var(--spacing2);
 	}
 	margin-bottom: calc(-1 * var(--spacing2));
+	margin-top: var(--spacing2);
 `
 
 const TagContainer = styled.div`
@@ -196,13 +197,13 @@ export const PureBlogPost = withBreakpoints(({ currentBreakpoint, post }) => {
 								{/* Info */}
 								<Info>
 									<div>
-										Dodano <b>{moment(post.createdAt).format("D.M.YY")}</b>
+										Dodano <b>{moment(post.createdAt).format("DD-MM-YY")}</b>
 									</div>
 									<div>
 										przez <b>{post.author}</b>
 									</div>
 									<div>
-										w <b>{post.section}</b>
+										w <b>{post.category}</b>
 									</div>
 								</Info>
 								{/* Tags */}
