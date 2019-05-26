@@ -43,7 +43,7 @@ export const PostCard = ({
 
 	return (
 		<Container>
-			<Link to={route("ITEM_DETAILS", { id })}>
+			<Link to={route("BLOG_POST", { id })}>
 				{imageURL && <FluidImage url={imageURL} />}
 				<InfoContainer>
 					<MiddleContainer>
