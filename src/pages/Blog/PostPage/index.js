@@ -7,6 +7,7 @@ import ReactMarkdown from "react-markdown"
 
 import { PageContainer } from "../../../components/Containers"
 import { TextBlock } from "../../../components/StyledComponents"
+import LoadingSpinner from "../../../components/LoadingSpinner"
 
 import { useFirebase } from "../../../hooks"
 import { ellipsis, getCategoryColor } from "../../../style-utils"
@@ -148,93 +149,107 @@ const usePost = (id) => {
 	return post
 }
 
-export const PureBlogPost = withBreakpoints(({ currentBreakpoint, post }) => {
-	if (!post) return null
-	const imageUrl = post.imageUrls[post.mainImageIndex]
-	const isMobile = currentBreakpoint <= 1
+export const PureBlogPost = withBreakpoints(
+	({
+		currentBreakpoint,
+		category,
+		title,
+		excerpt,
+		createdAt,
+		imageUrls,
+		mainImageIndex,
+		author,
+		tags,
+		mainContent
+	}) => {
+		const imageUrl = imageUrls[mainImageIndex]
+		const isMobile = currentBreakpoint <= 1
 
-	return (
-		<>
-			<HeaderBox category={post.category}>
+		return (
+			<>
+				<HeaderBox category={category}>
+					<PageContainer>
+						{/* Page Nav */}
+						{/* <PageNav /> */}
+
+						{/* Category */}
+						<div className="category">{category}</div>
+
+						{/* Title */}
+						<div className="title">{title}</div>
+
+						{/* Excerpt */}
+						<div className="excerpt">{excerpt}</div>
+
+						{/* Crated Date */}
+						<div className="date">{moment(createdAt).format("LL")}</div>
+					</PageContainer>
+				</HeaderBox>
+
 				<PageContainer>
-					{/* Page Nav */}
-					{/* <PageNav /> */}
+					<Layout>
+						<Main>
+							{/* Header image */}
+							<FluidImage url={imageUrl} />
 
-					{/* Category */}
-					<div className="category">{post.category}</div>
-
-					{/* Title */}
-					<div className="title">{post.title}</div>
-
-					{/* Excerpt */}
-					<div className="excerpt">{post.excerpt}</div>
-
-					{/* Crated Date */}
-					<div className="date">{moment(post.createdAt).format("LL")}</div>
+							<InnerContainer>
+								{!isMobile && (
+									<InfoAside>
+										{/* Share buttons */}
+										<ShareButtons>
+											<div title="Udostępnij na Twitterze">
+												<FontAwesomeIcon icon={["fab", "twitter"]} />
+											</div>
+											<div title="Udostępnij na Facebooku">
+												<FontAwesomeIcon icon={["fab", "facebook-square"]} />
+											</div>
+											<div title="Udostępnij na Instagramie">
+												<FontAwesomeIcon icon={["fab", "instagram"]} />
+											</div>
+										</ShareButtons>
+										{/* Info */}
+										<Info>
+											<div>
+												Dodano <b>{moment(createdAt).format("DD-MM-YY")}</b>
+											</div>
+											<div>
+												przez <b>{author}</b>
+											</div>
+											<div>
+												w <b>{category}</b>
+											</div>
+										</Info>
+										{/* Tags */}
+										<TagsContainer>
+											{tags.map((tag) => (
+												<Tag tag={tag} />
+											))}
+										</TagsContainer>
+									</InfoAside>
+								)}
+								<Article>
+									<ReactMarkdown source={mainContent} />
+								</Article>
+							</InnerContainer>
+						</Main>
+						{!isMobile && (
+							<Aside>
+								<TextBlock size="l" bold>
+									Podobne Artykuły
+								</TextBlock>
+							</Aside>
+						)}
+					</Layout>
 				</PageContainer>
-			</HeaderBox>
-
-			<PageContainer>
-				<Layout>
-					<Main>
-						{/* Header image */}
-						<FluidImage url={imageUrl} />
-
-						<InnerContainer>
-							<InfoAside>
-								{/* Share buttons */}
-								<ShareButtons>
-									<div title="Udostępnij na Twitterze">
-										<FontAwesomeIcon icon={["fab", "twitter"]} />
-									</div>
-									<div title="Udostępnij na Facebooku">
-										<FontAwesomeIcon icon={["fab", "facebook-square"]} />
-									</div>
-									<div title="Udostępnij na Instagramie">
-										<FontAwesomeIcon icon={["fab", "instagram"]} />
-									</div>
-								</ShareButtons>
-								{/* Info */}
-								<Info>
-									<div>
-										Dodano <b>{moment(post.createdAt).format("DD-MM-YY")}</b>
-									</div>
-									<div>
-										przez <b>{post.author}</b>
-									</div>
-									<div>
-										w <b>{post.category}</b>
-									</div>
-								</Info>
-								{/* Tags */}
-								<TagsContainer>
-									{post.tags.map((tag) => (
-										<Tag tag={tag} />
-									))}
-								</TagsContainer>
-							</InfoAside>
-							<Article>
-								<ReactMarkdown source={post.mainContent} />
-							</Article>
-						</InnerContainer>
-					</Main>
-					{!isMobile && (
-						<Aside>
-							<TextBlock size="l" bold>
-								Podobne Artykuły
-							</TextBlock>
-						</Aside>
-					)}
-				</Layout>
-			</PageContainer>
-		</>
-	)
-})
+			</>
+		)
+	}
+)
 
 const BlogPost = withRouter(({ match }) => {
 	const post = usePost(match.params.id)
 
-	return <PureBlogPost post={post} />
+	return post ? <PureBlogPost {...post} /> : <LoadingSpinner />
 })
 
 export default BlogPost
