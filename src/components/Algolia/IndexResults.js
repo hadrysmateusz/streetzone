@@ -5,8 +5,9 @@ import { TextBlock } from "../StyledComponents"
 import { DumbThematicGroup } from "../ThematicGroup"
 import { Results } from "./Helpers"
 
-const IndexResults = ({ indexName, render, title, component, limit }) => {
-	const isCustomRender = !!render
+const IndexResults = ({ indexName, children, title, component, limit }) => {
+	const isCustomRender = !!children
+	const isRenderFunction = typeof children === "function"
 
 	return (
 		<Index indexName={indexName}>
@@ -20,7 +21,11 @@ const IndexResults = ({ indexName, render, title, component, limit }) => {
 								{title}
 							</TextBlock>
 							{isCustomRender ? (
-								render
+								isRenderFunction ? (
+									children(results)
+								) : (
+									children
+								)
 							) : (
 								<DumbThematicGroup
 									results={results}
