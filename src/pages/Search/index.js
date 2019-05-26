@@ -1,15 +1,17 @@
 import React from "react"
 import { connectStateResults } from "react-instantsearch-dom"
 import styled from "styled-components/macro"
+import { withBreakpoints } from "react-breakpoints"
 
 import { CONST } from "../../constants"
 
-import { TextBlock } from "../../components/StyledComponents"
-import { SmallDropCard, SmallItemCard } from "../../components/Cards"
-import { PageContainer } from "../../components/Containers"
 import { StatelessSearchWrapper } from "../../components/InstantSearchWrapper"
 import AlgoliaSearchBox from "../../components/Algolia/AlgoliaSearchBox"
+import { SmallDropCard, SmallItemCard } from "../../components/Cards"
+import { DumbThematicGroup } from "../../components/ThematicGroup"
 import IndexResults from "../../components/Algolia/IndexResults"
+import { TextBlock } from "../../components/StyledComponents"
+import { PageContainer } from "../../components/Containers"
 
 import InfinitePosts from "../Blog/InfinitePostsList"
 import { Layout } from "../Blog/HomePage/Common"
@@ -45,7 +47,15 @@ const ContentContainer = styled.div`
 	margin-top: 150px;
 `
 
+const Section = styled.div`
+	:not(:last-child) {
+		margin-bottom: var(--spacing4);
+	}
+`
+
 const SearchPage = ({ currentBreakpoint, match }) => {
+	const isMobile = +currentBreakpoint === 0
+
 	return (
 		<OuterContainer>
 			<StatelessSearchWrapper indexName={CONST.BLOG_POST_ALGOLIA_INDEX}>
@@ -64,30 +74,54 @@ const SearchPage = ({ currentBreakpoint, match }) => {
 					<Layout>
 						<ContentContainer>
 							<SearchState>
-								<IndexResults
-									indexName={CONST.ITEMS_MARKETPLACE_DEFAULT_ALGOLIA_INDEX}
-									title="Tablica"
-									limit={10}
-								>
-									{(results) => (
-										<ItemsGrid>
-											{results.map((item) => (
-												<SmallItemCard {...item} key={item.id} />
-											))}
-										</ItemsGrid>
-									)}
-								</IndexResults>
+								<Section>
+									<IndexResults
+										indexName={CONST.ITEMS_MARKETPLACE_DEFAULT_ALGOLIA_INDEX}
+										title="Tablica"
+										limit={9}
+									>
+										{(results) =>
+											isMobile ? (
+												<DumbThematicGroup results={results} component={SmallItemCard} />
+											) : (
+												<ItemsGrid>
+													{results.map((item) => (
+														<SmallItemCard {...item} key={item.id} />
+													))}
+												</ItemsGrid>
+											)
+										}
+									</IndexResults>
+								</Section>
 
-								<IndexResults
-									indexName={CONST.BLOG_DROP_ALGOLIA_INDEX}
-									title="Dropy"
-									component={SmallDropCard}
-									limi={4}
-								/>
+								<Section>
+									<IndexResults
+										indexName={CONST.BLOG_DROP_ALGOLIA_INDEX}
+										title="Dropy"
+										limit={6}
+									>
+										{(results) =>
+											isMobile ? (
+												<DumbThematicGroup results={results} component={SmallItemCard} />
+											) : (
+												<ItemsGrid>
+													{results.map((drop) => (
+														<SmallDropCard {...drop} key={drop.id} />
+													))}
+												</ItemsGrid>
+											)
+										}
+									</IndexResults>
+								</Section>
 
-								<IndexResults indexName={CONST.BLOG_POST_ALGOLIA_INDEX} title="Artykuły">
-									<InfinitePosts />
-								</IndexResults>
+								<Section>
+									<IndexResults
+										indexName={CONST.BLOG_POST_ALGOLIA_INDEX}
+										title="Artykuły"
+									>
+										<InfinitePosts />
+									</IndexResults>
+								</Section>
 							</SearchState>
 						</ContentContainer>
 					</Layout>
@@ -97,4 +131,4 @@ const SearchPage = ({ currentBreakpoint, match }) => {
 	)
 }
 
-export default SearchPage
+export default withBreakpoints(SearchPage)

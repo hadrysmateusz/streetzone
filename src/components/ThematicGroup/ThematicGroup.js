@@ -8,7 +8,7 @@ export const DumbThematicGroup = ({
 	results,
 	title,
 	linkTo,
-	hasMore = true,
+	hasMore = false,
 	component: C
 }) => {
 	return results.length > 0 ? (

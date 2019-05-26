@@ -21,6 +21,7 @@ import {
 
 export const SmallContainer = styled.div`
 	min-width: 0; /* this has to be on the outermost component*/
+	max-width: 300px;
 
 	a {
 		border: 1px solid var(--gray75);
