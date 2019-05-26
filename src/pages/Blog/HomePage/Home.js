@@ -1,5 +1,4 @@
 import React from "react"
-import styled from "styled-components/macro"
 import { withBreakpoints } from "react-breakpoints"
 
 import { CONST } from "../../../constants"
@@ -14,14 +13,7 @@ import PromotedSection from "./PromotedSection"
 import Sidebar from "./Sidebar"
 import CategoryNav from "./CategoryNav"
 import InfinitePosts from "../InfinitePostsList"
-
-const Layout = styled.div`
-	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
-		display: grid;
-		grid-template-columns: 1fr minmax(220px, 25%);
-		gap: var(--spacing3);
-	}
-`
+import { Layout } from "./Common"
 
 const BlogHomePage = withBreakpoints(({ currentBreakpoint }) => {
 	const isMobile = currentBreakpoint <= 1

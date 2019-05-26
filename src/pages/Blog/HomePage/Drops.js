@@ -5,24 +5,33 @@ import {
 	enableBodyScroll,
 	clearAllBodyScrollLocks
 } from "body-scroll-lock"
+import styled from "styled-components/macro"
+
+import { PageContainer } from "../../../components/Containers"
+import {
+	SearchWrapper,
+	StatelessSearchWrapper
+} from "../../../components/InstantSearchWrapper"
+
+import { PromotedContainer } from "../StyledComponents"
+import { PromotedPost } from "../Previews"
 
 import { CONST } from "../../../constants"
+import { route } from "../../../utils"
+
+import { SmallDropCard, PostCard } from "../../../components/Cards"
+import { ThematicGroup } from "../../../components/ThematicGroup"
+
+// import Sidebar from "./Sidebar"
+import CategoryNav from "./CategoryNav"
+import InfinitePosts from "../InfinitePostsList"
+
 import { TextBlock } from "../../../components/StyledComponents"
 import { FiltersToggleButton } from "../../../components/Topbar/FiltersToggle"
 
 import PromotedDrop from "../Previews/PromotedDrop"
-import BlogPageTemplate from "./BlogPageTemplate"
 import Filters from "./Filters"
-
-const Content = ({ toggleFilters }) => {
-	return (
-		<>
-			<TextBlock size="xl" bold>
-				Dropy
-			</TextBlock>
-		</>
-	)
-}
+import { Layout } from "./Common"
 
 const Sidebar = withBreakpoints(({ currentBreakpoint }) => {
 	const [areFiltersOpen, setAreFiltersOpen] = useState(currentBreakpoint > 1)
@@ -53,16 +62,61 @@ const Sidebar = withBreakpoints(({ currentBreakpoint }) => {
 	)
 })
 
-const BlogHomePage = () => {
+const OuterContainer = styled.div`
+	padding: var(--spacing3) 0;
+`
+
+const PromotedSection = ({ indexName, limit, component: C = PromotedPost }) => {
+	console.log("limit", limit)
 	return (
-		<BlogPageTemplate
-			promotedSectionLimit={2}
-			promotedSectionIndex={CONST.BLOG_DROP_ALGOLIA_INDEX}
-			promotedSectionComponent={PromotedDrop}
-			contentSlot={<Content />}
-			sidebarSlot={<Sidebar />}
-		/>
+		<OuterContainer>
+			<StatelessSearchWrapper indexName={indexName} limit={limit}>
+				{(results) => (
+					<PromotedContainer>
+						{results.map((post) => (
+							<C {...post} />
+						))}
+					</PromotedContainer>
+				)}
+			</StatelessSearchWrapper>
+		</OuterContainer>
 	)
 }
 
-export default BlogHomePage
+const DropsPage = withBreakpoints(({ currentBreakpoint }) => {
+	const isMobile = currentBreakpoint <= 1
+
+	return (
+		<>
+			{!isMobile && (
+				<PageContainer>
+					<PromotedSection
+						indexName={CONST.BLOG_DROP_ALGOLIA_INDEX}
+						limit={2}
+						component={PromotedDrop}
+					/>
+				</PageContainer>
+			)}
+			<SearchWrapper
+				indexName={CONST.BLOG_DROP_ALGOLIA_INDEX}
+				allowedKeys={["tags"]}
+				hitsPerPage={3}
+			>
+				<PageContainer>
+					<Layout>
+						{/* Main Content */}
+						<main>
+							<TextBlock size="xl" bold>
+								Dropy
+							</TextBlock>
+						</main>
+						{/* Sidebar */}
+						{!isMobile && <Sidebar />}
+					</Layout>
+				</PageContainer>
+			</SearchWrapper>
+		</>
+	)
+})
+
+export default DropsPage
