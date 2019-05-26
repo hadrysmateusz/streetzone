@@ -11,11 +11,11 @@ import "moment/locale/pl"
 import * as serviceWorker from "./serviceWorker"
 import "./normalize.css"
 import "./config/fontAwesomeConfig"
-import "./index.css"
 
 import { THEME } from "./constants"
 import App from "./components/App"
 import { Firebase, FirebaseContext } from "./components/Firebase"
+import GlobalStyles from "./components/GlobalStyles"
 
 // set moment.js locale
 moment.locale("pl")
@@ -30,6 +30,7 @@ ReactDOM.render(
 	<FirebaseContext.Provider value={new Firebase()}>
 		<ThemeProvider theme={THEME}>
 			<ReactBreakpoints breakpoints={{ ...THEME.breakpoints }}>
+				<GlobalStyles />
 				<App />
 			</ReactBreakpoints>
 		</ThemeProvider>
