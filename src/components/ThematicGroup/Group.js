@@ -21,14 +21,12 @@ export const GroupContainer = styled.section`
 		overflow: auto;
 		width: auto;
 		grid-auto-flow: column;
-		justify-items: center;
 
 		@media (min-width: ${(p) => p.theme.breakpoints[0]}px) {
 			grid-auto-columns: 62%;
 		}
 
 		@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
-			grid-auto-flow: column;
 			grid-template-columns: repeat(3, 1fr);
 		}
 
