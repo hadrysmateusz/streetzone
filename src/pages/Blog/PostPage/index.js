@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"
 import moment from "moment"
-import { withRouter, Link } from "react-router-dom"
+import { withRouter } from "react-router-dom"
 import styled from "styled-components/macro"
 import ReactMarkdown from "react-markdown"
 
@@ -12,11 +12,11 @@ import Share from "../../../components/Share"
 
 import { useFirebase } from "../../../hooks"
 import { ellipsis, getCategoryColor } from "../../../style-utils"
-import { route } from "../../../utils"
+// import { route } from "../../../utils"
 
 import { FluidImage } from "../StyledComponents"
 import { Layout } from "../HomePage/Common"
-import PageNav from "../PageNav"
+// import PageNav from "../PageNav"
 import { withBreakpoints } from "react-breakpoints"
 
 const Main = styled.main`

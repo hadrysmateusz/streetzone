@@ -14,7 +14,6 @@ import {
 } from "../../../components/InstantSearchWrapper"
 
 import { PromotedContainer } from "../StyledComponents"
-import { PromotedPost } from "../Previews"
 
 import { CONST } from "../../../constants"
 import { route } from "../../../utils"
@@ -66,7 +65,7 @@ const OuterContainer = styled.div`
 	padding: var(--spacing3) 0;
 `
 
-const PromotedSection = ({ indexName, limit, component: C = PromotedPost }) => {
+const PromotedSection = ({ indexName, limit, component: C }) => {
 	return (
 		<OuterContainer>
 			<StatelessSearchWrapper indexName={indexName} limit={limit}>
