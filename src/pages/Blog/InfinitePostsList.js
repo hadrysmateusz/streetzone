@@ -1,9 +1,7 @@
 import React from "react"
-import { connectInfiniteHits } from "react-instantsearch-core"
-import InfiniteScroll from "react-infinite-scroller"
 import styled from "styled-components/macro"
 
-import LoadingSpinner from "../../components/LoadingSpinner"
+import InfiniteScrollingResults from "../../components/InfiniteScrollingResults"
 import PostPreview from "../../components/PostPreview"
 
 const PostsContainer = styled.div`
@@ -16,22 +14,18 @@ const PostsContainer = styled.div`
 	}
 `
 
-const InfinitePosts = connectInfiniteHits(({ hits, hasMore, refine, ...rest }) => {
+const InfinitePosts = () => {
 	return (
-		<InfiniteScroll
-			hasMore={hasMore}
-			loader={<LoadingSpinner />}
-			initialLoad={false}
-			loadMore={refine}
-			{...rest}
-		>
-			<PostsContainer>
-				{hits.map((post) => (
-					<PostPreview {...post} key={post.id} />
-				))}
-			</PostsContainer>
-		</InfiniteScroll>
+		<InfiniteScrollingResults>
+			{({ results }) => (
+				<PostsContainer>
+					{results.map((post) => (
+						<PostPreview {...post} key={post.id} />
+					))}
+				</PostsContainer>
+			)}
+		</InfiniteScrollingResults>
 	)
-})
+}
 
 export default InfinitePosts
