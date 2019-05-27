@@ -35,6 +35,7 @@ const BlogHomePage = withBreakpoints(({ currentBreakpoint }) => {
 								index={CONST.BLOG_DROP_ALGOLIA_INDEX}
 								title="Nadchodzące Dropy"
 								linkTo={route("DROPS")}
+								hasMore
 								component={SmallDropCard}
 							/>
 							<ThematicGroup
@@ -43,6 +44,7 @@ const BlogHomePage = withBreakpoints(({ currentBreakpoint }) => {
 								linkTo={route("BLOG_TAG", {
 									tag: "Czyszczenie i Pielęgnacja"
 								})}
+								hasMore
 								refinements={{ tags: ["Czyszczenie", "Pielęgnacja"] }}
 								component={PostCard}
 							/>
