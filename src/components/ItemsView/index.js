@@ -2,7 +2,7 @@ import styled from "styled-components/macro"
 
 export const ItemsContainer = styled.div`
 	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(175px, 1fr));
+	grid-template-columns: repeat(auto-fill, minmax(165px, 1fr));
 	justify-items: center;
 	gap: 3px;
 `
