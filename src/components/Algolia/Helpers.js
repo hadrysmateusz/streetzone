@@ -1,4 +1,4 @@
-import { connectHits } from "react-instantsearch-dom"
+import { connectHits, connectInfiniteHits } from "react-instantsearch-dom"
 import React from "react"
 import {
 	VirtualRefinementList,
@@ -13,6 +13,15 @@ import {
 export const Results = connectHits(({ hits, children }) => {
 	return children(hits)
 })
+
+/**
+ * Provides the results from an algolia search using the render props pattern, along with a function to load more
+ */
+export const InfiniteResults = connectInfiniteHits(
+	({ hasMore, refine, hits, children }) => {
+		return children({ results: hits, loadMore: refine, hasMore })
+	}
+)
 
 /**
  * Returns correct virtual refinement based on provided value, providing a declarative API
