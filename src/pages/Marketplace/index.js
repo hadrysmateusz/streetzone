@@ -3,7 +3,6 @@ import { withBreakpoints } from "react-breakpoints"
 import { disableBodyScroll, enableBodyScroll } from "body-scroll-lock"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
-import AlgoliaResults from "../../components/Algolia/AlgoliaResults"
 import CurrentFilters from "../../components/CurrentFilters"
 import sortingOptions from "../../constants/sortingOptions"
 import ScrollToTop from "../../components/ScrollToTop"
@@ -14,16 +13,13 @@ import { PageContainer } from "../../components/Containers"
 import PromotedSection from "./PromotedSection"
 import Header from "./Header"
 import Filters from "./Filters"
+import MarketplaceResults from "./MarketplaceResults"
 import { MainGrid, Sidebar, GridContainer } from "./StyledComponents"
 
 import { CONST } from "../../constants"
 
 const DEFAULT_SEARCH_STATE = {
-	hitsPerPage: 12,
-	sortBy: sortingOptions[0].value,
-	refinementList: {},
-	query: "",
-	page: 1
+	sortBy: sortingOptions[0].value
 }
 
 const MarketplacePage = ({ currentBreakpoint }) => {
@@ -51,6 +47,7 @@ const MarketplacePage = ({ currentBreakpoint }) => {
 			indexName={CONST.ITEMS_MARKETPLACE_DEFAULT_ALGOLIA_INDEX}
 			initialState={DEFAULT_SEARCH_STATE}
 			allowedKeys={["category", "designers", "price", "size"]}
+			hitsPerPage={3}
 		>
 			<Header />
 			<PromotedSection />
@@ -76,7 +73,7 @@ const MarketplacePage = ({ currentBreakpoint }) => {
 								}}
 							/>
 						</Sidebar>
-						<AlgoliaResults />
+						<MarketplaceResults />
 					</MainGrid>
 				</GridContainer>
 			</PageContainer>

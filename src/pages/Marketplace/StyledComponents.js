@@ -10,22 +10,19 @@ export const StyledInstantSearch = styled(InstantSearch)`
 
 export const MainGrid = styled.div`
 	position: relative;
-	display: flex;
+	@media (min-width: ${(p) => p.theme.breakpoints[3]}px) {
+		display: grid;
+		grid-template-columns: 270px 1fr;
+		gap: var(--spacing3);
+	}
 `
 
 export const Sidebar = styled.aside`
 	align-self: flex-start;
 	border: 1px solid var(--gray75);
-	grid-area: filters;
-	box-sizing: content-box;
-
-	max-width: 100%;
-
-	width: 270px;
-	margin-right: var(--spacing3);
 
 	/* mobile */
-	@media (max-width: ${(p) => p.theme.breakpoints[1] - 1}px) {
+	@media (max-width: ${(p) => p.theme.breakpoints[3] - 1}px) {
 		width: 0;
 		margin: 0;
 		position: fixed;

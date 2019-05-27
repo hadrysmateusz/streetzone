@@ -11,7 +11,7 @@ const EMPTY_SEARCH_ERR = "empty search string"
 export const SearchWrapper = withRouter(
 	({
 		indexName,
-		hitsPerPage = 10,
+		hitsPerPage = 12,
 		initialState,
 		allowedKeys,
 		children,
@@ -143,6 +143,8 @@ export const SearchWrapper = withRouter(
 			}
 		}, [_initialState, allowedKeys, location.search])
 
+		console.log(_initialState)
+
 		return (
 			<InstantSearch
 				appId={process.env.REACT_APP_APP_ID}
@@ -153,6 +155,7 @@ export const SearchWrapper = withRouter(
 				createURL={decodeURL}
 				{...rest}
 			>
+				{hitsPerPage && <Configure hitsPerPage={hitsPerPage} />}
 				{/* Hide archived results unless told otherwise */}
 				{!showArchived && (
 					<VirtualToggle

@@ -20,12 +20,12 @@ const FiltersBase = forwardRef((props, ref) => {
 	const { tabOptions, defaultTab, toggle, clear, currentBreakpoint, children } = props
 	const [openTab, switchTab, tabs] = useTabs(tabOptions, defaultTab)
 
-	const isMobile = +currentBreakpoint < 1
+	const isMobile = +currentBreakpoint < 3
 
 	return (
 		<FiltersContainer ref={ref}>
 			<FilterInnerContainer>
-				{isMobile && <Header title="Filtry" onClose={toggle} />}
+				{isMobile && <Header text="Filtry" onClose={toggle} />}
 
 				{children({ openTab, switchTab, tabs, isMobile })}
 			</FilterInnerContainer>

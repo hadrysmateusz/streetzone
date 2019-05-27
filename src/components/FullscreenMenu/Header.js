@@ -19,7 +19,7 @@ const CloseIconContainer = styled.span`
 	padding: var(--spacing1);
 `
 
-const Header = ({ text, onClose }) => {
+const Header = ({ onClose, text }) => {
 	return (
 		<HeaderContainer>
 			<TextBlock size="m" bold>
