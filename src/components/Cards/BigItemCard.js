@@ -1,6 +1,7 @@
 import React from "react"
 import { Link } from "react-router-dom"
 import styled from "styled-components/macro"
+import moment from "moment"
 
 import { HeartButton, TYPE } from "../SaveButton"
 
@@ -15,7 +16,8 @@ import {
 	MiddleContainer,
 	BottomContainer,
 	InfoContainer,
-	FluidImage
+	FluidImage,
+	DateContainer
 } from "./Common"
 
 export const BigContainer = styled.div`
@@ -62,9 +64,11 @@ export const BigItemCard = ({
 	attachments,
 	category,
 	mainImageIndex,
-	description
+	description,
+	createdAt
 }) => {
 	const imageURL = useImage(attachments[mainImageIndex])
+	const date = moment().to(moment(createdAt))
 
 	return (
 		<BigContainer>
@@ -77,6 +81,7 @@ export const BigItemCard = ({
 					</TopContainer>
 					<MiddleContainer>
 						<Name big>{name}</Name>
+						<DateContainer withMargin>Dodano {date}</DateContainer>
 						<Description>{description}</Description>
 					</MiddleContainer>
 					<BottomContainer pinToBottom>

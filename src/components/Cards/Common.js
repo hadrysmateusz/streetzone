@@ -68,6 +68,7 @@ export const Name = styled.div`
 `
 
 export const DateContainer = styled.div`
+	${(p) => p.withMargin && "margin: var(--spacing2) 0;"}
 	font-size: var(--font-size--xs);
 	color: var(--gray0);
 `
