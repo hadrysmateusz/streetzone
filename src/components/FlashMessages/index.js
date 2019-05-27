@@ -66,18 +66,18 @@ const Message = ({ ttl = 2500, id, textContent, type, onDelete }) => {
 
 export const FlashContext = React.createContext()
 
-const FlashMessages = ({ children, ...props }) => {
+const FlashMessages = ({ children }) => {
 	const [messages, setMessages] = useState([])
 
 	const addMessage = (message, ttl) => {
 		const id = shortid.generate()
 		const _message = { ...message, id, ttl }
 
-		setMessages([...messages, _message])
+		setMessages((messages) => [...messages, _message])
 	}
 
 	const onDelete = (id) => {
-		setMessages(messages.filter((a) => a.id !== id))
+		setMessages((messages) => messages.filter((a) => a.id !== id))
 	}
 
 	return (
