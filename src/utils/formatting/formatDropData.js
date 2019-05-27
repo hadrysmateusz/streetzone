@@ -12,13 +12,13 @@ export const MODE = {
 
 export const REQUIRED = [
 	"name",
-	"description",
 	"dropsAtString",
 	"designers",
 	"itemCategory",
 	"attachments",
 	"imageUrls",
-	"mainImageIndex"
+	"mainImageIndex",
+	"tags"
 ]
 
 export const dateFormat = "YY-MM-DD HH:mm"
@@ -101,6 +101,11 @@ export const formatDropDataForDb = (data, mode, flagState = true) => {
 		if (isSet(data.buyAt)) {
 			// array, can be empty
 			formatted.buyAt = data.buyAt
+		}
+
+		// tags
+		if (isSet(data.tags)) {
+			formatted.tags = formatNonEmptyArray(data.tags)
 		}
 	}
 

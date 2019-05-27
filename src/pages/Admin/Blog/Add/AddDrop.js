@@ -89,13 +89,19 @@ const AddDropForm = ({ onSubmit }) => {
 							info="Dokładna liczba lub opis"
 						/>
 
-						<FileHandlerFF label="Zdjęcia" name="files" />
-
 						<MultiTextInputFF
 							label="Gdzie kupić?"
 							placeholder="Linki (zatwierdzaj Enterem) (Opcjonalne)"
 							name="buyAt"
 						/>
+
+						<MultiTextInputFF
+							label="Tagi"
+							placeholder="Tagi (zatwierdzaj Enterem)"
+							name="tags"
+						/>
+
+						<FileHandlerFF label="Zdjęcia" name="files" />
 
 						<ButtonContainer>
 							<LoaderButton
