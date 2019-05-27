@@ -8,7 +8,6 @@ import { route } from "../../utils"
 import { useImage } from "../../hooks"
 
 import {
-	Name,
 	Designers,
 	Size,
 	Price,
@@ -19,48 +18,68 @@ import {
 	FluidImage
 } from "./Common"
 
-export const SmallContainer = styled.div`
+export const BigContainer = styled.div`
 	min-width: 0; /* this has to be on the outermost component*/
-	max-width: 300px;
-	width: 100%;
 
 	a {
 		border: 1px solid var(--gray75);
 		overflow: hidden;
 		display: grid;
-		grid-template-columns: 100%;
-		grid-template-rows: 140px min-content;
-		@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
-			grid-template-rows: 200px min-content;
-		}
+		grid-template-columns: 1fr 210px;
+		grid-template-rows: 100%;
+		height: 240px;
 	}
 `
 
-export const SmallItemCard = ({
+const Description = styled.div`
+	--line-height: 1.4em;
+	color: var(--black25);
+	max-width: 80%;
+	line-height: var(--line-height);
+	height: calc(var(--line-height) * 3);
+	overflow: hidden;
+	text-overflow: ellipsis;
+`
+
+export const Name = styled.div`
+	--line-height: 1.5em;
+
+	color: var(--black0);
+	font-size: var(--font-size--l);
+	font-family: var(--font-family--serif);
+	font-weight: bold;
+	line-height: var(--line-height);
+	max-height: calc(2 * var(--line-height));
+	overflow: hidden;
+`
+
+export const BigItemCard = ({
 	id,
 	name,
 	designers,
 	size,
 	price,
 	attachments,
-	mainImageIndex
+	category,
+	mainImageIndex,
+	description
 }) => {
 	const imageURL = useImage(attachments[mainImageIndex])
 
 	return (
-		<SmallContainer>
+		<BigContainer>
 			<Link to={route("ITEM_DETAILS", { id })}>
-				{imageURL && <FluidImage url={imageURL} />}
 				<InfoContainer>
 					<TopContainer>
-						{/* <div>{itemCategory}</div> */}
+						<div>{category}</div>
 						<Designers value={designers} />
 						<Size value={size} />
 					</TopContainer>
 					<MiddleContainer>
-						<Name>{name}</Name>
+						<Name big>{name}</Name>
+						<Description>{description}</Description>
 					</MiddleContainer>
-					<BottomContainer>
+					<BottomContainer pinToBottom>
 						<Price value={price} />
 						<div className="align-right">
 							<HeartButton
@@ -75,7 +94,8 @@ export const SmallItemCard = ({
 						</div>
 					</BottomContainer>
 				</InfoContainer>
+				{imageURL && <FluidImage url={imageURL} />}
 			</Link>
-		</SmallContainer>
+		</BigContainer>
 	)
 }

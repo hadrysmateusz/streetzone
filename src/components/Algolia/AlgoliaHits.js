@@ -6,8 +6,8 @@ import { compose } from "recompose"
 import { withBreakpoints } from "react-breakpoints"
 
 import LoadingSpinner from "../LoadingSpinner"
-import { ItemCard, ItemCardHorizontal } from "../ItemCard"
-import { SmallItemCard } from "../Cards"
+import { ItemCard } from "../ItemCard"
+import { SmallItemCard, BigItemCard } from "../Cards"
 import { ItemsContainer, ItemsList } from "../ItemsView"
 import Button from "../Button"
 import { ScrollableContainer } from "../Basics"
@@ -30,11 +30,9 @@ export const ItemsLoader = ({ refine }) => {
 export const AlgoliaInfiniteHits = compose(
 	withBreakpoints,
 	connectInfiniteHits
-)(({ hits, hasMore, refine, viewMode = "grid", currentBreakpoint }) => {
+)(({ hits, hasMore, refine, currentBreakpoint }) => {
 	// only allow the grid view on smaller viewports
-	if (currentBreakpoint < 2) {
-		viewMode = "grid"
-	}
+	const isMobile = currentBreakpoint < 1
 
 	return (
 		<InfiniteScroll
@@ -43,25 +41,19 @@ export const AlgoliaInfiniteHits = compose(
 			initialLoad={false}
 			loadMore={refine}
 		>
-			{viewMode === "list" ? (
+			{isMobile ? (
+				<ItemsContainer>
+					{hits.map((item) => (
+						<SmallItemCard key={item.objectID} {...item} />
+					))}
+				</ItemsContainer>
+			) : (
 				<ItemsList>
 					{hits.map((item) => (
-						<ItemCardHorizontal key={item.objectID} item={item} />
+						<BigItemCard key={item.objectID} {...item} />
 					))}
 				</ItemsList>
-			) : viewMode === "grid" ? (
-				<ContainerDimensions>
-					{({ width }) =>
-						width ? (
-							<ItemsContainer containerWidth={width}>
-								{hits.map((item) => (
-									<SmallItemCard key={item.objectID} {...item} />
-								))}
-							</ItemsContainer>
-						) : null
-					}
-				</ContainerDimensions>
-			) : null}
+			)}
 		</InfiniteScroll>
 	)
 })

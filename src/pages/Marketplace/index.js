@@ -67,7 +67,7 @@ const MarketplacePage = ({ currentBreakpoint }) => {
 					/>
 
 					<MainGrid>
-						<Sidebar hidden={!areFiltersOpen && !(currentBreakpoint > 0)}>
+						<Sidebar hidden={!areFiltersOpen && !(currentBreakpoint > 2)}>
 							<Filters
 								toggle={toggleFilters}
 								clear={{

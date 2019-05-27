@@ -22,7 +22,7 @@ const FiltersToggle = compose(
 	connectCurrentRefinements,
 	withBreakpoints
 )(({ currentBreakpoint, toggleFilters, currentRefinements, history, clearFilters }) => {
-	return currentBreakpoint < 1 ? (
+	return currentBreakpoint <= 2 ? (
 		<FiltersToggleContainer>
 			<Toggle onClick={toggleFilters}>
 				<FontAwesomeIcon icon="filter" />

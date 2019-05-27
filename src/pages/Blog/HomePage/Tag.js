@@ -1,21 +1,27 @@
 import React from "react"
+import styled from "styled-components/macro"
 import { withBreakpoints } from "react-breakpoints"
 import { compose } from "recompose"
 import { withRouter } from "react-router"
-import { Index } from "react-instantsearch-dom"
 
 import { CONST } from "../../../constants"
 
-import { TextBlock } from "../../../components/StyledComponents"
-import { SmallDropCard } from "../../../components/Cards"
+import { SmallDropCard, SmallItemCard } from "../../../components/Cards"
 import { PageContainer } from "../../../components/Containers"
 import { StatelessSearchWrapper } from "../../../components/InstantSearchWrapper"
-import { Results } from "../../../components/Algolia/Helpers"
 import { DumbThematicGroup } from "../../../components/ThematicGroup"
+import IndexResults from "../../../components/Algolia/IndexResults"
+import { ItemsGrid } from "../../../components/ItemsView"
 
 import Sidebar from "./Sidebar"
 import { Layout, Heading } from "./Common"
 import InfinitePosts from "../InfinitePostsList"
+
+const Section = styled.div`
+	:not(:last-child) {
+		margin-bottom: var(--spacing4);
+	}
+`
 
 const BlogTagPage = ({ currentBreakpoint, match }) => {
 	const isMobile = currentBreakpoint <= 1
@@ -34,39 +40,31 @@ const BlogTagPage = ({ currentBreakpoint, match }) => {
 						{/* Main Content */}
 						<main>
 							<Heading>{tag}</Heading>
-							<Index indexName={CONST.BLOG_DROP_ALGOLIA_INDEX}>
-								<Results>
-									{(results) => {
-										return !results || results.length === 0 ? null : (
-											<>
-												<TextBlock size="xl" bold>
-													Dropy
-												</TextBlock>
-												<DumbThematicGroup
-													results={results}
-													hasMore={false}
-													component={SmallDropCard}
-												/>
-											</>
-										)
-									}}
-								</Results>
-							</Index>
-							<Index indexName={CONST.BLOG_POST_ALGOLIA_INDEX}>
-								<Results>
+							<Section>
+								<IndexResults
+									indexName={CONST.BLOG_DROP_ALGOLIA_INDEX}
+									title="Dropy"
+									limit={6}
+								>
 									{(results) =>
-										!results || results.length === 0 ? null : (
-											<>
-												<TextBlock size="xl" bold>
-													Artykuły
-												</TextBlock>
-
-												<InfinitePosts />
-											</>
+										isMobile ? (
+											<DumbThematicGroup results={results} component={SmallItemCard} />
+										) : (
+											<ItemsGrid>
+												{results.map((drop) => (
+													<SmallDropCard {...drop} key={drop.id} />
+												))}
+											</ItemsGrid>
 										)
 									}
-								</Results>
-							</Index>
+								</IndexResults>
+							</Section>
+
+							<Section>
+								<IndexResults indexName={CONST.BLOG_POST_ALGOLIA_INDEX} title="Artykuły">
+									<InfinitePosts />
+								</IndexResults>
+							</Section>
 						</main>
 						{/* Sidebar */}
 						{!isMobile && <Sidebar />}

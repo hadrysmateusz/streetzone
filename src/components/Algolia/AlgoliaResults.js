@@ -27,13 +27,13 @@ const EndingInfoBlock = () => {
 	) : null
 }
 
-const AlgoliaResults = connectStateResults(({ searchResults, searching, viewMode }) => {
+const AlgoliaResults = connectStateResults(({ searchResults, searching }) => {
 	const hasResults = searchResults && searchResults.nbHits !== 0
 
 	return (
 		<ResultsContainer>
 			<div hidden={!hasResults}>
-				<AlgoliaInfiniteHits viewMode={viewMode} />
+				<AlgoliaInfiniteHits />
 			</div>
 			<div hidden={hasResults || searching}>
 				<EmptyState state={QueryNoResults} />

@@ -19,6 +19,7 @@ import {
 const Container = styled.div`
 	min-width: 0; /* this has to be on the outermost component*/
 	max-width: 300px;
+	width: 100%;
 
 	a {
 		border: 1px solid var(--gray75);

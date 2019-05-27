@@ -12,6 +12,7 @@ import { DumbThematicGroup } from "../../components/ThematicGroup"
 import IndexResults from "../../components/Algolia/IndexResults"
 import { TextBlock } from "../../components/StyledComponents"
 import { PageContainer } from "../../components/Containers"
+import { ItemsGrid } from "../../components/ItemsView"
 
 import InfinitePosts from "../Blog/InfinitePostsList"
 import { Layout } from "../Blog/HomePage/Common"
@@ -20,12 +21,6 @@ const SearchState = connectStateResults(({ searchState, children }) => {
 	const isQueryEmpty = !searchState || (searchState && !searchState.query)
 	return isQueryEmpty ? null : children
 })
-
-const ItemsGrid = styled.div`
-	display: grid;
-	gap: var(--spacing2);
-	grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-`
 
 const OuterContainer = styled.div`
 	position: relative;

@@ -8,6 +8,11 @@ import styled from "styled-components/macro"
 import { ellipsis, getCategoryColor } from "../../style-utils"
 
 export const InfoContainer = styled.div`
+	display: grid;
+	grid-template-rows: auto auto 1fr;
+	grid-template-columns: 100%;
+	min-width: 0;
+	height: 100%;
 	padding: var(--spacing2);
 	@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
 		padding: var(--spacing3);
@@ -16,6 +21,9 @@ export const InfoContainer = styled.div`
 
 export const BottomContainer = styled.div`
 	display: flex;
+
+	${(p) => p.pinToBottom && "align-self: end;"}
+
 	.align-right {
 		margin-left: auto;
 	}
@@ -75,15 +83,18 @@ export const PostCategory = styled.div`
 	line-height: 1.4;
 `
 
-export const Designers = ({ value }) => (
-	<div
-		css={`
-			font-weight: bold;
-		`}
-	>
-		{formatDesigners(value)}
-	</div>
-)
+export const Designers = ({ value }) => {
+	const formatted = formatDesigners(value)
+	return (
+		<div
+			css={`
+				font-weight: bold;
+			`}
+		>
+			{formatted}
+		</div>
+	)
+}
 
 export const Size = ({ value }) => (
 	<div
