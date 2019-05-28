@@ -20,6 +20,11 @@ const HeaderContainer = styled.header`
 	grid-template-columns: 1fr min-content;
 	grid-auto-flow: column;
 	align-items: center;
+
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
 `
 
 const CloseIconContainer = styled.span`
@@ -69,6 +74,7 @@ export const FullscreenContainer = styled.div`
 	max-width: 100vw;
 	min-width: 0;
 	position: fixed;
+	padding-top: var(--page-header-height);
 	top: 0;
 	left: 0;
 	right: 0;

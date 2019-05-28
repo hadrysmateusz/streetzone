@@ -36,51 +36,36 @@ export const OuterContainer = styled.div`
 `
 
 export const MobileRoomStyles = styled.div`
-	/* width: 100%;
+	width: 100%;
 	max-width: 100vw;
 	min-width: 0;
-	position: fixed;
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	height: 100vh;
-	background: white;
-	overflow: auto; */
+	/* height: 100vh; */
+	overflow: auto;
 
-	/* .top-container {
-		border-bottom: 1px solid var(--gray75);
-		padding: var(--spacing3);
-		display: grid;
-		grid-template-columns: auto 1fr auto;
-		grid-auto-flow: column;
-		align-items: center;
-		position: fixed;
-		top: 0;
-		left: 0;
-		width: 100%;
-		background: var(--glass);
+	--bottom-container-height: 250px;
 
-		.back-button {
-			height: 100%;
-			display: flex;
-			justify-content: center;
-			align-items: center;
-			font-size: 1.7rem;
-			margin-right: var(--spacing3);
-		}
-	} */
+	height: calc(100vh - var(--page-header-height));
+
+	display: grid;
+	grid-template-columns: 100%;
+	grid-template-rows: 1fr auto;
 
 	.messages {
+		min-height: 0;
 		max-height: 100vh;
 		overflow-y: scroll;
+		/* height: 400px; */
 
 		padding: var(--spacing3);
-		display: grid;
-		gap: var(--spacing3);
 
-		padding-bottom: 200px; /* make sure no content is inaccessible */
-		padding-top: 80px; /* make sure no content is inaccessible */
+		display: grid;
+		align-content: start;
+		/* use margin instead of gap to get the space after last message */
+		> * {
+			margin-bottom: var(--spacing3);
+		}
+
+		margin-bottom: var(--bottom-container-height);
 	}
 
 	.bottom-container {
@@ -89,9 +74,11 @@ export const MobileRoomStyles = styled.div`
 		min-width: 0;
 		max-width: 100vw;
 		width: 100%;
+		height: var(--bottom-container-height);
 
-		background: var(--glass);
+		background: white;
 		padding: var(--spacing2);
+		/* padding-bottom: 50px; */
 		box-sizing: border-box;
 		position: fixed;
 		bottom: 0;
