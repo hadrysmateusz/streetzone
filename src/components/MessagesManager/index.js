@@ -8,6 +8,7 @@ import ProfilePicture from "../ProfilePicture"
 import { ROUTES } from "../../constants"
 import getProfilePictureURL from "../../utils/getProfilePictureURL"
 import { useFirebase, useAuthentication, useUserData } from "../../hooks"
+import { route } from "../../utils"
 
 export const Submenu = styled.div`
 	background: var(--glass);
@@ -26,8 +27,6 @@ export const SubmenuContainer = styled.div`
 
 	${(p) => `${p.align}: 0;`}
 	z-index: 81;
-
-	padding-top: 20px;
 
 	display: none;
 `
@@ -75,6 +74,9 @@ const MessageStyles = styled.div`
 const ManagerStyles = styled.div`
 	color: var(--black75);
 	cursor: pointer;
+	height: 100%;
+	display: flex;
+	align-items: center;
 
 	.empty-state {
 		padding: var(--spacing3);
@@ -121,7 +123,7 @@ const Message = ({ message, author, createdAt, roomId }) => {
 
 	return !error && user ? (
 		<MessageStyles>
-			<Link to={ROUTES.ACCOUNT_CHAT.replace(":id", authUser.uid) + `?room=${roomId}`}>
+			<Link to={route("CHAT_ROOM", { roomId })}>
 				<div className="header">
 					<ProfilePicture size="30px" url={getProfilePictureURL(user, "S")} inline />
 					<span className="name">{user.name}</span>

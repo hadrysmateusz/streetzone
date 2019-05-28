@@ -10,7 +10,7 @@ import ProfilePicture from "../ProfilePicture"
 import { StyledNavLink } from "../Basics"
 import { withFirebase } from "../Firebase"
 import Logo from "../Logo"
-import Menu from "../FullscreenMenu"
+import BurgerNavigation from "../BurgerNavigation"
 import MessagesManager from "../MessagesManager"
 
 import { ROUTES } from "../../constants"
@@ -44,7 +44,7 @@ const PageHeaderMobile = ({ authUser, firebase, location }) => {
 			<div className="align-right">
 				{authUser && (
 					<NavItem>
-						<StyledNavLink to={ROUTES.ACCOUNT_CHAT.replace(":id", authUser.uid)}>
+						<StyledNavLink to={route("CHAT")}>
 							<MessagesManager />
 						</StyledNavLink>
 					</NavItem>
@@ -74,7 +74,7 @@ const PageHeaderMobile = ({ authUser, firebase, location }) => {
 					</StyledNavLink>
 				)}
 
-				<Menu>
+				<BurgerNavigation>
 					<StyledNavLink to={ROUTES.HOME} exact>
 						Strona główna
 					</StyledNavLink>
@@ -101,7 +101,7 @@ const PageHeaderMobile = ({ authUser, firebase, location }) => {
 							Zaloguj / Zarejestruj się
 						</StyledNavLink>
 					)}
-				</Menu>
+				</BurgerNavigation>
 			</div>
 		</PageHeaderContainerMobile>
 	)
@@ -180,7 +180,7 @@ const PageHeaderDesktop = ({ authUser, firebase, location }) => {
 							</StyledNavLink>{" "}
 						</NavItem>
 						<NavItem>
-							<StyledNavLink to={ROUTES.ACCOUNT_CHAT.replace(":id", authUser.uid)}>
+							<StyledNavLink to={route("CHAT")}>
 								<MessagesManager />
 							</StyledNavLink>
 						</NavItem>

@@ -58,24 +58,30 @@ export const MenuNavItem = styled.div`
 	}
 `
 
-const Menu = ({ children, currentBreakpoint }) => {
+const Menu = ({ children, currentBreakpoint, beforeClose, afterClose }) => {
 	const [isOpen, setIsOpen] = useState(false)
 	const menuRef = useRef()
 
-	const toggle = () => {
-		if (isOpen) {
+	const toggle = (value) => {
+		// if value is provided use it, otherwise just flip it
+		const setTo = value ? value : !isOpen
+
+		// set the value
+		setIsOpen(setTo)
+
+		if (setTo) {
+			// enable scroll lock when opening
 			enableBodyScroll(menuRef)
 		} else {
+			// disable scroll lock when closing
 			disableBodyScroll(menuRef)
 		}
-
-		setIsOpen(!isOpen)
 	}
 
-	const switchRoute = () => {
-		toggle()
-		// Force scroll-to-top
-		window.scrollTo(0, 0)
+	const close = () => {
+		if (beforeClose) beforeClose()
+		toggle(false)
+		if (afterClose) afterClose()
 	}
 
 	if (currentBreakpoint > 0) {
@@ -90,12 +96,12 @@ const Menu = ({ children, currentBreakpoint }) => {
 			{isOpen && (
 				<Portal>
 					<FullscreenContainer ref={menuRef}>
-						<Header text={CONST.BRAND_NAME} onClose={toggle} />
+						<Header text={CONST.BRAND_NAME} onClose={close} />
 
 						<div>
 							{React.Children.map(children, (child, i) =>
 								child ? (
-									<MenuNavItem key={i} onClick={switchRoute}>
+									<MenuNavItem key={i} onClick={close}>
 										{child}
 									</MenuNavItem>
 								) : null

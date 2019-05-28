@@ -33,7 +33,9 @@ export const ACCOUNT_FEEDBACK = ACCOUNT_BASE + "/opinie"
 export const ACCOUNT_SETTINGS = ACCOUNT_BASE + "/edytuj"
 export const ACCOUNT_CHAT = ACCOUNT_BASE + "/wiadomosci"
 
-export const CHAT_NEW = "/wiadomosci/:id"
+export const CHAT = "/wiadomosci"
+export const CHAT_ROOM = "/wiadomosci/r/:roomId"
+export const CHAT_NEW = "/wiadomosci/n/:id"
 
 export const SEARCH = "/szukaj"
 

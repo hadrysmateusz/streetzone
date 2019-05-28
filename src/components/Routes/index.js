@@ -164,12 +164,20 @@ const AdminUsers = Loadable({
 })
 
 // ===== MISC =====
-const Search = Loadable({
-	loader: () => import("../../pages/Search"),
-	loading: LoadableComponentSpinner
-})
 const ChatNew = Loadable({
 	loader: () => import("../../pages/Chat/New"),
+	loading: LoadableComponentSpinner
+})
+const Chat = Loadable({
+	loader: () => import("../../pages/Chat"),
+	loading: LoadableComponentSpinner
+})
+const ChatRoom = Loadable({
+	loader: () => import("../../pages/Chat"),
+	loading: LoadableComponentSpinner
+})
+const Search = Loadable({
+	loader: () => import("../../pages/Search"),
 	loading: LoadableComponentSpinner
 })
 const FAQ = Loadable({
@@ -282,6 +290,14 @@ const routes = [
 	{
 		path: ROUTES.CHAT_NEW,
 		component: ChatNew
+	},
+	{
+		path: ROUTES.CHAT,
+		component: Chat
+	},
+	{
+		path: ROUTES.CHAT_ROOM,
+		component: ChatRoom
 	},
 	{
 		path: ROUTES.ADMIN_BASE,
