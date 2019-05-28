@@ -42,7 +42,7 @@ export const MobileRoomStyles = styled.div`
 	/* height: 100vh; */
 	overflow: auto;
 
-	--bottom-container-height: 250px;
+	--bottom-container-height: 200px;
 
 	height: calc(100vh - var(--page-header-height));
 
@@ -162,7 +162,7 @@ export const MessageStyles = styled.div`
 	max-width: 90%;
 	color: ${(p) => (p.isAuthor ? "white" : "var(--black50)")};
 
-	background: ${(p) => (p.isAuthor ? "#1fc694" : "#f2f3f1")};
+	background: ${(p) => (p.isAuthor ? "var(--black25)" : "var(--gray100)")};
 	justify-self: ${(p) => (p.isAuthor ? "end" : "start")};
 
 	.createdAt {

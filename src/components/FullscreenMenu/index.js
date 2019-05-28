@@ -7,10 +7,46 @@ import {
 } from "body-scroll-lock"
 import { Portal } from "react-portal"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import Div100vh from "react-div-100vh"
 
 import { TextBlock } from "../StyledComponents"
 
 const FullscreenMenuContext = React.createContext()
+
+const DEFAULT_ANIMATION_TIME = "150ms"
+const DEFAULT_ANIMATION = keyframes`
+	from  {
+		transform: translateX(100%);
+	}
+	to {
+		transform: translateX(0);
+	}
+`
+
+const animate = (
+	animationKeyframes = DEFAULT_ANIMATION,
+	animationTime = DEFAULT_ANIMATION_TIME
+) => css`
+	animation: ${animationKeyframes} ${animationTime};
+`
+
+export const FullscreenContainer = styled.div`
+	width: 100%;
+	/* max-width: 100vw; */
+	min-width: 0;
+	position: fixed;
+	padding-top: var(--page-header-height);
+	top: 0;
+	left: 0;
+	/* right: 0;
+	bottom: 0;
+	height: 100vh; */
+	background: white;
+
+	height: 100%;
+
+	${(p) => p.animate && animate(p.animationKeyframes, p.animationTime)}
+`
 
 const HeaderContainer = styled.header`
 	border-bottom: 1px solid var(--gray75);
@@ -52,38 +88,6 @@ export const Header = ({ children }) => {
 	)
 }
 
-const DEFAULT_ANIMATION_TIME = "150ms"
-const DEFAULT_ANIMATION = keyframes`
-	from  {
-		transform: translateX(100%);
-	}
-	to {
-		transform: translateX(0);
-	}
-`
-
-const animate = (
-	animationKeyframes = DEFAULT_ANIMATION,
-	animationTime = DEFAULT_ANIMATION_TIME
-) => css`
-	animation: ${animationKeyframes} ${animationTime};
-`
-
-export const FullscreenContainer = styled.div`
-	width: 100%;
-	max-width: 100vw;
-	min-width: 0;
-	position: fixed;
-	padding-top: var(--page-header-height);
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	height: 100vh;
-	background: white;
-	${(p) => p.animate && animate(p.animationKeyframes, p.animationTime)}
-`
-
 const Menu = ({
 	onClose,
 	onOpen,
@@ -124,7 +128,7 @@ const Menu = ({
 			{isOpen ? (
 				<Portal>
 					<FullscreenContainer ref={menuRef} animate={animate}>
-						{renderWhenOpen ? renderWhenOpen(close) : null}
+						<Div100vh>{renderWhenOpen ? renderWhenOpen(close) : null}</Div100vh>
 					</FullscreenContainer>
 				</Portal>
 			) : renderWhenClosed ? (
