@@ -1,14 +1,51 @@
-import React, { useState, useRef, useEffect } from "react"
+import React, { useState, useRef, useEffect, useContext } from "react"
 import styled, { keyframes, css } from "styled-components/macro"
 import {
 	disableBodyScroll,
 	enableBodyScroll,
 	clearAllBodyScrollLocks
 } from "body-scroll-lock"
-import { withBreakpoints } from "react-breakpoints"
 import { Portal } from "react-portal"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
-import Header from "./Header"
+import { TextBlock } from "../StyledComponents"
+
+const FullscreenMenuContext = React.createContext()
+
+const HeaderContainer = styled.header`
+	border-bottom: 1px solid var(--gray75);
+	height: var(--page-header-height);
+	padding: 0 var(--spacing3);
+	display: grid;
+	grid-template-columns: 1fr min-content;
+	grid-auto-flow: column;
+	align-items: center;
+`
+
+const CloseIconContainer = styled.span`
+	cursor: pointer;
+	padding: var(--spacing1);
+`
+
+export const Header = ({ children }) => {
+	const isCustomContent = typeof children !== "string"
+	const { close } = useContext(FullscreenMenuContext)
+
+	return (
+		<HeaderContainer>
+			{isCustomContent ? (
+				<div>{children}</div>
+			) : (
+				<TextBlock size="m" bold>
+					{children}
+				</TextBlock>
+			)}
+			<CloseIconContainer onClick={close}>
+				<FontAwesomeIcon icon="times" />
+			</CloseIconContainer>
+		</HeaderContainer>
+	)
+}
 
 const DEFAULT_ANIMATION_TIME = "150ms"
 const DEFAULT_ANIMATION = keyframes`
@@ -42,12 +79,10 @@ export const FullscreenContainer = styled.div`
 `
 
 const Menu = ({
-	title,
 	onClose,
 	onOpen,
 	renderWhenClosed,
 	renderWhenOpen,
-	currentBreakpoint,
 	animate = true,
 	startOpen = false
 }) => {
@@ -79,12 +114,11 @@ const Menu = ({
 	})
 
 	return (
-		<>
+		<FullscreenMenuContext.Provider value={{ close }}>
 			{isOpen ? (
 				<Portal>
 					<FullscreenContainer ref={menuRef} animate={animate}>
-						<Header text={title} onClose={close} />
-						<div>{renderWhenOpen ? renderWhenOpen(close) : null}</div>
+						{renderWhenOpen ? renderWhenOpen(close) : null}
 					</FullscreenContainer>
 				</Portal>
 			) : renderWhenClosed ? (
@@ -92,8 +126,8 @@ const Menu = ({
 			) : (
 				<button onClick={open}>Otwórz</button>
 			)}
-		</>
+		</FullscreenMenuContext.Provider>
 	)
 }
 
-export default withBreakpoints(Menu)
+export default Menu

@@ -3,7 +3,7 @@ import { withBreakpoints } from "react-breakpoints"
 import { compose } from "recompose"
 
 import { Button, ButtonContainer } from "../Button"
-import Header from "../FullscreenMenu/Header"
+// import Header from "../FullscreenMenu/Header"
 
 import { useTabs } from "../../hooks"
 import { withProps } from "../../HOCs"
@@ -25,7 +25,7 @@ const FiltersBase = forwardRef((props, ref) => {
 	return (
 		<FiltersContainer ref={ref}>
 			<FilterInnerContainer>
-				{isMobile && <Header text="Filtry" onClose={toggle} />}
+				{/* {isMobile && <Header header="Filtry" onClose={toggle} />} */}
 
 				{children({ openTab, switchTab, tabs, isMobile })}
 			</FilterInnerContainer>

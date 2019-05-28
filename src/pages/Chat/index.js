@@ -10,7 +10,7 @@ import UserPreview from "../../components/UserPreview"
 import { withAuthorization } from "../../components/UserSession"
 import { PageContainer } from "../../components/Containers"
 import ProfilePicture from "../../components/ProfilePicture"
-import FullscreenMenu from "../../components/FullscreenMenu"
+import FullscreenMenu, { Header } from "../../components/FullscreenMenu"
 
 import getProfilePictureURL from "../../utils/getProfilePictureURL"
 import { useFirebase, useUserData, useAuthentication } from "../../hooks"
@@ -24,8 +24,8 @@ import {
 	RoomTabStyles,
 	MobileUserInfo,
 	OuterContainer,
-	CloseButton,
-	MobileRoomStyles
+	MobileRoomStyles,
+	TopContainerMobile
 } from "./StyledComponents"
 
 const Message = ({ id, roomId, message, createdAt, author, user, unread }) => {
@@ -74,6 +74,26 @@ const RoomsList = ({ rooms }) => {
 	return rooms.map((room) => <RoomTab key={room.id} {...room} />)
 }
 
+const ChatRoomTopContainerMobile = ({ user }) => {
+	return (
+		<TopContainerMobile>
+			{/* This Link will clear the selected room  */}
+			<Link to={route("CHAT")}>
+				<div className="back-button">
+					<FontAwesomeIcon icon="arrow-left" />
+				</div>
+			</Link>
+
+			{user && (
+				<MobileUserInfo>
+					<ProfilePicture size="30px" url={getProfilePictureURL(user, "S")} inline />
+					<span className="name">{user.name}</span>
+				</MobileUserInfo>
+			)}
+		</TopContainerMobile>
+	)
+}
+
 const ChatRoom = ({ id: roomId, otherUserId, authUser, isMobile, closeChat }) => {
 	const firebase = useFirebase()
 	const [messages, setMessages] = useState()
@@ -106,30 +126,9 @@ const ChatRoom = ({ id: roomId, otherUserId, authUser, isMobile, closeChat }) =>
 	if (isMobile) {
 		return (
 			<MobileRoomStyles>
-				<div className="top-container">
-					{/* This Link will clear the selected room  */}
-					<Link to="?">
-						<div className="back-button">
-							<FontAwesomeIcon icon="long-arrow-alt-left" />
-						</div>
-					</Link>
-
-					{!error && otherUser && (
-						<MobileUserInfo>
-							<ProfilePicture
-								size="30px"
-								url={getProfilePictureURL(otherUser, "S")}
-								inline
-							/>
-							<span className="name">{otherUser.name}</span>
-						</MobileUserInfo>
-					)}
-
-					{/* This will close the chat and redirect */}
-					<CloseButton onClick={closeChat}>
-						<FontAwesomeIcon icon="times" />
-					</CloseButton>
-				</div>
+				<Header>
+					<ChatRoomTopContainerMobile user={otherUser} />
+				</Header>
 
 				<div className="messages" ref={containerRef}>
 					{messages.map((message) => (
@@ -215,7 +214,6 @@ const UserChat = ({ location, history, match, currentBreakpoint }) => {
 	if (isMobile) {
 		return (
 			<FullscreenMenu
-				title="Wybierz osobę z listy"
 				onClose={closeChat}
 				startOpen
 				animate={false}
@@ -226,6 +224,7 @@ const UserChat = ({ location, history, match, currentBreakpoint }) => {
 						<ChatRoom {...chatRoomProps} />
 					) : hasRooms ? (
 						<div className="menu-content">
+							<Header>Wybierz z listy</Header>
 							<RoomsList rooms={rooms} />
 						</div>
 					) : (

@@ -36,7 +36,7 @@ export const OuterContainer = styled.div`
 `
 
 export const MobileRoomStyles = styled.div`
-	width: 100%;
+	/* width: 100%;
 	max-width: 100vw;
 	min-width: 0;
 	position: fixed;
@@ -46,9 +46,9 @@ export const MobileRoomStyles = styled.div`
 	bottom: 0;
 	height: 100vh;
 	background: white;
-	overflow: auto;
+	overflow: auto; */
 
-	.top-container {
+	/* .top-container {
 		border-bottom: 1px solid var(--gray75);
 		padding: var(--spacing3);
 		display: grid;
@@ -69,11 +69,11 @@ export const MobileRoomStyles = styled.div`
 			font-size: 1.7rem;
 			margin-right: var(--spacing3);
 		}
-	}
+	} */
 
 	.messages {
 		max-height: 100vh;
-		overflow-y: auto;
+		overflow-y: scroll;
 
 		padding: var(--spacing3);
 		display: grid;
@@ -130,20 +130,6 @@ export const RoomStyles = styled.div`
 		}
 	}
 
-	.top-container {
-		padding: var(--spacing3);
-		display: flex;
-
-		.back-button {
-			height: 100%;
-			display: flex;
-			justify-content: center;
-			align-items: center;
-			font-size: 1.7rem;
-			margin-right: var(--spacing3);
-		}
-	}
-
 	.bottom-container {
 		padding: var(--spacing3);
 		padding-top: var(--spacing2);
@@ -155,6 +141,19 @@ export const RoomStyles = styled.div`
 		align-content: start;
 		gap: var(--spacing3);
 		overflow-y: auto;
+	}
+`
+
+export const TopContainerMobile = styled.div`
+	display: flex;
+	.back-button {
+		height: 100%;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		font-size: 1.7rem;
+		margin-right: var(--spacing3);
+		cursor: pointer;
 	}
 `
 
