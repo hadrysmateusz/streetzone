@@ -42,7 +42,10 @@ export const FullscreenContainer = styled(Div100vh)`
 	bottom: 0;
 	height: 100vh; */
 	background: white;
-	overflow: auto;
+	overflow: scroll;
+	> * {
+		overflow: hidden;
+	}
 
 	/* height: 100%; */
 
@@ -116,11 +119,14 @@ const Menu = ({
 	}
 
 	useEffect(() => {
-		// if (isOpen) {
-		// 	disableBodyScroll(menuRef)
-		// } else {
-		// 	enableBodyScroll(menuRef)
-		// }
+		const el = document.getElementById("kurczok99")
+
+		console.log(el)
+		if (isOpen) {
+			disableBodyScroll(el)
+		} else {
+			enableBodyScroll(el)
+		}
 
 		return clearAllBodyScrollLocks
 	})
@@ -129,7 +135,7 @@ const Menu = ({
 		<FullscreenMenuContext.Provider value={{ close }}>
 			{isOpen ? (
 				<Portal>
-					<FullscreenContainer ref={menuRef} animate={animate}>
+					<FullscreenContainer id="kurczok99" ref={menuRef} animate={animate}>
 						{renderWhenOpen ? renderWhenOpen(close) : null}
 					</FullscreenContainer>
 				</Portal>

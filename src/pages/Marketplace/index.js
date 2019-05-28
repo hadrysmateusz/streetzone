@@ -35,6 +35,7 @@ const MarketplacePage = ({ currentBreakpoint }) => {
 	const [areFiltersOpen, setAreFiltersOpen] = useState(false)
 	const [clearFilters, setClearFilters] = useState(false)
 
+	// TODO: as far as I know this ref is not connected to any component
 	const filtersRef = useRef()
 
 	const toggleFilters = () => {
