@@ -44,7 +44,9 @@ const PageHeaderMobile = ({ authUser, firebase, location }) => {
 			<div className="align-right">
 				{authUser && (
 					<NavItem>
-						<StyledNavLink to={route("CHAT")}>
+						<StyledNavLink
+							to={{ pathname: route("CHAT"), state: { redirectTo: location } }}
+						>
 							<MessagesManager />
 						</StyledNavLink>
 					</NavItem>

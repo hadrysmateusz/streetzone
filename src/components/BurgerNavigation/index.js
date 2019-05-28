@@ -1,6 +1,8 @@
 import React from "react"
 import styled from "styled-components/macro"
 import FullscreenMenu from "../FullscreenMenu"
+import { CONST } from "../../constants"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 export const MenuNavItem = styled.div`
 	user-select: none;
@@ -18,17 +20,31 @@ export const MenuNavItem = styled.div`
 	}
 `
 
-const BurgerNavigation = ({ children, onClose }) => {
+const IconContainer = styled.div`
+	padding-left: 0;
+	cursor: pointer;
+	font-size: 2.15rem;
+`
+
+const BurgerNavigation = ({ children }) => {
 	return (
-		<FullscreenMenu>
-			{React.Children.map(children, (child, i) =>
-				child ? (
-					<MenuNavItem key={i} onClick={onClose}>
-						{child}
-					</MenuNavItem>
-				) : null
+		<FullscreenMenu
+			title={CONST.BRAND_NAME}
+			renderWhenClosed={(open) => (
+				<IconContainer onClick={open}>
+					<FontAwesomeIcon icon="bars" />
+				</IconContainer>
 			)}
-		</FullscreenMenu>
+			renderWhenOpen={(close) =>
+				React.Children.map(children, (child, i) =>
+					child ? (
+						<MenuNavItem key={i} onClick={close}>
+							{child}
+						</MenuNavItem>
+					) : null
+				)
+			}
+		/>
 	)
 }
 

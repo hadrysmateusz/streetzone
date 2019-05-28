@@ -68,7 +68,9 @@ class SignInFormBase extends Component {
 	render() {
 		const { error, redirectToReferrer } = this.state
 
-		const { redirectTo } = this.props.location.state || { redirectTo: { pathname: "/" } }
+		const { redirectTo } = this.props.location.state || {
+			redirectTo: { pathname: ROUTES.HOME }
+		}
 
 		return redirectToReferrer ? (
 			<Redirect to={redirectTo} />

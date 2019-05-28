@@ -10,11 +10,11 @@ import UserPreview from "../../components/UserPreview"
 import { withAuthorization } from "../../components/UserSession"
 import { PageContainer } from "../../components/Containers"
 import ProfilePicture from "../../components/ProfilePicture"
-import getProfilePictureURL from "../../utils/getProfilePictureURL"
+import FullscreenMenu from "../../components/FullscreenMenu"
 
+import getProfilePictureURL from "../../utils/getProfilePictureURL"
 import { useFirebase, useUserData, useAuthentication } from "../../hooks"
 import { route } from "../../utils"
-import { ROUTES } from "../../constants"
 
 import { NewChat } from "./New"
 
@@ -24,10 +24,8 @@ import {
 	RoomTabStyles,
 	MobileUserInfo,
 	OuterContainer,
-	Menu,
 	CloseButton,
-	MobileRoomStyles,
-	OuterContainerMobile
+	MobileRoomStyles
 } from "./StyledComponents"
 
 const Message = ({ id, roomId, message, createdAt, author, user, unread }) => {
@@ -55,6 +53,10 @@ const Message = ({ id, roomId, message, createdAt, author, user, unread }) => {
 	)
 }
 
+const EmptyState = () => (
+	<div className="empty-state">Nie masz jeszcze żadnych wiadomości</div>
+)
+
 const RoomTab = ({ id, otherUserId }) => {
 	const [user, error] = useUserData(otherUserId)
 
@@ -66,6 +68,10 @@ const RoomTab = ({ id, otherUserId }) => {
 			</Link>
 		</RoomTabStyles>
 	) : null
+}
+
+const RoomsList = ({ rooms }) => {
+	return rooms.map((room) => <RoomTab key={room.id} {...room} />)
 }
 
 const ChatRoom = ({ id: roomId, otherUserId, authUser, isMobile, closeChat }) => {
@@ -82,8 +88,6 @@ const ChatRoom = ({ id: roomId, otherUserId, authUser, isMobile, closeChat }) =>
 			.onSnapshot((snap) => {
 				const __messages = snap.docs.map((room) => room.data())
 				setMessages(__messages)
-
-				console.log("messages snap handler")
 
 				const elem = containerRef.current
 				elem.scrollTop = elem.scrollHeight
@@ -129,7 +133,7 @@ const ChatRoom = ({ id: roomId, otherUserId, authUser, isMobile, closeChat }) =>
 
 				<div className="messages" ref={containerRef}>
 					{messages.map((message) => (
-						<Message {...message} user={authUser} roomId={roomId} />
+						<Message {...message} key={message.id} user={authUser} roomId={roomId} />
 					))}
 				</div>
 
@@ -148,7 +152,7 @@ const ChatRoom = ({ id: roomId, otherUserId, authUser, isMobile, closeChat }) =>
 			</div>
 			<div className="messages" ref={containerRef}>
 				{messages.map((message) => (
-					<Message {...message} user={authUser} roomId={roomId} />
+					<Message {...message} key={message.id} user={authUser} roomId={roomId} />
 				))}
 			</div>
 			<div className="bottom-container">
@@ -160,7 +164,7 @@ const ChatRoom = ({ id: roomId, otherUserId, authUser, isMobile, closeChat }) =>
 
 const UserChat = ({ location, history, match, currentBreakpoint }) => {
 	const firebase = useFirebase()
-	const [authUser, isAuthenticated] = useAuthentication(true)
+	const authUser = useAuthentication()
 	const [rooms, setRooms] = useState()
 	const [currentRoom, setCurrentRoom] = useState()
 
@@ -197,53 +201,38 @@ const UserChat = ({ location, history, match, currentBreakpoint }) => {
 	}, [roomId, rooms])
 
 	const closeChat = () => {
-		const searchString = location.search
-		const sp = new URLSearchParams(searchString)
-		const redirectTo = sp.has("redirectTo") ? sp.get("redirectTo") : route("HOME")
-
+		// use destructuring to prevent "location.state is undefined" error
+		const { redirectTo } = location.state || { redirectTo: { pathname: route("HOME") } }
 		history.push(redirectTo)
 	}
 
 	const hasRooms = rooms && rooms.length > 0
 	const hasSelectedRoom = !!currentRoom
 	const isMobile = currentBreakpoint < 1
-
-	console.log("rooms", rooms)
-	console.log("currentRoom", currentRoom)
+	const chatRoomProps = { ...currentRoom, authUser, isMobile, closeChat }
 
 	// render mobile
 	if (isMobile) {
 		return (
-			<OuterContainerMobile>
-				{!rooms || !authUser ? (
-					<LoadingSpinner />
-				) : currentRoom ? (
-					<ChatRoom
-						{...currentRoom}
-						authUser={authUser}
-						isMobile={isMobile}
-						closeChat={closeChat}
-					/>
-				) : (
-					<Menu>
-						<div className="menu-header">
-							<div>Wybierz osobę z listy</div>
-							<CloseButton onClick={closeChat}>
-								<FontAwesomeIcon icon="times" />
-							</CloseButton>
+			<FullscreenMenu
+				title="Wybierz osobę z listy"
+				onClose={closeChat}
+				startOpen
+				animate={false}
+				renderWhenOpen={(close) =>
+					!rooms ? (
+						<LoadingSpinner />
+					) : hasSelectedRoom ? (
+						<ChatRoom {...chatRoomProps} />
+					) : hasRooms ? (
+						<div className="menu-content">
+							<RoomsList rooms={rooms} />
 						</div>
-						{hasRooms ? (
-							<div className="menu-content">
-								{rooms.map((room) => (
-									<RoomTab {...room} />
-								))}
-							</div>
-						) : (
-							<div className="empty-state">Nie masz jeszcze żadnych wiadomości</div>
-						)}
-					</Menu>
-				)}
-			</OuterContainerMobile>
+					) : (
+						<EmptyState />
+					)
+				}
+			/>
 		)
 	}
 
@@ -255,20 +244,18 @@ const UserChat = ({ location, history, match, currentBreakpoint }) => {
 			{hasRooms ? (
 				<OuterContainer>
 					<div className="sidebar">
-						{rooms.map((room) => (
-							<RoomTab {...room} />
-						))}
+						<RoomsList rooms={rooms} />
 					</div>
 					<div className="chat-container">
 						{hasSelectedRoom ? (
-							<ChatRoom {...currentRoom} authUser={authUser} />
+							<ChatRoom {...chatRoomProps} />
 						) : (
 							<div class="no-room-selected">Wybierz osobę z listy</div>
 						)}
 					</div>
 				</OuterContainer>
 			) : (
-				<div className="empty-state">Nie masz jeszcze żadnych wiadomości</div>
+				<EmptyState />
 			)}
 		</PageContainer>
 	)

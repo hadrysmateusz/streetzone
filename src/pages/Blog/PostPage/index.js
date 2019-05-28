@@ -171,7 +171,7 @@ export const PureBlogPost = withBreakpoints(
 						<PageNav
 							breadcrumbs={[
 								["Czytaj", "BLOG_HOME"],
-								["Buty", "BLOG_TAG", { tag: "Buty" }]
+								[category, "BLOG_CATEGORY", { category: category }]
 							]}
 							white
 						/>

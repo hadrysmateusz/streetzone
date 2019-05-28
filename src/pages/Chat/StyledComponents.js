@@ -1,22 +1,5 @@
 import styled from "styled-components/macro"
 
-export const Menu = styled.div`
-	height: 100%;
-
-	.menu-header {
-		display: grid;
-		grid-template-columns: 1fr auto;
-		grid-auto-flow: column;
-
-		border-bottom: 1px solid var(--gray75);
-		padding: var(--spacing3);
-		display: grid;
-		grid-template-columns: 1fr auto;
-		grid-auto-flow: column;
-		align-items: center;
-	}
-`
-
 export const CloseButton = styled.div`
 	cursor: pointer;
 	padding: var(--spacing1);
@@ -49,30 +32,6 @@ export const OuterContainer = styled.div`
 			user-select: none;
 			cursor: default;
 		}
-	}
-`
-
-export const OuterContainerMobile = styled.div`
-	position: fixed;
-	height: 100vh;
-	width: 100vw;
-	border: none;
-	z-index: 9999;
-	background: white;
-	top: 0;
-	left: 0;
-	overflow-y: auto;
-
-	.empty-state {
-		background: var(--almost-white);
-		width: 100%;
-		height: 100%;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		color: var(--gray0);
-		user-select: none;
-		cursor: default;
 	}
 `
 

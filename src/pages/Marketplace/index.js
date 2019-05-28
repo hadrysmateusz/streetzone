@@ -56,7 +56,7 @@ const MarketplacePage = ({ currentBreakpoint }) => {
 			indexName={CONST.ITEMS_MARKETPLACE_DEFAULT_ALGOLIA_INDEX}
 			initialState={DEFAULT_SEARCH_STATE}
 			allowedKeys={["category", "designers", "price", "size"]}
-			hitsPerPage={3}
+			hitsPerPage={4}
 		>
 			<Header />
 			<PromotedSection />

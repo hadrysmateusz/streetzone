@@ -18,7 +18,7 @@ const InfiniteScrollingResults = ({ children }) => {
 						loader={<LoadingSpinner />}
 						initialLoad={false}
 						loadMore={loadMore}
-						threshold={400}
+						threshold={450}
 					>
 						{isChildrenFunction ? children({ results, hasMore, loadMore }) : children}
 					</InfiniteScroll>

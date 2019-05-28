@@ -1,5 +1,5 @@
-import React, { useState, useRef } from "react"
-import styled, { keyframes } from "styled-components/macro"
+import React, { useState, useRef, useEffect } from "react"
+import styled, { keyframes, css } from "styled-components/macro"
 import {
 	disableBodyScroll,
 	enableBodyScroll,
@@ -7,19 +7,24 @@ import {
 } from "body-scroll-lock"
 import { withBreakpoints } from "react-breakpoints"
 import { Portal } from "react-portal"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 import Header from "./Header"
-import { CONST } from "../../constants"
 
-const slidein = keyframes`
+const DEFAULT_ANIMATION_TIME = "150ms"
+const DEFAULT_ANIMATION = keyframes`
 	from  {
 		transform: translateX(100%);
-
 	}
 	to {
 		transform: translateX(0);
 	}
+`
+
+const animate = (
+	animationKeyframes = DEFAULT_ANIMATION,
+	animationTime = DEFAULT_ANIMATION_TIME
+) => css`
+	animation: ${animationKeyframes} ${animationTime};
 `
 
 export const FullscreenContainer = styled.div`
@@ -33,82 +38,59 @@ export const FullscreenContainer = styled.div`
 	bottom: 0;
 	height: 100vh;
 	background: white;
-	animation: ${slidein} 150ms;
+	${(p) => p.animate && animate(p.animationKeyframes, p.animationTime)}
 `
 
-const IconContainer = styled.div`
-	padding-left: 0;
-	cursor: pointer;
-	font-size: 2.15rem;
-`
-
-export const MenuNavItem = styled.div`
-	user-select: none;
-	white-space: nowrap;
-	color: var(--gray0);
-	font-weight: bold;
-	font-size: var(--font-size--m);
-	padding: var(--spacing3);
-	border-top: 1px solid var(--gray75);
-	&:first-child {
-		border-top: none;
-	}
-	&:last-child {
-		border-bottom: 1px solid var(--gray75);
-	}
-`
-
-const Menu = ({ children, currentBreakpoint, beforeClose, afterClose }) => {
-	const [isOpen, setIsOpen] = useState(false)
+const Menu = ({
+	title,
+	onClose,
+	onOpen,
+	renderWhenClosed,
+	renderWhenOpen,
+	currentBreakpoint,
+	animate = true,
+	startOpen = false
+}) => {
+	const [isOpen, setIsOpen] = useState(startOpen)
 	const menuRef = useRef()
 
-	const toggle = (value) => {
-		// if value is provided use it, otherwise just flip it
-		const setTo = value ? value : !isOpen
-
-		// set the value
-		setIsOpen(setTo)
-
-		if (setTo) {
-			// enable scroll lock when opening
-			enableBodyScroll(menuRef)
-		} else {
-			// disable scroll lock when closing
-			disableBodyScroll(menuRef)
-		}
+	const toggle = () => {
+		setIsOpen((isOpen) => !isOpen)
 	}
 
 	const close = () => {
-		if (beforeClose) beforeClose()
-		toggle(false)
-		if (afterClose) afterClose()
+		setIsOpen(false)
+		if (onClose) onClose()
 	}
 
-	if (currentBreakpoint > 0) {
-		clearAllBodyScrollLocks()
+	const open = () => {
+		setIsOpen(true)
+		if (onOpen) onOpen()
 	}
+
+	useEffect(() => {
+		if (isOpen) {
+			disableBodyScroll(menuRef)
+		} else {
+			enableBodyScroll(menuRef)
+		}
+
+		return clearAllBodyScrollLocks
+	})
 
 	return (
 		<>
-			<IconContainer onClick={toggle}>
-				<FontAwesomeIcon icon="bars" />
-			</IconContainer>
-			{isOpen && (
+			{isOpen ? (
 				<Portal>
-					<FullscreenContainer ref={menuRef}>
-						<Header text={CONST.BRAND_NAME} onClose={close} />
-
-						<div>
-							{React.Children.map(children, (child, i) =>
-								child ? (
-									<MenuNavItem key={i} onClick={close}>
-										{child}
-									</MenuNavItem>
-								) : null
-							)}
-						</div>
+					<FullscreenContainer ref={menuRef} animate={animate}>
+						<Header text={title} onClose={close} />
+						<div>{renderWhenOpen ? renderWhenOpen(close) : null}</div>
 					</FullscreenContainer>
 				</Portal>
+			) : renderWhenClosed ? (
+				renderWhenClosed(open)
+			) : (
+				<button onClick={open}>Otwórz</button>
 			)}
 		</>
 	)
