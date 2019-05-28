@@ -1,4 +1,5 @@
 import React, { useState, useRef } from "react"
+import styled from "styled-components/macro"
 import { withBreakpoints } from "react-breakpoints"
 import { disableBodyScroll, enableBodyScroll } from "body-scroll-lock"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
@@ -17,6 +18,14 @@ import MarketplaceResults from "./MarketplaceResults"
 import { MainGrid, Sidebar, GridContainer } from "./StyledComponents"
 
 import { CONST } from "../../constants"
+
+const FiltersHeader = styled.div`
+	text-align: center;
+	padding: var(--spacing2);
+	font-size: var(--fs-l);
+	font-weight: bold;
+	border-bottom: 1px solid var(--gray75);
+`
 
 const DEFAULT_SEARCH_STATE = {
 	sortBy: sortingOptions[0].value
@@ -65,6 +74,7 @@ const MarketplacePage = ({ currentBreakpoint }) => {
 
 					<MainGrid>
 						<Sidebar hidden={!areFiltersOpen && !(currentBreakpoint > 2)}>
+							<FiltersHeader>Filtruj</FiltersHeader>
 							<Filters
 								toggle={toggleFilters}
 								clear={{
