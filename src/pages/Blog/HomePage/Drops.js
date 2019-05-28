@@ -1,34 +1,30 @@
 import React, { useState, useEffect, useRef } from "react"
 import { withBreakpoints } from "react-breakpoints"
+import styled from "styled-components/macro"
 import {
 	disableBodyScroll,
 	enableBodyScroll,
 	clearAllBodyScrollLocks
 } from "body-scroll-lock"
-import styled from "styled-components/macro"
 
-import { PageContainer } from "../../../components/Containers"
 import {
 	SearchWrapper,
 	StatelessSearchWrapper
 } from "../../../components/InstantSearchWrapper"
-
-import { PromotedContainer } from "../StyledComponents"
+import { PageContainer } from "../../../components/Containers"
+import { SmallDropCard, PostCard } from "../../../components/Cards"
+import { ThematicGroup } from "../../../components/ThematicGroup"
+import { TextBlock } from "../../../components/StyledComponents"
+import { FiltersToggleButton } from "../../../components/Topbar/FiltersToggle"
 
 import { CONST } from "../../../constants"
 import { route } from "../../../utils"
 
-import { SmallDropCard, PostCard } from "../../../components/Cards"
-import { ThematicGroup } from "../../../components/ThematicGroup"
-
+import PromotedDrop from "../Previews/PromotedDrop"
+import { PromotedContainer } from "../StyledComponents"
 // import Sidebar from "./Sidebar"
 import CategoryNav from "./CategoryNav"
 import InfinitePosts from "../InfinitePostsList"
-
-import { TextBlock } from "../../../components/StyledComponents"
-import { FiltersToggleButton } from "../../../components/Topbar/FiltersToggle"
-
-import PromotedDrop from "../Previews/PromotedDrop"
 import Filters from "./Filters"
 import { Layout } from "./Common"
 

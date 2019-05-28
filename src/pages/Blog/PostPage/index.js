@@ -61,7 +61,8 @@ const OuterContainer = styled.div`
 const HeaderBox = styled.div`
 	background: var(--black25);
 	color: white;
-	padding: var(--spacing3) 0;
+	padding-top: var(--spacing3);
+	padding-bottom: var(--spacing4);
 
 	--inner-width: 750px;
 
@@ -199,6 +200,7 @@ export const PureBlogPost = withBreakpoints(
 										<InfoAside>
 											{/* Share buttons */}
 											<Share />
+
 											{/* Info */}
 											<Info>
 												<div>

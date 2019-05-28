@@ -12,6 +12,7 @@ import { StatelessSearchWrapper } from "../../../components/InstantSearchWrapper
 import { DumbThematicGroup } from "../../../components/ThematicGroup"
 import IndexResults from "../../../components/Algolia/IndexResults"
 import { ItemsGrid } from "../../../components/ItemsView"
+import PageNav from "../../../components/PageNav"
 
 import Sidebar from "./Sidebar"
 import { Layout, Heading } from "./Common"
@@ -39,6 +40,7 @@ const BlogTagPage = ({ currentBreakpoint, match }) => {
 					<Layout>
 						{/* Main Content */}
 						<main>
+							<PageNav breadcrumbs={[["Czytaj", "BLOG_HOME"]]} />
 							<Heading>{tag}</Heading>
 							<Section>
 								<IndexResults

@@ -7,6 +7,7 @@ import { CONST } from "../../../constants"
 
 import { PageContainer } from "../../../components/Containers"
 import { StatelessSearchWrapper } from "../../../components/InstantSearchWrapper"
+import PageNav from "../../../components/PageNav"
 
 import Sidebar from "./Sidebar"
 import { Layout, Heading } from "./Common"
@@ -28,6 +29,7 @@ const BlogCategoryPage = ({ currentBreakpoint, match }) => {
 					<Layout>
 						{/* Main Content */}
 						<main>
+							<PageNav breadcrumbs={[["Czytaj", "BLOG_HOME"]]} />
 							<Heading category={category}>{category}</Heading>
 							<InfinitePosts />
 						</main>
