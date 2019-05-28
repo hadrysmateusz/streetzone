@@ -9,6 +9,7 @@ import { TextBlock } from "../../../components/StyledComponents"
 import Tags from "../../../components/Tags"
 import LoadingSpinner from "../../../components/LoadingSpinner"
 import Share from "../../../components/Share"
+import PageNav from "../../../components/PageNav"
 
 import { useFirebase } from "../../../hooks"
 import { ellipsis, getCategoryColor } from "../../../style-utils"
@@ -16,7 +17,6 @@ import { ellipsis, getCategoryColor } from "../../../style-utils"
 
 import { FluidImage } from "../StyledComponents"
 import { Layout } from "../HomePage/Common"
-// import PageNav from "../PageNav"
 import { withBreakpoints } from "react-breakpoints"
 
 const Main = styled.main`
@@ -53,17 +53,7 @@ const InfoAside = styled.aside`
 
 const Aside = styled.aside``
 
-const CommonContainer = styled.div`
-	--header-box-height: 260px;
-`
-
 const OuterContainer = styled.div`
-	position: relative;
-	z-index: 4;
-	padding-top: var(--header-box-height);
-`
-
-const SecondaryOuterContainer = styled.div`
 	background: white;
 	padding: var(--spacing3) 0;
 `
@@ -71,12 +61,7 @@ const SecondaryOuterContainer = styled.div`
 const HeaderBox = styled.div`
 	background: var(--black25);
 	color: white;
-
-	height: var(--header-box-height);
-
-	position: fixed;
-	width: 100%;
-	z-index: 3;
+	padding: var(--spacing3) 0;
 
 	--inner-width: 750px;
 
@@ -178,81 +163,81 @@ export const PureBlogPost = withBreakpoints(
 		const isMobile = currentBreakpoint <= 1
 
 		return (
-			<CommonContainer>
+			<>
 				<HeaderBox category={category}>
 					<PageContainer>
 						{/* Page Nav */}
-						{/* <PageNav /> */}
-
+						<PageNav
+							breadcrumbs={[
+								["Czytaj", "BLOG_HOME"],
+								["Buty", "BLOG_TAG", { tag: "Buty" }]
+							]}
+							white
+						/>
 						{/* Category */}
 						<div className="category">{category}</div>
-
 						{/* Title */}
 						<div className="title">{title}</div>
-
 						{/* Excerpt */}
 						<div className="excerpt">{excerpt}</div>
-
 						{/* Crated Date */}
 						<div className="date">{moment(createdAt).format("LL")}</div>
 					</PageContainer>
 				</HeaderBox>
 
 				<OuterContainer>
-					<SecondaryOuterContainer>
-						<PageContainer>
-							<Layout>
-								<Main>
-									{/* Header image */}
-									<MainImageContainer>
-										<FluidImage url={imageUrl} />
-									</MainImageContainer>
+					<PageContainer>
+						<Layout>
+							<Main>
+								{/* Header image */}
+								<MainImageContainer>
+									<FluidImage url={imageUrl} />
+								</MainImageContainer>
 
-									<InnerContainer>
-										{!isMobile && (
-											<InfoAside>
-												{/* Share buttons */}
-												<Share />
-												{/* Info */}
-												<Info>
-													<div>
-														Dodano <b>{moment(createdAt).format("DD-MM-YY")}</b>
-													</div>
-													<div>
-														przez <b>{author}</b>
-													</div>
-													<div>
-														w <b>{category}</b>
-													</div>
-												</Info>
-												{/* Tags */}
-												<Tags tags={tags} />
-											</InfoAside>
-										)}
-										<Article>
-											{isMobile && <Share withHeader />}
-											<ReactMarkdown source={mainContent} />
-											{isMobile && [
-												<TextBlock size="m" bold uppercase>
-													Tagi
-												</TextBlock>,
-												<Tags tags={tags} />
-											]}
-										</Article>
-									</InnerContainer>
-								</Main>
-								{!isMobile && (
-									<Aside>
-										<TextBlock size="l" bold>
-											Podobne Artykuły
-										</TextBlock>
-									</Aside>
-								)}
-							</Layout>
-						</PageContainer>
-					</SecondaryOuterContainer>
+								<InnerContainer>
+									{!isMobile && (
+										<InfoAside>
+											{/* Share buttons */}
+											<Share />
+											{/* Info */}
+											<Info>
+												<div>
+													Dodano <b>{moment(createdAt).format("DD-MM-YY")}</b>
+												</div>
+												<div>
+													przez <b>{author}</b>
+												</div>
+												<div>
+													w <b>{category}</b>
+												</div>
+											</Info>
+											{/* Tags */}
+											<Tags tags={tags} />
+										</InfoAside>
+									)}
+									<Article>
+										{isMobile && <Share withHeader />}
+										<ReactMarkdown source={mainContent} />
+										{isMobile && [
+											<TextBlock size="m" bold uppercase>
+												Tagi
+											</TextBlock>,
+											<Tags tags={tags} />
+										]}
+									</Article>
+								</InnerContainer>
+							</Main>
+							{!isMobile && (
+								<Aside>
+									<TextBlock size="l" bold>
+										Podobne Artykuły
+									</TextBlock>
+								</Aside>
+							)}
+						</Layout>
+					</PageContainer>
 				</OuterContainer>
-			</CommonContainer>
+			</>
 		)
 	}
 )

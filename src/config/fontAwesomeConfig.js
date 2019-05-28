@@ -35,6 +35,7 @@ import {
 	faExclamationCircle,
 	faLongArrowAltLeft,
 	faArrowRight,
+	faArrowLeft,
 	faStar,
 	faChevronDown,
 	faLongArrowAltUp,
@@ -100,5 +101,6 @@ library.add(
 	faThLarge,
 	faThList,
 	faClipboard,
+	faArrowLeft,
 	faCode
 )
