@@ -30,7 +30,7 @@ const animate = (
 	animation: ${animationKeyframes} ${animationTime};
 `
 
-export const FullscreenContainer = styled.div`
+export const FullscreenContainer = styled(Div100vh)`
 	width: 100%;
 	/* max-width: 100vw; */
 	min-width: 0;
@@ -42,13 +42,15 @@ export const FullscreenContainer = styled.div`
 	bottom: 0;
 	height: 100vh; */
 	background: white;
+	overflow: auto;
 
-	height: 100%;
+	/* height: 100%; */
 
 	${(p) => p.animate && animate(p.animationKeyframes, p.animationTime)}
 `
 
 const HeaderContainer = styled.header`
+	background: rgba(255, 255, 255, 0.5);
 	border-bottom: 1px solid var(--gray75);
 	height: var(--page-header-height);
 	padding: 0 var(--spacing3);
@@ -114,11 +116,11 @@ const Menu = ({
 	}
 
 	useEffect(() => {
-		if (isOpen) {
-			disableBodyScroll(menuRef)
-		} else {
-			enableBodyScroll(menuRef)
-		}
+		// if (isOpen) {
+		// 	disableBodyScroll(menuRef)
+		// } else {
+		// 	enableBodyScroll(menuRef)
+		// }
 
 		return clearAllBodyScrollLocks
 	})
@@ -128,7 +130,7 @@ const Menu = ({
 			{isOpen ? (
 				<Portal>
 					<FullscreenContainer ref={menuRef} animate={animate}>
-						<Div100vh>{renderWhenOpen ? renderWhenOpen(close) : null}</Div100vh>
+						{renderWhenOpen ? renderWhenOpen(close) : null}
 					</FullscreenContainer>
 				</Portal>
 			) : renderWhenClosed ? (
