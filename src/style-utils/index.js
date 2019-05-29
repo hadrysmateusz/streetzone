@@ -76,3 +76,12 @@ export const getCategoryColor = (category) => {
 			return "#c4c4c4"
 	}
 }
+
+export const nLinesHigh = (nOfLines, lineHeight = "1.6em") => {
+	return css`
+		--line-height: ${lineHeight};
+		--height: calc(${nOfLines} * var(--line-height));
+		line-height: var(--line-height);
+		height: var(--min-height);
+	`
+}
