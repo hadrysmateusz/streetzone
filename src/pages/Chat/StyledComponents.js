@@ -36,53 +36,26 @@ export const OuterContainer = styled.div`
 `
 
 export const MobileRoomStyles = styled.div`
-	/* width: 100%;
-	max-width: 100vw;
-	min-width: 0; */
-	/* height: 100vh; */
-	/* overflow: auto; */
-
-	--bottom-container-height: 200px;
-
-	/* height: 100%; */
-	/* height: calc(100% - var(--page-header-height)); */
-
-	/* display: grid;
-	grid-template-columns: 100%;
-	grid-template-rows: 1fr auto; */
+	--bottom-container-height: 180px;
 
 	.messages {
 		height: 100%;
-
 		min-height: 0;
-		/* max-height: 100vh; */
-		/* overflow-y: scroll; */
-		/* height: 400px; */
-
 		padding: var(--spacing3);
-
 		display: grid;
 		align-content: start;
 		gap: var(--spacing3);
-		/* use margin instead of gap to get the space after last message */
-		/* > * {
-			margin-bottom: var(--spacing3);
-		} */
-
 		margin-bottom: var(--bottom-container-height);
 	}
 
 	.bottom-container {
 		border-top: 1px solid var(--gray75);
 
-		/* min-width: 0;
-		max-width: 100vw; */
 		width: 100%;
 		height: var(--bottom-container-height);
 
-		background: rgba(255, 255, 255, 0.5);
+		background: white;
 		padding: var(--spacing2);
-		/* padding-bottom: 50px; */
 		box-sizing: border-box;
 		position: fixed;
 		bottom: 0;

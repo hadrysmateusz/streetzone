@@ -7,7 +7,8 @@ import {
 } from "body-scroll-lock"
 import { Portal } from "react-portal"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import Div100vh from "react-div-100vh"
+// import Div100vh from "react-div-100vh"
+import Div100vh from "../Div100vh"
 
 import { TextBlock } from "../StyledComponents"
 
@@ -32,28 +33,22 @@ const animate = (
 
 export const FullscreenContainer = styled(Div100vh)`
 	width: 100%;
-	/* max-width: 100vw; */
 	min-width: 0;
 	position: fixed;
 	padding-top: var(--page-header-height);
 	top: 0;
 	left: 0;
-	/* right: 0;
-	bottom: 0;
-	height: 100vh; */
 	background: white;
 	overflow: scroll;
 	> * {
 		overflow: hidden;
 	}
 
-	/* height: 100%; */
-
 	${(p) => p.animate && animate(p.animationKeyframes, p.animationTime)}
 `
 
 const HeaderContainer = styled.header`
-	background: rgba(255, 255, 255, 0.5);
+	background: white;
 	border-bottom: 1px solid var(--gray75);
 	height: var(--page-header-height);
 	padding: 0 var(--spacing3);
@@ -104,10 +99,6 @@ const Menu = ({
 	const [isOpen, setIsOpen] = useState(startOpen)
 	const menuRef = useRef()
 
-	const toggle = () => {
-		setIsOpen((isOpen) => !isOpen)
-	}
-
 	const close = () => {
 		setIsOpen(false)
 		if (onClose) onClose()
@@ -119,13 +110,10 @@ const Menu = ({
 	}
 
 	useEffect(() => {
-		const el = document.getElementById("kurczok99")
-
-		console.log(el)
 		if (isOpen) {
-			disableBodyScroll(el)
+			disableBodyScroll(menuRef.current)
 		} else {
-			enableBodyScroll(el)
+			enableBodyScroll(menuRef.current)
 		}
 
 		return clearAllBodyScrollLocks
@@ -135,7 +123,7 @@ const Menu = ({
 		<FullscreenMenuContext.Provider value={{ close }}>
 			{isOpen ? (
 				<Portal>
-					<FullscreenContainer id="kurczok99" ref={menuRef} animate={animate}>
+					<FullscreenContainer ref={menuRef} animate={animate}>
 						{renderWhenOpen ? renderWhenOpen(close) : null}
 					</FullscreenContainer>
 				</Portal>
