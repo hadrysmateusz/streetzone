@@ -19,13 +19,14 @@ import { route } from "../../utils"
 import { NewChat } from "./New"
 
 import {
-	MessageStyles,
-	RoomStyles,
-	RoomTabStyles,
-	MobileUserInfo,
 	OuterContainer,
+	NoRoomSelected,
 	MobileRoomStyles,
-	TopContainerMobile
+	DesktopRoomStyles,
+	TopContainerMobile,
+	MobileUserInfo,
+	MessageStyles,
+	RoomTabStyles
 } from "./StyledComponents"
 
 const Message = ({ id, roomId, message, createdAt, author, user, unread }) => {
@@ -53,7 +54,7 @@ const Message = ({ id, roomId, message, createdAt, author, user, unread }) => {
 	)
 }
 
-const EmptyState = () => (
+const NoMessages = () => (
 	<div className="empty-state">Nie masz jeszcze żadnych wiadomości</div>
 )
 
@@ -94,11 +95,17 @@ const ChatRoomTopContainerMobile = ({ user }) => {
 	)
 }
 
+const MessagesList = ({ messages, authUser, roomId }) => {
+	return messages.map((message) => (
+		<Message {...message} key={message.id} user={authUser} roomId={roomId} />
+	))
+}
+
 const ChatRoom = ({ id: roomId, otherUserId, authUser, isMobile, closeChat }) => {
 	const firebase = useFirebase()
 	const [messages, setMessages] = useState()
-	const containerRef = useRef()
 	const [otherUser, error] = useUserData(otherUserId)
+	const containerRef = useRef()
 
 	useEffect(() => {
 		const unsubscribe = firebase.db
@@ -131,9 +138,7 @@ const ChatRoom = ({ id: roomId, otherUserId, authUser, isMobile, closeChat }) =>
 				</Header>
 
 				<div className="messages" ref={containerRef}>
-					{messages.map((message) => (
-						<Message {...message} key={message.id} user={authUser} roomId={roomId} />
-					))}
+					<MessagesList messages={messages} authUser={authUser} roomId={roomId} />
 				</div>
 
 				<div className="bottom-container">
@@ -145,19 +150,19 @@ const ChatRoom = ({ id: roomId, otherUserId, authUser, isMobile, closeChat }) =>
 
 	// render desktop
 	return (
-		<RoomStyles>
+		<DesktopRoomStyles>
 			<div className="top-container">
 				<UserPreview id={otherUserId} />
 			</div>
+
 			<div className="messages" ref={containerRef}>
-				{messages.map((message) => (
-					<Message {...message} key={message.id} user={authUser} roomId={roomId} />
-				))}
+				<MessagesList messages={messages} authUser={authUser} roomId={roomId} />
 			</div>
+
 			<div className="bottom-container">
 				<NewChat userId={otherUserId} />
 			</div>
-		</RoomStyles>
+		</DesktopRoomStyles>
 	)
 }
 
@@ -228,7 +233,7 @@ const UserChat = ({ location, history, match, currentBreakpoint }) => {
 							<RoomsList rooms={rooms} />
 						</div>
 					) : (
-						<EmptyState />
+						<NoMessages />
 					)
 				}
 			/>
@@ -249,12 +254,12 @@ const UserChat = ({ location, history, match, currentBreakpoint }) => {
 						{hasSelectedRoom ? (
 							<ChatRoom {...chatRoomProps} />
 						) : (
-							<div class="no-room-selected">Wybierz osobę z listy</div>
+							<NoRoomSelected>Wybierz osobę z listy</NoRoomSelected>
 						)}
 					</div>
 				</OuterContainer>
 			) : (
-				<EmptyState />
+				<NoMessages />
 			)}
 		</PageContainer>
 	)

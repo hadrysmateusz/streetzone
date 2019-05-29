@@ -1,38 +1,31 @@
 import styled from "styled-components/macro"
 
-export const CloseButton = styled.div`
-	cursor: pointer;
-	padding: var(--spacing1);
-`
-
 export const OuterContainer = styled.div`
 	display: grid;
-	grid-template-columns: 1fr 3fr;
+	grid-template-columns: minmax(200px, 1fr) 3fr;
 	grid-template-rows: 100%;
-
-	height: 90vh;
+	height: 75vh;
 	overflow-y: auto;
 
 	border: 1px solid var(--gray75);
-	margin-bottom: var(--spacing4);
+	margin-top: var(--spacing3);
+	margin-bottom: var(--spacing3);
 
 	.sidebar {
 		border-right: 1px solid var(--gray75);
-		min-width: 200px;
 	}
-	.chat-container {
-		.no-room-selected {
-			background: var(--almost-white);
-			width: 100%;
-			height: 100%;
-			display: flex;
-			justify-content: center;
-			align-items: center;
-			color: var(--gray0);
-			user-select: none;
-			cursor: default;
-		}
-	}
+`
+
+export const NoRoomSelected = styled.div`
+	background: var(--almost-white);
+	width: 100%;
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	color: var(--gray0);
+	user-select: none;
+	cursor: default;
 `
 
 export const MobileRoomStyles = styled.div`
@@ -50,10 +43,8 @@ export const MobileRoomStyles = styled.div`
 
 	.bottom-container {
 		border-top: 1px solid var(--gray75);
-
 		width: 100%;
 		height: var(--bottom-container-height);
-
 		background: white;
 		padding: var(--spacing2);
 		box-sizing: border-box;
@@ -63,48 +54,34 @@ export const MobileRoomStyles = styled.div`
 	}
 `
 
-export const RoomStyles = styled.div`
+export const DesktopRoomStyles = styled.div`
 	display: grid;
 	grid-template-rows: auto 1fr auto;
 	min-height: 0;
 	height: 100%;
 
-	@media (max-width: ${(p) => p.theme.breakpoints[1] - 1}px) {
-		position: fixed;
-		height: 100vh;
-		width: 100vw;
-		border: none;
-		z-index: 9999;
-		background: white;
-		top: 0;
-		left: 0;
-		padding-bottom: 30px;
-
-		.bottom-container {
-			min-width: 0;
-			max-width: 100vw;
-			width: 100%;
-
-			background: white;
-			padding: var(--spacing2);
-			box-sizing: border-box;
-			position: fixed;
-			bottom: 0;
-			left: 0;
-		}
-	}
-
-	.bottom-container {
+	.top-container {
+		border-bottom: 1px solid var(--gray75);
 		padding: var(--spacing3);
-		padding-top: var(--spacing2);
 	}
 
 	.messages {
+		min-height: 0;
 		padding: var(--spacing3);
 		display: grid;
 		align-content: start;
-		gap: var(--spacing3);
+		/* use margin to preserve the space after last item */
+		> * {
+			margin-bottom: var(--spacing3);
+		}
 		overflow-y: auto;
+	}
+
+	.bottom-container {
+		border-top: 1px solid var(--gray75);
+		height: var(--bottom-container-height);
+		padding: var(--spacing3);
+		padding-top: var(--spacing2);
 	}
 `
 

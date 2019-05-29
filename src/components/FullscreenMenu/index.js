@@ -7,7 +7,6 @@ import {
 } from "body-scroll-lock"
 import { Portal } from "react-portal"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-// import Div100vh from "react-div-100vh"
 import Div100vh from "../Div100vh"
 
 import { TextBlock } from "../StyledComponents"
