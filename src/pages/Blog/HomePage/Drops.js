@@ -1,64 +1,45 @@
-import React, { useState, useEffect, useRef } from "react"
+import React, { useState } from "react"
 import { withBreakpoints } from "react-breakpoints"
 import styled from "styled-components/macro"
-import {
-	disableBodyScroll,
-	enableBodyScroll,
-	clearAllBodyScrollLocks
-} from "body-scroll-lock"
 
 import {
 	SearchWrapper,
 	StatelessSearchWrapper
 } from "../../../components/InstantSearchWrapper"
 import { PageContainer } from "../../../components/Containers"
-import { SmallDropCard, PostCard } from "../../../components/Cards"
-import { ThematicGroup } from "../../../components/ThematicGroup"
+import { SmallDropCard } from "../../../components/Cards"
 import { TextBlock } from "../../../components/StyledComponents"
 import { FiltersToggleButton } from "../../../components/Topbar/FiltersToggle"
 
 import { CONST } from "../../../constants"
 import { route } from "../../../utils"
+import { nLinesHigh } from "../../../style-utils"
 
 import PromotedDrop from "../Previews/PromotedDrop"
 import { PromotedContainer } from "../StyledComponents"
 // import Sidebar from "./Sidebar"
-import CategoryNav from "./CategoryNav"
-import InfinitePosts from "../InfinitePostsList"
 import Filters from "./Filters"
 import { Layout } from "./Common"
 
 const Sidebar = withBreakpoints(({ currentBreakpoint }) => {
-	const [areFiltersOpen, setAreFiltersOpen] = useState(currentBreakpoint > 1)
-	const [searchState, setSearchState] = useState(null)
-
 	const isMobile = currentBreakpoint === 0
-
-	const toggleFilters = () => {
-		// const wasOpen = areFiltersOpen
-		// if (wasOpen) {
-		// 	enableBodyScroll(this.targetElement)
-		// } else {
-		// 	disableBodyScroll(this.targetElement)
-		// }
-
-		setAreFiltersOpen((state) => !state)
-	}
-
-	// if (!isMobile) {
-	// 	enableBodyScroll(this.targetElement)
-	// }
 
 	return (
 		<>
-			{isMobile && <FiltersToggleButton onClick={toggleFilters} />}
-			<Filters toggle={toggleFilters} />
+			{/* {isMobile && <FiltersToggleButton onClick={toggleFilters} />}
+			<Filters toggle={toggleFilters} /> */}
 		</>
 	)
 })
 
 const OuterContainer = styled.div`
 	padding: var(--spacing3) 0;
+`
+
+const SectionCardContainer = styled.div`
+	padding: var(--spacing3);
+	background: white;
+	border: 1px solid var(--gray75);
 `
 
 const PromotedSection = ({ indexName, limit, component: C }) => {
@@ -77,6 +58,31 @@ const PromotedSection = ({ indexName, limit, component: C }) => {
 	)
 }
 
+const SectionCard = ({ title, description }) => {
+	return (
+		<SectionCardContainer>
+			<div className="title">{title}</div>
+			<div className="desc">{description}</div>
+		</SectionCardContainer>
+	)
+}
+
+const MobileSectionSelect = () => {
+	return <div />
+}
+
+const DesktopSectionSelect = () => {
+	return (
+		<div
+			css={`
+				display: grid;
+				grid-auto-columns: repeat(3, 1fr);
+				gap: var(--spacing3);
+			`}
+		/>
+	)
+}
+
 const DropsPage = withBreakpoints(({ currentBreakpoint }) => {
 	const isMobile = currentBreakpoint <= 1
 
@@ -91,10 +97,11 @@ const DropsPage = withBreakpoints(({ currentBreakpoint }) => {
 					/>
 				</PageContainer>
 			)}
+
 			<SearchWrapper
 				indexName={CONST.BLOG_DROP_ALGOLIA_INDEX}
-				allowedKeys={["tags"]}
-				hitsPerPage={3}
+				allowedKeys={["category", "designers"]}
+				hitsPerPage={4}
 			>
 				<PageContainer>
 					<Layout>
@@ -103,6 +110,7 @@ const DropsPage = withBreakpoints(({ currentBreakpoint }) => {
 							<TextBlock size="xl" bold>
 								Dropy
 							</TextBlock>
+							{isMobile ? <MobileSectionSelect /> : <DesktopSectionSelect />}
 						</main>
 						{/* Sidebar */}
 						{!isMobile && <Sidebar />}
