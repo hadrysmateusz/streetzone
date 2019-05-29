@@ -29,12 +29,12 @@ const IconContainer = styled.div`
 const BurgerNavigation = ({ children }) => {
 	return (
 		<FullscreenMenu
-			renderWhenClosed={(open) => (
+			renderWhenClosed={({ open }) => (
 				<IconContainer onClick={open}>
 					<FontAwesomeIcon icon="bars" />
 				</IconContainer>
 			)}
-			renderWhenOpen={(close) => (
+			renderWhenOpen={({ close }) => (
 				<>
 					<Header>{CONST.BRAND_NAME}</Header>
 					{React.Children.map(children, (child, i) =>
