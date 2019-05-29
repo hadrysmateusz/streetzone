@@ -93,7 +93,15 @@ export const NewChat = ({ userId }) => {
 						<Field name="message">
 							{({ input, meta }) => {
 								const error = meta.error && meta.touched ? meta.error : null
-								return <Textarea {...input} placeholder="Wiadomość" error={error} />
+								return (
+									<Textarea
+										{...input}
+										autoResize={false}
+										numberOfLines={3}
+										placeholder="Wiadomość"
+										error={error}
+									/>
+								)
 							}}
 						</Field>
 

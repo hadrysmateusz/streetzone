@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react"
+import React, { useEffect, useState, useRef, useContext } from "react"
 import moment from "moment"
 import { withRouter, Link } from "react-router-dom"
 import { withBreakpoints } from "react-breakpoints"
@@ -10,7 +10,10 @@ import UserPreview from "../../components/UserPreview"
 import { withAuthorization } from "../../components/UserSession"
 import { PageContainer } from "../../components/Containers"
 import ProfilePicture from "../../components/ProfilePicture"
-import FullscreenMenu, { Header } from "../../components/FullscreenMenu"
+import FullscreenMenu, {
+	Header,
+	FullscreenMenuContext
+} from "../../components/FullscreenMenu"
 
 import getProfilePictureURL from "../../utils/getProfilePictureURL"
 import { useFirebase, useUserData, useAuthentication } from "../../hooks"
@@ -21,6 +24,7 @@ import { NewChat } from "./New"
 import {
 	OuterContainer,
 	NoRoomSelected,
+	ChatRoomContainer,
 	MobileRoomStyles,
 	DesktopRoomStyles,
 	TopContainerMobile,
@@ -105,26 +109,40 @@ const ChatRoom = ({ id: roomId, otherUserId, authUser, isMobile, closeChat }) =>
 	const firebase = useFirebase()
 	const [messages, setMessages] = useState()
 	const [otherUser, error] = useUserData(otherUserId)
-	const containerRef = useRef()
+	const fullscreenContext = useContext(FullscreenMenuContext)
+	const desktopMessagesRef = useRef()
 
 	useEffect(() => {
+		// monitor new messages
 		const unsubscribe = firebase.db
 			.collection("rooms")
 			.doc(roomId)
 			.collection("messages")
 			.onSnapshot((snap) => {
+				// get new messages and write them to state
 				const __messages = snap.docs.map((room) => room.data())
 				setMessages(__messages)
-
-				const elem = containerRef.current
-				elem.scrollTop = elem.scrollHeight
 			})
 
 		return unsubscribe
-	}, [roomId, otherUserId])
+	}, [roomId, firebase])
 
+	useEffect(() => {
+		// get the scrollable element
+		const scrollableElement = fullscreenContext
+			? fullscreenContext.containerRef.current
+			: desktopMessagesRef.current
+
+		// return if no ref is available
+		if (!scrollableElement) return
+
+		// scroll the element to reveal the new message
+		scrollableElement.scrollTop = scrollableElement.scrollHeight
+	}, [messages, isMobile, fullscreenContext])
+
+	// sort messages to put newest at the bottom
 	if (messages) {
-		messages.sort((a, b) => a.createdAt - b.createdAt) /* put newest at the bottom */
+		messages.sort((a, b) => a.createdAt - b.createdAt)
 	}
 
 	if (!messages) return <LoadingSpinner />
@@ -132,37 +150,41 @@ const ChatRoom = ({ id: roomId, otherUserId, authUser, isMobile, closeChat }) =>
 	// render mobile
 	if (isMobile) {
 		return (
-			<MobileRoomStyles>
-				<Header>
-					<ChatRoomTopContainerMobile user={otherUser} />
-				</Header>
+			<ChatRoomContainer>
+				<MobileRoomStyles>
+					<Header>
+						<ChatRoomTopContainerMobile user={otherUser} />
+					</Header>
 
-				<div className="messages" ref={containerRef}>
+					<div className="messages">
+						<MessagesList messages={messages} authUser={authUser} roomId={roomId} />
+					</div>
+
+					<div className="bottom-container">
+						<NewChat userId={otherUserId} />
+					</div>
+				</MobileRoomStyles>
+			</ChatRoomContainer>
+		)
+	}
+
+	// render desktop
+	return (
+		<ChatRoomContainer>
+			<DesktopRoomStyles>
+				<div className="top-container">
+					<UserPreview id={otherUserId} />
+				</div>
+
+				<div className="messages" ref={desktopMessagesRef}>
 					<MessagesList messages={messages} authUser={authUser} roomId={roomId} />
 				</div>
 
 				<div className="bottom-container">
 					<NewChat userId={otherUserId} />
 				</div>
-			</MobileRoomStyles>
-		)
-	}
-
-	// render desktop
-	return (
-		<DesktopRoomStyles>
-			<div className="top-container">
-				<UserPreview id={otherUserId} />
-			</div>
-
-			<div className="messages" ref={containerRef}>
-				<MessagesList messages={messages} authUser={authUser} roomId={roomId} />
-			</div>
-
-			<div className="bottom-container">
-				<NewChat userId={otherUserId} />
-			</div>
-		</DesktopRoomStyles>
+			</DesktopRoomStyles>
+		</ChatRoomContainer>
 	)
 }
 
@@ -187,7 +209,7 @@ const UserChat = ({ location, history, match, currentBreakpoint }) => {
 			setRooms(__rooms)
 		}
 		getRooms()
-	}, [authUser])
+	}, [authUser, firebase])
 
 	// Get currently selected room from the list
 	useEffect(() => {
@@ -222,7 +244,7 @@ const UserChat = ({ location, history, match, currentBreakpoint }) => {
 				onClose={closeChat}
 				startOpen
 				animate={false}
-				renderWhenOpen={(close) =>
+				renderWhenOpen={({ close }) =>
 					!rooms ? (
 						<LoadingSpinner />
 					) : hasSelectedRoom ? (

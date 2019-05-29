@@ -11,7 +11,7 @@ import Div100vh from "../Div100vh"
 
 import { TextBlock } from "../StyledComponents"
 
-const FullscreenMenuContext = React.createContext()
+export const FullscreenMenuContext = React.createContext()
 
 const DEFAULT_ANIMATION_TIME = "150ms"
 const DEFAULT_ANIMATION = keyframes`
@@ -38,10 +38,7 @@ export const FullscreenContainer = styled(Div100vh)`
 	top: 0;
 	left: 0;
 	background: white;
-	overflow: scroll;
-	> * {
-		overflow: hidden;
-	}
+	overflow-y: auto;
 
 	${(p) => p.animate && animate(p.animationKeyframes, p.animationTime)}
 `
@@ -96,7 +93,7 @@ const Menu = ({
 	startOpen = false
 }) => {
 	const [isOpen, setIsOpen] = useState(startOpen)
-	const menuRef = useRef()
+	const containerRef = useRef()
 
 	const close = () => {
 		setIsOpen(false)
@@ -110,26 +107,28 @@ const Menu = ({
 
 	useEffect(() => {
 		if (isOpen) {
-			disableBodyScroll(menuRef.current)
+			disableBodyScroll(containerRef.current)
 		} else {
-			enableBodyScroll(menuRef.current)
+			enableBodyScroll(containerRef.current)
 		}
 
 		return clearAllBodyScrollLocks
 	})
 
+	const contextValue = { close, open, containerRef }
+
 	return (
-		<FullscreenMenuContext.Provider value={{ close }}>
+		<FullscreenMenuContext.Provider value={contextValue}>
 			{isOpen ? (
 				<Portal>
-					<FullscreenContainer ref={menuRef} animate={animate}>
-						{renderWhenOpen ? renderWhenOpen(close) : null}
+					<FullscreenContainer ref={containerRef} animate={animate}>
+						{renderWhenOpen ? renderWhenOpen(contextValue) : null}
 					</FullscreenContainer>
 				</Portal>
 			) : renderWhenClosed ? (
-				renderWhenClosed(open)
+				renderWhenClosed(contextValue)
 			) : (
-				<button onClick={open}>Otwórz</button>
+				<button onClick={open}>Otwórz Menu</button>
 			)}
 		</FullscreenMenuContext.Provider>
 	)

@@ -7,22 +7,23 @@ export default (userId, authUser, isAuthorized, forceRefresh, setForceRefresh) =
 	const [error, setError] = useState(null)
 	const [user, setUser] = useState(null)
 
-	const fetchUser = async () => {
-		if (isAuthorized) {
-			setUser(authUser)
-		} else {
-			const { user, error } = await firebase.getUserData(userId)
-			setUser(user)
-			setError(error)
-		}
-	}
-
 	useEffect(() => {
+		const fetchUser = async () => {
+			if (isAuthorized) {
+				setUser(authUser)
+			} else {
+				const { user, error } = await firebase.getUserData(userId)
+				setUser(user)
+				setError(error)
+			}
+		}
+
 		fetchUser()
+
 		if (forceRefresh) {
 			setForceRefresh(false)
 		}
-	}, [userId, authUser, forceRefresh])
+	}, [userId, isAuthorized, firebase, authUser, forceRefresh])
 
 	return [user, error]
 }

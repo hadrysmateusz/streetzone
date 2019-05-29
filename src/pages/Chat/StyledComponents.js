@@ -28,9 +28,12 @@ export const NoRoomSelected = styled.div`
 	cursor: default;
 `
 
-export const MobileRoomStyles = styled.div`
-	--bottom-container-height: 180px;
+export const ChatRoomContainer = styled.div`
+	--bottom-container-height: 160px;
+	height: 100%;
+`
 
+export const MobileRoomStyles = styled.div`
 	.messages {
 		height: 100%;
 		min-height: 0;
@@ -56,13 +59,15 @@ export const MobileRoomStyles = styled.div`
 
 export const DesktopRoomStyles = styled.div`
 	display: grid;
-	grid-template-rows: auto 1fr auto;
+	grid-template-rows: 110px 1fr var(--bottom-container-height);
 	min-height: 0;
 	height: 100%;
 
 	.top-container {
 		border-bottom: 1px solid var(--gray75);
-		padding: var(--spacing3);
+		padding: 0 var(--spacing3);
+		display: flex;
+		align-items: center;
 	}
 
 	.messages {
@@ -78,10 +83,9 @@ export const DesktopRoomStyles = styled.div`
 	}
 
 	.bottom-container {
-		border-top: 1px solid var(--gray75);
 		height: var(--bottom-container-height);
-		padding: var(--spacing3);
-		padding-top: var(--spacing2);
+		border-top: 1px solid var(--gray75);
+		padding: var(--spacing2) var(--spacing3);
 	}
 `
 
