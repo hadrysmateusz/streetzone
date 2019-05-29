@@ -83,6 +83,7 @@ body {
 		sans-serif;
 
 	overflow-y: scroll;
+	overflow-x: hidden;
 }
 
 *,
