@@ -4,7 +4,7 @@ import formatDesigners from "../../utils/formatDesigners"
 import formatSize from "../../utils/formatSize"
 import formatPrice from "../../utils/formatPrice"
 
-import styled from "styled-components/macro"
+import styled, { css } from "styled-components/macro"
 import { ellipsis, getCategoryColor } from "../../style-utils"
 
 export const InfoContainer = styled.div`
@@ -29,9 +29,19 @@ export const BottomContainer = styled.div`
 	}
 `
 
+const middleContainerFlex = css`
+	display: flex;
+	align-items: center;
+	.align-right {
+		margin-left: auto;
+	}
+`
+
 export const MiddleContainer = styled.div`
 	padding-top: var(--spacing1);
 	padding-bottom: var(--spacing2);
+
+	${(p) => p.flex && middleContainerFlex}
 `
 
 export const TopContainer = styled.div`

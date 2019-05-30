@@ -8,7 +8,7 @@ import {
 	StatelessSearchWrapper
 } from "../../../components/InstantSearchWrapper"
 import { PageContainer } from "../../../components/Containers"
-import { SmallDropCard } from "../../../components/Cards"
+import { BigDropCard } from "../../../components/Cards"
 import { TextBlock } from "../../../components/StyledComponents"
 import { FiltersToggleButton } from "../../../components/Topbar/FiltersToggle"
 import InfiniteScrollingResults from "../../../components/InfiniteScrollingResults"
@@ -43,7 +43,10 @@ const OuterContainer = styled.div`
 const ResultsContainer = styled.div`
 	display: grid;
 	gap: var(--spacing3);
-	grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+	grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
+		grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+	}
 `
 
 const SectionCardContainer = styled.div`
@@ -203,6 +206,8 @@ const DropsPage = withBreakpoints(({ currentBreakpoint }) => {
 				allowedKeys={["category", "designers", "dropsAtApproxTimestamp"]}
 				hitsPerPage={4}
 			>
+				{/* This only sets the default value but doesn't refine so it 
+				relies on the refine call inside of section select */}
 				{dropsAtRefinement && (
 					<VirtualRefinement
 						attribute="dropsAtApproxTimestamp"
@@ -238,7 +243,7 @@ const DropsPage = withBreakpoints(({ currentBreakpoint }) => {
 									return (
 										<ResultsContainer>
 											{results.map((drop) => (
-												<SmallDropCard {...drop} key={drop.id} />
+												<BigDropCard {...drop} key={drop.id} />
 											))}
 										</ResultsContainer>
 									)

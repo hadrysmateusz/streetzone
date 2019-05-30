@@ -80,7 +80,7 @@ export const BigItemCard = ({
 						<Size value={size} />
 					</TopContainer>
 					<MiddleContainer>
-						<Name big>{name}</Name>
+						<Name>{name}</Name>
 						<DateContainer withMargin>Dodano {date}</DateContainer>
 						<Description>{description}</Description>
 					</MiddleContainer>
