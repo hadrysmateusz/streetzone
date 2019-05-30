@@ -45,8 +45,6 @@ const PageNav = ({ breadcrumbs, showBack = true, white }) => {
 		return { title, path }
 	})
 
-	console.log(routes)
-
 	const lastRoute = routes[routes.length - 1]
 
 	return (

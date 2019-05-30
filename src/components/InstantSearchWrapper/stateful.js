@@ -4,7 +4,7 @@ import { InstantSearch, Configure } from "react-instantsearch-dom"
 import cloneDeep from "clone-deep"
 
 import { decodeURL, encodeURL } from "../../utils/algoliaURLutils"
-import { VirtualToggle } from "../Algolia/Virtual"
+import { VirtualToggle, VirtualSortBy } from "../Algolia/Virtual"
 
 const EMPTY_SEARCH_ERR = "empty search string"
 
@@ -17,6 +17,7 @@ export const SearchWrapper = withRouter(
 		children,
 		history,
 		location,
+		sortBy,
 		showArchived = false,
 		...rest
 	}) => {
@@ -142,8 +143,6 @@ export const SearchWrapper = withRouter(
 				return _initialState
 			}
 		}, [_initialState, allowedKeys, location.search])
-
-		console.log(searchState)
 
 		return (
 			<InstantSearch

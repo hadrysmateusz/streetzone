@@ -8,14 +8,14 @@ import {
 } from "../Algolia/Virtual"
 
 /**
- * Provides the results from an algolia search using the render props pattern
+ * Provides the current page of results from an algolia search using the render props pattern
  */
 export const Results = connectHits(({ hits, children }) => {
 	return children(hits)
 })
 
 /**
- * Provides the results from an algolia search using the render props pattern, along with a function to load more
+ * Provides all the results from an algolia search using the render props pattern, along with a function to load more
  */
 export const InfiniteResults = connectInfiniteHits(
 	({ hasMore, refine, hits, children }) => {
