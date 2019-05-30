@@ -43,7 +43,7 @@ const AddDropForm = ({ onSubmit }) => {
 
 						<TextareaFF
 							label="Opis"
-							placeholder="Kilka słów o przedmiocie. Jego historia itd."
+							placeholder="Kilka słów o przedmiocie. Jego historia itd. (Opcjonalny)"
 							name="description"
 						/>
 
@@ -74,12 +74,11 @@ const AddDropForm = ({ onSubmit }) => {
 							placeholder="Kategoria"
 						/>
 
-						<NumberFF
+						<TextFF
 							label="Cena przedmiotu"
 							placeholder="Cena (opcjonalne)"
 							name="price"
-							min="0"
-							step="1"
+							info={"Razem z walutą"}
 						/>
 
 						<TextFF
@@ -139,8 +138,6 @@ const AddDrop = ({ history }) => {
 				firebase.getImageURL(storageRef)
 			)
 			const imageUrls = await Promise.all(urlPromises)
-
-			debugger
 
 			// Get main image index
 			const mainImageIndex = files.findIndex((a) => a.isMain)

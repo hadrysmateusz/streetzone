@@ -73,7 +73,7 @@ export const formatDropDataForDb = (data, mode, flagState = true) => {
 
 		// price
 		if (isSet(data.price)) {
-			formatted.price = formatInt(data.price)
+			formatted.price = formatString(data.price)
 		}
 
 		// howMany
