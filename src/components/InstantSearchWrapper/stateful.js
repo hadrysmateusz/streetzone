@@ -143,7 +143,7 @@ export const SearchWrapper = withRouter(
 			}
 		}, [_initialState, allowedKeys, location.search])
 
-		console.log(_initialState)
+		console.log(searchState)
 
 		return (
 			<InstantSearch

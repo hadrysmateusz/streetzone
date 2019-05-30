@@ -11,6 +11,7 @@ export const EmptyStateContainer = styled.div`
 	color: var(--gray25);
 `
 
+// REMEMBER: this is a common empty state for all components using InfiniteScrollingResults
 const NoResults = connectStateResults(({ searchResults, searching }) => {
 	const hasResults = searchResults && searchResults.nbHits !== 0
 	const isEmpty = !hasResults && !searching
