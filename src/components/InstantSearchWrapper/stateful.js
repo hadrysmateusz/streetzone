@@ -42,6 +42,8 @@ export const SearchWrapper = withRouter(
 				}
 			}
 
+			console.log(parsedSearch)
+
 			try {
 				for (const [key, val] of Object.entries(parsedSearch)) {
 					// these three always have the same names
@@ -110,6 +112,8 @@ export const SearchWrapper = withRouter(
 				}
 			}
 
+			console.log("formattedState", formattedState)
+
 			return formattedState
 		}
 
@@ -124,6 +128,15 @@ export const SearchWrapper = withRouter(
 
 		const handleSearchStateChange = async (newSearchState) => {
 			const formattedState = await onSearchStateChange(newSearchState)
+			const url = encodeURL(formattedState)
+			history.push(url)
+		}
+
+		const forceRefineWithState = async (partialSearchState) => {
+			const formattedState = await onSearchStateChange({
+				...searchState,
+				...partialSearchState
+			})
 			const url = encodeURL(formattedState)
 			history.push(url)
 		}
@@ -144,6 +157,8 @@ export const SearchWrapper = withRouter(
 			}
 		}, [_initialState, allowedKeys, location.search])
 
+		const isChildrenFunction = typeof children === "function"
+
 		return (
 			<InstantSearch
 				appId={process.env.REACT_APP_APP_ID}
@@ -151,7 +166,7 @@ export const SearchWrapper = withRouter(
 				indexName={indexName}
 				searchState={searchState}
 				onSearchStateChange={handleSearchStateChange}
-				createURL={decodeURL}
+				createURL={encodeURL}
 				{...rest}
 			>
 				{hitsPerPage && <Configure hitsPerPage={hitsPerPage} />}
@@ -165,7 +180,7 @@ export const SearchWrapper = withRouter(
 					/>
 				)}
 
-				{children}
+				{isChildrenFunction ? children(forceRefineWithState) : children}
 			</InstantSearch>
 		)
 	}

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react"
 import { withBreakpoints } from "react-breakpoints"
 import styled from "styled-components/macro"
-import { connectSortBy } from "react-instantsearch-dom"
+import { connectSortBy, connectRange } from "react-instantsearch-dom"
+import { compose } from "recompose"
 
 import {
 	SearchWrapper,
@@ -17,6 +18,7 @@ import { VirtualSortBy } from "../../../components/Algolia/Virtual"
 
 import { CONST } from "../../../constants"
 import { route } from "../../../utils"
+import { withProps } from "../../../HOCs"
 import { nLinesHigh } from "../../../style-utils"
 
 import PromotedDrop from "../Previews/PromotedDrop"
@@ -134,26 +136,74 @@ const SectionCard = ({ id, title, description, onClick, selected }) => {
 	)
 }
 
+const SectionSelect = withBreakpoints(({ currentBreakpoint, ...rest }) => {
+	return +currentBreakpoint <= 1 ? (
+		<MobileSectionSelect {...rest} />
+	) : (
+		<DesktopSectionSelect {...rest} />
+	)
+})
+
 const MobileSectionSelect = () => {
 	return <div />
 }
 
+const constructRangeRefinement = (newMin, newMax, defMin, defMax) => {
+	return {
+		min: Math.max(newMin, defMin) || defMin,
+		max: Math.min(newMax, defMax) || defMax
+	}
+}
+
+const DateRefinement = compose(
+	withProps({ attribute: "dropsAtApproxTimestamp" }),
+	connectRange
+)((props) => {
+	console.log(props)
+	const { sectionId, refine, currentRefinement, min, max } = props
+	useEffect(() => {
+		const now = Date.now()
+		let value
+
+		console.log("changed section", sectionId, min, max)
+
+		switch (sectionId) {
+			case "newest":
+				value = constructRangeRefinement(null, null, min, max)
+				break
+			case "upcoming":
+				value = constructRangeRefinement(now, null, min, max)
+				break
+			case "archive":
+				value = constructRangeRefinement(null, now, min, max)
+				break
+			default:
+				value = constructRangeRefinement(null, null, min, max)
+		}
+
+		console.log("newRefinement", value)
+		console.log("refine range")
+
+		refine(value)
+
+		// refine({ min: 0, max: Date.now() })
+	}, [sectionId])
+
+	return null
+})
+
 const DesktopSectionSelect = connectSortBy(
 	({ sections, onClick, items, currentSection, refine }) => {
-		// const value = currentSection.sortBy
-
-		// useEffect(() => {
-		// 	console.log("refining with value:", value)
-		// 	refine(value)
-		// }, [value])
-
 		const _onClick = (section) => {
+			console.log("refine sorting")
 			refine(section.sortBy)
 			onClick(section.id)
 		}
 
 		return (
 			<DesktopSectionSelectContainer>
+				<DateRefinement sectionId={currentSection.id} />
+
 				{sections.map((section) => (
 					<SectionCard
 						key={section.title}
@@ -167,37 +217,13 @@ const DesktopSectionSelect = connectSortBy(
 	}
 )
 
-const CustomSortBy = connectSortBy((props) => {
-	console.log("sortby props", props)
-	return <div />
-})
-
 const DropsPage = withBreakpoints(({ currentBreakpoint }) => {
 	const isMobile = currentBreakpoint <= 1
 	const [section, setSection] = useState(SECTIONS[0])
 
 	const onChangeSection = (id) => {
-		console.log("section changing to:", id)
 		setSection(SECTIONS.find((s) => s.id === id))
 	}
-
-	let dropsAtRefinement
-
-	switch (section.id) {
-		case "newest":
-			dropsAtRefinement = null
-			break
-		case "upcoming":
-			dropsAtRefinement = { min: Date.now() }
-			break
-		case "archive":
-			dropsAtRefinement = { max: Date.now() }
-			break
-		default:
-			dropsAtRefinement = null
-	}
-
-	console.log("dropsAtRefinement", dropsAtRefinement)
 
 	return (
 		<>
@@ -206,15 +232,6 @@ const DropsPage = withBreakpoints(({ currentBreakpoint }) => {
 				allowedKeys={["category", "designers", "dropsAtApproxTimestamp"]}
 				hitsPerPage={4}
 			>
-				{/* This only sets the default value but doesn't refine so it 
-				relies on the refine call inside of section select */}
-				{dropsAtRefinement && (
-					<VirtualRefinement
-						attribute="dropsAtApproxTimestamp"
-						value={dropsAtRefinement}
-					/>
-				)}
-
 				{!isMobile && (
 					<PageContainer>
 						<PromotedSection component={PromotedDrop} />
@@ -228,16 +245,12 @@ const DropsPage = withBreakpoints(({ currentBreakpoint }) => {
 							<TextBlock size="xl" bold>
 								Dropy
 							</TextBlock>
-							{isMobile ? (
-								<MobileSectionSelect />
-							) : (
-								<DesktopSectionSelect
-									sections={SECTIONS}
-									items={SORTING_OPTIONS}
-									onClick={onChangeSection}
-									currentSection={section}
-								/>
-							)}
+							<SectionSelect
+								sections={SECTIONS}
+								items={SORTING_OPTIONS}
+								onClick={onChangeSection}
+								currentSection={section}
+							/>
 							<InfiniteScrollingResults>
 								{({ results, hasMore, loadMore }) => {
 									return (
