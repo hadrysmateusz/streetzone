@@ -1,9 +1,10 @@
-import React from "react"
+import React, { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
 import styled from "styled-components/macro"
 import moment from "moment"
 
 import { route } from "../../utils"
+import { dateFormat } from "../../utils/formatting/formatDropData"
 
 import {
 	Designers,
@@ -70,9 +71,63 @@ const Name = styled.div`
 `
 
 const Countdown = ({ dropsAt }) => {
-	const value = moment(dropsAt).format("HH:mm")
+	// const [hours, setHours] = useState()
+	// const [minutes, setMinutes] = useState()
+	const [totalDays, setTotalDays] = useState()
+	const [totalHours, setTotalHours] = useState()
+	const [hours, setHours] = useState()
+	const [minutes, setMinutes] = useState()
 
-	return <CountdownContainer>{value}</CountdownContainer>
+	useEffect(() => {
+		const getValues = () => {
+			const then = moment(dropsAt, dateFormat)
+			const now = moment()
+
+			const isDropInFuture = then.isAfter(now)
+
+			if (isDropInFuture) {
+				const duration = moment.duration(then.diff(now))
+
+				const __totalHours = Math.floor(duration.asHours())
+				const __totalDays = Math.floor(duration.asDays())
+				const __hours = duration.hours()
+				const __minutes = duration.minutes()
+
+				setTotalDays(__totalDays)
+				setTotalHours(__totalHours)
+				setHours(__hours)
+				setMinutes(__minutes)
+			}
+		}
+
+		// this means the string contains at least the full date and hour of the drop
+		if (dropsAt.length >= 11) {
+			getValues()
+
+			// update every 20 seconds
+			const id = setInterval(getValues, 20000)
+
+			return () => clearInterval(id)
+		}
+	}, [dropsAt])
+
+	// const value = hours && minutes ? `${hours}:${minutes}` : "?"
+
+	let value
+
+	if (totalDays && totalDays <= 3) {
+		if (totalHours && minutes) {
+			value = `${totalHours}h ${minutes}m`
+		} else if (totalHours) {
+			value = `${totalHours}godzin`
+		}
+	} else if (totalDays && hours) {
+		value = `${totalDays}dni ${hours}h`
+	} else if (totalDays) {
+		value = `${totalDays}dni`
+	}
+
+	return value ? <CountdownContainer>{value}</CountdownContainer> : null
 }
 
 export const BigDropCard = ({
@@ -82,7 +137,8 @@ export const BigDropCard = ({
 	itemCategory,
 	imageUrls,
 	mainImageIndex,
-	dropsAtApproxTimestamp
+	dropsAtApproxTimestamp,
+	dropsAtString
 }) => {
 	const imageURL = imageUrls[mainImageIndex]
 	const date = moment(dropsAtApproxTimestamp).format("LL")
@@ -95,12 +151,11 @@ export const BigDropCard = ({
 					<TopContainer>
 						<div>{itemCategory}</div>
 						<Designers value={designers} />
-						{/* <Size className="align-right" value={size} /> */}
 					</TopContainer>
 					<MiddleContainer flex>
 						<Name>{name}</Name>
 						<div className="align-right">
-							<Countdown dropsAt={dropsAtApproxTimestamp} />
+							<Countdown dropsAt={dropsAtString} />
 						</div>
 					</MiddleContainer>
 					<BottomContainer>
