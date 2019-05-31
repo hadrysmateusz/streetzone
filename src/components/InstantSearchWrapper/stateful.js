@@ -17,7 +17,7 @@ export const SearchWrapper = withRouter(
 		children,
 		history,
 		location,
-		sortBy,
+		defaultSortBy,
 		showArchived = false,
 		...rest
 	}) => {
@@ -26,10 +26,11 @@ export const SearchWrapper = withRouter(
 			query: "",
 			page: 1,
 			refinementList: {},
-			sortBy: indexName,
+			sortBy: defaultSortBy || indexName,
 			hitsPerPage,
 			...initialState
 		})
+		console.log(_initialState)
 		const [searchState, setSearchState] = useState(_initialState)
 		const [isFirstRender, setIsFirstRender] = useState(true)
 
@@ -42,7 +43,7 @@ export const SearchWrapper = withRouter(
 				}
 			}
 
-			console.log(parsedSearch)
+			console.log("parsedSearch", parsedSearch)
 
 			try {
 				for (const [key, val] of Object.entries(parsedSearch)) {
@@ -101,8 +102,9 @@ export const SearchWrapper = withRouter(
 
 			for (const [key, val] of Object.entries(state)) {
 				if (["sortBy", "page", "query"].includes(key)) {
+					// this makes it harder to debug
 					// if new value is equal to default one, don't clutter the url with it
-					if (val === _initialState[key]) continue
+					// if (val === _initialState[key]) continue
 					formattedState[key] = val
 					continue
 				}
@@ -111,8 +113,6 @@ export const SearchWrapper = withRouter(
 					flatten(key)
 				}
 			}
-
-			console.log("formattedState", formattedState)
 
 			return formattedState
 		}
@@ -133,11 +133,13 @@ export const SearchWrapper = withRouter(
 		}
 
 		const forceRefineWithState = async (partialSearchState) => {
-			const formattedState = await onSearchStateChange({
+			const newSearchState = {
 				...searchState,
 				...partialSearchState
-			})
+			}
+			const formattedState = await onSearchStateChange(newSearchState)
 			const url = encodeURL(formattedState)
+			console.log("force", formattedState)
 			history.push(url)
 		}
 

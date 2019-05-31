@@ -155,19 +155,21 @@ const constructRangeRefinement = (newMin, newMax, defMin, defMax) => {
 	}
 }
 
-const DateRefinement = compose(
+const DesktopSectionSelect = compose(
 	withProps({ attribute: "dropsAtApproxTimestamp" }),
 	connectRange
-)((props) => {
-	console.log(props)
-	const { sectionId, refine, currentRefinement, min, max } = props
-	useEffect(() => {
+)(({ sections, onClick, currentSection, forceRefineWithState, min, max }) => {
+	const _onClick = (section) => {
+		onClick(section.id)
+
+		console.log("click", section)
+
 		const now = Date.now()
 		let value
 
-		console.log("changed section", sectionId, min, max)
+		console.log("changed section", section.id, min, max)
 
-		switch (sectionId) {
+		switch (section.id) {
 			case "newest":
 				value = constructRangeRefinement(null, null, min, max)
 				break
@@ -181,41 +183,28 @@ const DateRefinement = compose(
 				value = constructRangeRefinement(null, null, min, max)
 		}
 
-		console.log("newRefinement", value)
-		console.log("refine range")
+		console.log("new range", value)
 
-		refine(value)
-
-		// refine({ min: 0, max: Date.now() })
-	}, [sectionId])
-
-	return null
-})
-
-const DesktopSectionSelect = connectSortBy(
-	({ sections, onClick, items, currentSection, refine }) => {
-		const _onClick = (section) => {
-			console.log("refine sorting")
-			refine(section.sortBy)
-			onClick(section.id)
-		}
-
-		return (
-			<DesktopSectionSelectContainer>
-				<DateRefinement sectionId={currentSection.id} />
-
-				{sections.map((section) => (
-					<SectionCard
-						key={section.title}
-						onClick={() => _onClick(section)}
-						selected={currentSection.id === section.id}
-						{...section}
-					/>
-				))}
-			</DesktopSectionSelectContainer>
-		)
+		forceRefineWithState({
+			page: 1,
+			sortBy: section.sortBy,
+			range: { dropsAtApproxTimestamp: value }
+		})
 	}
-)
+
+	return (
+		<DesktopSectionSelectContainer>
+			{sections.map((section) => (
+				<SectionCard
+					key={section.title}
+					onClick={() => _onClick(section)}
+					selected={currentSection.id === section.id}
+					{...section}
+				/>
+			))}
+		</DesktopSectionSelectContainer>
+	)
+})
 
 const DropsPage = withBreakpoints(({ currentBreakpoint }) => {
 	const isMobile = currentBreakpoint <= 1
@@ -231,42 +220,48 @@ const DropsPage = withBreakpoints(({ currentBreakpoint }) => {
 				indexName={CONST.BLOG_DROP_ALGOLIA_INDEX}
 				allowedKeys={["category", "designers", "dropsAtApproxTimestamp"]}
 				hitsPerPage={4}
+				defaultSortBy={SORTING_OPTIONS[0].value}
 			>
-				{!isMobile && (
-					<PageContainer>
-						<PromotedSection component={PromotedDrop} />
-					</PageContainer>
-				)}
+				{(forceRefineWithState) => (
+					<>
+						{!isMobile && (
+							<PageContainer>
+								<PromotedSection component={PromotedDrop} />
+							</PageContainer>
+						)}
 
-				<PageContainer>
-					<Layout>
-						{/* Main Content */}
-						<main>
-							<TextBlock size="xl" bold>
-								Dropy
-							</TextBlock>
-							<SectionSelect
-								sections={SECTIONS}
-								items={SORTING_OPTIONS}
-								onClick={onChangeSection}
-								currentSection={section}
-							/>
-							<InfiniteScrollingResults>
-								{({ results, hasMore, loadMore }) => {
-									return (
-										<ResultsContainer>
-											{results.map((drop) => (
-												<BigDropCard {...drop} key={drop.id} />
-											))}
-										</ResultsContainer>
-									)
-								}}
-							</InfiniteScrollingResults>
-						</main>
-						{/* Sidebar */}
-						{!isMobile && <Sidebar />}
-					</Layout>
-				</PageContainer>
+						<PageContainer>
+							<Layout>
+								{/* Main Content */}
+								<main>
+									<TextBlock size="xl" bold>
+										Dropy
+									</TextBlock>
+									<SectionSelect
+										sections={SECTIONS}
+										items={SORTING_OPTIONS}
+										onClick={onChangeSection}
+										currentSection={section}
+										forceRefineWithState={forceRefineWithState}
+									/>
+									<InfiniteScrollingResults>
+										{({ results, hasMore, loadMore }) => {
+											return (
+												<ResultsContainer>
+													{results.map((drop) => (
+														<BigDropCard {...drop} key={drop.id} />
+													))}
+												</ResultsContainer>
+											)
+										}}
+									</InfiniteScrollingResults>
+								</main>
+								{/* Sidebar */}
+								{!isMobile && <Sidebar />}
+							</Layout>
+						</PageContainer>
+					</>
+				)}
 			</SearchWrapper>
 		</>
 	)
