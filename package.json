@@ -15,7 +15,7 @@
 		"env-cmd": "^8.0.2",
 		"filesize": "^3.6.1",
 		"final-form": "^4.12.0",
-		"firebase": "^5.8.6",
+		"firebase": "^6.1.0",
 		"firebase-admin": "^6.5.0",
 		"loaders.css": "^0.1.2",
 		"lodash.throttle": "^4.1.1",
