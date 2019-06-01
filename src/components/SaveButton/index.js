@@ -16,7 +16,6 @@ export const TYPE = {
 const INVALID_TYPE_ERR = "SaveButton needs a valid type"
 
 const HeartButtonContainer = styled.div`
-	background: rgba(255, 255, 255, 1);
 	padding: var(--spacing1);
 	color: inherit;
 	display: flex;
