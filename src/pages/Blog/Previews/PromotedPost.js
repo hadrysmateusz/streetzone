@@ -4,7 +4,7 @@ import moment from "moment"
 
 import { ROUTES } from "../../../constants"
 
-import { PromotedPostMobileContainer } from "../StyledComponents"
+import { PromotedPostMobileContainer } from "./Common"
 
 const PromotedPost = ({ title, category, createdAt, mainImageIndex, imageUrls, id }) => {
 	const date = moment(createdAt).format("D.M.YY")

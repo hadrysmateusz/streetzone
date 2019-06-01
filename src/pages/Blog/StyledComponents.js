@@ -1,5 +1,5 @@
-import styled, { css } from "styled-components/macro"
-import { ellipsis, overlayTextShadow, getCategoryColor } from "../../style-utils"
+import styled from "styled-components/macro"
+import { ellipsis } from "../../style-utils"
 
 export const TagsContainer = styled.div`
 	display: flex;
@@ -40,51 +40,4 @@ export const PromotedContainer = styled.div`
 		height: 40vw;
 		max-height: 500px;
 	}
-`
-
-const promotedCommon = css`
-	width: 100%;
-	height: 100%;
-	background-size: cover;
-	background-position: center;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: flex-end;
-	padding: var(--spacing3) 0;
-`
-
-export const PromotedPostMobileContainer = styled.div`
-	background: linear-gradient(
-			to bottom,
-			rgba(0, 0, 0, 0) 42%,
-			rgba(0, 0, 0, 0.25) 62%,
-			rgba(0, 0, 0, 0.8) 100%
-		),
-		url(${(p) => p.image}), var(--gray100);
-	color: white;
-	${overlayTextShadow}
-	${promotedCommon}
-
-	.title {
-		font-family: var(--font-family--serif);
-		font-size: var(--font-size--m);
-		font-weight: bold;
-		max-width: 75vw;
-		text-align: center;
-	}
-	.info {
-		border-left: 3px solid ${(p) => getCategoryColor(p.category)};
-		padding-left: var(--spacing2);
-		line-height: 1.4;
-		margin: var(--spacing1) 0;
-		color: var(--almost-white);
-	}
-`
-
-export const PromotedDropContainer = styled.div`
-	background: url(${(p) => p.image});
-	color: var(--black75);
-	border: 1px solid var(--gray75);
-	${promotedCommon};
 `
