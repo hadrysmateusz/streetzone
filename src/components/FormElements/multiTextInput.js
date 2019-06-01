@@ -54,7 +54,7 @@ export class MultiTextInput extends Component {
 		value: []
 	}
 
-	handleChange = (value, actions) => {
+	handleChange = (value, action) => {
 		this.setState({ value })
 	}
 
@@ -103,9 +103,9 @@ export class MultiTextInput extends Component {
 export class MultiTextInputControlled extends Component {
 	state = { inputValue: "" }
 
-	handleChange = (value, actions) => {
-		if (actions.action === "clear") {
-			this.props.customSetState(null)
+	handleChange = (value, action) => {
+		if (action.action === "remove-value") {
+			this.props.remove(action.removedValue)
 		}
 	}
 
@@ -119,7 +119,7 @@ export class MultiTextInputControlled extends Component {
 		switch (event.key) {
 			case "Enter":
 			case "Tab":
-				this.props.customSetState(inputValue)
+				this.props.add(inputValue)
 				this.setState({ inputValue: "" })
 
 				event.preventDefault()

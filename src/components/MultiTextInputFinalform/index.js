@@ -2,7 +2,7 @@ import React from "react"
 import { MultiTextInputControlled } from "../FormElements"
 
 const MultiTextInputFinalform = ({ onChange, value, ...rest }) => {
-	const customSetState = (newTag) => {
+	const add = (newTag) => {
 		if (!newTag) {
 			onChange(undefined)
 		} else {
@@ -13,6 +13,11 @@ const MultiTextInputFinalform = ({ onChange, value, ...rest }) => {
 			}
 			onChange(value)
 		}
+	}
+
+	const remove = (removedValue) => {
+		value = value.filter((a) => a !== removedValue.value)
+		onChange(value)
 	}
 
 	// convert any string value to React Select option object
@@ -30,7 +35,8 @@ const MultiTextInputFinalform = ({ onChange, value, ...rest }) => {
 		<MultiTextInputControlled
 			{...rest}
 			value={formattedValue}
-			customSetState={customSetState}
+			add={add}
+			remove={remove}
 		/>
 	)
 }
