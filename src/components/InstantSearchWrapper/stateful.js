@@ -84,8 +84,6 @@ export const SearchWrapper = withRouter(
 					// TODO: consider reporting unhandled keys to Sentry
 				}
 
-				debugger
-
 				// if all values are handled correctly return state object
 				return state
 			} catch (error) {
@@ -129,7 +127,6 @@ export const SearchWrapper = withRouter(
 				state = { ...state, page: 1 }
 				setIsFirstRender(false)
 			}
-			debugger
 			setSearchState(state)
 		}, [location])
 
@@ -147,7 +144,6 @@ export const SearchWrapper = withRouter(
 			const formattedState = await onSearchStateChange(newSearchState)
 			const url = encodeURL(formattedState)
 			console.log("forced", formattedState)
-			debugger
 			history.push(url)
 		}
 

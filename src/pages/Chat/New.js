@@ -29,21 +29,23 @@ export const NewChat = ({ userId }) => {
 
 		actions.reset()
 
+		let roomId
+		const messageId = shortid.generate()
+		const senderId = authUser.uid
+		const recipientId = userId
+
+		// get common room for both users
 		let roomSnap = await firebase
 			.currentUser()
 			.collection("rooms")
 			.doc(userId)
 			.get()
 
-		let roomId
-		const messageId = shortid.generate()
-		const senderId = authUser.uid
-		const recipientId = userId
-
+		// Create room if it doesn't exist yet
 		if (!roomSnap.exists) {
 			roomId = shortid.generate()
 
-			// Create room if it doesn't exist yet
+			// create room in the rooms collection
 			await firebase.db
 				.collection("rooms")
 				.doc(roomId)
