@@ -2,11 +2,12 @@ import React, { useState, useEffect } from "react"
 import styled from "styled-components/macro"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
+import { shakeAnimation } from "../../style-utils/animations"
 import { useAuthentication, useFirebase, useFlash } from "../../hooks"
 
 const HeartButtonContainer = styled.div`
 	padding: var(--spacing1);
-	color: inherit;
+	color: var(--gray25);
 	display: flex;
 	cursor: pointer;
 	justify-content: center;
@@ -16,12 +17,11 @@ const HeartButtonContainer = styled.div`
 	font-size: ${(p) => 10 * (p.scale || 1)}px;
 
 	.filled {
-		/* color: var(--accent50); */
 		color: var(--gray25);
 	}
 
 	:hover {
-		transform: scale(1.1);
+		${shakeAnimation}
 	}
 `
 

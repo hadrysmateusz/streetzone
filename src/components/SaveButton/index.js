@@ -7,6 +7,7 @@ import Modal from "../Modal"
 import { Button } from "../Button"
 
 import { useAuthentication, useFirebase, useFlash } from "../../hooks"
+import { heartbeatAnimation } from "../../style-utils/animations"
 
 export const TYPE = {
 	ITEM: "savedItems",
@@ -31,7 +32,7 @@ const HeartButtonContainer = styled.div`
 	}
 
 	:hover {
-		transform: scale(1.1);
+		${heartbeatAnimation}
 	}
 `
 
