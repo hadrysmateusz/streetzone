@@ -129,26 +129,33 @@ const Admin = Loadable({
 	loader: () => import("../../pages/Admin"),
 	loading: LoadableComponentSpinner
 })
+
 const AdminBlog = Loadable({
 	loader: () => import("../../pages/Admin/Blog"),
 	loading: LoadableComponentSpinner
 })
 const AdminBlogEditPost = Loadable({
-	loader: () => import("../../pages/Admin/Blog/Edit/EditPost"),
-	loading: LoadableComponentSpinner
-})
-const AdminBlogEditDrop = Loadable({
-	loader: () => import("../../pages/Admin/Blog/Edit/EditDrop"),
+	loader: () => import("../../pages/Admin/Blog/Edit"),
 	loading: LoadableComponentSpinner
 })
 const AdminBlogAddPost = Loadable({
-	loader: () => import("../../pages/Admin/Blog/Add/AddPost"),
+	loader: () => import("../../pages/Admin/Blog/Add"),
 	loading: LoadableComponentSpinner
 })
-const AdminBlogAddDrop = Loadable({
-	loader: () => import("../../pages/Admin/Blog/Add/AddDrop"),
+
+const AdminDrops = Loadable({
+	loader: () => import("../../pages/Admin/Drops"),
 	loading: LoadableComponentSpinner
 })
+const AdminEditDrop = Loadable({
+	loader: () => import("../../pages/Admin/Drops/Edit"),
+	loading: LoadableComponentSpinner
+})
+const AdminAddDrop = Loadable({
+	loader: () => import("../../pages/Admin/Drops/Add"),
+	loading: LoadableComponentSpinner
+})
+
 const AdminDesigners = Loadable({
 	loader: () => import("../../pages/Admin/Designers"),
 	loading: LoadableComponentSpinner
@@ -315,26 +322,32 @@ const routes = [
 			},
 			{
 				id: "blogEditPost",
-				path: ROUTES.ADMIN_BLOG_EDIT_POST,
+				path: ROUTES.ADMIN_BLOG_EDIT,
 				component: AdminBlogEditPost,
 				isNavigable: false
 			},
 			{
-				id: "blogEditDrop",
-				path: ROUTES.ADMIN_BLOG_EDIT_DROP,
-				component: AdminBlogEditDrop,
-				isNavigable: false
-			},
-			{
 				id: "blogAddPost",
-				path: ROUTES.ADMIN_BLOG_ADD_POST,
+				path: ROUTES.ADMIN_BLOG_ADD,
 				component: AdminBlogAddPost,
 				isNavigable: false
 			},
 			{
-				id: "blogAddDrop",
-				path: ROUTES.ADMIN_BLOG_ADD_DROP,
-				component: AdminBlogAddDrop,
+				id: "drops",
+				path: ROUTES.ADMIN_DROPS,
+				component: AdminDrops,
+				isNavigable: true
+			},
+			{
+				id: "edit_drop",
+				path: ROUTES.ADMIN_DROPS_EDIT,
+				component: AdminEditDrop,
+				isNavigable: false
+			},
+			{
+				id: "add_drop",
+				path: ROUTES.ADMIN_DROPS_ADD,
+				component: AdminAddDrop,
 				isNavigable: false
 			},
 			{

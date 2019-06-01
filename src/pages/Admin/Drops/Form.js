@@ -1,31 +1,23 @@
 import React from "react"
 import { Prompt } from "react-router-dom"
-import { withRouter } from "react-router-dom"
 import { Form } from "react-final-form"
-import "react-datetime/css/react-datetime.css"
 
-import { LoaderButton, ButtonContainer } from "../../../../components/Button"
-import { PageContainer } from "../../../../components/Containers"
-import DisplayJSONButton from "../../../../components/DisplayJSONButton"
-import useFirebase from "../../../../hooks/useFirebase"
-import {
-	formatDropDataForDb,
-	MODE,
-	dateFormat
-} from "../../../../utils/formatting/formatDropData"
-import { ROUTES, ITEM_SCHEMA, CONST } from "../../../../constants"
-
+import { LoaderButton, ButtonContainer } from "../../../components/Button"
+import DisplayJSONButton from "../../../components/DisplayJSONButton"
 import {
 	TextFF,
 	DropdownFF,
 	FileHandlerFF,
 	MultiTextInputFF,
-	TextareaFF,
-	NumberFF
-} from "../FinalFormFields"
-import { StyledForm } from "../StyledComponents"
+	TextareaFF
+} from "../../../components/FinalFormFields"
 
-const AddDropForm = ({ onSubmit }) => {
+import { dateFormat } from "../../../utils/formatting/formatDropData"
+import { ITEM_SCHEMA } from "../../../constants"
+
+import { StyledForm } from "../Common"
+
+export default ({ onSubmit }) => {
 	return (
 		<Form
 			onSubmit={onSubmit}
@@ -120,53 +112,3 @@ const AddDropForm = ({ onSubmit }) => {
 		/>
 	)
 }
-
-const AddDrop = ({ history }) => {
-	const firebase = useFirebase()
-
-	const onSubmit = async (values, actions) => {
-		try {
-			const files = values.files
-
-			// Upload files to storage and get their refs
-			const attachments = await firebase.batchUploadFiles(
-				CONST.STORAGE_BUCKET_BLOG_ATTACHMENTS,
-				files
-			)
-
-			const urlPromises = attachments.map((storageRef) =>
-				firebase.getImageURL(storageRef)
-			)
-			const imageUrls = await Promise.all(urlPromises)
-
-			// Get main image index
-			const mainImageIndex = files.findIndex((a) => a.isMain)
-
-			// Format the values for db
-			const formattedData = formatDropDataForDb(
-				{ ...values, mainImageIndex, attachments, imageUrls },
-				MODE.CREATE
-			)
-
-			// Add drop to database
-			await firebase.drop(formattedData.id).set(formattedData)
-
-			// Reset form
-			actions.reset()
-
-			// Redirect
-			history.push(ROUTES.ADMIN_BLOG)
-		} catch (error) {
-			alert("Wystąpił problem")
-			console.log(error)
-		}
-	}
-
-	return (
-		<PageContainer>
-			<AddDropForm onSubmit={onSubmit} />
-		</PageContainer>
-	)
-}
-
-export default withRouter(AddDrop)

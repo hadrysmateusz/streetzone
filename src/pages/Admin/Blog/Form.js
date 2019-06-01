@@ -1,17 +1,9 @@
 import React from "react"
 import { Prompt } from "react-router-dom"
-import { withRouter } from "react-router-dom"
 import { Form } from "react-final-form"
-import "react-datetime/css/react-datetime.css"
 
-import { LoaderButton, ButtonContainer } from "../../../../components/Button"
-import { PageContainer } from "../../../../components/Containers"
-import DisplayJSONButton from "../../../../components/DisplayJSONButton"
-import useFirebase from "../../../../hooks/useFirebase"
-import { formatPostDataForDb, MODE } from "../../../../utils/formatting/formatPostData"
-import { ROUTES, CONST } from "../../../../constants"
-
-import categoryOptions from "./category_options"
+import { LoaderButton, ButtonContainer } from "../../../components/Button"
+import DisplayJSONButton from "../../../components/DisplayJSONButton"
 import {
 	TextFF,
 	DropdownFF,
@@ -19,10 +11,14 @@ import {
 	MarkdownEditorFF,
 	MultiTextInputFF,
 	TextareaFF
-} from "../FinalFormFields"
-import { StyledForm } from "../StyledComponents"
+} from "../../../components/FinalFormFields"
 
-const AddPostForm = ({ onSubmit }) => {
+import { CONST } from "../../../constants"
+
+import categoryOptions from "./post_category_options"
+import { StyledForm } from "../Common"
+
+export default ({ onSubmit }) => {
 	return (
 		<Form
 			onSubmit={onSubmit}
@@ -80,48 +76,3 @@ const AddPostForm = ({ onSubmit }) => {
 		/>
 	)
 }
-
-const AddPost = ({ history }) => {
-	const firebase = useFirebase()
-
-	const onSubmit = async (values, actions) => {
-		try {
-			const files = values.files
-
-			// Get attachments' refs
-			const attachments = files.map((file) => file.ref)
-
-			// Get attachments' urls
-			const imageUrls = files.map((file) => file.url)
-
-			// Get main image index
-			const mainImageIndex = files.findIndex((a) => a.isMain)
-
-			// Format the values for db
-			const formattedData = formatPostDataForDb(
-				{ ...values, mainImageIndex, attachments, imageUrls },
-				MODE.CREATE
-			)
-
-			// Add post to database
-			await firebase.post(formattedData.id).set(formattedData)
-
-			// Reset form
-			actions.reset()
-
-			// Redirect
-			history.push(ROUTES.ADMIN_BLOG)
-		} catch (error) {
-			alert("Wystąpił problem")
-			console.log(error)
-		}
-	}
-
-	return (
-		<PageContainer>
-			<AddPostForm onSubmit={onSubmit} />
-		</PageContainer>
-	)
-}
-
-export default withRouter(AddPost)

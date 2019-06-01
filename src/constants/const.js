@@ -13,6 +13,7 @@ export const M_THUMB_POSTFIX = "_M_THUMB"
 export const L_THUMB_POSTFIX = "_L_THUMB"
 
 export const STORAGE_BUCKET_BLOG_ATTACHMENTS = "blog-attachments"
+export const STORAGE_BUCKET_DROP_ATTACHMENTS = "drop-attachments"
 export const STORAGE_BUCKET_ITEM_ATTACHMENTS = "attachments"
 
 // ===============================================================================

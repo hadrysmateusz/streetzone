@@ -71,7 +71,7 @@ const EditItemPage = ({ match, history }) => {
 					// If file already has a ref, return it
 					if (file.storageRef) return file.storageRef
 
-					// Upload the new files and return promise containing ref
+					// Upload the new file and return promise containing ref
 					const snapshot = await firebase.uploadFile("attachments", file.data)
 					return snapshot.ref.fullPath
 				})
