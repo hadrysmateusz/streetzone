@@ -46,7 +46,7 @@ const formatValue = (dropsAt) => {
 
 	const isDropInFuture = then.isAfter(now) // this isn't reliable for dates without specified time
 	const isHourKnown = dropsAt && dropsAt.length > 11
-	const isSoon = totalDays && totalDays <= 2
+	const isSoon = totalHours && totalHours <= 48
 	const isToday = now.isSame(then, "day")
 
 	// isDropInFuture isn't reliable for dates without specified time so it requires a special case

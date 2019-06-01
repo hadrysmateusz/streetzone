@@ -95,6 +95,14 @@ const SectionCardContainer = styled.div`
 	}
 `
 
+const Header = styled.h1`
+	text-align: center;
+	margin: 0;
+	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
+		text-align: left;
+	}
+`
+
 const DesktopSectionSelectContainer = styled.div`
 	margin: var(--spacing3) 0;
 	display: grid;
@@ -278,9 +286,7 @@ const DropsPage = compose(
 							<Layout>
 								{/* Main Content */}
 								<main>
-									<TextBlock size="xl" bold>
-										Dropy
-									</TextBlock>
+									<Header>Dropy</Header>
 									<SectionSelect
 										sections={SECTIONS}
 										currentSection={section}

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react"
-import styled from "styled-components/macro"
+import styled, { css } from "styled-components/macro"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 import { shakeAnimation } from "../../style-utils/animations"
@@ -13,6 +13,13 @@ const HeartButtonContainer = styled.div`
 	justify-content: center;
 	align-items: center;
 	transition: transform 0.2s ease;
+	${(p) =>
+		!p.active &&
+		css`
+			:hover {
+				${shakeAnimation}
+			}
+		`}
 
 	font-size: ${(p) => 10 * (p.scale || 1)}px;
 
@@ -20,9 +27,7 @@ const HeartButtonContainer = styled.div`
 		color: var(--gray25);
 	}
 
-	:hover {
-		${shakeAnimation}
-	}
+
 `
 
 export const TYPE = {
@@ -117,6 +122,7 @@ export default ({ id, ...props }) => {
 						scale={1.5}
 						{...props}
 						title={isSaved ? "Przestań obserwować" : "Obserwuj"}
+						active={isSaved}
 					>
 						<div className="fa-layers fa-fw">
 							{isSaved ? (
