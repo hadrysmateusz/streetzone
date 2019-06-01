@@ -138,11 +138,13 @@ export const BigDropCard = ({
 	imageUrls,
 	mainImageIndex,
 	dropsAtApproxTimestamp,
-	dropsAtString
+	dropsAtString,
+	createdAt
 }) => {
 	const imageURL = imageUrls[mainImageIndex]
 	const date = moment(dropsAtApproxTimestamp).format("LL")
-
+	const date2 = moment(createdAt).format("LL")
+	const date3 = moment(createdAt).from(Date.now())
 	return (
 		<Container>
 			<Link to={route("DROP_DETAILS", { id })}>
@@ -160,6 +162,12 @@ export const BigDropCard = ({
 					</MiddleContainer>
 					<BottomContainer>
 						<DateContainer>{date}</DateContainer>
+						<DateContainer>
+							&nbsp;
+							<b>
+								{date2} - {date3}
+							</b>
+						</DateContainer>
 						{/* <HeartButton
 							css={`
 								color: var(--gray25);

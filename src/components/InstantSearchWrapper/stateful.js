@@ -26,11 +26,10 @@ export const SearchWrapper = withRouter(
 			query: "",
 			page: 1,
 			refinementList: {},
-			sortBy: defaultSortBy || indexName,
 			hitsPerPage,
 			...initialState
 		})
-		console.log(_initialState)
+		console.log("initialState", _initialState)
 		const [searchState, setSearchState] = useState(_initialState)
 		const [isFirstRender, setIsFirstRender] = useState(true)
 
@@ -80,6 +79,8 @@ export const SearchWrapper = withRouter(
 					// TODO: consider reporting unhandled keys to Sentry
 				}
 
+				debugger
+
 				// if all values are handled correctly return state object
 				return state
 			} catch (error) {
@@ -123,6 +124,7 @@ export const SearchWrapper = withRouter(
 				state = { ...state, page: 1 }
 				setIsFirstRender(false)
 			}
+			debugger
 			setSearchState(state)
 		}, [location])
 
@@ -139,7 +141,8 @@ export const SearchWrapper = withRouter(
 			}
 			const formattedState = await onSearchStateChange(newSearchState)
 			const url = encodeURL(formattedState)
-			console.log("force", formattedState)
+			console.log("forced", formattedState)
+			debugger
 			history.push(url)
 		}
 
@@ -160,6 +163,8 @@ export const SearchWrapper = withRouter(
 		}, [_initialState, allowedKeys, location.search])
 
 		const isChildrenFunction = typeof children === "function"
+
+		console.log("state", searchState)
 
 		return (
 			<InstantSearch

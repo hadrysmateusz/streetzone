@@ -217,10 +217,9 @@ const DropsPage = withBreakpoints(({ currentBreakpoint }) => {
 	return (
 		<>
 			<SearchWrapper
-				indexName={CONST.BLOG_DROP_ALGOLIA_INDEX}
+				indexName={section.sortBy}
 				allowedKeys={["category", "designers", "dropsAtApproxTimestamp"]}
 				hitsPerPage={4}
-				defaultSortBy={SORTING_OPTIONS[0].value}
 			>
 				{(forceRefineWithState) => (
 					<>
