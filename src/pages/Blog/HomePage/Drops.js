@@ -28,17 +28,6 @@ import { PromotedContainer } from "../StyledComponents"
 import Filters from "./Filters"
 import { Layout } from "./Common"
 
-const SORTING_OPTIONS = [
-	{
-		value: CONST.BLOG_DROP_NEWEST_ALGOLIA_INDEX,
-		label: "Czas dodania"
-	},
-	{
-		value: CONST.BLOG_DROP_ALGOLIA_INDEX,
-		label: "Czas dropu"
-	}
-]
-
 const SECTIONS = Object.freeze([
 	{
 		id: "newest",
@@ -56,7 +45,7 @@ const SECTIONS = Object.freeze([
 		id: "archive",
 		title: "Archiwum",
 		description: `Przeglądaj dropy które miały już miejsce i sprawdź czy dostaniesz je u nas na tablicy.`,
-		sortBy: CONST.BLOG_DROP_ALGOLIA_INDEX
+		sortBy: CONST.BLOG_DROP_ARCHIVE_ALGOLIA_INDEX
 	}
 ])
 

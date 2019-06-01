@@ -24,6 +24,7 @@ export const ITEMS_MARKETPLACE_PRICE_ASC_ALGOLIA_INDEX = `${env}_items_price_asc
 export const ITEMS_CUSTOM_ALGOLIA_INDEX = `${env}_custom`
 export const BLOG_POST_ALGOLIA_INDEX = `${env}_posts`
 export const BLOG_DROP_ALGOLIA_INDEX = `${env}_drops`
+export const BLOG_DROP_ARCHIVE_ALGOLIA_INDEX = `${env}_drops_archive`
 export const BLOG_DROP_NEWEST_ALGOLIA_INDEX = `${env}_drops_newest`
 export const DESIGNERS_ALGOLIA_INDEX = `${env}_designers`
 // ===============================================================================
