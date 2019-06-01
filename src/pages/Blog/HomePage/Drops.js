@@ -27,6 +27,38 @@ import { PromotedContainer } from "../StyledComponents"
 import Filters from "./Filters"
 import { Layout } from "./Common"
 
+const SORTING_OPTIONS = [
+	{
+		value: CONST.BLOG_DROP_NEWEST_ALGOLIA_INDEX,
+		label: "Czas dodania"
+	},
+	{
+		value: CONST.BLOG_DROP_ALGOLIA_INDEX,
+		label: "Czas dropu"
+	}
+]
+
+const SECTIONS = Object.freeze([
+	{
+		id: "newest",
+		title: "Nowe",
+		description: "Świeżo dodane dropy. Bądź na bieżąco.",
+		sortBy: CONST.BLOG_DROP_NEWEST_ALGOLIA_INDEX
+	},
+	{
+		id: "upcoming",
+		title: "Nadchodzące",
+		description: "3... 2... 1... Drop xd",
+		sortBy: CONST.BLOG_DROP_ALGOLIA_INDEX
+	},
+	{
+		id: "archive",
+		title: "Archiwum",
+		description: `Przeglądaj dropy które miały już miejsce i sprawdź czy dostaniesz je u nas na tablicy.`,
+		sortBy: CONST.BLOG_DROP_ALGOLIA_INDEX
+	}
+])
+
 const Sidebar = withBreakpoints(({ currentBreakpoint }) => {
 	const isMobile = currentBreakpoint === 0
 
@@ -80,37 +112,22 @@ const DesktopSectionSelectContainer = styled.div`
 	gap: var(--spacing3);
 `
 
-const SORTING_OPTIONS = [
-	{
-		value: CONST.BLOG_DROP_NEWEST_ALGOLIA_INDEX,
-		label: "Czas dodania"
-	},
-	{
-		value: CONST.BLOG_DROP_ALGOLIA_INDEX,
-		label: "Czas dropu"
-	}
-]
+const MobileSectionSelectContainer = styled.div`
+	margin: var(--spacing3) calc(-1 * var(--spacing3));
+	display: flex;
+	justify-content: space-evenly;
+	border-top: 1px solid var(--gray75);
+	border-bottom: 1px solid var(--gray75);
+`
 
-const SECTIONS = Object.freeze([
-	{
-		id: "newest",
-		title: "Nowe",
-		description: "Świeżo dodane dropy. Bądź na bieżąco.",
-		sortBy: CONST.BLOG_DROP_NEWEST_ALGOLIA_INDEX
-	},
-	{
-		id: "upcoming",
-		title: "Nadchodzące",
-		description: "3... 2... 1... Drop xd",
-		sortBy: CONST.BLOG_DROP_ALGOLIA_INDEX
-	},
-	{
-		id: "archive",
-		title: "Archiwum",
-		description: `Przeglądaj dropy które miały już miejsce i sprawdź czy dostaniesz je u nas na tablicy.`,
-		sortBy: CONST.BLOG_DROP_ALGOLIA_INDEX
-	}
-])
+const MobileSectionItem = styled.div`
+	text-transform: uppercase;
+	font-weight: bold;
+	font-size: var(--fs-xs);
+	height: 100%;
+	padding: var(--spacing3);
+	color: ${(p) => (p.selected ? "var(--black0)" : "var(--gray0)")};
+`
 
 const PromotedSection = ({ component: C }) => {
 	return (
@@ -141,7 +158,7 @@ const DesktopSectionSelect = ({ sections, currentSection, handleChange }) => {
 		<DesktopSectionSelectContainer>
 			{sections.map((section) => (
 				<SectionCard
-					key={section.title}
+					key={section.id}
 					onClick={() => handleChange(section)}
 					selected={currentSection.id === section.id}
 					{...section}
@@ -151,8 +168,21 @@ const DesktopSectionSelect = ({ sections, currentSection, handleChange }) => {
 	)
 }
 
-const MobileSectionSelect = () => {
-	return <div />
+const MobileSectionSelect = ({ sections, currentSection, handleChange }) => {
+	return (
+		<MobileSectionSelectContainer>
+			{sections.map((section) => (
+				<MobileSectionItem
+					key={section.id}
+					onClick={() => handleChange(section)}
+					selected={currentSection.id === section.id}
+					{...section}
+				>
+					{section.title}
+				</MobileSectionItem>
+			))}
+		</MobileSectionSelectContainer>
+	)
 }
 
 const constructRangeRefinement = (newMin, newMax, defMin, defMax) => {
