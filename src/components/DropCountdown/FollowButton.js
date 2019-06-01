@@ -112,7 +112,12 @@ export default ({ id, ...props }) => {
 		<FollowButtonLogic type={TYPE.DROP} id={id}>
 			{({ isSaved, onClick }) => {
 				return (
-					<HeartButtonContainer onClick={onClick} scale={1.5} {...props}>
+					<HeartButtonContainer
+						onClick={onClick}
+						scale={1.5}
+						{...props}
+						title={isSaved ? "Przestań obserwować" : "Obserwuj"}
+					>
 						<div className="fa-layers fa-fw">
 							{isSaved ? (
 								<FontAwesomeIcon className="filled" icon="bell" />

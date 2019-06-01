@@ -35,10 +35,7 @@ const CountdownContainer = styled.div`
 `
 
 const DropCountdown = ({ dropsAt, id }) => {
-	const [totalDays, setTotalDays] = useState()
-	const [totalHours, setTotalHours] = useState()
-	const [hours, setHours] = useState()
-	const [minutes, setMinutes] = useState()
+	const [value, setValue] = useState(null)
 
 	useEffect(() => {
 		const getValues = () => {
@@ -50,44 +47,37 @@ const DropCountdown = ({ dropsAt, id }) => {
 			if (isDropInFuture) {
 				const duration = moment.duration(then.diff(now))
 
-				const __totalHours = Math.floor(duration.asHours())
-				const __totalDays = Math.floor(duration.asDays())
-				const __hours = duration.hours()
-				const __minutes = duration.minutes()
+				const totalHours = Math.floor(duration.asHours())
+				const totalDays = Math.floor(duration.asDays())
+				const minutes = duration.minutes()
 
-				setTotalDays(__totalDays)
-				setTotalHours(__totalHours)
-				setHours(__hours)
-				setMinutes(__minutes)
+				const isHourKnown = dropsAt && dropsAt.length > 11
+				const isSoon = totalDays && totalDays <= 3
+				const isToday = totalHours <= 21 // based on moment.js "time to" breakpoints
+
+				// format value based on a few parameters
+				if (isHourKnown && isSoon) {
+					setValue(`${totalHours}h ${minutes}min`)
+				} else if (!isHourKnown && isToday) {
+					setValue("Dzisiaj") // TODO: this might be inaccessible because of conflict with isDropInFuture
+				} else {
+					setValue(moment().to(then, true))
+				}
+			} else {
+				setValue(null)
 			}
 		}
 
-		// this means the string contains at least the full date and hour of the drop
-		if (dropsAt.length >= 11) {
-			getValues()
+		// get first values instantly
+		getValues()
 
-			// update every 20 seconds
-			const id = setInterval(getValues, 20000)
+		// update every 20 seconds
+		const id = setInterval(getValues, 20000)
 
-			return () => clearInterval(id)
-		}
+		return () => clearInterval(id)
 	}, [dropsAt])
 
-	// const value = hours && minutes ? `${hours}:${minutes}` : "?"
-
-	let value
-
-	if (totalDays && totalDays <= 3) {
-		if (totalHours && minutes) {
-			value = `${totalHours}h ${minutes}m`
-		} else if (totalHours) {
-			value = `${totalHours}godzin`
-		}
-	} else if (totalDays && hours) {
-		value = `${totalDays}dni ${hours}h`
-	} else if (totalDays) {
-		value = `${totalDays}dni`
-	}
+	// const formattedValue = formatValue(values)
 
 	return value ? (
 		<CountdownContainer>
