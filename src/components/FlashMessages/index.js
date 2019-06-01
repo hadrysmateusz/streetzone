@@ -71,7 +71,12 @@ const FlashMessages = ({ children }) => {
 
 	const addMessage = (message, ttl) => {
 		const id = shortid.generate()
-		const _message = { ...message, id, ttl }
+
+		const isTextOnly = typeof message === "string"
+
+		const _message = isTextOnly
+			? { textContent: message, id, ttl }
+			: { ...message, id, ttl }
 
 		setMessages((messages) => [...messages, _message])
 	}
