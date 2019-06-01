@@ -148,17 +148,17 @@ const PageHeaderDesktop = ({ authUser, firebase, location }) => {
 					<SubmenuContainer align="left">
 						<Submenu>
 							<NavItem>
-								<SubmenuLink to={route("DROPS", null, { sort: "Nowe" })}>
+								<SubmenuLink to={route("DROPS_SECTION", { id: "newest" })}>
 									Nowe
 								</SubmenuLink>
 							</NavItem>
 							<NavItem>
-								<SubmenuLink to={route("DROPS", null, { sort: "Nadchodzace" })}>
+								<SubmenuLink to={route("DROPS_SECTION", { id: "upcoming" })}>
 									Nadchodzące
 								</SubmenuLink>
 							</NavItem>
 							<NavItem>
-								<SubmenuLink to={route("DROPS", null, { sort: "Archiwum" })}>
+								<SubmenuLink to={route("DROPS_SECTION", { id: "archive" })}>
 									Archiwum
 								</SubmenuLink>
 							</NavItem>
