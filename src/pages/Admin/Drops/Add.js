@@ -17,7 +17,7 @@ const AddDrop = ({ history }) => {
 
 			// Upload files to storage and get their refs
 			const attachments = await firebase.batchUploadFiles(
-				CONST.STORAGE_BUCKET_BLOG_ATTACHMENTS,
+				CONST.STORAGE_BUCKET_DROP_ATTACHMENTS,
 				files
 			)
 
@@ -42,7 +42,7 @@ const AddDrop = ({ history }) => {
 			actions.reset()
 
 			// Redirect
-			history.push(ROUTES.ADMIN_BLOG)
+			history.push(ROUTES.ADMIN_DROPS)
 		} catch (error) {
 			alert("Wystąpił problem")
 			console.log(error)

@@ -4,6 +4,7 @@ import { Form } from "react-final-form"
 
 import { LoaderButton, ButtonContainer } from "../../../components/Button"
 import DisplayJSONButton from "../../../components/DisplayJSONButton"
+import LoadingSpinner from "../../../components/LoadingSpinner"
 import {
 	TextFF,
 	DropdownFF,
@@ -18,10 +19,13 @@ import { CONST } from "../../../constants"
 import categoryOptions from "./post_category_options"
 import { StyledForm } from "../Common"
 
-export default ({ onSubmit }) => {
-	return (
+export default ({ onSubmit, initialValues, edit }) => {
+	return !initialValues && edit ? (
+		<LoadingSpinner />
+	) : (
 		<Form
 			onSubmit={onSubmit}
+			initialValues={initialValues}
 			render={({ form, handleSubmit, submitting, pristine, values, ...rest }) => {
 				return (
 					<StyledForm onSubmit={handleSubmit}>

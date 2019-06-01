@@ -9,7 +9,8 @@ export const formatNonEmptyArray = (val) => {
 }
 
 export const formatString = (val) => {
-	return "" + val.trim()
+	val += "" // convert to string
+	return val.trim()
 }
 
 export const formatFloat = (val) => {

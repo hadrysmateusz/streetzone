@@ -18,12 +18,12 @@ import DropForm from "./Form"
 
 const EditDrop = ({ match, history }) => {
 	const firebase = useFirebase()
-	const [initialData, setInitialData] = useState(null)
+	const [initialValues, setInitialValues] = useState(null)
 
 	const id = match.params.id
 
 	const getData = async () => {
-		const snap = await firebase.post(id).get()
+		const snap = await firebase.drop(id).get()
 
 		let data = snap.data()
 
@@ -39,7 +39,7 @@ const EditDrop = ({ match, history }) => {
 			})
 		})
 
-		setInitialData({ ...data, files })
+		setInitialValues({ ...data, files })
 	}
 
 	useEffect(() => {
@@ -74,14 +74,14 @@ const EditDrop = ({ match, history }) => {
 			// Format the values for db
 			const formattedData = formatDropDataForDb(
 				{ ...values, mainImageIndex, attachments: newRefs, imageUrls },
-				MODE.CREATE
+				MODE.EDIT
 			)
 
-			// Update item
-			await firebase.item(match.params.id).update(formattedData)
+			// Update drop
+			await firebase.drop(id).update(formattedData)
 
 			// Get just the old refs
-			let oldRefs = initialData.files.map((file) => file.storageRef)
+			let oldRefs = initialValues.files.map((file) => file.storageRef)
 
 			// Old refs no longer present in new refs are marked for deletion
 			let refsToDelete = oldRefs.filter((oldRef) => !newRefs.includes(oldRef))
@@ -98,15 +98,15 @@ const EditDrop = ({ match, history }) => {
 			actions.reset()
 
 			// Redirect
-			history.push(route("ADMIN_BLOG"))
+			history.push(route("ADMIN_DROPS"))
 		} catch (error) {
-			alert("Wystąpił problem")
+			alert("Wystąpił problem, więcej informacji w konsoli")
 			console.log(error)
 		}
 	}
 	return (
 		<PageContainer>
-			<DropForm onSubmit={onSubmit} />
+			<DropForm onSubmit={onSubmit} initialValues={initialValues} edit />
 		</PageContainer>
 	)
 }

@@ -4,6 +4,7 @@ import { Form } from "react-final-form"
 
 import { LoaderButton, ButtonContainer } from "../../../components/Button"
 import DisplayJSONButton from "../../../components/DisplayJSONButton"
+import LoadingSpinner from "../../../components/LoadingSpinner"
 import {
 	TextFF,
 	DropdownFF,
@@ -17,15 +18,18 @@ import { ITEM_SCHEMA } from "../../../constants"
 
 import { StyledForm } from "../Common"
 
-export default ({ onSubmit }) => {
-	return (
+export default ({ onSubmit, initialValues, edit }) => {
+	return !initialValues && edit ? (
+		<LoadingSpinner />
+	) : (
 		<Form
 			onSubmit={onSubmit}
+			initialValues={initialValues}
 			render={({ form, handleSubmit, submitting, pristine, values, ...rest }) => {
 				return (
 					<StyledForm onSubmit={handleSubmit}>
 						<Prompt
-							when={Object.values(values).length > 0}
+							when={Object.values(values).length > 0 && !pristine}
 							message={(location) =>
 								"Zmiany nie zostały zapisane. Czy napewno chcesz wyjść?"
 							}

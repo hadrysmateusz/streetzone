@@ -11,7 +11,6 @@ import { PageContainer } from "../../../components/Containers"
 import { route } from "../../../utils"
 import { ellipsis } from "../../../style-utils"
 import formatDesigners from "../../../utils/formatDesigners"
-import formatPrice from "../../../utils/formatPrice"
 
 import { useImage, useFirebase, useFirestoreCollection } from "../../../hooks"
 
@@ -68,7 +67,6 @@ const Drop = ({
 	const [imageURL, error] = useImage(attachments[mainImageIndex])
 
 	const formattedDesigners = formatDesigners(designers)
-	const formattedPrice = formatPrice(price)
 
 	const onDelete = (id) => {
 		try {
@@ -107,7 +105,7 @@ const Drop = ({
 			</TextBlock>
 			{price && (
 				<TextBlock color="black100">
-					Cena: <b>{formattedPrice}</b>
+					Cena: <b>{price}</b>
 				</TextBlock>
 			)}
 
