@@ -4,6 +4,7 @@ import styled from "styled-components/macro"
 
 import FormElementContainer from "./container"
 import { disabledStyles, hoverStyles, focusStyles, basicStyles } from "./commonStyles"
+import { ellipsis } from "../../style-utils"
 
 const StyledCreatableSelect = styled(CreatableSelect).attrs({
 	classNamePrefix: "react-select"
@@ -25,6 +26,10 @@ const StyledCreatableSelect = styled(CreatableSelect).attrs({
 	}
 	.react-select__control--is-disabled {
 		${disabledStyles}
+	}
+	.react-select__multi-value {
+		${ellipsis}
+		max-width: 160px;
 	}
 
 	.react-select__value-container {
