@@ -4,10 +4,17 @@ import { InstantSearch, Configure } from "react-instantsearch-dom"
 import cloneDeep from "clone-deep"
 
 import { decodeURL, encodeURL } from "../../utils/algoliaURLutils"
-import { VirtualToggle, VirtualSortBy } from "../Algolia/Virtual"
+import { VirtualToggle } from "../Algolia/Virtual"
 
 const EMPTY_SEARCH_ERR = "empty search string"
 
+/**
+ * @param indexName select index to query, selecting a replica index allows to change sorting
+ * @param allowedKeys attributes to which refinements can be applied - prevents querying arbitrary values by modifying the url
+ * @param showArchived whether to show results marked as archived - hidden by default
+ * @param hitsPerPage number of results to show on a given page
+ * @param initialState override any part of the initial state
+ */
 export const SearchWrapper = withRouter(
 	({
 		indexName,
@@ -17,7 +24,6 @@ export const SearchWrapper = withRouter(
 		children,
 		history,
 		location,
-		defaultSortBy,
 		showArchived = false,
 		...rest
 	}) => {
@@ -26,7 +32,6 @@ export const SearchWrapper = withRouter(
 			query: "",
 			page: 1,
 			refinementList: {},
-			hitsPerPage,
 			...initialState
 		})
 		console.log("initialState", _initialState)

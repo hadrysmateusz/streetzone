@@ -162,12 +162,8 @@ const DesktopSectionSelect = compose(
 	const _onClick = (section) => {
 		onClick(section.id)
 
-		console.log("click", section)
-
 		const now = Date.now()
 		let value
-
-		console.log("changed section", section.id, min, max)
 
 		switch (section.id) {
 			case "newest":
@@ -183,10 +179,8 @@ const DesktopSectionSelect = compose(
 				value = constructRangeRefinement(null, null, min, max)
 		}
 
-		console.log("new range", value)
-
 		forceRefineWithState({
-			page: 1,
+			page: 1, // reset current page
 			sortBy: section.sortBy,
 			range: { dropsAtApproxTimestamp: value }
 		})
