@@ -42,6 +42,9 @@ class Firebase {
 		// Firestore (Database)
 		this.db = app.firestore()
 
+		// FieldValue - used for things like arrayUnion, increment etc.
+		this.FieldValue = app.firestore.FieldValue
+
 		// Messaging
 		if (areNotificationsSupported()) {
 			this.messaging = app.messaging()
