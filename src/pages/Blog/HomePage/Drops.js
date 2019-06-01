@@ -136,13 +136,20 @@ const SectionCard = ({ id, title, description, onClick, selected }) => {
 	)
 }
 
-const SectionSelect = withBreakpoints(({ currentBreakpoint, ...rest }) => {
-	return +currentBreakpoint <= 1 ? (
-		<MobileSectionSelect {...rest} />
-	) : (
-		<DesktopSectionSelect {...rest} />
+const DesktopSectionSelect = ({ sections, currentSection, handleChange }) => {
+	return (
+		<DesktopSectionSelectContainer>
+			{sections.map((section) => (
+				<SectionCard
+					key={section.title}
+					onClick={() => handleChange(section)}
+					selected={currentSection.id === section.id}
+					{...section}
+				/>
+			))}
+		</DesktopSectionSelectContainer>
 	)
-})
+}
 
 const MobileSectionSelect = () => {
 	return <div />
@@ -155,50 +162,57 @@ const constructRangeRefinement = (newMin, newMax, defMin, defMax) => {
 	}
 }
 
-const DesktopSectionSelect = compose(
+const SectionSelect = compose(
 	withProps({ attribute: "dropsAtApproxTimestamp" }),
-	connectRange
-)(({ sections, onClick, currentSection, forceRefineWithState, min, max }) => {
-	const _onClick = (section) => {
-		onClick(section.id)
+	connectRange,
+	withBreakpoints
+)(
+	({
+		sections,
+		onClick,
+		currentSection,
+		forceRefineWithState,
+		min,
+		max,
+		currentBreakpoint
+	}) => {
+		const handleChange = (section) => {
+			onClick(section.id)
 
-		const now = Date.now()
-		let value
+			const now = Date.now()
+			let value
 
-		switch (section.id) {
-			case "newest":
-				value = constructRangeRefinement(null, null, min, max)
-				break
-			case "upcoming":
-				value = constructRangeRefinement(now, null, min, max)
-				break
-			case "archive":
-				value = constructRangeRefinement(null, now, min, max)
-				break
-			default:
-				value = constructRangeRefinement(null, null, min, max)
+			switch (section.id) {
+				case "newest":
+					value = constructRangeRefinement(null, null, min, max)
+					break
+				case "upcoming":
+					value = constructRangeRefinement(now, null, min, max)
+					break
+				case "archive":
+					value = constructRangeRefinement(null, now, min, max)
+					break
+				default:
+					value = constructRangeRefinement(null, null, min, max)
+			}
+
+			forceRefineWithState({
+				page: 1, // reset current page
+				sortBy: section.sortBy,
+				range: { dropsAtApproxTimestamp: value }
+			})
 		}
 
-		forceRefineWithState({
-			page: 1, // reset current page
-			sortBy: section.sortBy,
-			range: { dropsAtApproxTimestamp: value }
-		})
-	}
+		const isMobile = +currentBreakpoint <= 1
+		const commonProps = { sections, handleChange, currentSection }
 
-	return (
-		<DesktopSectionSelectContainer>
-			{sections.map((section) => (
-				<SectionCard
-					key={section.title}
-					onClick={() => _onClick(section)}
-					selected={currentSection.id === section.id}
-					{...section}
-				/>
-			))}
-		</DesktopSectionSelectContainer>
-	)
-})
+		return isMobile ? (
+			<MobileSectionSelect {...commonProps} />
+		) : (
+			<DesktopSectionSelect {...commonProps} />
+		)
+	}
+)
 
 const DropsPage = withBreakpoints(({ currentBreakpoint }) => {
 	const isMobile = currentBreakpoint <= 1
@@ -217,11 +231,12 @@ const DropsPage = withBreakpoints(({ currentBreakpoint }) => {
 			>
 				{(forceRefineWithState) => (
 					<>
-						{!isMobile && (
+						{/* intentionally hidden visually to prevent resizing bug */}
+						<div hidden={isMobile}>
 							<PageContainer>
 								<PromotedSection component={PromotedDrop} />
 							</PageContainer>
-						)}
+						</div>
 
 						<PageContainer>
 							<Layout>
