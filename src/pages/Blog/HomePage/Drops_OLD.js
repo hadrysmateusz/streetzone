@@ -3,7 +3,7 @@ import { withBreakpoints } from "react-breakpoints"
 import styled from "styled-components/macro"
 import { connectSortBy, connectRange } from "react-instantsearch-dom"
 import { compose } from "recompose"
-import { withRouter, Redirect } from "react-router-dom"
+import { withRouter } from "react-router-dom"
 
 import {
 	SearchWrapper,
@@ -193,27 +193,6 @@ const constructRangeRefinement = (newMin, newMax, defMin, defMax) => {
 	}
 }
 
-const getRangeRefinement = (sectionId, { min, max }) => {
-	const now = Date.now()
-	let value
-
-	switch (sectionId) {
-		case "newest":
-			value = constructRangeRefinement(null, null, min, max)
-			break
-		case "upcoming":
-			value = constructRangeRefinement(now, null, min, max)
-			break
-		case "archive":
-			value = constructRangeRefinement(null, now, min, max)
-			break
-		default:
-			value = constructRangeRefinement(null, null, min, max)
-	}
-
-	return { dropsAtApproxTimestamp: value }
-}
-
 const SectionSelect = compose(
 	withProps({ attribute: "dropsAtApproxTimestamp" }),
 	connectRange,
@@ -222,24 +201,41 @@ const SectionSelect = compose(
 )(
 	({
 		sections,
+		onClick,
 		currentSection,
 		forceRefineWithState,
 		min,
 		max,
 		currentBreakpoint,
-		history
+		location
 	}) => {
 		const handleChange = (section) => {
-			// set the selected section as param in the url
-			history.push(route("DROPS_SECTION", { id: section.id }))
+			onClick(section.id)
 
-			// construct the range refinement
-			const rangeRefinement = getRangeRefinement(section.id, { min, max })
+			const sp = new URLSearchParams(location.search)
+			sp.set("section", "id")
+
+			const now = Date.now()
+			let value
+
+			switch (section.id) {
+				case "newest":
+					value = constructRangeRefinement(null, null, min, max)
+					break
+				case "upcoming":
+					value = constructRangeRefinement(now, null, min, max)
+					break
+				case "archive":
+					value = constructRangeRefinement(null, now, min, max)
+					break
+				default:
+					value = constructRangeRefinement(null, null, min, max)
+			}
 
 			forceRefineWithState({
 				page: 1, // reset current page
 				sortBy: section.sortBy,
-				range: rangeRefinement
+				range: { dropsAtApproxTimestamp: value }
 			})
 		}
 
@@ -254,22 +250,15 @@ const SectionSelect = compose(
 	}
 )
 
-const DropsPage = compose(
-	withRouter,
-	withBreakpoints
-)(({ match, history, currentBreakpoint }) => {
-	// get current section id from url
-	const sectionId = match.params.id
-
-	// if no section id is found in url redirect to the default section
-	if (!sectionId) return <Redirect to={route("DROPS_SECTION", { id: SECTIONS[0].id })} />
-
-	// find the default section based on id from url
-	const section = SECTIONS.find((a) => a.id === sectionId)
-
+const DropsPage = withBreakpoints(({ currentBreakpoint }) => {
 	const isMobile = currentBreakpoint <= 1
+	const [section, setSection] = useState(SECTIONS[0])
 
-	return !section ? null : (
+	const onChangeSection = (id) => {
+		setSection(SECTIONS.find((s) => s.id === id))
+	}
+
+	return (
 		<>
 			<SearchWrapper
 				indexName={section.sortBy}
@@ -294,6 +283,8 @@ const DropsPage = compose(
 									</TextBlock>
 									<SectionSelect
 										sections={SECTIONS}
+										items={SORTING_OPTIONS}
+										onClick={onChangeSection}
 										currentSection={section}
 										forceRefineWithState={forceRefineWithState}
 									/>

@@ -100,24 +100,27 @@ const BlogPost = Loadable({
 	loader: () => import("../../pages/Blog/PostPage"),
 	loading: LoadableComponentSpinner
 })
-const BlogDrop = Loadable({
-	loader: () => import("../../pages/Blog/DropPage"),
-	loading: LoadableComponentSpinner
-})
 const BlogHome = Loadable({
 	loader: () => import("../../pages/Blog/HomePage/Home"),
 	loading: LoadableComponentSpinner
 })
-const BlogDrops = Loadable({
-	loader: () => import("../../pages/Blog/HomePage/Drops"),
-	loading: LoadableComponentSpinner
-})
+
 const BlogTag = Loadable({
 	loader: () => import("../../pages/Blog/HomePage/Tag"),
 	loading: LoadableComponentSpinner
 })
 const BlogCategory = Loadable({
 	loader: () => import("../../pages/Blog/HomePage/Category"),
+	loading: LoadableComponentSpinner
+})
+
+// ===== DROPS =====
+const BlogDrop = Loadable({
+	loader: () => import("../../pages/Blog/DropPage"),
+	loading: LoadableComponentSpinner
+})
+const Drops = Loadable({
+	loader: () => import("../../pages/Blog/HomePage/Drops"),
 	loading: LoadableComponentSpinner
 })
 
@@ -390,7 +393,11 @@ const routes = [
 	},
 	{
 		path: ROUTES.DROPS,
-		component: BlogDrops
+		component: Drops
+	},
+	{
+		path: ROUTES.DROPS_SECTION,
+		component: Drops
 	},
 	{
 		id: "drop",

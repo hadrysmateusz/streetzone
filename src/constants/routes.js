@@ -8,6 +8,7 @@ export const BLOG_CATEGORY = BLOG_BASE + "/k/:category"
 
 export const DROPS = "/dropy"
 export const DROP_DETAILS = DROPS + "/d/:id"
+export const DROPS_SECTION = DROPS + "/s/:id"
 
 export const MARKETPLACE = "/kupuj"
 export const DESIGNER = "/marki/:id"
