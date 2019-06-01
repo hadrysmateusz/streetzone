@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from "react"
+import React from "react"
 import { Link } from "react-router-dom"
 import styled from "styled-components/macro"
 import moment from "moment"
 
 import { route } from "../../utils"
-import { dateFormat } from "../../utils/formatting/formatDropData"
 
 import {
 	Designers,
@@ -15,6 +14,7 @@ import {
 	InfoContainer,
 	FluidImage
 } from "./Common"
+import DropCountdown from "../DropCountdown"
 
 const Container = styled.div`
 	min-width: 0; /* this has to be on the outermost component*/
@@ -36,27 +36,6 @@ const Container = styled.div`
 	}
 `
 
-const CountdownContainer = styled.div`
-	padding: var(--spacing1) var(--spacing2);
-	border: 1px solid var(--gray75);
-	border-radius: 4px;
-	position: relative;
-	color: var(--gray0);
-	white-space: nowrap;
-	margin-left: var(--spacing1);
-	::before {
-		position: absolute;
-		top: -0.8em;
-		left: var(--spacing1);
-		color: var(--gray50);
-		content: "ZA";
-		display: block;
-		padding: 0 3px;
-		background: white;
-		font-size: var(--fs-xs);
-	}
-`
-
 const Name = styled.div`
 	--line-height: 1.5em;
 
@@ -71,66 +50,6 @@ const Name = styled.div`
 		font-size: var(--fs-m);
 	}
 `
-
-const Countdown = ({ dropsAt }) => {
-	// const [hours, setHours] = useState()
-	// const [minutes, setMinutes] = useState()
-	const [totalDays, setTotalDays] = useState()
-	const [totalHours, setTotalHours] = useState()
-	const [hours, setHours] = useState()
-	const [minutes, setMinutes] = useState()
-
-	useEffect(() => {
-		const getValues = () => {
-			const then = moment(dropsAt, dateFormat)
-			const now = moment()
-
-			const isDropInFuture = then.isAfter(now)
-
-			if (isDropInFuture) {
-				const duration = moment.duration(then.diff(now))
-
-				const __totalHours = Math.floor(duration.asHours())
-				const __totalDays = Math.floor(duration.asDays())
-				const __hours = duration.hours()
-				const __minutes = duration.minutes()
-
-				setTotalDays(__totalDays)
-				setTotalHours(__totalHours)
-				setHours(__hours)
-				setMinutes(__minutes)
-			}
-		}
-
-		// this means the string contains at least the full date and hour of the drop
-		if (dropsAt.length >= 11) {
-			getValues()
-
-			// update every 20 seconds
-			const id = setInterval(getValues, 20000)
-
-			return () => clearInterval(id)
-		}
-	}, [dropsAt])
-
-	// const value = hours && minutes ? `${hours}:${minutes}` : "?"
-
-	let value
-
-	if (totalDays && totalDays <= 3) {
-		if (totalHours && minutes) {
-			value = `${totalHours}h ${minutes}m`
-		} else if (totalHours) {
-			value = `${totalHours}godzin`
-		}
-	} else if (totalDays && hours) {
-		value = `${totalDays}dni ${hours}h`
-	} else if (totalDays) {
-		value = `${totalDays}dni`
-	}
-
-	return value ? <CountdownContainer>{value}</CountdownContainer> : null
-}
 
 export const BigDropCard = ({
 	id,
@@ -157,19 +76,11 @@ export const BigDropCard = ({
 					<MiddleContainer flex>
 						<Name>{name}</Name>
 						<div className="align-right">
-							<Countdown dropsAt={dropsAtString} />
+							<DropCountdown dropsAt={dropsAtString} />
 						</div>
 					</MiddleContainer>
 					<BottomContainer>
 						<DateContainer>{date}</DateContainer>
-						{/* <HeartButton
-							css={`
-								color: var(--gray25);
-							`}
-							id={id}
-							type={TYPE.ITEM}
-							scale={1.5}
-						/> */}
 					</BottomContainer>
 				</InfoContainer>
 			</Link>
