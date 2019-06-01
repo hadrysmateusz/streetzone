@@ -42,14 +42,16 @@ import {
 	faThLarge,
 	faThList,
 	faClipboard,
-	faCode
+	faCode,
+	faBell
 } from "@fortawesome/free-solid-svg-icons"
 import {
 	faHeart as farHeart,
 	faEnvelope as farEnvelope,
 	faSquare as farSquare,
 	faCheckSquare as farCheckSquare,
-	faStar as farStar
+	faStar as farStar,
+	faBell as farBell
 } from "@fortawesome/free-regular-svg-icons"
 import { fab } from "@fortawesome/free-brands-svg-icons"
 
@@ -102,5 +104,7 @@ library.add(
 	faThList,
 	faClipboard,
 	faArrowLeft,
-	faCode
+	faCode,
+	faBell,
+	farBell
 )

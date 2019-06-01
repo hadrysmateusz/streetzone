@@ -76,7 +76,7 @@ export const BigDropCard = ({
 					<MiddleContainer flex>
 						<Name>{name}</Name>
 						<div className="align-right">
-							<DropCountdown dropsAt={dropsAtString} />
+							<DropCountdown dropsAt={dropsAtString} id={id} />
 						</div>
 					</MiddleContainer>
 					<BottomContainer>

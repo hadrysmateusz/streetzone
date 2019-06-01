@@ -3,15 +3,24 @@ import styled from "styled-components/macro"
 import moment from "moment"
 
 import { dateFormat } from "../../utils/formatting/formatDropData"
+import { useAuthentication, useFirebase } from "../../hooks"
+import FollowButton from "./FollowButton"
 
 const CountdownContainer = styled.div`
-	padding: var(--spacing1) var(--spacing2);
+	/* padding: var(--spacing1) var(--spacing2); */
 	border: 1px solid var(--gray75);
 	border-radius: 4px;
 	position: relative;
 	color: var(--gray0);
 	white-space: nowrap;
 	margin-left: var(--spacing1);
+	display: flex;
+
+	.value-container {
+		padding: var(--spacing1) var(--spacing2);
+		border-right: 1px solid var(--gray75);
+	}
+
 	::before {
 		position: absolute;
 		top: -0.8em;
@@ -25,9 +34,7 @@ const CountdownContainer = styled.div`
 	}
 `
 
-const DropCountdown = ({ dropsAt }) => {
-	// const [hours, setHours] = useState()
-	// const [minutes, setMinutes] = useState()
+const DropCountdown = ({ dropsAt, id }) => {
 	const [totalDays, setTotalDays] = useState()
 	const [totalHours, setTotalHours] = useState()
 	const [hours, setHours] = useState()
@@ -84,15 +91,8 @@ const DropCountdown = ({ dropsAt }) => {
 
 	return value ? (
 		<CountdownContainer>
-			{/* <HeartButton
-        css={`
-          color: var(--gray25);
-        `}
-        id={id}
-        type={TYPE.ITEM}
-        scale={1.5}
-      /> */}
-			{value}
+			<div className="value-container">{value}</div>
+			<FollowButton id={id} />
 		</CountdownContainer>
 	) : null
 }
