@@ -2,6 +2,7 @@ import React, { Component } from "react"
 import { withRouter } from "react-router-dom"
 import { compose } from "recompose"
 import moment from "moment"
+import styled from "styled-components/macro"
 
 import ProfilePicture from "../ProfilePicture"
 import { withFirebase } from "../Firebase"

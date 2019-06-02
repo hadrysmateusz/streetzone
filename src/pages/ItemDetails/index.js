@@ -3,24 +3,45 @@ import { Link } from "react-router-dom"
 import moment from "moment"
 import styled from "styled-components/macro"
 
-import ImageGallery from "../../components/ImageGallery"
-import LoadingSpinner from "../../components/LoadingSpinner"
 import Button, { LoaderButton, ButtonContainer } from "../../components/Button"
-import EmptyState from "../../components/EmptyState"
-import UserPreview from "../../components/UserPreview"
-import { translateCondition } from "../../constants/item_schema"
-import { PageContainer } from "../../components/Containers"
-import { SaveButton, TYPE } from "../../components/SaveButton"
 import { TextBlock, SmallTextBlock } from "../../components/StyledComponents"
+import { SaveButton, TYPE } from "../../components/SaveButton"
+import LoadingSpinner from "../../components/LoadingSpinner"
+import { PageContainer } from "../../components/Containers"
+import ImageGallery from "../../components/ImageGallery"
+import UserPreview from "../../components/UserPreview/new"
+import EmptyState from "../../components/EmptyState"
+import PageNav from "../../components/PageNav"
 
+import { translateCondition } from "../../constants/item_schema"
+import useAuthentication from "../../hooks/useAuthentication"
 import formatDesigners from "../../utils/formatDesigners"
+import useFirebase from "../../hooks/useFirebase"
 import formatPrice from "../../utils/formatPrice"
 import formatSize from "../../utils/formatSize"
 import { route } from "../../utils"
-import useFirebase from "../../hooks/useFirebase"
-import useAuthentication from "../../hooks/useAuthentication"
 
-import { ItemContainer, InfoContainer } from "./StyledComponents"
+const ItemContainer = styled.div`
+	position: relative;
+	display: grid;
+	max-width: 100%;
+	height: 100%;
+	gap: var(--spacing3);
+	grid-template-columns: 100%;
+
+	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
+		grid-template-columns: 2fr minmax(340px, 1fr);
+	}
+	@media (min-width: ${(p) => p.theme.breakpoints[3]}px) {
+		gap: var(--spacing4);
+	}
+`
+
+const InfoContainer = styled.div`
+	flex: 0 0 100%;
+	background: white;
+	padding-bottom: var(--spacing5);
+`
 
 const HeaderContainer = styled.div`
 	.designers {
@@ -182,6 +203,10 @@ const ItemDetailsPage = ({ match, history }) => {
 	return (
 		<>
 			<PageContainer>
+				{/* TODO: make the algolia encoding work with route helper, for this to work */}
+				<PageNav
+					breadcrumbs={[["Kupuj", "MARKETPLACE"], [item.category, "MARKETPLACE"]]}
+				/>
 				<ItemContainer>
 					<ImageGallery item={item} />
 					<InfoContainer>

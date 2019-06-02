@@ -10,6 +10,7 @@ import useUserData from "./useUserData"
 import useImage from "./useImage"
 import useFlash from "./useFlash"
 import useTabs from "./useTabs"
+import useUser from "./useUser"
 
 export {
 	useFirestoreCollection,
@@ -23,5 +24,6 @@ export {
 	useDesigner,
 	useImage,
 	useFlash,
+	useUser,
 	useTabs
 }
