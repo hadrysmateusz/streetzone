@@ -99,11 +99,12 @@ const Button = styled.button`
 const ButtonContainer = styled.div`
 	width: 100%;
 	display: flex;
+	${(p) => p.vertical && "flex-direction: column;"} 
 	${(p) => !p.noMargin && "margin: var(--spacing2) 0;"}
 	${(p) => p.alignRight && "justify-content: flex-end;"}
 	${(p) => p.centered && "justify-content: center;"}
 	> * + * {
-		margin-left: var(--spacing2);
+		${(p) => (p.vertical ? "margin-top: var(--spacing2);" : "margin-left: var(--spacing2);")} 
 	}
 `
 

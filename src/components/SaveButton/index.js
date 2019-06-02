@@ -126,13 +126,19 @@ export const SaveButton = ({ text, savedText, type, id, ...props }) => {
 			{({ isSaved, onClick }) => {
 				return (
 					<Button onClick={onClick} {...props}>
-						<div className="fa-layers fa-fw">
+						<div
+							className="fa-layers fa-fw"
+							css={`
+								margin-right: var(--spacing1);
+								font-size: 11px;
+							`}
+						>
 							{isSaved ? (
-								<FontAwesomeIcon className="filled" icon="heart" size="xs" />
+								<FontAwesomeIcon className="filled" icon="heart" />
 							) : (
-								<FontAwesomeIcon className="outline" icon={["far", "heart"]} size="xs" />
+								<FontAwesomeIcon className="outline" icon={["far", "heart"]} />
 							)}
-						</div>{" "}
+						</div>
 						{isSaved ? savedText : text}
 					</Button>
 				)

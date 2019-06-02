@@ -1,36 +1,123 @@
 import React, { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
-import { InstantSearch, Configure } from "react-instantsearch-dom"
 import moment from "moment"
+import styled from "styled-components/macro"
 
-import DataDisplay from "../../components/DataDisplay"
 import ImageGallery from "../../components/ImageGallery"
-
 import LoadingSpinner from "../../components/LoadingSpinner"
-import Button, {
-	LoaderButton,
-	ButtonContainer,
-	IconButton
-} from "../../components/Button"
+import Button, { LoaderButton, ButtonContainer } from "../../components/Button"
 import EmptyState from "../../components/EmptyState"
 import UserPreview from "../../components/UserPreview"
 import { translateCondition } from "../../constants/item_schema"
-import { PageContainer, GrayContainer } from "../../components/Containers"
-import { AlgoliaScrollableHits } from "../../components/Algolia/AlgoliaHits"
-import { VirtualMenu, VirtualRefinementList } from "../../components/Algolia/Virtual"
-import {
-	TextBlock,
-	SmallTextBlock,
-	HorizontalContainer
-} from "../../components/StyledComponents"
-import { ItemContainer, InfoContainer, SectionContainer } from "./StyledComponents"
+import { PageContainer } from "../../components/Containers"
 import { SaveButton, TYPE } from "../../components/SaveButton"
+import { TextBlock, SmallTextBlock } from "../../components/StyledComponents"
+
 import formatDesigners from "../../utils/formatDesigners"
 import formatPrice from "../../utils/formatPrice"
 import formatSize from "../../utils/formatSize"
-import { CONST, ROUTES } from "../../constants"
+import { route } from "../../utils"
 import useFirebase from "../../hooks/useFirebase"
 import useAuthentication from "../../hooks/useAuthentication"
+
+import { ItemContainer, InfoContainer } from "./StyledComponents"
+
+const HeaderContainer = styled.div`
+	.designers {
+		font-size: var(--fs-xs);
+		text-transform: uppercase;
+		color: var(--gray0);
+	}
+	.name {
+		font-size: var(--fs-l);
+		color: var(--black0);
+		font-weight: bold;
+	}
+
+	padding-bottom: var(--spacing1);
+	border-bottom: 1px solid var(--gray75);
+	margin-bottom: var(--spacing3);
+`
+
+const DetailsContainer = styled.div`
+	display: flex;
+	align-content: center;
+	margin-bottom: var(--spacing3);
+
+	> * + * {
+		margin-left: var(--spacing3);
+		@media (min-width: ${(p) => p.theme.breakpoints[4]}px) {
+			margin-left: var(--spacing4);
+		}
+	}
+	.logos-container {
+		display: flex;
+		align-content: center;
+		justify-content: flex-end;
+		margin-left: auto;
+		> * + * {
+			margin-left: var(--spacing2);
+		}
+	}
+`
+
+const Description = styled.div`
+	.content {
+		color: var(--black25);
+	}
+	margin-bottom: var(--spacing3);
+`
+
+const LogoContainer = styled.div`
+	border-radius: 50%;
+	border: 1px solid var(--gray75);
+	width: 100%;
+	height: 100%;
+	background-image: url("${(p) => p.url}");
+	background-color: var(--almost-white);
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: center;
+`
+
+const DatesContainer = styled.div`
+	display: flex;
+	margin-bottom: var(--spacing3);
+
+	> * + * {
+		margin-left: var(--spacing2);
+		@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
+			margin-left: var(--spacing3);
+		}
+	}
+`
+
+const Logo = ({ name }) => {
+	// TODO: finish this
+	return <LogoContainer />
+}
+
+const InfoItem = ({ name, children }) => {
+	return (
+		<div>
+			<SmallTextBlock>{name}</SmallTextBlock>
+			<TextBlock size="m" bold>
+				{children}
+			</TextBlock>
+		</div>
+	)
+}
+
+const Header = ({ designers, name }) => {
+	let formattedDesigners = formatDesigners(designers)
+
+	return (
+		<HeaderContainer>
+			<div className="designers">{formattedDesigners}</div>
+			<div className="name">{name}</div>
+		</HeaderContainer>
+	)
+}
 
 const ItemDetailsPage = ({ match, history }) => {
 	const firebase = useFirebase()
@@ -69,7 +156,7 @@ const ItemDetailsPage = ({ match, history }) => {
 				const items = oldItems.filter((item) => item !== itemId)
 				await firebase.currentUser().update({ items })
 
-				history.push(ROUTES.MARKETPLACE)
+				history.push(route("MARKETPLACE"))
 				return
 			} catch (e) {
 				alert("Usuwanie nie powiodło się")
@@ -87,9 +174,10 @@ const ItemDetailsPage = ({ match, history }) => {
 	const isAuthorized = authUser && authUser.uid === item.userId
 
 	const conditionObj = translateCondition(item.condition)
-	const formattedDesigners = formatDesigners(item.designers)
 	const formattedPrice = formatPrice(item.price)
 	const formattedSize = formatSize(item.size)
+
+	const brands = []
 
 	return (
 		<>
@@ -97,74 +185,73 @@ const ItemDetailsPage = ({ match, history }) => {
 				<ItemContainer>
 					<ImageGallery item={item} />
 					<InfoContainer>
-						<SectionContainer>
-							<TextBlock uppercase size="l" bold>
-								{item.designers && formattedDesigners}
-							</TextBlock>
-							<TextBlock size="m">{item.name}</TextBlock>
-						</SectionContainer>
+						<Header name={item.name} designers={item.designers} />
+						<DetailsContainer>
+							<InfoItem name="Cena">{formattedPrice}</InfoItem>
+							<InfoItem name="Stan">{conditionObj.displayValue}</InfoItem>
+							<InfoItem name="Rozmiar">{formattedSize}</InfoItem>
+							<div className="logos-container">
+								{brands.map((brand) => (
+									<Logo {...brand} key={brand.name} />
+								))}
+							</div>
+						</DetailsContainer>
 
-						<SectionContainer>
-							<HorizontalContainer gap="3">
-								<SmallTextBlock>
-									<b>Dodano:&nbsp;</b>
-									{moment(item.createdAt).format("D.M.YY o HH:mm")}
-								</SmallTextBlock>
-								<SmallTextBlock>
-									<b>Edytowano:&nbsp;</b>
-									{moment(item.createdAt).format("D.M.YY o HH:mm")}
-								</SmallTextBlock>
-							</HorizontalContainer>
-							<DataDisplay>
-								<tr>
-									<th>Cena</th>
-									<td>{formattedPrice}</td>
-								</tr>
-								<tr>
-									<th>Rozmiar</th>
-									<td>{formattedSize}</td>
-								</tr>
-								<tr>
-									<th>Stan</th>
-									<td>{conditionObj.displayValue}</td>
-								</tr>
-							</DataDisplay>
+						<Description>
+							<SmallTextBlock>Opis</SmallTextBlock>
+							<div className="content">{item.description}</div>
+						</Description>
 
+						<DatesContainer>
+							<SmallTextBlock>
+								<b>Dodano&nbsp;</b>
+								{moment().to(item.createdAt)}
+							</SmallTextBlock>
+							{item.editedAt && (
+								<SmallTextBlock>
+									<b>Edytowano&nbsp;</b>
+									{moment().to(item.editedAt)}
+								</SmallTextBlock>
+							)}
+						</DatesContainer>
+
+						<ButtonContainer
+							noMargin
+							vertical
+							css={`
+								margin-bottom: var(--spacing3);
+							`}
+						>
 							{isAuthorized ? (
 								<>
-									<ButtonContainer>
-										<Button accent fullWidth>
-											Promuj
-										</Button>
-									</ButtonContainer>
+									<Button accent fullWidth>
+										Promuj
+									</Button>
 
-									<ButtonContainer noMargin>
-										<Button
-											as={Link}
-											to={ROUTES.EDIT_ITEM.replace(":id", item.id)}
-											fullWidth
-										>
-											Edytuj
-										</Button>
-										<LoaderButton
-											isLoading={isDeleting}
-											text="Usuń"
-											loadingText="Usuwanie..."
-											onClick={deleteItem}
-											fullWidth
-										/>
-									</ButtonContainer>
+									<Button as={Link} to={route("EDIT_ITEM", { id: item.id })} fullWidth>
+										Edytuj
+									</Button>
+
+									<LoaderButton
+										isLoading={isDeleting}
+										text="Usuń"
+										loadingText="Usuwanie..."
+										onClick={deleteItem}
+										fullWidth
+									/>
 								</>
 							) : (
-								<ButtonContainer noMargin>
+								<>
 									<Button
 										as={Link}
-										to={ROUTES.CHAT_NEW.replace(":id", item.userId)}
+										to={route("CHAT_NEW", { id: item.userId })}
 										primary
 										fullWidth
+										big
 									>
 										Kontakt
 									</Button>
+
 									<SaveButton
 										fullWidth
 										text="Zapisz"
@@ -172,45 +259,43 @@ const ItemDetailsPage = ({ match, history }) => {
 										type={TYPE.ITEM}
 										id={item.id}
 									/>
-									<IconButton icon="ellipsis-h" />
-								</ButtonContainer>
+								</>
 							)}
-						</SectionContainer>
-						<SectionContainer>
-							{!isAuthorized && <UserPreview id={item.userId} />}
-							<TextBlock>{item.description}</TextBlock>
-						</SectionContainer>
+						</ButtonContainer>
+
+						{!isAuthorized && <UserPreview id={item.userId} />}
 					</InfoContainer>
 				</ItemContainer>
 			</PageContainer>
-			<GrayContainer padded>
-				<TextBlock uppercase>Podobne przedmioty</TextBlock>
-				<InstantSearch
-					appId={process.env.REACT_APP_APP_ID}
-					apiKey={process.env.REACT_APP_ALGOLIA_API_KEY}
-					indexName={CONST.ITEMS_MARKETPLACE_DEFAULT_ALGOLIA_INDEX}
-				>
-					<Configure hitsPerPage={3} />
-					<VirtualRefinementList
-						attribute="designers"
-						defaultRefinement={item.designers}
-					/>
-					<VirtualMenu attribute="category" defaultRefinement={item.category} />
-					<AlgoliaScrollableHits />
-				</InstantSearch>
-				<TextBlock uppercase>Inne przedmioty sprzedającego</TextBlock>
-				<InstantSearch
-					appId={process.env.REACT_APP_APP_ID}
-					apiKey={process.env.REACT_APP_ALGOLIA_API_KEY}
-					indexName={CONST.ITEMS_MARKETPLACE_DEFAULT_ALGOLIA_INDEX}
-				>
-					<Configure hitsPerPage={3} />
-					<VirtualMenu attribute="userId" defaultRefinement={item.userId} />
-					<AlgoliaScrollableHits />
-				</InstantSearch>
-			</GrayContainer>
 		</>
 	)
 }
 
 export default ItemDetailsPage
+
+/* <GrayContainer padded>
+	<TextBlock uppercase>Podobne przedmioty</TextBlock>
+	<InstantSearch
+		appId={process.env.REACT_APP_APP_ID}
+		apiKey={process.env.REACT_APP_ALGOLIA_API_KEY}
+		indexName={CONST.ITEMS_MARKETPLACE_DEFAULT_ALGOLIA_INDEX}
+	>
+		<Configure hitsPerPage={3} />
+		<VirtualRefinementList
+			attribute="designers"
+			defaultRefinement={item.designers}
+		/>
+		<VirtualMenu attribute="category" defaultRefinement={item.category} />
+		<AlgoliaScrollableHits />
+	</InstantSearch>
+	<TextBlock uppercase>Inne przedmioty sprzedającego</TextBlock>
+	<InstantSearch
+		appId={process.env.REACT_APP_APP_ID}
+		apiKey={process.env.REACT_APP_ALGOLIA_API_KEY}
+		indexName={CONST.ITEMS_MARKETPLACE_DEFAULT_ALGOLIA_INDEX}
+	>
+		<Configure hitsPerPage={3} />
+		<VirtualMenu attribute="userId" defaultRefinement={item.userId} />
+		<AlgoliaScrollableHits />
+	</InstantSearch>
+</GrayContainer> */

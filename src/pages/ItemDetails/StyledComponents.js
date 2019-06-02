@@ -2,12 +2,17 @@ import styled from "styled-components/macro"
 
 export const ItemContainer = styled.div`
 	position: relative;
-	display: flex;
-	flex-direction: column;
+	display: grid;
 	max-width: 100%;
 	height: 100%;
+	gap: var(--spacing3);
+	grid-template-columns: 100%;
+
 	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
-		flex-direction: row;
+		grid-template-columns: 2fr minmax(340px, 1fr);
+	}
+	@media (min-width: ${(p) => p.theme.breakpoints[3]}px) {
+		gap: var(--spacing4);
 	}
 `
 
@@ -15,13 +20,6 @@ export const InfoContainer = styled.div`
 	flex: 0 0 100%;
 	background: white;
 	padding-bottom: var(--spacing5);
-	padding-left: var(--spacing3);
-	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
-		max-width: 330px;
-	}
-	@media (min-width: ${(p) => p.theme.breakpoints[3]}px) {
-		max-width: 400px;
-	}
 `
 
 export const ButtonsContainer = styled.div`
