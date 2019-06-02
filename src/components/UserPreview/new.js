@@ -23,6 +23,7 @@ const Container = styled.div`
 		.name {
 			font-size: var(--fs-l);
 			font-weight: bold;
+			margin-left: var(--spacing2);
 		}
 	}
 	.info-container {
@@ -51,33 +52,41 @@ const InfoItem = ({ name, children }) => (
 )
 
 const NewUserPreview = withRouter(({ id }) => {
-	const firebase = useFirebase()
-
 	const [user, error] = useUser(id)
+
+	if (error) {
+		return (
+			<Container>
+				<div className="error">Wystąpił błąd</div>
+			</Container>
+		)
+	}
+
+	if (!user) {
+		return (
+			<Container>
+				<LoadingSpinner />
+			</Container>
+		)
+	}
+
+	const profilePictureUrl = getProfilePictureURL(user, "S")
 
 	return (
 		<Container>
-			{error ? (
-				<div className="error">Wystąpił błąd</div>
-			) : !user ? (
-				<LoadingSpinner />
-			) : (
-				<>
-					<div className="top-container">
-						{/* <ProfilePicture /> */}
-						<div className="name">{user.name}</div>
-					</div>
-					<div className="info-container">
-						<InfoItem name="W serwisie od">
-							{moment().diff(user.userSince, "days")} dni
-						</InfoItem>
-						{user.city && <InfoItem name="Miasto">{user.city}</InfoItem>}
-					</div>
-					<Button as={Link} to={route("ACCOUNT_ITEMS", { id })}>
-						Zobacz Profil
-					</Button>
-				</>
-			)}
+			<div className="top-container">
+				<ProfilePicture url={profilePictureUrl} size="40px" />
+				<div className="name">{user.name}</div>
+			</div>
+			<div className="info-container">
+				<InfoItem name="W serwisie od">
+					{moment().diff(user.userSince, "days")} dni
+				</InfoItem>
+				{user.city && <InfoItem name="Miasto">{user.city}</InfoItem>}
+			</div>
+			<Button as={Link} to={route("ACCOUNT_ITEMS", { id })}>
+				Zobacz Profil
+			</Button>
 		</Container>
 	)
 })
