@@ -7,6 +7,7 @@ import { withFirebase } from "../Firebase"
 import { MiniButton } from "../Basics"
 import { CONST } from "../../constants"
 import LoadingSpinner from "../LoadingSpinner"
+import CarouselButton from "../Carousel/CarouselButton"
 
 const CurrentImage = styled.div`
 	cursor: zoom-in;
@@ -213,15 +214,11 @@ export class ImageGallery extends Component {
 			<Container>
 				<CurrentImage>
 					{thumbnailURLs.length > 1 && (
-						<MiniButton
-							position={{ top: "calc(50% - 25px)", left: "20px" }}
-							size={42}
-							style={{ paddingRight: "2px" }}
+						<CarouselButton
 							data-index={+currentImageIndex - 1}
 							onClick={this.changeCurrentImage}
-						>
-							<FontAwesomeIcon icon="angle-left" size="2x" />
-						</MiniButton>
+							direction="left"
+						/>
 					)}
 					{this.state.error ? (
 						<StyledIcon icon="image" />
@@ -231,15 +228,11 @@ export class ImageGallery extends Component {
 						<img src={imageURLs[currentImageIndex]} alt="" onClick={this.openLightbox} />
 					)}
 					{thumbnailURLs.length > 1 && (
-						<MiniButton
-							position={{ top: "calc(50% - 25px)", right: "20px" }}
-							size={42}
-							style={{ paddingLeft: "2px" }}
+						<CarouselButton
 							data-index={+currentImageIndex + 1}
 							onClick={this.changeCurrentImage}
-						>
-							<FontAwesomeIcon icon="angle-right" size="2x" />
-						</MiniButton>
+							direction="right"
+						/>
 					)}
 				</CurrentImage>
 				{thumbnailURLs.length > 1 && (

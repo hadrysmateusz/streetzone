@@ -9,7 +9,7 @@ export const StyledButton = styled.button`
 	justify-content: center;
 	align-items: center;
 	width: var(--size);
-	height: var(--size);
+	height: calc(2 * var(--size));
 	font-size: 12px;
 	background: white;
 	color: var(--black25);
@@ -17,15 +17,22 @@ export const StyledButton = styled.button`
 	transition: all 0.2s;
 	cursor: pointer;
 	outline: none;
-	border: 1px solid var(--gray100);
+	/* border: 1px solid var(--gray100); */
+	border: none;
+	padding-${(p) => p.direction}: 4px;
 	&:hover {
 		opacity: 1;
 	}
+
+	/* positioning */
+	top: calc(50% - var(--size) );
+	position: absolute;
+	${(p) => p.direction}: 0;
 `
 
 export default ({ onClick, scale = 1, direction }) => {
 	return (
-		<StyledButton onClick={onClick} scale={scale}>
+		<StyledButton onClick={onClick} scale={scale} direction={direction}>
 			<FontAwesomeIcon icon={`angle-${direction}`} size="2x" />
 		</StyledButton>
 	)
