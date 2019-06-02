@@ -38,7 +38,7 @@ export const OptionsContainer = styled.div`
 	${(p) => p.multiColumn && `grid-template-columns: repeat(2, 1fr);`}
 	${(p) =>
 		p.boxGrid &&
-		"grid-template-columns: repeat(auto-fill, minmax(35px,1fr)); gap: var(--spacing2); "};
+		"grid-template-columns: repeat(auto-fill, minmax(35px,1fr)); gap: var(--spacing2); margin: var(--spacing2) 0;"};
 `
 
 export const FilterItem = styled.div`
