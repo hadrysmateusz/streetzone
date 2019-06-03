@@ -5,23 +5,26 @@ export default (selectedDesigner) => {
 	const [designer, setDesigner] = useState(null)
 	const firebase = useFirebase()
 
-	const getDesigner = async (selectedDesigner) => {
-		const snap = await firebase
-			.designers()
-			.where("label", "==", selectedDesigner)
-			.get()
-
-		let designersArr = []
-		snap.forEach((a) => {
-			designersArr.push(a.data())
-		})
-
-		setDesigner(designersArr[0])
-	}
-
 	useEffect(() => {
-		getDesigner(selectedDesigner)
+		const getDesigner = async () => {
+			const snap = await firebase
+				.designers()
+				.where("label", "==", selectedDesigner)
+				.get()
+
+			let designersArr = []
+			snap.forEach((a) => {
+				designersArr.push(a.data())
+			})
+
+			setDesigner(designersArr[0])
+		}
+
+		getDesigner()
 	}, [selectedDesigner])
+
+	console.log("selectedDesigner", selectedDesigner)
+	console.log("desinger", designer)
 
 	return designer
 }

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
 import moment from "moment"
-import styled from "styled-components/macro"
+import styled, { css } from "styled-components/macro"
 
 import Button, { LoaderButton, ButtonContainer } from "../../components/Button"
 import { TextBlock, SmallTextBlock } from "../../components/StyledComponents"
@@ -11,12 +11,13 @@ import { PageContainer } from "../../components/Containers"
 import ImageGallery from "../../components/ImageGallery"
 import UserPreview from "../../components/UserPreview/new"
 import EmptyState from "../../components/EmptyState"
+import { Image } from "../../components/Image"
 import PageNav from "../../components/PageNav"
 
+import { useFirebase, useDesigner, useAuthentication } from "../../hooks"
 import { translateCondition } from "../../constants/item_schema"
-import useAuthentication from "../../hooks/useAuthentication"
+import { encodeURL } from "../../utils/algoliaURLutils"
 import formatDesigners from "../../utils/formatDesigners"
-import useFirebase from "../../hooks/useFirebase"
 import formatPrice from "../../utils/formatPrice"
 import formatSize from "../../utils/formatSize"
 import { route } from "../../utils"
@@ -73,15 +74,6 @@ const DetailsContainer = styled.div`
 			margin-left: var(--spacing4);
 		}
 	}
-	.logos-container {
-		display: flex;
-		align-content: center;
-		justify-content: flex-end;
-		margin-left: auto;
-		> * + * {
-			margin-left: var(--spacing2);
-		}
-	}
 `
 
 const Description = styled.div`
@@ -89,18 +81,6 @@ const Description = styled.div`
 		color: var(--black25);
 	}
 	margin-bottom: var(--spacing3);
-`
-
-const LogoContainer = styled.div`
-	border-radius: 50%;
-	border: 1px solid var(--gray75);
-	width: 100%;
-	height: 100%;
-	background-image: url("${(p) => p.url}");
-	background-color: var(--almost-white);
-	background-size: cover;
-	background-repeat: no-repeat;
-	background-position: center;
 `
 
 const DatesContainer = styled.div`
@@ -115,9 +95,50 @@ const DatesContainer = styled.div`
 	}
 `
 
+const BrandsContainer = styled.div`
+	display: flex;
+	align-content: center;
+	justify-content: flex-end;
+	margin-left: auto;
+	> * + * {
+		margin-left: var(--spacing2);
+	}
+`
+
+const DesignerLink = ({ value, children }) => {
+	return (
+		<Link to={encodeURL({ designers: [value] }, route("MARKETPLACE"))}>{children}</Link>
+	)
+}
+
+const Brands = ({ designers }) => {
+	return (
+		<BrandsContainer>
+			{designers.map((designer) => (
+				<Logo name={designer} key={designer} />
+			))}
+		</BrandsContainer>
+	)
+}
+
 const Logo = ({ name }) => {
-	// TODO: finish this
-	return <LogoContainer />
+	const designer = useDesigner(name)
+
+	return designer ? (
+		<div
+			css={css`
+				width: 40px;
+				height: 40px;
+				border-radius: 50%;
+				overflow: hidden;
+				border: 1px solid var(--gray75);
+			`}
+		>
+			<DesignerLink value={designer.label}>
+				<Image url={designer.logoURL} title={designer.label} />
+			</DesignerLink>
+		</div>
+	) : null
 }
 
 const InfoItem = ({ name, children }) => {
@@ -201,8 +222,6 @@ const ItemDetailsPage = ({ match, history }) => {
 	const formattedSize = formatSize(item.size)
 	const formattedDesigners = formatDesigners(item.designers)
 
-	const brands = []
-
 	return (
 		<>
 			<PageContainer>
@@ -226,11 +245,7 @@ const ItemDetailsPage = ({ match, history }) => {
 							<InfoItem name="Cena">{formattedPrice}</InfoItem>
 							<InfoItem name="Stan">{conditionObj.displayValue}</InfoItem>
 							<InfoItem name="Rozmiar">{formattedSize}</InfoItem>
-							<div className="logos-container">
-								{brands.map((brand) => (
-									<Logo {...brand} key={brand.name} />
-								))}
-							</div>
+							<Brands designers={item.designers} />
 						</DetailsContainer>
 
 						<Description>
