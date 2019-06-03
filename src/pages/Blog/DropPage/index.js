@@ -11,6 +11,8 @@ import { PageContainer } from "../../../components/Containers"
 import ImageGallery from "../../../components/ImageGallery"
 import { Image } from "../../../components/Image"
 import PageNav from "../../../components/PageNav"
+import Share from "../../../components/Share"
+import Tags from "../../../components/Tags"
 
 import { useFirebase, useDesigner } from "../../../hooks"
 import { encodeURL } from "../../../utils/algoliaURLutils"
@@ -26,6 +28,32 @@ const DisclaimerContainer = styled.div`
 	text-transform: uppercase;
 	a {
 		color: var(--black0);
+	}
+`
+
+const MiscBar = styled.div`
+	border-top: 1px solid var(--gray75);
+	border-bottom: 1px solid var(--gray75);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin: var(--spacing4) 0;
+	padding: var(--spacing2) var(--spacing3);
+
+	> * + * {
+		margin-left: var(--spacing4);
+	}
+
+	.group {
+		display: flex;
+		align-items: center;
+	}
+
+	.group-name {
+		margin-right: var(--spacing3);
+		text-transform: uppercase;
+		font-size: var(--fs-xs);
+		color: var(--gray0);
 	}
 `
 
@@ -247,6 +275,16 @@ const DropDetailsPage = ({ match, history }) => {
 					</InfoContainer>
 				</ItemContainer>
 			</PageContainer>
+			<MiscBar>
+				<div className="group">
+					<div className="group-name">Udostępnij</div>
+					<Share />
+				</div>
+				<div className="group">
+					<div className="group-name">Tagi</div>
+					<Tags tags={drop.tags} />
+				</div>
+			</MiscBar>
 		</>
 	)
 }

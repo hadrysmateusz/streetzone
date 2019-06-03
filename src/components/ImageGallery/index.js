@@ -21,6 +21,7 @@ const OuterContainer = styled.div`
 	}
 	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
 		min-height: 480px;
+		max-height: 620px;
 	}
 `
 

@@ -214,7 +214,13 @@ export const PureBlogPost = withBreakpoints(
 												</div>
 											</Info>
 											{/* Tags */}
-											<Tags tags={tags} />
+											<div
+												css={`
+													margin-top: var(--spacing2);
+												`}
+											>
+												<Tags tags={tags} />
+											</div>
 										</InfoAside>
 									)}
 									<Article>

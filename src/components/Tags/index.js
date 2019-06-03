@@ -14,7 +14,6 @@ export const TagsContainer = styled.div`
 		margin-bottom: var(--spacing2);
 	}
 	margin-bottom: calc(-1 * var(--spacing2));
-	margin-top: var(--spacing2);
 `
 
 const TagContainer = styled.div`
