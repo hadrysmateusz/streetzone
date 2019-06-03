@@ -3,7 +3,6 @@ import styled from "styled-components/macro"
 import moment from "moment"
 
 import { dateFormat } from "../../utils/formatting/formatDropData"
-import { useAuthentication, useFirebase } from "../../hooks"
 import FollowButton from "./FollowButton"
 
 const CountdownContainer = styled.div`
@@ -41,11 +40,10 @@ const formatValue = (dropsAt) => {
 	const duration = moment.duration(then.diff(now))
 
 	const totalHours = Math.floor(duration.asHours())
-	const totalDays = Math.floor(duration.asDays())
 	const minutes = duration.minutes()
 
 	const isDropInFuture = then.isAfter(now) // this isn't reliable for dates without specified time
-	const isHourKnown = dropsAt && dropsAt.length > 11
+	const isTimeKnown = dropsAt && dropsAt.length > 9
 	const isSoon = totalHours && totalHours <= 48
 	const isToday = now.isSame(then, "day")
 
@@ -61,12 +59,12 @@ const formatValue = (dropsAt) => {
 
 	// 21 hours is when moment starts to show hours instead of days
 	// if the hour isn't known, prevent from showing misleading information
-	if (!isHourKnown && totalHours <= 21) {
+	if (!isTimeKnown && totalHours <= 21) {
 		return "Jutro"
 	}
 
 	// if the drop is very soon and the exact time is known, display countdown
-	if (isSoon) {
+	if (isTimeKnown && isSoon) {
 		return `${totalHours}h ${minutes}min`
 	}
 

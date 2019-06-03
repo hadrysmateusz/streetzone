@@ -6,7 +6,7 @@ import { route } from "../../utils"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 const NavContainer = styled.div`
-	margin: var(--spacing2) 0;
+	margin: var(--spacing3) 0;
 	text-transform: uppercase;
 	font-size: var(--font-size--xs);
 	color: ${(p) => (p.white ? "white" : "var(--gray0)")};

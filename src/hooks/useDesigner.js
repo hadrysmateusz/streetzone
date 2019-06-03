@@ -23,8 +23,5 @@ export default (selectedDesigner) => {
 		getDesigner()
 	}, [selectedDesigner])
 
-	console.log("selectedDesigner", selectedDesigner)
-	console.log("desinger", designer)
-
 	return designer
 }
