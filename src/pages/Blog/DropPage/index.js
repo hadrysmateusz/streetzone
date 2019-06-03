@@ -32,25 +32,45 @@ const DisclaimerContainer = styled.div`
 `
 
 const MiscBar = styled.div`
-	border-top: 1px solid var(--gray75);
-	border-bottom: 1px solid var(--gray75);
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	margin: var(--spacing4) 0;
-	padding: var(--spacing2) var(--spacing3);
+	padding: var(--spacing3) var(--spacing3);
+	text-align: center;
 
-	> * + * {
-		margin-left: var(--spacing4);
+	@media (max-width: ${(p) => p.theme.breakpoints[2] - 1}px) {
+		flex-direction: column;
+	}
+	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
+		border-top: 1px solid var(--gray75);
+		border-bottom: 1px solid var(--gray75);
 	}
 
 	.group {
 		display: flex;
 		align-items: center;
+
+		@media (max-width: ${(p) => p.theme.breakpoints[2] - 1}px) {
+			flex-direction: column;
+			:not(:last-child) {
+				margin-bottom: var(--spacing3);
+			}
+		}
+		@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
+			:not(:last-child) {
+				margin-right: var(--spacing4);
+			}
+		}
 	}
 
 	.group-name {
-		margin-right: var(--spacing3);
+		@media (max-width: ${(p) => p.theme.breakpoints[2] - 1}px) {
+			margin-bottom: var(--spacing2);
+		}
+		@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
+			margin-right: var(--spacing3);
+		}
 		text-transform: uppercase;
 		font-size: var(--fs-xs);
 		color: var(--gray0);
@@ -78,7 +98,6 @@ const ItemContainer = styled.div`
 const InfoContainer = styled.div`
 	flex: 0 0 100%;
 	background: white;
-	padding-bottom: var(--spacing5);
 `
 
 const HeaderContainer = styled.div`

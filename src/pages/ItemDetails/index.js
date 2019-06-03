@@ -42,7 +42,6 @@ const ItemContainer = styled.div`
 const InfoContainer = styled.div`
 	flex: 0 0 100%;
 	background: white;
-	padding-bottom: var(--spacing5);
 `
 
 const HeaderContainer = styled.div`
