@@ -1,11 +1,10 @@
 import React from "react"
-
-import formatDesigners from "../../utils/formatDesigners"
-import formatSize from "../../utils/formatSize"
-import formatPrice from "../../utils/formatPrice"
-
 import styled, { css } from "styled-components/macro"
+
 import { ellipsis, getCategoryColor } from "../../style-utils"
+import { itemDataHelpers } from "../../utils"
+
+const { formatDesigners, formatPrice, formatSize } = itemDataHelpers
 
 export const InfoContainer = styled.div`
 	display: grid;

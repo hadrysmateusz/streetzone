@@ -7,7 +7,9 @@ import { withRouter } from "react-router-dom"
 import { ClearFiltersSubButton } from "../Topbar/StyledComponents"
 
 import { ROUTES } from "../../constants"
-import formatSize from "../../utils/formatSize"
+import { itemDataHelpers } from "../../utils"
+
+const { formatSize } = itemDataHelpers
 
 const Container = styled.div`
 	font-size: var(--font-size--xs);

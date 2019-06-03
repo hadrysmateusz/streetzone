@@ -7,7 +7,8 @@ import { withFirebase } from "../Firebase"
 import UserPreview from "../UserPreview"
 import Button, { ButtonContainer, LoaderButton } from "../Button"
 import { Separator } from "../Basics"
-import { HeartButton, TYPE } from "../SaveButton"
+import { SmallTextBlock, HorizontalContainer, TextBlock } from "../StyledComponents"
+import DataDisplay from "../DataDisplay"
 
 import {
 	DetailsContainer,
@@ -15,15 +16,13 @@ import {
 	Image,
 	ImageContainer
 } from "./StyledComponents"
+
 import { ROUTES } from "../../constants"
 import { translateCondition } from "../../constants/item_schema"
-import { SmallTextBlock, HorizontalContainer, TextBlock } from "../StyledComponents"
-import DataDisplay from "../DataDisplay"
-import formatDesigners from "../../utils/formatDesigners"
-import formatPrice from "../../utils/formatPrice"
-import formatSize from "../../utils/formatSize"
-
 import { useImage, useFirebase, useAuthentication } from "../../hooks"
+import { itemDataHelpers } from "../../utils"
+
+const { formatDesigners, formatPrice, formatSize } = itemDataHelpers
 
 const DetailedItemCard = ({ item, history, isAuthorized }) => {
 	const { imageUrl, error: imageError } = useImage(

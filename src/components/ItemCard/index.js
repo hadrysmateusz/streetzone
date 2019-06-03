@@ -6,11 +6,12 @@ import { withBreakpoints } from "react-breakpoints"
 import { HeartButton, TYPE } from "../SaveButton"
 import LoadingSpinner from "../LoadingSpinner"
 
-import formatDesigners from "../../utils/formatDesigners"
-import formatPrice from "../../utils/formatPrice"
-import formatSize from "../../utils/formatSize"
-import { useImage } from "../../hooks"
 import { ThumbnailContainer, StyledIcon, Container, FluidImage } from "./StyledComponents"
+
+import { useImage } from "../../hooks"
+import { itemDataHelpers } from "../../utils"
+
+const { formatDesigners, formatPrice, formatSize } = itemDataHelpers
 
 export const ItemCardImage = ({ imageId }) => {
 	const { imageURL, error } = useImage(imageId, "M")

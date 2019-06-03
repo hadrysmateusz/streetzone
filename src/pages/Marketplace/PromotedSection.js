@@ -8,15 +8,16 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { UncontrolledInstantSearchWrapper } from "../../components/InstantSearchWrapper"
 import { PageContainer } from "../../components/Containers"
 import { VirtualRange } from "../../components/Algolia/Virtual"
-import { CONST } from "../../constants"
 import { TextBlock } from "../../components/StyledComponents"
 import { ItemCard } from "../../components/ItemCard"
-import formatDesigners from "../../utils/formatDesigners"
-import formatPrice from "../../utils/formatPrice"
 import Button, { ButtonContainer } from "../../components/Button"
+
+import { CONST } from "../../constants"
 import { overlayTextShadow } from "../../style-utils"
 import { useImage } from "../../hooks"
-import { mapN, route } from "../../utils"
+import { mapN, route, itemDataHelpers } from "../../utils"
+
+const { formatDesigners, formatPrice } = itemDataHelpers
 
 const NUMBER_OF_PROMOTED_ITEMS = 3
 

@@ -9,12 +9,12 @@ import SingleValueDisplay from "../SingleValueDisplay"
 
 import { ROUTES } from "../../constants"
 import { translateCondition } from "../../constants/item_schema"
-import formatDesigners from "../../utils/formatDesigners"
-import formatPrice from "../../utils/formatPrice"
-import formatSize from "../../utils/formatSize"
 import { useFirebase, useImage, useAuthentication } from "../../hooks"
+import { itemDataHelpers } from "../../utils"
 
 import { MainContainer, OuterContainer, Image, ImageContainer } from "./StyledComponents"
+
+const { formatDesigners, formatPrice, formatSize } = itemDataHelpers
 
 const OwnerItemCard = ({ item, history }) => {
 	const [isDeleting, setIsDeleting] = useState(false)

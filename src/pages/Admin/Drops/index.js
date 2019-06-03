@@ -8,11 +8,11 @@ import Button, { ButtonContainer } from "../../../components/Button"
 import { TextBlock } from "../../../components/StyledComponents"
 import { PageContainer } from "../../../components/Containers"
 
-import { route } from "../../../utils"
+import { route, itemDataHelpers } from "../../../utils"
 import { ellipsis } from "../../../style-utils"
-import formatDesigners from "../../../utils/formatDesigners"
-
 import { useImage, useFirebase, useFirestoreCollection } from "../../../hooks"
+
+const { formatDesigners } = itemDataHelpers
 
 const BlogImageContainer = styled.div`
 	img {

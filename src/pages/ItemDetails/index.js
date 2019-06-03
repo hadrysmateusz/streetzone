@@ -17,10 +17,9 @@ import PageNav from "../../components/PageNav"
 import { useFirebase, useDesigner, useAuthentication } from "../../hooks"
 import { translateCondition } from "../../constants/item_schema"
 import { encodeURL } from "../../utils/algoliaURLutils"
-import formatDesigners from "../../utils/formatDesigners"
-import formatPrice from "../../utils/formatPrice"
-import formatSize from "../../utils/formatSize"
-import { route } from "../../utils"
+import { route, itemDataHelpers } from "../../utils"
+
+const { formatDesigners, formatPrice, formatSize } = itemDataHelpers
 
 const ItemContainer = styled.div`
 	position: relative;
