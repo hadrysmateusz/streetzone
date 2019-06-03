@@ -19,6 +19,9 @@ const OuterContainer = styled.div`
 	> * {
 		min-height: 0;
 	}
+	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
+		min-height: 480px;
+	}
 `
 
 const ContentContainer = styled.div`
