@@ -32,7 +32,8 @@ const OuterContainer = styled.div`
 	}
 
 	@media (max-width: ${(p) => p.theme.breakpoints[2] - 1}px) {
-		height: 68vmin;
+		max-height: 58vh;
+		height: 100%;
 	}
 	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
 		height: 100%;
@@ -40,7 +41,6 @@ const OuterContainer = styled.div`
 `
 
 const ThumbnailsContainer = styled.div`
-	/* grid setup */
 	display: grid;
 	gap: var(--spacing2);
 	grid-template-columns: repeat(
@@ -48,17 +48,33 @@ const ThumbnailsContainer = styled.div`
 		minmax(calc(100vw / 5.5), 1fr)
 	);
 
-	/* position: relative; */
-	margin-top: var(--spacing2);
+		/* make the content go from edge to edge on mobile*/
+		@media (max-width: ${(p) => p.theme.breakpoints[1] - 1}px) {
+			--x-margin: calc(-1 * var(--spacing3));
+			margin-left: var(--x-margin);
+			margin-right: var(--x-margin);
+			padding: 0 var(--spacing3);
+			&::after {
+				content: "";
+				display: block;
+				width: var(--spacing2);
+			}
+		}
 
-	/* remove this if it proves to be too difficult to implement a scrolling indicator */
-	overflow-x: auto;
+		/* position: relative; */
+		margin-top: var(--spacing2);
 
-	@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
-		grid-template-columns: repeat(auto-fill, minmax(75px, 1fr));
-	}
-	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
-		overflow-x: visible;
+		/* remove this if it proves to be too difficult to implement a scrolling indicator */
+		overflow-x: auto;
+
+		@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
+			grid-template-columns: repeat(auto-fill, minmax(75px, 1fr));
+		}
+		@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
+			overflow-x: visible;
+		}
+
+
 	}
 `
 
@@ -120,7 +136,7 @@ const MainImage = ({ storageRef, index, current, onChangeIndex }) => {
 			) : isLoading ? (
 				<LoadingSpinner />
 			) : (
-				<FluidImage url={imageURL} />
+				<FluidImage url={imageURL} contain />
 			)}
 		</MainImageContainer>
 	)

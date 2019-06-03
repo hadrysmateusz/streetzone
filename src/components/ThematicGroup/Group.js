@@ -32,7 +32,9 @@ export const GroupContainer = styled.section`
 
 		/* make the content go from edge to edge on mobile*/
 		@media (max-width: ${(p) => p.theme.breakpoints[1] - 1}px) {
-			margin: 0 calc(-1 * var(--spacing3));
+			--x-margin: calc(-1 * var(--spacing3));
+			margin-left: var(--x-margin);
+			margin-right: var(--x-margin);
 			padding: 0 var(--spacing3);
 			&::after {
 				content: "";

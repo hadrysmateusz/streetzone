@@ -4,7 +4,7 @@ export const FluidImage = styled.div`
 	width: 100%;
 	height: 100%;
 	background-image: url("${(p) => p.url}");
-	background-size: contain;
+	background-size: ${(p) => (p.contain ? "contain" : "cover")};
 	background-repeat: no-repeat;
 	background-position: center;
 `
