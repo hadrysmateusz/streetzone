@@ -28,7 +28,9 @@ const ItemContainer = styled.div`
 	height: 100%;
 	gap: var(--spacing3);
 	grid-template-columns: 100%;
-
+	@media (max-width: ${(p) => p.theme.breakpoints[2] - 1}px) {
+		grid-template-rows: minmax(270px, 65vmin);
+	}
 	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
 		grid-template-columns: 2fr minmax(340px, 1fr);
 	}

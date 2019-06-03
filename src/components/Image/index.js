@@ -1,4 +1,5 @@
 import styled from "styled-components/macro"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 export const FluidImage = styled.div`
 	width: 100%;
@@ -17,4 +18,11 @@ export const Image = styled.div`
 	background-size: cover;
 	background-repeat: no-repeat;
 	background-position: center;
+`
+
+export const ErrorIcon = styled(FontAwesomeIcon).attrs({ icon: "image" })`
+	font-size: 5rem;
+	path {
+		color: ${(p) => p.theme.colors.gray[100]};
+	}
 `
