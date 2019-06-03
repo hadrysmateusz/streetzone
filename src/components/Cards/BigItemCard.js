@@ -67,7 +67,7 @@ export const BigItemCard = ({
 	description,
 	createdAt
 }) => {
-	const imageURL = useImage(attachments[mainImageIndex])
+	const { imageURL } = useImage(attachments[mainImageIndex], "M")
 	const date = moment().to(moment(createdAt))
 
 	return (

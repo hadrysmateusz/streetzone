@@ -5,7 +5,7 @@ import { withBreakpoints } from "react-breakpoints"
 import { CONST } from "../../../constants"
 
 import { StatelessSearchWrapper } from "../../../components/InstantSearchWrapper"
-import Carousel from "../../../components/Carousel"
+import { Carousel } from "../../../components/Carousel"
 import { PageContainer } from "../../../components/Containers"
 
 import PromotedPost from "../Previews/PromotedPost"

@@ -134,7 +134,7 @@ const InnerContainer = connectHits(({ hits }) => {
 })
 
 const PromotedItem = ({ item }) => {
-	const [imageURL, error] = useImage(item.attachments[item.mainImageIndex], "L")
+	const { imageURL } = useImage(item.attachments[item.mainImageIndex], "L")
 
 	const formattedDesigners = formatDesigners(item.designers)
 	const formattedPrice = formatPrice(item.price)

@@ -8,7 +8,7 @@ import { TextBlock, SmallTextBlock } from "../../components/StyledComponents"
 import { SaveButton, TYPE } from "../../components/SaveButton"
 import LoadingSpinner from "../../components/LoadingSpinner"
 import { PageContainer } from "../../components/Containers"
-import ImageGallery from "../../components/ImageGallery"
+import ImageGallery from "../../components/ImageGallery/new"
 import UserPreview from "../../components/UserPreview/new"
 import EmptyState from "../../components/EmptyState"
 import PageNav from "../../components/PageNav"
@@ -208,7 +208,7 @@ const ItemDetailsPage = ({ match, history }) => {
 					breadcrumbs={[["Kupuj", "MARKETPLACE"], [item.category, "MARKETPLACE"]]}
 				/>
 				<ItemContainer>
-					<ImageGallery item={item} />
+					<ImageGallery storageRefs={item.attachments} />
 					<InfoContainer>
 						<Header name={item.name} designers={item.designers} />
 						<DetailsContainer>

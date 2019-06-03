@@ -20,7 +20,10 @@ const OwnerItemCard = ({ item, history }) => {
 	const [isDeleting, setIsDeleting] = useState(false)
 	const firebase = useFirebase()
 	const authUser = useAuthentication()
-	const [imageUrl, imageError] = useImage(item.attachments[item.mainImageIndex])
+	const { imageUrl, error: imageError } = useImage(
+		item.attachments[item.mainImageIndex],
+		"M"
+	)
 
 	const deleteItem = async () => {
 		setIsDeleting(true)

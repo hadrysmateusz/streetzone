@@ -13,7 +13,7 @@ import { useImage } from "../../hooks"
 import { ThumbnailContainer, StyledIcon, Container, FluidImage } from "./StyledComponents"
 
 export const ItemCardImage = ({ imageId }) => {
-	const [imageURL, error] = useImage(imageId)
+	const { imageURL, error } = useImage(imageId, "M")
 	const isLoading = imageURL === null
 
 	return (
@@ -32,7 +32,7 @@ export const ItemCardImage = ({ imageId }) => {
 export const ItemCard = withBreakpoints(({ item, currentBreakpoint, ...rest }) => {
 	const { id, name, price, designers, category, size, attachments, mainImageIndex } = item
 
-	const [imageURL, error] = useImage(attachments[mainImageIndex])
+	const { imageURL } = useImage(attachments[mainImageIndex], "M")
 
 	const formattedDesigners = formatDesigners(designers)
 	const formattedPrice = formatPrice(price)
@@ -75,7 +75,7 @@ export const ItemCardHorizontal = withBreakpoints(
 			mainImageIndex
 		} = item
 
-		const [imageURL, error] = useImage(attachments[mainImageIndex])
+		const { imageURL } = useImage(attachments[mainImageIndex], "M")
 
 		const formattedDesigners = formatDesigners(designers)
 		const formattedPrice = formatPrice(price)

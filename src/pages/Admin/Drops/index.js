@@ -64,7 +64,7 @@ const Drop = ({
 }) => {
 	const firebase = useFirebase()
 
-	const [imageURL, error] = useImage(attachments[mainImageIndex])
+	const { imageURL } = useImage(attachments[mainImageIndex], "M")
 
 	const formattedDesigners = formatDesigners(designers)
 

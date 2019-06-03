@@ -214,6 +214,7 @@ export class ImageGallery extends Component {
 			<Container>
 				<CurrentImage>
 					{thumbnailURLs.length > 1 && (
+						// TODO: onClick doesn't work
 						<CarouselButton
 							data-index={+currentImageIndex - 1}
 							onClick={this.changeCurrentImage}

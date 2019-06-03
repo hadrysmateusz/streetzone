@@ -26,7 +26,10 @@ import formatSize from "../../utils/formatSize"
 import { useImage, useFirebase, useAuthentication } from "../../hooks"
 
 const DetailedItemCard = ({ item, history, isAuthorized }) => {
-	const [imageUrl, imageError] = useImage(item.attachments[item.mainImageIndex])
+	const { imageUrl, error: imageError } = useImage(
+		item.attachments[item.mainImageIndex],
+		"M"
+	)
 	const [isDeleting, setIsDeleting] = useState(false)
 	const firebase = useFirebase()
 	const authUser = useAuthentication()

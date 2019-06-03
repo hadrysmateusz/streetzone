@@ -45,7 +45,7 @@ export const SmallItemCard = ({
 	attachments,
 	mainImageIndex
 }) => {
-	const imageURL = useImage(attachments[mainImageIndex])
+	const { imageURL } = useImage(attachments[mainImageIndex], "M")
 
 	return (
 		<SmallContainer>

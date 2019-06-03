@@ -10,7 +10,7 @@ const SpinnerContainer = styled.div`
 	align-items: center;
 	justify-content: center;
 
-	height: ${(p) => p.size * 40}px;
+	height: ${(p) => p.size * 30}px;
 	max-height: 100%;
 `
 
