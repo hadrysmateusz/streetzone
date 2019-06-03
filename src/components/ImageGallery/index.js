@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React from "react"
 import styled from "styled-components/macro"
 import SwipeableViews from "react-swipeable-views"
 import Lightbox from "react-image-lightbox"
@@ -8,8 +8,9 @@ import { useCarousel, CarouselIndicator, CarouselButton } from "../Carousel"
 import LoadingSpinner from "../LoadingSpinner"
 
 import { Thumbnails } from "./Thumbnails"
+import useLightbox from "./useLightbox"
 
-import { useImage, useFirebase } from "../../hooks"
+import { useImage } from "../../hooks"
 
 const OuterContainer = styled.div`
 	display: grid;
@@ -66,23 +67,15 @@ const ImageGallery = ({ storageRefs, lightboxTitle, showThumbnails }) => {
 	const hasMoreThanOne = nOfElements > 1
 
 	const { current, changeIndex, previous, next } = useCarousel(nOfElements)
-	const [isLightboxOpen, setIsLightboxOpen] = useState(false)
-	const [fullSizeUrls, setFullSizeUrls] = useState([])
-	const firebase = useFirebase()
-
-	const openLightbox = async () => {
-		const _fullSizeUrls = await firebase.batchGetImageURLs(storageRefs)
-		setFullSizeUrls(_fullSizeUrls)
-		setIsLightboxOpen(true)
-	}
-
-	const mainSrc = fullSizeUrls[current] || undefined
-	const nextSrc = fullSizeUrls[(current + 1) % nOfElements] || undefined
-	const prevSrc = fullSizeUrls[(current + nOfElements - 1) % nOfElements] || undefined
+	const { isLightboxOpen, lightboxProps, openLightbox } = useLightbox(
+		current,
+		storageRefs
+	)
 
 	return (
 		<OuterContainer>
 			<ContentContainer>
+				{/* Current Image */}
 				<MainImageArea>
 					<SwipeableViews
 						index={current}
@@ -101,9 +94,11 @@ const ImageGallery = ({ storageRefs, lightboxTitle, showThumbnails }) => {
 					</SwipeableViews>
 				</MainImageArea>
 
+				{/* Buttons */}
 				{hasMoreThanOne && <CarouselButton onClick={previous} direction="left" />}
 				{hasMoreThanOne && <CarouselButton onClick={next} direction="right" />}
 
+				{/* Indicator */}
 				<CarouselIndicator
 					nOfElements={nOfElements}
 					current={current}
@@ -122,12 +117,9 @@ const ImageGallery = ({ storageRefs, lightboxTitle, showThumbnails }) => {
 			{/* Lightbox */}
 			{isLightboxOpen && (
 				<Lightbox
-					mainSrc={mainSrc}
-					nextSrc={nextSrc}
-					prevSrc={prevSrc}
-					onCloseRequest={() => setIsLightboxOpen(false)}
-					onMovePrevRequest={previous}
+					{...lightboxProps}
 					onMoveNextRequest={next}
+					onMovePrevRequest={previous}
 					imageTitle={lightboxTitle}
 				/>
 			)}
