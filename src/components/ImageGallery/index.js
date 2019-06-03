@@ -1,14 +1,15 @@
-import React from "react"
+import React, { useState } from "react"
 import styled from "styled-components/macro"
 import SwipeableViews from "react-swipeable-views"
+import Lightbox from "react-image-lightbox"
 
 import { FluidImage, ErrorIcon } from "../Image"
 import { useCarousel, CarouselIndicator, CarouselButton } from "../Carousel"
 import LoadingSpinner from "../LoadingSpinner"
 
-import Thumbnails from "./Thumbnails"
+import { Thumbnails } from "./Thumbnails"
 
-import { useImage } from "../../hooks"
+import { useImage, useFirebase } from "../../hooks"
 
 const OuterContainer = styled.div`
 	display: grid;
@@ -39,9 +40,10 @@ const MainImageContainer = styled.div`
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	cursor: zoom-in;
 `
 
-const MainImage = ({ storageRef, index, current, onChangeIndex }) => {
+const MainImage = ({ storageRef, index, current, onChangeIndex, onClick }) => {
 	// load the image, if the image is not currently shown use the defer flag
 	const defer = index !== current
 	const { imageURL, error, isLoading } = useImage(storageRef, "L", defer)
@@ -53,17 +55,30 @@ const MainImage = ({ storageRef, index, current, onChangeIndex }) => {
 			) : isLoading ? (
 				<LoadingSpinner />
 			) : (
-				<FluidImage url={imageURL} contain />
+				<FluidImage url={imageURL} contain onClick={onClick} />
 			)}
 		</MainImageContainer>
 	)
 }
 
-const ImageGallery = ({ storageRefs }) => {
+const ImageGallery = ({ storageRefs, lightboxTitle, showThumbnails }) => {
 	const nOfElements = storageRefs.length
 	const hasMoreThanOne = nOfElements > 1
 
 	const { current, changeIndex, previous, next } = useCarousel(nOfElements)
+	const [isLightboxOpen, setIsLightboxOpen] = useState(false)
+	const [fullSizeUrls, setFullSizeUrls] = useState([])
+	const firebase = useFirebase()
+
+	const openLightbox = async () => {
+		const _fullSizeUrls = await firebase.batchGetImageURLs(storageRefs)
+		setFullSizeUrls(_fullSizeUrls)
+		setIsLightboxOpen(true)
+	}
+
+	const mainSrc = fullSizeUrls[current] || undefined
+	const nextSrc = fullSizeUrls[(current + 1) % nOfElements] || undefined
+	const prevSrc = fullSizeUrls[(current + nOfElements - 1) % nOfElements] || undefined
 
 	return (
 		<OuterContainer>
@@ -80,6 +95,7 @@ const ImageGallery = ({ storageRefs }) => {
 								key={storageRef}
 								index={i}
 								current={current}
+								onClick={openLightbox}
 							/>
 						))}
 					</SwipeableViews>
@@ -99,8 +115,21 @@ const ImageGallery = ({ storageRefs }) => {
 			</ContentContainer>
 
 			{/* Thumbnails */}
-			{hasMoreThanOne && (
+			{showThumbnails && hasMoreThanOne && (
 				<Thumbnails storageRefs={storageRefs} onChangeIndex={changeIndex} />
+			)}
+
+			{/* Lightbox */}
+			{isLightboxOpen && (
+				<Lightbox
+					mainSrc={mainSrc}
+					nextSrc={nextSrc}
+					prevSrc={prevSrc}
+					onCloseRequest={() => setIsLightboxOpen(false)}
+					onMovePrevRequest={previous}
+					onMoveNextRequest={next}
+					imageTitle={lightboxTitle}
+				/>
 			)}
 		</OuterContainer>
 	)
