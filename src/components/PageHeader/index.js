@@ -42,16 +42,6 @@ const PageHeaderMobile = ({ authUser, firebase, location }) => {
 		<PageHeaderContainerMobile>
 			<Logo />
 			<div className="align-right">
-				{authUser && (
-					<NavItem>
-						<StyledNavLink
-							to={{ pathname: route("CHAT"), state: { redirectTo: location } }}
-						>
-							<MessagesManager />
-						</StyledNavLink>
-					</NavItem>
-				)}
-
 				{!authUser && (
 					<StyledNavLink
 						to={{ pathname: ROUTES.SIGN_IN, state: { redirectTo: location } }}
@@ -65,6 +55,16 @@ const PageHeaderMobile = ({ authUser, firebase, location }) => {
 						<FontAwesomeIcon icon="search" />
 					</IconContainer>
 				</StyledNavLink>
+
+				{authUser && (
+					<NavItem>
+						<StyledNavLink
+							to={{ pathname: route("CHAT"), state: { redirectTo: location } }}
+						>
+							<MessagesManager />
+						</StyledNavLink>
+					</NavItem>
+				)}
 
 				{authUser && (
 					<StyledNavLink to={ROUTES.ACCOUNT_BASE.replace(":id", authUser.uid)}>
