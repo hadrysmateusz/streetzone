@@ -1,33 +1,14 @@
 import React from "react"
-import { withBreakpoints } from "react-breakpoints"
 
-import { SmallItemCard, BigItemCard } from "../../components/Cards"
-import { ItemsContainer, ItemsList } from "../../components/ItemsView"
+import ItemsView from "../../components/ItemsView"
 import InfiniteScrollingResults from "../../components/InfiniteScrollingResults"
 
-const MarketplaceResults = withBreakpoints(({ currentBreakpoint }) => {
-	// only allow the grid view on smaller viewports
-	const isMobile = currentBreakpoint < 1
-
+const MarketplaceResults = ({ currentBreakpoint }) => {
 	return (
 		<InfiniteScrollingResults>
-			{({ results, hasMore, loadMore }) =>
-				isMobile ? (
-					<ItemsContainer>
-						{results.map((item) => (
-							<SmallItemCard key={item.objectID} {...item} />
-						))}
-					</ItemsContainer>
-				) : (
-					<ItemsList>
-						{results.map((item) => (
-							<BigItemCard key={item.objectID} {...item} />
-						))}
-					</ItemsList>
-				)
-			}
+			{({ results, hasMore, loadMore }) => <ItemsView items={results} />}
 		</InfiniteScrollingResults>
 	)
-})
+}
 
 export default MarketplaceResults

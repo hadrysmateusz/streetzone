@@ -1,56 +1,55 @@
-import React, { Component } from "react"
-import { compose } from "recompose"
+import React, { useState, useEffect } from "react"
 
 import EmptyState, { UserNoLiked } from "../../components/EmptyState"
 import LoadingSpinner from "../../components/LoadingSpinner"
-import { withAuthentication } from "../../components/UserSession"
-import { withFirebase } from "../../components/Firebase"
-import DetailedItemsView from "../../components/DetailedItemsView"
 import { PageContainer } from "../../components/Containers"
+import ItemsView from "../../components/ItemsView"
 
-class UserLiked extends Component {
-	state = {
-		isLoading: true,
-		isFetchingItems: false,
-		items: [],
-		error: null
-	}
+import { useFirebase } from "../../hooks"
 
-	getUserItems = async () => {
-		this.setState({ isFetchingItems: true })
-		let { items, error } = await this.props.firebase.getUserSavedItems(this.props.user)
-		this.setState({ items, error, isFetchingItems: false })
-	}
+import { HeaderContainer } from "./Common"
 
-	componentDidMount = async () => {
-		try {
-			this.getUserItems()
-		} catch (error) {
-			this.setState({ error })
-		} finally {
-			this.setState({ isLoading: false })
-		}
-	}
-
-	render() {
-		if (this.state.error) throw this.state.error
-		const { isLoading, isFetchingItems, items } = this.state
-
-		return (
-			<PageContainer extraWide>
-				{isLoading || isFetchingItems ? (
-					<LoadingSpinner />
-				) : items && items.length > 0 ? (
-					<DetailedItemsView items={items} />
-				) : (
-					<EmptyState state={UserNoLiked} />
-				)}
-			</PageContainer>
-		)
-	}
+const Header = ({ numItems = 0 }) => {
+	return (
+		<HeaderContainer>
+			Zapisane przedmioty {numItems > 0 && <div className="count">{numItems}</div>}
+		</HeaderContainer>
+	)
 }
 
-export default compose(
-	withFirebase,
-	withAuthentication
-)(UserLiked)
+const UserSavedItems = ({ user }) => {
+	const firebase = useFirebase()
+	const [items, setItems] = useState()
+	const [error, setError] = useState()
+
+	useEffect(() => {
+		const getSavedItems = async () => {
+			const { items, error } = await firebase.getUserSavedItems(user)
+			setItems(items)
+			setError(error)
+		}
+
+		getSavedItems()
+	}, [user, firebase])
+
+	const numItems = items ? items.length : 0
+	const hasItems = numItems > 0
+	const isLoading = !items
+
+	return (
+		<PageContainer>
+			<Header numItems={numItems} />
+			{error ? (
+				<div>Wystąpił problem, spróbuj odświeżyć stronę</div>
+			) : isLoading ? (
+				<LoadingSpinner />
+			) : hasItems ? (
+				<ItemsView items={items} />
+			) : (
+				<EmptyState state={UserNoLiked} />
+			)}
+		</PageContainer>
+	)
+}
+
+export default UserSavedItems
