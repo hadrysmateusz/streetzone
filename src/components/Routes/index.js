@@ -64,10 +64,6 @@ const UserSettings = Loadable({
 	loader: () => import("../../pages/Account/UserSettings"),
 	loading: LoadableComponentSpinner
 })
-const UserChat = Loadable({
-	loader: () => import("../../pages/Account/UserChat"),
-	loading: LoadableComponentSpinner
-})
 
 // ===== MARKETPLACE =====
 const Marketplace = Loadable({
@@ -227,19 +223,11 @@ const BumpInfo = Loadable({
 export const ACCOUNT_ROUTES = [
 	{
 		id: "items",
-		label: "Oferty",
+		label: "Przedmioty",
 		path: ROUTES.ACCOUNT_ITEMS,
 		component: UserItems,
 		isProtected: false,
 		isDefault: true
-	},
-	{
-		id: "chat",
-		label: "Wiadomości",
-		path: ROUTES.ACCOUNT_CHAT,
-		component: UserChat,
-		isProtected: true,
-		isHiddenOnMobile: true
 	},
 	{
 		id: "savedItems",

@@ -35,7 +35,7 @@ import {
 
 const Message = ({ id, roomId, message, createdAt, author, user, unread }) => {
 	const firebase = useFirebase()
-	const formattedCreatedAt = moment(createdAt).format("DD.MM o HH:mm")
+	const formattedCreatedAt = moment().to(createdAt)
 	const isAuthor = author === user.uid
 
 	useEffect(() => {
