@@ -149,7 +149,10 @@ const Description = ({ children }) => {
 }
 
 const DeleteButton = ({ id }) => {
-	const deleteItem = () => alert("deleting")
+	const deleteItem = (e) => {
+		e.preventDefault() // prevent the Link to item from triggering
+		alert("deleting")
+	}
 	return (
 		<LoaderButton text="Usuń" loadingText="Usuwanie..." onClick={deleteItem} fullWidth />
 	)
@@ -178,7 +181,8 @@ const EditButton = withRouter(({ history, id }) => {
 	return (
 		<Button
 			fullWidth
-			onClick={() => {
+			onClick={(e) => {
+				e.preventDefault() // prevent the Link to item from triggering
 				/* This is not an a-tag to allow for programmatic disabling */
 				history.push(route("EDIT_ITEM", { id }))
 			}}
