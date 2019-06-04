@@ -77,11 +77,15 @@ export const getCategoryColor = (category) => {
 	}
 }
 
-export const nLinesHigh = (nOfLines, lineHeight = "1.6em") => {
+export const nLinesHigh = (nOfLines, options = {}) => {
+	const useMaxHeight = options.useMaxHeight || false
+	const lineHeight = options.lineHeight || 1.6
+
 	return css`
-		--line-height: ${lineHeight};
+		--line-height: ${lineHeight}em;
 		--height: calc(${nOfLines} * var(--line-height));
 		line-height: var(--line-height);
-		height: var(--min-height);
+		${useMaxHeight ? "max-height: var(--height);" : "height: var(--height);"}
+		overflow: hidden;
 	`
 }
