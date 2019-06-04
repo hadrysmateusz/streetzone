@@ -233,37 +233,6 @@ class Firebase {
 		}
 	}
 
-	getUserSavedItems = async (user) => {
-		let res = {
-			items: [],
-			error: null
-		}
-
-		try {
-			let idsToDelete = []
-			const oldIds = user.savedItems
-
-			// get data from firestore
-			for (let id of oldIds) {
-				const itemDoc = await this.item(id).get()
-				if (itemDoc.exists) {
-					res.items.push(itemDoc.data())
-				} else {
-					idsToDelete.push(id)
-				}
-			}
-
-			// create new list of ids by removing marked ids
-			const newIds = oldIds.filter((id) => !idsToDelete.includes(id))
-
-			this.user(user.uid).update({ savedItems: newIds })
-		} catch (error) {
-			res.error = error
-		} finally {
-			return res
-		}
-	}
-
 	// Item API
 
 	item = (id) => this.db.collection("items").doc(id)
