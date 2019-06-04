@@ -25,6 +25,8 @@ const UserSavedItems = ({ user }) => {
 	const userId = user.uid
 	const itemIds = user.savedItems
 
+	console.log(itemIds)
+
 	// intentionally only include userId as dependency
 	// the component shouldn't rerender automatically on unsaving an item
 	// this prevents the user from accidentaly unsaving
@@ -33,8 +35,10 @@ const UserSavedItems = ({ user }) => {
 			// create new list of ids by removing marked ids
 			const newIds = itemIds.filter((id) => !ids.includes(id))
 
-			// remove marked ids from saved items list
-			firebase.user(user.uid).update({ savedItems: newIds })
+			if (itemIds.length !== newIds.length) {
+				// remove marked ids from saved items list
+				firebase.user(user.uid).update({ savedItems: newIds })
+			}
 		}
 
 		const getSavedItems = async () => {

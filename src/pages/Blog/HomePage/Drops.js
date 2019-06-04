@@ -1,21 +1,15 @@
-import React, { useState, useEffect } from "react"
+import React from "react"
 import { withBreakpoints } from "react-breakpoints"
 import styled from "styled-components/macro"
-import { connectSortBy, connectRange } from "react-instantsearch-dom"
+import { connectRange } from "react-instantsearch-dom"
 import { compose } from "recompose"
 import { withRouter, Redirect } from "react-router-dom"
 
-import {
-	SearchWrapper,
-	StatelessSearchWrapper
-} from "../../../components/InstantSearchWrapper"
+import { SearchWrapper } from "../../../components/InstantSearchWrapper"
 import { PageContainer } from "../../../components/Containers"
 import { BigDropCard } from "../../../components/Cards"
-import { TextBlock } from "../../../components/StyledComponents"
-import { FiltersToggleButton } from "../../../components/Topbar/FiltersToggle"
 import InfiniteScrollingResults from "../../../components/InfiniteScrollingResults"
-import { VirtualRefinement, InfiniteResults } from "../../../components/Algolia/Helpers"
-import { VirtualSortBy } from "../../../components/Algolia/Virtual"
+import { InfiniteResults } from "../../../components/Algolia/Helpers"
 
 import { CONST } from "../../../constants"
 import { route } from "../../../utils"
@@ -25,7 +19,7 @@ import { nLinesHigh } from "../../../style-utils"
 import PromotedDrop from "../Previews/PromotedDrop"
 import { PromotedContainer } from "../StyledComponents"
 // import Sidebar from "./Sidebar"
-import Filters from "./Filters"
+// import Filters from "./Filters"
 import { Layout } from "./Common"
 
 const SECTIONS = Object.freeze([
@@ -50,7 +44,7 @@ const SECTIONS = Object.freeze([
 ])
 
 const Sidebar = withBreakpoints(({ currentBreakpoint }) => {
-	const isMobile = currentBreakpoint === 0
+	// const isMobile = currentBreakpoint === 0
 
 	return (
 		<>

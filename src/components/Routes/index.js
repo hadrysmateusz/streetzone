@@ -249,15 +249,6 @@ export const ACCOUNT_ROUTES = [
 		isHidden: true /* This feature isn't finished or necessary */
 	},
 	{
-		id: "followedUsers",
-		label: "Obserwowani Użytkownicy",
-		path: ROUTES.ACCOUNT_SAVED_USERS,
-		component: UserFollowing,
-		isProtected: true,
-		category: "Zapisane",
-		shortLabel: "Użytkownicy"
-	},
-	{
 		id: "followedDrops",
 		label: "Obserwowane Dropy",
 		path: ROUTES.ACCOUNT_SAVED_DROPS,
@@ -265,6 +256,15 @@ export const ACCOUNT_ROUTES = [
 		isProtected: true,
 		category: "Zapisane",
 		shortLabel: "Dropy"
+	},
+	{
+		id: "followedUsers",
+		label: "Obserwowani Użytkownicy",
+		path: ROUTES.ACCOUNT_SAVED_USERS,
+		component: UserFollowing,
+		isProtected: true,
+		category: "Zapisane",
+		shortLabel: "Użytkownicy"
 	},
 	{
 		id: "feedback",
