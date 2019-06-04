@@ -84,7 +84,7 @@ const UserSavedItems = ({ user }) => {
 	const isLoading = !items
 
 	return (
-		<PageContainer>
+		<PageContainer extraWide>
 			<Header numItems={numItems} />
 			{error ? (
 				<div>Wystąpił problem, spróbuj odświeżyć stronę</div>
