@@ -13,7 +13,7 @@ import Logo from "../Logo"
 import BurgerNavigation from "../BurgerNavigation"
 import MessagesManager from "../MessagesManager"
 
-import { ROUTES } from "../../constants"
+import { ROUTES, POST_CATEGORIES } from "../../constants"
 import { ACCOUNT_ROUTES } from "../Routes"
 import getProfilePictureURL from "../../utils/getProfilePictureURL"
 import { route } from "../../utils"
@@ -121,6 +121,22 @@ const PageHeaderDesktop = ({ authUser, firebase, location }) => {
 							<NavItem>
 								<SubmenuLink to={ROUTES.BLOG_HOME} exact>
 									Wszystko
+								</SubmenuLink>
+							</NavItem>
+							<NavItem>
+								<SubmenuLink
+									to={route("BLOG_CATEGORY", { category: POST_CATEGORIES.SNEAKERS })}
+									exact
+								>
+									{POST_CATEGORIES.SNEAKERS}
+								</SubmenuLink>
+							</NavItem>
+							<NavItem>
+								<SubmenuLink
+									to={route("BLOG_CATEGORY", { category: POST_CATEGORIES.STREETWEAR })}
+									exact
+								>
+									{POST_CATEGORIES.STREETWEAR}
 								</SubmenuLink>
 							</NavItem>
 						</Submenu>
