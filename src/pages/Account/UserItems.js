@@ -1,11 +1,13 @@
 import React from "react"
 import styled from "styled-components/macro"
+import { connectStats } from "react-instantsearch-dom"
 import { StatelessSearchWrapper } from "../../components/InstantSearchWrapper"
-import { CONST } from "../../constants"
 import { AlgoliaInfiniteHits } from "../../components/Algolia/AlgoliaHits"
 import InfiniteScrollingResults from "../../components/InfiniteScrollingResults"
 import { PageContainer } from "../../components/Containers"
 import { OwnerItemCard } from "../../components/Cards"
+
+import { CONST } from "../../constants"
 
 const ItemsList = styled.div`
 	> * + * {
@@ -13,7 +15,24 @@ const ItemsList = styled.div`
 	}
 `
 
-export const InfiniteOwnerCards = () => {
+const HeaderContainer = styled.div`
+	display: flex;
+	justify-content: center;
+	font-size: var(--fs-m);
+	font-weight: bold;
+	margin: var(--spacing3) 0;
+
+	@media (min-width: ${(p) => p.theme.breakpoints[3]}px) {
+		margin: var(--spacing4) 0;
+	}
+
+	.count {
+		color: var(--gray0);
+		margin-left: var(--spacing2);
+	}
+`
+
+const InfiniteOwnerCards = () => {
 	return (
 		<InfiniteScrollingResults>
 			{({ results, hasMore, loadMore }) => (
@@ -27,6 +46,14 @@ export const InfiniteOwnerCards = () => {
 	)
 }
 
+const Header = connectStats(({ nbHits }) => {
+	return (
+		<HeaderContainer>
+			Wszystkie przedmioty <div className="count">{nbHits}</div>
+		</HeaderContainer>
+	)
+})
+
 const UserItems = ({ isAuthorized, userId }) => {
 	return (
 		<PageContainer extraWide>
@@ -35,6 +62,7 @@ const UserItems = ({ isAuthorized, userId }) => {
 				refinements={{ userId }}
 				limit={6}
 			>
+				<Header />
 				{isAuthorized ? <InfiniteOwnerCards /> : <AlgoliaInfiniteHits />}
 			</StatelessSearchWrapper>
 		</PageContainer>
