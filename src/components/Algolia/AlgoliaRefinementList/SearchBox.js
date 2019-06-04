@@ -1,20 +1,8 @@
 import React from "react"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-
-import { SearchBox as SearchBoxContainer } from "../StyledComponents"
+import { Input } from "../../FormElements"
 
 const SearchBox = ({ value, onChange, clear }) => (
-	<SearchBoxContainer>
-		<div className="icon-container">
-			<FontAwesomeIcon icon="search" />
-		</div>
-		<input type="text" placeholder="Szukaj" onChange={onChange} value={value} />
-		{value && (
-			<div className="icon-container" onClick={clear}>
-				<FontAwesomeIcon icon="times" />
-			</div>
-		)}
-	</SearchBoxContainer>
+	<Input icon="search" value={value} placeholder="Szukaj" onChange={onChange} />
 )
 
 export default SearchBox

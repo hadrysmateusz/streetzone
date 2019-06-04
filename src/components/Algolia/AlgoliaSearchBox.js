@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from "react"
 import { connectSearchBox } from "react-instantsearch-dom"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { withRouter } from "react-router-dom"
 import { compose } from "recompose"
 import { withBreakpoints } from "react-breakpoints"
