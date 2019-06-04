@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React from "react"
 import moment from "moment"
 import { withRouter, Link } from "react-router-dom"
 import styled, { css } from "styled-components/macro"
@@ -6,59 +6,21 @@ import styled, { css } from "styled-components/macro"
 import Button, { ButtonContainer, LoaderButton } from "../Button"
 import InfoItem from "../InfoItem"
 import { SmallTextBlock } from "../StyledComponents"
-// import {} from "../ItemDetails"
 import { FluidImage } from "../Image"
 
 import { translateCondition } from "../../constants/item_schema"
-import { useFirebase, useImage, useAuthentication } from "../../hooks"
+import { useImage } from "../../hooks"
 import { itemDataHelpers, route } from "../../utils"
 import { nLinesHigh } from "../../style-utils"
 
-import {
-	Designers,
-	Size,
-	Price,
-	TopContainer,
-	MiddleContainer,
-	BottomContainer,
-	DateContainer
-} from "./Common"
+import { Designers, TopContainer } from "./Common"
 import withBreakpoints from "react-breakpoints/lib/withBreakpoints"
 
 const { formatPrice, formatSize } = itemDataHelpers
 
-export const DetailsContainer = styled.div`
-	display: flex;
-	align-content: center;
-	margin: var(--spacing2) 0;
-
-	@media (max-width: ${(p) => p.theme.breakpoints[2] - 1}px) {
-		flex-direction: column;
-	}
-
-	> * + * {
-		@media (max-width: ${(p) => p.theme.breakpoints[2] - 1}px) {
-			margin-top: var(--spacing2);
-		}
-		@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
-			margin-left: var(--spacing3);
-		}
-	}
-`
-
-export const InfoContainer = styled.div`
-	display: grid;
-	min-height: 0;
-	min-width: 0;
-	height: 100%;
-	padding: var(--spacing2);
-	@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
-		padding: var(--spacing3);
-	}
-`
-
-export const BigContainer = styled.div`
+const OuterContainer = styled.div`
 	min-width: 0; /* this has to be on the outermost component*/
+	min-height: 0;
 
 	> a {
 		border: 1px solid var(--gray75);
@@ -66,9 +28,6 @@ export const BigContainer = styled.div`
 		display: grid;
 
 		@media (max-width: ${(p) => p.theme.breakpoints[3] - 1}px) {
-			/* grid-template-columns: 100%;
-			grid-template-rows:  */
-			grid-template-rows: 100%;
 			> * {
 				min-height: 0;
 			}
@@ -80,7 +39,51 @@ export const BigContainer = styled.div`
 	}
 `
 
-export const Name = styled.div`
+const OuterDetailsContainer = styled.div`
+	display: flex;
+	height: 100%;
+	align-items: center;
+	.mobile-image-container {
+		height: 150px;
+		width: 126px;
+
+		margin-top: var(--spacing3);
+		margin-right: var(--spacing3);
+		margin-bottom: var(--spacing3);
+	}
+`
+
+const DetailsContainer = styled.div`
+	display: flex;
+	align-content: center;
+	margin: var(--spacing2) 0;
+
+	@media (max-width: ${(p) => p.theme.breakpoints[3] - 1}px) {
+		flex-direction: column;
+	}
+
+	> * + * {
+		@media (max-width: ${(p) => p.theme.breakpoints[3] - 1}px) {
+			margin-top: var(--spacing2);
+		}
+		@media (min-width: ${(p) => p.theme.breakpoints[3]}px) {
+			margin-left: var(--spacing3);
+		}
+	}
+`
+
+const InfoContainer = styled.div`
+	display: grid;
+	min-height: 0;
+	min-width: 0;
+	height: 100%;
+	padding: var(--spacing2);
+	@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
+		padding: var(--spacing3);
+	}
+`
+
+const Name = styled.div`
 	color: var(--black0);
 	font-size: var(--font-size--l);
 	font-family: var(--font-family--serif);
@@ -89,7 +92,7 @@ export const Name = styled.div`
 	${nLinesHigh(2, { useMaxHeight: true, lineHeight: 1.5 })}
 `
 
-const ActionsSection = styled.div`
+const ActionsContainer = styled.div`
 	padding: var(--spacing2);
 	display: flex;
 	flex-direction: column;
@@ -209,7 +212,7 @@ const OwnerItemCard = ({
 	const isMobile = +currentBreakpoint <= 2
 
 	return (
-		<BigContainer>
+		<OuterContainer>
 			<Link to={route("ITEM_DETAILS", { id })}>
 				{!isMobile && <FluidImage url={imageURL} />}
 				<InfoContainer>
@@ -220,16 +223,24 @@ const OwnerItemCard = ({
 
 					<Name>{name}</Name>
 
-					<DetailsContainer>
-						<InfoItem name="Cena">{formattedPrice}</InfoItem>
-						<InfoItem name="Stan">{conditionObj.displayValue}</InfoItem>
-						<InfoItem name="Rozmiar">{formattedSize}</InfoItem>
-					</DetailsContainer>
+					<OuterDetailsContainer>
+						{isMobile && (
+							<div className="mobile-image-container">
+								<FluidImage url={imageURL} />
+							</div>
+						)}
+
+						<DetailsContainer>
+							<InfoItem name="Cena">{formattedPrice}</InfoItem>
+							<InfoItem name="Stan">{conditionObj.displayValue}</InfoItem>
+							<InfoItem name="Rozmiar">{formattedSize}</InfoItem>
+						</DetailsContainer>
+					</OuterDetailsContainer>
 
 					<Description>{description}</Description>
 				</InfoContainer>
 
-				<ActionsSection>
+				<ActionsContainer>
 					<Button accent fullWidth>
 						Promuj
 					</Button>
@@ -241,9 +252,9 @@ const OwnerItemCard = ({
 						<EditButton id={id} />
 						<DeleteButton id={id} />
 					</ButtonContainer>
-				</ActionsSection>
+				</ActionsContainer>
 			</Link>
-		</BigContainer>
+		</OuterContainer>
 	)
 }
 
