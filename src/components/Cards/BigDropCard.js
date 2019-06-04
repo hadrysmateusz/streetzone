@@ -3,6 +3,8 @@ import { Link } from "react-router-dom"
 import styled from "styled-components/macro"
 import moment from "moment"
 
+import { FluidImage } from "../Image"
+
 import { route } from "../../utils"
 
 import {
@@ -11,8 +13,7 @@ import {
 	MiddleContainer,
 	BottomContainer,
 	DateContainer,
-	InfoContainer,
-	FluidImage
+	InfoContainer
 } from "./Common"
 import DropCountdown from "../DropCountdown"
 
@@ -67,7 +68,7 @@ export const BigDropCard = ({
 	return (
 		<Container>
 			<Link to={route("DROP_DETAILS", { id })}>
-				{imageURL && <FluidImage url={imageURL} />}
+				<FluidImage url={imageURL} />
 				<InfoContainer>
 					<TopContainer>
 						<div>{itemCategory}</div>

@@ -10,6 +10,7 @@ export const InfoContainer = styled.div`
 	display: grid;
 	grid-template-rows: auto auto 1fr;
 	grid-template-columns: 100%;
+	min-height: 0;
 	min-width: 0;
 	height: 100%;
 	padding: var(--spacing2);
@@ -130,12 +131,3 @@ export const Price = ({ value }) => (
 		{formatPrice(value)}
 	</div>
 )
-
-export const FluidImage = styled.div`
-	width: 100%;
-	height: 100%;
-	background-image: url("${(p) => p.url}");
-	background-size: cover;
-	background-repeat: no-repeat;
-	background-position: center;
-`

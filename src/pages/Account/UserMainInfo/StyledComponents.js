@@ -1,6 +1,7 @@
 import styled from "styled-components/macro"
 
 export const MainInfoContainer = styled.div`
+	margin-top: var(--spacing3);
 	display: grid;
 	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
 		grid-auto-flow: columns;

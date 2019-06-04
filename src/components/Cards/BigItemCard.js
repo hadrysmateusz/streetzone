@@ -4,6 +4,7 @@ import styled from "styled-components/macro"
 import moment from "moment"
 
 import { HeartButton, TYPE } from "../SaveButton"
+import { FluidImage } from "../Image"
 
 import { route } from "../../utils"
 import { useImage } from "../../hooks"
@@ -16,7 +17,6 @@ import {
 	MiddleContainer,
 	BottomContainer,
 	InfoContainer,
-	FluidImage,
 	DateContainer
 } from "./Common"
 
@@ -99,7 +99,7 @@ export const BigItemCard = ({
 						</div>
 					</BottomContainer>
 				</InfoContainer>
-				{imageURL && <FluidImage url={imageURL} />}
+				<FluidImage url={imageURL} />
 			</Link>
 		</BigContainer>
 	)

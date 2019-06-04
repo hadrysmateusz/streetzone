@@ -3,6 +3,8 @@ import { Link } from "react-router-dom"
 import styled from "styled-components/macro"
 import moment from "moment"
 
+import { FluidImage } from "../Image"
+
 import { route } from "../../utils"
 
 import {
@@ -11,8 +13,7 @@ import {
 	DateContainer,
 	MiddleContainer,
 	BottomContainer,
-	InfoContainer,
-	FluidImage
+	InfoContainer
 } from "./Common"
 
 export const Container = styled.div`
@@ -46,7 +47,7 @@ export const PostCard = ({
 	return (
 		<Container>
 			<Link to={route("BLOG_POST", { id })}>
-				{imageURL && <FluidImage url={imageURL} />}
+				<FluidImage url={imageURL} />
 				<InfoContainer>
 					<MiddleContainer>
 						<Name>{title}</Name>

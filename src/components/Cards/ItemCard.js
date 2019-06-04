@@ -3,6 +3,7 @@ import { Link } from "react-router-dom"
 import styled from "styled-components/macro"
 
 import { HeartButton, TYPE } from "../SaveButton"
+import { FluidImage } from "../Image"
 
 import { route } from "../../utils"
 import { useImage } from "../../hooks"
@@ -15,8 +16,7 @@ import {
 	TopContainer,
 	MiddleContainer,
 	BottomContainer,
-	InfoContainer,
-	FluidImage
+	InfoContainer
 } from "./Common"
 
 export const SmallContainer = styled.div`
@@ -50,7 +50,7 @@ export const SmallItemCard = ({
 	return (
 		<SmallContainer>
 			<Link to={route("ITEM_DETAILS", { id })}>
-				{imageURL && <FluidImage url={imageURL} />}
+				<FluidImage url={imageURL} />
 				<InfoContainer>
 					<TopContainer>
 						{/* <div>{itemCategory}</div> */}
