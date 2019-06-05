@@ -13,6 +13,7 @@ import { NotFoundError } from "../../errors"
 import EditItemForm from "./EditItemForm"
 import useAuthentication from "../../hooks/useAuthentication"
 import { formatItemDataForDb, MODE } from "../../utils/formatting/formatItemData"
+import { CONST } from "../../constants"
 import { S_THUMB_POSTFIX, M_THUMB_POSTFIX, L_THUMB_POSTFIX } from "../../constants/const"
 
 const formatDataForEditForm = (price, condition, description, files) => ({
@@ -41,7 +42,8 @@ const EditItemPage = ({ match, history }) => {
 				return new CustomFile({
 					storageRef: attachment,
 					previewUrl: imageURLs[i],
-					isUploaded: true
+					isUploaded: true,
+					isMain: i === item.mainImageIndex
 				})
 			})
 
@@ -72,14 +74,20 @@ const EditItemPage = ({ match, history }) => {
 					if (file.storageRef) return file.storageRef
 
 					// Upload the new file and return promise containing ref
-					const snapshot = await firebase.uploadFile("attachments", file.data)
+					const snapshot = await firebase.uploadFile(
+						CONST.STORAGE_BUCKET_ITEM_ATTACHMENTS,
+						file.data
+					)
 					return snapshot.ref.fullPath
 				})
 			)
 
+			// Get main image ref
+			const mainImageIndex = files.findIndex((a) => a.isMain)
+
 			// Format the data
 			const data = formatItemDataForDb(
-				{ price, description, condition, attachments: newRefs },
+				{ price, description, condition, mainImageIndex, attachments: newRefs },
 				MODE.EDIT
 			)
 
