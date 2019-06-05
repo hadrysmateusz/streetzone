@@ -1,31 +1,44 @@
-import React from "react"
+import React, { useState, useEffect } from "react"
 
-import EmptyState, { UserNoFollowing } from "../../components/EmptyState"
-import LoadingSpinner from "../../components/LoadingSpinner"
-import FollowedUserCard from "../../components/FollowedUserCard"
-import { FollowedUsersContainer } from "./StyledComponents"
+import EmptyState, { UserNoLiked } from "../../components/EmptyState"
 import { PageContainer } from "../../components/Containers"
+import { UsersView } from "../../components/UserPreview/big"
 
-const UserFollowing = ({ user, userId, isAuthorized }) => {
-	const { followedUsers } = user
+import { HeaderContainer } from "./Common"
 
-	const hasUsers = followedUsers && followedUsers.length > 0
+const Header = ({ numUsers = 0 }) => {
+	return (
+		<HeaderContainer>
+			Obserwowani użytkownicy {numUsers > 0 && <div className="count">{numUsers}</div>}
+		</HeaderContainer>
+	)
+}
+
+const UserSavedUsers = ({ user }) => {
+	const [followedUsers, setFollowedUsers] = useState(null)
+
+	// keep followedUsers in state and update only on uid change
+	// to prevent accidentally unfollowing someone
+	useEffect(() => {
+		setFollowedUsers(user.followedUsers)
+	}, [user.uid])
+
+	const numUsers = followedUsers ? followedUsers.length : 0
+	const hasUsers = numUsers > 0
+	const error = !followedUsers
 
 	return (
-		<PageContainer>
-			{!followedUsers ? (
-				<LoadingSpinner />
+		<PageContainer extraWide>
+			<Header numUsers={numUsers} />
+			{error ? (
+				<div>Wystąpił problem, spróbuj odświeżyć stronę</div>
 			) : hasUsers ? (
-				<FollowedUsersContainer>
-					{followedUsers.map((userId) => {
-						return <FollowedUserCard id={userId} />
-					})}
-				</FollowedUsersContainer>
+				<UsersView users={followedUsers} />
 			) : (
-				<EmptyState state={UserNoFollowing} />
+				<EmptyState state={UserNoLiked} />
 			)}
 		</PageContainer>
 	)
 }
 
-export default UserFollowing
+export default UserSavedUsers
