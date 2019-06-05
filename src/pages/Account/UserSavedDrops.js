@@ -7,7 +7,7 @@ import { BigDropCard } from "../../components/Cards"
 
 import { useFirebase } from "../../hooks"
 
-import { HeaderContainer } from "./Common"
+import { HeaderContainer, EmptyState } from "./Common"
 
 const DropsList = styled.div`
 	display: grid;
@@ -21,7 +21,7 @@ const DropsList = styled.div`
 const Header = ({ numDrops = 0 }) => {
 	return (
 		<HeaderContainer>
-			Obserwowane dropy {numDrops > 0 && <div className="count">{numDrops}</div>}
+			Obserwowane dropy <div className="count">{numDrops}</div>
 		</HeaderContainer>
 	)
 }
@@ -104,7 +104,10 @@ const UserSavedDrops = ({ user }) => {
 					))}
 				</DropsList>
 			) : (
-				<div>Nie zapisałeś jeszcze żadnego dropu</div>
+				<EmptyState header="Nie zaobserwowałeś jeszcze żadnego dropu">
+					Tutaj znajdziesz zaobserwowane dropy. Obserwuj dropy by dostawać update-y i
+					przypomnienia.
+				</EmptyState>
 			)}
 		</PageContainer>
 	)

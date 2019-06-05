@@ -50,6 +50,7 @@ const GlobalStyle = createGlobalStyle`
 	--font-family--serif: "Playfair Display";
 	--font-family--sans-serif: "Open Sans";
 
+
 	--form-element-height: 40px;
 
 	--page-header-height: 52px;
@@ -68,6 +69,8 @@ const GlobalStyle = createGlobalStyle`
 	--fs-l: var(--font-size--l);
 	--fs-xl: var(--font-size--xl);
 	--fs-xxl: var(--font-size--xxl);
+
+	--semi-bold: 600;
 }
 
 body {

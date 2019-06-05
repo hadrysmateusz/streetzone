@@ -1,6 +1,5 @@
 import React from "react"
 
-import EmptyState, { UserNoFeedback } from "../../components/EmptyState"
 import LoadingSpinner from "../../components/LoadingSpinner"
 import Comment from "../../components/Comment"
 import AddComment from "../../components/AddComment"
@@ -8,12 +7,12 @@ import { PageContainer } from "../../components/Containers"
 
 import { useFirebase } from "../../hooks"
 
-import { HeaderContainer } from "./Common"
+import { HeaderContainer, EmptyState } from "./Common"
 
 const Header = ({ numFeedback = 0 }) => {
 	return (
 		<HeaderContainer>
-			Opinie / Komentarze {numFeedback > 0 && <div className="count">{numFeedback}</div>}
+			Opinie / Komentarze <div className="count">{numFeedback}</div>
 		</HeaderContainer>
 	)
 }
@@ -59,8 +58,15 @@ const UserFeedback = ({ user, userId, isAuthorized, onForceRefresh }) => {
 						)
 					})}
 				</div>
+			) : isAuthorized ? (
+				<EmptyState header="Nie masz jeszcze żadnych opinii">
+					Tutaj znajdziesz opinie wystawione przez innych użytkowników
+				</EmptyState>
 			) : (
-				<EmptyState state={UserNoFeedback} />
+				<EmptyState header="Ten użytkownik nie ma jeszcze żadnych opinii">
+					Jeśli kupowałeś coś od tego użytkownika, wystaw opinie by pomóc innym
+					użytkownikom
+				</EmptyState>
 			)}
 		</PageContainer>
 	)

@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from "react"
 
-import EmptyState from "../../components/EmptyState"
 import { PageContainer } from "../../components/Containers"
 import { UsersView } from "../../components/UserPreview/big"
 
-import { HeaderContainer } from "./Common"
+import { HeaderContainer, EmptyState } from "./Common"
 
 const Header = ({ numUsers = 0 }) => {
 	return (
 		<HeaderContainer>
-			Obserwowani użytkownicy {numUsers > 0 && <div className="count">{numUsers}</div>}
+			Obserwowani użytkownicy <div className="count">{numUsers}</div>
 		</HeaderContainer>
 	)
 }
@@ -35,7 +34,9 @@ const UserSavedUsers = ({ user }) => {
 			) : hasUsers ? (
 				<UsersView users={followedUsers} />
 			) : (
-				<EmptyState text="Nie obserwujesz nikogo" />
+				<EmptyState header="Nie obserwujesz jeszcze nikogo">
+					Tutaj znajdziesz zaobserwowanych przez siebie użytkowników
+				</EmptyState>
 			)}
 		</PageContainer>
 	)

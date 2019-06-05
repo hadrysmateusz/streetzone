@@ -1,18 +1,17 @@
 import React, { useState, useEffect } from "react"
 
-import EmptyState, { UserNoLiked } from "../../components/EmptyState"
 import LoadingSpinner from "../../components/LoadingSpinner"
 import { PageContainer } from "../../components/Containers"
 import ItemsView from "../../components/ItemsView"
 
 import { useFirebase } from "../../hooks"
 
-import { HeaderContainer } from "./Common"
+import { HeaderContainer, EmptyState } from "./Common"
 
 const Header = ({ numItems = 0 }) => {
 	return (
 		<HeaderContainer>
-			Zapisane przedmioty {numItems > 0 && <div className="count">{numItems}</div>}
+			Zapisane przedmioty <div className="count">{numItems}</div>
 		</HeaderContainer>
 	)
 }
@@ -93,7 +92,9 @@ const UserSavedItems = ({ user }) => {
 			) : hasItems ? (
 				<ItemsView items={items} />
 			) : (
-				<EmptyState state={UserNoLiked} />
+				<EmptyState header="Nie zapisałeś jeszcze żadnego przedmiotu">
+					Tutaj znajdziesz zapisane przez siebie przedmioty
+				</EmptyState>
 			)}
 		</PageContainer>
 	)

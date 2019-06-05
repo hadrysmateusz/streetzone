@@ -112,7 +112,7 @@ const MainInfo = ({ user, isAuthorized, userId, currentBreakpoint }) => {
 									id={userId}
 									type={TYPE.USER}
 									text="Obserwuj"
-									savedText="Obserwowany"
+									savedText="Obserwujesz"
 									fullWidth={currentBreakpoint <= 1}
 								/>
 								{/* <MoreButton title="Więcej">

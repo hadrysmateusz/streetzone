@@ -1,13 +1,21 @@
 import React from "react"
 import styled from "styled-components/macro"
 import { connectStats } from "react-instantsearch-dom"
+import { Link } from "react-router-dom"
+
 import { StatelessSearchWrapper } from "../../components/InstantSearchWrapper"
-import { AlgoliaInfiniteHits } from "../../components/Algolia/AlgoliaHits"
 import InfiniteScrollingResults from "../../components/InfiniteScrollingResults"
 import { PageContainer } from "../../components/Containers"
 import { OwnerItemCard } from "../../components/Cards"
+import { Button } from "../../components/Button"
+import ItemsView from "../../components/ItemsView"
 
 import { CONST } from "../../constants"
+import { route } from "../../utils"
+
+import { EmptyState } from "./Common"
+import { SaveButton } from "../../components/SaveButton"
+import { TYPE } from "../../components/DropCountdown/FollowButton"
 
 const ItemsList = styled.div`
 	> * + * {
@@ -32,9 +40,17 @@ const HeaderContainer = styled.div`
 	}
 `
 
-const InfiniteOwnerCards = () => {
-	return (
-		<InfiniteScrollingResults>
+const ItemsResults = ({ isAuthorized, userId }) => {
+	return isAuthorized ? (
+		<InfiniteScrollingResults
+			emptyState={
+				<EmptyState header="Nie wystawiłeś jeszcze żadnego przedmiotu">
+					<Button as={Link} to={route("NEW_ITEM")} primary>
+						Zacznij sprzedawać
+					</Button>
+				</EmptyState>
+			}
+		>
 			{({ results, hasMore, loadMore }) => (
 				<ItemsList>
 					{results.map((item) => (
@@ -43,13 +59,30 @@ const InfiniteOwnerCards = () => {
 				</ItemsList>
 			)}
 		</InfiniteScrollingResults>
+	) : (
+		<InfiniteScrollingResults
+			emptyState={
+				<EmptyState header="Ten użytkownik nie wystawił aktualnie żadnego przedmiotu">
+					<div>Obserwuj by dowiedzieć się gdy coś wystawi</div>
+					<SaveButton
+						type={TYPE.USER}
+						id={userId}
+						text="Obserwuj"
+						savedText="Obserwujesz"
+						fullWidth
+					/>
+				</EmptyState>
+			}
+		>
+			{({ results, hasMore, loadMore }) => <ItemsView items={results} />}
+		</InfiniteScrollingResults>
 	)
 }
 
 const Header = connectStats(({ nbHits }) => {
 	return (
 		<HeaderContainer>
-			Wszystkie przedmioty <div className="count">{nbHits}</div>
+			Wszystkie przedmioty <div className="count">{nbHits || 0}</div>
 		</HeaderContainer>
 	)
 })
@@ -63,7 +96,7 @@ const UserItems = ({ isAuthorized, userId }) => {
 				limit={6}
 			>
 				<Header />
-				{isAuthorized ? <InfiniteOwnerCards /> : <AlgoliaInfiniteHits />}
+				<ItemsResults isAuthorized={isAuthorized} userId={userId} />
 			</StatelessSearchWrapper>
 		</PageContainer>
 	)

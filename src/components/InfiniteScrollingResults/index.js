@@ -5,14 +5,15 @@ import { InfiniteResults } from "../Algolia/Helpers"
 import LoadingSpinner from "../LoadingSpinner"
 import NoResults from "../Algolia/NoResults"
 
-const InfiniteScrollingResults = ({ children, threshold = 450 }) => {
+const InfiniteScrollingResults = ({ children, threshold = 450, emptyState }) => {
 	const isChildrenFunction = typeof children === "function"
 
 	return (
 		<InfiniteResults>
 			{({ results, hasMore, loadMore }) => (
 				<>
-					<NoResults /> {/* Render empty state if there are no results */}
+					{<NoResults render={emptyState} />}
+					{/* Render empty state if there are no results */}
 					<InfiniteScroll
 						hasMore={hasMore}
 						loader={<LoadingSpinner />}
