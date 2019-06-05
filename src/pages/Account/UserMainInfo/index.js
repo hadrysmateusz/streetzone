@@ -24,6 +24,8 @@ import MoreButton from "../../../components/MoreButton"
 const MainInfo = ({ user, isAuthorized, userId, currentBreakpoint }) => {
 	const { getToggleProps, getContentProps } = useContentToggle(false)
 
+	const numDays = moment().diff(user.userSince, "days")
+
 	return (
 		<PageContainer>
 			<MainInfoContainer>
@@ -39,9 +41,7 @@ const MainInfo = ({ user, isAuthorized, userId, currentBreakpoint }) => {
 							{user.name}
 						</TextBlock>
 						<HorizontalContainer gap="3">
-							<SingleValueDisplay title="W serwisie od">
-								{moment(user.userSince).format("D.MM.YYYY")}
-							</SingleValueDisplay>
+							<SingleValueDisplay title="W serwisie od">{numDays} dni</SingleValueDisplay>
 
 							{user.feedback && (
 								<SingleValueDisplay title="Opinie">
