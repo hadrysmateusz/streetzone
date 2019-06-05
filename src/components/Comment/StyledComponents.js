@@ -3,8 +3,8 @@ import styled from "styled-components/macro"
 export const CommentContainer = styled.div`
 	margin-bottom: var(--spacing4);
 	background: var(--almost-white);
-	border: 1px solid var(--gray100);
-	box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.04);
+	/* border: 1px solid var(--gray100); */
+	/* box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.04); */
 	padding: var(--spacing3);
 `
 
@@ -18,6 +18,6 @@ export const VerticalSeparator = styled.div`
 export const Header = styled.div`
 	width: 100%;
 	display: grid;
-	grid-template-columns: 1fr 1fr;
+	grid-template-columns: 1fr min-content;
 	align-items: center;
 `

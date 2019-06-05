@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"
 
-import EmptyState, { UserNoLiked } from "../../components/EmptyState"
+import EmptyState from "../../components/EmptyState"
 import { PageContainer } from "../../components/Containers"
 import { UsersView } from "../../components/UserPreview/big"
 
@@ -35,7 +35,7 @@ const UserSavedUsers = ({ user }) => {
 			) : hasUsers ? (
 				<UsersView users={followedUsers} />
 			) : (
-				<EmptyState state={UserNoLiked} />
+				<EmptyState text="Nie obserwujesz nikogo" />
 			)}
 		</PageContainer>
 	)
