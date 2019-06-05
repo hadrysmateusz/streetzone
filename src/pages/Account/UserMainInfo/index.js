@@ -7,24 +7,28 @@ import { withBreakpoints } from "react-breakpoints"
 import ProfilePicture from "../../../components/ProfilePicture"
 import getProfilePictureURL from "../../../utils/getProfilePictureURL"
 import Button, { ButtonContainer } from "../../../components/Button"
+import { TYPE, SaveButton } from "../../../components/SaveButton"
+import { TextBlock, HorizontalContainer } from "../../../components/StyledComponents"
+import InfoItem from "../../../components/InfoItem"
+import { PageContainer } from "../../../components/Containers"
+// import MoreButton from "../../../components/MoreButton"
+
 import {
 	MainInfoContainer,
 	InfoContainer,
 	SecondContainer,
 	TopContainer
 } from "./StyledComponents"
-import { TYPE, SaveButton } from "../../../components/SaveButton"
-import { ROUTES } from "../../../constants"
-import { TextBlock, HorizontalContainer } from "../../../components/StyledComponents"
-import SingleValueDisplay from "../../../components/SingleValueDisplay"
+
 import useContentToggle from "../../../hooks/useContentToggle"
-import { PageContainer } from "../../../components/Containers"
-import MoreButton from "../../../components/MoreButton"
+import { route } from "../../../utils"
 
 const MainInfo = ({ user, isAuthorized, userId, currentBreakpoint }) => {
 	const { getToggleProps, getContentProps } = useContentToggle(false)
 
 	const numDays = moment().diff(user.userSince, "days")
+
+	const infoItemSize = currentBreakpoint >= 3 ? "m" : "s"
 
 	return (
 		<PageContainer>
@@ -41,16 +45,20 @@ const MainInfo = ({ user, isAuthorized, userId, currentBreakpoint }) => {
 							{user.name}
 						</TextBlock>
 						<HorizontalContainer gap="3">
-							<SingleValueDisplay title="W serwisie od">{numDays} dni</SingleValueDisplay>
+							<InfoItem name="W serwisie od" size={infoItemSize}>
+								{numDays} dni
+							</InfoItem>
 
 							{user.feedback && (
-								<SingleValueDisplay title="Opinie">
+								<InfoItem name="Opinie" size={infoItemSize}>
 									{Array.from(user.feedback).length}
-								</SingleValueDisplay>
+								</InfoItem>
 							)}
 
 							{user.city && (
-								<SingleValueDisplay title="Miasto">{user.city}</SingleValueDisplay>
+								<InfoItem name="Miasto" size={infoItemSize}>
+									{user.city}
+								</InfoItem>
 							)}
 						</HorizontalContainer>
 						{currentBreakpoint > 2 ? (
@@ -70,20 +78,20 @@ const MainInfo = ({ user, isAuthorized, userId, currentBreakpoint }) => {
 					</InfoContainer>
 				</TopContainer>
 				<SecondContainer>
-					<ButtonContainer alignRight>
+					<ButtonContainer alignRight noMargin vertical={currentBreakpoint < 1}>
 						{isAuthorized ? (
 							<>
 								<Button
 									primary
 									as={Link}
-									to={ROUTES.NEW_ITEM}
+									to={route("CHAT")}
 									fullWidth={currentBreakpoint <= 1}
 								>
-									<span>Wystaw Przedmiot</span>
+									<span>Wiadomości</span>
 								</Button>
 								<Button
 									as={Link}
-									to={ROUTES.ACCOUNT_SETTINGS.replace(":id", userId)}
+									to={route("ACCOUNT_SETTINGS", { id: userId })}
 									fullWidth={currentBreakpoint <= 1}
 								>
 									<span>Edytuj Profil</span>
@@ -91,19 +99,25 @@ const MainInfo = ({ user, isAuthorized, userId, currentBreakpoint }) => {
 							</>
 						) : (
 							<>
-								<Button as={Link} to={ROUTES.CHAT_NEW.replace(":id", userId)} primary>
+								<Button
+									as={Link}
+									to={route("CHAT_NEW", { id: userId })}
+									primary
+									fullWidth={currentBreakpoint <= 1}
+								>
 									<FontAwesomeIcon icon={["far", "envelope"]} size="lg" />
-									<span>Wyślij wiadomość</span>
+									<span>Kontakt</span>
 								</Button>
 								<SaveButton
 									id={userId}
 									type={TYPE.USER}
 									text="Obserwuj"
 									savedText="Obserwowany"
+									fullWidth={currentBreakpoint <= 1}
 								/>
-								<MoreButton title="Więcej">
+								{/* <MoreButton title="Więcej">
 									<div>Zgłoś naruszenie</div>
-								</MoreButton>
+								</MoreButton> */}
 							</>
 						)}
 					</ButtonContainer>

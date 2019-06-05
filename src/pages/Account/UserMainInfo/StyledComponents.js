@@ -33,6 +33,10 @@ export const SecondContainer = styled.div`
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
+	@media (max-width: ${(p) => p.theme.breakpoints[2] - 1}px) {
+		margin-top: var(--spacing3);
+		margin-bottom: var(--spacing1);
+	}
 `
 
 export const InfoContainer = styled.div`
