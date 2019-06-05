@@ -3,10 +3,11 @@ import styled from "styled-components/macro"
 import moment from "moment"
 
 import { dateFormat } from "../../utils/formatting/formatDropData"
+import { useAuthentication } from "../../hooks"
+
 import FollowButton from "./FollowButton"
 
 const CountdownContainer = styled.div`
-	/* padding: var(--spacing1) var(--spacing2); */
 	border: 1px solid var(--gray75);
 	border-radius: 4px;
 	position: relative;
@@ -17,7 +18,9 @@ const CountdownContainer = styled.div`
 
 	.value-container {
 		padding: var(--spacing1) var(--spacing2);
-		border-right: 1px solid var(--gray75);
+		:not(:last-child) {
+			border-right: 1px solid var(--gray75);
+		}
 	}
 
 	::before {
@@ -25,7 +28,7 @@ const CountdownContainer = styled.div`
 		top: -0.8em;
 		left: var(--spacing1);
 		color: var(--gray50);
-		content: "ZA";
+		${(p) => !p.isArchival && "content: 'ZA';"}
 		display: block;
 		padding: 0 3px;
 		background: white;
@@ -73,7 +76,17 @@ const formatValue = (dropsAt) => {
 }
 
 const DropCountdown = ({ dropsAt, id }) => {
+	const [authUser, isAuthenticated] = useAuthentication(true)
 	const [value, setValue] = useState(null)
+	const [isSaved, setIsSaved] = useState(false)
+
+	// get the isSaved value
+	useEffect(() => {
+		const isSaved =
+			isAuthenticated && authUser.followedDrops && authUser.followedDrops.includes(id)
+
+		setIsSaved(isSaved)
+	}, [authUser, id])
 
 	useEffect(() => {
 		const getValue = () => {
@@ -81,7 +94,7 @@ const DropCountdown = ({ dropsAt, id }) => {
 			setValue(value)
 		}
 
-		// get first values instantly
+		// get first value instantly
 		getValue()
 
 		// update every minute
@@ -90,14 +103,18 @@ const DropCountdown = ({ dropsAt, id }) => {
 		return () => clearInterval(id)
 	}, [dropsAt])
 
-	// const formattedValue = formatValue(values)
-
 	return value ? (
 		<CountdownContainer>
 			<div className="value-container">{value}</div>
 			<FollowButton id={id} />
 		</CountdownContainer>
-	) : null
+	) : (
+		<CountdownContainer isArchival>
+			<div className="value-container">Archiwum</div>
+			{/* only show the follow button in archival drops if it is active */}
+			{isSaved && <FollowButton id={id} />}
+		</CountdownContainer>
+	)
 }
 
 export default DropCountdown

@@ -26,8 +26,6 @@ const HeartButtonContainer = styled.div`
 	.filled {
 		color: var(--gray25);
 	}
-
-
 `
 
 export const TYPE = {
