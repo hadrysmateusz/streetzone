@@ -1,5 +1,3 @@
-// DEPRECATED
-
 export default (input) => {
 	return {
 		name: input.name,
@@ -20,6 +18,7 @@ export default (input) => {
 		savedFilters: [],
 		savedDrops: [],
 		followedUsers: [],
+		followedDrops: [],
 		importedFrom: input.importedFrom || null
 	}
 }
