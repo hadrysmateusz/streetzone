@@ -74,6 +74,7 @@ const DetailsContainer = styled.div`
 
 const InfoContainer = styled.div`
 	display: grid;
+	grid-template-rows: repeat(4, min-content) minmax(0, 1fr);
 	min-height: 0;
 	min-width: 0;
 	height: 100%;
