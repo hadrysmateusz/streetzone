@@ -98,7 +98,7 @@ const OwnerItemCard = ({ item, history }) => {
 							fullWidth
 							onClick={() => {
 								/* This is not an a-tag to allow for programmatic disabling */
-								history.push(ROUTES.EDIT_ITEM.replace(":id", item.id))
+								history.replace(ROUTES.EDIT_ITEM.replace(":id", item.id))
 							}}
 						>
 							Edytuj

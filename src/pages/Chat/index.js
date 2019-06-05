@@ -229,7 +229,7 @@ const UserChat = ({ location, history, match, currentBreakpoint }) => {
 	const closeChat = () => {
 		// use destructuring to prevent "location.state is undefined" error
 		const { redirectTo } = location.state || { redirectTo: { pathname: route("HOME") } }
-		history.push(redirectTo)
+		history.replace(redirectTo)
 	}
 
 	const hasRooms = rooms && rooms.length > 0

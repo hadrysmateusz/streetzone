@@ -43,7 +43,7 @@ export const InstantSearchWrapper = withRouter(
 		const handleSearchStateChange = async (newSearchState) => {
 			const formattedState = await onSearchStateChange(newSearchState)
 			const url = encodeURL(formattedState)
-			history.push(url)
+			history.replace(url)
 		}
 
 		const createStateFromURL = () => {

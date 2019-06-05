@@ -112,7 +112,7 @@ const DetailedItemCard = ({ item, history, isAuthorized }) => {
 									fullWidth
 									onClick={() => {
 										/* This is not an a-tag to allow for programmatic disabling */
-										history.push(ROUTES.EDIT_ITEM.replace(":id", item.id))
+										history.replace(ROUTES.EDIT_ITEM.replace(":id", item.id))
 									}}
 									// TODO: make the "Zaczekaj jeszcze show actual remaining time"
 									title="Przedmiot może być edytowany dopiero po 24 godzinach.

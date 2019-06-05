@@ -45,7 +45,7 @@ const CurrentFiltersView = ({ items, history, clear, refine }) => {
 			{items && items.length > 0 && (
 				<ClearFiltersSubButton
 					onClick={() => {
-						history.push(ROUTES.MARKETPLACE)
+						history.replace(ROUTES.MARKETPLACE)
 						clear.update(true)
 					}}
 				>

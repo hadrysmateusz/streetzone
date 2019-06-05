@@ -31,7 +31,7 @@ const FiltersToggle = compose(
 			{currentRefinements && currentRefinements.length > 0 && (
 				<ClearFiltersSubButton
 					onClick={() => {
-						history.push(ROUTES.MARKETPLACE)
+						history.replace(ROUTES.MARKETPLACE)
 						clearFilters.update(true)
 					}}
 					title="Wyczyść filtry"

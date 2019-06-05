@@ -133,7 +133,7 @@ export const SearchWrapper = withRouter(
 		const handleSearchStateChange = async (newSearchState) => {
 			const formattedState = await onSearchStateChange(newSearchState)
 			const url = encodeURL(formattedState)
-			history.push(url)
+			history.replace(url)
 		}
 
 		const forceRefineWithState = async (partialSearchState) => {
@@ -144,7 +144,7 @@ export const SearchWrapper = withRouter(
 			const formattedState = await onSearchStateChange(newSearchState)
 			const url = encodeURL(formattedState)
 			console.log("forced", formattedState)
-			history.push(url)
+			history.replace(url)
 		}
 
 		const createStateFromURL = useCallback(() => {

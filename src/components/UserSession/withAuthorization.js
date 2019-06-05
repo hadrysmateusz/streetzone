@@ -13,7 +13,7 @@ const withAuthorization = (condition) => (Component) =>
 			if (condition(authUser, props.match.params)) {
 				setIsAuthorized(true)
 			} else {
-				props.history.push(ROUTES.SIGN_IN, { redirectTo: props.location })
+				props.history.replace(ROUTES.SIGN_IN, { redirectTo: props.location })
 			}
 		})
 

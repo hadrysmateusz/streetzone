@@ -6,7 +6,7 @@ import { ROUTES } from "../../constants"
 const ClearAllFiltersButton = withRouter(({ history, onClick }) => (
 	<Button
 		onClick={() => {
-			history.push(ROUTES.MARKETPLACE)
+			history.replace(ROUTES.MARKETPLACE)
 			onClick(true)
 		}}
 		fullWidth

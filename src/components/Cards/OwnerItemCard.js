@@ -185,7 +185,7 @@ const EditButton = withRouter(({ history, id }) => {
 			onClick={(e) => {
 				e.preventDefault() // prevent the Link to item from triggering
 				/* This is not an a-tag to allow for programmatic disabling */
-				history.push(route("EDIT_ITEM", { id }))
+				history.replace(route("EDIT_ITEM", { id }))
 			}}
 		>
 			Edytuj
