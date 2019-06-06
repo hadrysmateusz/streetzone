@@ -46,6 +46,43 @@ const basic = css`
 	}
 `
 
+const facebook = css`
+	color: white;
+	background-color: ${(p) => (p.disabled ? "#7D8EB2" : "#3b5998")};
+	border-color: ${(p) => (p.disabled ? "#7D8EB2" : "#3b5998")};
+	:not([disabled]) {
+		:hover {
+			background-color: #2b4988;
+			border-color: #2b4988;
+		}
+	}
+`
+
+const google = css`
+	color: white;
+	background-color: ${(p) => (p.disabled ? "#9FBFF4" : "#4285f4")};
+	border-color: ${(p) => (p.disabled ? "#9FBFF4" : "#4285f4")};
+
+	:not([disabled]) {
+		:hover {
+			background-color: #3275e4;
+			border-color: #3275e4;
+		}
+	}
+`
+
+const social = (name) => {
+	console.log(name)
+	switch (name) {
+		case "facebook":
+			return facebook
+		case "google":
+			return google
+		default:
+			throw Error("Invalid social button type")
+	}
+}
+
 const disabled = css`
 	border-color: var(--gray100);
 	background: var(--almost-white);
@@ -89,6 +126,9 @@ const Button = styled.button`
 	/* Disabled styles */
 	${(p) => p.disabled && disabled}
 
+	/* Social styles */
+	${(p) => p.social && social(p.social)}
+ 
 	/* Full-width styling */
 	${(p) => p.fullWidth && "width: 100%;"}
 
@@ -145,6 +185,7 @@ const LoaderButton = styled(LoaderButtonUnstyled)`
 	}
 `
 
+// Deprecated
 const FacebookButton = styled(Button)`
 	color: white;
 	background-color: ${(p) => (p.disabled ? "#7D8EB2" : "#3b5998")};
@@ -157,6 +198,7 @@ const FacebookButton = styled(Button)`
 	}
 `
 
+// Deprecated
 const GoogleButton = styled(Button)`
 	color: white;
 	background-color: ${(p) => (p.disabled ? "#9FBFF4" : "#4285f4")};

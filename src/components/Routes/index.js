@@ -23,7 +23,7 @@ const SignUp = Loadable({
 	loading: LoadableComponentSpinner
 })
 const SignIn = Loadable({
-	loader: () => import("../../pages/SignIn"),
+	loader: () => import("../../pages/SignIn/new"),
 	loading: LoadableComponentSpinner
 })
 const PasswordForget = Loadable({
