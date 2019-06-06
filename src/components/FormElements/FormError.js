@@ -1,31 +1,52 @@
 import React from "react"
-import { Box } from "rebass"
 import styled from "styled-components/macro"
-import { space, color, fontSize } from "styled-system"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
-const Icon = styled(FontAwesomeIcon)`
-  ${fontSize}
-	${space}
-  ${color}
+const ErrorContainer = styled.div`
+	background: var(--error100);
+	color: var(--error0);
+	padding: var(--spacing2);
+	border: 1px solid var(--error0);
+
+	.icon {
+		margin-left: var(--spacing1);
+		margin-right: var(--spacing2);
+	}
 `
 
-const ErrorContainer = styled(Box).attrs({
-	px: 2,
-	py: 2,
-	mt: 2,
-	bg: "danger.100",
-	color: "danger.0"
-})`
-	border: 1px solid ${(p) => p.theme.colors.danger[0]};
-`
+const translateErrorMessage = (error) => {
+	// get the error message
+	let message = typeof error === "string" ? error : error.message
+	let errorCode = typeof error === "object" ? error.code : null
 
-const FormError = ({ message, show }) =>
-	show ? (
+	// compare the error against a list of known error codes
+	switch (errorCode) {
+		case "auth/account-exists-with-different-credential":
+			return `Konto o tym samym adresie e-mail jest już zarejestrowane na tej stronie.
+      Zaloguj się przy użyciu tego konta i powiąż swoje konta społecznościowe
+      w ustawieniach profilu.`
+		case "auth/email-already-in-use":
+			return `Konto społecznościowe z tym adresem e-mail jest już zarejestrowane na tej stronie.
+      Zaloguj się przy użyciu tego konta i powiąż swoje konta
+      w ustawieniach profilu.`
+		default:
+			return message
+	}
+}
+
+const FormError = ({ error }) => {
+	const hasError = !!error
+
+	if (!hasError) return null
+
+	const message = translateErrorMessage(error)
+
+	return (
 		<ErrorContainer>
-			<Icon icon="exclamation" ml={1} mr={2} />
+			<FontAwesomeIcon className="icon" icon="exclamation" />
 			<span>{message}</span>
 		</ErrorContainer>
-	) : null
+	)
+}
 
 export default FormError
