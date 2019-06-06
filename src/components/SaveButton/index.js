@@ -3,7 +3,7 @@ import styled from "styled-components/macro"
 import PropTypes from "prop-types"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
-import Modal from "../Modal"
+import AuthModal from "../AuthModal"
 import { Button } from "../Button"
 
 import { useAuthentication, useFirebase, useFlash } from "../../hooks"
@@ -40,7 +40,6 @@ const SaveButtonLogic = ({ id, type, children }) => {
 	const firebase = useFirebase()
 	const [authUser, isAuthenticated] = useAuthentication(true)
 	const [isSaved, setIsSaved] = useState(false)
-	const [showModal, setShowModal] = useState(false)
 	const flashMessage = useFlash()
 
 	const checkIfSaved = () => {
@@ -76,15 +75,8 @@ const SaveButtonLogic = ({ id, type, children }) => {
 	const onClick = (e) => {
 		e.preventDefault()
 		e.stopPropagation()
-		// e.persist()
-		// e.stopPropagation()
-		// console.log("click", e)
 
-		if (isAuthenticated) {
-			toggleSaved()
-		} else {
-			setShowModal(true)
-		}
+		toggleSaved()
 	}
 
 	useEffect(() => {
@@ -96,11 +88,10 @@ const SaveButtonLogic = ({ id, type, children }) => {
 		return null
 	}
 
-	return (
-		<>
-			{children({ isSaved, onClick })}
-			{showModal && <Modal onRequestClose={() => setShowModal(false)}>Zaloguj się</Modal>}
-		</>
+	return isAuthenticated ? (
+		children({ isSaved, onClick })
+	) : (
+		<AuthModal>{({ open }) => children({ isSaved, onClick: open })}</AuthModal>
 	)
 }
 

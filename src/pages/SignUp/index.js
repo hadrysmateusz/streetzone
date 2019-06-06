@@ -26,6 +26,7 @@ const SignUpPage = () => {
 		<CenteredContainer>
 			<Header>Utwórz konto</Header>
 			<SignUpForm />
+			<SignInLink />
 		</CenteredContainer>
 	)
 }
@@ -142,7 +143,6 @@ class SignUpFormBase extends Component {
 							fullWidth
 						/>
 						{error && <FormError message={error.message} show={error} />}
-						<SignInLink />
 					</StyledForm>
 				)}
 			/>

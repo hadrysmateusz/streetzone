@@ -6,7 +6,6 @@ import styled from "styled-components/macro"
 import { withAuthenticationProvider } from "../UserSession"
 import { withFirebase } from "../Firebase"
 import { withGlobalContextProvider } from "../GlobalContext"
-import AuthModal from "../AuthModal"
 import { Routes, Meta } from "../Routes"
 import PageHeader from "../PageHeader"
 import Footer from "../Footer"
@@ -35,7 +34,6 @@ class App extends React.Component {
 							<Footer />
 						</AppContainer>
 					</FlashMessages>
-					<AuthModal />
 				</div>
 			</Router>
 		)
