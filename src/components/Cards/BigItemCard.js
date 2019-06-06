@@ -86,7 +86,7 @@ export const BigItemCard = ({
 					</MiddleContainer>
 					<BottomContainer pinToBottom>
 						<Price value={price} />
-						<div className="align-right">
+						<div className="align-right" onClick={() => console.log("propagates")}>
 							<HeartButton
 								css={`
 									color: var(--gray25);

@@ -75,6 +75,10 @@ const SaveButtonLogic = ({ id, type, children }) => {
 
 	const onClick = (e) => {
 		e.preventDefault()
+		e.stopPropagation()
+		// e.persist()
+		// e.stopPropagation()
+		// console.log("click", e)
 
 		if (isAuthenticated) {
 			toggleSaved()
@@ -92,12 +96,12 @@ const SaveButtonLogic = ({ id, type, children }) => {
 		return null
 	}
 
-	return [
-		children({ isSaved, onClick }),
-		<Modal isOpen={showModal} onRequestClose={() => setShowModal(false)}>
-			Zaloguj się
-		</Modal>
-	]
+	return (
+		<>
+			{children({ isSaved, onClick })}
+			{showModal && <Modal onRequestClose={() => setShowModal(false)}>Zaloguj się</Modal>}
+		</>
+	)
 }
 
 export const HeartButton = ({ type, id, scale, ...props }) => {
