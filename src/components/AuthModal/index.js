@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 
-import { SignInForm } from "../../pages/SignIn"
+import { SignIn } from "../../pages/SignIn"
 import { SignUpForm } from "../../pages/SignUp"
 import { StatefulModal } from "../Modal/new"
 import { Button } from "../Button"
@@ -9,7 +9,7 @@ const SignInModal = ({ changePage }) => {
 	return (
 		<div>
 			<h3>Zaloguj się</h3>
-			<SignInForm />
+			<SignIn />
 			<p>Nie masz jeszcze konta?</p>
 			<Button onClick={() => changePage("signUp")}>Utwórz konto</Button>
 		</div>

@@ -9,7 +9,7 @@ import { StyledLink, FieldRow, Header } from "../../components/Basics"
 import { LoaderButton } from "../../components/Button"
 import { FormError, Input } from "../../components/FormElements"
 
-import { SignInLink } from "../SignIn"
+import { SignInLink } from "../SignIn/old"
 
 import { ROUTES, AUTH_ERR } from "../../constants"
 import formatUserData from "../../utils/formatUserData"
