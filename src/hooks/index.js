@@ -11,6 +11,7 @@ import useImage from "./useImage"
 import useFlash from "./useFlash"
 import useTabs from "./useTabs"
 import useUser from "./useUser"
+import useBodyScrollLock from "./useBodyScrollLock"
 
 export {
 	useFirestoreCollection,
@@ -25,5 +26,6 @@ export {
 	useImage,
 	useFlash,
 	useUser,
-	useTabs
+	useTabs,
+	useBodyScrollLock
 }
