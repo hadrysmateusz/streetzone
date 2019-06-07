@@ -3,15 +3,12 @@ import React, { useState } from "react"
 import { SignIn } from "../../pages/SignIn"
 import { SignUpForm } from "../../pages/SignUp"
 import { StatefulModal } from "../Modal/new"
-import { Button } from "../Button"
 
 const SignInModal = ({ changePage }) => {
 	return (
 		<div>
 			<h3>Zaloguj się</h3>
 			<SignIn />
-			<p>Nie masz jeszcze konta?</p>
-			<Button onClick={() => changePage("signUp")}>Utwórz konto</Button>
 		</div>
 	)
 }
@@ -21,8 +18,6 @@ const SignUpModal = ({ changePage }) => {
 		<div>
 			<h3>Utwórz konto</h3>
 			<SignUpForm />
-			<p>Masz już konto?</p>
-			<Button onClick={() => changePage("signIn")}>Zaloguj się</Button>
 		</div>
 	)
 }

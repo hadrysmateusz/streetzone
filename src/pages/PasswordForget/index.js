@@ -89,6 +89,7 @@ class PasswordForgetFormBase extends Component {
 
 const PasswordForgetForm = compose(withFirebase)(PasswordForgetFormBase)
 
+// deprecated
 const PasswordForgetLink = () => (
 	<p>
 		<StyledLink to={ROUTES.PASSWORD_FORGET}>Zapomniałeś hasła?</StyledLink>

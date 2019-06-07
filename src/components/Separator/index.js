@@ -10,7 +10,7 @@ const SeparatorBase = ({ children, ...rest }) => (
 )
 
 const Separator = styled(SeparatorBase)`
-	padding: ${(p) => p.spacing || "var(--spacing1)"} 0;
+	padding: ${(p) => p.spacing || 0} 0;
 	display: flex;
 	align-items: center;
 	justify-content: center;

@@ -1,5 +1,6 @@
 import { route } from "../../utils"
 import formatUserData from "../../utils/formatUserData"
+import styled from "styled-components/macro"
 
 // constants - don't change in production
 const FACEBOOK_NAME = "facebook"
@@ -43,3 +44,11 @@ export const getUserInfoFromSocialProfile = (nameOfSite, socialAuthUser) => {
 			throw Error("Invalid social media provider")
 	}
 }
+
+export const Heading = styled.h1`
+	text-align: center;
+	color: var(--black25);
+	font-weight: var(--semi-bold);
+	margin-bottom: var(--spacing3);
+	margin-top: 0px;
+`

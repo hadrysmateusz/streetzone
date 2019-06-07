@@ -1,15 +1,52 @@
 import React, { useState } from "react"
 import { withRouter } from "react-router-dom"
+import styled from "styled-components/macro"
 
 import FormError from "../../components/FormElements/FormError"
 import { CenteredContainer } from "../../components/Containers"
-import { ButtonContainer } from "../../components/Button"
+import { StyledLink } from "../../components/Basics"
+import Separator from "../../components/Separator"
 
 import { useFlash } from "../../hooks"
+import { route } from "../../utils"
 
 import EmailSignInForm from "./email"
 import { GoogleButton, FacebookButton } from "./social"
-import { getRedirectTo } from "./common"
+import { getRedirectTo, Heading } from "./common"
+
+const SocialContainer = styled.div`
+	display: grid;
+	gap: var(--spacing2);
+	margin-bottom: calc(var(--spacing3) - 5px);
+`
+
+const EmailContainer = styled.div`
+	margin-top: calc(var(--spacing3) - 12px);
+	margin-bottom: var(--spacing3);
+`
+
+const PasswordForgetLink = () => (
+	<div
+		css={`
+			margin-top: calc(var(--spacing3) - 2px);
+		`}
+	>
+		<StyledLink to={route("PASSWORD_FORGET")}>Zapomniałeś hasła?</StyledLink>
+	</div>
+)
+
+const SignUpLink = () => (
+	<div
+		css={`
+			margin-top: calc(var(--spacing3) - 2px);
+		`}
+	>
+		Nie masz jeszcze konta?{" "}
+		<StyledLink to={route("SIGN_UP")} className="link">
+			Utwórz konto
+		</StyledLink>
+	</div>
+)
 
 export const SignIn = withRouter(({ history, location }) => {
 	const flashMessage = useFlash()
@@ -34,12 +71,20 @@ export const SignIn = withRouter(({ history, location }) => {
 
 	return (
 		<>
-			<EmailSignInForm {...commonProps} />
-			<ButtonContainer vertical noMargin>
+			<Heading>Zaloguj się</Heading>
+
+			<SocialContainer>
 				<GoogleButton {...commonProps} />
 				<FacebookButton {...commonProps} />
-			</ButtonContainer>
-			<FormError error={error} />
+			</SocialContainer>
+
+			<Separator>lub</Separator>
+
+			<EmailContainer>
+				<EmailSignInForm {...commonProps} />
+				<FormError error={error} />
+				<PasswordForgetLink />
+			</EmailContainer>
 		</>
 	)
 })
@@ -47,6 +92,8 @@ export const SignIn = withRouter(({ history, location }) => {
 const SignInPage = () => (
 	<CenteredContainer>
 		<SignIn />
+		<Separator />
+		<SignUpLink />
 	</CenteredContainer>
 )
 

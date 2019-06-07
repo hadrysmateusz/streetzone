@@ -82,7 +82,7 @@ const Sidebar = ({ match, location, history, items, currentBreakpoint, slot }) =
 				<>
 					<PageNav />
 					<SectionNav currentSection={currentSection} />
-					<Separator spacing="var(--spacing3)" />
+					<Separator margin={3} />
 					{slot}
 					{/* <TagsNav currentSection={currentSection} items={items} /> */}
 				</>
