@@ -1,6 +1,6 @@
 import React from "react"
 
-import { PasswordChangeForm } from "../../pages/PasswordChange"
+import { PasswordChangeForm } from "../PasswordChange"
 import { PasswordContainer } from "./StyledComponents"
 import AddPassword from "./AddPassword"
 import { TextBlock } from "../StyledComponents"

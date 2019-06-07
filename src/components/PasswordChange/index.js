@@ -1,9 +1,9 @@
 import React, { Component } from "react"
 import { Form, Field } from "react-final-form"
 
-import { FieldRow } from "../../components/Basics"
-import { LoaderButton } from "../../components/Button"
-import { FormError, Input } from "../../components/FormElements"
+import { FieldRow } from "../Basics"
+import { LoaderButton } from "../Button"
+import { FormError, Input } from "../FormElements"
 
 import { FORM_ERR } from "../../constants"
 

@@ -19,15 +19,15 @@ const Home = Loadable({
 
 // ===== AUTH FLOW =====
 const SignUp = Loadable({
-	loader: () => import("../../pages/SignUp"),
+	loader: () => import("../../pages/Auth/SignUp"),
 	loading: LoadableComponentSpinner
 })
 const SignIn = Loadable({
-	loader: () => import("../../pages/SignIn"),
+	loader: () => import("../../pages/Auth/SignIn"),
 	loading: LoadableComponentSpinner
 })
 const PasswordForget = Loadable({
-	loader: () => import("../../pages/PasswordForget"),
+	loader: () => import("../../pages/Auth/PasswordForget"),
 	loading: LoadableComponentSpinner
 })
 

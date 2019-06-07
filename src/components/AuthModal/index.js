@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 
-import { SignIn } from "../../pages/SignIn"
-import { SignUpForm } from "../../pages/SignUp"
+import { SignIn } from "../../pages/Auth/SignIn"
+import { SignUpForm } from "../../pages/Auth/SignUp"
 import { StatefulModal } from "../Modal/new"
 
 const SignInModal = ({ changePage }) => {

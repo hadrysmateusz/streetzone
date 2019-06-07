@@ -9,17 +9,56 @@ import { StyledLink, FieldRow, Header } from "../../components/Basics"
 import { LoaderButton } from "../../components/Button"
 import { FormError, Input } from "../../components/FormElements"
 
-import { SignInLink } from "../SignIn/old"
-
-import { ROUTES, AUTH_ERR } from "../../constants"
+import { ROUTES, AUTH_ERR, FORM_ERR, REGEX } from "../../constants"
 import formatUserData from "../../utils/formatUserData"
-import validate from "./validate"
 import { CenteredContainer } from "../../components/Containers"
+
+const validate = (values) => {
+	const { email, name, password, passwordConfirm } = values
+	const errors = {}
+
+	// E-mail
+	if (!email) {
+		errors.email = FORM_ERR.IS_REQUIRED
+	} else if (!REGEX.EMAIL.test(email)) {
+		errors.email = FORM_ERR.EMAIL_INVALID
+	}
+
+	// Name
+	if (!name) {
+		errors.name = FORM_ERR.IS_REQUIRED
+	}
+
+	// Password
+	if (!password) {
+		errors.password = FORM_ERR.IS_REQUIRED
+	}
+
+	// Password Confirm
+	if (!passwordConfirm) {
+		errors.passwordConfirm = FORM_ERR.IS_REQUIRED
+	} else if (password !== passwordConfirm) {
+		errors.passwordConfirm = FORM_ERR.PASSWORDS_NOT_MATCHING
+	}
+
+	return errors
+}
 
 const StyledForm = styled.form`
 	display: grid;
 	gap: var(--spacing3);
 `
+
+const SignInLink = ({ ...props }) => {
+	return (
+		<p {...props}>
+			Masz już konto?{" "}
+			<StyledLink to={ROUTES.SIGN_IN} className="link">
+				Zaloguj się
+			</StyledLink>
+		</p>
+	)
+}
 
 const SignUpPage = () => {
 	return (
