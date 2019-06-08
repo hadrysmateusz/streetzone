@@ -1,93 +1,134 @@
-import React, { Component } from "react"
-import { Form, Field } from "react-final-form"
-import { compose } from "recompose"
+import React, { useState } from "react"
+import { Form } from "react-final-form"
+import styled from "styled-components/macro"
 
-import { withFirebase } from "../../components/Firebase"
-import { StyledLink, FieldRow, Header } from "../../components/Basics"
-import { LoaderButton, ButtonContainer } from "../../components/Button"
-import { FormError, Input } from "../../components/FormElements"
+import { StyledLink } from "../../components/Basics"
+import { LoaderButton } from "../../components/Button"
+import FormError from "../../components/FormElements/FormError"
+
+import { TextFF } from "../../components/FinalFormFields"
+import { CenteredContainer } from "../../components/Containers"
+import Separator from "../../components/Separator"
 
 import { ROUTES, FORM_ERR, CONST } from "../../constants"
-import { CenteredContainer } from "../../components/Containers"
+import { route } from "../../utils"
+import { useFirebase } from "../../hooks"
+
+import { Heading } from "./common"
+
+const OuterContainer = styled.div`
+	display: grid;
+	gap: var(--spacing3);
+`
+
+const SuccessBox = styled.div`
+	text-align: center;
+	padding: var(--spacing3);
+	background: #d0f4cd;
+	border: 1px solid #66c978;
+	color: #196014;
+`
+
+const StyledForm = styled.form`
+	display: grid;
+	gap: var(--spacing2);
+`
+
+const validate = ({ email }) => {
+	const errors = {}
+
+	if (!email) {
+		errors.email = FORM_ERR.IS_REQUIRED
+	} else if (!CONST.EMAIL_REGEX.test(email)) {
+		errors.email = FORM_ERR.EMAIL_INVALID
+	}
+
+	return errors
+}
 
 const PasswordForgetPage = () => {
 	return (
 		<CenteredContainer>
-			<Header>Zresetuj hasło</Header>
-			<PasswordForgetForm />
+			<Heading>Zresetuj hasło</Heading>
+			<PasswordForget />
 		</CenteredContainer>
 	)
 }
 
-class PasswordForgetFormBase extends Component {
-	state = { error: null }
+const PasswordForget = () => {
+	const [error, setError] = useState()
+	const [isEmailSent, setIsEmailSent] = useState(false)
 
-	onSubmit = async (values, actions) => {
+	const onSuccess = () => {
+		setIsEmailSent(true)
+	}
+
+	const onError = (err) => {
+		setError(err)
+	}
+
+	return (
+		<OuterContainer>
+			{isEmailSent ? (
+				<>
+					<SuccessBox>
+						Na podany adres e-mail została wysłana wiadomość z linkiem do zresetowania
+						hasła.
+					</SuccessBox>
+				</>
+			) : (
+				<>
+					<PasswordForgetForm onSuccess={onSuccess} onError={onError} />
+					<FormError error={error} />
+				</>
+			)}
+			<Separator />
+			<StyledLink to={route("SIGN_IN")}>Wróć do logowania</StyledLink>
+		</OuterContainer>
+	)
+}
+
+const PasswordForgetForm = ({ onSuccess, onError }) => {
+	const firebase = useFirebase()
+
+	const onSubmit = async (values, actions) => {
 		const { email } = values
 
 		try {
-			await this.props.firebase.resetPassword(email)
+			await firebase.resetPassword(email)
+
 			// Reset form
 			actions.reset()
-			// Reset component
-			await this.setState({ error: null })
-		} catch (error) {
-			this.setState({ error })
+
+			onSuccess()
+		} catch (err) {
+			onError(err)
 		}
 	}
 
-	validate = (values) => {
-		const { email } = values
-		const errors = {}
+	return (
+		<Form
+			onSubmit={onSubmit}
+			validate={validate}
+			render={({ form, handleSubmit, submitting, pristine, values, ...rest }) => {
+				return (
+					<StyledForm onSubmit={handleSubmit}>
+						<TextFF label="E-mail" name="email" />
 
-		// E-mail
-		if (!email) {
-			errors.email = FORM_ERR.IS_REQUIRED
-		} else if (!CONST.EMAIL_REGEX.test(email)) {
-			errors.email = FORM_ERR.EMAIL_INVALID
-		}
-
-		return errors
-	}
-
-	render() {
-		const { error } = this.state
-
-		return (
-			<Form
-				onSubmit={this.onSubmit}
-				validate={this.validate}
-				render={({ handleSubmit, submitting, pristine }) => (
-					<form onSubmit={handleSubmit}>
-						{/* E-mail */}
-						<FieldRow>
-							<Field name="email">
-								{({ input, meta }) => {
-									const error = meta.error && meta.touched ? meta.error : null
-									return (
-										<Input {...input} type="email" placeholder="E-mail" error={error} />
-									)
-								}}
-							</Field>
-						</FieldRow>
-						<ButtonContainer>
-							<LoaderButton
-								text="Zresetuj hasło"
-								type="submit"
-								isLoading={submitting}
-								disabled={submitting || pristine}
-								fullWidth
-							/>
-						</ButtonContainer>
-						{error && <FormError message={error.message} show={error} />}
-					</form>
-				)}
-			/>
-		)
-	}
+						<LoaderButton
+							text="Zresetuj hasło"
+							type="submit"
+							fullWidth
+							primary
+							isLoading={submitting}
+							disabled={submitting || pristine}
+						/>
+					</StyledForm>
+				)
+			}}
+		/>
+	)
 }
-
-const PasswordForgetForm = compose(withFirebase)(PasswordForgetFormBase)
 
 // deprecated
 const PasswordForgetLink = () => (
