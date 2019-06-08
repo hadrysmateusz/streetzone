@@ -7,6 +7,7 @@ const pageHeaderContainerCommon = css`
 	height: var(--page-header-height);
 	margin: 0 auto;
 	padding: 0 var(--spacing3);
+	grid-template-rows: 100%;
 `
 
 export const PageHeaderContainerDesktop = styled.header`
