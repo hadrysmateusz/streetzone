@@ -32,6 +32,7 @@ export const PromotedPostMobileContainer = styled.div`
 		font-weight: bold;
 		max-width: 75vw;
 		text-align: center;
+		padding: var(--spacing2);
 	}
 	.info {
 		border-left: 3px solid ${(p) => getCategoryColor(p.category)};
