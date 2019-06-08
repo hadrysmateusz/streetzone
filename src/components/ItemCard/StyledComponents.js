@@ -126,7 +126,7 @@ export const Container = styled.div`
 				justify-content: space-between;
 
 				.price {
-					color: var(--error0);
+					color: var(--danger0);
 					font-weight: bold;
 				}
 

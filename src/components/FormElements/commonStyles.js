@@ -22,7 +22,7 @@ export const placeholderStyles = css`
 export const basicStyles = css`
 	border: 1px solid;
 	width: 100%;
-	border-color: ${(p) => (!!p.hasError ? "var(--error50)" : "var(--gray25)")};
+	border-color: ${(p) => (!!p.hasError ? "var(--danger50)" : "var(--gray25)")};
 	transition: box-shadow 0.11s ease, border-color 0.11s ease;
 `
 

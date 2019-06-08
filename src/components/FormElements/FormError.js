@@ -5,10 +5,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { CONST } from "../../constants"
 
 const ErrorContainer = styled.div`
-	background: var(--error100);
-	color: var(--error0);
+	background: var(--danger100);
+	color: var(--danger0);
 	padding: var(--spacing2);
-	border: 1px solid var(--error0);
+	border: 1px solid var(--danger0);
 	margin-top: var(--spacing2);
 
 	.icon {

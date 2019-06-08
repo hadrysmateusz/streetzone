@@ -24,9 +24,9 @@ const OuterContainer = styled.div`
 const SuccessBox = styled.div`
 	text-align: center;
 	padding: var(--spacing3);
-	background: #d0f4cd;
-	border: 1px solid #66c978;
-	color: #196014;
+	background: var(--success75);
+	border: 1px solid var(--success50);
+	color: var(--success25);
 `
 
 const StyledForm = styled.form`
@@ -70,17 +70,16 @@ const PasswordForget = () => {
 	return (
 		<OuterContainer>
 			{isEmailSent ? (
-				<>
-					<SuccessBox>
-						Na podany adres e-mail została wysłana wiadomość z linkiem do zresetowania
-						hasła.
-					</SuccessBox>
-				</>
+				<SuccessBox>
+					Na podany adres e-mail została wysłana wiadomość z linkiem do zresetowania
+					hasła. (Jeśli nie otrzymasz wiadomości w ciągu 5 minut, sprawdź folder ze
+					spamem)
+				</SuccessBox>
 			) : (
-				<>
+				<div>
 					<PasswordForgetForm onSuccess={onSuccess} onError={onError} />
 					<FormError error={error} />
-				</>
+				</div>
 			)}
 			<Separator />
 			<StyledLink to={route("SIGN_IN")}>Wróć do logowania</StyledLink>

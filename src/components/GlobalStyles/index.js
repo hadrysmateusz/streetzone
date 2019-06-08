@@ -11,9 +11,13 @@ const GlobalStyle = createGlobalStyle`
 
 	--glass: rgba(255, 255, 255, 0.93);
 
-	--error0: #b42121;
-	--error50: #e63b27;
-	--error100: #ffdeda;
+	--danger0: #b42121;
+	--danger50: #e63b27;
+	--danger100: #ffdeda;
+
+	--success25: #196014;
+	--success50: #66c978;
+	--success75: #d0f4cd;
 
 	--black0: #06080a;
 	--black25: #17191b;

@@ -17,7 +17,7 @@ const Thumbnail = styled.div`
 	position: relative;
 
 	border: 1px solid;
-	border-color: ${(p) => (p.hasError ? "var(--error50)" : "var(--gray25)")};
+	border-color: ${(p) => (p.hasError ? "var(--danger50)" : "var(--gray25)")};
 
 	img {
 		object-fit: cover;
@@ -55,7 +55,7 @@ const PureFileItem = ({
 				<IndicatorsContainer>
 					{hasError && (
 						<IndicatorIcon
-							color="var(--error50)"
+							color="var(--danger50)"
 							title={error}
 							icon="exclamation-circle"
 						/>

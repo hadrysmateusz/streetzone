@@ -5,7 +5,7 @@ import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons"
 
 const InfoContainer = styled.div`
 	font-size: var(--font-size--xs);
-	color: ${(p) => (p.hasError ? "var(--error50)" : "var(--gray0)")};
+	color: ${(p) => (p.hasError ? "var(--danger50)" : "var(--gray0)")};
 	display: flex;
 	align-items: center;
 	margin-top: var(--spacing1);

@@ -2,8 +2,8 @@ import React from "react"
 import styled from "styled-components/macro"
 
 const ErrorContainer = styled.div`
-	border: 1px solid var(--error50);
-	background: var(--error100);
+	border: 1px solid var(--danger50);
+	background: var(--danger100);
 	color: var(--black25);
 	padding: var(--spacing2);
 `

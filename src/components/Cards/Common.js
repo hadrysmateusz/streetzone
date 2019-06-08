@@ -123,7 +123,7 @@ export const Size = ({ value }) => (
 export const Price = ({ value }) => (
 	<div
 		css={`
-			color: var(--error0);
+			color: var(--danger0);
 			font-weight: bold;
 			flex-shrink: 0;
 		`}
