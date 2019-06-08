@@ -188,15 +188,15 @@ const PageHeaderDesktop = ({ authUser, firebase, location }) => {
 			</Nav>
 
 			<Nav alignRight>
+				<NavItem>
+					<StyledNavLink to={route("SEARCH")} exact>
+						<IconContainer>
+							<FontAwesomeIcon icon="search" />
+						</IconContainer>
+					</StyledNavLink>
+				</NavItem>
 				{authUser ? (
 					<>
-						<NavItem>
-							<StyledNavLink to={route("SEARCH")} exact>
-								<IconContainer>
-									<FontAwesomeIcon icon="search" />
-								</IconContainer>
-							</StyledNavLink>{" "}
-						</NavItem>
 						<NavItem>
 							<StyledNavLink to={route("CHAT")}>
 								<MessagesManager />

@@ -32,7 +32,7 @@ const IndicatorIcon = styled(FontAwesomeIcon)`
 
 const IndicatorsContainer = styled.div`
 	position: absolute;
-	z-index: 90;
+	z-index: 77;
 	top: var(--spacing2);
 	right: var(--spacing2);
 	display: grid;

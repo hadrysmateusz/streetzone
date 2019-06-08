@@ -47,7 +47,7 @@ export const SubmenuContainer = styled.div`
 	position: absolute;
 	top: 100%;
 	${(p) => `${p.align}: 0;`}
-	z-index: 81;
+	z-index: 90;
 	display: none;
 `
 

@@ -31,7 +31,8 @@ const TopContainer = styled.div`
 	top: var(--page-header-height);
 	box-shadow: 0 10px 10px -6px rgba(0, 0, 0, 0.08);
 	width: 100%;
-	z-index: 80;
+	/* TODO: make this higher than pageheader after making submenus use portals */
+	z-index: 79;
 	border-bottom: 1px solid var(--gray75);
 	padding: var(--spacing3) 0;
 	margin-bottom: var(--spacing3);
