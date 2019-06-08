@@ -1,4 +1,5 @@
 import React from "react"
+import { withRouter } from "react-router-dom"
 
 import LoginManagement from "../../components/LoginManagement"
 import SignOutButton from "../../components/SignOut"
@@ -7,66 +8,50 @@ import { PageContainer } from "../../components/Containers"
 import { Separator } from "../../components/Basics"
 import { Button } from "../../components/Button"
 
-import { useFirebase } from "../../hooks"
+import { useFunctionWithReauthentication } from "../Auth/Reauthentication"
+
+import { useFirebase, useFlash } from "../../hooks"
+import { route } from "../../utils"
 
 import { UserSettingsContainer, Section } from "./StyledComponents"
 import UserPreferences from "./UserPreferences"
 
-const DeleteAccountButton = () => {
+const DeleteAccountButton = withRouter(({ history }) => {
 	const firebase = useFirebase()
+	const flashMessage = useFlash()
+
+	const [
+		deleteWithReauthentication,
+		renderReauthenticationModal
+	] = useFunctionWithReauthentication(async () => {
+		await firebase.auth.currentUser.delete()
+	})
 
 	const onDelete = async () => {
-		const confirmation = window.confirm(
-			"Czy napewno chcesz usunąć swoje konto? Tej akcji nie można cofnąć."
-		)
-
+		// get confirmation from user
+		const message = "Czy napewno chcesz usunąć swoje konto? Tej akcji nie można cofnąć."
+		const confirmation = window.confirm(message)
 		if (!confirmation) return
 
-		/* TODO: email+password doesn't work yet. this needs a lot more work to communicate to the user what they need to do and the ui needs to reflect that */
 		try {
-			await firebase.auth.currentUser.delete()
-		} catch (error) {
-			if (error.code === "auth/requires-recent-login") {
-				const user = firebase.auth.currentUser
-
-				const signInMethods = await firebase.auth.fetchSignInMethodsForEmail(user.email)
-
-				// try google
-				if (signInMethods.includes(firebase.signInMethods.google)) {
-					await user.reauthenticateWithPopup(firebase.googleProvider)
-					await firebase.auth.currentUser.delete()
-
-					return null
-				}
-
-				// try facebook
-				if (signInMethods.includes(firebase.signInMethods.facebook)) {
-					await user.reauthenticateWithPopup(firebase.facebookProvider)
-					await firebase.auth.currentUser.delete()
-
-					return null
-				}
-
-				// try email and password
-				if (signInMethods.includes(firebase.signInMethods.email))
-					return async (password) => {
-						const credential = firebase.emailAuthProvider.credential(user.email, password)
-						await user.reauthenticateAndRetrieveDataWithCredential(credential)
-						await firebase.auth.currentUser.delete()
-					}
-			} else {
-				// if there was a different error, rethrow it
-				throw error
-			}
+			await deleteWithReauthentication()
+			flashMessage("Konto zostało usunięte")
+			history.push(route("HOME"))
+		} catch (err) {
+			console.log(err)
+			alert("Wystąpił problem. Konto mogło nie zostać usunięte.")
 		}
 	}
 
 	return (
-		<Button onClick={onDelete} big fullWidth>
-			Usuń konto
-		</Button>
+		<>
+			{renderReauthenticationModal()}
+			<Button onClick={onDelete} big fullWidth danger>
+				Usuń konto
+			</Button>
+		</>
 	)
-}
+})
 
 const UserSettings = () => (
 	<PageContainer>

@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react"
 import styled from "styled-components/macro"
 
+import LoadingSpinner from "../LoadingSpinner"
+import FormError from "../FormElements/FormError"
+
+import { useAuthentication, useFirebase, useFlash } from "../../hooks"
+import { useFunctionWithReauthentication } from "../../pages/Auth/Reauthentication"
+
 import PasswordManagement from "./PasswordManagement"
 import SocialLoginManagement from "./SocialLoginManagement"
-import useAuthentication from "../../hooks/useAuthentication"
-import useFirebase from "../../hooks/useFirebase"
-import LoadingSpinner from "../LoadingSpinner"
-import ErrorBox from "../ErrorBox"
-
-import ReauthenticationModal from "../../pages/Auth/Reauthentication"
 
 const Section = styled.div`
 	margin: var(--spacing5) 0;
@@ -18,69 +18,59 @@ const LoginManagement = () => {
 	const firebase = useFirebase()
 	const authUser = useAuthentication()
 
-	// const [isReauthModalOpen, setIsReauthModalOpen] = useState(false)
-	const [reauthenticationAction, setReauthenticationAction] = useState(null)
 	const [activeMethods, setActiveMethods] = useState(null)
 	const [error, setError] = useState(null)
-
-	useEffect(() => {
-		fetchActiveMethods()
-	}, [])
+	const flashMessage = useFlash()
 
 	const fetchActiveMethods = async () => {
 		try {
 			const activeMethods = await firebase.auth.fetchSignInMethodsForEmail(authUser.email)
 			setActiveMethods(activeMethods)
-			setError(null)
 		} catch (error) {
 			setError(error)
 		}
 	}
 
+	useEffect(() => {
+		fetchActiveMethods()
+	}, [authUser, firebase])
+
+	const [
+		linkWithCredentialWithReauthentication,
+		renderReauthenticationModal
+	] = useFunctionWithReauthentication((credential) =>
+		firebase.auth.currentUser.linkWithCredential(credential)
+	)
+
 	const onPasswordLoginLink = async (password) => {
-		// define the function
-		const handler = async () => {
-			console.log("fn running!")
-
-			const credential = firebase.emailAuthProvider.credential(authUser.email, password)
-
-			await firebase.auth.currentUser.linkWithCredential(credential)
-
-			fetchActiveMethods()
-		}
-
 		try {
-			await handler()
-		} catch (error) {
-			if (error.code === "auth/requires-recent-login") {
-				setReauthenticationAction({ handler })
-			} else {
-				setError(error)
-			}
+			const credential = firebase.emailAuthProvider.credential(authUser.email, password)
+			await linkWithCredentialWithReauthentication(credential)
+			flashMessage("Hasło dodano pomyślnie")
+		} catch (err) {
+			setError(err)
 		}
+		fetchActiveMethods()
 	}
 
 	const onSocialLoginLink = async (provider) => {
 		try {
 			await firebase.auth.currentUser.linkWithPopup(firebase[provider])
-			fetchActiveMethods()
-		} catch (error) {
-			setError(error)
+			flashMessage("Połączono pomyślnie")
+		} catch (err) {
+			setError(err)
 		}
+		fetchActiveMethods()
 	}
 
 	const onUnlink = async (providerId) => {
 		try {
 			await firebase.auth.currentUser.unlink(providerId)
-			fetchActiveMethods()
-		} catch (error) {
-			setError(error)
+			flashMessage("Rozłączono pomyślnie")
+		} catch (err) {
+			setError(err)
 		}
-	}
-
-	if (error) {
-		console.log(error)
-		return <ErrorBox error="Wystąpił problem" />
+		fetchActiveMethods()
 	}
 
 	if (!activeMethods) {
@@ -96,17 +86,14 @@ const LoginManagement = () => {
 
 	return (
 		<>
-			{reauthenticationAction && (
-				<ReauthenticationModal
-					onSuccess={reauthenticationAction}
-					onRequestClose={() => {
-						setReauthenticationAction(null)
-					}}
-				/>
-			)}
+			{renderReauthenticationModal()}
+
+			<FormError error={error} />
+
 			<Section>
 				<PasswordManagement {...commonProps} onLink={onPasswordLoginLink} />
 			</Section>
+
 			<Section>
 				<SocialLoginManagement
 					{...commonProps}

@@ -146,7 +146,7 @@ const ProfileEditForm = (props) => {
 							</Field>
 						</FormElement>
 
-						{/* Avatar */}
+						{/* Profile Picture */}
 						<FormElement>
 							<TextBlock size="m" bold uppercase>
 								Zdjęcie profilowe
