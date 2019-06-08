@@ -18,14 +18,9 @@ const ModalContainer = styled.div`
 `
 
 const ModalBox = styled.div`
-	box-sizing: content-box;
 	background: white;
-	padding: var(--spacing4);
 	box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.45);
-	min-width: 250px;
-	max-width: 90vw;
 	@media (max-width: ${(p) => p.theme.breakpoints[0] - 1}px) {
-		max-width: 100vw;
 		width: 100vw;
 	}
 	z-index: 1001;

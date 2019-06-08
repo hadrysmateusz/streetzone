@@ -11,6 +11,39 @@ import { route } from "../../utils"
 
 import Separator from "../Separator"
 import { StatefulModal } from "../Modal/new"
+import { ReactComponent as Logo } from "../Logo/logo-small-white.svg"
+
+const ModalOuterContainer = styled.div`
+	max-width: 100vw;
+	height: 530px; /* some extra height to account for error messages */
+	overflow: hidden;
+	width: 670px;
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+`
+const ModalContent = styled.div`
+	padding: var(--spacing4);
+`
+const ModalAside = styled.div`
+	background: black;
+	display: flex;
+	justify-content: center;
+	align-content: center;
+	svg {
+		width: 50%;
+	}
+`
+
+const AuthModalContainer = ({ children }) => {
+	return (
+		<ModalOuterContainer>
+			<ModalContent>{children}</ModalContent>
+			<ModalAside>
+				<Logo />
+			</ModalAside>
+		</ModalOuterContainer>
+	)
+}
 
 const LinkButton = styled.span`
 	cursor: pointer;
@@ -90,7 +123,11 @@ const AuthModal = ({ children, currentBreakpoint, location }) => {
 				) : (
 					<>
 						{children({ open, close, isOpen, modal })}
-						{modal(<CurrentComponent {...commonProps} />)}
+						{modal(
+							<AuthModalContainer>
+								<CurrentComponent {...commonProps} />
+							</AuthModalContainer>
+						)}
 					</>
 				)
 			}
