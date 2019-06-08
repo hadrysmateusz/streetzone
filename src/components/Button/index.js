@@ -46,6 +46,20 @@ const basic = css`
 	}
 `
 
+const danger = css`
+	border-color: var(--danger0);
+	background: white;
+	color: var(--danger0);
+
+	&:not([disabled]) {
+		&:hover {
+			border-color: var(--danger0);
+			background: var(--danger0);
+			color: white;
+		}
+	}
+`
+
 const facebook = css`
 	color: white;
 	background-color: ${(p) => (p.disabled ? "#7D8EB2" : "#3b5998")};
@@ -121,13 +135,13 @@ const Button = styled.button`
 	${(p) => (p.disabled ? "cursor: default;" : "cursor: pointer;")}
 
 	/* Variant styles */
-	${(p) => (p.accent ? accent : p.primary ? primary : basic)}
-
-	/* Disabled styles */
-	${(p) => p.disabled && disabled}
+	${(p) => (p.accent ? accent : p.primary ? primary : p.danger ? danger : basic)}
 
 	/* Social styles */
 	${(p) => p.social && social(p.social)}
+
+	/* Disabled styles */
+	${(p) => p.disabled && disabled}
  
 	/* Full-width styling */
 	${(p) => p.fullWidth && "width: 100%;"}
