@@ -18,7 +18,7 @@ const Separator = styled(SeparatorBase)`
 	.horizontal-rule {
 		height: 1px;
 		width: 100%;
-		background: ${(p) => p.theme.colors.gray[50]};
+		background: var(--gray75);
 	}
 	.children {
 		white-space: nowrap;
@@ -29,7 +29,7 @@ const Separator = styled(SeparatorBase)`
 		:not(:empty) {
 			padding: 0 var(--spacing1);
 		}
-		color: ${(p) => p.theme.colors.gray[25]};
+		color: var(--gray50);
 	}
 `
 
