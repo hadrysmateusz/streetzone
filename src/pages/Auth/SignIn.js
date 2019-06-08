@@ -10,8 +10,8 @@ import Separator from "../../components/Separator"
 import { useFlash } from "../../hooks"
 import { route } from "../../utils"
 
-import EmailSignInForm from "./email"
-import { GoogleButton, FacebookButton } from "./social"
+import EmailSignInForm from "./EmailSignIn"
+import { GoogleButton, FacebookButton } from "./SocialSignIn"
 import { getRedirectTo, Heading } from "./common"
 
 const SocialContainer = styled.div`
@@ -41,10 +41,7 @@ const SignUpLink = () => (
 			margin-top: calc(var(--spacing3) - 2px);
 		`}
 	>
-		Nie masz jeszcze konta?{" "}
-		<StyledLink to={route("SIGN_UP")} className="link">
-			Utwórz konto
-		</StyledLink>
+		Nie masz jeszcze konta? <StyledLink to={route("SIGN_UP")}>Utwórz konto</StyledLink>
 	</div>
 )
 

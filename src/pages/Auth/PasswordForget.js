@@ -7,7 +7,7 @@ import { StyledLink, FieldRow, Header } from "../../components/Basics"
 import { LoaderButton, ButtonContainer } from "../../components/Button"
 import { FormError, Input } from "../../components/FormElements"
 
-import { ROUTES, FORM_ERR, REGEX } from "../../constants"
+import { ROUTES, FORM_ERR, CONST } from "../../constants"
 import { CenteredContainer } from "../../components/Containers"
 
 const PasswordForgetPage = () => {
@@ -43,7 +43,7 @@ class PasswordForgetFormBase extends Component {
 		// E-mail
 		if (!email) {
 			errors.email = FORM_ERR.IS_REQUIRED
-		} else if (!REGEX.EMAIL.test(email)) {
+		} else if (!CONST.EMAIL_REGEX.test(email)) {
 			errors.email = FORM_ERR.EMAIL_INVALID
 		}
 

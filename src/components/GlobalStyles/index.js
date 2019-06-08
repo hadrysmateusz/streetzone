@@ -80,7 +80,7 @@ body {
 	/* base typography */
 	font-weight: 400;
 	font-size: var(--font-size--s);
-	line-height: 1.4;
+	line-height: 1.5;
 	font-family: "Open Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
 		"Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
 		sans-serif;

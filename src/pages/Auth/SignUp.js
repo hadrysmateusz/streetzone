@@ -1,17 +1,25 @@
-import React, { Component } from "react"
-import { withRouter, Redirect } from "react-router-dom"
-import { Form, Field } from "react-final-form"
-import { compose } from "recompose"
+import React from "react"
+import { Form } from "react-final-form"
 import styled from "styled-components/macro"
 
-import { withFirebase } from "../../components/Firebase"
-import { StyledLink, FieldRow, Header } from "../../components/Basics"
+import { StyledLink } from "../../components/Basics"
 import { LoaderButton } from "../../components/Button"
-import { FormError, Input } from "../../components/FormElements"
-
-import { ROUTES, AUTH_ERR, FORM_ERR, REGEX } from "../../constants"
-import formatUserData from "../../utils/formatUserData"
 import { CenteredContainer } from "../../components/Containers"
+import { TextFF } from "../../components/FinalFormFields"
+import Separator from "../../components/Separator"
+
+import { FORM_ERR, CONST } from "../../constants"
+import formatUserData from "../../utils/formatUserData"
+import { route } from "../../utils"
+import { useFirebase } from "../../hooks"
+
+import { Heading } from "./common"
+
+const StyledForm = styled.form`
+	display: grid;
+	gap: var(--spacing2);
+	margin-bottom: var(--spacing3);
+`
 
 const validate = (values) => {
 	const { email, name, password, passwordConfirm } = values
@@ -20,7 +28,7 @@ const validate = (values) => {
 	// E-mail
 	if (!email) {
 		errors.email = FORM_ERR.IS_REQUIRED
-	} else if (!REGEX.EMAIL.test(email)) {
+	} else if (!CONST.EMAIL_REGEX.test(email)) {
 		errors.email = FORM_ERR.EMAIL_INVALID
 	}
 
@@ -44,43 +52,26 @@ const validate = (values) => {
 	return errors
 }
 
-const StyledForm = styled.form`
-	display: grid;
-	gap: var(--spacing3);
-`
-
-const SignInLink = ({ ...props }) => {
+const SignInLink = () => {
 	return (
-		<p {...props}>
-			Masz już konto?{" "}
-			<StyledLink to={ROUTES.SIGN_IN} className="link">
-				Zaloguj się
-			</StyledLink>
-		</p>
+		<div
+			css={`
+				margin-top: calc(var(--spacing3) - 3px);
+			`}
+		>
+			Masz już konto? <StyledLink to={route("SIGN_IN")}>Zaloguj się</StyledLink>
+		</div>
 	)
 }
 
-const SignUpPage = () => {
-	return (
-		<CenteredContainer>
-			<Header>Utwórz konto</Header>
-			<SignUpForm />
-			<SignInLink />
-		</CenteredContainer>
-	)
-}
+export const SignUpForm = ({ onSuccess, onError }) => {
+	const firebase = useFirebase()
 
-class SignUpFormBase extends Component {
-	state = { error: null, redirectToReferrer: false }
-
-	onSubmit = async ({ name, email, password }, actions) => {
-		const { firebase } = this.props
-
+	const onSubmit = async (values, actions) => {
 		try {
-			// Create user for auth
+			// get values and attempt sign-in
+			const { name, email, password } = values
 			const authUser = await firebase.signUpWithEmail(email, password)
-
-			const userId = authUser.user.uid
 
 			// Add the name to the auth user
 			await authUser.user.updateProfile({
@@ -88,120 +79,65 @@ class SignUpFormBase extends Component {
 			})
 
 			// Create user in db
+			const userId = authUser.user.uid
 			const userData = formatUserData({ name, email })
 			await firebase.user(userId).set(userData)
 
 			// Reset form
 			actions.reset()
-			// Reset component
-			await this.setState({ error: null, redirectToReferrer: true })
-		} catch (error) {
-			if (error.code === AUTH_ERR.CODE_SOCIAL_ACCOUNT_EXISTS) {
-				error.message = AUTH_ERR.MSG_SOCIAL_ACCOUNT_EXISTS
-			}
-			this.setState({ error })
+
+			// exit successfully
+			onSuccess(`Witaj w ${CONST.BRAND_NAME}!`)
+		} catch (err) {
+			// pass the error to handler
+			onError(err)
 		}
 	}
 
-	render() {
-		const { error, redirectToReferrer } = this.state
-
-		const { redirectTo } = this.props.location.state || { redirectTo: { pathname: "/" } }
-
-		return redirectToReferrer ? (
-			<Redirect to={redirectTo} />
-		) : (
-			<Form
-				onSubmit={this.onSubmit}
-				validate={validate}
-				render={({ handleSubmit, submitting, pristine, values }) => (
+	return (
+		<Form
+			onSubmit={onSubmit}
+			validate={validate}
+			render={({ form, handleSubmit, submitting, pristine, values, ...rest }) => {
+				return (
 					<StyledForm onSubmit={handleSubmit}>
-						{/* Imię */}
-						<FieldRow>
-							<Field name="name">
-								{({ input, meta }) => {
-									const error = meta.error && meta.touched ? meta.error : null
-									return (
-										<Input
-											{...input}
-											type="text"
-											placeholder="Nazwa użytkownika"
-											error={error}
-										/>
-									)
-								}}
-							</Field>
-						</FieldRow>
+						<TextFF label="Nazwa użytkownika" name="name" />
 
-						{/* E-mail */}
-						<FieldRow>
-							<Field name="email">
-								{({ input, meta }) => {
-									const error = meta.error && meta.touched ? meta.error : null
-									return (
-										<Input {...input} type="email" placeholder="E-mail" error={error} />
-									)
-								}}
-							</Field>
-						</FieldRow>
+						<TextFF label="E-mail" name="email" />
 
-						{/* Hasło */}
-						<FieldRow>
-							<Field name="password">
-								{({ input, meta }) => {
-									const error = meta.error && meta.touched ? meta.error : null
-									return (
-										<Input {...input} type="password" placeholder="Hasło" error={error} />
-									)
-								}}
-							</Field>
-						</FieldRow>
+						<TextFF label="Hasło" name="password" />
 
-						{/* Powtórz Hasło */}
-						<FieldRow>
-							<Field name="passwordConfirm">
-								{({ input, meta }) => {
-									const error = meta.error && meta.touched ? meta.error : null
-									return (
-										<Input
-											{...input}
-											type="password"
-											placeholder="Potwierdź Hasło"
-											error={error}
-										/>
-									)
-								}}
-							</Field>
-						</FieldRow>
+						<TextFF label="Potwierdź hasło" name="confirmPassword" />
 
 						<LoaderButton
-							text="Utwórz konto"
+							text="Gotowe"
 							type="submit"
+							fullWidth
+							primary
 							isLoading={submitting}
 							disabled={submitting || pristine}
-							fullWidth
 						/>
-						{error && <FormError message={error.message} show={error} />}
 					</StyledForm>
-				)}
-			/>
-		)
-	}
+				)
+			}}
+		/>
+	)
 }
 
-export const SignUpForm = compose(
-	withRouter,
-	withFirebase
-)(SignUpFormBase)
+export const SignUp = () => (
+	<>
+		<Heading>Utwórz konto</Heading>
+		<SignUpForm />
+	</>
+)
 
-export const SignUpLink = ({ ...props }) => {
+const SignUpPage = () => {
 	return (
-		<p {...props}>
-			Nie masz jeszcze konta?{" "}
-			<StyledLink to={ROUTES.SIGN_UP} className="link">
-				Utwórz konto
-			</StyledLink>
-		</p>
+		<CenteredContainer>
+			<SignUp />
+			<Separator />
+			<SignInLink />
+		</CenteredContainer>
 	)
 }
 

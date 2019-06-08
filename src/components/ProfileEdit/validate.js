@@ -1,4 +1,4 @@
-import { FORM_ERR, CONST, REGEX } from "../../constants"
+import { FORM_ERR, CONST } from "../../constants"
 
 export default ({ name, email, city, phone, info }) => {
 	const errors = {}
@@ -11,7 +11,7 @@ export default ({ name, email, city, phone, info }) => {
 	// E-mail
 	if (!email) {
 		errors.email = FORM_ERR.IS_REQUIRED
-	} else if (!REGEX.EMAIL.test(email)) {
+	} else if (!CONST.EMAIL_REGEX.test(email)) {
 		errors.email = FORM_ERR.EMAIL_INVALID
 	}
 
