@@ -10,7 +10,7 @@ import { getUserInfoFromSocialProfile, socialMediaSites } from "./common"
 const SocialSignInButton = ({
 	onError,
 	onSuccess,
-	name,
+	name: nameOfSite,
 	signInMethodName,
 	buttonText
 }) => {
@@ -32,7 +32,7 @@ const SocialSignInButton = ({
 
 			// extract relevant data from user profile
 			const userId = socialAuthUser.user.uid
-			const userData = getUserInfoFromSocialProfile()
+			const userData = getUserInfoFromSocialProfile(nameOfSite, socialAuthUser)
 
 			// upload the data to firebase
 			await firebase.user(userId).set(userData)
@@ -47,7 +47,7 @@ const SocialSignInButton = ({
 
 	return (
 		<form onSubmit={onSubmit}>
-			<Button social={name} fullWidth>
+			<Button social={nameOfSite} fullWidth>
 				{buttonText}
 			</Button>
 		</form>

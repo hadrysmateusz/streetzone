@@ -5,7 +5,7 @@ import { FieldRow } from "../Basics"
 import { Input } from "../FormElements"
 import { LoaderButton, ButtonContainer } from "../Button"
 import InfoBox from "../InfoBox"
-import { FORM_ERR } from "../../constants"
+import { FORM_ERR, CONST } from "../../constants"
 
 const validate = (values) => {
 	const { password, passwordConfirm } = values
@@ -14,6 +14,8 @@ const validate = (values) => {
 	// Password
 	if (!password) {
 		errors.password = FORM_ERR.IS_REQUIRED
+	} else if (password.length < CONST.MIN_PASSWORD_LENGTH) {
+		errors.password = FORM_ERR.PASSWORD_TOO_SHORT
 	}
 
 	// Password Confirm

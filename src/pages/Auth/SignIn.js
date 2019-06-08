@@ -7,10 +7,10 @@ import { CenteredContainer } from "../../components/Containers"
 import { StyledLink } from "../../components/Basics"
 import Separator from "../../components/Separator"
 
-import { useFlash } from "../../hooks"
+import { useFlash, useFirebase } from "../../hooks"
 import { route } from "../../utils"
 
-import EmailSignInForm from "./EmailSignIn"
+import EmailSignInForm from "./EmailSignInForm"
 import { GoogleButton, FacebookButton } from "./SocialSignIn"
 import { getRedirectTo, Heading, LinkContainer } from "./common"
 
@@ -38,8 +38,24 @@ const SignUpLink = () => (
 )
 
 export const SignIn = withRouter(({ history, location }) => {
+	const firebase = useFirebase()
 	const flashMessage = useFlash()
 	const [error, setError] = useState()
+
+	const onFormSubmit = async (values, actions) => {
+		try {
+			// get values and attempt sign-in
+			const { email, password } = values
+			await firebase.signInWithEmail(email, password)
+
+			// reset the form
+			actions.reset()
+
+			onSuccessfulSignIn("Witaj ponownie")
+		} catch (err) {
+			onError(err)
+		}
+	}
 
 	const onSuccessfulSignIn = (message) => {
 		// show flash message
@@ -70,7 +86,7 @@ export const SignIn = withRouter(({ history, location }) => {
 			<Separator>lub</Separator>
 
 			<EmailContainer>
-				<EmailSignInForm {...commonProps} />
+				<EmailSignInForm onError={onError} onSubmit={onFormSubmit} />
 				<FormError error={error} />
 				<PasswordForgetLink />
 			</EmailContainer>

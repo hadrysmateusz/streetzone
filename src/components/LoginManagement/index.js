@@ -8,16 +8,18 @@ import useFirebase from "../../hooks/useFirebase"
 import LoadingSpinner from "../LoadingSpinner"
 import ErrorBox from "../ErrorBox"
 
+import ReauthenticationModal from "../../pages/Auth/Reauthentication"
+
 const Section = styled.div`
-	/* border-top: 1px solid var(--gray75); */
 	margin: var(--spacing5) 0;
-	/* padding-top: var(--spacing5); */
 `
 
 const LoginManagement = () => {
 	const firebase = useFirebase()
 	const authUser = useAuthentication()
 
+	// const [isReauthModalOpen, setIsReauthModalOpen] = useState(false)
+	const [reauthenticationAction, setReauthenticationAction] = useState(null)
 	const [activeMethods, setActiveMethods] = useState(null)
 	const [error, setError] = useState(null)
 
@@ -36,13 +38,25 @@ const LoginManagement = () => {
 	}
 
 	const onPasswordLoginLink = async (password) => {
-		try {
+		// define the function
+		const handler = async () => {
+			console.log("fn running!")
+
 			const credential = firebase.emailAuthProvider.credential(authUser.email, password)
 
-			await firebase.auth.currentUser.linkAndRetrieveDataWithCredential(credential)
+			await firebase.auth.currentUser.linkWithCredential(credential)
+
 			fetchActiveMethods()
+		}
+
+		try {
+			await handler()
 		} catch (error) {
-			setError(error)
+			if (error.code === "auth/requires-recent-login") {
+				setReauthenticationAction({ handler })
+			} else {
+				setError(error)
+			}
 		}
 	}
 
@@ -65,6 +79,7 @@ const LoginManagement = () => {
 	}
 
 	if (error) {
+		console.log(error)
 		return <ErrorBox error="Wystąpił problem" />
 	}
 
@@ -81,6 +96,14 @@ const LoginManagement = () => {
 
 	return (
 		<>
+			{reauthenticationAction && (
+				<ReauthenticationModal
+					onSuccess={reauthenticationAction}
+					onRequestClose={() => {
+						setReauthenticationAction(null)
+					}}
+				/>
+			)}
 			<Section>
 				<PasswordManagement {...commonProps} onLink={onPasswordLoginLink} />
 			</Section>

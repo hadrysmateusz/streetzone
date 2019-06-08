@@ -11,13 +11,15 @@ export const socialMediaSites = {
 		name: FACEBOOK_NAME,
 		label: "Facebook",
 		signInMethodName: "signInWithFacebook",
-		buttonText: "Zaloguj się przez Facebooka"
+		buttonText: "Zaloguj się przez Facebooka",
+		provider: "facebookProvider"
 	},
 	google: {
 		name: GOOGLE_NAME,
 		label: "Google",
 		signInMethodName: "signInWithGoogle",
-		buttonText: "Zaloguj się przez Google"
+		buttonText: "Zaloguj się przez Google",
+		provider: "googleProvider"
 	}
 }
 

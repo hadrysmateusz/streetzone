@@ -53,9 +53,6 @@ const validate = (values) => {
 const SignUpForm = ({ onSuccess, onError }) => {
 	const firebase = useFirebase()
 
-	console.log("onSuccess", onSuccess)
-	console.log("onError", onError)
-
 	const onSubmit = async (values, actions) => {
 		try {
 			// get values and attempt sign-up
@@ -94,9 +91,9 @@ const SignUpForm = ({ onSuccess, onError }) => {
 
 						<TextFF label="E-mail" name="email" />
 
-						<TextFF label="Hasło" name="password" />
+						<TextFF label="Hasło" password name="password" />
 
-						<TextFF label="Potwierdź hasło" name="passwordConfirm" />
+						<TextFF label="Potwierdź hasło" password name="passwordConfirm" />
 
 						<LoaderButton
 							text="Gotowe"

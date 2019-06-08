@@ -5,7 +5,6 @@ import styled from "styled-components/macro"
 import { TextFF } from "../../components/FinalFormFields"
 import { LoaderButton } from "../../components/Button"
 
-import { useFirebase } from "../../hooks"
 import { FORM_ERR, CONST } from "../../constants"
 
 const validate = (values) => {
@@ -32,24 +31,7 @@ const StyledForm = styled.form`
 	gap: var(--spacing2);
 `
 
-const SignInForm = ({ onSuccess, onError }) => {
-	const firebase = useFirebase()
-
-	const onSubmit = async (values, actions) => {
-		try {
-			// get values and attempt sign-in
-			const { email, password } = values
-			await firebase.signInWithEmail(email, password)
-
-			// reset the form
-			actions.reset()
-
-			onSuccess("Witaj ponownie")
-		} catch (err) {
-			onError(err)
-		}
-	}
-
+const SignInForm = ({ onSubmit, onError }) => {
 	return (
 		<Form
 			onSubmit={onSubmit}
@@ -59,7 +41,7 @@ const SignInForm = ({ onSuccess, onError }) => {
 					<StyledForm onSubmit={handleSubmit}>
 						<TextFF label="E-mail" name="email" />
 
-						<TextFF label="Hasło" name="password" />
+						<TextFF label="Hasło" password name="password" />
 
 						<LoaderButton
 							text="Gotowe"

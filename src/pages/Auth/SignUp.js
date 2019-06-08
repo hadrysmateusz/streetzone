@@ -25,8 +25,6 @@ export const SignUp = withRouter(({ location, history }) => {
 	const [error, setError] = useState()
 
 	const onSuccess = (message) => {
-		console.log("onSuccess", message)
-
 		// show flash message
 		if (message) {
 			flashMessage({ type: "success", textContent: message })
@@ -38,8 +36,6 @@ export const SignUp = withRouter(({ location, history }) => {
 	}
 
 	const onError = (err) => {
-		console.log("onError", err)
-
 		setError(err)
 	}
 

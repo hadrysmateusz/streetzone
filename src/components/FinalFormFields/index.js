@@ -59,7 +59,7 @@ export const Section = styled.div`
 	}
 `
 
-export const TextFF = ({ label, name, placeholder, info }) => {
+export const TextFF = ({ label, name, placeholder, info, password = false }) => {
 	return (
 		<Section>
 			<div className="header">{label}</div>
@@ -69,7 +69,7 @@ export const TextFF = ({ label, name, placeholder, info }) => {
 					return (
 						<Input
 							{...input}
-							type="text"
+							type={password ? "password" : "text"}
 							placeholder={placeholder}
 							error={error}
 							info={info}
