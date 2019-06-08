@@ -12,7 +12,7 @@ import { route } from "../../utils"
 
 import EmailSignInForm from "./EmailSignIn"
 import { GoogleButton, FacebookButton } from "./SocialSignIn"
-import { getRedirectTo, Heading } from "./common"
+import { getRedirectTo, Heading, LinkContainer } from "./common"
 
 const SocialContainer = styled.div`
 	display: grid;
@@ -26,23 +26,15 @@ const EmailContainer = styled.div`
 `
 
 const PasswordForgetLink = () => (
-	<div
-		css={`
-			margin-top: calc(var(--spacing3) - 2px);
-		`}
-	>
+	<LinkContainer>
 		<StyledLink to={route("PASSWORD_FORGET")}>Zapomniałeś hasła?</StyledLink>
-	</div>
+	</LinkContainer>
 )
 
 const SignUpLink = () => (
-	<div
-		css={`
-			margin-top: calc(var(--spacing3) - 2px);
-		`}
-	>
+	<LinkContainer>
 		Nie masz jeszcze konta? <StyledLink to={route("SIGN_UP")}>Utwórz konto</StyledLink>
-	</div>
+	</LinkContainer>
 )
 
 export const SignIn = withRouter(({ history, location }) => {

@@ -1,6 +1,7 @@
 export const BRAND_NAME = "StreetZone"
 export const CONTACT_EMAIL = "kontakt@streetzone.pl"
 
+export const MIN_PASSWORD_LENGTH = 8
 export const ATTACHMENTS_MAX_COUNT = 9
 export const ATTACHMENTS_MAX_SIZE = 5242880
 export const DESC_MAX_CHARACTERS = 500

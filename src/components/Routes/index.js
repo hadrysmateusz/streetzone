@@ -44,10 +44,6 @@ const UserLiked = Loadable({
 	loader: () => import("../../pages/Account/UserLiked"),
 	loading: LoadableComponentSpinner
 })
-const UserSavedFilters = Loadable({
-	loader: () => import("../../pages/Account/UserSavedFilters"),
-	loading: LoadableComponentSpinner
-})
 const UserFollowing = Loadable({
 	loader: () => import("../../pages/Account/UserFollowing"),
 	loading: LoadableComponentSpinner
@@ -239,16 +235,6 @@ export const ACCOUNT_ROUTES = [
 		shortLabel: "Przedmioty"
 	},
 	{
-		id: "savedFilters",
-		label: "Zapisane Filtry",
-		path: ROUTES.ACCOUNT_SAVED_FILTERS,
-		component: UserSavedFilters,
-		isProtected: true,
-		category: "Zapisane",
-		shortLabel: "Filtry",
-		isHidden: true /* This feature isn't finished or necessary */
-	},
-	{
 		id: "followedDrops",
 		label: "Obserwowane Dropy",
 		path: ROUTES.ACCOUNT_SAVED_DROPS,
@@ -279,7 +265,8 @@ export const ACCOUNT_ROUTES = [
 		path: ROUTES.ACCOUNT_SETTINGS,
 		component: UserSettings,
 		isProtected: true,
-		isHidden: true
+		isHidden: false,
+		isHiddenOnMobile: true
 	}
 ]
 
