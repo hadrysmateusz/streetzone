@@ -7,6 +7,7 @@ const ErrorContainer = styled.div`
 	color: var(--error0);
 	padding: var(--spacing2);
 	border: 1px solid var(--error0);
+	margin-top: var(--spacing2);
 
 	.icon {
 		margin-left: var(--spacing1);

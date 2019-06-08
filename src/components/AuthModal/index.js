@@ -15,7 +15,7 @@ import { ReactComponent as Logo } from "../Logo/logo-small-white.svg"
 
 const ModalOuterContainer = styled.div`
 	max-width: 100vw;
-	height: 530px; /* some extra height to account for error messages */
+	min-height: 515px;
 	overflow: hidden;
 	width: 670px;
 	display: grid;
