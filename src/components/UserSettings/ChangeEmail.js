@@ -9,9 +9,10 @@ import { useAuthentication, useFirebase } from "../../hooks"
 
 import LoadingSpinner from "../LoadingSpinner"
 import Button, { LoaderButton, ButtonContainer } from "../Button"
-import { TextBlock } from "../StyledComponents"
 import { TextFF } from "../FinalFormFields"
 import FormError from "../FormElements/FormError"
+
+import { Heading } from "./common"
 
 const StyledForm = styled.form`
 	display: grid;
@@ -35,9 +36,7 @@ const ChangeEmailForm = ({ onSubmit, initialValues, clearError }) => {
 							}
 						/>
 
-						<TextBlock size="m" bold uppercase>
-							Zmień adres email
-						</TextBlock>
+						<Heading>Zmień adres email</Heading>
 
 						<TextFF
 							name="email"

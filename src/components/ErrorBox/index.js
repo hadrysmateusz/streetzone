@@ -1,13 +1,3 @@
-import React from "react"
-import styled from "styled-components/macro"
-
-const ErrorContainer = styled.div`
-	border: 1px solid var(--danger50);
-	background: var(--danger100);
-	color: var(--black25);
-	padding: var(--spacing2);
-`
-
-const FormError = ({ error }) => (error ? <ErrorContainer>{error}</ErrorContainer> : null)
+import FormError from "../FormElements/FormError"
 
 export default FormError

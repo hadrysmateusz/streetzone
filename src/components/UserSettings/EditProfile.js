@@ -6,11 +6,12 @@ import styled from "styled-components/macro"
 import LoadingSpinner from "../LoadingSpinner"
 import { CustomFile } from "../FileHandler"
 import Button, { LoaderButton, ButtonContainer } from "../Button"
-import { TextBlock } from "../StyledComponents"
 import { ProfilePictureFF, TextFF, TextareaFF } from "../FinalFormFields"
 
 import { useAuthentication, useFirebase } from "../../hooks"
 import getProfilePictureURL from "../../utils/getProfilePictureURL"
+
+import { Heading } from "./common"
 
 const StyledForm = styled.form`
 	display: grid;
@@ -34,9 +35,7 @@ const ProfileEditForm = ({ onSubmit, initialValues }) => {
 							}
 						/>
 
-						<TextBlock size="m" bold uppercase>
-							Informacje i Zdjęcie profilowe
-						</TextBlock>
+						<Heading>Informacje i Zdjęcie profilowe</Heading>
 
 						<TextFF
 							name="name"

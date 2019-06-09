@@ -1,7 +1,9 @@
 import React from "react"
-import Button, { GoogleButton, FacebookButton, ButtonContainer } from "../Button"
 import styled from "styled-components/macro"
-import { TextBlock } from "../StyledComponents"
+
+import Button, { GoogleButton, FacebookButton, ButtonContainer } from "../../Button"
+
+import { Heading } from "../common"
 
 const SocialButton = ({ provider, ...rest }) => {
 	switch (provider) {
@@ -21,17 +23,17 @@ const SocialLoginCardContainer = styled.div`
 	gap: var(--spacing2);
 `
 
+const StatusContainer = styled.div``
+
 const SocialLoginCard = ({ onlyOneLeft, isEnabled, signInMethod, onLink, onUnlink }) => {
 	return (
 		<SocialLoginCardContainer>
-			<TextBlock size="m" bold>
-				{signInMethod.name}
-			</TextBlock>
+			<Heading>{signInMethod.name}</Heading>
 
-			<TextBlock>
+			<StatusContainer>
 				<b>Status: </b>
 				{isEnabled ? "połączono" : "nie połączono"}
-			</TextBlock>
+			</StatusContainer>
 
 			<ButtonContainer>
 				{isEnabled ? (
