@@ -1,12 +1,7 @@
 import React, { useState } from "react"
 import styled from "styled-components/macro"
 
-import Button, {
-	GoogleButton,
-	FacebookButton,
-	ButtonContainer,
-	LoaderButton
-} from "../../Button"
+import Button, { ButtonContainer, LoaderButton } from "../../Button"
 
 import { Heading } from "../common"
 
@@ -57,6 +52,7 @@ const SocialLoginCard = ({ onlyOneLeft, isEnabled, signInMethod, onLink, onUnlin
 			<ButtonContainer>
 				{isEnabled ? (
 					<SocialButton
+						isLoading={isLoading}
 						text="Rozłącz"
 						provider={signInMethod.id}
 						onClick={__onUnlink}
@@ -68,7 +64,12 @@ const SocialLoginCard = ({ onlyOneLeft, isEnabled, signInMethod, onLink, onUnlin
 						}
 					/>
 				) : (
-					<SocialButton text="Połącz" provider={signInMethod.id} onClick={__onLink} />
+					<SocialButton
+						isLoading={isLoading}
+						text="Połącz"
+						provider={signInMethod.id}
+						onClick={__onLink}
+					/>
 				)}
 			</ButtonContainer>
 		</SocialLoginCardContainer>

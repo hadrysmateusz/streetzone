@@ -118,10 +118,9 @@ const Button = styled.button`
 	padding: 0 var(--spacing3);
 	margin: 0;
 	border: 1px solid;
-	font-weight: bold;
+	font-weight: var(--semi-bold);
 
 	text-transform: uppercase;
-	/* font-weight: 700; */
 	letter-spacing: 1px;
 	font-size: var(--font-size--xs);
 
@@ -198,40 +197,5 @@ const LoaderButton = styled(LoaderButtonUnstyled)`
 	}
 `
 
-// Deprecated
-const FacebookButton = styled(Button)`
-	color: white;
-	background-color: ${(p) => (p.disabled ? "#7D8EB2" : "#3b5998")};
-	border-color: ${(p) => (p.disabled ? "#7D8EB2" : "#3b5998")};
-	:not([disabled]) {
-		:hover {
-			background-color: #2b4988;
-			border-color: #2b4988;
-		}
-	}
-`
-
-// Deprecated
-const GoogleButton = styled(Button)`
-	color: white;
-	background-color: ${(p) => (p.disabled ? "#9FBFF4" : "#4285f4")};
-	border-color: ${(p) => (p.disabled ? "#9FBFF4" : "#4285f4")};
-
-	:not([disabled]) {
-		:hover {
-			background-color: #3275e4;
-			border-color: #3275e4;
-		}
-	}
-`
-
 export default Button
-export {
-	LoaderButton,
-	FacebookButton,
-	GoogleButton,
-	Button,
-	ButtonContainer,
-	IconButton,
-	UnstyledButton
-}
+export { LoaderButton, Button, ButtonContainer, IconButton, UnstyledButton }
