@@ -180,7 +180,6 @@ export const DesignersList = connectInfiniteHits(({ hits, hasMore, refine, ...re
 		{ "#": [] }
 	)
 
-	// debugger
 	let components = []
 	Object.entries(sortedHits).forEach(([key, value]) => {
 		const header = (

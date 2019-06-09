@@ -20,11 +20,17 @@ const DeleteAccountButton = withRouter(({ history }) => {
 	const firebase = useFirebase()
 	const flashMessage = useFlash()
 
+	// portion of the function which should rerun after reauth
 	const [
-		deleteWithReauthentication,
+		onDeleteWithReauthentication,
 		renderReauthenticationModal
 	] = useFunctionWithReauthentication(async () => {
+		// delete the auth user
 		await firebase.auth.currentUser.delete()
+
+		// exit successfully
+		flashMessage("Konto zostało usunięte")
+		history.push(route("HOME"))
 	})
 
 	const onDelete = async () => {
@@ -34,9 +40,7 @@ const DeleteAccountButton = withRouter(({ history }) => {
 		if (!confirmation) return
 
 		try {
-			await deleteWithReauthentication()
-			flashMessage("Konto zostało usunięte")
-			history.push(route("HOME"))
+			await onDeleteWithReauthentication()
 		} catch (err) {
 			console.log(err)
 			alert("Wystąpił problem. Konto mogło nie zostać usunięte.")

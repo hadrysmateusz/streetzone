@@ -34,7 +34,6 @@ export const SearchWrapper = withRouter(
 			refinementList: {},
 			...initialState
 		})
-		console.log("initialState", _initialState)
 		const [searchState, setSearchState] = useState(_initialState)
 		const [isFirstRender, setIsFirstRender] = useState(true)
 
@@ -46,8 +45,6 @@ export const SearchWrapper = withRouter(
 					state[key] = {}
 				}
 			}
-
-			console.log("parsedSearch", parsedSearch)
 
 			try {
 				for (const [key, val] of Object.entries(parsedSearch)) {

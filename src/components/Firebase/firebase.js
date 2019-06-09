@@ -99,65 +99,6 @@ class Firebase {
 
 	// Auth API
 
-	/* 
-		higher order function handling re-authentication for sensitive operations 
-		if user can only re-authenticate with email and password it will return function accepting the password that will attempt to re-authenticate and retry, otherwise it returns null
-		CURRENTLY DOESN'T WORK :C
-	*/
-	// withReauthentication = (fn) => async (...args) => {
-	// 	try {
-	// 		console.log(fn)
-	// 		console.log(this.auth.currentUser.delete)
-	// 		// await fn()
-	// 		await this.auth.currentUser.delete()
-	// 	} catch (error) {
-	// 		console.log("error", error)
-
-	// 		if (error.code === "auth/requires-recent-login") {
-	// 			console.log("action requires re-authentication")
-
-	// 			const user = this.auth.currentUser
-
-	// 			const signInMethods = await this.auth.fetchSignInMethodsForEmail(user.email)
-
-	// 			const googleMethodId = this.auth.GoogleAuthProvider.GOOGLE_SIGN_IN_METHOD
-	// 			const facebookMethodId = this.auth.FacebookAuthProvider.FACEBOOK_SIGN_IN_METHOD
-	// 			const emailMethodId = this.auth.EmailAuthProvider.EMAIL_PASSWORD_SIGN_IN_METHOD
-
-	// 			debugger
-
-	// 			// try google
-	// 			if (signInMethods.includes(googleMethodId)) {
-	// 				await user.reauthenticateWithPopup(this.googleProvider)
-	// 				await fn(...args)
-
-	// 				return null
-	// 			}
-
-	// 			// try facebook
-	// 			if (signInMethods.includes(facebookMethodId)) {
-	// 				await user.reauthenticateWithPopup(this.facebookProvider)
-	// 				await fn(...args)
-
-	// 				return null
-	// 			}
-
-	// 			// try email and password
-	// 			if (signInMethods.includes(emailMethodId))
-	// 				return async (password) => {
-	// 					const credential = this.emailAuthProvider.credential(user.email, password)
-	// 					await user.reauthenticateAndRetrieveDataWithCredential(credential)
-	// 					await fn(...args)
-	// 				}
-	// 		} else {
-	// 			// if there was a different error, rethrow it
-	// 			throw error
-	// 		}
-	// 	}
-
-	// 	return null
-	// }
-
 	signUpWithEmail = (email, password) =>
 		this.auth.createUserWithEmailAndPassword(email, password)
 

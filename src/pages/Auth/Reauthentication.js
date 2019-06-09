@@ -48,11 +48,13 @@ export const useFunctionWithReauthentication = (fn) => {
 	const [args, setArgs] = useState()
 
 	const wrappedFunction = async (...newArgs) => {
+		// store the arguments with which to invoke the function inside the modal
 		setArgs(newArgs)
 
 		try {
 			return await fn(...newArgs)
 		} catch (error) {
+			console.log("caught", error)
 			// rethrow errors other than requires-recent-login
 			if (error.code !== "auth/requires-recent-login") {
 				throw error
@@ -63,6 +65,7 @@ export const useFunctionWithReauthentication = (fn) => {
 	}
 
 	const openModal = () => {
+		console.log("open modal")
 		setIsModalOpen(true)
 	}
 
@@ -71,6 +74,7 @@ export const useFunctionWithReauthentication = (fn) => {
 	}
 
 	const renderModal = () => {
+		console.log("render modal", isModalOpen)
 		return isModalOpen ? (
 			<ReauthenticationModal onSuccess={() => fn(...args)} onRequestClose={closeModal} />
 		) : null

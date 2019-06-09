@@ -24,8 +24,6 @@ const UserSavedItems = ({ user }) => {
 	const userId = user.uid
 	const itemIds = user.savedItems
 
-	console.log(itemIds)
-
 	// intentionally only include userId as dependency
 	// the component shouldn't rerender automatically on unsaving an item
 	// this prevents the user from accidentaly unsaving

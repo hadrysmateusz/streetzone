@@ -86,7 +86,6 @@ const google = css`
 `
 
 const social = (name) => {
-	console.log(name)
 	switch (name) {
 		case "facebook":
 			return facebook
