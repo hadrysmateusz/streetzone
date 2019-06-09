@@ -1,10 +1,15 @@
 import React from "react"
 import { Field } from "react-final-form"
 import ReactMarkdown from "react-markdown"
-import styled from "styled-components/macro"
+import styled, { css } from "styled-components/macro"
 
 import { Input, Textarea } from "../FormElements"
-import { LiveFileHandler, FileHandlerText, FileHandler } from "../FileHandler"
+import {
+	LiveFileHandler,
+	FileHandlerText,
+	FileHandler,
+	FileHandlerSingle
+} from "../FileHandler"
 import DropdownFinalform from "../DropdownFinalform"
 import MultiTextInputFinalform from "../MultiTextInputFinalform"
 
@@ -187,6 +192,33 @@ export const FileHandlerFF = ({ label, name, info }) => {
 					const itemErrors = meta.error ? meta.error.specific : null
 					return (
 						<FileHandler {...input} error={error} itemErrors={itemErrors} info={info} />
+					)
+				}}
+			</Field>
+		</Section>
+	)
+}
+
+export const ProfilePictureFF = ({ label, name, info }) => {
+	return (
+		<Section>
+			<div className="header">{label}</div>
+			<Field name={name}>
+				{({ input, meta }) => {
+					const error = meta.error && meta.touched ? meta.error : null
+
+					return (
+						<FileHandlerSingle
+							{...input}
+							error={error}
+							info={info}
+							containerStyles={css`
+								width: 220px;
+								height: 220px;
+								border-radius: 50%;
+								margin: 0 auto;
+							`}
+						/>
 					)
 				}}
 			</Field>

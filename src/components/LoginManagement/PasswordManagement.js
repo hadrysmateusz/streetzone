@@ -1,6 +1,6 @@
 import React from "react"
 
-import { PasswordChangeForm } from "../PasswordChange"
+import PasswordChange from "../ProfileEdit/PasswordChange"
 import { PasswordContainer } from "./StyledComponents"
 import AddPassword from "./AddPassword"
 import { TextBlock } from "../StyledComponents"
@@ -15,7 +15,7 @@ const PasswordManagement = ({ activeMethods, onLink }) => {
 					<TextBlock size="m" bold uppercase>
 						Zmień hasło
 					</TextBlock>
-					<PasswordChangeForm />
+					<PasswordChange />
 				</>
 			) : (
 				<>

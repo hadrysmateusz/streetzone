@@ -4,6 +4,8 @@ import { withRouter } from "react-router-dom"
 import LoginManagement from "../../components/LoginManagement"
 import SignOutButton from "../../components/SignOut"
 import ProfileEdit from "../../components/ProfileEdit"
+import ChangeEmail from "../../components/ProfileEdit/ChangeEmail"
+
 import { PageContainer } from "../../components/Containers"
 import { Separator } from "../../components/Basics"
 import { Button } from "../../components/Button"
@@ -14,7 +16,6 @@ import { useFirebase, useFlash } from "../../hooks"
 import { route } from "../../utils"
 
 import { UserSettingsContainer, Section } from "./StyledComponents"
-import UserPreferences from "./UserPreferences"
 
 const DeleteAccountButton = withRouter(({ history }) => {
 	const firebase = useFirebase()
@@ -23,7 +24,7 @@ const DeleteAccountButton = withRouter(({ history }) => {
 	// portion of the function which should rerun after reauth
 	const [
 		onDeleteWithReauthentication,
-		renderReauthenticationModal
+		reauthenticationModal
 	] = useFunctionWithReauthentication(async () => {
 		// delete the auth user
 		await firebase.auth.currentUser.delete()
@@ -49,7 +50,7 @@ const DeleteAccountButton = withRouter(({ history }) => {
 
 	return (
 		<>
-			{renderReauthenticationModal()}
+			{reauthenticationModal()}
 			<Button onClick={onDelete} big fullWidth danger>
 				Usuń konto
 			</Button>
@@ -66,6 +67,12 @@ const UserSettings = () => (
 
 			<Separator />
 
+			<Section>
+				<ChangeEmail />
+			</Section>
+
+			<Separator />
+
 			{/* <UserPreferences />
 
 			<Separator /> */}
@@ -77,11 +84,11 @@ const UserSettings = () => (
 			<Separator />
 
 			<Section>
-				<DeleteAccountButton />
+				<SignOutButton />
 			</Section>
 
 			<Section>
-				<SignOutButton />
+				<DeleteAccountButton />
 			</Section>
 		</UserSettingsContainer>
 	</PageContainer>

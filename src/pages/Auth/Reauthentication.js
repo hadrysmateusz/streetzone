@@ -74,7 +74,6 @@ export const useFunctionWithReauthentication = (fn) => {
 	}
 
 	const renderModal = () => {
-		console.log("render modal", isModalOpen)
 		return isModalOpen ? (
 			<ReauthenticationModal onSuccess={() => fn(...args)} onRequestClose={closeModal} />
 		) : null

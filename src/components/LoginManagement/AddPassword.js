@@ -1,11 +1,16 @@
-import React, { Component } from "react"
-import { Form, Field } from "react-final-form"
+import React from "react"
+import { Form } from "react-final-form"
+import styled from "styled-components/macro"
 
-import { FieldRow } from "../Basics"
-import { Input } from "../FormElements"
 import { LoaderButton, ButtonContainer } from "../Button"
 import InfoBox from "../InfoBox"
+import { TextFF } from "../FinalFormFields"
 import { FORM_ERR, CONST } from "../../constants"
+
+const StyledForm = styled.form`
+	display: grid;
+	gap: var(--spacing3);
+`
 
 const validate = (values) => {
 	const { password, passwordConfirm } = values
@@ -28,69 +33,40 @@ const validate = (values) => {
 	return errors
 }
 
-class AddPassword extends Component {
-	onSubmit = async (values, actions) => {
-		await this.props.onLink(values.password)
-		actions.reset()
+const AddPassword = ({ onLink }) => {
+	const onSubmit = async (values) => {
+		await onLink(values.password)
 	}
 
-	render() {
-		return (
-			<Form
-				onSubmit={this.onSubmit}
-				validate={validate}
-				render={({ handleSubmit, submitting, pristine, values, invalid }) => (
-					<form onSubmit={handleSubmit}>
-						<InfoBox>
-							Jeśli za pierwszym razem zalogowałeś się używając jednego z kont
-							społecznościowych, możesz również dodać hasło by logować się za pomocą
-							e-mailu i hasła.
-						</InfoBox>
+	return (
+		<Form
+			onSubmit={onSubmit}
+			validate={validate}
+			render={({ handleSubmit, submitting, pristine, values, invalid }) => (
+				<StyledForm onSubmit={handleSubmit}>
+					<InfoBox>
+						Jeśli za pierwszym razem zalogowałeś się używając jednego z kont
+						społecznościowych, możesz również dodać hasło by logować się za pomocą e-mailu
+						i hasła.
+					</InfoBox>
 
-						{/* Hasło */}
-						<FieldRow>
-							<Field name="password">
-								{({ input, meta }) => {
-									const error = meta.error && meta.touched ? meta.error : null
-									return (
-										<Input {...input} type="password" placeholder="Hasło" error={error} />
-									)
-								}}
-							</Field>
-						</FieldRow>
+					<TextFF name="password" placeholder="Hasło" password />
+					<TextFF name="passwordConfirm" placeholder="Potwierdź hasło" password />
 
-						{/* Powtórz Hasło */}
-						<FieldRow>
-							<Field name="passwordConfirm">
-								{({ input, meta }) => {
-									const error = meta.error && meta.touched ? meta.error : null
-									return (
-										<Input
-											{...input}
-											type="password"
-											placeholder="Potwierdź Hasło"
-											error={error}
-										/>
-									)
-								}}
-							</Field>
-						</FieldRow>
-
-						<ButtonContainer>
-							<LoaderButton
-								text="Zapisz"
-								type="submit"
-								isLoading={submitting}
-								disabled={submitting || pristine || invalid}
-								primary
-								fullWidth
-							/>
-						</ButtonContainer>
-					</form>
-				)}
-			/>
-		)
-	}
+					<ButtonContainer>
+						<LoaderButton
+							text="Zapisz"
+							type="submit"
+							isLoading={submitting}
+							disabled={submitting || pristine || invalid}
+							primary
+							fullWidth
+						/>
+					</ButtonContainer>
+				</StyledForm>
+			)}
+		/>
+	)
 }
 
 export default AddPassword

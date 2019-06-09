@@ -37,7 +37,7 @@ const LoginManagement = () => {
 
 	const [
 		linkWithCredentialWithReauthentication,
-		renderReauthenticationModal
+		reauthenticationModal
 	] = useFunctionWithReauthentication((credential) =>
 		firebase.auth.currentUser.linkWithCredential(credential)
 	)
@@ -86,7 +86,7 @@ const LoginManagement = () => {
 
 	return (
 		<>
-			{renderReauthenticationModal()}
+			{reauthenticationModal()}
 
 			<FormError error={error} />
 
