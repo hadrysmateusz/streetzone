@@ -1,16 +1,21 @@
-import React from "react"
+import React, { useState } from "react"
 import styled from "styled-components/macro"
 
-import Button, { GoogleButton, FacebookButton, ButtonContainer } from "../../Button"
+import Button, {
+	GoogleButton,
+	FacebookButton,
+	ButtonContainer,
+	LoaderButton
+} from "../../Button"
 
 import { Heading } from "../common"
 
 const SocialButton = ({ provider, ...rest }) => {
 	switch (provider) {
 		case "google.com":
-			return <GoogleButton {...rest} />
+			return <LoaderButton social="google" {...rest} />
 		case "facebook.com":
-			return <FacebookButton {...rest} />
+			return <LoaderButton social="facebook" {...rest} />
 		default:
 			return <Button {...rest} />
 	}
@@ -26,6 +31,20 @@ const SocialLoginCardContainer = styled.div`
 const StatusContainer = styled.div``
 
 const SocialLoginCard = ({ onlyOneLeft, isEnabled, signInMethod, onLink, onUnlink }) => {
+	const [isLoading, setIsLoading] = useState()
+
+	const __onLink = () => {
+		setIsLoading(true)
+		onLink(signInMethod.provider)
+		setIsLoading(false)
+	}
+
+	const __onUnlink = async () => {
+		setIsLoading(true)
+		await onUnlink(signInMethod.id)
+		setIsLoading(false)
+	}
+
 	return (
 		<SocialLoginCardContainer>
 			<Heading>{signInMethod.name}</Heading>
@@ -38,24 +57,18 @@ const SocialLoginCard = ({ onlyOneLeft, isEnabled, signInMethod, onLink, onUnlin
 			<ButtonContainer>
 				{isEnabled ? (
 					<SocialButton
+						text="Rozłącz"
 						provider={signInMethod.id}
-						onClick={() => onUnlink(signInMethod.id)}
+						onClick={__onUnlink}
 						disabled={onlyOneLeft}
 						title={
 							onlyOneLeft
 								? "Nie można dezaktywować ostatniej metody logowania"
 								: undefined
 						}
-					>
-						Rozłącz
-					</SocialButton>
+					/>
 				) : (
-					<SocialButton
-						provider={signInMethod.id}
-						onClick={() => onLink(signInMethod.provider)}
-					>
-						Połącz
-					</SocialButton>
+					<SocialButton text="Połącz" provider={signInMethod.id} onClick={__onLink} />
 				)}
 			</ButtonContainer>
 		</SocialLoginCardContainer>

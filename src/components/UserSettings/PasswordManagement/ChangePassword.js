@@ -16,8 +16,9 @@ const ChangePassword = ({ onSuccess }) => {
 	const [
 		updatePasswordWithReauthentication,
 		reauthenticationModal
-	] = useFunctionWithReauthentication((password) => {
-		return firebase.updatePassword(password)
+	] = useFunctionWithReauthentication(async (password) => {
+		await firebase.updatePassword(password)
+		onSuccess("Hasło zmieniono pomyślnie")
 	})
 
 	// submit handler
@@ -28,8 +29,6 @@ const ChangePassword = ({ onSuccess }) => {
 			if (!password) throw Error("Podaj nowe hasło")
 
 			await updatePasswordWithReauthentication(password)
-
-			onSuccess("Hasło zmieniono pomyślnie")
 		} catch (err) {
 			setError(err)
 		}
@@ -39,7 +38,12 @@ const ChangePassword = ({ onSuccess }) => {
 		<>
 			{reauthenticationModal()}
 			<Heading>Zmień hasło</Heading>
-			<PasswordForm onSubmit={onSubmit} />
+			<PasswordForm
+				onSubmit={onSubmit}
+				onCancel={() => {
+					setError(null)
+				}}
+			/>
 			<ErrorBox error={error} />
 		</>
 	)

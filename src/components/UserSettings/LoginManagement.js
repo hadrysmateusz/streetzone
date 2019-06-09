@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react"
 import styled from "styled-components/macro"
 
+import { PageContainer } from "../Containers"
 import LoadingSpinner from "../LoadingSpinner"
+import Separator from "../Separator"
 import ErrorBox from "../ErrorBox"
 
 import { useAuthentication, useFirebase, useFlash } from "../../hooks"
@@ -35,7 +37,7 @@ const LoginManagement = () => {
 
 	const onSuccess = (message) => {
 		flashMessage(message)
-		// fetchActiveMethods()
+		fetchActiveMethods()
 	}
 
 	return error ? (
@@ -45,11 +47,17 @@ const LoginManagement = () => {
 	) : (
 		<>
 			<Section>
-				<PasswordManagement activeMethods={activeMethods} onSuccess={onSuccess} />
+				<PageContainer maxWidth={1}>
+					<PasswordManagement activeMethods={activeMethods} onSuccess={onSuccess} />
+				</PageContainer>
 			</Section>
 
+			<Separator />
+
 			<Section>
-				<SocialLoginManagement activeMethods={activeMethods} onSuccess={onSuccess} />
+				<PageContainer maxWidth={1}>
+					<SocialLoginManagement activeMethods={activeMethods} onSuccess={onSuccess} />
+				</PageContainer>
 			</Section>
 		</>
 	)

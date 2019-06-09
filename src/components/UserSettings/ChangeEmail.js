@@ -5,12 +5,12 @@ import styled from "styled-components/macro"
 
 import { useFunctionWithReauthentication } from "../../pages/Auth/Reauthentication"
 
-import { useAuthentication, useFirebase } from "../../hooks"
+import { useAuthentication, useFirebase, useFlash } from "../../hooks"
 
 import LoadingSpinner from "../LoadingSpinner"
 import Button, { LoaderButton, ButtonContainer } from "../Button"
 import { TextFF } from "../FinalFormFields"
-import FormError from "../FormElements/FormError"
+import ErrorBox from "../ErrorBox"
 
 import { Heading } from "./common"
 
@@ -19,7 +19,7 @@ const StyledForm = styled.form`
 	gap: var(--spacing3);
 `
 
-const ChangeEmailForm = ({ onSubmit, initialValues, clearError }) => {
+const ChangeEmailForm = ({ onSubmit, initialValues, onCancel }) => {
 	return !initialValues ? (
 		<LoadingSpinner />
 	) : (
@@ -60,7 +60,7 @@ const ChangeEmailForm = ({ onSubmit, initialValues, clearError }) => {
 								disabled={submitting || pristine}
 								onClick={() => {
 									form.reset()
-									clearError()
+									onCancel()
 								}}
 								fullWidth
 							>
@@ -79,13 +79,19 @@ const ChangeEmail = () => {
 	const firebase = useFirebase()
 	const [initialValues, setInitialValues] = useState(null)
 	const [error, setError] = useState(null)
+	const flashMessage = useFlash()
 
-	// get updateEmail wrapped with reauthentication
 	const [
 		updateEmailWithReauthentication,
 		reauthenticationModal
-	] = useFunctionWithReauthentication((email) => {
-		return firebase.updateEmail(email)
+	] = useFunctionWithReauthentication(async (email) => {
+		// update auth user email
+		await firebase.updateEmail(email)
+
+		// update email in database
+		await firebase.user(authUser.uid).update({ email })
+
+		flashMessage("Zmiany zostały zapisane")
 	})
 
 	// set initialValues for the form
@@ -96,7 +102,7 @@ const ChangeEmail = () => {
 	}, [authUser])
 
 	// submit handler
-	const onSubmit = async (values, actions) => {
+	const onSubmit = async (values) => {
 		try {
 			setError(null)
 			const email = values.email || initialValues.email
@@ -106,8 +112,6 @@ const ChangeEmail = () => {
 			}
 
 			await updateEmailWithReauthentication(email)
-
-			await firebase.user(authUser.uid).update({ email })
 		} catch (err) {
 			setError(err)
 		}
@@ -123,9 +127,11 @@ const ChangeEmail = () => {
 			<ChangeEmailForm
 				onSubmit={onSubmit}
 				initialValues={initialValues}
-				clearError={() => setError(null)}
+				onCancel={() => {
+					setError(null)
+				}}
 			/>
-			<FormError error={error} />
+			<ErrorBox error={error} />
 		</>
 	)
 }

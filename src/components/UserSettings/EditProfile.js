@@ -7,9 +7,11 @@ import LoadingSpinner from "../LoadingSpinner"
 import { CustomFile } from "../FileHandler"
 import Button, { LoaderButton, ButtonContainer } from "../Button"
 import { ProfilePictureFF, TextFF, TextareaFF } from "../FinalFormFields"
+import ErrorBox from "../ErrorBox"
 
-import { useAuthentication, useFirebase } from "../../hooks"
+import { useAuthentication, useFirebase, useFlash } from "../../hooks"
 import getProfilePictureURL from "../../utils/getProfilePictureURL"
+import { FORM_ERR } from "../../constants"
 
 import { Heading } from "./common"
 
@@ -18,21 +20,30 @@ const StyledForm = styled.form`
 	gap: var(--spacing3);
 `
 
-const ProfileEditForm = ({ onSubmit, initialValues }) => {
+const ProfileEditForm = ({ onSubmit, initialValues, onCancel }) => {
+	const validate = ({ name }) => {
+		const errors = {}
+
+		if (!name) {
+			errors.name = FORM_ERR.IS_REQUIRED
+		}
+
+		return errors
+	}
+
 	return !initialValues ? (
 		<LoadingSpinner />
 	) : (
 		<Form
 			onSubmit={onSubmit}
+			validate={validate}
 			initialValues={initialValues}
-			render={({ form, handleSubmit, submitting, pristine, values, ...rest }) => {
+			render={({ form, handleSubmit, submitting, pristine, values }) => {
 				return (
 					<StyledForm onSubmit={handleSubmit}>
 						<Prompt
 							when={Object.values(values).length > 0 && !pristine}
-							message={(location) =>
-								"Zmiany nie zostały zapisane. Czy napewno chcesz wyjść?"
-							}
+							message={() => "Zmiany nie zostały zapisane. Czy napewno chcesz wyjść?"}
 						/>
 
 						<Heading>Informacje i Zdjęcie profilowe</Heading>
@@ -75,7 +86,10 @@ const ProfileEditForm = ({ onSubmit, initialValues }) => {
 								text="Anuluj"
 								type="button"
 								disabled={submitting || pristine}
-								onClick={form.reset}
+								onClick={() => {
+									form.reset()
+									onCancel()
+								}}
 								fullWidth
 							>
 								Anuluj
@@ -91,7 +105,9 @@ const ProfileEditForm = ({ onSubmit, initialValues }) => {
 const EditProfile = () => {
 	const authUser = useAuthentication()
 	const firebase = useFirebase()
+	const flashMessage = useFlash()
 	const [initialValues, setInitialValues] = useState(null)
+	const [error, setError] = useState(null)
 
 	useEffect(() => {
 		// get all the basic values
@@ -143,29 +159,36 @@ const EditProfile = () => {
 		return { profilePictureRef: newFileRef, profilePictureURLs: [newUrl_temp] }
 	}
 
-	const onSubmit = async (values, actions) => {
-		// Get ref of current profile picture
-		const oldFileRef = authUser.profilePictureRef || null
+	const onSubmit = async (values) => {
+		try {
+			// Get ref of current profile picture
+			const oldFileRef = authUser.profilePictureRef || null
 
-		// Get the values of profile picture related fields
-		const newImageInfo = await getNewImageInfo(values.file)
+			// Get the values of profile picture related fields
+			const newImageInfo = await getNewImageInfo(values.file)
 
-		// Format the data for database
-		const data = {
-			name: values.name || initialValues.name || null,
-			city: values.city || null,
-			phone: values.phone || null,
-			info: values.info || null,
-			messengerLink: values.messengerLink || null,
-			...newImageInfo
-		}
+			// Format the data for database
+			const data = {
+				name: values.name || initialValues.name || null,
+				city: values.city || null,
+				phone: values.phone || null,
+				info: values.info || null,
+				messengerLink: values.messengerLink || null,
+				...newImageInfo
+			}
 
-		// Update the user with the new data
-		await firebase.user(authUser.uid).update(data)
+			// Update the user with the new data
+			await firebase.user(authUser.uid).update(data)
 
-		// Remove old file if it's different from the new one
-		if (oldFileRef && oldFileRef !== data.profilePictureRef) {
-			await firebase.file(oldFileRef).delete()
+			// Remove old file if it's different from the new one
+			if (oldFileRef && oldFileRef !== data.profilePictureRef) {
+				await firebase.file(oldFileRef).delete()
+			}
+
+			flashMessage("Zmiany zostały zapisane")
+		} catch (err) {
+			console.log(err)
+			setError("Wystąpił błąd, zmiany mogły nie zostać zapisane")
 		}
 	}
 
@@ -174,7 +197,14 @@ const EditProfile = () => {
 	return isLoading ? (
 		<LoadingSpinner />
 	) : (
-		<ProfileEditForm onSubmit={onSubmit} initialValues={initialValues} />
+		<>
+			<ProfileEditForm
+				onSubmit={onSubmit}
+				initialValues={initialValues}
+				onCancel={() => setError(null)}
+			/>
+			<ErrorBox error={error} />
+		</>
 	)
 }
 

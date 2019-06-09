@@ -1,8 +1,10 @@
 import React, { useState } from "react"
+import styled from "styled-components/macro" // using css prop
 
 import { useFunctionWithReauthentication } from "../../../pages/Auth/Reauthentication"
 import { useFirebase, useAuthentication } from "../../../hooks"
 
+import InfoBox from "../../InfoBox"
 import ErrorBox from "../../ErrorBox"
 
 import { Heading } from "../common"
@@ -17,8 +19,9 @@ const AddPassword = ({ onSuccess }) => {
 	const [
 		linkWithCredentialWithReauthentication,
 		reauthenticationModal
-	] = useFunctionWithReauthentication((credential) => {
-		return firebase.auth.currentUser.linkWithCredential(credential)
+	] = useFunctionWithReauthentication(async (credential) => {
+		await firebase.auth.currentUser.linkWithCredential(credential)
+		onSuccess("Hasło dodano pomyślnie")
 	})
 
 	// submit handler
@@ -30,8 +33,6 @@ const AddPassword = ({ onSuccess }) => {
 
 			const credential = firebase.emailAuthProvider.credential(authUser.email, password)
 			await linkWithCredentialWithReauthentication(credential)
-
-			onSuccess("Hasło dodano pomyślnie")
 		} catch (err) {
 			setError(err)
 		}
@@ -41,7 +42,22 @@ const AddPassword = ({ onSuccess }) => {
 		<>
 			{reauthenticationModal()}
 			<Heading>Dodaj hasło</Heading>
-			<PasswordForm onSubmit={onSubmit} />
+			<InfoBox
+				css={`
+					margin-top: var(--spacing3);
+					margin-bottom: var(--spacing3);
+				`}
+			>
+				Jeśli za pierwszym razem zalogowałeś się używając jednego z kont
+				społecznościowych, możesz również dodać hasło by logować się za pomocą e-mailu i
+				hasła.
+			</InfoBox>
+			<PasswordForm
+				onSubmit={onSubmit}
+				onCancel={() => {
+					setError(null)
+				}}
+			/>
 			<ErrorBox error={error} />
 		</>
 	)

@@ -114,10 +114,12 @@ const FileHandlerSingle = ({
 							<FontAwesomeIcon icon="plus" size="2x" fixedWidth />
 							<TextBlock centered>{!isEmpty ? "Zmień" : "Dodaj"}</TextBlock>
 						</IconContainer>
-						<IconContainer onClick={onClear}>
-							<FontAwesomeIcon icon="trash" size="2x" fixedWidth />
-							<TextBlock centered>Usuń</TextBlock>
-						</IconContainer>
+						{!isEmpty && (
+							<IconContainer onClick={onClear}>
+								<FontAwesomeIcon icon="trash" size="2x" fixedWidth />
+								<TextBlock centered>Usuń</TextBlock>
+							</IconContainer>
+						)}
 					</Overlay>
 				)}
 			</FileHandlerSingleContainer>
