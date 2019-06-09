@@ -1,10 +1,21 @@
 import React from "react"
 import InfoBox from "../InfoBox"
 import { TextBlock } from "../StyledComponents"
+import styled from "styled-components/macro"
 
 import SocialLoginCard from "./SocialLoginCard"
-import { SocialCardsContainer, SocialContainer } from "./StyledComponents"
 import SIGN_IN_METHODS from "../../constants/signInMethods"
+
+export const SocialContainer = styled.div`
+	display: grid;
+	gap: var(--spacing3);
+`
+
+export const SocialCardsContainer = styled.div`
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+	gap: var(--spacing3);
+`
 
 const SocialLoginManagement = ({ activeMethods, onlyOneLeft, onLink, onUnlink }) => {
 	return (

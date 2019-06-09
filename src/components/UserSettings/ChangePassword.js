@@ -61,7 +61,7 @@ const PasswordChangeForm = ({ onSubmit }) => {
 	)
 }
 
-const PasswordChange = () => {
+const ChangePassword = () => {
 	const firebase = useFirebase()
 	const [error, setError] = useState(null)
 
@@ -98,4 +98,4 @@ const PasswordChange = () => {
 	)
 }
 
-export default PasswordChange
+export default ChangePassword

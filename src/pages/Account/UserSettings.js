@@ -1,10 +1,10 @@
 import React from "react"
 import { withRouter } from "react-router-dom"
 
-import LoginManagement from "../../components/LoginManagement"
-import SignOutButton from "../../components/SignOut"
-import ProfileEdit from "../../components/ProfileEdit"
-import ChangeEmail from "../../components/ProfileEdit/ChangeEmail"
+import SignOutButton from "../../components/UserSettings/SignOut"
+import LoginManagement from "../../components/UserSettings/LoginManagement"
+import EditProfile from "../../components/UserSettings/EditProfile"
+import ChangeEmail from "../../components/UserSettings/ChangeEmail"
 
 import { PageContainer } from "../../components/Containers"
 import { Separator } from "../../components/Basics"
@@ -62,7 +62,7 @@ const UserSettings = () => (
 	<PageContainer>
 		<UserSettingsContainer>
 			<Section>
-				<ProfileEdit />
+				<EditProfile />
 			</Section>
 
 			<Separator />
@@ -72,10 +72,6 @@ const UserSettings = () => (
 			</Section>
 
 			<Separator />
-
-			{/* <UserPreferences />
-
-			<Separator /> */}
 
 			<Section>
 				<LoginManagement />
