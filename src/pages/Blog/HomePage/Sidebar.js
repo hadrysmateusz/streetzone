@@ -1,42 +1,25 @@
 import React from "react"
-import styled from "styled-components/macro"
-import { getCategoryColor } from "../../../style-utils"
 import { PoweredByBox } from "../../../components/Algolia/PoweredBy"
+import Sidebar from "../../../components/Sidebar"
 
 import TagsNav from "./TagsNav"
 
-const SidebarContainer = styled.aside``
+const availableElements = [
+	{
+		title: "Popularne Tagi",
+		component: TagsNav
+	},
+	{ title: "Cośtam1", component: () => <div>adsf1</div> },
+	{ title: "Cośtam2", component: () => <div>adsf2</div> },
+	{ title: "Cośtam3", component: () => <div>adsf3</div> }
+]
 
-const SidebarHeader = styled.div`
-	font-size: var(--font-size--m);
-	font-weight: bold;
-	margin-bottom: var(--spacing2);
-
-	border-left: 4px solid ${(p) => getCategoryColor(p.category)};
-	padding-left: var(--spacing2);
-	line-height: 1.3;
-`
-
-const SidebarSectionContainer = styled.div``
-
-const SidebarSection = ({ title, children }) => {
+const BlogHomeSidebar = () => {
 	return (
-		<SidebarSectionContainer>
-			<SidebarHeader>{title}</SidebarHeader>
-			<div>{children}</div>
-		</SidebarSectionContainer>
-	)
-}
-
-const Sidebar = () => {
-	return (
-		<SidebarContainer>
+		<Sidebar availableElements={availableElements} isRandom>
 			<PoweredByBox />
-			<SidebarSection title="Popularne Tagi">
-				<TagsNav />
-			</SidebarSection>
-		</SidebarContainer>
+		</Sidebar>
 	)
 }
 
-export default Sidebar
+export default BlogHomeSidebar
