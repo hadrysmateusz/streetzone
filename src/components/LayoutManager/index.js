@@ -24,8 +24,9 @@ const SidebarHeader = styled.div`
 `
 
 const SidebarSectionContainer = styled.div`
-	background: rgba(255, 0, 0, 0.2);
-	border-bottom: 1px solid green;
+	/* /* background: rgba(255, 0, 0, 0.2); */
+	/* border-bottom: 1px solid green; */
+	/* min-height: 400px; */
 	min-height: calc(100vh - var(--page-header-height));
 	overflow-x: hidden;
 `
@@ -52,39 +53,53 @@ export const useLoadableElements = (availableElements, options = {}) => {
 	const isRandom = options.isRandom || false
 	const initialLoad = options.initialLoad || true
 
-	// get initialState based on initialLoad option
-	const initialArray = initialLoad ? [availableElements[0]] : []
-
-	const [currentElements, setCurrentElements] = useState(initialArray)
-
-	const loadSequential = () => {
-		const nextIndex = currentElements.length
-		const nextElement = availableElements[nextIndex]
-
-		if (!nextElement) return
-
-		setCurrentElements((currentElements) => {
-			const newElements = [...currentElements, nextElement]
-			return newElements
-		})
+	const getRandomIndex = () => {
+		const numAvailableElements = availableElements.length
+		const randomIndex = Math.ceil(Math.random() * (numAvailableElements - 1))
+		return randomIndex
 	}
 
-	const loadRandom = () => {
+	const getInitialState = () => {
+		// if there is no initial load return empty array
+		if (!initialLoad) return []
+		// if the loading is sequential return array with first element
+		if (!isRandom) return [availableElements[0]]
+		// otherwise return array with random element
+		const randomIndex = getRandomIndex()
+		return [availableElements[randomIndex]]
+	}
+
+	// get initialState based on initialLoad option
+	const [currentElements, setCurrentElements] = useState(getInitialState())
+
+	const getSequential = () => {
+		const nextIndex = currentElements.length
+		const nextElement = availableElements[nextIndex]
+		return nextElement
+	}
+
+	const getRandom = () => {
+		// if there is only one element return it to prevent an infinite loop
+		if (availableElements.length === 1) return availableElements[0]
+
 		const lastElement = currentElements[currentElements.length - 1] || {}
 		let nextElement = {}
 
 		// get next element, if it's the same as last one, try again
 		do {
-			const numAvailableElements = availableElements.length
-			const randomIndex = Math.ceil(Math.random() * (numAvailableElements - 1))
-
+			const randomIndex = getRandomIndex()
 			nextElement = availableElements[randomIndex]
 		} while (lastElement.title === nextElement.title)
 
+		return nextElement
+	}
+
+	const loadMore = () => {
+		const nextElement = isRandom ? getRandom() : getSequential()
+		if (!nextElement) return
 		setCurrentElements((currentElements) => [...currentElements, nextElement])
 	}
 
-	const loadMore = isRandom ? loadRandom : loadSequential
 	const hasMore = isRandom ? true : availableElements.length > currentElements.length
 
 	return { elements: currentElements, loadMore, hasMore }
@@ -115,7 +130,7 @@ export const Sidebar = ({ children, availableElements, isRandom }) => {
 
 	const { sidebarRef, heightDifference, forceUpdateDifference } = layoutContext
 
-	const sectionHeight = 450
+	const sectionHeight = 400
 
 	useEffect(() => {
 		if (heightDifference > sectionHeight) {
@@ -139,12 +154,14 @@ export const LayoutManager = ({ children, availableElements, isRandom, columns }
 
 	const [heightDifference, setHeightDifference] = useState(0)
 
-	const limit = 500
+	const limit = 200
 
 	const update = () => {
 		const mainHeight = mainRef.current.clientHeight
 		const sidebarHeight = sidebarRef.current.clientHeight
 		let difference = Math.max(mainHeight - sidebarHeight, 0)
+
+		console.log("update:", difference)
 
 		setHeightDifference(difference)
 	}

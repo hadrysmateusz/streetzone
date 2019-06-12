@@ -15,13 +15,15 @@ import InfinitePosts from "../InfinitePostsList"
 import TagsNav from "./TagsNav"
 
 const sidebarElements = [
+	{ title: "Cośtam1", component: () => <div>adsf1</div> },
 	{
 		title: "Popularne Tagi",
 		component: TagsNav
 	},
-	{ title: "Cośtam1", component: () => <div>adsf1</div> },
 	{ title: "Cośtam2", component: () => <div>adsf2</div> },
-	{ title: "Cośtam3", component: () => <div>adsf3</div> }
+	{ title: "Cośtam3", component: () => <div>adsf3</div> },
+	{ title: "Cośtam4", component: () => <div>adsf4</div> },
+	{ title: "Cośtam5", component: () => <div>adsf5</div> }
 ]
 
 const DropsGroup = () => (
@@ -67,7 +69,7 @@ const BlogHomePage = () => {
 							{/* Infinite Posts List */}
 							<InfinitePosts />
 						</Main>
-						<Sidebar availableElements={sidebarElements} />
+						<Sidebar availableElements={sidebarElements} isRandom />
 					</LayoutManager>
 				</PageContainer>
 			</SearchWrapper>
