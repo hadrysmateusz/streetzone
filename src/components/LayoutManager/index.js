@@ -113,13 +113,14 @@ export const Sidebar = ({ children, availableElements, isRandom }) => {
 
 	const { elements, loadMore } = useLoadableElements(availableElements, { isRandom })
 
-	const { sidebarRef, heightDifference } = layoutContext
+	const { sidebarRef, heightDifference, forceUpdateDifference } = layoutContext
 
 	const sectionHeight = 450
 
 	useEffect(() => {
 		if (heightDifference > sectionHeight) {
 			loadMore()
+			forceUpdateDifference()
 		}
 	}, [heightDifference])
 
@@ -140,21 +141,28 @@ export const LayoutManager = ({ children, availableElements, isRandom, columns }
 
 	const limit = 500
 
-	useEffect(() => {
-		const update = () => {
-			const mainHeight = mainRef.current.clientHeight
-			const sidebarHeight = sidebarRef.current.clientHeight
-			let difference = Math.max(mainHeight - sidebarHeight, 0)
-			setHeightDifference(difference)
-		}
+	const update = () => {
+		const mainHeight = mainRef.current.clientHeight
+		const sidebarHeight = sidebarRef.current.clientHeight
+		let difference = Math.max(mainHeight - sidebarHeight, 0)
 
+		setHeightDifference(difference)
+	}
+
+	useEffect(() => {
 		const throttledUpdate = throttle(update, limit, { leading: true })
 
 		window.addEventListener("scroll", throttledUpdate)
+
 		return () => window.removeEventListener("scroll", throttledUpdate)
 	}, [mainRef.current, sidebarRef.current])
 
-	const contextValue = { mainRef, sidebarRef, heightDifference }
+	const contextValue = {
+		mainRef,
+		sidebarRef,
+		heightDifference,
+		forceUpdateDifference: update
+	}
 
 	return (
 		<LayoutContext.Provider value={contextValue}>
