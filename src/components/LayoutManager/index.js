@@ -84,18 +84,7 @@ export const useLoadableElements = (availableElements, options = {}) => {
 		setCurrentElements((currentElements) => [...currentElements, nextElement])
 	}
 
-	const loadMore = () => {
-		console.log("availableElements:", availableElements)
-		console.log("before loadMore, elements:", currentElements)
-		console.log("loadMore, random:", isRandom)
-
-		if (isRandom) {
-			loadRandom()
-		} else {
-			loadSequential()
-		}
-	}
-
+	const loadMore = isRandom ? loadRandom : loadSequential
 	const hasMore = isRandom ? true : availableElements.length > currentElements.length
 
 	return { elements: currentElements, loadMore, hasMore }
@@ -114,7 +103,7 @@ export const Main = ({ children }) => {
 	return <MainContainer ref={layoutContext.mainRef}>{children}</MainContainer>
 }
 
-export const Sidebar = ({ children }) => {
+export const Sidebar = ({ children, availableElements, isRandom }) => {
 	const layoutContext = useContext(LayoutContext)
 
 	if (!layoutContext) {
@@ -122,9 +111,21 @@ export const Sidebar = ({ children }) => {
 		return null
 	}
 
+	const { elements, loadMore } = useLoadableElements(availableElements, { isRandom })
+
+	const { sidebarRef, heightDifference } = layoutContext
+
+	const sectionHeight = 450
+
+	useEffect(() => {
+		if (heightDifference > sectionHeight) {
+			loadMore()
+		}
+	}, [heightDifference])
+
 	return (
-		<SidebarContainer ref={layoutContext.sidebarRef}>
-			{layoutContext.elements.map(({ title, component }) => (
+		<SidebarContainer ref={sidebarRef}>
+			{elements.map(({ title, component }) => (
 				<SidebarSection title={title}>{component}</SidebarSection>
 			))}
 		</SidebarContainer>
@@ -135,38 +136,25 @@ export const LayoutManager = ({ children, availableElements, isRandom, columns }
 	const mainRef = useRef()
 	const sidebarRef = useRef()
 
+	const [heightDifference, setHeightDifference] = useState(0)
+
 	const limit = 500
 
-	const sidebar = React.Children.toArray(children).find((a) => a.props.availableElements)
-
-	const { elements, loadMore: loadMoreSidebar } = useLoadableElements(
-		sidebar.props.availableElements,
-		{
-			isRandom
-		}
-	)
-
-	const update = () => {
-		const mainHeight = mainRef.current.clientHeight
-		const sidebarHeight = sidebarRef.current.clientHeight
-		let difference = mainHeight - sidebarHeight
-		difference = difference > 0 ? difference : 0
-
-		// TODO: implement a way to load more than one section for when you start reading lower on the page
-		// e.g. when refreshing or using a fragment link
-		if (difference > 450) {
-			loadMoreSidebar()
-		}
-	}
-
-	const throttledUpdate = throttle(update, limit, { leading: true })
-
 	useEffect(() => {
+		const update = () => {
+			const mainHeight = mainRef.current.clientHeight
+			const sidebarHeight = sidebarRef.current.clientHeight
+			let difference = Math.max(mainHeight - sidebarHeight, 0)
+			setHeightDifference(difference)
+		}
+
+		const throttledUpdate = throttle(update, limit, { leading: true })
+
 		window.addEventListener("scroll", throttledUpdate)
 		return () => window.removeEventListener("scroll", throttledUpdate)
-	}, [])
+	}, [mainRef.current, sidebarRef.current])
 
-	const contextValue = { mainRef, sidebarRef, elements }
+	const contextValue = { mainRef, sidebarRef, heightDifference }
 
 	return (
 		<LayoutContext.Provider value={contextValue}>
