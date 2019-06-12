@@ -8,6 +8,7 @@ import { SearchWrapper } from "../../../components/InstantSearchWrapper"
 import { SmallDropCard, PostCard } from "../../../components/Cards"
 import { ThematicGroup } from "../../../components/ThematicGroup"
 import { LayoutManager, Main, Sidebar } from "../../../components/LayoutManager"
+import { PoweredByBox } from "../../../components/Algolia/PoweredBy"
 
 import PromotedSection from "./PromotedSection"
 import CategoryNav from "./CategoryNav"
@@ -69,7 +70,9 @@ const BlogHomePage = () => {
 							{/* Infinite Posts List */}
 							<InfinitePosts />
 						</Main>
-						<Sidebar availableElements={sidebarElements} isRandom />
+						<Sidebar availableElements={sidebarElements} isRandom>
+							<PoweredByBox />
+						</Sidebar>
 					</LayoutManager>
 				</PageContainer>
 			</SearchWrapper>
