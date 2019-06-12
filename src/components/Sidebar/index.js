@@ -6,7 +6,9 @@ import LoadingSpinner from "../LoadingSpinner"
 
 import { getCategoryColor } from "../../style-utils"
 
-const SidebarContainer = styled.aside``
+const SidebarContainer = styled.aside`
+	align-self: start;
+`
 
 const SidebarHeader = styled.div`
 	font-size: var(--font-size--m);
@@ -86,17 +88,20 @@ export const useLoadableElements = (availableElements, options = {}) => {
 	return renderElements
 }
 
-const Sidebar = ({ availableElements, children, isRandom, threshold }) => {
-	const renderElements = useLoadableElements(availableElements, { isRandom, threshold })
+const Sidebar = React.forwardRef(
+	({ availableElements, children, isRandom, threshold }, ref) => {
+		console.log("sidebar ref", ref)
+		const renderElements = useLoadableElements(availableElements, { isRandom, threshold })
 
-	return (
-		<SidebarContainer>
-			{/* Here go static elements which should always be rendered */}
-			{children}
-			{/* Here go conditionally rendered elements */}
-			{renderElements()}
-		</SidebarContainer>
-	)
-}
+		return (
+			<SidebarContainer ref={ref}>
+				{/* Here go static elements which should always be rendered */}
+				{children}
+				{/* Here go conditionally rendered elements */}
+				{renderElements()}
+			</SidebarContainer>
+		)
+	}
+)
 
 export default Sidebar

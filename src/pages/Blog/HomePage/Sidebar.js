@@ -14,12 +14,12 @@ const availableElements = [
 	{ title: "Cośtam3", component: () => <div>adsf3</div> }
 ]
 
-const BlogHomeSidebar = () => {
+const BlogHomeSidebar = React.forwardRef((props, ref) => {
 	return (
-		<Sidebar availableElements={availableElements} isRandom>
+		<Sidebar ref={ref} availableElements={availableElements} isRandom>
 			<PoweredByBox />
 		</Sidebar>
 	)
-}
+})
 
 export default BlogHomeSidebar
