@@ -40,7 +40,7 @@ const Article = ({ id, title, imageUrls, mainImageIndex }) => {
 }
 
 const ArticleList = ({ articles }) => {
-	return articles.map((article) => <Article {...article} />)
+	return articles.map((article) => <Article key={article.id} {...article} />)
 }
 
 export default ArticleList

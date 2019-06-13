@@ -51,7 +51,7 @@ const PageNav = ({ breadcrumbs, showBack = true, white }) => {
 		<NavContainer white={white}>
 			<div className="left">
 				{routes.map(({ title, path }, i) => (
-					<Link to={path}>
+					<Link to={path} key={title}>
 						{i > 0 && <Chevron />}
 						{title}
 					</Link>

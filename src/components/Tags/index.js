@@ -39,7 +39,7 @@ export default ({ tags }) => {
 	return (
 		<TagsContainer>
 			{tags.map((tag) => (
-				<Tag tag={tag} />
+				<Tag tag={tag} key={tag} />
 			))}
 		</TagsContainer>
 	)
