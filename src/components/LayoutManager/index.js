@@ -54,8 +54,9 @@ export const useLoadableElements = (availableElements, options = {}) => {
 	const initialLoad = options.initialLoad || true
 
 	const getRandomIndex = () => {
-		const numAvailableElements = availableElements.length
-		const randomIndex = Math.floor(Math.random() * (numAvailableElements - 1))
+		const min = 0
+		const max = availableElements.length - 1
+		const randomIndex = Math.floor(Math.random() * (max - min + 1)) + min
 		return randomIndex
 	}
 
