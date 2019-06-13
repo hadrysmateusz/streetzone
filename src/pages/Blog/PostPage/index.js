@@ -10,20 +10,15 @@ import Tags from "../../../components/Tags"
 import LoadingSpinner from "../../../components/LoadingSpinner"
 import Share from "../../../components/Share"
 import PageNav from "../../../components/PageNav"
+import { SimilarArticles } from "../../../components/SidebarComponents"
+import { LayoutManager, Main, Sidebar } from "../../../components/LayoutManager"
 
 import { useFirebase } from "../../../hooks"
 import { ellipsis, getCategoryColor } from "../../../style-utils"
 // import { route } from "../../../utils"
 
 import { FluidImage } from "../StyledComponents"
-import { Layout } from "../HomePage/Common"
 import { withBreakpoints } from "react-breakpoints"
-
-const Main = styled.main`
-	display: grid;
-	grid-template-rows: max-content 1fr;
-	gap: var(--spacing3);
-`
 
 const InnerContainer = styled.div`
 	display: grid;
@@ -50,8 +45,6 @@ const InfoAside = styled.aside`
 	gap: var(--spacing2);
 	align-content: start;
 `
-
-const Aside = styled.aside``
 
 const OuterContainer = styled.div`
 	background: white;
@@ -111,13 +104,15 @@ const HeaderBox = styled.div`
 
 const MainImageContainer = styled.div`
 	position: relative;
+	margin-bottom: var(--spacing3);
+
 	> * {
 		height: 0;
 		padding-top: 56%;
 	}
 	@media (max-width: ${(p) => p.theme.breakpoints[2] - 1}px) {
 		margin: calc(-1 * var(--spacing3));
-		margin-bottom: 0;
+		margin-bottom: var(--spacing3);
 	}
 `
 
@@ -146,6 +141,8 @@ const usePost = (id) => {
 
 	return post
 }
+
+const sidebarElements = [{ title: "Podobne artykuły", component: SimilarArticles }]
 
 export const PureBlogPost = withBreakpoints(
 	({
@@ -188,7 +185,7 @@ export const PureBlogPost = withBreakpoints(
 
 				<OuterContainer>
 					<PageContainer>
-						<Layout>
+						<LayoutManager columns="1fr minmax(220px, 25%)">
 							<Main>
 								{/* Header image */}
 								<MainImageContainer>
@@ -235,14 +232,8 @@ export const PureBlogPost = withBreakpoints(
 									</Article>
 								</InnerContainer>
 							</Main>
-							{!isMobile && (
-								<Aside>
-									<TextBlock size="l" bold>
-										Podobne Artykuły
-									</TextBlock>
-								</Aside>
-							)}
-						</Layout>
+							<Sidebar availableElements={sidebarElements} isRandom />
+						</LayoutManager>
 					</PageContainer>
 				</OuterContainer>
 			</>
