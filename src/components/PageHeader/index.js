@@ -22,8 +22,8 @@ import { useScrollPosition, useAuthentication } from "../../hooks"
 const pageHeaderContainerCommon = css`
 	width: 100%;
 	max-width: ${(p) => p.theme.breakpoints[5]}px;
-	height: var(--page-header-height);
 	margin: 0 auto;
+	height: 100%;
 	padding: 0 var(--spacing3);
 	grid-template-rows: 100%;
 `
@@ -52,6 +52,8 @@ export const PageHeaderContainerMobile = styled.header`
 `
 
 export const PageHeaderOuter = styled.div`
+	height: var(--page-header-height);
+
 	position: sticky;
 	top: 0;
 	z-index: 80;
@@ -117,7 +119,7 @@ const Submenu = styled.div`
 
 const IconContainer = styled.div`
 	cursor: pointer;
-	font-size: 1.8rem;
+	font-size: 1.6rem;
 	color: black;
 `
 

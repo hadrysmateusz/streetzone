@@ -32,7 +32,7 @@ export const SubmenuContainer = styled.div`
 
 const Indicator = styled.div`
 	position: relative;
-	font-size: 2.2rem;
+	font-size: 1.9rem;
 
 	.number-display {
 		position: absolute;

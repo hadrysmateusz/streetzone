@@ -57,9 +57,9 @@ const GlobalStyle = createGlobalStyle`
 
 	--form-element-height: 40px;
 
-	--page-header-height: 52px;
+	--page-header-height: 44px;
 	@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
-		--page-header-height: 60px;
+		--page-header-height: 54px;
 	}
 
 	/* new aliases */
