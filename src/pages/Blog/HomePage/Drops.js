@@ -10,6 +10,8 @@ import { PageContainer } from "../../../components/Containers"
 import { BigDropCard } from "../../../components/Cards"
 import InfiniteScrollingResults from "../../../components/InfiniteScrollingResults"
 import { InfiniteResults } from "../../../components/Algolia/Helpers"
+import { LayoutManager, Main, Sidebar } from "../../../components/LayoutManager"
+import { PopularArticles } from "../../../components/SidebarComponents"
 
 import { CONST } from "../../../constants"
 import { route } from "../../../utils"
@@ -18,9 +20,9 @@ import { nLinesHigh } from "../../../style-utils"
 
 import PromotedDrop from "../Previews/PromotedDrop"
 import { PromotedContainer } from "../StyledComponents"
-// import Sidebar from "./Sidebar"
 // import Filters from "./Filters"
-import { Layout } from "./Common"
+
+const sidebarElements = [{ title: "Popularne na blogu", component: PopularArticles }]
 
 const SECTIONS = Object.freeze([
 	{
@@ -43,16 +45,16 @@ const SECTIONS = Object.freeze([
 	}
 ])
 
-const Sidebar = withBreakpoints(({ currentBreakpoint }) => {
-	// const isMobile = currentBreakpoint === 0
+// const Sidebar = withBreakpoints(({ currentBreakpoint }) => {
+// 	const isMobile = currentBreakpoint === 0
 
-	return (
-		<>
-			{/* {isMobile && <FiltersToggleButton onClick={toggleFilters} />}
-			<Filters toggle={toggleFilters} /> */}
-		</>
-	)
-})
+// 	return (
+// 		<>
+// 			 {isMobile && <FiltersToggleButton onClick={toggleFilters} />}
+// 			<Filters toggle={toggleFilters} />
+// 		</>
+// 	)
+// })
 
 const OuterContainer = styled.div`
 	padding: var(--spacing3) 0;
@@ -277,9 +279,8 @@ const DropsPage = compose(
 						</div>
 
 						<PageContainer>
-							<Layout>
-								{/* Main Content */}
-								<main>
+							<LayoutManager columns="1fr minmax(220px, 25%)">
+								<Main>
 									<Header>Dropy</Header>
 									<SectionSelect
 										sections={SECTIONS}
@@ -297,10 +298,9 @@ const DropsPage = compose(
 											)
 										}}
 									</InfiniteScrollingResults>
-								</main>
-								{/* Sidebar */}
-								{!isMobile && <Sidebar />}
-							</Layout>
+								</Main>
+								<Sidebar availableElements={sidebarElements} isRandom />
+							</LayoutManager>
 						</PageContainer>
 					</>
 				)}
