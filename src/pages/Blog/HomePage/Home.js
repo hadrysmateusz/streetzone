@@ -9,18 +9,15 @@ import { SmallDropCard, PostCard } from "../../../components/Cards"
 import { ThematicGroup } from "../../../components/ThematicGroup"
 import { LayoutManager, Main, Sidebar } from "../../../components/LayoutManager"
 import { PoweredByBox } from "../../../components/Algolia/PoweredBy"
+import { PopularArticles, PopularTags } from "../../../components/SidebarComponents"
 
 import PromotedSection from "./PromotedSection"
 import CategoryNav from "./CategoryNav"
 import InfinitePosts from "../InfinitePostsList"
-import TagsNav from "./TagsNav"
 
 const sidebarElements = [
-	{ title: "Cośtam1", component: () => <div>adsf1</div> },
-	{ title: "Cośtam2", component: () => <div>adsf2</div> },
-	{ title: "Cośtam3", component: () => <div>adsf3</div> },
-	{ title: "Cośtam4", component: () => <div>adsf4</div> },
-	{ title: "Cośtam5", component: () => <div>adsf5</div> }
+	{ title: "Popularne artykuły", component: PopularArticles },
+	{ title: "Popularne tagi", component: PopularTags }
 ]
 
 const DropsGroup = () => (
@@ -68,7 +65,6 @@ const BlogHomePage = () => {
 						</Main>
 						<Sidebar availableElements={sidebarElements} isRandom>
 							<PoweredByBox />
-							<TagsNav />
 						</Sidebar>
 					</LayoutManager>
 				</PageContainer>
