@@ -127,9 +127,12 @@ export const Sidebar = ({ children, availableElements, isRandom }) => {
 		return null
 	}
 
-	const { elements, loadMore } = useLoadableElements(availableElements, { isRandom })
+	const { sidebarRef, heightDifference, forceUpdateDifference, isMobile } = layoutContext
 
-	const { sidebarRef, heightDifference, forceUpdateDifference } = layoutContext
+	// don't render on mobile
+	if (isMobile) return null
+
+	const { elements, loadMore } = useLoadableElements(availableElements, { isRandom })
 
 	const sectionHeight = 400
 
@@ -143,8 +146,8 @@ export const Sidebar = ({ children, availableElements, isRandom }) => {
 	return (
 		<SidebarContainer ref={sidebarRef}>
 			<div>{children}</div>
-			{elements.map(({ title, component: C }) => (
-				<SidebarSection title={title}>
+			{elements.map(({ title, component: C }, i) => (
+				<SidebarSection title={title} key={i}>
 					<C />
 				</SidebarSection>
 			))}
@@ -152,42 +155,53 @@ export const Sidebar = ({ children, availableElements, isRandom }) => {
 	)
 }
 
-export const LayoutManager = ({ children, availableElements, isRandom, columns }) => {
-	const mainRef = useRef()
-	const sidebarRef = useRef()
+export const LayoutManager = withBreakpoints(
+	({ currentBreakpoint, children, availableElements, isRandom, columns }) => {
+		const mainRef = useRef()
+		const sidebarRef = useRef()
 
-	const [heightDifference, setHeightDifference] = useState(0)
+		const [heightDifference, setHeightDifference] = useState(0)
 
-	const limit = 200
+		const limit = 200
+		const isMobile = +currentBreakpoint <= 1
+		console.log(currentBreakpoint, isMobile)
 
-	const update = () => {
-		const mainHeight = mainRef.current.clientHeight
-		const sidebarHeight = sidebarRef.current.clientHeight
-		let difference = Math.max(mainHeight - sidebarHeight, 0)
+		const update = () => {
+			// exit if any of the refs are not bound to avoid errors
+			if (!mainRef.current || !sidebarRef.current) return
 
-		console.log("update:", difference)
+			const mainHeight = mainRef.current.clientHeight
+			const sidebarHeight = sidebarRef.current.clientHeight
+			let difference = Math.max(mainHeight - sidebarHeight, 0)
 
-		setHeightDifference(difference)
+			setHeightDifference(difference)
+		}
+
+		useEffect(() => {
+			const unregister = () => window.removeEventListener("scroll", throttledUpdate)
+
+			// don't listen on mobile
+			if (isMobile) return unregister
+
+			const throttledUpdate = throttle(update, limit, { leading: true })
+
+			window.addEventListener("scroll", throttledUpdate)
+
+			return unregister
+		}, [mainRef.current, sidebarRef.current])
+
+		const contextValue = {
+			mainRef,
+			sidebarRef,
+			heightDifference,
+			isMobile,
+			forceUpdateDifference: update
+		}
+
+		return (
+			<LayoutContext.Provider value={contextValue}>
+				<Layout columns={columns}>{children}</Layout>
+			</LayoutContext.Provider>
+		)
 	}
-
-	useEffect(() => {
-		const throttledUpdate = throttle(update, limit, { leading: true })
-
-		window.addEventListener("scroll", throttledUpdate)
-
-		return () => window.removeEventListener("scroll", throttledUpdate)
-	}, [mainRef.current, sidebarRef.current])
-
-	const contextValue = {
-		mainRef,
-		sidebarRef,
-		heightDifference,
-		forceUpdateDifference: update
-	}
-
-	return (
-		<LayoutContext.Provider value={contextValue}>
-			<Layout columns={columns}>{children}</Layout>
-		</LayoutContext.Provider>
-	)
-}
+)
