@@ -5,7 +5,6 @@ import styled from "styled-components/macro"
 
 import ProfilePicture from "../ProfilePicture"
 
-import { ROUTES } from "../../constants"
 import getProfilePictureURL from "../../utils/getProfilePictureURL"
 import { useFirebase, useAuthentication, useUserData } from "../../hooks"
 import { route } from "../../utils"
@@ -33,7 +32,7 @@ export const SubmenuContainer = styled.div`
 
 const Indicator = styled.div`
 	position: relative;
-	font-size: 2.4rem;
+	font-size: 2.2rem;
 
 	.number-display {
 		position: absolute;
@@ -72,7 +71,7 @@ const MessageStyles = styled.div`
 `
 
 const ManagerStyles = styled.div`
-	color: var(--black75);
+	color: black;
 	cursor: pointer;
 	height: 100%;
 	display: flex;
@@ -180,7 +179,7 @@ const MessagesManager = () => {
 	return (
 		<ManagerStyles>
 			<Indicator>
-				<FontAwesomeIcon icon={["far", "envelope"]} fixedWidth />
+				<FontAwesomeIcon icon={["far", "envelope"]} />
 				{hasMessages && <div className="number-display">{messagesCount}</div>}
 			</Indicator>
 			<SubmenuContainer align="right">

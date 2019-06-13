@@ -43,7 +43,8 @@ import {
 	faThList,
 	faClipboard,
 	faCode,
-	faBell
+	faBell,
+	faEnvelope
 } from "@fortawesome/free-solid-svg-icons"
 import {
 	faHeart as farHeart,
@@ -106,5 +107,6 @@ library.add(
 	faArrowLeft,
 	faCode,
 	faBell,
-	farBell
+	farBell,
+	faEnvelope
 )

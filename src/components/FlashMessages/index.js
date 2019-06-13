@@ -52,7 +52,7 @@ const MessageContainer = styled.div`
 	animation-delay: 0s, var(--exit-delay);
 `
 
-const Message = ({ ttl = 2500, id, textContent, type, onDelete }) => {
+const Message = ({ ttl = 4000, id, textContent, type, onDelete }) => {
 	useEffect(() => {
 		const timeoutId = setTimeout(() => {
 			onDelete(id)

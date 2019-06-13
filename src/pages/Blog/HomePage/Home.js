@@ -17,10 +17,6 @@ import TagsNav from "./TagsNav"
 
 const sidebarElements = [
 	{ title: "Cośtam1", component: () => <div>adsf1</div> },
-	{
-		title: "Popularne Tagi",
-		component: TagsNav
-	},
 	{ title: "Cośtam2", component: () => <div>adsf2</div> },
 	{ title: "Cośtam3", component: () => <div>adsf3</div> },
 	{ title: "Cośtam4", component: () => <div>adsf4</div> },
@@ -72,6 +68,7 @@ const BlogHomePage = () => {
 						</Main>
 						<Sidebar availableElements={sidebarElements} isRandom>
 							<PoweredByBox />
+							<TagsNav />
 						</Sidebar>
 					</LayoutManager>
 				</PageContainer>
