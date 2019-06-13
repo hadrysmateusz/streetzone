@@ -142,8 +142,10 @@ export const Sidebar = ({ children, availableElements, isRandom }) => {
 	return (
 		<SidebarContainer ref={sidebarRef}>
 			<div>{children}</div>
-			{elements.map(({ title, component }) => (
-				<SidebarSection title={title}>{component}</SidebarSection>
+			{elements.map(({ title, component: C }) => (
+				<SidebarSection title={title}>
+					<C />
+				</SidebarSection>
 			))}
 		</SidebarContainer>
 	)
