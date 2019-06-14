@@ -68,12 +68,11 @@ const PlaceholderContainer = styled.div`
 	width: 100%;
 	height: 100%;
 	background: var(--almost-white);
-	border: 1px solid var(--gray100);
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-	color: var(--gray0);
+	color: var(--gray25);
 	padding: var(--spacing3) 0;
 	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
 		padding: var(--spacing4) 0;
@@ -81,6 +80,7 @@ const PlaceholderContainer = styled.div`
 
 	.icon {
 		font-size: 3rem;
+		color: var(--gray50);
 	}
 `
 
