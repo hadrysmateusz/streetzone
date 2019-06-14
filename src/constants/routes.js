@@ -17,6 +17,7 @@ export const ITEM_DETAILS = "/i/:id"
 export const NEW_ITEM = "/i/nowy"
 export const DELETE_ITEM = "/i/usun/:id"
 export const EDIT_ITEM = "/i/:id/edytuj"
+export const ITEM_PROMOTE = "/i/:id/promuj"
 
 export const DESIGNERS = "/marki"
 

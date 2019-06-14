@@ -82,6 +82,10 @@ const NewItem = Loadable({
 	loader: () => import("../../pages/NewItem"),
 	loading: LoadableComponentSpinner
 })
+const ItemPromote = Loadable({
+	loader: () => import("../../pages/ItemPromote"),
+	loading: LoadableComponentSpinner
+})
 
 // ===== BLOG =====
 const BlogBase = Loadable({
@@ -447,7 +451,11 @@ const routes = [
 		component: EditItem,
 		title: `Edytuj przedmiot`
 	},
-
+	{
+		path: ROUTES.ITEM_PROMOTE,
+		component: ItemPromote,
+		title: `Promuj przedmiot`
+	},
 	{
 		path: ROUTES.FAQ,
 		component: FAQ,

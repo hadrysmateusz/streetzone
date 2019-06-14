@@ -6,15 +6,16 @@ import { withAuthorization, withAuthentication } from "../../components/UserSess
 import LoadingSpinner from "../../components/LoadingSpinner"
 import { PageContainer } from "../../components/Containers"
 import { CustomFile } from "../../components/FileHandler"
-import useFirebase from "../../hooks/useFirebase"
 import EmptyState from "../../components/EmptyState"
 
 import { NotFoundError } from "../../errors"
-import EditItemForm from "./EditItemForm"
-import useAuthentication from "../../hooks/useAuthentication"
+import { useAuthentication, useFirebase } from "../../hooks"
 import { formatItemDataForDb, MODE } from "../../utils/formatting/formatItemData"
 import { CONST } from "../../constants"
-import { S_THUMB_POSTFIX, M_THUMB_POSTFIX, L_THUMB_POSTFIX } from "../../constants/const"
+
+import EditItemForm from "./EditItemForm"
+
+const { S_THUMB_POSTFIX, M_THUMB_POSTFIX, L_THUMB_POSTFIX } = CONST
 
 const formatDataForEditForm = (price, condition, description, files) => ({
 	price: Number.parseInt(price),

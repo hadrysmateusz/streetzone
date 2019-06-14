@@ -185,7 +185,7 @@ const EditButton = withRouter(({ history, id }) => {
 			onClick={(e) => {
 				e.preventDefault() // prevent the Link to item from triggering
 				/* This is not an a-tag to allow for programmatic disabling */
-				history.replace(route("EDIT_ITEM", { id }))
+				history.push(route("EDIT_ITEM", { id }))
 			}}
 		>
 			Edytuj
@@ -246,7 +246,7 @@ const OwnerItemCard = ({
 				</InfoContainer>
 
 				<ActionsContainer>
-					<Button accent fullWidth>
+					<Button accent fullWidth as={Link} to={route("ITEM_PROMOTE", { id })}>
 						Promuj
 					</Button>
 					<PromoteStatus id={id} />
