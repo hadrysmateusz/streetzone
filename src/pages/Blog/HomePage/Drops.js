@@ -76,7 +76,9 @@ const SectionCardContainer = styled.div`
 	:hover {
 		background: var(--almost-white);
 	}
-	border: 1px solid ${(p) => (p.selected ? "black" : "var(--gray75)")};
+	border: 1px solid ${(p) => (p.selected ? "var(--black0)" : "var(--gray75)")};
+
+	transition: border-color 350ms ease, background-color 200ms ease;
 
 	.title {
 		color: var(--black0);

@@ -25,6 +25,10 @@ export const BigContainer = styled.div`
 
 	a {
 		border: 1px solid var(--gray75);
+		transition: border-color 200ms ease;
+		:hover {
+			border: 1px solid var(--gray25);
+		}
 		overflow: hidden;
 		display: grid;
 		grid-template-columns: 1fr 210px;
