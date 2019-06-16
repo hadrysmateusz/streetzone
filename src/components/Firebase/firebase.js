@@ -4,6 +4,7 @@ import "firebase/auth"
 import "firebase/storage"
 import "firebase/firestore"
 import "firebase/messaging"
+import "firebase/functions"
 import { S_THUMB_POSTFIX, M_THUMB_POSTFIX, L_THUMB_POSTFIX } from "../../constants/const"
 import areNotificationsSupported from "../../utils/areNotificationsSupported"
 
@@ -19,6 +20,17 @@ const config = {
 class Firebase {
 	constructor() {
 		app.initializeApp(config)
+
+		// Cloud Functions
+		this.functions = app.functions()
+		this.fn = this.functions.httpsCallable
+
+		// use the locally emulated functions in development
+		if (process.env.NODE_ENV === "development") {
+			this.functions._url = function(name) {
+				return `http://localhost:5001/streetwear-app/us-central1/${name}`
+			}
+		}
 
 		// Auth
 		/* emailAuthProvider needs to be on top or else it will be overriden */

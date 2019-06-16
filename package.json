@@ -9,6 +9,7 @@
 		"@fortawesome/free-solid-svg-icons": "^5.8.1",
 		"@fortawesome/react-fontawesome": "^0.1.4",
 		"@sentry/browser": "^5.1.0",
+		"axios": "^0.19.0",
 		"body-scroll-lock": "^2.6.1",
 		"clone-deep": "^4.0.1",
 		"deep-equal": "^1.0.1",
@@ -86,7 +87,11 @@
 		"predeploy:staging": "yarn build:staging",
 		"deploy:staging": "firebase deploy --only hosting -P staging",
 		"predeploy:prod": "yarn build:prod",
-		"deploy:prod": "firebase deploy --only hosting -P prod"
+		"deploy:prod": "firebase deploy --only hosting -P prod",
+		"deploy-functions:dev": "firebase deploy --only functions -P dev",
+		"deploy-functions:staging": "firebase deploy --only functions -P staging",
+		"deploy-functions:prod": "firebase deploy --only functions -P prod",
+		"emulate-functions:dev": "set GOOGLE_APPLICATION_CREDENTIALS=functions\\firebase-admin-key-dev.json && firebase emulators:start --only functions"
 	},
 	"eslintConfig": {
 		"extends": "react-app"

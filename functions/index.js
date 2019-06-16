@@ -6,7 +6,10 @@ const spawn = require("child-process-promise").spawn
 const path = require("path")
 const os = require("os")
 const fs = require("fs")
-const serviceAccount = require("./firebase-admin-key.json")
+const axios = require("axios")
+const serviceAccount = require("./firebase-admin-key-dev.json")
+
+require("dotenv").config()
 
 const JPEG_EXTENSION = ".jpg"
 const S_THUMB_POSTFIX = "_S_THUMB"
@@ -18,6 +21,7 @@ const signedURLConfig = {
 	expires: "03-01-2500"
 }
 
+// The FIREBASE_CONFIG environment variable is included automatically in Cloud Functions for Firebase functions that were deployed via the Firebase CLI
 const adminConfig = JSON.parse(process.env.FIREBASE_CONFIG)
 adminConfig.credential = admin.credential.cert(serviceAccount)
 admin.initializeApp(adminConfig)
@@ -38,8 +42,8 @@ const DESIGNERS_ALGOLIA_INDEX = isProd ? "prod_designers" : "dev_designers"
 
 // ===============================================================================
 
-const ALGOLIA_ID = functions.config().algolia.app_id
-const ALGOLIA_ADMIN_KEY = functions.config().algolia.api_key
+const ALGOLIA_ID = process.env.ALGOLIA_APP_ID
+const ALGOLIA_ADMIN_KEY = process.env.ALGOLIA_API_KEY
 const client = algoliasearch(ALGOLIA_ID, ALGOLIA_ADMIN_KEY)
 
 const bucket = admin.storage().bucket()
@@ -522,3 +526,68 @@ exports.onChatMessageSent = functions.firestore
 		})
 		return Promise.all(tokensToRemove)
 	})
+
+// Pay for promoting
+exports.promote = functions.https.onCall(async (data, context) => {
+	const CREATE_ORDER_URL = "https://secure.snd.payu.com/api/v2_1/orders"
+	const GET_OAUTH_TOKEN_URL =
+		"https://secure.snd.payu.com/pl/standard/user/oauth/authorize"
+
+	let access_token
+
+	try {
+		const res = await axios.post(
+			GET_OAUTH_TOKEN_URL,
+			"grant_type=client_credentials&client_id=358631&client_secret=1ad614470dab9f6caec6fecbffd6b5d9"
+		)
+
+		access_token = res.data.access_token
+	} catch (err) {
+		return err
+	}
+
+	try {
+		let cost
+
+		switch (data.level) {
+			case 0:
+				cost = 500
+				break
+			case 1:
+				cost = 1000
+				break
+			case 2:
+				cost = 2000
+				break
+			default:
+				return { error: "You need to provide the promoting level" }
+		}
+
+		await axios.post(
+			CREATE_ORDER_URL,
+			{
+				customerIp: data.customerIp,
+				merchantPosId: process.env.PAYU_CLIENT_ID,
+				description: "Promote Listing",
+				currencyCode: "PLN",
+				totalAmount: cost,
+				products: [
+					{
+						name: `Promote Listing Level-${data.level}`,
+						unitPrice: cost,
+						quantity: "1"
+					}
+				]
+			},
+			{
+				maxRedirects: 0,
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer ${access_token}`
+				}
+			}
+		)
+	} catch (err) {
+		return err.response.data
+	}
+})

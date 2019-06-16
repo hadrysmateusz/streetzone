@@ -13,12 +13,10 @@
 /build
 
 # secrets
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-.env.staging.local
-functions/firebase-admin-key.json
+functions/firebase-admin-key-dev.json
+functions/firebase-admin-key-staging.json
+functions/firebase-admin-key-prod.json
+functions/.env
 
 # misc
 .DS_Store
