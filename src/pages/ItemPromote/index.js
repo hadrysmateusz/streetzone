@@ -43,20 +43,26 @@ const EditItemPage = ({ match, history }) => {
 
 		var getIPAddress = async function() {
 			try {
-				const res = await axios.get("https://api.ipify.org?format=json")
-				return res.data.ip
+				const res = await axios.get("https://api.ipify.org")
+				return res.data
 			} catch (err) {
 				// TODO: figure out how to handle this
 				console.log(err)
 			}
 		}
 
-		const ip = getIPAddress()
-		const data = { itemId: item.id, level: 0, clientIp: ip }
+		const ip = await getIPAddress()
+		const data = { itemId: item.id, level: 0, customerIp: ip }
 		const promote = firebase.functions.httpsCallable("promote")
 
 		try {
 			const res = await promote(data)
+			console.log("response:", res)
+
+			if (!res.data.redirectUri) {
+				throw Error("No redirectUri received")
+			}
+
 			const wasOpened = window.open(res.data.redirectUri, "_blank")
 			if (wasOpened === null) {
 				// TODO: handle window being blocked by a popup blocker
@@ -64,7 +70,6 @@ const EditItemPage = ({ match, history }) => {
 				// TODO: add a button/link to manually redirect if it doesn't automatically
 				// https://developer.mozilla.org/en-US/docs/Web/API/Window/open
 			}
-			console.log("response:", res)
 		} catch (err) {
 			console.log("error:", err)
 		}

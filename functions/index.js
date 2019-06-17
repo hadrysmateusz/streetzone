@@ -16,6 +16,11 @@ const S_THUMB_POSTFIX = "_S_THUMB"
 const M_THUMB_POSTFIX = "_M_THUMB"
 const L_THUMB_POSTFIX = "_L_THUMB"
 
+const PRODUCTION_DOMAIN = "streetzone.pl"
+
+const CREATE_ORDER_URL = "https://secure.snd.payu.com/api/v2_1/orders"
+const GET_OAUTH_TOKEN_URL = "https://secure.snd.payu.com/pl/standard/user/oauth/authorize"
+
 const signedURLConfig = {
 	action: "read",
 	expires: "03-01-2500"
@@ -42,10 +47,13 @@ const DESIGNERS_ALGOLIA_INDEX = isProd ? "prod_designers" : "dev_designers"
 
 // ===============================================================================
 
-const ALGOLIA_ID = process.env.ALGOLIA_APP_ID
-const ALGOLIA_ADMIN_KEY = process.env.ALGOLIA_API_KEY
-const client = algoliasearch(ALGOLIA_ID, ALGOLIA_ADMIN_KEY)
+const ALGOLIA_ID = process.env.ALGOLIA_APP_ID || functions.config().algolia.app_id
+const ALGOLIA_ADMIN_KEY = process.env.ALGOLIA_API_KEY || functions.config().algolia.app_id
+const PAYU_CLIENT_ID = process.env.PAYU_CLIENT_ID || functions.config().payu.client_id
+const PAYU_CLIENT_SECRET =
+	process.env.PAYU_CLIENT_SECRET || functions.config().payu.client_secret
 
+const client = algoliasearch(ALGOLIA_ID, ALGOLIA_ADMIN_KEY)
 const bucket = admin.storage().bucket()
 
 // ------------------------------------
@@ -529,16 +537,14 @@ exports.onChatMessageSent = functions.firestore
 
 // Pay for promoting
 exports.promote = functions.https.onCall(async (data, context) => {
-	const CREATE_ORDER_URL = "https://secure.snd.payu.com/api/v2_1/orders"
-	const GET_OAUTH_TOKEN_URL =
-		"https://secure.snd.payu.com/pl/standard/user/oauth/authorize"
-
+	const { itemId, customerIp, level } = data
 	let access_token
+	let cost
 
 	try {
 		const res = await axios.post(
 			GET_OAUTH_TOKEN_URL,
-			"grant_type=client_credentials&client_id=358631&client_secret=1ad614470dab9f6caec6fecbffd6b5d9"
+			`grant_type=client_credentials&client_id=${PAYU_CLIENT_ID}&client_secret=${PAYU_CLIENT_SECRET}`
 		)
 
 		access_token = res.data.access_token
@@ -547,47 +553,107 @@ exports.promote = functions.https.onCall(async (data, context) => {
 	}
 
 	try {
-		let cost
-
 		switch (data.level) {
 			case 0:
-				cost = 500
+				cost = 499
 				break
 			case 1:
-				cost = 1000
+				cost = 999
 				break
 			case 2:
-				cost = 2000
+				cost = 2500
 				break
 			default:
 				return { error: "You need to provide the promoting level" }
 		}
 
-		await axios.post(
-			CREATE_ORDER_URL,
-			{
-				customerIp: data.customerIp,
-				merchantPosId: process.env.PAYU_CLIENT_ID,
-				description: "Promote Listing",
-				currencyCode: "PLN",
-				totalAmount: cost,
-				products: [
-					{
-						name: `Promote Listing Level-${data.level}`,
-						unitPrice: cost,
-						quantity: "1"
-					}
-				]
-			},
-			{
-				maxRedirects: 0,
-				headers: {
-					"Content-Type": "application/json",
-					Authorization: `Bearer ${access_token}`
+		const notifyUrl = isProd
+			? "https://us-central1-streetwear-app-prod.cloudfunctions.net/promoteNotification"
+			: "https://us-central1-streetwear-app.cloudfunctions.net/promoteNotification"
+
+		const continueUrl = isProd
+			? `https://${PRODUCTION_DOMAIN}/po-promowaniu`
+			: "http://localhost:3000/po-promowaniu"
+
+		const merchantPosId = PAYU_CLIENT_ID
+
+		const additionalDescription = JSON.stringify({ itemId, level })
+
+		const createOrderData = {
+			notifyUrl,
+			continueUrl,
+			customerIp,
+			merchantPosId,
+			description: `Promote Listing ${itemId}`,
+			additionalDescription,
+			currencyCode: "PLN",
+			totalAmount: cost,
+			products: [
+				{
+					name: `Promote Listing ${itemId} (Level-${level})`,
+					unitPrice: cost,
+					quantity: "1"
 				}
+			]
+		}
+
+		const createOrderOptions = {
+			maxRedirects: 0,
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${access_token}`
 			}
-		)
+		}
+
+		console.log(createOrderData)
+		console.log(createOrderOptions)
+
+		await axios.post(CREATE_ORDER_URL, createOrderData, createOrderOptions)
 	} catch (err) {
 		return err.response.data
 	}
 })
+
+const express = require("express")
+const cors = require("cors")
+
+const app = express()
+
+app.use(express.json()) // for parsing application/json
+
+app.use(cors({ origin: true }))
+
+app.all("/", (req, res) => {
+	console.log("notification body:", req.body)
+
+	if (!req.body.additionalDescription) {
+		console.log("Order has empty additionalDescription field")
+		res.status(500).end()
+		return
+	}
+
+	const { itemId, level } = req.body.additionalDescription
+
+	if (itemId === undefined || level === undefined) {
+		console.log("Some of the required values are missing")
+		res.status(500).end()
+		return
+	}
+
+	const db = admin.firestore()
+	db.collection("items")
+		.doc(itemId)
+		.update({ promotedAt: Date.now(), lastPromotionLevel: level })
+		.then(() => {
+			res.status(200).end()
+			return
+		})
+		.catch((err) => {
+			console.log("There was a problem with updating the item in firestore", err)
+			res.status(500).end()
+			return
+		})
+})
+
+// Expose Express API as a single Cloud Function:
+exports.promoteNotification = functions.https.onRequest(app)

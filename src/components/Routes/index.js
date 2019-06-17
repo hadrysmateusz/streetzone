@@ -86,6 +86,10 @@ const ItemPromote = Loadable({
 	loader: () => import("../../pages/ItemPromote"),
 	loading: LoadableComponentSpinner
 })
+const ItemPromoteAfter = Loadable({
+	loader: () => import("../../pages/ItemPromoteAfter"),
+	loading: LoadableComponentSpinner
+})
 
 // ===== BLOG =====
 const BlogBase = Loadable({
@@ -455,6 +459,10 @@ const routes = [
 		path: ROUTES.ITEM_PROMOTE,
 		component: ItemPromote,
 		title: `Promuj przedmiot`
+	},
+	{
+		path: ROUTES.ITEM_PROMOTE_AFTER,
+		component: ItemPromoteAfter
 	},
 	{
 		path: ROUTES.FAQ,
