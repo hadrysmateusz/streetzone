@@ -26,11 +26,11 @@ class Firebase {
 		this.fn = this.functions.httpsCallable
 
 		// use the locally emulated functions in development
-		if (process.env.NODE_ENV === "development") {
-			this.functions._url = function(name) {
-				return `http://localhost:5001/streetwear-app/us-central1/${name}`
-			}
-		}
+		// if (process.env.NODE_ENV === "development") {
+		// 	this.functions._url = function(name) {
+		// 		return `http://localhost:5001/streetwear-app/us-central1/${name}`
+		// 	}
+		// }
 
 		// Auth
 		/* emailAuthProvider needs to be on top or else it will be overriden */

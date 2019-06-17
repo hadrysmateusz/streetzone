@@ -112,8 +112,7 @@ export const Main = ({ children }) => {
 	const layoutContext = useContext(LayoutContext)
 
 	if (!layoutContext) {
-		console.error("You can't use <Main> outside of <LayoutManager>")
-		return null
+		console.error("You shouldn't use <Main> outside of <LayoutManager>")
 	}
 
 	return <MainContainer ref={layoutContext.mainRef}>{children}</MainContainer>
@@ -123,14 +122,10 @@ export const Sidebar = ({ children, availableElements, isRandom }) => {
 	const layoutContext = useContext(LayoutContext)
 
 	if (!layoutContext) {
-		console.error("You can't use <Sidebar> outside of <LayoutManager>")
-		return null
+		console.error("You shouldn't use <Sidebar> outside of <LayoutManager>")
 	}
 
 	const { sidebarRef, heightDifference, forceUpdateDifference, isMobile } = layoutContext
-
-	// don't render on mobile
-	if (isMobile) return null
 
 	const { elements, loadMore } = useLoadableElements(availableElements, { isRandom })
 
@@ -141,9 +136,9 @@ export const Sidebar = ({ children, availableElements, isRandom }) => {
 			loadMore()
 			forceUpdateDifference()
 		}
-	}, [heightDifference])
+	}, [heightDifference, loadMore, forceUpdateDifference])
 
-	return (
+	return isMobile ? null : (
 		<SidebarContainer ref={sidebarRef}>
 			<div>{children}</div>
 			{elements.map(({ title, component: C }, i) => (

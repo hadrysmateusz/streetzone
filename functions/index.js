@@ -594,7 +594,13 @@ exports.promote = functions.https.onCall(async (data, context) => {
 					unitPrice: cost,
 					quantity: "1"
 				}
-			]
+			],
+			buyer: {
+				extCustomerId: context.auth.uid || null,
+				email: context.auth.token.email || null,
+				firstName: context.auth.token.name || null,
+				language: "pl"
+			}
 		}
 
 		const createOrderOptions = {
@@ -624,35 +630,29 @@ app.use(express.json()) // for parsing application/json
 app.use(cors({ origin: true }))
 
 app.all("/", (req, res) => {
-	console.log("notification body:", req.body)
+	try {
+		console.log("notification body:", req.body)
+		const order = req.body.order
+		const { itemId, level } = JSON.parse(order.additionalDescription)
 
-	if (!req.body.additionalDescription) {
-		console.log("Order has empty additionalDescription field")
+		const db = admin.firestore()
+		db.collection("items")
+			.doc(itemId)
+			.update({ promotedAt: Date.now(), lastPromotionLevel: level })
+			.then(() => {
+				res.status(200).end()
+				return
+			})
+			.catch((err) => {
+				console.log("There was a problem with updating the item in firestore", err)
+				res.status(500).end()
+				return
+			})
+	} catch (err) {
+		console.log(err)
 		res.status(500).end()
 		return
 	}
-
-	const { itemId, level } = req.body.additionalDescription
-
-	if (itemId === undefined || level === undefined) {
-		console.log("Some of the required values are missing")
-		res.status(500).end()
-		return
-	}
-
-	const db = admin.firestore()
-	db.collection("items")
-		.doc(itemId)
-		.update({ promotedAt: Date.now(), lastPromotionLevel: level })
-		.then(() => {
-			res.status(200).end()
-			return
-		})
-		.catch((err) => {
-			console.log("There was a problem with updating the item in firestore", err)
-			res.status(500).end()
-			return
-		})
 })
 
 // Expose Express API as a single Cloud Function:
