@@ -8,8 +8,15 @@ const os = require("os")
 const fs = require("fs")
 const axios = require("axios")
 const serviceAccount = require("./firebase-admin-key-dev.json")
+const moment = require("moment")
+const express = require("express")
+const cors = require("cors")
 
+require("moment/locale/pl")
 require("dotenv").config()
+
+// set moment.js locale
+moment.locale("pl")
 
 const JPEG_EXTENSION = ".jpg"
 const S_THUMB_POSTFIX = "_S_THUMB"
@@ -55,6 +62,7 @@ const PAYU_CLIENT_SECRET =
 
 const client = algoliasearch(ALGOLIA_ID, ALGOLIA_ADMIN_KEY)
 const bucket = admin.storage().bucket()
+const db = admin.firestore()
 
 // ------------------------------------
 // ---- Algolia Index Sync Helpers ----
@@ -228,7 +236,6 @@ exports.removeItemFromUser = functions.firestore
 		const data = snap.data()
 		const userId = data.userId
 		const id = context.params.id
-		const db = admin.firestore()
 
 		// get owner's data
 		const userSnap = await db
@@ -255,7 +262,6 @@ exports.removeItemFromUser = functions.firestore
 exports.removeUserItems = functions.firestore
 	.document(`users/{userId}`)
 	.onDelete((snap, context) => {
-		const db = admin.firestore()
 		const data = snap.data()
 		data.items.forEach((item) => {
 			db.collection("items")
@@ -271,7 +277,6 @@ exports.removeUserItems = functions.firestore
 // When an authUser is deleted the corresponding user is removed from db
 exports.userDbCleanup = functions.auth.user().onDelete((user, ...rest) => {
 	const userId = user.uid
-	const db = admin.firestore()
 	db.collection("users")
 		.doc(userId)
 		.delete()
@@ -413,7 +418,6 @@ const writeUrlsToDb = async (userId, urls) => {
 	})
 
 	// Add the URLs to the Database
-	const db = admin.firestore()
 	return db
 		.collection("users")
 		.doc(userId)
@@ -454,7 +458,6 @@ exports.onChatMessageSent = functions.firestore
 	.onCreate(async (snap, context) => {
 		const roomId = context.params.roomId
 
-		const db = admin.firestore()
 		const messageData = snap.data()
 		const senderId = messageData.author
 
@@ -535,11 +538,78 @@ exports.onChatMessageSent = functions.firestore
 		return Promise.all(tokensToRemove)
 	})
 
+class PromotingLevel {
+	constructor(level, cost, duration, bumps) {
+		this.level = level
+		this.cost = cost
+		this.duration = duration
+		this.bumps = bumps
+	}
+
+	formatForDb(oldData) {
+		const { promotedUntil: startAt = Date.now(), bumps: remainingBumps = 0 } = oldData
+
+		const promotedUntil = moment(startAt)
+			.add(this.duration, "days")
+			.valueOf()
+
+		return {
+			promotedAt: Date.now(),
+			promotedUntil,
+			lastPromotionLevel: this.level,
+			bumps: this.bumps + remainingBumps
+		}
+	}
+}
+
+class PromotingManager {
+	constructor() {
+		this.levels = new Map()
+	}
+
+	addLevel(object) {
+		const level = object.level
+		if (this.levels.has(level)) {
+			throw Error("This promoting level already exists")
+		}
+		this.levels.set(level, object)
+	}
+
+	getLevel(level) {
+		return this.levels.get(level)
+	}
+
+	async promoteItem(itemId, level) {
+		const levelObject = this.getLevel(level)
+
+		const oldItemSnap = await db
+			.collection("items")
+			.doc(itemId)
+			.get()
+		const oldItemData = oldItemSnap.data()
+
+		const formattedData = levelObject.formatForDb(oldItemData)
+
+		console.log("levelObject", levelObject)
+		console.log("formattedData", formattedData)
+
+		return db
+			.collection("items")
+			.doc(itemId)
+			.update(formattedData)
+	}
+}
+
+const promotingManager = new PromotingManager()
+
+promotingManager.addLevel(new PromotingLevel(0, 499, 7, 0))
+promotingManager.addLevel(new PromotingLevel(1, 999, 10, 4))
+promotingManager.addLevel(new PromotingLevel(2, 2500, 14, 10))
+
 // Pay for promoting
 exports.promote = functions.https.onCall(async (data, context) => {
 	const { itemId, customerIp, level } = data
 	let access_token
-	let cost
 
 	try {
 		const res = await axios.post(
@@ -553,19 +623,7 @@ exports.promote = functions.https.onCall(async (data, context) => {
 	}
 
 	try {
-		switch (data.level) {
-			case 0:
-				cost = 499
-				break
-			case 1:
-				cost = 999
-				break
-			case 2:
-				cost = 2500
-				break
-			default:
-				return { error: "You need to provide the promoting level" }
-		}
+		const { cost } = promotingManager.getLevel(level)
 
 		const notifyUrl = isProd
 			? "https://us-central1-streetwear-app-prod.cloudfunctions.net/promoteNotification"
@@ -620,38 +678,32 @@ exports.promote = functions.https.onCall(async (data, context) => {
 	}
 })
 
-const express = require("express")
-const cors = require("cors")
-
 const app = express()
-
 app.use(express.json()) // for parsing application/json
-
 app.use(cors({ origin: true }))
-
-app.all("/", (req, res) => {
+app.post("/", (req, res) => {
 	try {
-		console.log("notification body:", req.body)
 		const order = req.body.order
+		console.log("order:", order)
+
+		if (order.status !== "COMPLETED") {
+			return res.status(200).end()
+		}
+
 		const { itemId, level } = JSON.parse(order.additionalDescription)
 
-		const db = admin.firestore()
-		db.collection("items")
-			.doc(itemId)
-			.update({ promotedAt: Date.now(), lastPromotionLevel: level })
+		promotingManager
+			.promoteItem(itemId, level)
 			.then(() => {
-				res.status(200).end()
-				return
+				return res.status(200).end()
 			})
 			.catch((err) => {
 				console.log("There was a problem with updating the item in firestore", err)
-				res.status(500).end()
-				return
+				return res.status(500).end()
 			})
 	} catch (err) {
 		console.log(err)
-		res.status(500).end()
-		return
+		return res.status(500).end()
 	}
 })
 

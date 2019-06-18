@@ -52,7 +52,7 @@ const EditItemPage = ({ match, history }) => {
 		}
 
 		const ip = await getIPAddress()
-		const data = { itemId: item.id, level: 0, customerIp: ip }
+		const data = { itemId: item.id, level: 2, customerIp: ip }
 		const promote = firebase.functions.httpsCallable("promote")
 
 		try {

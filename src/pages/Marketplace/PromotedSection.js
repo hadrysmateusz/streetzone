@@ -1,6 +1,5 @@
 import React from "react"
 import styled from "styled-components/macro"
-import moment from "moment"
 import { Link } from "react-router-dom"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
@@ -182,15 +181,11 @@ const PromotedPlaceholder = () => {
 }
 
 const PromotedSection = () => {
-	const minDate = moment(Date.now())
-		.subtract(7, "days")
-		.valueOf()
-
 	return (
 		<OuterContainer>
 			<StatelessSearchWrapper
 				indexName={CONST.ITEMS_MARKETPLACE_DEFAULT_ALGOLIA_INDEX}
-				refinements={{ promotedAt: { min: minDate } }}
+				refinements={{ promotedUntil: { min: Date.now() } }}
 			>
 				{(hits) => (
 					<PageContainer noMargin>

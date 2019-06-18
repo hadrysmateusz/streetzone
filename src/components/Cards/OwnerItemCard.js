@@ -117,20 +117,39 @@ const StatusContainer = styled.div`
 	}
 `
 
-const PromoteStatus = ({ id }) => {
+const PromoteStatus = ({ lastPromotionLevel, promotedUntil }) => {
+	// TODO: this only shows full days so it effectively shows one less than it should
+	const numDaysLeft = moment(promotedUntil).diff(Date.now(), "days")
+	const hasDaysLeft = +numDaysLeft > 0
+	// TODO: map promotion levels to their names
+	const promotionLevel = hasDaysLeft ? lastPromotionLevel : "Brak"
+
 	return (
 		<StatusContainer>
-			<div>Poziom promowania:</div>
-			<div>Pozostało promowania:</div>
+			<div>
+				Poziom promowania: <b>{promotionLevel}</b>
+			</div>
+			<div>
+				Pozostało promowania: <b>{numDaysLeft || "Brak"}</b>
+			</div>
 		</StatusContainer>
 	)
 }
 
-const RefreshStatus = ({ id }) => {
+const RefreshStatus = ({ refreshedAt, createdAt, bumps }) => {
+	const remainingBumps = bumps || "Brak"
+	const wasRefreshed = refreshedAt && createdAt !== refreshedAt
+	// TODO: this only shows full days so it effectively shows one less than it should
+	const numDaysAgo = wasRefreshed ? moment().diff(refreshedAt, "days") : "Nigdy"
+
 	return (
 		<StatusContainer>
-			<div>Ostatnio odświeżano:</div>
-			<div>Pozostało odświeżeń:</div>
+			<div>
+				Ostatnio odświeżano: <b>{numDaysAgo}</b>
+			</div>
+			<div>
+				Pozostało odświeżeń: <b>{remainingBumps}</b>
+			</div>
 		</StatusContainer>
 	)
 }
@@ -202,10 +221,13 @@ const OwnerItemCard = ({
 	price,
 	size,
 	name,
-	createdAt,
 	description,
 	category,
-	history,
+	createdAt,
+	refreshedAt,
+	promotedUntil,
+	lastPromotionLevel,
+	bumps,
 	currentBreakpoint
 }) => {
 	const { imageURL } = useImage(attachments[mainImageIndex], "M")
@@ -249,9 +271,16 @@ const OwnerItemCard = ({
 					<Button accent fullWidth as={Link} to={route("ITEM_PROMOTE", { id })}>
 						Promuj
 					</Button>
-					<PromoteStatus id={id} />
+					<PromoteStatus
+						lastPromotionLevel={lastPromotionLevel}
+						promotedUntil={promotedUntil}
+					/>
 					<Button fullWidth>Odśwież</Button>
-					<RefreshStatus id={id} />
+					<RefreshStatus
+						numBumps={bumps}
+						refreshedAt={refreshedAt}
+						createdAt={createdAt}
+					/>
 					<LearnMore />
 					<ButtonContainer noMargin>
 						<EditButton id={id} />
