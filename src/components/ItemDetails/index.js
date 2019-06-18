@@ -54,6 +54,7 @@ export const DetailsContainer = styled.div`
 	display: flex;
 	align-content: center;
 	margin-bottom: var(--spacing3);
+	overflow-x: auto;
 
 	> * + * {
 		margin-left: var(--spacing3);
@@ -83,6 +84,7 @@ export const DatesContainer = styled.div`
 `
 
 export const BrandsContainer = styled.div`
+	padding-left: var(--spacing3);
 	display: flex;
 	align-content: center;
 	justify-content: flex-end;
