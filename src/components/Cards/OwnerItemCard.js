@@ -13,7 +13,7 @@ import { useImage } from "../../hooks"
 import { itemDataHelpers, route } from "../../utils"
 import { nLinesHigh } from "../../style-utils"
 
-import { Designers, TopContainer } from "./Common"
+import { Designers, TopContainer, cardBorder } from "./Common"
 import withBreakpoints from "react-breakpoints/lib/withBreakpoints"
 
 const { formatPrice, formatSize } = itemDataHelpers
@@ -23,7 +23,7 @@ const OuterContainer = styled.div`
 	min-height: 0;
 
 	> a {
-		border: 1px solid var(--gray75);
+		${cardBorder}
 		overflow: hidden;
 		display: grid;
 

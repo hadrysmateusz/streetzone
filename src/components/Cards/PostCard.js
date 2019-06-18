@@ -13,7 +13,8 @@ import {
 	DateContainer,
 	MiddleContainer,
 	BottomContainer,
-	InfoContainer
+	InfoContainer,
+	cardBorder
 } from "./Common"
 
 export const Container = styled.div`
@@ -22,7 +23,7 @@ export const Container = styled.div`
 	max-width: 310px;
 
 	a {
-		border: 1px solid var(--gray75);
+		${cardBorder}
 		overflow: hidden;
 		display: grid;
 		grid-template-columns: 100%;

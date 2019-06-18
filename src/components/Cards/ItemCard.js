@@ -16,7 +16,8 @@ import {
 	TopContainer,
 	MiddleContainer,
 	BottomContainer,
-	InfoContainer
+	InfoContainer,
+	cardBorder
 } from "./Common"
 
 export const SmallContainer = styled.div`
@@ -25,7 +26,7 @@ export const SmallContainer = styled.div`
 	width: 100%;
 
 	a {
-		border: 1px solid var(--gray75);
+		${cardBorder}
 		overflow: hidden;
 		display: grid;
 		grid-template-columns: 100%;

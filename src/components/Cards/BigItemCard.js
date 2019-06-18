@@ -17,18 +17,15 @@ import {
 	MiddleContainer,
 	BottomContainer,
 	InfoContainer,
-	DateContainer
+	DateContainer,
+	cardBorder
 } from "./Common"
 
 export const BigContainer = styled.div`
 	min-width: 0; /* this has to be on the outermost component*/
 
 	a {
-		border: 1px solid var(--gray75);
-		transition: border-color 200ms ease;
-		:hover {
-			border: 1px solid var(--gray25);
-		}
+		${cardBorder}
 		overflow: hidden;
 		display: grid;
 		grid-template-columns: 1fr 210px;

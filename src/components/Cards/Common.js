@@ -6,6 +6,14 @@ import { itemDataHelpers } from "../../utils"
 
 const { formatDesigners, formatPrice, formatSize } = itemDataHelpers
 
+export const cardBorder = css`
+	border: 1px solid var(--gray75);
+	transition: border-color 200ms ease;
+	:hover {
+		border: 1px solid var(--gray25);
+	}
+`
+
 export const InfoContainer = styled.div`
 	display: grid;
 	grid-template-rows: auto auto 1fr;
