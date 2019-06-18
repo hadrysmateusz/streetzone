@@ -22,25 +22,46 @@ export const PromotedPostMobileContainer = styled.div`
 		url(${(p) => p.image}), var(--gray100);
 	color: white;
 	padding: var(--spacing3) 0;
+	overflow-y: hidden;
+	text-align: center;
 
-	${overlayTextShadow}
-	${promotedCommon}
+	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
+		:hover {
+			.info-container {
+				transform: none;
+			}
+		}
+	}
+
+	.info-container {
+		transition: transform 200ms ease;
+		transform: translateY(var(--spacing4));
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: flex-end;
+	}
+
+	.additional-info {
+		margin-top: var(--spacing3);
+	}
 
 	.title {
 		font-family: var(--font-family--serif);
 		font-size: var(--font-size--m);
 		font-weight: bold;
 		max-width: 75vw;
-		text-align: center;
 		padding: var(--spacing2);
 	}
 	.info {
 		border-left: 3px solid ${(p) => getCategoryColor(p.category)};
 		padding-left: var(--spacing2);
 		line-height: 1.4;
-		margin: var(--spacing1) 0;
 		color: var(--almost-white);
 	}
+
+	${overlayTextShadow}
+	${promotedCommon}
 `
 
 export const PromotedDropContainer = styled.div`

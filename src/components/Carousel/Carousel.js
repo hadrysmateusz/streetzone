@@ -18,16 +18,16 @@ const ContentContainer = styled.div`
 `
 
 const Carousel = ({ handleChange, children, nOfElements }) => {
-	const { onChangeIndex, current } = useCarousel(nOfElements, handleChange)
+	const { changeIndex, current } = useCarousel(nOfElements, handleChange)
 
 	return (
 		<OuterContainer>
-			<Indicator nOfElements={nOfElements} current={current} onClick={onChangeIndex} />
+			<Indicator nOfElements={nOfElements} current={current} onClick={changeIndex} />
 
 			<ContentContainer>
 				<SwipeableViews
 					index={current}
-					onChangeIndex={onChangeIndex}
+					onChangeIndex={changeIndex}
 					containerStyle={{ height: "100%" }}
 				>
 					{children(current)}
