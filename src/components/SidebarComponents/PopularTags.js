@@ -9,15 +9,27 @@ import { withProps } from "../../HOCs"
 
 const Container = styled.div`
 	display: grid;
-	gap: var(--spacing1);
 	align-content: start;
+	justify-items: stretch;
 `
 
-const Tag = styled.span`
+const Tag = styled.div`
+	width: 100%;
+	display: flex;
+	align-items: center;
+	margin: calc(-1 * var(--spacing1)) 0;
+	padding: var(--spacing2);
+
 	color: var(--gray0);
 	text-transform: uppercase;
 	font-size: var(--font-size--xs);
+	:hover {
+		background: var(--almost-white);
+		color: var(--black0);
+	}
 `
+
+const StyledLink = styled(NavLink)``
 
 const PopularTags = ({ items }) => {
 	return (
@@ -26,9 +38,9 @@ const PopularTags = ({ items }) => {
 				let to = route("BLOG_TAG", { tag: item.value })
 
 				return (
-					<NavLink to={to} key={item.value}>
+					<StyledLink to={to} key={item.value}>
 						<Tag> {item.label}</Tag>
-					</NavLink>
+					</StyledLink>
 				)
 			})}
 		</Container>

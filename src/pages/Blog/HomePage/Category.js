@@ -1,6 +1,4 @@
 import React from "react"
-import { withBreakpoints } from "react-breakpoints"
-import { compose } from "recompose"
 import { withRouter } from "react-router"
 
 import { CONST } from "../../../constants"
@@ -8,14 +6,19 @@ import { CONST } from "../../../constants"
 import { PageContainer } from "../../../components/Containers"
 import { StatelessSearchWrapper } from "../../../components/InstantSearchWrapper"
 import PageNav from "../../../components/PageNav"
+import { LayoutManager, Main, Sidebar } from "../../../components/LayoutManager"
+import { PoweredByBox } from "../../../components/Algolia/PoweredBy"
+import { PopularArticles, PopularTags } from "../../../components/SidebarComponents"
 
-import Sidebar from "./Sidebar"
-import { Layout, Heading } from "./Common"
+import { Heading } from "./Common"
 import InfinitePosts from "../InfinitePostsList"
 
-const BlogCategoryPage = ({ currentBreakpoint, match }) => {
-	const isMobile = currentBreakpoint <= 1
+const sidebarElements = [
+	{ title: "Popularne artykuły", component: PopularArticles },
+	{ title: "Popularne tagi", component: PopularTags }
+]
 
+const BlogCategoryPage = ({ match }) => {
 	const { category } = match.params
 
 	return (
@@ -26,23 +29,20 @@ const BlogCategoryPage = ({ currentBreakpoint, match }) => {
 				hitsPerPage={6}
 			>
 				<PageContainer>
-					<Layout>
-						{/* Main Content */}
-						<main>
+					<LayoutManager columns="1fr minmax(220px, 25%)">
+						<Main>
 							<PageNav breadcrumbs={[["Czytaj", "BLOG_HOME"]]} />
 							<Heading category={category}>{category}</Heading>
 							<InfinitePosts />
-						</main>
-						{/* Sidebar */}
-						{!isMobile && <Sidebar />}
-					</Layout>
+						</Main>
+						<Sidebar availableElements={sidebarElements} isRandom>
+							<PoweredByBox />
+						</Sidebar>
+					</LayoutManager>
 				</PageContainer>
 			</StatelessSearchWrapper>
 		</>
 	)
 }
 
-export default compose(
-	withBreakpoints,
-	withRouter
-)(BlogCategoryPage)
+export default withRouter(BlogCategoryPage)
