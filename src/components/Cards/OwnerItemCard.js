@@ -27,14 +27,17 @@ const OuterContainer = styled.div`
 		overflow: hidden;
 		display: grid;
 
-		@media (max-width: ${(p) => p.theme.breakpoints[3] - 1}px) {
+		@media (max-width: ${(p) => p.theme.breakpoints[2] - 1}px) {
 			> * {
 				min-height: 0;
 			}
 		}
+		@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
+			grid-template-columns: 210px 10fr 10fr;
+			grid-template-rows: 248px;
+		}
 		@media (min-width: ${(p) => p.theme.breakpoints[3]}px) {
 			grid-template-columns: 210px 10fr 7fr;
-			grid-template-rows: 248px;
 		}
 	}
 `
@@ -44,8 +47,8 @@ const OuterDetailsContainer = styled.div`
 	height: 100%;
 	align-items: center;
 	.mobile-image-container {
-		height: 150px;
-		width: 126px;
+		height: 200px;
+		width: 156px;
 
 		margin-top: var(--spacing3);
 		margin-right: var(--spacing3);
@@ -58,16 +61,16 @@ const DetailsContainer = styled.div`
 	align-content: center;
 	margin: var(--spacing2) 0;
 
-	@media (max-width: ${(p) => p.theme.breakpoints[3] - 1}px) {
+	@media (max-width: ${(p) => p.theme.breakpoints[2] - 1}px) {
 		flex-direction: column;
 	}
 
 	> * + * {
-		@media (max-width: ${(p) => p.theme.breakpoints[3] - 1}px) {
+		@media (max-width: ${(p) => p.theme.breakpoints[2] - 1}px) {
 			margin-top: var(--spacing2);
 		}
-		@media (min-width: ${(p) => p.theme.breakpoints[3]}px) {
-			margin-left: var(--spacing3);
+		@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
+			margin-left: var(--spacing4);
 		}
 	}
 `
@@ -81,6 +84,12 @@ const InfoContainer = styled.div`
 	padding: var(--spacing2);
 	@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
 		padding: var(--spacing3);
+	}
+	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
+		padding-right: 0;
+	}
+	@media (min-width: ${(p) => p.theme.breakpoints[3]}px) {
+		padding-right: var(--spacing3);
 	}
 `
 
@@ -236,7 +245,7 @@ const OwnerItemCard = ({
 	let formattedPrice = formatPrice(price)
 	let formattedSize = formatSize(size)
 
-	const isMobile = +currentBreakpoint <= 2
+	const isMobile = +currentBreakpoint < 2
 
 	return (
 		<OuterContainer>
