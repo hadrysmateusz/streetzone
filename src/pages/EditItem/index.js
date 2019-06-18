@@ -58,7 +58,7 @@ const EditItemPage = ({ match, history }) => {
 
 			setInitialData(initialData)
 		} catch (err) {
-			if (error instanceof NotFoundError) {
+			if (err instanceof NotFoundError) {
 				setError(err)
 			} else {
 				throw err
