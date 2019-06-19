@@ -24,11 +24,12 @@ const SidebarHeader = styled.div`
 `
 
 const SidebarSectionContainer = styled.div`
-	/* /* background: rgba(255, 0, 0, 0.2); */
-	/* border-bottom: 1px solid green; */
-	/* min-height: 400px; */
-	min-height: calc(100vh - var(--page-header-height));
-	overflow-x: hidden;
+	/* background: rgba(255, 0, 0, 0.2);
+	border-bottom: 1px solid green; */
+	overflow: hidden;
+	:not(:last-child) {
+		height: calc(100vh - var(--page-header-height));
+	}
 `
 
 const Layout = styled.div`
@@ -129,14 +130,14 @@ export const Sidebar = ({ children, availableElements, isRandom }) => {
 
 	const { elements, loadMore } = useLoadableElements(availableElements, { isRandom })
 
-	const sectionHeight = 400
+	const sectionHeight = window.innerHeight / 2
 
 	useEffect(() => {
 		if (heightDifference > sectionHeight) {
 			loadMore()
 			forceUpdateDifference()
 		}
-	}, [heightDifference, loadMore, forceUpdateDifference])
+	}, [sectionHeight, heightDifference, loadMore, forceUpdateDifference])
 
 	return isMobile ? null : (
 		<SidebarContainer ref={sidebarRef}>
@@ -159,7 +160,6 @@ export const LayoutManager = withBreakpoints(
 
 		const limit = 200
 		const isMobile = +currentBreakpoint <= 1
-		console.log(currentBreakpoint, isMobile)
 
 		const update = () => {
 			// exit if any of the refs are not bound to avoid errors
@@ -183,7 +183,7 @@ export const LayoutManager = withBreakpoints(
 			window.addEventListener("scroll", throttledUpdate)
 
 			return unregister
-		}, [mainRef.current, sidebarRef.current])
+		}, [isMobile])
 
 		const contextValue = {
 			mainRef,
