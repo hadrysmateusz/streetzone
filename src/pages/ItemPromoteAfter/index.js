@@ -1,10 +1,11 @@
 import React from "react"
+import { PageContainer } from "../../components/Containers"
 
 const ItemPromoteAfter = () => {
 	return (
-		<div>
+		<PageContainer>
 			<h3>Dzięki za zakup</h3>
-		</div>
+		</PageContainer>
 	)
 }
 

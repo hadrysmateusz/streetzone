@@ -2,17 +2,17 @@ import React from "react"
 import { compose } from "recompose"
 import { withRouter } from "react-router-dom"
 import shortid from "shortid"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { Form, Field } from "react-final-form"
 
-import { useFirebase, useAuthentication } from "../../hooks"
 import { withAuthorization } from "../../components/UserSession"
 import { PageContainer } from "../../components/Containers"
-import { Form, Field } from "react-final-form"
 import { LoaderButton, ButtonContainer, Button } from "../../components/Button"
 import { SmallTextBlock, TextBlock } from "../../components/StyledComponents"
 import { Textarea } from "../../components/FormElements"
 import UserPreview from "../../components/UserPreview"
-import useUser from "../../hooks/useUser"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+
+import { useFirebase, useAuthentication, useUser } from "../../hooks"
 
 const validate = (values) => {
 	const errors = {}
