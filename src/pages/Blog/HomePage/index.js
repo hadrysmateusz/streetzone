@@ -1,8 +1,5 @@
 import React from "react"
 
-import { CONST } from "../../../constants"
-import { route } from "../../../utils"
-
 import { PageContainer } from "../../../components/Containers"
 import { SearchWrapper } from "../../../components/InstantSearchWrapper"
 import { SmallDropCard, PostCard } from "../../../components/Cards"
@@ -10,6 +7,9 @@ import { ThematicGroup } from "../../../components/ThematicGroup"
 import { LayoutManager, Main, Sidebar } from "../../../components/LayoutManager"
 import { PoweredByBox } from "../../../components/Algolia/PoweredBy"
 import { PopularArticles, PopularTags } from "../../../components/SidebarComponents"
+
+import { CONST } from "../../../constants"
+import { route } from "../../../utils"
 
 import PromotedSection from "./PromotedSection"
 import CategoryNav from "./CategoryNav"

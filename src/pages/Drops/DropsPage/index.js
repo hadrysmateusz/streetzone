@@ -18,8 +18,7 @@ import { route } from "../../../utils"
 import { withProps } from "../../../HOCs"
 import { nLinesHigh } from "../../../style-utils"
 
-import PromotedDrop from "../Previews/PromotedDrop"
-import { PromotedContainer } from "../StyledComponents"
+import PromotedDrop from "../PromotedDrop"
 // import Filters from "./Filters"
 
 const sidebarElements = [{ title: "Popularne na blogu", component: PopularArticles }]
@@ -55,6 +54,18 @@ const SECTIONS = Object.freeze([
 // 		</>
 // 	)
 // })
+
+const PromotedContainer = styled.div`
+	display: grid;
+	gap: var(--spacing2);
+
+	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
+		grid-template-columns: 1fr 1fr;
+		gap: var(--spacing3);
+		height: 40vw;
+		max-height: 500px;
+	}
+`
 
 const OuterContainer = styled.div`
 	padding: var(--spacing3) 0;

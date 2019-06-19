@@ -4,19 +4,25 @@ import moment from "moment"
 import PropTypes from "prop-types"
 import styled from "styled-components/macro"
 
-import { ROUTES } from "../../../constants"
-
-import { promotedCommon } from "./common"
+import { route } from "../../utils"
 
 export const PromotedDropContainer = styled.div`
-	background: url(${(p) => p.image}), var(--almost-white);
+	width: 100%;
+	height: 100%;
+	background-image: url(${(p) => p.image});
+	background-color: var(--almost-white);
+	background-size: cover;
+	background-position: center;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: flex-end;
 	color: var(--black75);
 	border: 1px solid var(--gray75);
 	transition: border-color 200ms ease;
 	:hover {
 		border: 1px solid var(--gray25);
 	}
-	${promotedCommon};
 
 	.bottom-container {
 		border-top: 1px solid var(--gray75);
@@ -63,7 +69,7 @@ const PromotedPost = ({
 	const imageUrl = imageUrls[mainImageIndex]
 
 	return (
-		<Link to={ROUTES.BLOG_POST.replace(":id", id)}>
+		<Link to={route("DROP_DETAILS", { id })}>
 			<PromotedDropContainer image={imageUrl}>
 				<div className="bottom-container">
 					<div className="name">{name}</div>

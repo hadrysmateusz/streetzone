@@ -3,7 +3,9 @@ import moment from "moment"
 import { withRouter } from "react-router-dom"
 import styled from "styled-components/macro"
 import ReactMarkdown from "react-markdown"
+import { withBreakpoints } from "react-breakpoints"
 
+import { FluidImage } from "../../../components/Image"
 import { PageContainer } from "../../../components/Containers"
 import { TextBlock } from "../../../components/StyledComponents"
 import Tags from "../../../components/Tags"
@@ -16,9 +18,6 @@ import { LayoutManager, Main, Sidebar } from "../../../components/LayoutManager"
 import { useFirebase } from "../../../hooks"
 import { ellipsis, getCategoryColor } from "../../../style-utils"
 // import { route } from "../../../utils"
-
-import { FluidImage } from "../StyledComponents"
-import { withBreakpoints } from "react-breakpoints"
 
 const InnerContainer = styled.div`
 	display: grid;

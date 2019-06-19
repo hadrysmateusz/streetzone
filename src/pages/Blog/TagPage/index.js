@@ -17,7 +17,7 @@ import { LayoutManager, Main, Sidebar } from "../../../components/LayoutManager"
 import { PoweredByBox } from "../../../components/Algolia/PoweredBy"
 import { PopularArticles, PopularTags } from "../../../components/SidebarComponents"
 
-import { Heading } from "./Common"
+import { Heading } from "../common"
 import InfinitePosts from "../InfinitePostsList"
 
 const Section = styled.div`

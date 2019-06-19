@@ -8,7 +8,7 @@ import { StatelessSearchWrapper } from "../../../components/InstantSearchWrapper
 import { Carousel } from "../../../components/Carousel"
 import { PageContainer } from "../../../components/Containers"
 
-import PromotedPost from "../Previews/PromotedPost"
+import PromotedPost from "../PromotedPost"
 
 const DesktopContainer = styled.div`
 	margin-top: var(--spacing3);

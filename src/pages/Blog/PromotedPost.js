@@ -4,10 +4,8 @@ import moment from "moment"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import styled from "styled-components/macro"
 
-import { overlayTextShadow, getCategoryColor } from "../../../style-utils"
-import { route } from "../../../utils"
-
-import { promotedCommon } from "./common"
+import { overlayTextShadow, getCategoryColor } from "../../style-utils"
+import { route } from "../../utils"
 
 export const PromotedPostContainer = styled.div`
 	background: linear-gradient(
@@ -58,7 +56,15 @@ export const PromotedPostContainer = styled.div`
 	}
 
 	${overlayTextShadow}
-	${promotedCommon}
+
+	width: 100%;
+	height: 100%;
+	background-size: cover;
+	background-position: center;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: flex-end;
 `
 
 const PromotedPost = ({

@@ -101,26 +101,26 @@ const BlogPost = Loadable({
 	loading: LoadableComponentSpinner
 })
 const BlogHome = Loadable({
-	loader: () => import("../../pages/Blog/HomePage/Home"),
+	loader: () => import("../../pages/Blog/HomePage"),
 	loading: LoadableComponentSpinner
 })
 
 const BlogTag = Loadable({
-	loader: () => import("../../pages/Blog/HomePage/Tag"),
+	loader: () => import("../../pages/Blog/TagPage"),
 	loading: LoadableComponentSpinner
 })
 const BlogCategory = Loadable({
-	loader: () => import("../../pages/Blog/HomePage/Category"),
+	loader: () => import("../../pages/Blog/CategoryPage"),
 	loading: LoadableComponentSpinner
 })
 
 // ===== DROPS =====
 const BlogDrop = Loadable({
-	loader: () => import("../../pages/Blog/DropPage"),
+	loader: () => import("../../pages/Drops/DropPage"),
 	loading: LoadableComponentSpinner
 })
 const Drops = Loadable({
-	loader: () => import("../../pages/Blog/HomePage/Drops"),
+	loader: () => import("../../pages/Drops/DropsPage"),
 	loading: LoadableComponentSpinner
 })
 

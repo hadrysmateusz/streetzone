@@ -1,5 +1,5 @@
 import styled from "styled-components/macro"
-import { getCategoryColor } from "../../../style-utils"
+import { getCategoryColor } from "../../style-utils"
 
 export const Heading = styled.h1`
 	font-size: var(--font-size--l);
