@@ -31,7 +31,7 @@ export const TABS = {
 	}
 }
 
-const Filters = ({ toggle, clear }, ref) => {
+const Filters = ({ toggle, clear, shouldClear }, ref) => {
 	const authUser = useAuthentication()
 
 	return (
@@ -81,7 +81,7 @@ const Filters = ({ toggle, clear }, ref) => {
 								{...commonProps}
 								tab={tabs.price}
 								attribute="price"
-								clear={clear}
+								shouldClearFilters={shouldClear}
 								startFolded
 							/>
 						</Section>

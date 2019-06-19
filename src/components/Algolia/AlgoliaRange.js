@@ -21,11 +21,11 @@ const AlgoliaRange = (props) => {
 	}
 
 	useEffect(() => {
-		if (props.clear.value) {
-			props.clear.update(false)
+		if (props.shouldClearFilters.value) {
+			props.shouldClearFilters.update(false)
 			reset()
 		}
-	}, [props.clear, reset])
+	}, [props.shouldClearFilters])
 
 	const onChange = () => {
 		// get the value from ref

@@ -35,7 +35,7 @@ const Item = styled.div`
 	margin: var(--spacing1);
 `
 
-const CurrentFiltersView = ({ items, history, clear, refine }) => {
+const CurrentFilters = ({ items, history, clearFilters, refine }) => {
 	// ignore the isArchived refinement
 	items = items.filter((a) => a.attribute !== "isArchived")
 
@@ -56,7 +56,7 @@ const CurrentFiltersView = ({ items, history, clear, refine }) => {
 				<ClearFiltersButton
 					onClick={() => {
 						history.replace(route("MARKETPLACE"))
-						clear.update(true)
+						clearFilters()
 					}}
 				>
 					Wyczyść wszystko
@@ -69,4 +69,4 @@ const CurrentFiltersView = ({ items, history, clear, refine }) => {
 export default compose(
 	connectCurrentRefinements,
 	withRouter
-)(CurrentFiltersView)
+)(CurrentFilters)

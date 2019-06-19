@@ -92,6 +92,10 @@ const MarketplacePage = ({ currentBreakpoint }) => {
 		enableBodyScroll(filtersRef.current)
 	}
 
+	const clearFiltersFn = () => {
+		setClearFilters(true)
+	}
+
 	return (
 		<SearchWrapper
 			indexName={CONST.ITEMS_MARKETPLACE_DEFAULT_ALGOLIA_INDEX}
@@ -105,23 +109,15 @@ const MarketplacePage = ({ currentBreakpoint }) => {
 				<GridContainer>
 					<Topbar toggleFilters={toggleFilters} sortingOptions={sortingOptions} />
 
-					<CurrentFilters
-						toggle={toggleFilters}
-						clear={{
-							value: clearFilters,
-							update: setClearFilters
-						}}
-					/>
+					<CurrentFilters toggle={toggleFilters} clearFilters={clearFiltersFn} />
 
 					<MainGrid>
 						<Sidebar hidden={!areFiltersOpen && !(currentBreakpoint > 2)}>
 							<FiltersHeader>Filtruj</FiltersHeader>
 							<Filters
 								toggle={toggleFilters}
-								clear={{
-									value: clearFilters,
-									update: setClearFilters
-								}}
+								clear={clearFiltersFn}
+								shouldClear={{ value: clearFilters, update: setClearFilters }}
 							/>
 						</Sidebar>
 						<MarketplaceResults />
