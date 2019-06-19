@@ -256,6 +256,7 @@ const PageHeaderMobile = ({ authUser, firebase, location }) => {
 					</StyledNavLink>
 					<StyledNavLink to={route("DROPS")}>Dropy</StyledNavLink>
 					<StyledNavLink to={route("NEW_ITEM")}>Sprzedawaj</StyledNavLink>
+					<StyledNavLink to={route("ABOUT")}>Informacje</StyledNavLink>
 
 					{authUser && [
 						<StyledNavLink to={route("ACCOUNT_BASE", { id: authUser.uid })}>
@@ -318,6 +319,13 @@ const PageHeaderDesktop = ({ authUser, firebase, location }) => {
 				</DesktopNavItem>
 
 				<DesktopNavItem link={route("NEW_ITEM")} label="Sprzedawaj" />
+
+				<DesktopNavItem link={route("ABOUT")} label="Informacje" alignSubmenu="left">
+					<SubmenuItem link={route("ABOUT")} label="O nas" />
+					<SubmenuItem link={route("CONTACT")} label="Kontakt" />
+					<SubmenuItem link={route("FAQ")} label="FAQ" />
+					<SubmenuItem link={route("ADVERTISE")} label="Współpraca" />
+				</DesktopNavItem>
 			</Nav>
 
 			<Nav alignRight>

@@ -10,7 +10,9 @@ export const MenuNavItem = styled.div`
 	color: var(--gray0);
 	font-weight: bold;
 	font-size: var(--font-size--m);
-	padding: var(--spacing3);
+	a {
+		padding: var(--spacing3);
+	}
 	border-top: 1px solid var(--gray75);
 	&:first-of-type {
 		border-top: none;
