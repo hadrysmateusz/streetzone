@@ -15,7 +15,6 @@ import { PageContainer } from "../../components/Containers"
 import { ItemsGrid } from "../../components/ItemsView"
 
 import InfinitePosts from "../Blog/InfinitePostsList"
-import { Layout } from "../Blog/HomePage/Common"
 
 const SearchState = connectStateResults(({ searchState, children }) => {
 	const isQueryEmpty = !searchState || (searchState && !searchState.query)
@@ -24,6 +23,14 @@ const SearchState = connectStateResults(({ searchState, children }) => {
 
 const OuterContainer = styled.div`
 	position: relative;
+`
+
+const Layout = styled.div`
+	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
+		display: grid;
+		grid-template-columns: 1fr minmax(220px, 25%);
+		gap: var(--spacing3);
+	}
 `
 
 const TopContainer = styled.div`
