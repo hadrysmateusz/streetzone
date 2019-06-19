@@ -4,12 +4,22 @@ import styled from "styled-components/macro"
 import { compose } from "recompose"
 import { withRouter } from "react-router-dom"
 
-import { ClearFiltersSubButton } from "../Topbar/StyledComponents"
-
-import { ROUTES } from "../../constants"
-import { itemDataHelpers } from "../../utils"
+import { itemDataHelpers, route } from "../../utils"
 
 const { formatSize } = itemDataHelpers
+
+const ClearFiltersButton = styled.div`
+	color: ${(p) => p.theme.colors.danger[50]};
+	:hover {
+		text-decoration: underline;
+	}
+	cursor: pointer;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex: 0 0 var(--width);
+	margin-left: var(--spacing2);
+`
 
 const Container = styled.div`
 	font-size: var(--font-size--xs);
@@ -43,14 +53,14 @@ const CurrentFiltersView = ({ items, history, clear, refine }) => {
 				}
 			})}
 			{items && items.length > 0 && (
-				<ClearFiltersSubButton
+				<ClearFiltersButton
 					onClick={() => {
-						history.replace(ROUTES.MARKETPLACE)
+						history.replace(route("MARKETPLACE"))
 						clear.update(true)
 					}}
 				>
 					Wyczyść wszystko
-				</ClearFiltersSubButton>
+				</ClearFiltersButton>
 			)}
 		</Container>
 	) : null
