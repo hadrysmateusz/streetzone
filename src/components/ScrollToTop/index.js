@@ -11,7 +11,6 @@ const ScrollToTopButton = styled.button`
 	--font-size: 1.1rem;
 	${scaleInCenterAnimation}
 	background: var(--black0);
-	border: 1px solid var(--gray75);
 	color: white;
 	outline: none;
 	box-shadow: none;
