@@ -89,3 +89,18 @@ export const heartbeat = keyframes`
 export const heartbeatAnimation = css`
 	animation: ${heartbeat} 1.5s ease-in-out infinite both;
 `
+
+export const scaleInCenter = keyframes` 
+  0% {
+    transform: scale(0);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+`
+
+export const scaleInCenterAnimation = css`
+	animation: ${scaleInCenter} 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+`

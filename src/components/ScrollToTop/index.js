@@ -1,21 +1,25 @@
+import React from "react"
 import styled from "styled-components/macro"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
-const ScrollToTop = styled.button.attrs((p) => ({
-	onClick: () => document.getElementById(p.element || "App-Element").scrollIntoView(true)
-}))`
+import { useScrollPosition } from "../../hooks"
+import { scaleInCenterAnimation } from "../../style-utils/animations"
+
+const ScrollToTopButton = styled.button`
 	--size: 60px;
 	--offset: 15px;
 	--font-size: 1.1rem;
-	background: rgba(255, 255, 255, 0.88);
+	${scaleInCenterAnimation}
+	background: var(--black0);
 	border: 1px solid var(--gray75);
-	color: var(--black75);
+	color: white;
 	outline: none;
 	box-shadow: none;
 	border-radius: 50%;
-	box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.28);
 	cursor: pointer;
+	transition: background-color 200ms ease;
 	:hover {
-		background: white;
+		background: var(--black50);
 	}
 	position: sticky;
 	float: right;
@@ -34,5 +38,22 @@ const ScrollToTop = styled.button.attrs((p) => ({
 		--font-size: 1.5rem;
 	}
 `
+
+const ScrollToTop = () => {
+	const scrollPosition = useScrollPosition()
+
+	const shouldShow = scrollPosition >= window.innerHeight / 2
+
+	const onClick = () =>
+		document
+			.getElementById("App-Element")
+			.scrollIntoView({ behavior: "smooth", block: "start" })
+
+	return shouldShow ? (
+		<ScrollToTopButton onClick={onClick}>
+			<FontAwesomeIcon icon="long-arrow-alt-up" />
+		</ScrollToTopButton>
+	) : null
+}
 
 export default ScrollToTop

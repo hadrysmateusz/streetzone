@@ -2,7 +2,6 @@ import React, { useState, useRef } from "react"
 import styled from "styled-components/macro"
 import { withBreakpoints } from "react-breakpoints"
 import { disableBodyScroll, enableBodyScroll } from "body-scroll-lock"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 import { SearchWrapper } from "../../components/InstantSearchWrapper"
 import CurrentFilters from "../../components/CurrentFilters"
@@ -124,9 +123,7 @@ const MarketplacePage = ({ currentBreakpoint }) => {
 					</MainGrid>
 				</GridContainer>
 			</PageContainer>
-			<ScrollToTop>
-				<FontAwesomeIcon icon="long-arrow-alt-up" />
-			</ScrollToTop>
+			<ScrollToTop />
 		</SearchWrapper>
 	)
 }
