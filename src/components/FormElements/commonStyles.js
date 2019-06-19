@@ -21,6 +21,10 @@ export const placeholderStyles = css`
 
 export const basicStyles = css`
 	border: 1px solid;
+	border-radius: 0;
+	:not([type="radio"]):not([type="checkbox"]) {
+		-webkit-appearance: none;
+	}
 	width: 100%;
 	border-color: ${(p) => (!!p.hasError ? "var(--danger50)" : "var(--gray75)")};
 	transition: box-shadow 0.11s ease, border-color 0.11s ease;
