@@ -498,62 +498,86 @@ const routes = [
 			{
 				path: ROUTES.ABOUT,
 				component: About,
-				title: "O nas"
+				title: "O nas",
+				label: "O nas",
+				category: "Info"
 			},
 			{
 				path: ROUTES.CONTACT,
 				component: Contact,
-				title: "Kontakt"
+				title: "Kontakt",
+				label: "Kontakt",
+				category: "Info"
 			},
 			{
 				path: ROUTES.FAQ,
 				component: FAQ,
-				title: `FAQ`
+				title: `FAQ`,
+				label: `FAQ`,
+				category: "Pomoc"
 			},
 			{
 				path: ROUTES.PROMOTING_INFO,
 				component: PromotingInfo,
-				title: `Promowanie i odświeżanie`
+				title: `Promowanie i odświeżanie`,
+				label: `Promowanie i odświeżanie`,
+				category: "Pomoc"
 			},
 			{
 				path: ROUTES.ALLOW_ADS,
 				component: AllowAds,
-				title: `Zezwól na reklamy`
+				title: `Zezwól na reklamy`,
+				label: `Zezwól na reklamy`,
+				category: "Pomoc"
 			},
 			{
 				path: ROUTES.ALLOW_NOTIFICATIONS,
 				component: AllowNotifications,
-				title: `Włącz powiadomienia`
+				title: `Włącz powiadomienia`,
+				label: `Włącz powiadomienia`,
+				category: "Pomoc"
 			},
 			{
 				path: ROUTES.BUG_REPORT,
 				component: BugReport,
-				title: "Zgłoś problem"
+				title: "Zgłoś problem",
+				label: "Zgłoś problem",
+				category: "Pomoc"
 			},
 			{
 				path: ROUTES.ADVERTISE,
 				component: Advertise,
-				title: "Reklamuj się"
+				title: "Reklamuj się",
+				label: "Reklamuj się",
+				category: "Współpraca"
 			},
 			{
 				path: ROUTES.PARTNERS,
 				component: Partners,
-				title: "Partnerzy"
+				title: "Partnerzy",
+				label: "Partnerzy",
+				category: "Współpraca"
 			},
 			{
 				path: ROUTES.WRITE_FOR_US,
 				component: WriteForUs,
-				title: "Pisz dla nas"
+				title: "Pisz dla nas",
+				label: "Pisz dla nas",
+				category: "Współpraca"
 			},
 			{
 				path: ROUTES.TERMS,
 				component: Terms,
-				title: "Regulamin"
+				title: "Regulamin",
+				label: "Regulamin",
+				category: "Prawne"
 			},
 			{
 				path: ROUTES.PRIVACY_POLICY,
 				component: PrivacyPolicy,
-				title: "Polityka Prywatności"
+				title: "Polityka Prywatności",
+				label: "Polityka Prywatności",
+				category: "Prawne"
 			}
 		]
 	}
