@@ -190,36 +190,62 @@ const Search = Loadable({
 	loader: () => import("../../pages/Search"),
 	loading: LoadableComponentSpinner
 })
-const FAQ = Loadable({
-	loader: () => import("../../pages/FAQ"),
-	loading: LoadableComponentSpinner
-})
-const PrivacyPolicy = Loadable({
-	loader: () => import("../../pages/PrivacyPolicy"),
-	loading: LoadableComponentSpinner
-})
-const About = Loadable({
-	loader: () => import("../../pages/About"),
-	loading: LoadableComponentSpinner
-})
-const Contact = Loadable({
-	loader: () => import("../../pages/Contact"),
-	loading: LoadableComponentSpinner
-})
-const Terms = Loadable({
-	loader: () => import("../../pages/Terms"),
-	loading: LoadableComponentSpinner
-})
 const RequestDesigner = Loadable({
 	loader: () => import("../../pages/RequestDesigner"),
 	loading: LoadableComponentSpinner
 })
-const BugReport = Loadable({
-	loader: () => import("../../pages/BugReport"),
+
+// ===== INFO ======
+const Info = Loadable({
+	loader: () => import("../../pages/Info"),
 	loading: LoadableComponentSpinner
 })
-const BumpInfo = Loadable({
-	loader: () => import("../../pages/BumpInfo"),
+const About = Loadable({
+	loader: () => import("../../pages/Info/About"),
+	loading: LoadableComponentSpinner
+})
+const Contact = Loadable({
+	loader: () => import("../../pages/Info/Contact"),
+	loading: LoadableComponentSpinner
+})
+const FAQ = Loadable({
+	loader: () => import("../../pages/Info/FAQ"),
+	loading: LoadableComponentSpinner
+})
+const PromotingInfo = Loadable({
+	loader: () => import("../../pages/Info/PromotingInfo"),
+	loading: LoadableComponentSpinner
+})
+const AllowAds = Loadable({
+	loader: () => import("../../pages/Info/AllowAds"),
+	loading: LoadableComponentSpinner
+})
+const AllowNotifications = Loadable({
+	loader: () => import("../../pages/Info/AllowNotifications"),
+	loading: LoadableComponentSpinner
+})
+const BugReport = Loadable({
+	loader: () => import("../../pages/Info/BugReport"),
+	loading: LoadableComponentSpinner
+})
+const Advertise = Loadable({
+	loader: () => import("../../pages/Info/Advertise"),
+	loading: LoadableComponentSpinner
+})
+const Partners = Loadable({
+	loader: () => import("../../pages/Info/Partners"),
+	loading: LoadableComponentSpinner
+})
+const WriteForUs = Loadable({
+	loader: () => import("../../pages/Info/WriteForUs"),
+	loading: LoadableComponentSpinner
+})
+const Terms = Loadable({
+	loader: () => import("../../pages/Info/Terms"),
+	loading: LoadableComponentSpinner
+})
+const PrivacyPolicy = Loadable({
+	loader: () => import("../../pages/Info/PrivacyPolicy"),
 	loading: LoadableComponentSpinner
 })
 
@@ -465,39 +491,71 @@ const routes = [
 		component: ItemPromoteAfter
 	},
 	{
-		path: ROUTES.FAQ,
-		component: FAQ,
-		title: `FAQ`
-	},
-	{
-		path: ROUTES.PRIVACY_POLICY,
-		component: PrivacyPolicy,
-		title: "Polityka Prywatności"
-	},
-	{
-		path: ROUTES.ABOUT,
-		component: About,
-		title: "O nas"
-	},
-	{
-		path: ROUTES.CONTACT,
-		component: Contact,
-		title: "Kontakt"
-	},
-	{
-		path: ROUTES.TERMS,
-		component: Terms,
-		title: "Regulamin"
-	},
-	{
-		path: ROUTES.PROMOTING_INFO,
-		component: BumpInfo,
-		title: "Promowanie"
-	},
-	{
-		path: ROUTES.BUG_REPORT,
-		component: BugReport,
-		title: "Zgłoś problem"
+		path: ROUTES.INFO_BASE,
+		exact: false,
+		component: Info,
+		routes: [
+			{
+				path: ROUTES.ABOUT,
+				component: About,
+				title: "O nas"
+			},
+			{
+				path: ROUTES.CONTACT,
+				component: Contact,
+				title: "Kontakt"
+			},
+			{
+				path: ROUTES.FAQ,
+				component: FAQ,
+				title: `FAQ`
+			},
+			{
+				path: ROUTES.PROMOTING_INFO,
+				component: PromotingInfo,
+				title: `Promowanie i odświeżanie`
+			},
+			{
+				path: ROUTES.ALLOW_ADS,
+				component: AllowAds,
+				title: `Zezwól na reklamy`
+			},
+			{
+				path: ROUTES.ALLOW_NOTIFICATIONS,
+				component: AllowNotifications,
+				title: `Włącz powiadomienia`
+			},
+			{
+				path: ROUTES.BUG_REPORT,
+				component: BugReport,
+				title: "Zgłoś problem"
+			},
+			{
+				path: ROUTES.ADVERTISE,
+				component: Advertise,
+				title: "Reklamuj się"
+			},
+			{
+				path: ROUTES.PARTNERS,
+				component: Partners,
+				title: "Partnerzy"
+			},
+			{
+				path: ROUTES.WRITE_FOR_US,
+				component: WriteForUs,
+				title: "Pisz dla nas"
+			},
+			{
+				path: ROUTES.TERMS,
+				component: Terms,
+				title: "Regulamin"
+			},
+			{
+				path: ROUTES.PRIVACY_POLICY,
+				component: PrivacyPolicy,
+				title: "Polityka Prywatności"
+			}
+		]
 	}
 ]
 
