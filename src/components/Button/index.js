@@ -41,7 +41,7 @@ const basic = css`
 	&:not([disabled]) {
 		&:hover {
 			background: var(--almost-white);
-			border-color: var(--black50);
+			border-color: var(--gray0);
 		}
 	}
 `
@@ -56,6 +56,22 @@ const danger = css`
 			border-color: var(--danger0);
 			background: var(--danger0);
 			color: white;
+		}
+	}
+`
+
+const messenger = css`
+	color: white;
+	${(p) =>
+		!p.disabled &&
+		css`
+			background-color: #00c6ff;
+			background-image: linear-gradient(to bottom, #00c6ff, #0078ff);
+		`}
+	border: none;
+	:not([disabled]) {
+		:hover {
+			background: #00c6ff;
 		}
 	}
 `
@@ -87,6 +103,8 @@ const google = css`
 
 const social = (name) => {
 	switch (name) {
+		case "messenger":
+			return messenger
 		case "facebook":
 			return facebook
 		case "google":
@@ -109,7 +127,7 @@ const Button = styled.button`
 	justify-content: center;
 	align-items: center;
 
-	transition-property: background, color, border-color;
+	transition-property: background-color, color, border-color, background-image;
 	transition-duration: 0.15s;
 	transition-timing-function: ease;
 
