@@ -13,6 +13,7 @@ import UserPreview from "../../components/UserPreview/new"
 import EmptyState from "../../components/EmptyState"
 import PageNav from "../../components/PageNav"
 import InfoItem from "../../components/InfoItem"
+import ContactModal from "../../components/ContactModal"
 import Share from "../../components/Share"
 import {
 	Header,
@@ -167,15 +168,13 @@ const ItemDetailsPage = ({ match, history }) => {
 								</>
 							) : (
 								<>
-									<Button
-										as={Link}
-										to={route("CHAT_NEW", { id: item.userId })}
-										primary
-										fullWidth
-										big
-									>
-										Kontakt
-									</Button>
+									<ContactModal userId={item.userId}>
+										{({ open }) => (
+											<Button primary fullWidth big onClick={open}>
+												Kontakt
+											</Button>
+										)}
+									</ContactModal>
 
 									<SaveButton
 										fullWidth
