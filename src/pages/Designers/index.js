@@ -1,15 +1,16 @@
-import React from "react"
+import React, { useMemo } from "react"
 import styled from "styled-components/macro"
-import { ROUTES } from "../../constants"
+import { connectInfiniteHits } from "react-instantsearch-core"
+
 import { StyledLink } from "../../components/Basics"
-import { encodeURL } from "../../utils/algoliaURLutils"
 import { PageContainer } from "../../components/Containers"
 import { TextBlock } from "../../components/StyledComponents"
-
 import { SearchWrapper } from "../../components/InstantSearchWrapper"
-import { CONST } from "../../constants"
-import connectInfiniteHits from "react-instantsearch-core/dist/cjs/connectors/connectInfiniteHits"
 import AlgoliaSearchBox from "../../components/Algolia/AlgoliaSearchBox"
+
+import { encodeURL } from "../../utils/algoliaURLutils"
+import { CONST, ROUTES } from "../../constants"
+import { ellipsis } from "polished"
 
 const DesignerLink = ({ value }) => {
 	return (
@@ -19,38 +20,79 @@ const DesignerLink = ({ value }) => {
 	)
 }
 
+const Header = styled.div`
+	margin: var(--spacing4) 0;
+	/* font-family: var(--ff-serif); */
+	font-size: var(--fs-l);
+	font-weight: bold;
+	text-align: center;
+`
+
+const OuterContainer = styled.div`
+	max-width: 100%;
+`
+
 const SectionContainer = styled.div`
 	margin: var(--spacing4) 0;
 	display: grid;
 	grid-template-columns: 1fr 3fr;
-	gap: var(--spacing1);
+	gap: var(--spacing2);
 `
 
 const List = styled.div`
 	display: grid;
-	grid-template-columns: repeat(3, 1fr);
-	gap: var(--spacing1);
+	grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+
+	> * {
+		${ellipsis}
+	}
+	grid-auto-rows: min-content;
+	gap: var(--spacing2);
+	align-content: center;
 `
 
 const ListContainer = styled.div`
-	margin: 0 auto;
-	max-width: 650px;
+	margin: var(--spacing4) auto 0;
+	max-width: 700px;
 `
 
-const Nav = styled.div`
-	padding: var(--spacing3) 0;
+const LetterNavbarContainer = styled.div`
+	overflow: auto;
 	border-bottom: 1px solid var(--gray75);
+
+	/* make the content go from edge to edge on mobile*/
+	@media (max-width: ${(p) => p.theme.breakpoints[1] - 1}px) {
+		--x-margin: calc(-1 * var(--spacing3));
+		margin-left: var(--x-margin);
+		margin-right: var(--x-margin);
+		padding: 0 var(--spacing3);
+		&::after {
+			content: "";
+			display: block;
+			width: var(--spacing2);
+		}
+	}
+`
+
+const LetterNavbar = styled.div`
+	overflow: visible;
+
+	padding-bottom: var(--spacing2);
 	display: flex;
 	justify-content: space-around;
+	min-width: 850px;
+	width: 100%;
 `
 
-const NavItemContainer = styled.div`
+const NavLetterContainer = styled.div`
+	cursor: ${(p) => (p.isEmpty ? "default" : "pointer")};
+	${(p) => p.isEmpty && "color: var(--gray25);"}
 	font-family: var(--font-family--serif);
 	font-size: var(--font-size--l);
 `
 
-const NavItem = ({ value }) => {
-	return <NavItemContainer>{value}</NavItemContainer>
+const NavLetter = ({ value, isEmpty }) => {
+	return <NavLetterContainer isEmpty={isEmpty}>{value}</NavLetterContainer>
 }
 
 const chars = [
@@ -83,60 +125,70 @@ const chars = [
 	"Z"
 ]
 
-export const DesignersList = connectInfiniteHits(({ hits }) => {
-	console.log(hits)
-	const sortedHits = hits.reduce(
-		(acc, curr, i) => {
-			var firstLetter = curr.label[0]
-
-			var regex = /[A-Z]/g
-			var isLetter = firstLetter.match(regex)
-			if (!isLetter) {
-				acc["#"].push(curr)
-				return acc
-			}
-
-			if (acc[firstLetter]) {
-				acc[firstLetter].push(curr)
-				return acc
-			} else {
-				acc[firstLetter] = [curr]
-				return acc
-			}
-		},
-		{ "#": [] }
-	)
-
-	let components = []
-	Object.entries(sortedHits).forEach(([key, value]) => {
-		const header = (
-			<TextBlock serif size="6.4rem">
-				{key}
-			</TextBlock>
-		)
-		const list = value.map((designer) => (
-			<TextBlock uppercase color="gray0">
-				<DesignerLink value={designer.label} />
-			</TextBlock>
-		))
-
-		components.push(
-			<SectionContainer>
-				<div>{header}</div>
-				<List>{list}</List>
-			</SectionContainer>
-		)
-	})
+const ListSection = ({ letter, items }) => {
+	if (!items || items.length === 0) return null
 
 	return (
-		<div>
-			<Nav>
-				{chars.map((char) => (
-					<NavItem value={char} />
+		<SectionContainer>
+			<TextBlock serif size="6.4rem">
+				{letter}
+			</TextBlock>
+			<List>
+				{items.map((designer) => (
+					<TextBlock uppercase color="gray0" key={designer}>
+						<DesignerLink value={designer.label} />
+					</TextBlock>
 				))}
-			</Nav>
-			<ListContainer>{components}</ListContainer>
-		</div>
+			</List>
+		</SectionContainer>
+	)
+}
+
+export const DesignersList = connectInfiniteHits(({ hits }) => {
+	const groupedHits = useMemo(
+		() =>
+			hits.reduce(
+				(acc, curr, i) => {
+					var firstLetter = curr.label[0]
+
+					var regex = /[A-Z]/g
+					var isLetter = firstLetter.match(regex)
+					if (!isLetter) {
+						acc["#"].push(curr)
+						return acc
+					}
+
+					if (acc[firstLetter]) {
+						acc[firstLetter].push(curr)
+						return acc
+					} else {
+						acc[firstLetter] = [curr]
+						return acc
+					}
+				},
+				{ "#": [] }
+			),
+		[hits]
+	)
+
+	return (
+		<OuterContainer>
+			<LetterNavbarContainer>
+				<LetterNavbar>
+					{chars.map((char) => {
+						const isEmpty = !groupedHits[char] || groupedHits[char].length === 0
+						return <NavLetter key={char} isEmpty={isEmpty} value={char} />
+					})}
+				</LetterNavbar>
+			</LetterNavbarContainer>
+
+			<ListContainer>
+				<AlgoliaSearchBox placeholder="Szukaj" />
+				{Object.entries(groupedHits).map(([letter, items]) => (
+					<ListSection letter={letter} items={items} key={letter} />
+				))}
+			</ListContainer>
+		</OuterContainer>
 	)
 })
 
@@ -148,11 +200,7 @@ const DesignersPage = () => {
 			ignoreArchivedStatus
 		>
 			<PageContainer>
-				<TextBlock centered serif size="l">
-					Projektanci
-				</TextBlock>
-
-				<AlgoliaSearchBox placeholder="Szukaj" />
+				<Header>Projektanci</Header>
 
 				<DesignersList />
 			</PageContainer>

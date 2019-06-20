@@ -55,7 +55,8 @@ const AlgoliaSearchBox = ({
 		refine()
 	}
 
-	const placeholderText = currentBreakpoint > 0 ? placeholderLong : placeholder
+	const placeholderText =
+		currentBreakpoint > 0 ? placeholderLong || placeholder : placeholder
 
 	return (
 		<Input

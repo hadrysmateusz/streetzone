@@ -5,7 +5,7 @@ import { PoweredBy as PoweredByBase } from "react-instantsearch-dom"
 export const PoweredBy = styled(PoweredByBase)`
 	margin: 0;
 	height: 100%;
-	transform: scale(0.83) ${(p) => p.small && "translateY(7px)"} translateX(-24px);
+	transform: scale(0.83) ${(p) => p.small && "translateY(7px)"};
 
 	.ais-PoweredBy-text {
 		transform: translateY(-2px) translateX(-3px);
