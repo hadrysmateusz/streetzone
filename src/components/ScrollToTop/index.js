@@ -14,6 +14,7 @@ const ScrollToTopButton = styled.button`
 	color: white;
 	outline: none;
 	box-shadow: none;
+	border: none;
 	border-radius: 50%;
 	cursor: pointer;
 	transition: background-color 200ms ease;

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
 import moment from "moment"
+import styled from "styled-components/macro" // for css prop
 
 import Button, { LoaderButton, ButtonContainer } from "../../components/Button"
 import { SmallTextBlock } from "../../components/StyledComponents"
@@ -30,23 +31,23 @@ const { formatDesigners, formatPrice, formatSize } = itemDataHelpers
 
 const ItemDetailsPage = ({ match, history }) => {
 	const firebase = useFirebase()
-	const authUser = useAuthentication()
+	const [authUser, isAuthenticated] = useAuthentication(true)
 	const [isDeleting, setIsDeleting] = useState(false)
 	const [isLoading, setIsLoading] = useState(true)
 	const [item, setItem] = useState(null)
 
 	const itemId = match.params.id
 
-	const getItem = async () => {
-		setIsLoading(true)
-		const foundItem = await firebase.getItemData(itemId)
-		setItem(foundItem)
-		setIsLoading(false)
-	}
-
 	useEffect(() => {
+		const getItem = async () => {
+			setIsLoading(true)
+			const foundItem = await firebase.getItemData(itemId)
+			setItem(foundItem)
+			setIsLoading(false)
+		}
+
 		getItem()
-	}, [itemId, !!authUser])
+	}, [itemId, isAuthenticated, firebase])
 
 	const deleteItem = async () => {
 		setIsDeleting(true)

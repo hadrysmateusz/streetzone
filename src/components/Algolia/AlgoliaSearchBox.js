@@ -10,9 +10,7 @@ import { PoweredBy } from "./PoweredBy"
 
 const AlgoliaSearchBox = ({
 	location,
-	history,
 	refine,
-	currentRefinement,
 	currentBreakpoint,
 	placeholderLong,
 	placeholder
@@ -71,95 +69,6 @@ const AlgoliaSearchBox = ({
 		/>
 	)
 }
-
-// class AlgoliaSearchBox extends React.Component {
-// 	delay = 350
-
-// 	state = { inputValue: this.props.currentRefinement }
-
-// 	componentDidMount() {
-// 		try {
-// 			// get the encoded search parameter from URL
-// 			const parsedSearch = decodeURL(this.props.location.search)
-
-// 			this.setState({ inputValue: parsedSearch.query })
-// 		} catch (e) {
-// 			// if there was a problem while parsing, empty the field
-// 			this.setState({ inputValue: "" })
-// 		}
-// 	}
-
-// 	onChange = (e) => {
-// 		// get the currentTarget from the synthetic event before its inaccessible
-// 		const currentTarget = e.currentTarget
-// 		// update the internal state
-// 		this.setState({ inputValue: currentTarget.value })
-
-// 		// the timeout makes it so the query only gets updated when you stop typing
-// 		clearTimeout(this.rateLimitedRefine)
-// 		this.rateLimitedRefine = setTimeout(() => {
-// 			this.props.refine(currentTarget.value)
-// 		}, this.delay)
-// 	}
-
-// 	clearField = () => {
-// 		this.setState({ inputValue: "" })
-
-// 		this.props.refine()
-// 	}
-
-// 	componentDidUpdate(prevProps) {
-// 		if (prevProps.location !== this.props.location) {
-// 			try {
-// 				// get the encoded search parameter from URL
-// 				var searchParams = new URLSearchParams(this.props.location.search)
-// 				const search = searchParams.get("search")
-
-// 				// decode and parse the search paramter
-// 				const parsedSearch = JSON.parse(search)
-
-// 				this.setState({ inputValue: parsedSearch.query })
-// 			} catch (e) {
-// 				// if there was a problem while parsing, empty the field
-// 				this.setState({ inputValue: "" })
-// 			}
-// 		}
-// 	}
-
-// 	render() {
-// 		const placeholderText =
-// 			this.props.currentBreakpoint > 0 ? "Szukaj po nazwie, marce, itd." : "Szukaj"
-
-// 		return (
-// 			<Input
-// 				icon="search"
-// 				value={this.state.inputValue}
-// 				placeholder={placeholderText}
-// 				onChange={this.onChange}
-// 			/>
-
-// 			// {/* <SearchBox>
-// 			// 	<div className="icon-container">
-// 			// 		<FontAwesomeIcon icon="search" />
-// 			// 	</div>
-// 			// 	<input
-// 			// 		type="text"
-// 			// 		onChange={this.onChange}
-// 			// 		value={this.state.inputValue}
-// 			// 		placeholder={placeholderText}
-// 			// 	/>
-// 			// 	{this.state.inputValue && (
-// 			// 		<div className="icon-container" onClick={this.clearField}>
-// 			// 			<FontAwesomeIcon icon="times" />
-// 			// 		</div>
-// 			// 	)}
-// 			// 	<div className="powered-by-container">
-// 			// 		<StyledPoweredBy />
-// 			// 	</div>
-// 			// </SearchBox> */}
-// 		)
-// 	}
-// }
 
 export default compose(
 	withRouter,

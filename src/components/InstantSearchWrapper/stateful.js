@@ -11,9 +11,10 @@ const EMPTY_SEARCH_ERR = "empty search string"
 /**
  * @param indexName select index to query, selecting a replica index allows to change sorting
  * @param allowedKeys attributes to which refinements can be applied - prevents querying arbitrary values by modifying the url
- * @param showArchived whether to show results marked as archived - hidden by default
  * @param hitsPerPage number of results to show on a given page
  * @param initialState override any part of the initial state
+ * @param showArchived whether to show results marked as archived - hidden by default
+ * @param ignoreArchivedStatus set to true if the given index doesn't support the isArchived attribute
  */
 export const SearchWrapper = withRouter(
 	({
@@ -25,6 +26,7 @@ export const SearchWrapper = withRouter(
 		history,
 		location,
 		showArchived = false,
+		ignoreArchivedStatus = false,
 		...rest
 	}) => {
 		// use default values and prop overrides to construct initial state
@@ -176,7 +178,7 @@ export const SearchWrapper = withRouter(
 			>
 				{hitsPerPage && <Configure hitsPerPage={hitsPerPage} />}
 				{/* Hide archived results unless told otherwise */}
-				{!showArchived && (
+				{!ignoreArchivedStatus && !showArchived && (
 					<VirtualToggle
 						attribute="isArchived"
 						value={false}

@@ -6,84 +6,10 @@ import { encodeURL } from "../../utils/algoliaURLutils"
 import { PageContainer } from "../../components/Containers"
 import { TextBlock } from "../../components/StyledComponents"
 
-import cloneDeep from "clone-deep"
-
-import InstantSearchWrapper from "../../components/InstantSearchWrapper"
+import { SearchWrapper } from "../../components/InstantSearchWrapper"
 import { CONST } from "../../constants"
 import connectInfiniteHits from "react-instantsearch-core/dist/cjs/connectors/connectInfiniteHits"
-
-const DEFAULT_HITS_PER_PAGE = 12
-
-const DEFAULT_SEARCH_STATE = Object.freeze({
-	hitsPerPage: DEFAULT_HITS_PER_PAGE,
-	refinementList: {},
-	query: "",
-	page: 1
-})
-
-class InstantSearchDesignersWrapper extends React.Component {
-	urlToState = (parsedSearch) => {
-		let searchState = cloneDeep(DEFAULT_SEARCH_STATE)
-		// format the searchState according to Algolia's spec
-		const { tags, section, query, page } = parsedSearch
-
-		searchState.refinementList.section = section || []
-		searchState.refinementList.tags = tags || []
-		searchState.query = query || ""
-		searchState.page = page || 1
-
-		return searchState
-	}
-
-	onSearchStateChange = async (newSearchState) => {
-		// format the state to keep the url relatively short
-		const { refinementList, query, page } = newSearchState
-		let formattedState = {}
-		if (refinementList !== undefined) {
-			if (refinementList.tags !== undefined) formattedState.tags = refinementList.tags
-			if (refinementList.section !== undefined)
-				formattedState.section = refinementList.section
-		}
-		if (page !== undefined) formattedState.page = page
-		if (query !== undefined) formattedState.query = query
-
-		return formattedState
-	}
-
-	render() {
-		return (
-			<InstantSearchWrapper
-				indexName={CONST.DESIGNERS_ALGOLIA_INDEX}
-				onSearchStateChange={this.onSearchStateChange}
-				urlToState={this.urlToState}
-				defaultSearchState={DEFAULT_SEARCH_STATE}
-			>
-				{this.props.children}
-			</InstantSearchWrapper>
-		)
-	}
-}
-
-// const useDesigners = () => {
-// 	const firebase = useFirebase()
-// 	const [designers, setDesigners] = useState(null)
-
-// 	const getDesigners = async () => {
-// 		const snap = await firebase.designers().get()
-// 		let designersArr = []
-// 		snap.forEach((designer) => {
-// 			console.log(designer, designer.data())
-// 			designersArr.push(designer.data())
-// 		})
-// 		setDesigners(designersArr)
-// 	}
-
-// 	useEffect(() => {
-// 		getDesigners()
-// 	}, [])
-
-// 	return designers
-// }
+import AlgoliaSearchBox from "../../components/Algolia/AlgoliaSearchBox"
 
 const DesignerLink = ({ value }) => {
 	return (
@@ -157,7 +83,8 @@ const chars = [
 	"Z"
 ]
 
-export const DesignersList = connectInfiniteHits(({ hits, hasMore, refine, ...rest }) => {
+export const DesignersList = connectInfiniteHits(({ hits }) => {
+	console.log(hits)
 	const sortedHits = hits.reduce(
 		(acc, curr, i) => {
 			var firstLetter = curr.label[0]
@@ -214,22 +141,22 @@ export const DesignersList = connectInfiniteHits(({ hits, hasMore, refine, ...re
 })
 
 const DesignersPage = () => {
-	// const designers = useDesigners()
-
 	return (
-		<InstantSearchDesignersWrapper>
+		<SearchWrapper
+			indexName={CONST.DESIGNERS_ALGOLIA_INDEX}
+			hitsPerPage={9999}
+			ignoreArchivedStatus
+		>
 			<PageContainer>
 				<TextBlock centered serif size="l">
 					Projektanci
 				</TextBlock>
 
-				<DesignersList />
+				<AlgoliaSearchBox placeholder="Szukaj" />
 
-				{/* {designers.map((designer) => (
-							<DesignerLink value={designer.label} />
-						))} */}
+				<DesignersList />
 			</PageContainer>
-		</InstantSearchDesignersWrapper>
+		</SearchWrapper>
 	)
 }
 
