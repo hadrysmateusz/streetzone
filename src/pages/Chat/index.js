@@ -30,7 +30,8 @@ import {
 	TopContainerMobile,
 	MobileUserInfo,
 	MessageStyles,
-	RoomTabStyles
+	RoomTabStyles,
+	EmptyState
 } from "./StyledComponents"
 
 const Message = ({ id, roomId, message, createdAt, author, user, unread }) => {
@@ -58,9 +59,7 @@ const Message = ({ id, roomId, message, createdAt, author, user, unread }) => {
 	)
 }
 
-const NoMessages = () => (
-	<div className="empty-state">Nie masz jeszcze żadnych wiadomości</div>
-)
+const NoMessages = () => <EmptyState>Nie masz jeszcze żadnych wiadomości</EmptyState>
 
 const RoomTab = ({ id, otherUserId }) => {
 	const [user, error] = useUserData(otherUserId)
