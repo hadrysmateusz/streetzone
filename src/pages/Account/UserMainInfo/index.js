@@ -11,6 +11,7 @@ import { TYPE, SaveButton } from "../../../components/SaveButton"
 import { TextBlock, HorizontalContainer } from "../../../components/StyledComponents"
 import InfoItem from "../../../components/InfoItem"
 import { PageContainer } from "../../../components/Containers"
+import ContactModal from "../../../components/ContactModal"
 // import MoreButton from "../../../components/MoreButton"
 
 import {
@@ -99,15 +100,13 @@ const MainInfo = ({ user, isAuthorized, userId, currentBreakpoint }) => {
 							</>
 						) : (
 							<>
-								<Button
-									as={Link}
-									to={route("CHAT_NEW", { id: userId })}
-									primary
-									fullWidth={currentBreakpoint <= 1}
-								>
-									<FontAwesomeIcon icon={["far", "envelope"]} size="lg" />
-									<span>Kontakt</span>
-								</Button>
+								<ContactModal userId={userId}>
+									{({ open }) => (
+										<Button primary onClick={open}>
+											Kontakt
+										</Button>
+									)}
+								</ContactModal>
 								<SaveButton
 									id={userId}
 									type={TYPE.USER}

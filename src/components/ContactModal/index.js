@@ -1,6 +1,7 @@
 import React from "react"
 import styled from "styled-components/macro"
 import { withRouter, Link } from "react-router-dom"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 import { StatefulModal } from "../Modal/new"
 import { ButtonContainer, Button } from "../Button"
@@ -53,13 +54,9 @@ const ContactModal = ({ children, userId }) => {
 									<Header>Kontakt</Header>
 									<UserPreview user={user} onlyInfo />
 									<ButtonContainer vertical noMargin>
-										<Button
-											primary
-											icon="envelope"
-											as={Link}
-											to={route("CHAT_NEW", { id: userId })}
-										>
-											Napisz Wiadomość
+										<Button primary as={Link} to={route("CHAT_NEW", { id: userId })}>
+											<FontAwesomeIcon icon={["far", "envelope"]} />
+											&nbsp; Napisz Wiadomość
 										</Button>
 										{hasPhone && (
 											<Button>
