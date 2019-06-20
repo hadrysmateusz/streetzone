@@ -50,33 +50,41 @@ const InfoItem = ({ name, children }) => (
 	</div>
 )
 
-const DumbUserPreview = ({ profilePictureUrl, user, error, onlyInfo = false }) => (
-	<Container onlyInfo={onlyInfo}>
-		{error ? (
-			<div className="error">Wystąpił błąd</div>
-		) : !user ? (
-			<LoadingSpinner />
-		) : (
-			<>
-				<div className="top-container">
-					<ProfilePicture url={profilePictureUrl} size="40px" />
-					<div className="name">{user.name}</div>
-				</div>
-				<div className="info-container">
-					<InfoItem name="W serwisie od">
-						{moment().diff(user.userSince, "days")} dni
-					</InfoItem>
-					{user.city && <InfoItem name="Miasto">{user.city}</InfoItem>}
-				</div>
-				{!onlyInfo && (
-					<Button as={Link} to={route("ACCOUNT_ITEMS", { id: user.id })}>
-						Zobacz Profil
-					</Button>
-				)}
-			</>
-		)}
-	</Container>
-)
+const DumbUserPreview = ({
+	profilePictureUrl,
+	user,
+	userId,
+	error,
+	onlyInfo = false
+}) => {
+	return (
+		<Container onlyInfo={onlyInfo}>
+			{error ? (
+				<div className="error">Wystąpił błąd</div>
+			) : !user ? (
+				<LoadingSpinner />
+			) : (
+				<>
+					<div className="top-container">
+						<ProfilePicture url={profilePictureUrl} size="40px" />
+						<div className="name">{user.name}</div>
+					</div>
+					<div className="info-container">
+						<InfoItem name="W serwisie od">
+							{moment().diff(user.userSince, "days")} dni
+						</InfoItem>
+						{user.city && <InfoItem name="Miasto">{user.city}</InfoItem>}
+					</div>
+					{!onlyInfo && (
+						<Button as={Link} to={route("ACCOUNT_ITEMS", { id: userId })}>
+							Zobacz Profil
+						</Button>
+					)}
+				</>
+			)}
+		</Container>
+	)
+}
 
 const SmartUserPreview = ({ userId, ...rest }) => {
 	const [user, error] = useUser(userId)
@@ -84,6 +92,7 @@ const SmartUserPreview = ({ userId, ...rest }) => {
 	return (
 		<DumbUserPreview
 			user={user}
+			userId={userId}
 			error={error}
 			profilePictureUrl={profilePictureUrl}
 			{...rest}
@@ -94,7 +103,14 @@ const SmartUserPreview = ({ userId, ...rest }) => {
 const NewUserPreviewWrapper = ({ user, id, ...rest }) => {
 	if (user) {
 		const profilePictureUrl = getProfilePictureURL(user, "S")
-		return <DumbUserPreview user={user} profilePictureUrl={profilePictureUrl} {...rest} />
+		return (
+			<DumbUserPreview
+				user={user}
+				userId={id}
+				profilePictureUrl={profilePictureUrl}
+				{...rest}
+			/>
+		)
 	} else {
 		return <SmartUserPreview userId={id} {...rest} />
 	}
