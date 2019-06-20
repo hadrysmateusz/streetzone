@@ -16,6 +16,7 @@ import MessagesManager from "../MessagesManager"
 import { POST_CATEGORIES } from "../../constants"
 import { ACCOUNT_ROUTES } from "../Routes"
 import getProfilePictureURL from "../../utils/getProfilePictureURL"
+import { swingInFwdTopAnimation } from "../../style-utils/animations"
 import { route } from "../../utils"
 import { useScrollPosition, useAuthentication } from "../../hooks"
 
@@ -112,6 +113,7 @@ const Nav = styled.nav`
 `
 
 const Submenu = styled.div`
+	${swingInFwdTopAnimation}
 	padding: var(--spacing2) 0;
 	background: var(--black0);
 	box-shadow: 0 5px 10px -2px rgba(0, 0, 0, 0.3);

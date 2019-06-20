@@ -104,3 +104,20 @@ export const scaleInCenter = keyframes`
 export const scaleInCenterAnimation = css`
 	animation: ${scaleInCenter} 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
 `
+
+export const swingInFwdTop = keyframes` 
+  0% {
+    transform: rotateX(-100deg);
+    transform-origin: top;
+    opacity: 0;
+  }
+  100% {
+    transform: rotateX(0deg);
+    transform-origin: top;
+    opacity: 1;
+  }
+`
+
+export const swingInFwdTopAnimation = css`
+	animation: ${swingInFwdTop} 0.2s cubic-bezier(0.175, 0.885, 0.3, 1) both;
+`
