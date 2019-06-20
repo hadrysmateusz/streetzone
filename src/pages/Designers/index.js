@@ -1,8 +1,8 @@
 import React, { useMemo } from "react"
+import { Link } from "react-router-dom"
 import styled from "styled-components/macro"
 import { connectInfiniteHits } from "react-instantsearch-core"
 
-import { StyledLink } from "../../components/Basics"
 import { PageContainer } from "../../components/Containers"
 import { TextBlock } from "../../components/StyledComponents"
 import { SearchWrapper } from "../../components/InstantSearchWrapper"
@@ -11,14 +11,6 @@ import AlgoliaSearchBox from "../../components/Algolia/AlgoliaSearchBox"
 import { encodeURL } from "../../utils/algoliaURLutils"
 import { CONST, ROUTES } from "../../constants"
 import { ellipsis } from "polished"
-
-const DesignerLink = ({ value }) => {
-	return (
-		<StyledLink to={encodeURL({ designers: [value] }, ROUTES.MARKETPLACE)}>
-			{value}
-		</StyledLink>
-	)
-}
 
 const Header = styled.div`
 	margin: var(--spacing4) 0;
@@ -91,8 +83,36 @@ const NavLetterContainer = styled.div`
 	font-size: var(--font-size--l);
 `
 
+const StyledLink = styled(Link)`
+	cursor: pointer;
+	color: var(--gray0);
+	text-transform: uppercase;
+	:hover {
+		color: var(--black0);
+	}
+`
+
+const DesignerLink = ({ value }) => {
+	return (
+		<div>
+			<StyledLink to={encodeURL({ designers: [value] }, ROUTES.MARKETPLACE)}>
+				{value}
+			</StyledLink>
+		</div>
+	)
+}
+
 const NavLetter = ({ value, isEmpty }) => {
-	return <NavLetterContainer isEmpty={isEmpty}>{value}</NavLetterContainer>
+	const onClick = () =>
+		document
+			.getElementById(`designers-list-section-${value}`)
+			.scrollIntoView({ behavior: "smooth", block: "start" })
+
+	return (
+		<NavLetterContainer isEmpty={isEmpty} onClick={onClick}>
+			{value}
+		</NavLetterContainer>
+	)
 }
 
 const chars = [
@@ -129,15 +149,13 @@ const ListSection = ({ letter, items }) => {
 	if (!items || items.length === 0) return null
 
 	return (
-		<SectionContainer>
+		<SectionContainer id={`designers-list-section-${letter}`}>
 			<TextBlock serif size="6.4rem">
 				{letter}
 			</TextBlock>
 			<List>
 				{items.map((designer) => (
-					<TextBlock uppercase color="gray0" key={designer}>
-						<DesignerLink value={designer.label} />
-					</TextBlock>
+					<DesignerLink value={designer.label} key={designer} />
 				))}
 			</List>
 		</SectionContainer>
