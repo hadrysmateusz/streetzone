@@ -13,6 +13,7 @@ import UserPreview from "../../components/UserPreview/new"
 import EmptyState from "../../components/EmptyState"
 import PageNav from "../../components/PageNav"
 import InfoItem from "../../components/InfoItem"
+import Share from "../../components/Share"
 import {
 	Header,
 	DetailsContainer,
@@ -20,7 +21,8 @@ import {
 	Brands,
 	Description,
 	ItemContainer,
-	InfoContainer
+	InfoContainer,
+	MiscBar
 } from "../../components/ItemDetails"
 
 import { useFirebase, useAuthentication } from "../../hooks"
@@ -190,6 +192,12 @@ const ItemDetailsPage = ({ match, history }) => {
 					</InfoContainer>
 				</ItemContainer>
 			</PageContainer>
+			<MiscBar>
+				<div className="group">
+					<div className="group-name">Udostępnij</div>
+					<Share />
+				</div>
+			</MiscBar>
 		</>
 	)
 }
