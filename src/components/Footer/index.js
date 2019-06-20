@@ -108,7 +108,9 @@ const Footer = () => {
 				<Group>
 					<ImportantText>KONTAKT</ImportantText>
 					<Item to={ROUTES.CONTACT}>Kontakt</Item>
-					<Item>{CONST.CONTACT_EMAIL}</Item>
+					<Item as="a" href={`mailto:${CONST.CONTACT_EMAIL}`}>
+						{CONST.CONTACT_EMAIL}
+					</Item>
 				</Group>
 				<Group>
 					<ImportantText>POMOC</ImportantText>
