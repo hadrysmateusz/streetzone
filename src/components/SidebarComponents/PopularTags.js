@@ -23,6 +23,9 @@ const Tag = styled.div`
 	color: var(--gray0);
 	text-transform: uppercase;
 	font-size: var(--font-size--xs);
+	transition-property: background, color;
+	transition-timing-function: linear;
+	transition-duration: 100ms;
 	:hover {
 		background: var(--almost-white);
 		color: var(--black0);
