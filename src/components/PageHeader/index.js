@@ -164,6 +164,7 @@ const submenuItemCommon = css`
 	padding: var(--spacing2) var(--spacing3);
 	color: white;
 	font-weight: var(--semi-bold);
+	transition: background-color 100ms linear, color 100ms linear;
 
 	&:hover {
 		color: white;
