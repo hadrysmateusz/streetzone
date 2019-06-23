@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react"
-import styled from "styled-components/macro"
+import styled, { css } from "styled-components/macro"
 import { withBreakpoints } from "react-breakpoints"
 import { disableBodyScroll, enableBodyScroll } from "body-scroll-lock"
 
@@ -96,35 +96,41 @@ const MarketplacePage = ({ currentBreakpoint }) => {
 	}
 
 	return (
-		<SearchWrapper
-			indexName={CONST.ITEMS_MARKETPLACE_DEFAULT_ALGOLIA_INDEX}
-			initialState={DEFAULT_SEARCH_STATE}
-			allowedKeys={["category", "designers", "price", "size"]}
-			hitsPerPage={4}
+		<div
+			css={css`
+				margin-top: var(--spacing3);
+			`}
 		>
-			<Header />
-			<PromotedSection />
-			<PageContainer extraWide>
-				<GridContainer>
-					<Topbar toggleFilters={toggleFilters} sortingOptions={sortingOptions} />
+			<SearchWrapper
+				indexName={CONST.ITEMS_MARKETPLACE_DEFAULT_ALGOLIA_INDEX}
+				initialState={DEFAULT_SEARCH_STATE}
+				allowedKeys={["category", "designers", "price", "size"]}
+				hitsPerPage={4}
+			>
+				<Header />
+				<PromotedSection />
+				<PageContainer extraWide>
+					<GridContainer>
+						<Topbar toggleFilters={toggleFilters} sortingOptions={sortingOptions} />
 
-					<CurrentFilters toggle={toggleFilters} clearFilters={clearFiltersFn} />
+						<CurrentFilters toggle={toggleFilters} clearFilters={clearFiltersFn} />
 
-					<MainGrid>
-						<Sidebar hidden={!areFiltersOpen && !(currentBreakpoint > 2)}>
-							<FiltersHeader>Filtruj</FiltersHeader>
-							<Filters
-								toggle={toggleFilters}
-								clear={clearFiltersFn}
-								shouldClear={{ value: clearFilters, update: setClearFilters }}
-							/>
-						</Sidebar>
-						<MarketplaceResults />
-					</MainGrid>
-				</GridContainer>
-			</PageContainer>
-			<ScrollToTop />
-		</SearchWrapper>
+						<MainGrid>
+							<Sidebar hidden={!areFiltersOpen && !(currentBreakpoint > 2)}>
+								<FiltersHeader>Filtruj</FiltersHeader>
+								<Filters
+									toggle={toggleFilters}
+									clear={clearFiltersFn}
+									shouldClear={{ value: clearFilters, update: setClearFilters }}
+								/>
+							</Sidebar>
+							<MarketplaceResults />
+						</MainGrid>
+					</GridContainer>
+				</PageContainer>
+				<ScrollToTop />
+			</SearchWrapper>
+		</div>
 	)
 }
 

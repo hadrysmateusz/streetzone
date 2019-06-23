@@ -61,7 +61,8 @@ export const PageHeaderOuter = styled.div`
 	background: white;
 	border-bottom: 1px solid white;
 	transition: border-color 0.14s linear;
-	${(p) => p.scrollPosition !== 0 && "border-color: var(--gray75);"}
+	border-color: var(--gray75);
+	/* ${(p) => p.scrollPosition !== 0 && "border-color: var(--gray75);"} */
 `
 
 const SubmenuContainer = styled.div`
@@ -144,6 +145,7 @@ const DesktopNavLink = styled(NavLink)`
 	${linkCommon}
 	padding: 0;
 	color: var(--gray25);
+	font-weight: var(--semi-bold);
 
 	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
 		:hover > ${SubmenuContainer} {

@@ -5,6 +5,8 @@ const GlobalStyle = createGlobalStyle`
 	/* base font size for the rem units */
 	font-size: 10px;
 
+	--app-background-color: #fdfdfe;
+
 	--color-messenger: #009bfa;
 	--color-facebook: #3c5a99;
 	--color-twitter: #1da1f2;
@@ -28,13 +30,13 @@ const GlobalStyle = createGlobalStyle`
 	--gray0: #8f8f8f;
 	--gray25: #afafaf;
 	--gray50: #c6c6c6;
-	--gray75: #dadada;
+	--gray75: #d8d8d8;
 	--gray100: #eaeaea;
 
 	--accent25: #efd00a;
 	--accent50: #ffde5b;
 
-	--almost-white: #f9f9f9;
+	--almost-white: #f7f7f8;
 
 	--spacing-base: 4px;
 	--spacing1: calc(var(--spacing-base) * 1);
@@ -51,7 +53,9 @@ const GlobalStyle = createGlobalStyle`
 	--font-size--xl: 3.2rem;
 	--font-size--xxl: 4.8rem;
 
-	--font-family--serif: "Playfair Display";
+	/* TODO: the serif font is set to a sans-serif font for testing purposes, 
+	determine whether to keep this change or revert it */
+	--font-family--serif: "Open Sans";
 	--font-family--sans-serif: "Open Sans";
 
 
@@ -80,6 +84,7 @@ const GlobalStyle = createGlobalStyle`
 body {
 	padding: 0;
 	margin: 0;
+	background: var(--app-background-color);
 
 	/* base typography */
 	font-weight: 400;

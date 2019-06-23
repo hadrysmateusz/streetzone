@@ -1,5 +1,6 @@
 import React, { Component } from "react"
 import { compose } from "recompose"
+import { css } from "styled-components/macro"
 
 import { withAuthorization, withAuthentication } from "../../components/UserSession"
 import { withFirebase } from "../../components/Firebase"
@@ -53,7 +54,12 @@ class NewItemPage extends Component {
 
 	render() {
 		return (
-			<PageContainer maxWidth={2}>
+			<PageContainer
+				maxWidth={2}
+				css={css`
+					margin-top: var(--spacing3);
+				`}
+			>
 				<NewItemForm onSubmit={this.onSubmit} />
 			</PageContainer>
 		)
