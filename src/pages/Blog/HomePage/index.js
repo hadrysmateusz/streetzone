@@ -24,7 +24,7 @@ const DropsGroup = () => (
 	<ThematicGroup
 		index={CONST.BLOG_DROP_ALGOLIA_INDEX}
 		title="Nadchodzące Dropy"
-		linkTo={route("DROPS")}
+		linkTo={route("DROPS_SECTION", { id: "upcoming" })}
 		hasMore
 		component={SmallDropCard}
 	/>
