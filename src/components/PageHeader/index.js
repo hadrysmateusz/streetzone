@@ -254,10 +254,10 @@ const PageHeaderMobile = ({ authUser, firebase, location }) => {
 						Strona główna
 					</StyledNavLink>
 					<StyledNavLink to={route("BLOG_HOME")}>Czytaj</StyledNavLink>
+					<StyledNavLink to={route("DROPS")}>Dropy</StyledNavLink>
 					<StyledNavLink to={route("MARKETPLACE")} exact>
 						Kupuj
 					</StyledNavLink>
-					<StyledNavLink to={route("DROPS")}>Dropy</StyledNavLink>
 					<StyledNavLink to={route("NEW_ITEM")}>Sprzedawaj</StyledNavLink>
 					<StyledNavLink to={route("ABOUT")}>Informacje</StyledNavLink>
 
@@ -299,16 +299,6 @@ const PageHeaderDesktop = ({ authUser, firebase, location }) => {
 					))}
 				</DesktopNavItem>
 
-				<DesktopNavItem
-					link={route("MARKETPLACE")}
-					exact
-					label="Kupuj"
-					alignSubmenu="left"
-				>
-					<SubmenuItem link={route("MARKETPLACE")} label="Tablica" />
-					<SubmenuItem link={route("DESIGNERS")} label="Projektanci / Marki" />
-				</DesktopNavItem>
-
 				<DesktopNavItem link={route("DROPS")} label="Dropy" alignSubmenu="left">
 					<SubmenuItem link={route("DROPS_SECTION", { id: "newest" })} label="Nowe" />
 					<SubmenuItem
@@ -319,6 +309,16 @@ const PageHeaderDesktop = ({ authUser, firebase, location }) => {
 						link={route("DROPS_SECTION", { id: "archive" })}
 						label="Archiwum"
 					/>
+				</DesktopNavItem>
+
+				<DesktopNavItem
+					link={route("MARKETPLACE")}
+					exact
+					label="Kupuj"
+					alignSubmenu="left"
+				>
+					<SubmenuItem link={route("MARKETPLACE")} label="Tablica" />
+					<SubmenuItem link={route("DESIGNERS")} label="Projektanci / Marki" />
 				</DesktopNavItem>
 
 				<DesktopNavItem link={route("NEW_ITEM")} label="Sprzedawaj" />
