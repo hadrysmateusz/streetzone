@@ -292,7 +292,7 @@ const DropsPage = compose(
 						</div>
 
 						<PageContainer>
-							<LayoutManager columns="1fr minmax(220px, 25%)">
+							<LayoutManager>
 								<Main>
 									<Header>Dropy</Header>
 									<SectionSelect

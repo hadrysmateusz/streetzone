@@ -53,7 +53,7 @@ const BlogHomePage = () => {
 				hitsPerPage={3}
 			>
 				<PageContainer>
-					<LayoutManager columns="1fr minmax(220px, 25%)">
+					<LayoutManager>
 						<Main>
 							{/* Navigation */}
 							<CategoryNav />

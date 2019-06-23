@@ -44,7 +44,7 @@ const BlogTagPage = ({ currentBreakpoint, match }) => {
 				refinements={{ tags: [tag] }}
 			>
 				<PageContainer>
-					<LayoutManager columns="1fr minmax(220px, 25%)">
+					<LayoutManager>
 						<Main>
 							<PageNav breadcrumbs={[["Czytaj", "BLOG_HOME"]]} />
 							<Heading>{tag}</Heading>

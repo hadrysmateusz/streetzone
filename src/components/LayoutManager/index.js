@@ -7,10 +7,12 @@ import { getCategoryColor } from "../../style-utils"
 
 const MainContainer = styled.div`
 	align-self: start;
+	flex: 1;
 `
 
 const SidebarContainer = styled.aside`
-	align-self: start;
+	width: 25%;
+	min-width: 220px;
 `
 
 const SidebarHeader = styled.div`
@@ -26,6 +28,7 @@ const SidebarHeader = styled.div`
 const SidebarSectionContainer = styled.div`
 	/* background: rgba(255, 0, 0, 0.2);
 	border-bottom: 1px solid green; */
+	width: 100%;
 	overflow: hidden;
 	:not(:last-child) {
 		height: calc(100vh - var(--page-header-height));
@@ -34,8 +37,14 @@ const SidebarSectionContainer = styled.div`
 
 const Layout = styled.div`
 	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
-		display: grid;
-		grid-template-columns: ${(p) => p.columns || "3fr 1fr"};
+
+		> :first-child {
+			margin-right: var(--spacing3);
+		}
+
+		display: flex;
+		/* grid-template-columns: ${(p) => p.columns || "1fr minmax(220px, 25%)"}; */
+		/* grid-template-columns: auto auto; */
 		gap: var(--spacing3);
 	}
 `
@@ -152,7 +161,7 @@ export const Sidebar = ({ children, availableElements, isRandom }) => {
 }
 
 export const LayoutManager = withBreakpoints(
-	({ currentBreakpoint, children, availableElements, isRandom, columns }) => {
+	({ currentBreakpoint, children, columns }) => {
 		const mainRef = useRef()
 		const sidebarRef = useRef()
 

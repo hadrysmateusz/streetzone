@@ -29,7 +29,7 @@ const BlogCategoryPage = ({ match }) => {
 				hitsPerPage={6}
 			>
 				<PageContainer>
-					<LayoutManager columns="1fr minmax(220px, 25%)">
+					<LayoutManager>
 						<Main>
 							<PageNav breadcrumbs={[["Czytaj", "BLOG_HOME"]]} />
 							<Heading category={category}>{category}</Heading>

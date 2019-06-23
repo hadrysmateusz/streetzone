@@ -184,7 +184,7 @@ export const PureBlogPost = withBreakpoints(
 
 				<OuterContainer>
 					<PageContainer>
-						<LayoutManager columns="1fr minmax(220px, 25%)">
+						<LayoutManager>
 							<Main>
 								{/* Header image */}
 								<MainImageContainer>
