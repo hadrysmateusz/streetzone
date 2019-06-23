@@ -18,7 +18,7 @@ const NavContainer = styled.div`
 		min-width: 0;
 	}
 	.right {
-		font-weight: bold;
+		font-weight: var(--semi-bold);
 		> :first-child {
 			margin-right: var(--spacing1);
 		}

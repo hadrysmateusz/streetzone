@@ -119,24 +119,24 @@ const usePost = (id) => {
 	const [post, setPost] = useState(null)
 	const firebase = useFirebase()
 
-	const getPost = async () => {
-		try {
-			// Get data from db
-			const snap = await firebase.post(id).get()
-			const post = snap.data()
-
-			// Un-escape new-line characters
-			post.mainContent = post.mainContent.replace(/\\n/g, "\n")
-
-			setPost(post)
-		} catch (e) {
-			console.log(e)
-		}
-	}
-
 	useEffect(() => {
+		const getPost = async () => {
+			try {
+				// Get data from db
+				const snap = await firebase.post(id).get()
+				const post = snap.data()
+
+				// Un-escape new-line characters
+				post.mainContent = post.mainContent.replace(/\\n/g, "\n")
+
+				setPost(post)
+			} catch (e) {
+				console.log(e)
+			}
+		}
+
 		getPost()
-	}, [])
+	}, [firebase, id])
 
 	return post
 }
