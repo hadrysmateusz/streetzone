@@ -28,6 +28,7 @@ const Tag = styled.div`
 	transition-duration: 100ms;
 	:hover {
 		background: var(--almost-white);
+		border-radius: 4px;
 		color: var(--black0);
 	}
 `
