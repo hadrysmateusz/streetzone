@@ -45,23 +45,23 @@ export const GroupContainer = styled.section`
 	}
 `
 
-const Group = ({ title, hasMore, children, linkTo }) => {
+const Group = ({ title, hasMore = false, children, linkTo }) => {
 	return (
 		<GroupContainer>
-			<header>
-				{title && (
-					<TextBlock bold uppercase size="m">
-						{title}
-					</TextBlock>
-				)}
-				{hasMore && (
-					<Link to={linkTo}>
+			<Link to={linkTo}>
+				<header>
+					{title && (
+						<TextBlock bold uppercase size="m">
+							{title}
+						</TextBlock>
+					)}
+					{hasMore && (
 						<TextBlock color="gray0">
 							Więcej <FontAwesomeIcon size="xs" icon="arrow-right" />
 						</TextBlock>
-					</Link>
-				)}
-			</header>
+					)}
+				</header>
+			</Link>
 			<div className="content">{children}</div>
 		</GroupContainer>
 	)

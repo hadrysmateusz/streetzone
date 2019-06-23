@@ -25,7 +25,6 @@ const DropsGroup = () => (
 		index={CONST.BLOG_DROP_ALGOLIA_INDEX}
 		title="Nadchodzące Dropy"
 		linkTo={route("DROPS_SECTION", { id: "upcoming" })}
-		hasMore
 		component={SmallDropCard}
 	/>
 )
@@ -37,7 +36,6 @@ const CareAndMaintenanceGroup = () => (
 		linkTo={route("BLOG_TAG", {
 			tag: "Czyszczenie i Pielęgnacja"
 		})}
-		hasMore
 		refinements={{ tags: ["Czyszczenie", "Pielęgnacja"] }}
 		component={PostCard}
 	/>
