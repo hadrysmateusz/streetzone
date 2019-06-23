@@ -20,7 +20,7 @@ export const DumbThematicGroup = ({
 	) : null
 }
 
-export default ({
+const ThematicGroup = ({
 	limit = 3,
 	index,
 	title,
@@ -28,7 +28,8 @@ export default ({
 	linkTo,
 	showArchived,
 	hasMore,
-	component
+	component,
+	filters
 }) => {
 	return (
 		<StatelessSearchWrapper
@@ -36,6 +37,7 @@ export default ({
 			indexName={index}
 			limit={limit}
 			refinements={refinements}
+			filters={filters}
 		>
 			{(results) => {
 				return (
@@ -51,3 +53,5 @@ export default ({
 		</StatelessSearchWrapper>
 	)
 }
+
+export default ThematicGroup

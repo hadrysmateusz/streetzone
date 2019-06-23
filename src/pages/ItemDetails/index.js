@@ -14,6 +14,9 @@ import EmptyState from "../../components/EmptyState"
 import PageNav from "../../components/PageNav"
 import InfoItem from "../../components/InfoItem"
 import ContactModal from "../../components/ContactModal"
+import { LayoutManager, Sidebar, Main } from "../../components/LayoutManager"
+import { ThematicGroup } from "../../components/ThematicGroup"
+import { SmallItemCard } from "../../components/Cards"
 import Share from "../../components/Share"
 import {
 	Header,
@@ -28,6 +31,7 @@ import {
 
 import { useFirebase, useAuthentication } from "../../hooks"
 import { translateCondition } from "../../constants/item_schema"
+import { CONST } from "../../constants"
 import { route, itemDataHelpers } from "../../utils"
 
 const { formatDesigners, formatPrice, formatSize } = itemDataHelpers
@@ -90,6 +94,12 @@ const ItemDetailsPage = ({ match, history }) => {
 	const formattedPrice = formatPrice(item.price)
 	const formattedSize = formatSize(item.size)
 	const formattedDesigners = formatDesigners(item.designers)
+
+	const similarFilters = `NOT id:${item.id} AND category:${
+		item.category
+	} AND (${item.designers.map((d) => `designers:${d}`).join(" OR ")})`
+
+	console.log(similarFilters)
 
 	return (
 		<>
@@ -197,35 +207,31 @@ const ItemDetailsPage = ({ match, history }) => {
 					<Share />
 				</div>
 			</MiscBar>
+			<PageContainer>
+				<LayoutManager>
+					<Main>
+						<ThematicGroup
+							index={CONST.ITEMS_MARKETPLACE_DEFAULT_ALGOLIA_INDEX}
+							title="Podobne przedmioty"
+							filters={similarFilters}
+							component={SmallItemCard}
+							limit={3}
+						/>
+						<ThematicGroup
+							index={CONST.ITEMS_MARKETPLACE_DEFAULT_ALGOLIA_INDEX}
+							title="Inne przedmioty tego użytkownika"
+							filters={`NOT id:${item.id} AND userId:${item.userId}`}
+							component={SmallItemCard}
+							limit={3}
+						/>
+					</Main>
+					<Sidebar
+						availableElements={[{ component: () => <div />, title: "Placeholder" }]}
+					/>
+				</LayoutManager>
+			</PageContainer>
 		</>
 	)
 }
 
 export default ItemDetailsPage
-
-/* <GrayContainer padded>
-	<TextBlock uppercase>Podobne przedmioty</TextBlock>
-	<InstantSearch
-		appId={process.env.REACT_APP_APP_ID}
-		apiKey={process.env.REACT_APP_ALGOLIA_API_KEY}
-		indexName={CONST.ITEMS_MARKETPLACE_DEFAULT_ALGOLIA_INDEX}
-	>
-		<Configure hitsPerPage={3} />
-		<VirtualRefinementList
-			attribute="designers"
-			defaultRefinement={item.designers}
-		/>
-		<VirtualMenu attribute="category" defaultRefinement={item.category} />
-		<AlgoliaScrollableHits />
-	</InstantSearch>
-	<TextBlock uppercase>Inne przedmioty sprzedającego</TextBlock>
-	<InstantSearch
-		appId={process.env.REACT_APP_APP_ID}
-		apiKey={process.env.REACT_APP_ALGOLIA_API_KEY}
-		indexName={CONST.ITEMS_MARKETPLACE_DEFAULT_ALGOLIA_INDEX}
-	>
-		<Configure hitsPerPage={3} />
-		<VirtualMenu attribute="userId" defaultRefinement={item.userId} />
-		<AlgoliaScrollableHits />
-	</InstantSearch>
-</GrayContainer> */
