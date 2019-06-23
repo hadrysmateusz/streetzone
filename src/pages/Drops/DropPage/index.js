@@ -12,6 +12,9 @@ import PageNav from "../../../components/PageNav"
 import Share from "../../../components/Share"
 import Tags from "../../../components/Tags"
 import InfoItem from "../../../components/InfoItem"
+import { LayoutManager, Sidebar, Main } from "../../../components/LayoutManager"
+import { ThematicGroup } from "../../../components/ThematicGroup"
+import { SmallDropCard } from "../../../components/Cards"
 import {
 	Header,
 	DetailsContainer,
@@ -70,11 +73,13 @@ const DropDetailsPage = ({ match, history }) => {
 	const dropsAtDate = dropsAt.format("LL")
 	const dropsAtTime = dropsAt.format("HH:mm")
 
+	const similarFilters = `NOT id:${drop.id}`
+
 	return (
 		<>
 			<PageContainer>
 				{/* TODO: make the algolia encoding work with route helper, for this to work */}
-				<PageNav breadcrumbs={[["Dropy", "DROPS"]]} />
+				<PageNav breadcrumbs={[["Dropy", "DROPS"]]} noMargin />
 				<ItemContainer>
 					<ImageGallery
 						storageRefs={drop.attachments}
@@ -139,6 +144,29 @@ const DropDetailsPage = ({ match, history }) => {
 					<Tags tags={drop.tags} />
 				</div>
 			</MiscBar>
+			<PageContainer>
+				<LayoutManager>
+					<Main>
+						<ThematicGroup
+							index={CONST.BLOG_DROP_ALGOLIA_INDEX}
+							title="Więcej dropów"
+							filters={similarFilters}
+							component={SmallDropCard}
+							limit={3}
+						/>
+						{/* <ThematicGroup
+							index={CONST.ITEMS_MARKETPLACE_DEFAULT_ALGOLIA_INDEX}
+							title="Inne przedmioty tego użytkownika"
+							filters={`NOT id:${item.id} AND userId:${item.userId}`}
+							component={SmallItemCard}
+							limit={3}
+						/> */}
+					</Main>
+					<Sidebar
+						availableElements={[{ component: () => <div />, title: "Placeholder" }]}
+					/>
+				</LayoutManager>
+			</PageContainer>
 		</>
 	)
 }

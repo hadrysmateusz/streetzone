@@ -163,7 +163,7 @@ const PromotedContainer = styled.div`
 `
 
 const OuterContainer = styled.div`
-	padding: var(--spacing3) 0;
+	padding-bottom: var(--spacing3);
 `
 
 const ResultsContainer = styled.div`

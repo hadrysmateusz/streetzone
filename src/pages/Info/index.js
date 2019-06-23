@@ -5,7 +5,6 @@ import styled from "styled-components/macro"
 import { PageContainer } from "../../components/Containers"
 
 const Layout = styled.div`
-	margin-top: var(--spacing4);
 	gap: var(--spacing4);
 	display: grid;
 	grid-template-columns: minmax(220px, 25%) 1fr;

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
 import moment from "moment"
-import styled from "styled-components/macro" // for css prop
+import { css } from "styled-components/macro" // for css prop
 
 import Button, { LoaderButton, ButtonContainer } from "../../components/Button"
 import { SmallTextBlock } from "../../components/StyledComponents"
@@ -154,7 +154,7 @@ const ItemDetailsPage = ({ match, history }) => {
 						<ButtonContainer
 							noMargin
 							vertical
-							css={`
+							css={css`
 								margin-bottom: var(--spacing3);
 							`}
 						>

@@ -16,6 +16,7 @@ export const InfoContainer = styled.div`
 `
 
 export const ItemContainer = styled.div`
+	margin-top: var(--spacing3);
 	position: relative;
 	display: grid;
 	max-width: 100%;
@@ -95,6 +96,7 @@ export const BrandsContainer = styled.div`
 `
 
 export const MiscBar = styled.div`
+	background: white;
 	display: flex;
 	align-items: center;
 	justify-content: center;

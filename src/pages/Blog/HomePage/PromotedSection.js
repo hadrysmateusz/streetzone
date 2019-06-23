@@ -11,7 +11,7 @@ import { PageContainer } from "../../../components/Containers"
 import PromotedPost from "../PromotedPost"
 
 const DesktopContainer = styled.div`
-	margin-top: var(--spacing3);
+	margin-bottom: var(--spacing3);
 	display: grid;
 	grid-template-columns: 2fr 1fr;
 	grid-template-rows: 1fr 1fr;
@@ -20,7 +20,6 @@ const DesktopContainer = styled.div`
 	> *:first-child {
 		grid-row: span 2;
 	}
-	margin-bottom: var(--spacing3);
 `
 
 const MobileContainer = styled.div`

@@ -25,10 +25,13 @@ const InnerContainer = styled.div`
 	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
 		grid-template-columns: 150px 1fr;
 	}
+	@media (min-width: ${(p) => p.theme.breakpoints[3]}px) {
+		grid-template-columns: 170px 1fr;
+	}
 `
 
 const Article = styled.article`
-	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
+	@media (min-width: ${(p) => p.theme.breakpoints[3]}px) {
 		font-size: var(--font-size--m);
 	}
 	max-width: 100%;
@@ -51,6 +54,7 @@ const OuterContainer = styled.div`
 `
 
 const HeaderBox = styled.div`
+	margin-top: calc(-1 * var(--spacing3));
 	background: var(--black25);
 	color: white;
 	padding-top: var(--spacing2);
