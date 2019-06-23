@@ -356,6 +356,7 @@ const DropsPage = compose(
 				indexName={section.sortBy}
 				allowedKeys={["category", "designers", "dropsAtApproxTimestamp"]}
 				hitsPerPage={4}
+				refinements={{ dropsAtApproxTimestamp: range }}
 			>
 				{/* intentionally hidden visually to prevent resizing bug */}
 				<div hidden={isMobile}>
@@ -365,7 +366,7 @@ const DropsPage = compose(
 				</div>
 
 				{/* Set date range based on current section */}
-				<VirtualRange attribute="dropsAtApproxTimestamp" defaultRefinement={range} />
+				{/* <VirtualRange attribute="dropsAtApproxTimestamp" defaultRefinement={range} /> */}
 
 				<PageContainer>
 					<LayoutManager>

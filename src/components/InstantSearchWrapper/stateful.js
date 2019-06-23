@@ -5,6 +5,7 @@ import cloneDeep from "clone-deep"
 
 import { decodeURL, encodeURL } from "../../utils/algoliaURLutils"
 import { VirtualToggle } from "../Algolia/Virtual"
+import { VirtualRefinement } from "../Algolia/Helpers"
 
 const EMPTY_SEARCH_ERR = "empty search string"
 
@@ -27,6 +28,7 @@ export const SearchWrapper = withRouter(
 		location,
 		showArchived = false,
 		ignoreArchivedStatus = false,
+		refinements,
 		...rest
 	}) => {
 		// use default values and prop overrides to construct initial state
@@ -177,6 +179,13 @@ export const SearchWrapper = withRouter(
 				{...rest}
 			>
 				{hitsPerPage && <Configure hitsPerPage={hitsPerPage} />}
+
+				{/* apply necessary refinements */}
+				{refinements &&
+					Object.entries(refinements).map(([key, value]) => (
+						<VirtualRefinement key={key} attribute={key} value={value} />
+					))}
+
 				{/* Hide archived results unless told otherwise */}
 				{!ignoreArchivedStatus && !showArchived && (
 					<VirtualToggle
