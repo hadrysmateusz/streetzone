@@ -21,6 +21,7 @@ const { formatPrice, formatSize } = itemDataHelpers
 const OuterContainer = styled.div`
 	min-width: 0; /* this has to be on the outermost component*/
 	min-height: 0;
+	background: white;
 
 	> a {
 		${cardBorder}

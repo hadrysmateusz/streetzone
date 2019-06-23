@@ -22,6 +22,7 @@ const Container = styled.div`
 	min-width: 0; /* this has to be on the outermost component*/
 	max-width: 310px;
 	width: 100%;
+	background: white;
 
 	a {
 		${cardBorder}

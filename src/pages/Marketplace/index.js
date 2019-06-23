@@ -39,6 +39,7 @@ const MainGrid = styled.div`
 const Sidebar = styled.aside`
 	align-self: flex-start;
 	border: 1px solid var(--gray75);
+	background: white;
 
 	/* mobile */
 	@media (max-width: ${(p) => p.theme.breakpoints[3] - 1}px) {

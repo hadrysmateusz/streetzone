@@ -23,6 +23,7 @@ import {
 
 export const BigContainer = styled.div`
 	min-width: 0; /* this has to be on the outermost component*/
+	background: white;
 
 	a {
 		${cardBorder}
