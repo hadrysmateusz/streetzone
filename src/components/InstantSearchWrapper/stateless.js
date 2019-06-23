@@ -8,17 +8,12 @@ const StatelessSearchWrapper = (props) => {
 		indexName,
 		refinements,
 		filters,
-		exclude,
 		limit = 3,
 		children,
 		showArchived = false
 	} = props
 
 	const isRenderFn = typeof children === "function"
-
-	console.log(exclude)
-
-	// const filters = `NOT id:${exclude}`
 
 	return (
 		<InstantSearch
@@ -29,20 +24,21 @@ const StatelessSearchWrapper = (props) => {
 			<Configure filters={filters || undefined} hitsPerPage={limit} />
 
 			{/* apply necessary refinements */}
-			{/* {refinements &&
+			{refinements &&
 				Object.entries(refinements).map(([key, value]) => (
 					<VirtualRefinement key={key} attribute={key} value={value} />
-				))} */}
+				))}
 
+			{/* TODO: verify that this works */}
 			{/* Hide archived results unless told otherwise */}
-			{/* {!showArchived && (
+			{!showArchived && (
 				<VirtualToggle
 					attribute="isArchived"
 					value={false}
 					defaultRefinement={true}
 					label="Hide Archived"
 				/>
-			)} */}
+			)}
 
 			{/* render children (using renderProps if applicable) */}
 			{isRenderFn ? <Results>{children}</Results> : children}
