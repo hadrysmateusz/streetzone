@@ -21,6 +21,13 @@ const CategoryLink = styled(Link)`
 	border-bottom: 2px solid ${(p) => getCategoryColor(p.category)};
 	padding: var(--spacing1) 0;
 	text-transform: uppercase;
+	font-weight: var(--semi-bold);
+	color: var(--black75);
+
+	:hover {
+		color: black;
+	}
+
 	:not(:last-child) {
 		margin-right: var(--spacing3);
 	}

@@ -6,7 +6,7 @@ import { route } from "../../utils"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 const NavContainer = styled.div`
-	margin: var(--spacing3) 0;
+	margin: ${(p) => (p.noMargin ? "0" : "var(--spacing3)")} 0;
 	text-transform: uppercase;
 	font-size: var(--font-size--xs);
 	color: ${(p) => (p.white ? "white" : "var(--gray0)")};
@@ -34,7 +34,7 @@ const IconContainer = styled.div`
 
 const Chevron = () => <IconContainer>&gt;</IconContainer>
 
-const PageNav = ({ breadcrumbs, showBack = true, white }) => {
+const PageNav = ({ breadcrumbs, showBack = true, white, noMargin }) => {
 	const routes = breadcrumbs.map((value) => {
 		// Use the first element of the array as the title
 		const title = value.shift()
@@ -48,7 +48,7 @@ const PageNav = ({ breadcrumbs, showBack = true, white }) => {
 	const lastRoute = routes[routes.length - 1]
 
 	return (
-		<NavContainer white={white}>
+		<NavContainer white={white} noMargin={noMargin}>
 			<div className="left">
 				{routes.map(({ title, path }, i) => (
 					<Link to={path} key={title}>

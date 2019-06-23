@@ -1,5 +1,6 @@
 import React from "react"
 import { withRouter } from "react-router"
+import { css } from "styled-components/macro"
 
 import { CONST } from "../../../constants"
 
@@ -22,7 +23,11 @@ const BlogCategoryPage = ({ match }) => {
 	const { category } = match.params
 
 	return (
-		<>
+		<div
+			css={css`
+				margin-top: var(--spacing3);
+			`}
+		>
 			<StatelessSearchWrapper
 				indexName={CONST.BLOG_POST_ALGOLIA_INDEX}
 				refinements={{ category }}
@@ -41,7 +46,7 @@ const BlogCategoryPage = ({ match }) => {
 					</LayoutManager>
 				</PageContainer>
 			</StatelessSearchWrapper>
-		</>
+		</div>
 	)
 }
 
