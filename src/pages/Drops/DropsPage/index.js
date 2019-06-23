@@ -10,6 +10,7 @@ import { PageContainer } from "../../../components/Containers"
 import { BigDropCard } from "../../../components/Cards"
 import InfiniteScrollingResults from "../../../components/InfiniteScrollingResults"
 import { InfiniteResults } from "../../../components/Algolia/Helpers"
+import { VirtualRange } from "../../../components/Algolia/Virtual"
 import { LayoutManager, Main, Sidebar } from "../../../components/LayoutManager"
 import { PopularArticles } from "../../../components/SidebarComponents"
 
@@ -22,6 +23,100 @@ import PromotedDrop from "../PromotedDrop"
 // import Filters from "./Filters"
 
 const sidebarElements = [{ title: "Popularne na blogu", component: PopularArticles }]
+
+// class Section {
+// 	constructor(id, title, description, indexName, getRange) {
+// 		this.id = id
+// 		this.title = title
+// 		this.description = description
+// 		this.indexName = indexName
+// 		this.getRange = getRange
+// 	}
+
+// 	get() {
+// 		const range = getRange()
+
+// 		return {
+// 			id: this.id,
+// 			title: this.title,
+// 			description: this.description,
+// 			indexName: this.indexName,
+// 			range
+// 		}
+// 	}
+// }
+
+// class PromotingManager {
+// 	constructor() {
+// 		this.levels = new Map()
+// 	}
+
+// 	addLevel(object) {
+// 		const level = object.level
+// 		if (this.levels.has(level)) {
+// 			throw Error("This promoting level already exists")
+// 		}
+// 		this.levels.set(level, object)
+// 	}
+
+// 	getLevel(level) {
+// 		return this.levels.get(level)
+// 	}
+
+// 	async promoteItem(itemId, level) {
+// 		const levelObject = this.getLevel(level)
+
+// 		const oldItemSnap = await db
+// 			.collection("items")
+// 			.doc(itemId)
+// 			.get()
+// 		const oldItemData = oldItemSnap.data()
+
+// 		const formattedData = levelObject.formatForDb(oldItemData)
+
+// 		console.log("levelObject", levelObject)
+// 		console.log("formattedData", formattedData)
+
+// 		return db
+// 			.collection("items")
+// 			.doc(itemId)
+// 			.update(formattedData)
+// 	}
+// }
+
+// const promotingManager = new PromotingManager()
+
+// promotingManager.addLevel(new PromotingLevel(0, 499, 7, 0))
+// promotingManager.addLevel(new PromotingLevel(1, 999, 10, 4))
+// promotingManager.addLevel(new PromotingLevel(2, 2500, 14, 10))
+
+// const constructRangeRefinement = (newMin, newMax, defMin, defMax) => {
+// 	return {
+// 		min: Math.max(newMin, defMin) || defMin,
+// 		max: Math.min(newMax, defMax) || defMax
+// 	}
+// }
+
+// const getRangeRefinement = (sectionId, { min, max }) => {
+// 	const now = Date.now()
+// 	let value
+
+// 	switch (sectionId) {
+// 		case "newest":
+// 			value = constructRangeRefinement(null, null, min, max)
+// 			break
+// 		case "upcoming":
+// 			value = constructRangeRefinement(now, null, min, max)
+// 			break
+// 		case "archive":
+// 			value = constructRangeRefinement(null, now, min, max)
+// 			break
+// 		default:
+// 			value = constructRangeRefinement(null, null, min, max)
+// 	}
+
+// 	return { dropsAtApproxTimestamp: value }
+// }
 
 const SECTIONS = Object.freeze([
 	{
@@ -192,78 +287,57 @@ const MobileSectionSelect = ({ sections, currentSection, handleChange }) => {
 	)
 }
 
-const constructRangeRefinement = (newMin, newMax, defMin, defMax) => {
+const constructRangeRefinement = (newMin, newMax) => {
 	return {
-		min: Math.max(newMin, defMin) || defMin,
-		max: Math.min(newMax, defMax) || defMax
+		min: Math.max(newMin, 0) || 0,
+		max: Math.min(newMax, Number.MAX_SAFE_INTEGER) || Number.MAX_SAFE_INTEGER
 	}
 }
 
-const getRangeRefinement = (sectionId, { min, max }) => {
+const getRangeRefinement = (sectionId) => {
 	const now = Date.now()
 	let value
 
 	switch (sectionId) {
 		case "newest":
-			value = constructRangeRefinement(null, null, min, max)
+			value = constructRangeRefinement(null, null)
 			break
 		case "upcoming":
-			value = constructRangeRefinement(now, null, min, max)
+			value = constructRangeRefinement(now, null)
 			break
 		case "archive":
-			value = constructRangeRefinement(null, now, min, max)
+			value = constructRangeRefinement(null, now)
 			break
 		default:
-			value = constructRangeRefinement(null, null, min, max)
+			value = constructRangeRefinement(null, null)
 	}
 
-	return { dropsAtApproxTimestamp: value }
+	return value
 }
 
 const SectionSelect = compose(
-	withProps({ attribute: "dropsAtApproxTimestamp" }),
-	connectRange,
 	withBreakpoints,
 	withRouter
-)(
-	({
-		sections,
-		currentSection,
-		forceRefineWithState,
-		min,
-		max,
-		currentBreakpoint,
-		history
-	}) => {
-		const handleChange = (section) => {
-			// set the selected section as param in the url
-			history.push(route("DROPS_SECTION", { id: section.id }))
-
-			// construct the range refinement
-			const rangeRefinement = getRangeRefinement(section.id, { min, max })
-
-			forceRefineWithState({
-				page: 1, // reset current page
-				sortBy: section.sortBy,
-				range: rangeRefinement
-			})
-		}
-
-		const isMobile = +currentBreakpoint <= 1
-		const commonProps = { sections, handleChange, currentSection }
-
-		return isMobile ? (
-			<MobileSectionSelect {...commonProps} />
-		) : (
-			<DesktopSectionSelect {...commonProps} />
-		)
+)(({ sections, currentSection, currentBreakpoint, history }) => {
+	const handleChange = (section) => {
+		// set the selected section as param in the url
+		history.push(route("DROPS_SECTION", { id: section.id }))
 	}
-)
+
+	const isMobile = +currentBreakpoint <= 1
+	const commonProps = { sections, handleChange, currentSection }
+
+	return isMobile ? (
+		<MobileSectionSelect {...commonProps} />
+	) : (
+		<DesktopSectionSelect {...commonProps} />
+	)
+})
 
 const DropsPage = compose(
 	withRouter,
 	withBreakpoints
-)(({ match, history, currentBreakpoint }) => {
+)(({ match, currentBreakpoint }) => {
 	// get current section id from url
 	const sectionId = match.params.id
 
@@ -272,6 +346,7 @@ const DropsPage = compose(
 
 	// find the default section based on id from url
 	const section = SECTIONS.find((a) => a.id === sectionId)
+	const range = getRangeRefinement(sectionId)
 
 	const isMobile = currentBreakpoint <= 1
 
@@ -282,41 +357,36 @@ const DropsPage = compose(
 				allowedKeys={["category", "designers", "dropsAtApproxTimestamp"]}
 				hitsPerPage={4}
 			>
-				{(forceRefineWithState) => (
-					<>
-						{/* intentionally hidden visually to prevent resizing bug */}
-						<div hidden={isMobile}>
-							<PageContainer>
-								<PromotedSection component={PromotedDrop} />
-							</PageContainer>
-						</div>
+				{/* intentionally hidden visually to prevent resizing bug */}
+				<div hidden={isMobile}>
+					<PageContainer>
+						<PromotedSection component={PromotedDrop} />
+					</PageContainer>
+				</div>
 
-						<PageContainer>
-							<LayoutManager>
-								<Main>
-									<Header>Dropy</Header>
-									<SectionSelect
-										sections={SECTIONS}
-										currentSection={section}
-										forceRefineWithState={forceRefineWithState}
-									/>
-									<InfiniteScrollingResults>
-										{({ results, hasMore, loadMore }) => {
-											return (
-												<ResultsContainer>
-													{results.map((drop) => (
-														<BigDropCard {...drop} key={drop.id} />
-													))}
-												</ResultsContainer>
-											)
-										}}
-									</InfiniteScrollingResults>
-								</Main>
-								<Sidebar availableElements={sidebarElements} isRandom />
-							</LayoutManager>
-						</PageContainer>
-					</>
-				)}
+				{/* Set date range based on current section */}
+				<VirtualRange attribute="dropsAtApproxTimestamp" defaultRefinement={range} />
+
+				<PageContainer>
+					<LayoutManager>
+						<Main>
+							<Header>Dropy</Header>
+							<SectionSelect sections={SECTIONS} currentSection={section} />
+							<InfiniteScrollingResults>
+								{({ results, hasMore, loadMore }) => {
+									return (
+										<ResultsContainer>
+											{results.map((drop) => (
+												<BigDropCard {...drop} key={drop.id} />
+											))}
+										</ResultsContainer>
+									)
+								}}
+							</InfiniteScrollingResults>
+						</Main>
+						<Sidebar availableElements={sidebarElements} isRandom />
+					</LayoutManager>
+				</PageContainer>
 			</SearchWrapper>
 		</>
 	)
