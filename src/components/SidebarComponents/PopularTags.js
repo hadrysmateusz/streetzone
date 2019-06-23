@@ -17,8 +17,8 @@ const Tag = styled.div`
 	width: 100%;
 	display: flex;
 	align-items: center;
-	margin: calc(-1 * var(--spacing1)) 0;
-	padding: var(--spacing2);
+	margin: 0;
+	padding: var(--spacing1) var(--spacing2);
 
 	color: var(--gray0);
 	text-transform: uppercase;
@@ -27,7 +27,7 @@ const Tag = styled.div`
 	transition-timing-function: linear;
 	transition-duration: 100ms;
 	:hover {
-		background: var(--almost-white);
+		background: var(--gray125);
 		border-radius: 4px;
 		color: var(--black0);
 	}

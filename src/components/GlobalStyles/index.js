@@ -31,7 +31,8 @@ const GlobalStyle = createGlobalStyle`
 	--gray25: #afafaf;
 	--gray50: #c6c6c6;
 	--gray75: #d8d8d8;
-	--gray100: #eaeaea;
+	--gray100: #ebebeb;
+	--gray125: #f2f2f2;
 
 	--accent25: #efd00a;
 	--accent50: #ffde5b;
