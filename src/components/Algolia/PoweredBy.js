@@ -22,10 +22,16 @@ export const BoxContainer = styled.div`
 	margin-bottom: var(--spacing3);
 `
 
-export const PoweredByBox = () => {
-	return (
-		<BoxContainer>
-			<PoweredBy />
-		</BoxContainer>
-	)
-}
+export const PoweredByBox = styled(PoweredByBase)`
+	margin: 0 0 var(--spacing3);
+	height: 100%;
+	transform: scale(0.83) translateX(-26px);
+
+	.ais-PoweredBy-text {
+		transform: translateY(-2px) translateX(-3px);
+		display: inline-block;
+	}
+	.ais-PoweredBy-logo {
+		margin-bottom: -7px;
+	}
+`
