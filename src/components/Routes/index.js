@@ -5,7 +5,7 @@ import { Helmet } from "react-helmet"
 
 import { ROUTES, CONST } from "../../constants"
 
-import { LoadableComponentSpinner } from "../LoadingSpinner"
+import { LoadableComponentSpinner, FullPageSpinner } from "../LoadingSpinner"
 import ErrorBoundary from "../ErrorBoundary"
 
 import NotFound from "../../pages/NotFound"

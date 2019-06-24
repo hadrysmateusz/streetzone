@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react"
+import React from "react"
 import { BarLoader } from "react-css-loaders"
 import PropTypes from "prop-types"
 import styled from "styled-components/macro"
 
 import EmptyState from "../EmptyState"
+import { useNewDelayRender } from "../../hooks/useDelayRender"
 
 const SpinnerContainer = styled.div`
 	display: flex;
@@ -14,19 +15,35 @@ const SpinnerContainer = styled.div`
 	max-height: 100%;
 `
 
+const FullPageOverlay = styled.div`
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: rgba(0, 0, 0, 0.6);
+	z-index: 999;
+`
+
+export const FullPageSpinner = ({ delay = 350 }) => {
+	return useNewDelayRender(
+		<FullPageOverlay>
+			<LoadingSpinner delay={0} color={"white"} />
+		</FullPageOverlay>,
+		delay
+	)
+}
+
 const LoadingSpinner = ({ size = 9, color = "#cfcfcf", delay = 200 }) => {
-	const [isVisible, setIsVisible] = useState(false)
-
-	useEffect(() => {
-		const timeoutId = setTimeout(() => setIsVisible(true), delay)
-		return () => clearTimeout(timeoutId)
-	}, [])
-
-	return isVisible ? (
+	return useNewDelayRender(
 		<SpinnerContainer size={size}>
 			<BarLoader size={size} color={color || "#cfcfcf"} />
-		</SpinnerContainer>
-	) : null
+		</SpinnerContainer>,
+		delay
+	)
 }
 
 LoadingSpinner.propTypes = {
@@ -50,7 +67,7 @@ const LoadableComponentSpinner = ({ error, pastDelay, timedOut }) => {
 			</EmptyState>
 		)
 	} else if (pastDelay) {
-		return <LoadingSpinner />
+		return <FullPageSpinner />
 	} else {
 		return null
 	}

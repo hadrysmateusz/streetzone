@@ -11,11 +11,11 @@ export default (time) => {
 	return isDone
 }
 
-export const useNewDelayRender = (render, delay = 0) => {
+export const useNewDelayRender = (render, delay) => {
 	const [isDone, setIsDone] = useState(false)
 
 	if (!delay) {
-		console.log(
+		console.warn(
 			"Delay was not set in a delayRender hook (the component will render without delay)"
 		)
 	}
