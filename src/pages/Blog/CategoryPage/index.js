@@ -1,6 +1,5 @@
 import React from "react"
 import { withRouter } from "react-router"
-import { css } from "styled-components/macro"
 
 import { CONST } from "../../../constants"
 
@@ -23,30 +22,24 @@ const BlogCategoryPage = ({ match }) => {
 	const { category } = match.params
 
 	return (
-		<div
-			css={css`
-				margin-top: var(--spacing3);
-			`}
+		<StatelessSearchWrapper
+			indexName={CONST.BLOG_POST_ALGOLIA_INDEX}
+			refinements={{ category }}
+			hitsPerPage={6}
 		>
-			<StatelessSearchWrapper
-				indexName={CONST.BLOG_POST_ALGOLIA_INDEX}
-				refinements={{ category }}
-				hitsPerPage={6}
-			>
-				<PageContainer>
-					<LayoutManager>
-						<Main>
-							<PageNav breadcrumbs={[["Czytaj", "BLOG_HOME"]]} />
-							<Heading category={category}>{category}</Heading>
-							<InfinitePosts />
-						</Main>
-						<Sidebar availableElements={sidebarElements} isRandom>
-							<PoweredByBox />
-						</Sidebar>
-					</LayoutManager>
-				</PageContainer>
-			</StatelessSearchWrapper>
-		</div>
+			<PageContainer>
+				<LayoutManager>
+					<Main>
+						<PageNav breadcrumbs={[["Czytaj", "BLOG_HOME"]]} noMargin />
+						<Heading category={category}>{category}</Heading>
+						<InfinitePosts />
+					</Main>
+					<Sidebar availableElements={sidebarElements} isRandom>
+						<PoweredByBox />
+					</Sidebar>
+				</LayoutManager>
+			</PageContainer>
+		</StatelessSearchWrapper>
 	)
 }
 

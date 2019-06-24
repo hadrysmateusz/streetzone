@@ -23,7 +23,8 @@ const DesktopContainer = styled.div`
 `
 
 const MobileContainer = styled.div`
-	height: 30vh;
+	height: 32vh;
+	margin-top: calc(-1 * var(--spacing3));
 	margin-bottom: var(--spacing3);
 `
 

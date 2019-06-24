@@ -37,50 +37,48 @@ const BlogTagPage = ({ currentBreakpoint, match }) => {
 	const { tag } = match.params
 
 	return (
-		<>
-			<StatelessSearchWrapper
-				indexName={CONST.BLOG_POST_ALGOLIA_INDEX}
-				hitsPerPage={6}
-				refinements={{ tags: [tag] }}
-			>
-				<PageContainer>
-					<LayoutManager>
-						<Main>
-							<PageNav breadcrumbs={[["Czytaj", "BLOG_HOME"]]} />
-							<Heading>{tag}</Heading>
-							<Section>
-								<IndexResults
-									indexName={CONST.BLOG_DROP_ALGOLIA_INDEX}
-									title="Dropy"
-									limit={6}
-								>
-									{(results) =>
-										isMobile ? (
-											<DumbThematicGroup results={results} component={SmallItemCard} />
-										) : (
-											<ItemsGrid>
-												{results.map((drop) => (
-													<SmallDropCard {...drop} key={drop.id} />
-												))}
-											</ItemsGrid>
-										)
-									}
-								</IndexResults>
-							</Section>
+		<StatelessSearchWrapper
+			indexName={CONST.BLOG_POST_ALGOLIA_INDEX}
+			hitsPerPage={6}
+			refinements={{ tags: [tag] }}
+		>
+			<PageContainer>
+				<LayoutManager>
+					<Main>
+						<PageNav breadcrumbs={[["Czytaj", "BLOG_HOME"]]} noMargin />
+						<Heading>{tag}</Heading>
+						<Section>
+							<IndexResults
+								indexName={CONST.BLOG_DROP_ALGOLIA_INDEX}
+								title="Dropy"
+								limit={6}
+							>
+								{(results) =>
+									isMobile ? (
+										<DumbThematicGroup results={results} component={SmallItemCard} />
+									) : (
+										<ItemsGrid>
+											{results.map((drop) => (
+												<SmallDropCard {...drop} key={drop.id} />
+											))}
+										</ItemsGrid>
+									)
+								}
+							</IndexResults>
+						</Section>
 
-							<Section>
-								<IndexResults indexName={CONST.BLOG_POST_ALGOLIA_INDEX} title="Artykuły">
-									<InfinitePosts />
-								</IndexResults>
-							</Section>
-						</Main>
-						<Sidebar availableElements={sidebarElements} isRandom>
-							<PoweredByBox />
-						</Sidebar>
-					</LayoutManager>
-				</PageContainer>
-			</StatelessSearchWrapper>
-		</>
+						<Section>
+							<IndexResults indexName={CONST.BLOG_POST_ALGOLIA_INDEX} title="Artykuły">
+								<InfinitePosts />
+							</IndexResults>
+						</Section>
+					</Main>
+					<Sidebar availableElements={sidebarElements} isRandom>
+						<PoweredByBox />
+					</Sidebar>
+				</LayoutManager>
+			</PageContainer>
+		</StatelessSearchWrapper>
 	)
 }
 

@@ -28,6 +28,15 @@ const OuterContainer = styled.div`
 		overflow: hidden;
 		display: grid;
 
+		@media (max-width: ${(p) => p.theme.breakpoints[1] - 1}px) {
+			&,
+			:hover {
+				border-left: none;
+				border-right: none;
+				margin-right: -4px;
+				margin-left: -4px;
+			}
+		}
 		@media (max-width: ${(p) => p.theme.breakpoints[2] - 1}px) {
 			> * {
 				min-height: 0;
