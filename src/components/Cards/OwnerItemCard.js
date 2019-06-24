@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 import moment from "moment"
 import { withRouter, Link } from "react-router-dom"
 import styled, { css } from "styled-components/macro"
@@ -9,7 +9,7 @@ import { SmallTextBlock } from "../StyledComponents"
 import { FluidImage } from "../Image"
 
 import { translateCondition } from "../../constants/item_schema"
-import { useImage } from "../../hooks"
+import { useImage, useFirebase } from "../../hooks"
 import { itemDataHelpers, route } from "../../utils"
 import { nLinesHigh } from "../../style-utils"
 
@@ -185,6 +185,19 @@ const Description = ({ children }) => {
 			<DescriptionContainer>{children}</DescriptionContainer>
 		</>
 	)
+}
+
+const useDeleteItem = (id) => {
+	const [isDeleting, setIsDeleting] = useState(false)
+	const firebase = useFirebase()
+
+	const deleteItem = async () => {
+		setIsDeleting(true)
+		await firebase.item(id).update({ isArchived: true, archivedAt: Date.now() })
+		setIsDeleting(false)
+	}
+
+	return [deleteItem, isDeleting]
 }
 
 const DeleteButton = ({ id }) => {
