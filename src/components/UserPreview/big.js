@@ -42,6 +42,7 @@ const Container = styled.div`
 	border: 1px solid var(--gray75);
 	color: var(--black0);
 	padding: var(--spacing3);
+	min-height: 238px;
 	.top-container {
 		display: flex;
 		align-items: center;
