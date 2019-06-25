@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react"
-import { compose } from "recompose"
+import React, { useState, useEffect, useContext } from "react"
 import { withRouter, Link } from "react-router-dom"
 import styled from "styled-components/macro"
 
@@ -12,7 +11,8 @@ import EmptyState from "../../components/EmptyState/new"
 
 import { NotFoundError } from "../../errors"
 import { useFlash, useFirebase } from "../../hooks"
-import { getRedirectTo } from "../../utils"
+import { getRedirectTo, sleep } from "../../utils"
+import { StatelessSearchWrapper } from "../../components/InstantSearchWrapper"
 
 const PageHeader = styled.div`
 	font-weight: bold;
@@ -57,6 +57,12 @@ const useDeleteItem = (id) => {
 		} catch (err) {
 			throw err
 		} finally {
+			/* 
+			Sleep is used here to prevent redirect before the algolia index gets updated.
+			Redirecting too early would mean displaying the deleted item because algolia 
+			is not yet aware of its deletion.
+			*/
+			await sleep(5500)
 			setIsDeleting(false)
 		}
 	}
@@ -91,7 +97,7 @@ const useItem = (id) => {
 	return [item, error]
 }
 
-const ItemPromotePage = ({ match, history, location }) => {
+const DeleteItem = withRouter(({ match, history, location }) => {
 	const itemId = match.params.id
 
 	const flashMessage = useFlash()
@@ -154,7 +160,13 @@ const ItemPromotePage = ({ match, history, location }) => {
 			)}
 		</PageContainer>
 	)
-}
+})
+
+const DeleteItemPage = () => (
+	<StatelessSearchWrapper>
+		<DeleteItem />
+	</StatelessSearchWrapper>
+)
 
 const condition = (authUser, pathParams) => {
 	const isAuthenticated = !!authUser
@@ -166,7 +178,4 @@ const condition = (authUser, pathParams) => {
 	}
 }
 
-export default compose(
-	withRouter,
-	withAuthorization(condition)
-)(ItemPromotePage)
+export default withAuthorization(condition)(DeleteItemPage)

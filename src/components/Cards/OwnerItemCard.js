@@ -1,16 +1,17 @@
-import React, { useState, useContext } from "react"
+import React, { useContext } from "react"
 import moment from "moment"
 import { withRouter, Link } from "react-router-dom"
 import styled, { css } from "styled-components/macro"
 
-import Button, { ButtonContainer, LoaderButton } from "../Button"
+import Button, { ButtonContainer } from "../Button"
 import InfoItem from "../InfoItem"
 import { SmallTextBlock } from "../StyledComponents"
 import { FluidImage } from "../Image"
 import { SearchWrapperContext } from "../InstantSearchWrapper"
+import DeleteItemButton from "../DeleteItemButton"
 
 import { translateCondition } from "../../constants/item_schema"
-import { useImage, useFirebase } from "../../hooks"
+import { useImage } from "../../hooks"
 import { itemDataHelpers, route } from "../../utils"
 import { nLinesHigh } from "../../style-utils"
 
@@ -189,18 +190,6 @@ const Description = ({ children }) => {
 	)
 }
 
-const DeleteButton = withRouter(({ id, location }) => {
-	return (
-		<Button
-			fullWidth
-			as={Link}
-			to={{ pathname: route("ITEM_DELETE", { id }), state: { redirectTo: location } }}
-		>
-			Usuń
-		</Button>
-	)
-})
-
 const LearnMore = () => {
 	return (
 		<Link
@@ -311,7 +300,7 @@ const OwnerItemCard = ({
 				<LearnMore />
 				<ButtonContainer noMargin>
 					<EditButton id={id} />
-					<DeleteButton id={id} afterDelete={refresh} />
+					<DeleteItemButton id={id} />
 				</ButtonContainer>
 			</ActionsContainer>
 		</OuterContainer>

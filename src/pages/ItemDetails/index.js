@@ -3,7 +3,8 @@ import { Link } from "react-router-dom"
 import moment from "moment"
 import { css } from "styled-components/macro" // for css prop
 
-import Button, { LoaderButton, ButtonContainer } from "../../components/Button"
+import Button, { ButtonContainer } from "../../components/Button"
+import DeleteItemButton from "../../components/DeleteItemButton"
 import { SmallTextBlock } from "../../components/StyledComponents"
 import { SaveButton, TYPE } from "../../components/SaveButton"
 import LoadingSpinner from "../../components/LoadingSpinner"
@@ -168,13 +169,7 @@ const ItemDetailsPage = ({ match, history }) => {
 										Edytuj
 									</Button>
 
-									<LoaderButton
-										isLoading={isDeleting}
-										text="Usuń"
-										loadingText="Usuwanie..."
-										onClick={deleteItem}
-										fullWidth
-									/>
+									<DeleteItemButton />
 								</>
 							) : (
 								<>

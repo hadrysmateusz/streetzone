@@ -1,8 +1,8 @@
-import React, { createContext } from "react"
+import React, { createContext, useState, useEffect } from "react"
 import { InstantSearch, Configure } from "react-instantsearch-dom"
 import { VirtualToggle } from "../Algolia/Virtual"
 import { Results, VirtualRefinement } from "../Algolia/Helpers"
-import { useStateButton } from "../../hooks"
+// import { useStateButton } from "../../hooks"
 
 export const SearchWrapperContext = createContext()
 
@@ -16,9 +16,24 @@ const StatelessSearchWrapper = (props) => {
 		showArchived = false
 	} = props
 
-	const isRenderFn = typeof children === "function"
+	const [shouldRefresh, setShouldRefresh] = useState(false)
 
-	const [shouldRefresh, refresh] = useStateButton(false)
+	const refresh = () => {
+		setShouldRefresh(true)
+	}
+
+	console.log("pre hook", shouldRefresh)
+
+	useEffect(() => {
+		if (shouldRefresh) {
+			setShouldRefresh(false)
+		}
+	}, [shouldRefresh])
+
+	console.log("post hook", shouldRefresh)
+	console.log("---")
+
+	const isRenderFn = typeof children === "function"
 
 	return (
 		<InstantSearch

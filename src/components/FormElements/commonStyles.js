@@ -27,7 +27,7 @@ export const basicStyles = css`
 	}
 	width: 100%;
 	border-color: ${(p) => (!!p.hasError ? "var(--danger50)" : "var(--gray75)")};
-	transition: box-shadow 0.11s ease, border-color 0.11s ease;
+	transition: box-shadow 0.15s ease, border-color 0.15s ease;
 `
 
 export default css`
