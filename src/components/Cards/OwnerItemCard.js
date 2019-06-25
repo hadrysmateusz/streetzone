@@ -20,36 +20,36 @@ import withBreakpoints from "react-breakpoints/lib/withBreakpoints"
 const { formatPrice, formatSize } = itemDataHelpers
 
 const OuterContainer = styled.div`
-	min-width: 0; /* this has to be on the outermost component*/
+	min-width: 0;
+	max-width: 100%;
+	width: 100%;
 	min-height: 0;
 	background: white;
 
-	> a {
-		${cardBorder}
-		overflow: hidden;
-		display: grid;
+	${cardBorder}
+	overflow: hidden;
+	display: grid;
 
-		@media (max-width: ${(p) => p.theme.breakpoints[1] - 1}px) {
-			&,
-			:hover {
-				border-left: none;
-				border-right: none;
-				margin-right: -4px;
-				margin-left: -4px;
-			}
+	@media (max-width: ${(p) => p.theme.breakpoints[1] - 1}px) {
+		&,
+		:hover {
+			border-left: none;
+			border-right: none;
+			margin-right: -4px;
+			margin-left: -4px;
 		}
-		@media (max-width: ${(p) => p.theme.breakpoints[2] - 1}px) {
-			> * {
-				min-height: 0;
-			}
+	}
+	@media (max-width: ${(p) => p.theme.breakpoints[2] - 1}px) {
+		> * {
+			min-height: 0;
 		}
-		@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
-			grid-template-columns: 210px 10fr 10fr;
-			grid-template-rows: 248px;
-		}
-		@media (min-width: ${(p) => p.theme.breakpoints[3]}px) {
-			grid-template-columns: 210px 10fr 7fr;
-		}
+	}
+	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
+		grid-template-columns: 210px 10fr 10fr;
+		grid-template-rows: 248px;
+	}
+	@media (min-width: ${(p) => p.theme.breakpoints[3]}px) {
+		grid-template-columns: 210px 10fr 7fr;
 	}
 `
 
@@ -89,6 +89,7 @@ const DetailsContainer = styled.div`
 const InfoContainer = styled.div`
 	display: grid;
 	grid-template-rows: repeat(4, min-content) minmax(0, 1fr);
+	grid-template-columns: 100%;
 	min-height: 0;
 	min-width: 0;
 	height: 100%;
@@ -283,8 +284,14 @@ const OwnerItemCard = ({
 
 	return (
 		<OuterContainer>
-			<Link to={route("ITEM_DETAILS", { id })}>
-				{!isMobile && <FluidImage url={imageURL} />}
+			{!isMobile && <FluidImage url={imageURL} />}
+			<Link
+				to={route("ITEM_DETAILS", { id })}
+				css={css`
+					min-width: 0;
+					min-height: 0;
+				`}
+			>
 				<InfoContainer>
 					<TopContainer>
 						<div>{category}</div>
@@ -309,28 +316,24 @@ const OwnerItemCard = ({
 
 					<Description>{description}</Description>
 				</InfoContainer>
-
-				<ActionsContainer>
-					<Button accent fullWidth as={Link} to={route("ITEM_PROMOTE", { id })}>
-						Promuj
-					</Button>
-					<PromoteStatus
-						lastPromotionLevel={lastPromotionLevel}
-						promotedUntil={promotedUntil}
-					/>
-					<Button fullWidth>Odśwież</Button>
-					<RefreshStatus
-						numBumps={bumps}
-						refreshedAt={refreshedAt}
-						createdAt={createdAt}
-					/>
-					<LearnMore />
-					<ButtonContainer noMargin>
-						<EditButton id={id} />
-						<DeleteButton id={id} afterDelete={refresh} />
-					</ButtonContainer>
-				</ActionsContainer>
 			</Link>
+
+			<ActionsContainer>
+				<Button accent fullWidth as={Link} to={route("ITEM_PROMOTE", { id })}>
+					Promuj
+				</Button>
+				<PromoteStatus
+					lastPromotionLevel={lastPromotionLevel}
+					promotedUntil={promotedUntil}
+				/>
+				<Button fullWidth>Odśwież</Button>
+				<RefreshStatus numBumps={bumps} refreshedAt={refreshedAt} createdAt={createdAt} />
+				<LearnMore />
+				<ButtonContainer noMargin>
+					<EditButton id={id} />
+					<DeleteButton id={id} afterDelete={refresh} />
+				</ButtonContainer>
+			</ActionsContainer>
 		</OuterContainer>
 	)
 }
