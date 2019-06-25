@@ -62,7 +62,7 @@ export const PageHeaderOuter = styled.div`
 	border-bottom: 1px solid white;
 	transition: border-color 0.14s linear;
 	border-color: var(--gray75);
-	margin-bottom: var(--spacing3);
+	margin-bottom: var(--spacing4);
 	/* ${(p) => p.scrollPosition !== 0 && "border-color: var(--gray75);"} */
 `
 
