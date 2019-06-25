@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useContext } from "react"
 import moment from "moment"
 import { withRouter, Link } from "react-router-dom"
 import styled, { css } from "styled-components/macro"
@@ -7,6 +7,7 @@ import Button, { ButtonContainer, LoaderButton } from "../Button"
 import InfoItem from "../InfoItem"
 import { SmallTextBlock } from "../StyledComponents"
 import { FluidImage } from "../Image"
+import { SearchWrapperContext } from "../InstantSearchWrapper"
 
 import { translateCondition } from "../../constants/item_schema"
 import { useImage, useFirebase } from "../../hooks"
@@ -187,26 +188,35 @@ const Description = ({ children }) => {
 	)
 }
 
-const useDeleteItem = (id) => {
+const useDeleteItem = () => {
 	const [isDeleting, setIsDeleting] = useState(false)
 	const firebase = useFirebase()
 
-	const deleteItem = async () => {
+	const onDelete = async (id) => {
 		setIsDeleting(true)
 		await firebase.item(id).update({ isArchived: true, archivedAt: Date.now() })
 		setIsDeleting(false)
 	}
 
-	return [deleteItem, isDeleting]
+	return [onDelete, isDeleting]
 }
 
-const DeleteButton = ({ id }) => {
-	const deleteItem = (e) => {
-		e.preventDefault() // prevent the Link to item from triggering
-		alert("deleting")
-	}
+const DeleteButton = ({ id, afterDelete }) => {
+	const [onDelete, isDeleting] = useDeleteItem()
+
 	return (
-		<LoaderButton text="Usuń" loadingText="Usuwanie..." onClick={deleteItem} fullWidth />
+		<LoaderButton
+			isLoading={isDeleting}
+			text="Usuń"
+			loadingText="Usuwanie..."
+			onClick={async (e) => {
+				e.preventDefault()
+				await onDelete(id)
+				// call the callback function if one was provided
+				if (afterDelete) afterDelete(id)
+			}}
+			fullWidth
+		/>
 	)
 }
 
@@ -263,6 +273,7 @@ const OwnerItemCard = ({
 	currentBreakpoint
 }) => {
 	const { imageURL } = useImage(attachments[mainImageIndex], "M")
+	const { refresh } = useContext(SearchWrapperContext)
 
 	let conditionObj = translateCondition(condition)
 	let formattedPrice = formatPrice(price)
@@ -316,7 +327,7 @@ const OwnerItemCard = ({
 					<LearnMore />
 					<ButtonContainer noMargin>
 						<EditButton id={id} />
-						<DeleteButton id={id} />
+						<DeleteButton id={id} afterDelete={refresh} />
 					</ButtonContainer>
 				</ActionsContainer>
 			</Link>

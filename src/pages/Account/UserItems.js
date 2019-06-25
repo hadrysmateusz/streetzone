@@ -54,7 +54,7 @@ const ItemsResults = ({ isAuthorized, userId }) => {
 			{({ results, hasMore, loadMore }) => (
 				<ItemsList>
 					{results.map((item) => (
-						<OwnerItemCard {...item} />
+						<OwnerItemCard key={item.id} {...item} />
 					))}
 				</ItemsList>
 			)}

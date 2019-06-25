@@ -1,7 +1,10 @@
-import React from "react"
+import React, { createContext } from "react"
 import { InstantSearch, Configure } from "react-instantsearch-dom"
 import { VirtualToggle } from "../Algolia/Virtual"
 import { Results, VirtualRefinement } from "../Algolia/Helpers"
+import { useStateButton } from "../../hooks"
+
+export const SearchWrapperContext = createContext()
 
 const StatelessSearchWrapper = (props) => {
 	const {
@@ -15,11 +18,14 @@ const StatelessSearchWrapper = (props) => {
 
 	const isRenderFn = typeof children === "function"
 
+	const [shouldRefresh, refresh] = useStateButton(false)
+
 	return (
 		<InstantSearch
 			appId={process.env.REACT_APP_APP_ID}
 			apiKey={process.env.REACT_APP_ALGOLIA_API_KEY}
 			indexName={indexName}
+			refresh={shouldRefresh}
 		>
 			<Configure filters={filters || undefined} hitsPerPage={limit} />
 
@@ -41,7 +47,15 @@ const StatelessSearchWrapper = (props) => {
 			)}
 
 			{/* render children (using renderProps if applicable) */}
-			{isRenderFn ? <Results>{children}</Results> : children}
+			<Results>
+				{(results) => {
+					return (
+						<SearchWrapperContext.Provider value={{ results, refresh }}>
+							{isRenderFn ? children(results) : children}
+						</SearchWrapperContext.Provider>
+					)
+				}}
+			</Results>
 		</InstantSearch>
 	)
 }

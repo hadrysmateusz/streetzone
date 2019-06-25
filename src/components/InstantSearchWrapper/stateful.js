@@ -166,8 +166,6 @@ export const SearchWrapper = withRouter(
 
 		const isChildrenFunction = typeof children === "function"
 
-		console.log("state", searchState)
-
 		return (
 			<InstantSearch
 				appId={process.env.REACT_APP_APP_ID}

@@ -7,10 +7,10 @@ import axios from "axios"
 import { withAuthorization } from "../../components/UserSession"
 import LoadingSpinner from "../../components/LoadingSpinner"
 import { PageContainer } from "../../components/Containers"
-import { Button, LoaderButton } from "../../components/Button"
+import { LoaderButton } from "../../components/Button"
 
 import { NotFoundError } from "../../errors"
-import { useAuthentication, useFirebase } from "../../hooks"
+import { useFirebase } from "../../hooks"
 
 const PageHeader = styled.div`
 	font-weight: bold;
@@ -193,43 +193,6 @@ const ItemPromotePage = ({ match, history }) => {
 
 		getItem()
 	}, [itemId, firebase])
-
-	const onSubmit = async (e) => {
-		e.preventDefault()
-
-		var getIPAddress = async function() {
-			try {
-				const res = await axios.get("https://api.ipify.org")
-				return res.data
-			} catch (err) {
-				// TODO: figure out how to handle this
-				console.log(err)
-			}
-		}
-
-		const ip = await getIPAddress()
-		const data = { itemId: item.id, level: 2, customerIp: ip }
-		const promote = firebase.functions.httpsCallable("promote")
-
-		try {
-			const res = await promote(data)
-			console.log("response:", res)
-
-			if (!res.data.redirectUri) {
-				throw Error("No redirectUri received")
-			}
-
-			const wasOpened = window.open(res.data.redirectUri, "_blank")
-			if (wasOpened === null) {
-				// TODO: handle window being blocked by a popup blocker
-				// TODO: consider using a different way of showing the payment gateway
-				// TODO: add a button/link to manually redirect if it doesn't automatically
-				// https://developer.mozilla.org/en-US/docs/Web/API/Window/open
-			}
-		} catch (err) {
-			console.log("error:", err)
-		}
-	}
 
 	return (
 		<PageContainer>

@@ -1,6 +1,6 @@
 import { UncontrolledInstantSearchWrapper, InstantSearchWrapper } from "./old"
 import SearchWrapper from "./stateful"
-import StatelessSearchWrapper from "./stateless"
+import StatelessSearchWrapper, { SearchWrapperContext } from "./stateless"
 
 export default InstantSearchWrapper
 
@@ -8,5 +8,6 @@ export {
 	SearchWrapper,
 	StatelessSearchWrapper,
 	InstantSearchWrapper,
-	UncontrolledInstantSearchWrapper
+	UncontrolledInstantSearchWrapper,
+	SearchWrapperContext
 }
