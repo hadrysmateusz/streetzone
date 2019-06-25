@@ -4,10 +4,11 @@ import styled from "styled-components/macro"
 import LoadingSpinner from "../../components/LoadingSpinner"
 import { PageContainer } from "../../components/Containers"
 import { BigDropCard } from "../../components/Cards"
+import EmptyState from "../../components/EmptyState/new"
 
 import { useFirebase } from "../../hooks"
 
-import { HeaderContainer, EmptyState } from "./Common"
+import { HeaderContainer } from "./Common"
 
 const DropsList = styled.div`
 	display: grid;

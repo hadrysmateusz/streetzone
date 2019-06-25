@@ -5,7 +5,7 @@ import { Helmet } from "react-helmet"
 
 import { ROUTES, CONST } from "../../constants"
 
-import { LoadableComponentSpinner, FullPageSpinner } from "../LoadingSpinner"
+import { LoadableComponentSpinner } from "../LoadingSpinner"
 import ErrorBoundary from "../ErrorBoundary"
 
 import NotFound from "../../pages/NotFound"
@@ -76,6 +76,10 @@ const ItemDetails = Loadable({
 })
 const EditItem = Loadable({
 	loader: () => import("../../pages/EditItem"),
+	loading: LoadableComponentSpinner
+})
+const DeleteItem = Loadable({
+	loader: () => import("../../pages/DeleteItem"),
 	loading: LoadableComponentSpinner
 })
 const NewItem = Loadable({
@@ -480,6 +484,11 @@ const routes = [
 		path: ROUTES.EDIT_ITEM,
 		component: EditItem,
 		title: `Edytuj przedmiot`
+	},
+	{
+		path: ROUTES.ITEM_DELETE,
+		component: DeleteItem,
+		title: `Usuń przedmiot`
 	},
 	{
 		path: ROUTES.ITEM_PROMOTE,

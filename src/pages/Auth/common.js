@@ -1,4 +1,3 @@
-import { route } from "../../utils"
 import formatUserData from "../../utils/formatUserData"
 import styled from "styled-components/macro"
 
@@ -22,9 +21,6 @@ export const socialMediaSites = {
 		provider: "googleProvider"
 	}
 }
-
-export const getRedirectTo = (location) =>
-	location.state ? location.state.redirectTo : { pathname: route("HOME") }
 
 export const getUserInfoFromSocialProfile = (nameOfSite, socialAuthUser) => {
 	switch (nameOfSite) {

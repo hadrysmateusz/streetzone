@@ -4,8 +4,8 @@ import { Link } from "react-router-dom"
 import { PageContainer } from "../../components/Containers"
 import { TextBlock, Text } from "../../components/StyledComponents"
 import { ROUTES } from "../../constants"
-import { encodeURL } from "../../utils/algoliaURLutils"
 
+import { encodeURL } from "../../utils/algoliaURLutils"
 import { useFirebase } from "../../hooks"
 
 import { FiltersItemContainer } from "./StyledComponents"

@@ -4,10 +4,11 @@ import LoadingSpinner from "../../components/LoadingSpinner"
 import Comment from "../../components/Comment"
 import AddComment from "../../components/AddComment"
 import { PageContainer } from "../../components/Containers"
+import EmptyState from "../../components/EmptyState/new"
 
 import { useFirebase } from "../../hooks"
 
-import { HeaderContainer, EmptyState } from "./Common"
+import { HeaderContainer } from "./Common"
 
 const Header = ({ numFeedback = 0 }) => {
 	return (

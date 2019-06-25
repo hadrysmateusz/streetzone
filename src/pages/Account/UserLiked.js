@@ -3,10 +3,11 @@ import React, { useState, useEffect } from "react"
 import LoadingSpinner from "../../components/LoadingSpinner"
 import { PageContainer } from "../../components/Containers"
 import ItemsView from "../../components/ItemsView"
+import EmptyState from "../../components/EmptyState/new"
 
 import { useFirebase } from "../../hooks"
 
-import { HeaderContainer, EmptyState } from "./Common"
+import { HeaderContainer } from "./Common"
 
 const Header = ({ numItems = 0 }) => {
 	return (

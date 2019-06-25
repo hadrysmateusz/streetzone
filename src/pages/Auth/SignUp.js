@@ -7,9 +7,9 @@ import Separator from "../../components/Separator"
 import FormError from "../../components/FormElements/FormError"
 
 import { useFlash } from "../../hooks"
-import { route } from "../../utils"
+import { getRedirectTo, route } from "../../utils"
 
-import { getRedirectTo, Heading, LinkContainer } from "./common"
+import { Heading, LinkContainer } from "./common"
 import SignUpForm from "./SignUpForm"
 
 const SignInLink = () => {

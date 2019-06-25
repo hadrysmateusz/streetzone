@@ -9,11 +9,11 @@ import { PageContainer } from "../../components/Containers"
 import { OwnerItemCard } from "../../components/Cards"
 import { Button } from "../../components/Button"
 import ItemsView from "../../components/ItemsView"
+import EmptyState from "../../components/EmptyState/new"
 
 import { CONST } from "../../constants"
 import { route } from "../../utils"
 
-import { EmptyState } from "./Common"
 import { SaveButton } from "../../components/SaveButton"
 import { TYPE } from "../../components/DropCountdown/FollowButton"
 

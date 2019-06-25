@@ -189,37 +189,17 @@ const Description = ({ children }) => {
 	)
 }
 
-const useDeleteItem = () => {
-	const [isDeleting, setIsDeleting] = useState(false)
-	const firebase = useFirebase()
-
-	const onDelete = async (id) => {
-		setIsDeleting(true)
-		await firebase.item(id).update({ isArchived: true, archivedAt: Date.now() })
-		setIsDeleting(false)
-	}
-
-	return [onDelete, isDeleting]
-}
-
-const DeleteButton = ({ id, afterDelete }) => {
-	const [onDelete, isDeleting] = useDeleteItem()
-
+const DeleteButton = withRouter(({ id, location }) => {
 	return (
-		<LoaderButton
-			isLoading={isDeleting}
-			text="Usuń"
-			loadingText="Usuwanie..."
-			onClick={async (e) => {
-				e.preventDefault()
-				await onDelete(id)
-				// call the callback function if one was provided
-				if (afterDelete) afterDelete(id)
-			}}
+		<Button
 			fullWidth
-		/>
+			as={Link}
+			to={{ pathname: route("ITEM_DELETE", { id }), state: { redirectTo: location } }}
+		>
+			Usuń
+		</Button>
 	)
-}
+})
 
 const LearnMore = () => {
 	return (

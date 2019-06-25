@@ -8,11 +8,11 @@ import { StyledLink } from "../../components/Basics"
 import Separator from "../../components/Separator"
 
 import { useFlash, useFirebase } from "../../hooks"
-import { route } from "../../utils"
+import { getRedirectTo, route } from "../../utils"
 
 import EmailSignInForm from "./EmailSignInForm"
 import { GoogleButton, FacebookButton } from "./SocialSignIn"
-import { getRedirectTo, Heading, LinkContainer } from "./common"
+import { Heading, LinkContainer } from "./common"
 
 const SocialContainer = styled.div`
 	display: grid;
