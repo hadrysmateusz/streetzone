@@ -10,7 +10,8 @@ import {
 	Nav,
 	NavItem,
 	StyledNavLink,
-	OuterContainer
+	OuterContainer,
+	SubmenuNavItem
 } from "./TabsNav.styles"
 
 const DropdownNavItem = ({ label, routes }) => {
@@ -65,9 +66,9 @@ const TabsNav = ({ routes, isMobile, isAuthorized = false }) => {
 		routes.forEach((route) => {
 			if ((isAuthorized || !route.isProtected) && !route.isHidden) {
 				subRoutes.push(
-					<StyledNavLink to={route.path} key={route.id}>
+					<SubmenuNavItem to={route.path} key={route.id}>
 						{route.shortLabel}
-					</StyledNavLink>
+					</SubmenuNavItem>
 				)
 			}
 		})

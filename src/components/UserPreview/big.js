@@ -11,7 +11,6 @@ import InfoItem from "../InfoItem"
 import { HeartButton, TYPE } from "../SaveButton"
 
 import getProfilePictureURL from "../../utils/getProfilePictureURL"
-import { ROUTES } from "../../constants"
 import { useFirebase, useUser } from "../../hooks"
 import { route } from "../../utils"
 
@@ -32,7 +31,7 @@ const UsersList = styled.div`
 	display: grid;
 	gap: var(--spacing3);
 	grid-template-columns: 100%;
-	@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
+	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
 		grid-template-columns: repeat(2, minmax(0, 1fr));
 	}
 `

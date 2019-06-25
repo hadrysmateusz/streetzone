@@ -66,6 +66,7 @@ export const Nav = styled.nav`
 export const NavItem = styled.div`
 	border-bottom: 1px solid var(--gray75);
 	text-align: center;
+	font-weight: var(--semi-bold);
 
 	font-size: var(--font-size--xs);
 	text-transform: uppercase;
@@ -75,7 +76,7 @@ export const NavItem = styled.div`
 	user-select: none;
 	position: relative;
 	white-space: nowrap;
-	color: var(--gray0);
+	color: var(--gray25);
 	&:hover {
 		color: black;
 	}
@@ -91,6 +92,18 @@ export const NavItem = styled.div`
 
 export const StyledNavLink = styled(NavLink)`
 	text-decoration: none;
+
+	&.active {
+		color: black;
+		font-weight: bold;
+	}
+`
+
+export const SubmenuNavItem = styled(NavLink)`
+	text-decoration: none;
+	:hover {
+		background: var(--almost-white);
+	}
 
 	&.active {
 		color: black;
