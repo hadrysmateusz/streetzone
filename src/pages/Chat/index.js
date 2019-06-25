@@ -10,6 +10,7 @@ import UserPreview from "../../components/UserPreview"
 import { withAuthorization } from "../../components/UserSession"
 import { PageContainer } from "../../components/Containers"
 import ProfilePicture from "../../components/ProfilePicture"
+import EmptyState from "../../components/EmptyState/new"
 import FullscreenMenu, {
 	Header,
 	FullscreenMenuContext
@@ -30,8 +31,7 @@ import {
 	TopContainerMobile,
 	MobileUserInfo,
 	MessageStyles,
-	RoomTabStyles,
-	EmptyState
+	RoomTabStyles
 } from "./StyledComponents"
 
 const Message = ({ id, roomId, message, createdAt, author, user, unread }) => {
@@ -59,7 +59,11 @@ const Message = ({ id, roomId, message, createdAt, author, user, unread }) => {
 	)
 }
 
-const NoMessages = () => <EmptyState>Nie masz jeszcze żadnych wiadomości</EmptyState>
+const NoMessages = () => (
+	<EmptyState header="Nie masz jeszcze żadnych wiadomości">
+		Tutaj znajdziesz swoje konwersacje z innymi użytkownikami
+	</EmptyState>
+)
 
 const RoomTab = ({ id, otherUserId }) => {
 	const [user, error] = useUserData(otherUserId)

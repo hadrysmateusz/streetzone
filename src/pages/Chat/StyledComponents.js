@@ -152,10 +152,3 @@ export const RoomTabStyles = styled.div`
 	text-transform: uppercase;
 	border-bottom: 1px solid var(--gray75);
 `
-
-export const EmptyState = styled.div`
-	padding: var(--spacing4) 0;
-	color: var(--gray25);
-	font-style: italic;
-	text-align: center;
-`
