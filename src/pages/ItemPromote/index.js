@@ -15,6 +15,7 @@ import { useAuthentication, useFirebase } from "../../hooks"
 const PageHeader = styled.div`
 	font-weight: bold;
 	text-align: center;
+	text-transform: uppercase;
 	margin: var(--spacing3) 0 var(--spacing4);
 `
 
@@ -32,6 +33,9 @@ const PromoteOptionsContainer = styled.div`
 `
 
 const PromoteOptionCardContainer = styled.div`
+	@media (max-width: ${(p) => p.theme.breakpoints[2] - 1}px) {
+		order: ${(p) => (p.main ? 1 : 2)};
+	}
 	display: flex;
 	flex-direction: column;
 	border: 1px solid var(--gray75);
