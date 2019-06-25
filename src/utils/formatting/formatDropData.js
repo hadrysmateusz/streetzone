@@ -21,6 +21,7 @@ export const REQUIRED = [
 	"tags"
 ]
 
+// this date format is also used in cloud functions
 export const dateFormat = "YY-MM-DD HH:mm"
 
 export const formatDropDataForDb = (data, mode, flagState = true) => {
