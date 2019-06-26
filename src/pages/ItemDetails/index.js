@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
 import moment from "moment"
-import { css } from "styled-components/macro" // for css prop
+import { css } from "styled-components/macro"
 
 import Button, { ButtonContainer } from "../../components/Button"
 import DeleteItemButton from "../../components/DeleteItemButton"
@@ -11,7 +11,7 @@ import LoadingSpinner from "../../components/LoadingSpinner"
 import { PageContainer } from "../../components/Containers"
 import ImageGallery from "../../components/ImageGallery"
 import UserPreview from "../../components/UserPreview/new"
-import EmptyState from "../../components/EmptyState"
+import EmptyState from "../../components/EmptyState/new"
 import PageNav from "../../components/PageNav"
 import InfoItem from "../../components/InfoItem"
 import ContactModal from "../../components/ContactModal"
@@ -40,7 +40,6 @@ const { formatDesigners, formatPrice, formatSize } = itemDataHelpers
 const ItemDetailsPage = ({ match, history }) => {
 	const firebase = useFirebase()
 	const [authUser, isAuthenticated] = useAuthentication(true)
-	const [isDeleting, setIsDeleting] = useState(false)
 	const [isLoading, setIsLoading] = useState(true)
 	const [item, setItem] = useState(null)
 
@@ -57,36 +56,11 @@ const ItemDetailsPage = ({ match, history }) => {
 		getItem()
 	}, [itemId, isAuthenticated, firebase])
 
-	const deleteItem = async () => {
-		setIsDeleting(true)
-
-		// TODO: better confirmation dialog
-		let confirmation = window.confirm("Czy napewno chcesz usunąć ten przedmiot?")
-
-		if (confirmation) {
-			try {
-				const oldItems = authUser.items
-
-				// Delete the item
-				await firebase.item(itemId).delete()
-
-				// Remove the deleted item from user's items
-				const items = oldItems.filter((item) => item !== itemId)
-				await firebase.currentUser().update({ items })
-
-				history.push(route("MARKETPLACE"))
-				return
-			} catch (e) {
-				alert("Usuwanie nie powiodło się")
-			}
-		}
-
-		setIsDeleting(false)
-	}
-
 	if (isLoading) return <LoadingSpinner />
 	if (!item) {
-		return <EmptyState text="Nie znaleziono przedmiotu, być może został usunięty." />
+		return (
+			<EmptyState header="Nie znaleziono przedmiotu">Być może został usunięty</EmptyState>
+		)
 	}
 
 	const isAuthorized = authUser && authUser.uid === item.userId
@@ -99,8 +73,6 @@ const ItemDetailsPage = ({ match, history }) => {
 	const similarFilters = `NOT id:${item.id} AND category:${
 		item.category
 	} AND (${item.designers.map((d) => `designers:${d}`).join(" OR ")})`
-
-	console.log(similarFilters)
 
 	return (
 		<>
@@ -169,7 +141,7 @@ const ItemDetailsPage = ({ match, history }) => {
 										Edytuj
 									</Button>
 
-									<DeleteItemButton />
+									<DeleteItemButton id={item.id} />
 								</>
 							) : (
 								<>
