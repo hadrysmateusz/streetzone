@@ -195,7 +195,7 @@ class Firebase {
 		const itemDoc = await this.item(id).get()
 		if (!itemDoc.exists) {
 			console.warn(`Item with id ${id} wasn't found`)
-			return {}
+			return null
 		} else {
 			return itemDoc.data()
 		}
