@@ -133,7 +133,12 @@ const ItemDetailsPage = ({ match, history }) => {
 						>
 							{isAuthorized ? (
 								<>
-									<Button accent fullWidth>
+									<Button
+										accent
+										fullWidth
+										as={Link}
+										to={route("ITEM_PROMOTE", { id: item.id })}
+									>
 										Promuj
 									</Button>
 
