@@ -10,10 +10,12 @@ import EmptyState from "../../components/EmptyState"
 
 import { NotFoundError } from "../../errors"
 import { useAuthentication, useFirebase } from "../../hooks"
+import { sleep } from "../../utils"
 import { formatItemDataForDb, MODE } from "../../utils/formatting/formatItemData"
 import { CONST } from "../../constants"
 
 import EditItemForm from "./EditItemForm"
+import PageHeading from "../../components/PageHeading"
 
 const { S_THUMB_POSTFIX, M_THUMB_POSTFIX, L_THUMB_POSTFIX } = CONST
 
@@ -29,44 +31,50 @@ const EditItemPage = ({ match, history }) => {
 	const authUser = useAuthentication()
 	const [error, setError] = useState(null)
 	const [initialData, setInitialData] = useState(null)
+	const [itemName, setItemName] = useState(null)
 
-	const getItem = async () => {
-		try {
-			// Get item from database
-			let item = await firebase.getItemData(match.params.id)
+	useEffect(() => {
+		const getItem = async () => {
+			try {
+				// Get item from database
+				let item = await firebase.getItemData(match.params.id)
 
-			// Get item attachments' refs and urls for previews
-			const imageURLs = await firebase.batchGetImageURLs(item.attachments)
+				// Get item attachments' refs and urls for previews
+				const imageURLs = await firebase.batchGetImageURLs(item.attachments)
 
-			// create CustomFile objects with the fetched previewUrls
-			const files = item.attachments.map((attachment, i) => {
-				return new CustomFile({
-					storageRef: attachment,
-					previewUrl: imageURLs[i],
-					isUploaded: true,
-					isMain: i === item.mainImageIndex
+				// create CustomFile objects with the fetched previewUrls
+				const files = item.attachments.map((attachment, i) => {
+					return new CustomFile({
+						storageRef: attachment,
+						previewUrl: imageURLs[i],
+						isUploaded: true,
+						isMain: i === item.mainImageIndex
+					})
 				})
-			})
 
-			// Format data for the form
-			const initialData = formatDataForEditForm(
-				item.price,
-				item.condition,
-				item.description,
-				files
-			)
+				// Format data for the form
+				const initialData = formatDataForEditForm(
+					item.price,
+					item.condition,
+					item.description,
+					files
+				)
 
-			setInitialData(initialData)
-		} catch (err) {
-			if (err instanceof NotFoundError) {
-				setError(err)
-			} else {
-				throw err
+				setInitialData(initialData)
+				setItemName(item.name)
+			} catch (err) {
+				if (err instanceof NotFoundError) {
+					setError(err)
+				} else {
+					throw err
+				}
 			}
 		}
-	}
 
-	const onSubmit = async ({ files, price, description, condition }) => {
+		getItem()
+	}, [match, authUser, firebase])
+
+	const onSubmit = async ({ files, price, description, condition }, actions) => {
 		try {
 			// Upload NEW files and get ALL refs
 			const newRefs = await Promise.all(
@@ -109,18 +117,19 @@ const EditItemPage = ({ match, history }) => {
 				await firebase.removeFile(storageRef + S_THUMB_POSTFIX)
 			}
 
-			// Redirect to home page
-			history.push("/")
+			await sleep(3000)
+
+			// Clear form to remove conflict with transition blocking
+			actions.reset()
+
+			// Redirect back
+			history.goBack()
 			return
 		} catch (error) {
 			alert("Wystąpił problem podczas edytowania przedmiotu")
 			console.log(error)
 		}
 	}
-
-	useEffect(() => {
-		getItem()
-	}, [match, authUser])
 
 	return (
 		<PageContainer maxWidth={2}>
@@ -129,7 +138,10 @@ const EditItemPage = ({ match, history }) => {
 			) : !initialData ? (
 				<LoadingSpinner />
 			) : (
-				<EditItemForm initialValues={initialData} onSubmit={onSubmit} />
+				<>
+					<PageHeading emoji={"🖊️"}>Edytuj {itemName}</PageHeading>
+					<EditItemForm initialValues={initialData} onSubmit={onSubmit} />
+				</>
 			)}
 		</PageContainer>
 	)

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react"
+import React, { useState, useEffect } from "react"
 import { withRouter, Link } from "react-router-dom"
 import styled from "styled-components/macro"
 
@@ -13,16 +13,7 @@ import { NotFoundError } from "../../errors"
 import { useFlash, useFirebase } from "../../hooks"
 import { getRedirectTo, sleep } from "../../utils"
 import { StatelessSearchWrapper } from "../../components/InstantSearchWrapper"
-
-const PageHeader = styled.div`
-	font-weight: bold;
-	text-align: center;
-	text-transform: uppercase;
-	margin: 0 0 var(--spacing3);
-	@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
-		margin: var(--spacing3) 0 var(--spacing4);
-	}
-`
+import PageHeading from "../../components/PageHeading"
 
 const OuterContainer = styled.div`
 	max-width: 430px;
@@ -128,11 +119,7 @@ const DeleteItem = withRouter(({ match, history, location }) => {
 				</EmptyState>
 			) : (
 				<>
-					<PageHeader>
-						<span role="img" aria-label="promowane">
-							🔥 Na pewno usunąć?
-						</span>
-					</PageHeader>
+					<PageHeading emoji={"🔥"}>Na pewno usunąć?</PageHeading>
 					{item ? (
 						<OuterContainer>
 							<ItemContainer>

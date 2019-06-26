@@ -1,131 +1,97 @@
 import React from "react"
-import { Form, Field } from "react-final-form"
+import { Form } from "react-final-form"
 import styled from "styled-components/macro"
-import { withRouter } from "react-router-dom"
+import { withRouter, Prompt } from "react-router-dom"
 
-import Button, { LoaderButton } from "../../components/Button"
-import { FieldRow, FieldLabel } from "../../components/Basics"
-import { Input, Textarea } from "../../components/FormElements"
-import { FileHandler } from "../../components/FileHandler"
-import DropdownFinalform from "../../components/DropdownFinalform"
+import Button, { LoaderButton, ButtonContainer } from "../../components/Button"
+import LoadingSpinner from "../../components/LoadingSpinner"
+import {
+	NumberFF,
+	DropdownFF,
+	TextareaFF,
+	FileHandlerFF
+} from "../../components/FinalFormFields"
+
+import { ITEM_SCHEMA, CONST } from "../../constants"
 
 import validate from "./validate"
-import { ITEM_SCHEMA, ROUTES, CONST } from "../../constants"
 
-const StyledForm = styled.form`
+// const StyledForm = styled.form`
+// 	display: grid;
+// 	grid-template-columns: 1fr 1fr;
+// 	gap: var(--spacing3);
+// 	grid-template-areas:
+// 		"price condition"
+// 		"description description"
+// 		"files files";
+// `
+
+export const StyledForm = styled.form`
 	display: grid;
-	grid-template-columns: 1fr 1fr;
 	gap: var(--spacing3);
-	grid-template-areas:
-		"price condition"
-		"description description"
-		"files files";
+	grid-template-columns: 100%;
 `
 
-const EditItemForm = ({ initialValues, onSubmit, history, isLoading }) => (
-	<Form
-		onSubmit={onSubmit}
-		validate={validate}
-		initialValues={initialValues ? initialValues : undefined}
-		render={({ form, handleSubmit, submitting, pristine, values, ...rest }) => {
-			return (
-				<StyledForm onSubmit={handleSubmit}>
-					{/* Price */}
-					<FieldRow gridArea="price">
-						<Field name="price">
-							{({ input, meta }) => {
-								const error = meta.error && meta.touched ? meta.error : null
-								return (
-									<>
-										<FieldLabel>Cena </FieldLabel>
-										<Input
-											{...input}
-											type="number"
-											min="0"
-											step="1"
-											placeholder="Cena"
-											error={error}
-										/>
-									</>
-								)
-							}}
-						</Field>
-					</FieldRow>
+const EditItemForm = ({ onSubmit, initialValues, history }) => {
+	return !initialValues ? (
+		<LoadingSpinner />
+	) : (
+		<Form
+			onSubmit={onSubmit}
+			initialValues={initialValues}
+			validate={validate}
+			render={({ form, handleSubmit, submitting, pristine, values, dirty, ...rest }) => {
+				return (
+					<StyledForm onSubmit={handleSubmit}>
+						<Prompt
+							when={Object.values(values).length > 0 && dirty && !submitting}
+							message={(location) =>
+								"Zmiany nie zostały zapisane. Czy napewno chcesz wyjść?"
+							}
+						/>
 
-					{/* Condition */}
-					<FieldRow gridArea="condition">
-						<Field name="condition">
-							{({ input, meta }) => {
-								const error = meta.error && meta.touched ? meta.error : null
-								return (
-									<>
-										<FieldLabel>Stan </FieldLabel>
+						<NumberFF label="Cena" placeholder="Cena" name="price" min="0" step="1" />
 
-										<DropdownFinalform
-											{...input}
-											options={ITEM_SCHEMA.conditionOptions}
-											isSearchable={false}
-											placeholder="Stan"
-											error={error}
-										/>
-									</>
-								)
-							}}
-						</Field>
-					</FieldRow>
+						<DropdownFF
+							label="Stan"
+							placeholder="Stan"
+							name="condition"
+							options={ITEM_SCHEMA.conditionOptions}
+							isSearchable={false}
+						/>
 
-					{/* Description */}
-					<FieldRow gridArea="description">
-						<Field name="description">
-							{({ input, meta }) => {
-								const error = meta.error && meta.touched ? meta.error : null
-								return (
-									<>
-										<FieldLabel>Opis </FieldLabel>
-										<Textarea
-											{...input}
-											placeholder={CONST.ITEM_DESC_PLACEHOLDER}
-											error={error}
-										/>
-									</>
-								)
-							}}
-						</Field>
-					</FieldRow>
+						<TextareaFF
+							label="Opis"
+							placeholder={CONST.ITEM_DESC_PLACEHOLDER}
+							name="description"
+						/>
 
-					{/* Files (handled by separate component) */}
-					<FieldRow gridArea="files">
-						<FieldLabel>Zdjęcia </FieldLabel>
-						<Field name="files">
-							{({ input, meta }) => {
-								const error = meta.error && meta.touched ? meta.error.main : null
-								const itemErrors = meta.error ? meta.error.specific : null
-								return <FileHandler {...input} error={error} itemErrors={itemErrors} />
-							}}
-						</Field>
-					</FieldRow>
+						<FileHandlerFF label="Zdjęcia" name="files" />
 
-					<LoaderButton
-						text="Gotowe"
-						type="submit"
-						isLoading={submitting}
-						disabled={submitting || pristine}
-					/>
-					<Button
-						text="Anuluj"
-						type="button"
-						disabled={submitting}
-						onClick={() => history.push(ROUTES.HOME)}
-					>
-						Anuluj
-					</Button>
-					{/* {process.env.NODE_ENV === "development" && (
-							<pre>{JSON.stringify(values, 0, 2)}</pre>
-						)} */}
-				</StyledForm>
-			)
-		}}
-	/>
-)
+						<ButtonContainer>
+							<LoaderButton
+								text="Gotowe"
+								type="submit"
+								primary
+								fullWidth
+								isLoading={submitting}
+								disabled={submitting || pristine}
+							/>
+							<Button
+								text="Anuluj"
+								type="button"
+								fullWidth
+								disabled={submitting}
+								onClick={() => history.goBack()}
+							>
+								Anuluj
+							</Button>
+						</ButtonContainer>
+					</StyledForm>
+				)
+			}}
+		/>
+	)
+}
 
 export default withRouter(EditItemForm)
