@@ -9,7 +9,7 @@ import { SearchWrapper } from "../../../components/InstantSearchWrapper"
 import { PageContainer } from "../../../components/Containers"
 import { BigDropCard } from "../../../components/Cards"
 import InfiniteScrollingResults from "../../../components/InfiniteScrollingResults"
-import { InfiniteResults } from "../../../components/Algolia/Helpers"
+import { InfiniteResults, Results } from "../../../components/Algolia/Helpers"
 import { VirtualRange } from "../../../components/Algolia/Virtual"
 import { LayoutManager, Main, Sidebar } from "../../../components/LayoutManager"
 import { PopularArticles } from "../../../components/SidebarComponents"
@@ -350,6 +350,8 @@ const DropsPage = compose(
 
 	const isMobile = currentBreakpoint <= 1
 
+	console.log(section.sortBy, range)
+
 	return !section ? null : (
 		<>
 			<SearchWrapper
@@ -373,8 +375,9 @@ const DropsPage = compose(
 						<Main>
 							<Header>Dropy</Header>
 							<SectionSelect sections={SECTIONS} currentSection={section} />
-							<InfiniteScrollingResults>
-								{({ results, hasMore, loadMore }) => {
+							<Results>
+								{(results) => {
+									console.log(results)
 									return (
 										<ResultsContainer>
 											{results.map((drop) => (
@@ -383,7 +386,19 @@ const DropsPage = compose(
 										</ResultsContainer>
 									)
 								}}
-							</InfiniteScrollingResults>
+							</Results>
+							{/* <InfiniteScrollingResults>
+								{({ results, hasMore, loadMore }) => {
+									console.log(results)
+									return (
+										<ResultsContainer>
+											{results.map((drop) => (
+												<BigDropCard {...drop} key={drop.id} />
+											))}
+										</ResultsContainer>
+									)
+								}}
+							</InfiniteScrollingResults> */}
 						</Main>
 						<Sidebar availableElements={sidebarElements} isRandom />
 					</LayoutManager>

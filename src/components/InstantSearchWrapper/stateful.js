@@ -41,60 +41,63 @@ export const SearchWrapper = withRouter(
 		const [searchState, setSearchState] = useState(_initialState)
 		const [isFirstRender, setIsFirstRender] = useState(true)
 
-		const urlToState = (parsedSearch) => {
-			let state = cloneDeep(_initialState)
+		const urlToState = useCallback(
+			(parsedSearch) => {
+				let state = cloneDeep(_initialState)
 
-			const makeSureIsObject = (key) => {
-				if (!state[key]) {
-					state[key] = {}
-				}
-			}
-
-			try {
-				for (const [key, val] of Object.entries(parsedSearch)) {
-					// these three always have the same names
-					if (["sortBy", "query", "page"].includes(key)) {
-						// TODO: only allow sorting by whitelisted keys
-						state[key] = val
-						continue
+				const makeSureIsObject = (key) => {
+					if (!state[key]) {
+						state[key] = {}
 					}
-
-					// apart from sortBy, query and page all keys must be whitelisted
-					if (!allowedKeys.includes(key)) {
-						console.log("key:", key)
-						console.log("value:", val)
-						throw new Error(`Tried to query a forbidden key, more info in the console`)
-					}
-
-					// all arrays correspond to a refinementList
-					if (Array.isArray(val)) {
-						makeSureIsObject("refinementList")
-						state.refinementList[key] = val
-						continue
-					}
-
-					// all objects correspond to range fields
-					// has to be after array as arrays are also objects
-					if (typeof val === "object") {
-						makeSureIsObject("range")
-						state.range[key] = val
-						continue
-					}
-
-					// any unhandled key should just be ignored
-					// TODO: consider reporting unhandled keys to Sentry
 				}
 
-				// if all values are handled correctly return state object
-				return state
-			} catch (error) {
-				// TODO: report to sentry
-				console.error(error)
+				try {
+					for (const [key, val] of Object.entries(parsedSearch)) {
+						// these three always have the same names
+						if (["sortBy", "query", "page"].includes(key)) {
+							// TODO: only allow sorting by whitelisted keys
+							state[key] = val
+							continue
+						}
 
-				// in case of error return default state
-				return cloneDeep(_initialState)
-			}
-		}
+						// apart from sortBy, query and page all keys must be whitelisted
+						if (!allowedKeys.includes(key)) {
+							console.log("key:", key)
+							console.log("value:", val)
+							throw new Error(`Tried to query a forbidden key, more info in the console`)
+						}
+
+						// all arrays correspond to a refinementList
+						if (Array.isArray(val)) {
+							makeSureIsObject("refinementList")
+							state.refinementList[key] = val
+							continue
+						}
+
+						// all objects correspond to range fields
+						// has to be after array as arrays are also objects
+						if (typeof val === "object") {
+							makeSureIsObject("range")
+							state.range[key] = val
+							continue
+						}
+
+						// any unhandled key should just be ignored
+						// TODO: consider reporting unhandled keys to Sentry
+					}
+
+					// if all values are handled correctly return state object
+					return state
+				} catch (error) {
+					// TODO: report to sentry
+					console.error(error)
+
+					// in case of error return default state
+					return cloneDeep(_initialState)
+				}
+			},
+			[_initialState, allowedKeys]
+		)
 
 		const onSearchStateChange = (state) => {
 			let formattedState = {}
@@ -129,7 +132,7 @@ export const SearchWrapper = withRouter(
 				setIsFirstRender(false)
 			}
 			setSearchState(state)
-		}, [location])
+		}, [location, createStateFromURL, isFirstRender])
 
 		const handleSearchStateChange = async (newSearchState) => {
 			const formattedState = await onSearchStateChange(newSearchState)
@@ -162,9 +165,11 @@ export const SearchWrapper = withRouter(
 				// if there was a problem while parsing, use default state instead
 				return _initialState
 			}
-		}, [_initialState, allowedKeys, location.search])
+		}, [_initialState, location.search, urlToState])
 
 		const isChildrenFunction = typeof children === "function"
+
+		console.log(indexName, searchState, hitsPerPage, refinements)
 
 		return (
 			<InstantSearch

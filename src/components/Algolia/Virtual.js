@@ -13,7 +13,6 @@ export const VirtualRange = withProps({
 	max: Number.MAX_SAFE_INTEGER
 })(
 	connectRange((props) => {
-		console.log("virtual", props)
 		return null
 	})
 )

@@ -22,7 +22,7 @@ const StatelessSearchWrapper = (props) => {
 		setShouldRefresh(true)
 	}
 
-	console.log("pre hook", shouldRefresh)
+	// console.log("pre hook", shouldRefresh)
 
 	useEffect(() => {
 		if (shouldRefresh) {
@@ -30,8 +30,8 @@ const StatelessSearchWrapper = (props) => {
 		}
 	}, [shouldRefresh])
 
-	console.log("post hook", shouldRefresh)
-	console.log("---")
+	// console.log("post hook", shouldRefresh)
+	// console.log("---")
 
 	const isRenderFn = typeof children === "function"
 
