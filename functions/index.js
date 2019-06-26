@@ -714,7 +714,7 @@ exports.promoteNotification = functions.https.onRequest(app)
 
 const getDropsAt = (drop) => {
 	const now = moment()
-	const dropsAt = drop.dropsAt
+	const dropsAt = drop.dropsAtString
 	const then = moment(dropsAt, dateFormat)
 
 	const duration = moment.duration(then.diff(now))
@@ -749,11 +749,10 @@ const getDropsAt = (drop) => {
 	return null
 }
 
-// "0 9 * * *"
-
 // This schedule should run the function at 9am every day
 exports.dropNotification = functions.pubsub
-	.schedule("every 3 minutes")
+	.schedule("0 9 * * *")
+	.timeZone("Poland")
 	.onRun(async (context) => {
 		// this is to include drops without specified time
 		const nowTimestamp = moment()
@@ -775,7 +774,7 @@ exports.dropNotification = functions.pubsub
 
 			// If dropsAt returns null it means a notification shouldn't be sent
 			if (!dropsAt) {
-				console.log(`Skipped drop (${drop.name}`)
+				console.log(`Skipped drop (${drop.name})`)
 				continue
 			}
 
@@ -788,7 +787,6 @@ exports.dropNotification = functions.pubsub
 				}
 			}
 
-			console.log(`Notification payload for ${drop.name}`, payload)
 
 			// get all drop subscribers
 			const subscribersSnap = await db
@@ -817,6 +815,8 @@ exports.dropNotification = functions.pubsub
 				const response = await admin.messaging().sendToDevice(tokens, payload)
 
 				console.log(`Response (${subscriberId}):`, response)
+
+				// TODO: add token removal
 
 				// // For each message check if there was an error.
 				// const tokensToRemove = []
