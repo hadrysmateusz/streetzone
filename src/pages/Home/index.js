@@ -4,18 +4,14 @@ import styled from "styled-components/macro"
 import { PageContainer } from "../../components/Containers"
 import { SmallItemCard, SmallDropCard, PostCard } from "../../components/Cards"
 
+import { CONST } from "../../constants"
+
 import MainCarousel from "./MainCarousel"
 import HomeSection from "./HomeSection"
 
 const OuterContainer = styled.div`
 	margin-top: calc(-1 * var(--page-header-margin));
 `
-
-const cardsDummyData = {
-	marketplace: [{ id: 0, name: "Adidas NDM R1" }],
-	drops: [{}],
-	blog: [{}]
-}
 
 const MarketplaceSection = () => (
 	<HomeSection
@@ -27,7 +23,7 @@ const MarketplaceSection = () => (
 			</>
 		}
 		component={SmallItemCard}
-		data={cardsDummyData.marketplace}
+		indexName={CONST.ITEMS_MARKETPLACE_DEFAULT_ALGOLIA_INDEX}
 		inverse
 	/>
 )
@@ -41,7 +37,7 @@ const DropsSection = () => (
 				nigdy żadnego nie przegapić. Zobacz nadchodzące dropy, lub sprawdź nasze archiwum
 			</>
 		}
-		data={cardsDummyData.drops}
+		indexName={CONST.BLOG_DROP_NEWEST_ALGOLIA_INDEX}
 		component={SmallDropCard}
 	/>
 )
@@ -55,8 +51,8 @@ const BlogSection = () => (
 				uszkadzając ich. Sprawdź jak rozpoznać fake'a, i wiele więcej...
 			</>
 		}
+		indexName={CONST.BLOG_POST_ALGOLIA_INDEX}
 		component={PostCard}
-		data={cardsDummyData.blog}
 		inverse
 	/>
 )
