@@ -257,7 +257,9 @@ const PageHeaderMobile = ({ authUser, firebase, location }) => {
 						Strona główna
 					</StyledNavLink>
 					<StyledNavLink to={route("BLOG_HOME")}>Czytaj</StyledNavLink>
-					<StyledNavLink to={route("DROPS")}>Dropy</StyledNavLink>
+					<StyledNavLink to={route("DROPS_SECTION", { id: "newest" })}>
+						Dropy
+					</StyledNavLink>
 					<StyledNavLink to={route("MARKETPLACE")} exact>
 						Kupuj
 					</StyledNavLink>
@@ -302,7 +304,11 @@ const PageHeaderDesktop = ({ authUser, firebase, location }) => {
 					))}
 				</DesktopNavItem>
 
-				<DesktopNavItem link={route("DROPS")} label="Dropy" alignSubmenu="left">
+				<DesktopNavItem
+					link={route("DROPS_SECTION", { id: "newest" })}
+					label="Dropy"
+					alignSubmenu="left"
+				>
 					<SubmenuItem link={route("DROPS_SECTION", { id: "newest" })} label="Nowe" />
 					<SubmenuItem
 						link={route("DROPS_SECTION", { id: "upcoming" })}
