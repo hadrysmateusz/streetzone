@@ -74,8 +74,17 @@ export const SignIn = withRouter(({ history, location }) => {
 
 	const commonProps = { onSuccess: onSuccessfulSignIn, onError }
 
+	const reason = location.state ? location.state.redirectReason || null : null
+
 	return (
 		<>
+			{reason && (
+				<>
+					{reason.message && <h1>{reason.message}</h1>}
+					{reason.details && <pre>{JSON.stringify(reason.details, 0, 2)}</pre>}
+				</>
+			)}
+
 			<Heading>Zaloguj się</Heading>
 
 			<SocialContainer>

@@ -149,8 +149,9 @@ const EditItemPage = ({ match, history }) => {
 
 const condition = (authUser, pathParams) => {
 	const isAuthenticated = !!authUser
+
 	if (!isAuthenticated) {
-		return
+		return false
 	} else {
 		const isAuthorized = authUser.items.includes(pathParams.id)
 		return isAuthorized
