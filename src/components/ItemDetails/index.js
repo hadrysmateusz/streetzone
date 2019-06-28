@@ -103,13 +103,11 @@ export const MiscBar = styled.div`
 	margin: var(--spacing4) 0;
 	padding: var(--spacing3) var(--spacing3);
 	text-align: center;
+	border-top: 1px solid var(--gray75);
+	border-bottom: 1px solid var(--gray75);
 
 	@media (max-width: ${(p) => p.theme.breakpoints[2] - 1}px) {
 		flex-direction: column;
-	}
-	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
-		border-top: 1px solid var(--gray75);
-		border-bottom: 1px solid var(--gray75);
 	}
 
 	.group {
