@@ -1,4 +1,4 @@
-import React, { useContext } from "react"
+import React from "react"
 import moment from "moment"
 import { withRouter, Link } from "react-router-dom"
 import styled, { css } from "styled-components/macro"
@@ -7,7 +7,6 @@ import Button, { ButtonContainer } from "../Button"
 import InfoItem from "../InfoItem"
 import { SmallTextBlock } from "../StyledComponents"
 import { FluidImage } from "../Image"
-import { SearchWrapperContext } from "../InstantSearchWrapper"
 import DeleteItemButton from "../DeleteItemButton"
 
 import { translateCondition } from "../../constants/item_schema"
@@ -211,14 +210,7 @@ const LearnMore = () => {
 
 const EditButton = withRouter(({ history, id }) => {
 	return (
-		<Button
-			fullWidth
-			onClick={(e) => {
-				e.preventDefault() // prevent the Link to item from triggering
-				/* This is not an a-tag to allow for programmatic disabling */
-				history.push(route("EDIT_ITEM", { id }))
-			}}
-		>
+		<Button fullWidth as={Link} to={route("EDIT_ITEM", { id })}>
 			Edytuj
 		</Button>
 	)
@@ -243,7 +235,6 @@ const OwnerItemCard = ({
 	currentBreakpoint
 }) => {
 	const { imageURL } = useImage(attachments[mainImageIndex], "M")
-	const { refresh } = useContext(SearchWrapperContext)
 
 	let conditionObj = translateCondition(condition)
 	let formattedPrice = formatPrice(price)

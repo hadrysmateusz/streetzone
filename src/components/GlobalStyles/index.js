@@ -59,7 +59,7 @@ const GlobalStyle = createGlobalStyle`
 	--font-family--serif: "Open Sans";
 	--font-family--sans-serif: "Open Sans";
 
-
+	--page-header-margin: var(--spacing4);
 	--form-element-height: 40px;
 
 	--page-header-height: 44px;
