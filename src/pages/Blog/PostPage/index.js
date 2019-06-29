@@ -54,7 +54,7 @@ const OuterContainer = styled.div`
 `
 
 const HeaderBox = styled.div`
-	margin-top: calc(-1 * var(--spacing3));
+	margin-top: calc(-1 * var(--page-header-margin));
 	background: var(--black25);
 	color: white;
 	padding-top: var(--spacing2);
