@@ -10,9 +10,17 @@ import {
 	Nav,
 	NavItem,
 	StyledNavLink,
-	OuterContainer,
-	SubmenuNavItem
+	SubmenuNavItem,
+	SubmenuOuterContainer
 } from "./TabsNav.styles"
+
+const shouldRenderRoute = (route, isAuthorized, isMobile) => {
+	return (
+		(isAuthorized || !route.isProtected) &&
+		(!isMobile || !route.isHiddenOnMobile) &&
+		!route.isHidden
+	)
+}
 
 const DropdownNavItem = ({ label, routes }) => {
 	const [isOpen, setIsOpen] = useState(false)
@@ -21,17 +29,23 @@ const DropdownNavItem = ({ label, routes }) => {
 	}
 
 	return (
-		<NavItem onClick={onClick}>
-			<div>{label}</div>
+		<SubmenuOuterContainer>
+			<NavItem onClick={onClick}>{label}</NavItem>
 			{isOpen && (
 				<>
 					<SubmenuContainer>
-						<Submenu>{routes}</Submenu>
+						<Submenu>
+							{routes.map((route) => (
+								<SubmenuNavItem to={route.path} key={route.id} onClick={onClick}>
+									{route.shortLabel}
+								</SubmenuNavItem>
+							))}
+						</Submenu>
 					</SubmenuContainer>
 					<Overlay onClick={onClick} />
 				</>
 			)}
-		</NavItem>
+		</SubmenuOuterContainer>
 	)
 }
 
@@ -62,47 +76,31 @@ const TabsNav = ({ routes, isMobile, isAuthorized = false }) => {
 	const routeEntries = Object.entries(routes)
 
 	const renderDropdown = (categoryName, routes) => {
-		let subRoutes = []
-		routes.forEach((route) => {
-			if ((isAuthorized || !route.isProtected) && !route.isHidden) {
-				subRoutes.push(
-					<SubmenuNavItem to={route.path} key={route.id}>
-						{route.shortLabel}
-					</SubmenuNavItem>
-				)
-			}
-		})
+		routes = routes.reduce((acc, route) => {
+			return shouldRenderRoute(route, isAuthorized, isMobile) ? [...acc, route] : acc
+		}, [])
 
-		return subRoutes.length > 0 ? (
-			<DropdownNavItem label={categoryName} routes={subRoutes} key={categoryName} />
+		return routes.length > 0 ? (
+			<DropdownNavItem label={categoryName} routes={routes} key={categoryName} />
 		) : null
 	}
 
-	const renderSingleRoute = (route) => {
-		return (
-			(isAuthorized || !route.isProtected) &&
-			(!isMobile || !route.isHiddenOnMobile) &&
-			!route.isHidden && (
-				<NavItem key={route.id}>
-					<StyledNavLink to={route.path} key={route.id}>
-						{route.label}
-					</StyledNavLink>
-				</NavItem>
-			)
-		)
-	}
+	const renderSingleRoute = (route) =>
+		shouldRenderRoute(route, isAuthorized, isMobile) ? (
+			<StyledNavLink to={route.path} key={route.id}>
+				{route.label}
+			</StyledNavLink>
+		) : null
 
 	return (
 		<PageContainer extraWide>
-			<OuterContainer>
-				<Nav>
-					{routeEntries.map(([key, value]) => {
-						return Array.isArray(value)
-							? renderDropdown(key, value)
-							: renderSingleRoute(value)
-					})}
-				</Nav>
-			</OuterContainer>
+			<Nav>
+				{routeEntries.map(([key, value]) => {
+					return Array.isArray(value)
+						? renderDropdown(key, value)
+						: renderSingleRoute(value)
+				})}
+			</Nav>
 		</PageContainer>
 	)
 }

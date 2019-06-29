@@ -64,19 +64,12 @@ const StyledLink = styled(NavLink)`
 `
 
 const ScrollableNavbarContainer = styled.nav`
-	/* display: flex;
-	> * + * {
-		margin-left: var(--spacing3);
-	} */
-
 	display: grid;
 	gap: 0;
 	overflow: auto;
 	width: auto;
 	grid-auto-flow: column;
 
-	/* --x-margin: calc(-1 * var(--spacing3)); */
-	/* padding: 0 var(--spacing3); */
 	&::after {
 		content: "";
 		display: block;
@@ -88,8 +81,6 @@ const OuterScrollableNavbarContainer = styled.div`
 	background: linear-gradient(to right, rgba(0, 0, 0, 0) 94%, rgba(0, 0, 0, 0.06));
 	margin-right: calc(-1 * var(--spacing3));
 	margin-left: calc(-1 * var(--spacing3));
-
-	/* padding: var(--spacing2) 0; */
 `
 
 const NavbarItemContainer = styled(NavLink)`
@@ -99,26 +90,16 @@ const NavbarItemContainer = styled(NavLink)`
 	text-transform: uppercase;
 	text-align: center;
 	white-space: nowrap;
-	&.active {
-		color: var(--black0);
-	}
-
 	user-select: none;
-	white-space: nowrap;
-	display: block;
 	cursor: pointer;
 	position: relative;
-
 	display: flex;
 	align-items: center;
 	height: 36px;
-
 	padding: 0 var(--spacing4);
-	border-bottom: 1px solid var(--gray75);
-
-	transition: border-color 0.25s linear, border-width 0.25s linear;
-
 	box-sizing: padding-box;
+	border-bottom: 1px solid var(--gray75);
+	transition: border-color 0.25s linear, border-width 0.25s linear;
 
 	&:hover {
 		color: black;

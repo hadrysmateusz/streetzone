@@ -7,7 +7,6 @@ import styled, { css } from "styled-components/macro"
 
 import { withAuthentication } from "../UserSession"
 import ProfilePicture from "../ProfilePicture"
-import { StyledNavLink } from "../Basics"
 import { withFirebase } from "../Firebase"
 import Logo from "../Logo"
 import BurgerNavigation from "../BurgerNavigation"
@@ -190,6 +189,30 @@ const SubmenuButton = styled.div`
 	${submenuItemCommon}
 `
 
+const MobileNavLink = styled(NavLink)`
+	${linkCommon}
+	padding: 0;
+	color: var(--gray25);
+	font-weight: var(--semi-bold);
+
+	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
+		:hover > ${SubmenuContainer} {
+			display: block;
+		}
+	}
+
+	&:hover {
+		color: black;
+		background: var(--almost-white);
+	}
+
+	&.active {
+		color: black;
+		font-weight: bold;
+		background: var(--almost-white);
+	}
+`
+
 const SubmenuItem = ({ label, link, onClick }) => {
 	const [authUser, isAuthenticated] = useAuthentication(true)
 
@@ -219,68 +242,68 @@ const PageHeaderMobile = ({ authUser, firebase, location }) => {
 			<Logo />
 			<div className="align-right">
 				{!authUser && (
-					<StyledNavLink
+					<MobileNavLink
 						to={{ pathname: route("SIGN_IN"), state: { redirectTo: location } }}
 					>
 						Zaloguj
-					</StyledNavLink>
+					</MobileNavLink>
 				)}
 
-				<StyledNavLink to={route("SEARCH")} exact>
+				<MobileNavLink to={route("SEARCH")} exact>
 					<IconContainer>
 						<FontAwesomeIcon icon="search" />
 					</IconContainer>
-				</StyledNavLink>
+				</MobileNavLink>
 
 				{authUser && (
 					<NavItem>
-						<StyledNavLink
+						<MobileNavLink
 							to={{ pathname: route("CHAT"), state: { redirectTo: location } }}
 						>
 							<MessagesManager />
-						</StyledNavLink>
+						</MobileNavLink>
 					</NavItem>
 				)}
 
 				{authUser && (
-					<StyledNavLink to={route("ACCOUNT_BASE", { id: authUser.uid })}>
+					<MobileNavLink to={route("ACCOUNT_BASE", { id: authUser.uid })}>
 						<ProfilePicture
 							size={"26px"}
 							url={getProfilePictureURL(authUser, "S")}
 							inline
 						/>
-					</StyledNavLink>
+					</MobileNavLink>
 				)}
 
 				<BurgerNavigation>
-					<StyledNavLink to={route("HOME")} exact>
+					<MobileNavLink to={route("HOME")} exact>
 						Strona główna
-					</StyledNavLink>
-					<StyledNavLink to={route("BLOG_HOME")}>Czytaj</StyledNavLink>
-					<StyledNavLink to={route("DROPS_SECTION", { id: "newest" })}>
+					</MobileNavLink>
+					<MobileNavLink to={route("BLOG_HOME")}>Czytaj</MobileNavLink>
+					<MobileNavLink to={route("DROPS_SECTION", { id: "newest" })}>
 						Dropy
-					</StyledNavLink>
-					<StyledNavLink to={route("MARKETPLACE")} exact>
+					</MobileNavLink>
+					<MobileNavLink to={route("MARKETPLACE")} exact>
 						Kupuj
-					</StyledNavLink>
-					<StyledNavLink to={route("NEW_ITEM")}>Sprzedawaj</StyledNavLink>
-					<StyledNavLink to={route("ABOUT")}>Informacje</StyledNavLink>
+					</MobileNavLink>
+					<MobileNavLink to={route("NEW_ITEM")}>Sprzedawaj</MobileNavLink>
+					<MobileNavLink to={route("ABOUT")}>Informacje</MobileNavLink>
 
 					{authUser && [
-						<StyledNavLink to={route("ACCOUNT_BASE", { id: authUser.uid })}>
+						<MobileNavLink to={route("ACCOUNT_BASE", { id: authUser.uid })}>
 							Profil
-						</StyledNavLink>,
-						<StyledNavLink as="a" onClick={firebase.signOut}>
+						</MobileNavLink>,
+						<MobileNavLink as="a" onClick={firebase.signOut}>
 							Wyloguj się
-						</StyledNavLink>
+						</MobileNavLink>
 					]}
 
 					{!authUser && (
-						<StyledNavLink
+						<MobileNavLink
 							to={{ pathname: route("SIGN_IN"), state: { redirectTo: location } }}
 						>
 							Zaloguj / Zarejestruj się
-						</StyledNavLink>
+						</MobileNavLink>
 					)}
 				</BurgerNavigation>
 			</div>
