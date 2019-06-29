@@ -10,17 +10,25 @@ const OuterContainer = styled.div.attrs((p) => ({
 }))`
 	background: linear-gradient(${(p) => p.deg}, #f0f0f0, white 43%);
 	padding: var(--spacing4) 0;
-	height: 220px;
-	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
+	/* height: 220px; */
+	/* @media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
 		height: 350px;
-	}
+	} */
 `
 
 const InnerContainer = styled.div`
 	display: grid;
 	align-items: center;
-	grid-template-columns: ${(p) => (p.inverse ? "1fr min-content" : "min-content 1fr")};
+	justify-content: space-between;
+	grid-template-columns: auto auto;
 	height: 100%;
+	gap: var(--spacing3);
+	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
+		gap: var(--spacing4);
+	}
+	@media (min-width: ${(p) => p.theme.breakpoints[3]}px) {
+		gap: var(--spacing5);
+	}
 `
 
 const SectionHeader = styled.h2`
@@ -37,11 +45,13 @@ const SectionHeader = styled.h2`
 
 const SectionBodyText = styled.p`
 	margin: 0;
+
 	color: var(--gray25);
 	text-align: ${(p) => (p.inverse ? "left" : "right")};
 `
 
 const TextContainer = styled.div`
+	width: 100%;
 	max-width: 450px;
 	margin-top: -24px;
 	order: ${(p) => (p.inverse ? 0 : 1)};
@@ -76,7 +86,7 @@ const HomeSection = ({ inverse = false, header, body, component: C, indexName })
 			<StatelessSearchWrapper indexName={indexName} limit={2}>
 				{(results) => (
 					<PageContainer fullHeight>
-						<InnerContainer inverse={inverse}>
+						<InnerContainer>
 							<TextContainer inverse={inverse}>
 								<SectionHeader inverse={inverse}>{header}</SectionHeader>
 								<SectionBodyText inverse={inverse}>{body}</SectionBodyText>
