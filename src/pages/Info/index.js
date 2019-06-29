@@ -1,5 +1,7 @@
 import React, { useMemo } from "react"
 import { Switch, Route, withRouter, NavLink } from "react-router-dom"
+import { withBreakpoints } from "react-breakpoints"
+import { compose } from "recompose"
 import styled from "styled-components/macro"
 
 import { PageContainer } from "../../components/Containers"
@@ -7,7 +9,12 @@ import { PageContainer } from "../../components/Containers"
 const Layout = styled.div`
 	gap: var(--spacing4);
 	display: grid;
-	grid-template-columns: minmax(220px, 25%) 1fr;
+
+	grid-template-columns: 100%;
+
+	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
+		grid-template-columns: minmax(220px, 25%) 1fr;
+	}
 `
 
 const SidebarHeader = styled.div`
@@ -56,7 +63,93 @@ const StyledLink = styled(NavLink)`
 	}
 `
 
-const InfoPage = withRouter(({ routes }) => {
+const ScrollableNavbarContainer = styled.nav`
+	/* display: flex;
+	> * + * {
+		margin-left: var(--spacing3);
+	} */
+
+	display: grid;
+	gap: 0;
+	overflow: auto;
+	width: auto;
+	grid-auto-flow: column;
+
+	/* --x-margin: calc(-1 * var(--spacing3)); */
+	/* padding: 0 var(--spacing3); */
+	&::after {
+		content: "";
+		display: block;
+		width: 0;
+	}
+`
+
+const OuterScrollableNavbarContainer = styled.div`
+	background: linear-gradient(to right, rgba(0, 0, 0, 0) 94%, rgba(0, 0, 0, 0.06));
+	margin-right: calc(-1 * var(--spacing3));
+	margin-left: calc(-1 * var(--spacing3));
+
+	/* padding: var(--spacing2) 0; */
+`
+
+const NavbarItemContainer = styled(NavLink)`
+	color: var(--gray25);
+	font-weight: var(--semi-bold);
+	font-size: var(--fs-xs);
+	text-transform: uppercase;
+	text-align: center;
+	white-space: nowrap;
+	&.active {
+		color: var(--black0);
+	}
+
+	user-select: none;
+	white-space: nowrap;
+	display: block;
+	cursor: pointer;
+	position: relative;
+
+	display: flex;
+	align-items: center;
+	height: 36px;
+
+	padding: 0 var(--spacing4);
+	border-bottom: 1px solid var(--gray75);
+
+	transition: border-color 0.25s linear, border-width 0.25s linear;
+
+	box-sizing: padding-box;
+
+	&:hover {
+		color: black;
+	}
+
+	&.active {
+		color: black;
+		border-bottom: 3px solid black;
+	}
+`
+
+const NavbarItem = ({ label, path }) => {
+	return <NavbarItemContainer to={path}>{label}</NavbarItemContainer>
+}
+
+const ScrollableNavbar = ({ routes }) => {
+	return (
+		<OuterScrollableNavbarContainer>
+			<ScrollableNavbarContainer>
+				{routes.map((route) => (
+					<NavbarItem {...route} key={route.label} />
+				))}
+			</ScrollableNavbarContainer>
+		</OuterScrollableNavbarContainer>
+	)
+}
+
+const InfoPage = compose(
+	withBreakpoints,
+	withRouter
+)(({ routes, currentBreakpoint }) => {
 	const groupedRoutes = useMemo(() => {
 		return routes.reduce((acc, curr, i) => {
 			const categoryArr = acc[curr.category] ? [...acc[curr.category], curr] : [curr]
@@ -64,25 +157,31 @@ const InfoPage = withRouter(({ routes }) => {
 		}, {})
 	}, [routes])
 
+	const isMobile = +currentBreakpoint < 2
+
 	return (
 		<PageContainer>
 			<Layout>
-				<Sidebar>
-					<SidebarHeader>Informacje</SidebarHeader>
-					{Object.entries(groupedRoutes).map(([groupName, group]) => {
-						console.log(groupName, group)
-						return (
-							<Section key={groupName}>
-								<SectionHeader>{groupName}</SectionHeader>
-								{group.map((route) => (
-									<StyledLink key={route.label} to={route.path}>
-										{route.label}
-									</StyledLink>
-								))}
-							</Section>
-						)
-					})}
-				</Sidebar>
+				{isMobile ? (
+					<ScrollableNavbar routes={routes} />
+				) : (
+					<Sidebar>
+						<SidebarHeader>Informacje</SidebarHeader>
+						{Object.entries(groupedRoutes).map(([groupName, group]) => {
+							console.log(groupName, group)
+							return (
+								<Section key={groupName}>
+									<SectionHeader>{groupName}</SectionHeader>
+									{group.map((route) => (
+										<StyledLink key={route.label} to={route.path}>
+											{route.label}
+										</StyledLink>
+									))}
+								</Section>
+							)
+						})}
+					</Sidebar>
+				)}
 				<Main>
 					<Switch>
 						{routes.map((route, i) => (
