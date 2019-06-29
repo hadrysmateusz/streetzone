@@ -2,16 +2,16 @@ import React from "react"
 import styled from "styled-components/macro"
 
 import { PageContainer } from "../../components/Containers"
+import { Carousel } from "../../components/Carousel"
 
 import { ReactComponent as Logo } from "./white-logomark-with-name.svg"
 
 const MainCarouselContainer = styled.div`
 	background: linear-gradient(30deg, #373737, #1a1a1a 55%);
 	padding-top: var(--spacing4);
-	height: 220px;
+	padding-bottom: var(--spacing2);
 	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
-		padding-top: var(--spacing5);
-		height: 350px;
+		padding-top: 40px;
 	}
 `
 
@@ -45,18 +45,35 @@ const SecondaryText = styled.div`
 	text-align: center;
 `
 
-const MainCarousel = () => {
+const CopyContainer = styled.div``
+
+const Copy = ({ main, secondary }) => {
 	return (
-		<MainCarouselContainer>
-			<PageContainer>
-				<LogoContainer>
-					<Logo />
-				</LogoContainer>
-				<MainText>Cały Polski Streetwear w jednym miejscu</MainText>
-				<SecondaryText>Tablica. Dropy. Artykuły. Newsy.</SecondaryText>
-			</PageContainer>
-		</MainCarouselContainer>
+		<CopyContainer>
+			<MainText>{main}</MainText>
+			<SecondaryText>{secondary}</SecondaryText>
+		</CopyContainer>
 	)
 }
+
+const MainCarousel = () => (
+	<MainCarouselContainer>
+		<PageContainer>
+			<LogoContainer>
+				<Logo />
+			</LogoContainer>
+			<Carousel autoPlay interval={3500}>
+				{[
+					<Copy
+						main="Cały Polski Streetwear w jednym miejscu"
+						secondary="Tablica. Dropy. Artykuły. Newsy."
+						key="1"
+					/>,
+					<Copy main="Jakość i autentyczność" secondary="Cośtam" key="2" />
+				]}
+			</Carousel>
+		</PageContainer>
+	</MainCarouselContainer>
+)
 
 export default MainCarousel

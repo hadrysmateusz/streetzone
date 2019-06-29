@@ -31,7 +31,7 @@ const MobileContainer = styled.div`
 const MobilePromotedSection = ({ results }) => {
 	return (
 		<MobileContainer>
-			<Carousel nOfElements={results.length}>
+			<Carousel>
 				{() => results.map((result) => <PromotedPost key={result.id} {...result} />)}
 			</Carousel>
 		</MobileContainer>
