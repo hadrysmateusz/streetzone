@@ -33,7 +33,7 @@ export const SmallContainer = styled.div`
 		grid-template-columns: 100%;
 		grid-template-rows: 140px min-content;
 		@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
-			grid-template-rows: 200px min-content;
+			grid-template-rows: 165px min-content;
 		}
 	}
 `
