@@ -64,7 +64,7 @@ const HomePage = () => {
 			<MarketplaceSection />
 			<DropsSection />
 			<BlogSection />
-			<PageContainer>Other stuff</PageContainer>
+			<PageContainer />
 		</OuterContainer>
 	)
 }
