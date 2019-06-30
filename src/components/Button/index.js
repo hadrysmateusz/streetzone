@@ -1,7 +1,9 @@
 import React from "react"
 import styled, { css } from "styled-components/macro"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { Link } from "react-router-dom"
 
+import { withProps } from "../../HOCs"
 import { ellipsis, resetButtonStyles } from "../../style-utils"
 import { SPIN } from "../../style-utils/keyframes"
 
@@ -215,5 +217,7 @@ const LoaderButton = styled(LoaderButtonUnstyled)`
 	}
 `
 
+const LinkButton = withProps({ as: Link })(Button)
+
 export default Button
-export { LoaderButton, Button, ButtonContainer, IconButton, UnstyledButton }
+export { LoaderButton, Button, ButtonContainer, IconButton, UnstyledButton, LinkButton }
