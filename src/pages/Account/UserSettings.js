@@ -1,11 +1,11 @@
 import React from "react"
 
-import SignOutButton from "../../components/UserSettings/SignOut"
 import LoginManagement from "../../components/UserSettings/LoginManagement"
 import EditProfile from "../../components/UserSettings/EditProfile"
 import ChangeEmail from "../../components/UserSettings/ChangeEmail"
 import DeleteAccount from "../../components/UserSettings/DeleteAccount"
 
+import { SignOutButton } from "../../components/SignOut"
 import { PageContainer } from "../../components/Containers"
 import { Separator } from "../../components/Basics"
 

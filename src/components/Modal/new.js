@@ -48,17 +48,7 @@ export const StatefulModal = ({ children }) => {
 		)
 	}
 
-	return (
-		<div
-			onClick={(e) => {
-				// prevent click events on the trigger from propagating to the rest of the React tree
-				e.stopPropagation()
-				e.preventDefault()
-			}}
-		>
-			{children({ open, close, isOpen, modal: wrapWithModal })}
-		</div>
-	)
+	return children({ open, close, isOpen, modal: wrapWithModal })
 }
 
 export const Modal = ({ children, onRequestClose }) => {

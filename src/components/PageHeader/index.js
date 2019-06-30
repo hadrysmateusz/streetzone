@@ -7,6 +7,7 @@ import styled, { css } from "styled-components/macro"
 
 import { withAuthentication } from "../UserSession"
 import ProfilePicture from "../ProfilePicture"
+import SignOut from "../SignOut"
 import { withFirebase } from "../Firebase"
 import Logo from "../Logo"
 import BurgerNavigation from "../BurgerNavigation"
@@ -189,11 +190,20 @@ const SubmenuButton = styled.div`
 	${submenuItemCommon}
 `
 
-const MobileNavLink = styled(NavLink)`
+const mobileNavItemCommon = css`
 	${linkCommon}
-	padding: 0;
 	color: var(--gray25);
 	font-weight: var(--semi-bold);
+
+	&:hover {
+		color: black;
+		background: var(--almost-white);
+	}
+`
+
+const MobileNavLink = styled(NavLink)`
+	${linkCommon}
+	${mobileNavItemCommon}
 
 	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
 		:hover > ${SubmenuContainer} {
@@ -201,16 +211,15 @@ const MobileNavLink = styled(NavLink)`
 		}
 	}
 
-	&:hover {
-		color: black;
-		background: var(--almost-white);
-	}
-
 	&.active {
 		color: black;
 		font-weight: bold;
 		background: var(--almost-white);
 	}
+`
+
+const MobileNavItem = styled.div`
+	${mobileNavItemCommon}
 `
 
 const SubmenuItem = ({ label, link, onClick }) => {
@@ -236,80 +245,84 @@ const DesktopNavItem = ({ children, label, alignSubmenu, exact, link }) => {
 	)
 }
 
-const PageHeaderMobile = ({ authUser, firebase, location }) => {
-	return (
-		<PageHeaderContainerMobile>
-			<Logo />
-			<div className="align-right">
-				{!authUser && (
-					<MobileNavLink
-						to={{ pathname: route("SIGN_IN"), state: { redirectTo: location } }}
-					>
-						Zaloguj
-					</MobileNavLink>
-				)}
+const MobileSignOutWrapper = ({ children }) => (
+	<SignOut>{({ open }) => children(open)}</SignOut>
+)
 
-				<MobileNavLink to={route("SEARCH")} exact>
-					<IconContainer>
-						<FontAwesomeIcon icon="search" />
-					</IconContainer>
-				</MobileNavLink>
-
-				{authUser && (
-					<NavItem>
-						<MobileNavLink
-							to={{ pathname: route("CHAT"), state: { redirectTo: location } }}
-						>
-							<MessagesManager />
-						</MobileNavLink>
-					</NavItem>
-				)}
-
-				{authUser && (
-					<MobileNavLink to={route("ACCOUNT_BASE", { id: authUser.uid })}>
-						<ProfilePicture
-							size={"26px"}
-							url={getProfilePictureURL(authUser, "S")}
-							inline
-						/>
-					</MobileNavLink>
-				)}
-
-				<BurgerNavigation>
-					<MobileNavLink to={route("HOME")} exact>
-						Strona główna
-					</MobileNavLink>
-					<MobileNavLink to={route("BLOG_HOME")}>Czytaj</MobileNavLink>
-					<MobileNavLink to={route("DROPS_SECTION", { id: "newest" })}>
-						Dropy
-					</MobileNavLink>
-					<MobileNavLink to={route("MARKETPLACE")} exact>
-						Kupuj
-					</MobileNavLink>
-					<MobileNavLink to={route("NEW_ITEM")}>Sprzedawaj</MobileNavLink>
-					<MobileNavLink to={route("ABOUT")}>Informacje</MobileNavLink>
-
-					{authUser && [
-						<MobileNavLink to={route("ACCOUNT_BASE", { id: authUser.uid })}>
-							Profil
-						</MobileNavLink>,
-						<MobileNavLink as="a" onClick={firebase.signOut}>
-							Wyloguj się
-						</MobileNavLink>
-					]}
-
+const PageHeaderMobile = ({ authUser, firebase, location }) => (
+	<MobileSignOutWrapper>
+		{(openSignOutModal) => (
+			<PageHeaderContainerMobile>
+				<Logo />
+				<div className="align-right">
 					{!authUser && (
 						<MobileNavLink
 							to={{ pathname: route("SIGN_IN"), state: { redirectTo: location } }}
 						>
-							Zaloguj / Zarejestruj się
+							Zaloguj
 						</MobileNavLink>
 					)}
-				</BurgerNavigation>
-			</div>
-		</PageHeaderContainerMobile>
-	)
-}
+
+					<MobileNavLink to={route("SEARCH")} exact>
+						<IconContainer>
+							<FontAwesomeIcon icon="search" />
+						</IconContainer>
+					</MobileNavLink>
+
+					{authUser && (
+						<NavItem>
+							<MobileNavLink
+								to={{ pathname: route("CHAT"), state: { redirectTo: location } }}
+							>
+								<MessagesManager />
+							</MobileNavLink>
+						</NavItem>
+					)}
+
+					{authUser && (
+						<MobileNavLink to={route("ACCOUNT_BASE", { id: authUser.uid })}>
+							<ProfilePicture
+								size={"26px"}
+								url={getProfilePictureURL(authUser, "S")}
+								inline
+							/>
+						</MobileNavLink>
+					)}
+
+					<BurgerNavigation>
+						<MobileNavLink to={route("HOME")} exact>
+							Strona główna
+						</MobileNavLink>
+						<MobileNavLink to={route("BLOG_HOME")}>Czytaj</MobileNavLink>
+						<MobileNavLink to={route("DROPS_SECTION", { id: "newest" })}>
+							Dropy
+						</MobileNavLink>
+						<MobileNavLink to={route("MARKETPLACE")} exact>
+							Kupuj
+						</MobileNavLink>
+						<MobileNavLink to={route("NEW_ITEM")}>Sprzedawaj</MobileNavLink>
+						<MobileNavLink to={route("ABOUT")}>Informacje</MobileNavLink>
+
+						{authUser && [
+							<MobileNavLink to={route("ACCOUNT_BASE", { id: authUser.uid })}>
+								Profil
+							</MobileNavLink>,
+							<MobileNavItem onClick={openSignOutModal}>Wyloguj</MobileNavItem>
+						]}
+
+						{!authUser && (
+							<MobileNavLink
+								to={{ pathname: route("SIGN_IN"), state: { redirectTo: location } }}
+							>
+								Zaloguj / Zarejestruj się
+							</MobileNavLink>
+						)}
+					</BurgerNavigation>
+				</div>
+			</PageHeaderContainerMobile>
+		)}
+	</MobileSignOutWrapper>
+)
 
 const PageHeaderDesktop = ({ authUser, firebase, location }) => {
 	return (
