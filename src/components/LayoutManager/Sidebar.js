@@ -54,7 +54,7 @@ const Sidebar = ({ children, availableElements, isRandom }) => {
 	const { elements, loadMore } = useLoadableElements(availableElements, { isRandom })
 
 	// TODO: this value might get stale if the window is resized
-	const sectionHeight = window.innerHeight / 2
+	const sectionHeight = window.innerHeight
 
 	const update = useCallback(() => {
 		const difference = getHeightDifference(mainRef, sidebarRef)
