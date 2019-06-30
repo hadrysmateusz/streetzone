@@ -97,6 +97,7 @@ export const formatItemDataForDb = (data, mode, flagState = true) => {
 		/* has to be null, otherwise it would show up in promoted section */
 		formatted.promotedAt = null
 		formatted.promotingLevel = null
+		formatted.bumps = 0
 
 		formatted.isArchived = false
 		formatted.isVerified = false

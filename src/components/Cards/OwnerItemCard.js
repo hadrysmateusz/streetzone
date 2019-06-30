@@ -285,7 +285,7 @@ const OwnerItemCard = ({
 				</Button>
 				<PromoteStatus promotingLevel={promotingLevel} promotedUntil={promotedUntil} />
 				<Button fullWidth>Odśwież</Button>
-				<RefreshStatus numBumps={bumps} refreshedAt={refreshedAt} createdAt={createdAt} />
+				<RefreshStatus bumps={bumps} refreshedAt={refreshedAt} createdAt={createdAt} />
 				<LearnMore />
 				<ButtonContainer noMargin>
 					<EditButton id={id} />
