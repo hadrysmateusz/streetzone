@@ -105,7 +105,9 @@ const DeleteItem = withRouter(({ match, history, location }) => {
 			// redirect
 			const redirectTo = getRedirectTo(location)
 			history.replace(redirectTo)
-		} catch (err) {}
+		} catch (err) {
+			// TODO: error handling
+		}
 	}
 
 	return (

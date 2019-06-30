@@ -1,9 +1,9 @@
-import React from "react"
+import React, { useState } from "react"
 import moment from "moment"
-import { withRouter, Link } from "react-router-dom"
+import { Link } from "react-router-dom"
 import styled, { css } from "styled-components/macro"
 
-import Button, { ButtonContainer } from "../Button"
+import Button, { ButtonContainer, LoaderButton } from "../Button"
 import InfoItem from "../InfoItem"
 import { SmallTextBlock } from "../StyledComponents"
 import { FluidImage } from "../Image"
@@ -11,7 +11,7 @@ import DeleteItemButton from "../DeleteItemButton"
 
 import { translateCondition } from "../../constants/item_schema"
 import promotingLevels from "../../constants/promoting_levels"
-import { useImage } from "../../hooks"
+import { useImage, useFlash, useFirebase } from "../../hooks"
 import { itemDataHelpers, route } from "../../utils"
 import { nLinesHigh } from "../../style-utils"
 
@@ -162,7 +162,7 @@ const RefreshStatus = ({ refreshedAt, createdAt, bumps }) => {
 	const remainingBumps = bumps || "Brak"
 	const wasRefreshed = refreshedAt && createdAt !== refreshedAt
 	// TODO: this only shows full days so it effectively shows one less than it should
-	const numDaysAgo = wasRefreshed ? moment().diff(refreshedAt, "days") : "Nigdy"
+	const numDaysAgo = wasRefreshed ? moment().to(refreshedAt) : "Nigdy"
 
 	return (
 		<StatusContainer>
@@ -209,13 +209,60 @@ const LearnMore = () => {
 	)
 }
 
-const EditButton = withRouter(({ history, id }) => {
+const EditButton = ({ id }) => {
 	return (
 		<Button fullWidth as={Link} to={route("EDIT_ITEM", { id })}>
 			Edytuj
 		</Button>
 	)
-})
+}
+
+const RefreshButton = ({ id }) => {
+	const flashMessage = useFlash()
+	const [isRefreshing, setIsRefreshing] = useState(false)
+	const firebase = useFirebase()
+
+	const refreshItem = async () => {
+		setIsRefreshing(true)
+		try {
+			await firebase.item(id).update({ refreshedAt: Date.now() })
+		} catch (err) {
+			throw err
+		} finally {
+			// await sleep(5500)
+			setIsRefreshing(false)
+		}
+	}
+
+	const onClick = async () => {
+		try {
+			await refreshItem()
+
+			// show flash message
+			flashMessage({ type: "success", textContent: "BUMP" })
+		} catch (err) {
+			// TODO: error handling
+		}
+	}
+
+	return (
+		<LoaderButton
+			fullWidth
+			text="Odśwież"
+			loadingText="Odświeżanie..."
+			onClick={onClick}
+			isLoading={isRefreshing}
+		/>
+	)
+}
+
+const PromoteButton = ({ id }) => {
+	return (
+		<Button accent fullWidth as={Link} to={route("ITEM_PROMOTE", { id })}>
+			Promuj
+		</Button>
+	)
+}
 
 const OwnerItemCard = ({
 	id,
@@ -280,11 +327,9 @@ const OwnerItemCard = ({
 			</Link>
 
 			<ActionsContainer>
-				<Button accent fullWidth as={Link} to={route("ITEM_PROMOTE", { id })}>
-					Promuj
-				</Button>
+				<PromoteButton id={id} />
 				<PromoteStatus promotingLevel={promotingLevel} promotedUntil={promotedUntil} />
-				<Button fullWidth>Odśwież</Button>
+				<RefreshButton id={id} />
 				<RefreshStatus bumps={bumps} refreshedAt={refreshedAt} createdAt={createdAt} />
 				<LearnMore />
 				<ButtonContainer noMargin>
