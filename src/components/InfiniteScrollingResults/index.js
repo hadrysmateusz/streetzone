@@ -2,7 +2,7 @@ import React from "react"
 import InfiniteScroll from "react-infinite-scroller"
 
 import { InfiniteResults } from "../Algolia/Helpers"
-import LoadingSpinner from "../LoadingSpinner"
+import { InfiniteLoadingSpinner } from "../LoadingSpinner"
 import NoResults from "../Algolia/NoResults"
 
 const InfiniteScrollingResults = ({ children, threshold = 450, emptyState }) => {
@@ -16,7 +16,7 @@ const InfiniteScrollingResults = ({ children, threshold = 450, emptyState }) => 
 					{/* Render empty state if there are no results */}
 					<InfiniteScroll
 						hasMore={hasMore}
-						loader={<LoadingSpinner />}
+						loader={<InfiniteLoadingSpinner />}
 						initialLoad={false}
 						loadMore={loadMore}
 						threshold={threshold}

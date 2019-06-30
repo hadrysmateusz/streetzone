@@ -3,6 +3,7 @@ import { BarLoader } from "react-css-loaders"
 import PropTypes from "prop-types"
 import styled from "styled-components/macro"
 
+import { LoaderButton } from "../Button"
 import EmptyState from "../EmptyState"
 import { useNewDelayRender } from "../../hooks/useDelayRender"
 
@@ -73,5 +74,27 @@ const LoadableComponentSpinner = ({ error, pastDelay, timedOut }) => {
 	}
 }
 
+const InfiniteLoadingSpinner = ({
+	delay = 350,
+	loadMore,
+	isLoading,
+	showSpinner = true
+}) => {
+	return useNewDelayRender(
+		<div>
+			{showSpinner && <LoadingSpinner delay={0} />}
+			<LoaderButton
+				isLoading={isLoading}
+				fullWidth
+				big
+				onClick={loadMore}
+				text="Załaduj więcej"
+				loadingText="Ładowanie"
+			/>
+		</div>,
+		delay
+	)
+}
+
 export default LoadingSpinner
-export { LoadableComponentSpinner }
+export { LoadableComponentSpinner, InfiniteLoadingSpinner }

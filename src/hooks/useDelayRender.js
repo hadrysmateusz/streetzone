@@ -12,7 +12,7 @@ export default (time) => {
 }
 
 export const useNewDelayRender = (render, delay) => {
-	const [isDone, setIsDone] = useState(false)
+	const [isDone, setIsDone] = useState(delay === 0)
 
 	if (!delay) {
 		console.warn(
@@ -22,10 +22,7 @@ export const useNewDelayRender = (render, delay) => {
 
 	useEffect(() => {
 		// render immediately if delay is set to 0
-		if (delay === 0) {
-			setIsDone(true)
-			return
-		}
+		if (delay === 0) return
 
 		const timeoutId = setTimeout(() => setIsDone(true), delay)
 		return () => clearTimeout(timeoutId)

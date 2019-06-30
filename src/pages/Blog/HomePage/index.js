@@ -1,7 +1,7 @@
 import React from "react"
 
 import { PageContainer } from "../../../components/Containers"
-import { SearchWrapper } from "../../../components/InstantSearchWrapper"
+import { StatelessSearchWrapper } from "../../../components/InstantSearchWrapper"
 import { SmallDropCard, PostCard } from "../../../components/Cards"
 import { ThematicGroup } from "../../../components/ThematicGroup"
 import { LayoutManager, Main, Sidebar } from "../../../components/LayoutManager"
@@ -45,11 +45,7 @@ const BlogHomePage = () => {
 	return (
 		<>
 			<PromotedSection />
-			<SearchWrapper
-				indexName={CONST.BLOG_POST_ALGOLIA_INDEX}
-				allowedKeys={["tags"]}
-				hitsPerPage={3}
-			>
+			<StatelessSearchWrapper indexName={CONST.BLOG_POST_ALGOLIA_INDEX} limit={3}>
 				<PageContainer>
 					<LayoutManager>
 						<Main>
@@ -66,7 +62,7 @@ const BlogHomePage = () => {
 						</Sidebar>
 					</LayoutManager>
 				</PageContainer>
-			</SearchWrapper>
+			</StatelessSearchWrapper>
 		</>
 	)
 }
