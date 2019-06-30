@@ -2,6 +2,7 @@ import React from "react"
 import styled from "styled-components/macro"
 import { Link } from "react-router-dom"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { withBreakpoints } from "react-breakpoints"
 
 import { StatelessSearchWrapper } from "../../components/InstantSearchWrapper"
 import { PageContainer } from "../../components/Containers"
@@ -106,15 +107,32 @@ const BottomContainer = styled.div`
 	overflow: auto;
 	width: auto;
 	grid-auto-flow: column;
-	grid-auto-columns: 250px;
+	grid-auto-columns: 220px;
 	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
 		gap: var(--spacing3);
 	}
+
+	/* make the content go from edge to edge on mobile*/
+	@media (max-width: ${(p) => p.theme.breakpoints[1] - 1}px) {
+		--x-margin: calc(-1 * var(--spacing3));
+		margin-left: var(--x-margin);
+		margin-right: var(--x-margin);
+		padding: 0 var(--spacing3);
+		&::after {
+			content: "";
+			display: block;
+			width: var(--spacing2);
+		}
+	}
 `
 
-const InnerContainer = ({ items }) => {
-	const main = items.slice(0, NUMBER_OF_PROMOTED_ITEMS)
-	const other = items.slice(NUMBER_OF_PROMOTED_ITEMS)
+const InnerContainer = withBreakpoints(({ items, currentBreakpoint }) => {
+	const isMobile = +currentBreakpoint < 2
+
+	const showMain = !isMobile
+
+	const main = isMobile ? [] : items.slice(0, NUMBER_OF_PROMOTED_ITEMS)
+	const other = isMobile ? items : items.slice(NUMBER_OF_PROMOTED_ITEMS)
 	const hasMain = main && main.length > 0
 	const hasOther = other && other.length > 0
 	const nToFill = !hasMain
@@ -128,14 +146,16 @@ const InnerContainer = ({ items }) => {
 					🔥 Promowane
 				</span>
 			</TextBlock>
-			<TopContainer>
-				{main.map((item) => (
-					<PromotedItem item={item} />
-				))}
-				{mapN(nToFill, () => (
-					<PromotedPlaceholder />
-				))}
-			</TopContainer>
+			{showMain && (
+				<TopContainer>
+					{main.map((item) => (
+						<PromotedItem item={item} />
+					))}
+					{mapN(nToFill, () => (
+						<PromotedPlaceholder />
+					))}
+				</TopContainer>
+			)}
 			{hasOther && (
 				<BottomContainer>
 					{other.map((item) => (
@@ -145,7 +165,7 @@ const InnerContainer = ({ items }) => {
 			)}
 		</InnerContainerContainer>
 	)
-}
+})
 
 const PromotedItem = ({ item }) => {
 	const { imageURL } = useImage(item.attachments[item.mainImageIndex], "L")
