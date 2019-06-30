@@ -1,3 +1,4 @@
+// I'm 90% sure it's DEPRECATED
 import React, { useState } from "react"
 import styled from "styled-components/macro"
 import InfiniteScroll from "react-infinite-scroller"

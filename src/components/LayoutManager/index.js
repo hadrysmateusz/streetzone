@@ -1,9 +1,34 @@
-import React, { useState, useRef, useEffect, useContext, createContext } from "react"
+import React, {
+	useState,
+	useRef,
+	useEffect,
+	useContext,
+	createContext,
+	useLayoutEffect,
+	useCallback
+} from "react"
 import { withBreakpoints } from "react-breakpoints"
 import styled from "styled-components/macro"
 import throttle from "lodash.throttle"
 
 import { getCategoryColor } from "../../style-utils"
+
+const LayoutContext = createContext()
+
+/**
+ * Gets height difference between two refs
+ */
+const getDifference = (refOne, refTwo) => {
+	// exit if any of the refs are not bound to avoid errors
+	if (!refOne.current || !refTwo.current) {
+		console.warn("One of the refs isn't currently bound")
+		return 0
+	}
+
+	const heightOne = refOne.current.clientHeight
+	const heightTwo = refTwo.current.clientHeight
+	return Math.max(heightOne - heightTwo, 0)
+}
 
 const MainContainer = styled.div`
 	align-self: start;
@@ -13,6 +38,7 @@ const MainContainer = styled.div`
 const SidebarContainer = styled.aside`
 	width: 25%;
 	min-width: 220px;
+	align-self: flex-start;
 `
 
 const SidebarHeader = styled.div`
@@ -26,8 +52,8 @@ const SidebarHeader = styled.div`
 `
 
 const SidebarSectionContainer = styled.div`
-	/* background: rgba(255, 0, 0, 0.2);
-	border-bottom: 1px solid green; */
+	background: rgba(255, 0, 0, 0.2);
+	border-bottom: 1px solid green;
 	width: 100%;
 	overflow: hidden;
 	:not(:last-child) {
@@ -37,14 +63,11 @@ const SidebarSectionContainer = styled.div`
 
 const Layout = styled.div`
 	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
-
 		> :first-child {
 			margin-right: var(--spacing3);
 		}
 
 		display: flex;
-		/* grid-template-columns: ${(p) => p.columns || "1fr minmax(220px, 25%)"}; */
-		/* grid-template-columns: auto auto; */
 		gap: var(--spacing3);
 	}
 `
@@ -63,12 +86,12 @@ export const useLoadableElements = (availableElements, options = {}) => {
 	const isRandom = options.isRandom || false
 	const initialLoad = options.initialLoad || true
 
-	const getRandomIndex = () => {
+	const getRandomIndex = useCallback(() => {
 		const min = 0
 		const max = availableElements.length - 1
 		const randomIndex = Math.floor(Math.random() * (max - min + 1)) + min
 		return randomIndex
-	}
+	}, [availableElements])
 
 	const getInitialState = () => {
 		// if there is no initial load return empty array
@@ -83,40 +106,38 @@ export const useLoadableElements = (availableElements, options = {}) => {
 	// get initialState based on initialLoad option
 	const [currentElements, setCurrentElements] = useState(getInitialState())
 
-	const getSequential = () => {
-		const nextIndex = currentElements.length
-		const nextElement = availableElements[nextIndex]
-		return nextElement
-	}
+	const loadMore = useCallback(() => {
+		const getSequential = () => {
+			const nextIndex = currentElements.length
+			const nextElement = availableElements[nextIndex]
+			return nextElement
+		}
 
-	const getRandom = () => {
-		// if there is only one element return it to prevent an infinite loop
-		if (availableElements.length === 1) return availableElements[0]
+		const getRandom = () => {
+			// if there is only one element return it to prevent an infinite loop
+			if (availableElements.length === 1) return availableElements[0]
 
-		const lastElement = currentElements[currentElements.length - 1] || {}
-		let nextElement = {}
+			const lastElement = currentElements[currentElements.length - 1] || {}
+			let nextElement = {}
 
-		// get next element, if it's the same as last one, try again
-		do {
-			const randomIndex = getRandomIndex()
-			nextElement = availableElements[randomIndex]
-		} while (lastElement.title === nextElement.title)
+			// get next element, if it's the same as last one, try again
+			do {
+				const randomIndex = getRandomIndex()
+				nextElement = availableElements[randomIndex]
+			} while (lastElement.title === nextElement.title)
 
-		return nextElement
-	}
+			return nextElement
+		}
 
-	const loadMore = () => {
 		const nextElement = isRandom ? getRandom() : getSequential()
 		if (!nextElement) return
 		setCurrentElements((currentElements) => [...currentElements, nextElement])
-	}
+	}, [availableElements, currentElements, getRandomIndex, isRandom])
 
 	const hasMore = isRandom ? true : availableElements.length > currentElements.length
 
 	return { elements: currentElements, loadMore, hasMore }
 }
-
-const LayoutContext = createContext()
 
 export const Main = ({ children }) => {
 	const layoutContext = useContext(LayoutContext)
@@ -130,23 +151,39 @@ export const Main = ({ children }) => {
 
 export const Sidebar = ({ children, availableElements, isRandom }) => {
 	const layoutContext = useContext(LayoutContext)
-
 	if (!layoutContext) {
 		console.error("You shouldn't use <Sidebar> outside of <LayoutManager>")
 	}
-
-	const { sidebarRef, heightDifference, forceUpdateDifference, isMobile } = layoutContext
+	const { sidebarRef, mainRef, isMobile } = layoutContext
 
 	const { elements, loadMore } = useLoadableElements(availableElements, { isRandom })
 
+	// TODO: this might get stale if the window is resized
 	const sectionHeight = window.innerHeight / 2
 
-	useEffect(() => {
-		if (heightDifference > sectionHeight) {
+	const update = useCallback(() => {
+		const difference = getDifference(mainRef, sidebarRef)
+		if (difference > sectionHeight) {
 			loadMore()
-			forceUpdateDifference()
 		}
-	}, [sectionHeight, heightDifference, loadMore, forceUpdateDifference])
+	}, [loadMore, mainRef, sectionHeight, sidebarRef])
+
+	useEffect(() => {
+		// create cleanup function
+		const unregister = () => window.removeEventListener("scroll", throttledUpdate)
+
+		// don't listen on mobile
+		if (isMobile) return unregister
+
+		// create throttled version of update function
+		const throttleInterval = 200
+		const throttledUpdate = throttle(update, throttleInterval, { leading: true })
+
+		// register onScroll listener
+		window.addEventListener("scroll", throttledUpdate)
+
+		return unregister
+	}, [isMobile, update])
 
 	return isMobile ? null : (
 		<SidebarContainer ref={sidebarRef}>
@@ -160,52 +197,20 @@ export const Sidebar = ({ children, availableElements, isRandom }) => {
 	)
 }
 
-export const LayoutManager = withBreakpoints(
-	({ currentBreakpoint, children, columns }) => {
-		const mainRef = useRef()
-		const sidebarRef = useRef()
+export const LayoutManager = withBreakpoints(({ currentBreakpoint, children }) => {
+	const mainRef = useRef()
+	const sidebarRef = useRef()
+	const isMobile = +currentBreakpoint <= 1
 
-		const [heightDifference, setHeightDifference] = useState(0)
-
-		const limit = 200
-		const isMobile = +currentBreakpoint <= 1
-
-		const update = () => {
-			// exit if any of the refs are not bound to avoid errors
-			if (!mainRef.current || !sidebarRef.current) return
-
-			const mainHeight = mainRef.current.clientHeight
-			const sidebarHeight = sidebarRef.current.clientHeight
-			let difference = Math.max(mainHeight - sidebarHeight, 0)
-
-			setHeightDifference(difference)
-		}
-
-		useEffect(() => {
-			const unregister = () => window.removeEventListener("scroll", throttledUpdate)
-
-			// don't listen on mobile
-			if (isMobile) return unregister
-
-			const throttledUpdate = throttle(update, limit, { leading: true })
-
-			window.addEventListener("scroll", throttledUpdate)
-
-			return unregister
-		}, [isMobile])
-
-		const contextValue = {
-			mainRef,
-			sidebarRef,
-			heightDifference,
-			isMobile,
-			forceUpdateDifference: update
-		}
-
-		return (
-			<LayoutContext.Provider value={contextValue}>
-				<Layout columns={columns}>{children}</Layout>
-			</LayoutContext.Provider>
-		)
+	const contextValue = {
+		mainRef,
+		sidebarRef,
+		isMobile
 	}
-)
+
+	return (
+		<LayoutContext.Provider value={contextValue}>
+			<Layout>{children}</Layout>
+		</LayoutContext.Provider>
+	)
+})
