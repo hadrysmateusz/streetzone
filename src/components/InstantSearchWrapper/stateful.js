@@ -99,6 +99,22 @@ export const SearchWrapper = withRouter(
 			[_initialState, allowedKeys]
 		)
 
+		const createStateFromURL = useCallback(() => {
+			try {
+				const parsedSearch = decodeURL(location.search)
+				if (!parsedSearch) throw new Error("empty search string")
+				const formattedState = urlToState(parsedSearch)
+				return formattedState
+			} catch (e) {
+				// EMPTY_SEARCH_ERR is harmless, don't report it
+				if (e.message !== EMPTY_SEARCH_ERR) {
+					console.log(e)
+				}
+				// if there was a problem while parsing, use default state instead
+				return _initialState
+			}
+		}, [_initialState, location.search, urlToState])
+
 		const onSearchStateChange = (state) => {
 			let formattedState = {}
 
@@ -125,20 +141,26 @@ export const SearchWrapper = withRouter(
 			return formattedState
 		}
 
+		const handleSearchStateChange = useCallback(
+			async (newSearchState) => {
+				const formattedState = await onSearchStateChange(newSearchState)
+				const url = encodeURL(formattedState)
+				history.replace(url)
+			},
+			[history]
+		)
+
 		useEffect(() => {
 			let state = createStateFromURL()
 			if (isFirstRender) {
-				state = { ...state, page: 1 }
 				setIsFirstRender(false)
+				if (state.page !== 1) {
+					const newState = { ...state, page: 1 }
+					handleSearchStateChange(newState)
+				}
 			}
 			setSearchState(state)
-		}, [location, createStateFromURL, isFirstRender])
-
-		const handleSearchStateChange = async (newSearchState) => {
-			const formattedState = await onSearchStateChange(newSearchState)
-			const url = encodeURL(formattedState)
-			history.replace(url)
-		}
+		}, [location, createStateFromURL, isFirstRender, handleSearchStateChange])
 
 		const forceRefineWithState = async (partialSearchState) => {
 			const newSearchState = {
@@ -151,25 +173,7 @@ export const SearchWrapper = withRouter(
 			history.replace(url)
 		}
 
-		const createStateFromURL = useCallback(() => {
-			try {
-				const parsedSearch = decodeURL(location.search)
-				if (!parsedSearch) throw new Error("empty search string")
-				const formattedState = urlToState(parsedSearch)
-				return formattedState
-			} catch (e) {
-				// EMPTY_SEARCH_ERR is harmless, don't report it
-				if (e.message !== EMPTY_SEARCH_ERR) {
-					console.log(e)
-				}
-				// if there was a problem while parsing, use default state instead
-				return _initialState
-			}
-		}, [_initialState, location.search, urlToState])
-
 		const isChildrenFunction = typeof children === "function"
-
-		console.log(indexName, searchState, hitsPerPage, refinements)
 
 		return (
 			<InstantSearch
