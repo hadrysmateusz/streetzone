@@ -96,6 +96,7 @@ export const formatItemDataForDb = (data, mode, flagState = true) => {
 		formatted.modifiedAt = Date.now()
 		/* has to be null, otherwise it would show up in promoted section */
 		formatted.promotedAt = null
+		formatted.promotingLevel = null
 
 		formatted.isArchived = false
 		formatted.isVerified = false

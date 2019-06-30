@@ -10,6 +10,7 @@ import { FluidImage } from "../Image"
 import DeleteItemButton from "../DeleteItemButton"
 
 import { translateCondition } from "../../constants/item_schema"
+import promotingLevels from "../../constants/promoting_levels"
 import { useImage } from "../../hooks"
 import { itemDataHelpers, route } from "../../utils"
 import { nLinesHigh } from "../../style-utils"
@@ -138,12 +139,12 @@ const StatusContainer = styled.div`
 	}
 `
 
-const PromoteStatus = ({ lastPromotionLevel, promotedUntil }) => {
+const PromoteStatus = ({ promotingLevel, promotedUntil }) => {
 	// TODO: this only shows full days so it effectively shows one less than it should
 	const numDaysLeft = moment(promotedUntil).diff(Date.now(), "days")
 	const hasDaysLeft = +numDaysLeft > 0
 	// TODO: map promotion levels to their names
-	const promotionLevel = hasDaysLeft ? lastPromotionLevel : "Brak"
+	const promotionLevel = hasDaysLeft ? promotingLevels[promotingLevel] : "Brak"
 
 	return (
 		<StatusContainer>
@@ -151,7 +152,7 @@ const PromoteStatus = ({ lastPromotionLevel, promotedUntil }) => {
 				Poziom promowania: <b>{promotionLevel}</b>
 			</div>
 			<div>
-				Pozostało promowania: <b>{numDaysLeft || "Brak"}</b>
+				Pozostało promowania: <b>{`${numDaysLeft} dni` || "Brak"}</b>
 			</div>
 		</StatusContainer>
 	)
@@ -230,7 +231,7 @@ const OwnerItemCard = ({
 	createdAt,
 	refreshedAt,
 	promotedUntil,
-	lastPromotionLevel,
+	promotingLevel,
 	bumps,
 	currentBreakpoint
 }) => {
@@ -282,10 +283,7 @@ const OwnerItemCard = ({
 				<Button accent fullWidth as={Link} to={route("ITEM_PROMOTE", { id })}>
 					Promuj
 				</Button>
-				<PromoteStatus
-					lastPromotionLevel={lastPromotionLevel}
-					promotedUntil={promotedUntil}
-				/>
+				<PromoteStatus promotingLevel={promotingLevel} promotedUntil={promotedUntil} />
 				<Button fullWidth>Odśwież</Button>
 				<RefreshStatus numBumps={bumps} refreshedAt={refreshedAt} createdAt={createdAt} />
 				<LearnMore />

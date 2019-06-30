@@ -11,6 +11,7 @@ import { LoaderButton } from "../../components/Button"
 
 import { NotFoundError } from "../../errors"
 import { useFirebase } from "../../hooks"
+import promotingLevels from "../../constants/promoting_levels"
 
 const PageHeader = styled.div`
 	font-weight: bold;
@@ -209,7 +210,7 @@ const ItemPromotePage = ({ match, history }) => {
 
 					<PromoteOptionsContainer>
 						<PromoteOptionCard
-							name="Mini"
+							name={promotingLevels[0]}
 							level={0}
 							price={4.99}
 							itemId={itemId}
@@ -220,7 +221,7 @@ const ItemPromotePage = ({ match, history }) => {
 							]}
 						/>
 						<PromoteOptionCard
-							name="Hype"
+							name={promotingLevels[1]}
 							level={1}
 							price={9.99}
 							itemId={itemId}
@@ -235,7 +236,7 @@ const ItemPromotePage = ({ match, history }) => {
 							]}
 						/>
 						<PromoteOptionCard
-							name="Mega"
+							name={promotingLevels[2]}
 							level={2}
 							price={25}
 							itemId={itemId}

@@ -558,7 +558,7 @@ class PromotingLevel {
 		return {
 			promotedAt: Date.now(),
 			promotedUntil,
-			lastPromotionLevel: this.level,
+			promotingLevel: this.level,
 			bumps: this.bumps + remainingBumps
 		}
 	}
@@ -786,7 +786,6 @@ exports.dropNotification = functions.pubsub
 					icon: drop.imageUrls[drop.mainImageIndex]
 				}
 			}
-
 
 			// get all drop subscribers
 			const subscribersSnap = await db

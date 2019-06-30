@@ -8,6 +8,7 @@ import { CONST } from "../../constants"
 
 import MainCarousel from "./MainCarousel"
 import HomeSection from "./HomeSection"
+import MarketplacePromoted from "./MarketplacePromoted"
 
 const OuterContainer = styled.div`
 	margin-top: calc(-1 * var(--page-header-margin));
@@ -64,7 +65,9 @@ const HomePage = () => {
 			<MarketplaceSection />
 			<DropsSection />
 			<BlogSection />
-			<PageContainer />
+			<PageContainer>
+				<MarketplacePromoted />
+			</PageContainer>
 		</OuterContainer>
 	)
 }
