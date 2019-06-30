@@ -76,7 +76,7 @@ const CardsContainerInner = styled.div`
 	}
 
 	/* make the content go from edge to edge on mobile*/
-	@media (max-width: ${(p) => p.theme.breakpoints[3] - 1}px) {
+	@media (max-width: ${(p) => p.theme.breakpoints[2] - 1}px) {
 		display: grid;
 		gap: var(--spacing2);
 		grid-auto-columns: 250px;
