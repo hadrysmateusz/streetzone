@@ -15,6 +15,10 @@ import MarketplacePromoted from "./MarketplacePromoted"
 
 const OuterContainer = styled.div`
 	margin-top: calc(-1 * var(--page-header-margin));
+	margin-bottom: var(--spacing5);
+	@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
+		margin-bottom: var(--spacing6);
+	}
 `
 
 const StyledLink = styled(Link)`

@@ -8,6 +8,7 @@ import { TextBlock } from "../../components/StyledComponents"
 import { useDesigner } from "../../hooks"
 
 const OuterContainer = styled.div`
+	margin-top: calc(-1 * var(--page-header-margin));
 	height: 140px;
 	background: linear-gradient(135deg, ${(p) => p.colorA}, ${(p) => p.colorB});
 	> * {

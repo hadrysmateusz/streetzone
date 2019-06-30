@@ -12,7 +12,10 @@ import { route } from "../../utils"
 import { encodeURL } from "../../utils/algoliaURLutils"
 
 const OuterContainer = styled.div`
-	margin-top: var(--spacing6);
+	margin-top: var(--spacing5);
+	@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
+		margin-top: var(--spacing6);
+	}
 `
 
 const InnerContainer = styled.div`
