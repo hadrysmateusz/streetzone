@@ -25,8 +25,9 @@ const SidebarHeader = styled.div`
 `
 
 const SidebarSectionContainer = styled.div`
-	background: rgba(255, 0, 0, 0.2);
-	border-bottom: 1px solid green;
+	/* background: rgba(255, 0, 0, 0.2);
+	border-bottom: 1px solid green; */
+
 	width: 100%;
 	overflow: hidden;
 	:not(:last-child) {
