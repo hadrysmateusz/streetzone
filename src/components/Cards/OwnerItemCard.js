@@ -143,17 +143,17 @@ const StatusContainer = styled.div`
 const PromoteStatus = ({ promotingLevel, promotedUntil }) => {
 	// const numDaysLeft = moment(promotedUntil).diff(Date.now(), "days")
 	const diff = moment(promotedUntil).diff(moment())
-	const numDaysLeft = moment.duration(diff).humanize()
-	const hasDaysLeft = +numDaysLeft > 0
-	const promotionLevel = hasDaysLeft ? promotingLevels[promotingLevel] : "Brak"
+	const timeLeft = moment.duration(diff).humanize()
+	const hasTimeLeft = +timeLeft > 0
+	const promotingType = hasTimeLeft ? promotingLevels[promotingLevel] : "Brak"
 
 	return (
 		<StatusContainer>
 			<div>
-				Poziom promowania: <b>{promotionLevel}</b>
+				Poziom promowania: <b>{promotingType}</b>
 			</div>
 			<div>
-				Pozostało promowania: <b>{numDaysLeft || "Brak"}</b>
+				Pozostało promowania: <b>{timeLeft || "Brak"}</b>
 			</div>
 		</StatusContainer>
 	)
@@ -162,13 +162,12 @@ const PromoteStatus = ({ promotingLevel, promotedUntil }) => {
 const RefreshStatus = ({ refreshedAt, createdAt, bumps }) => {
 	const remainingBumps = bumps || "Brak"
 	const wasRefreshed = refreshedAt && createdAt !== refreshedAt
-	// TODO: this only shows full days so it effectively shows one less than it should
-	const numDaysAgo = wasRefreshed ? moment().to(refreshedAt) : "Nigdy"
+	const lastRefreshed = wasRefreshed ? moment().to(refreshedAt) : "Nigdy"
 
 	return (
 		<StatusContainer>
 			<div>
-				Ostatnio odświeżano: <b>{numDaysAgo}</b>
+				Ostatnio odświeżano: <b>{lastRefreshed}</b>
 			</div>
 			<div>
 				Pozostało odświeżeń: <b>{remainingBumps}</b>
