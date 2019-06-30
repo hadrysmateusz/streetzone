@@ -13,6 +13,7 @@ const StatelessSearchWrapper = (props) => {
 		filters,
 		limit = 3,
 		children,
+		ignoreArchivedStatus = false,
 		showArchived = false
 	} = props
 
@@ -54,7 +55,7 @@ const StatelessSearchWrapper = (props) => {
 
 			{/* TODO: verify that this works */}
 			{/* Hide archived results unless told otherwise */}
-			{!showArchived && (
+			{!ignoreArchivedStatus && !showArchived && (
 				<VirtualToggle
 					attribute="isArchived"
 					value={false}

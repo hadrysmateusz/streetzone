@@ -4,6 +4,7 @@ import { Link } from "react-router-dom"
 
 import { PageContainer } from "../../components/Containers"
 import { SmallItemCard, SmallDropCard, PostCard } from "../../components/Cards"
+import PopularDesigners from "../../components/PopularDesigners"
 
 import { CONST } from "../../constants"
 import { route } from "../../utils"
@@ -85,6 +86,7 @@ const HomePage = () => {
 			<BlogSection />
 			<PageContainer>
 				<MarketplacePromoted />
+				<PopularDesigners />
 			</PageContainer>
 		</OuterContainer>
 	)
