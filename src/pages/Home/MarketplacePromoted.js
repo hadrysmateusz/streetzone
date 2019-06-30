@@ -1,5 +1,6 @@
 import React from "react"
 import styled from "styled-components/macro"
+import { Link } from "react-router-dom"
 
 import { LinkButton, ButtonContainer } from "../../components/Button"
 import { FluidImage } from "../../components/Image"
@@ -56,18 +57,24 @@ const PromotedItem = ({ attachments, mainImageIndex, name, designers, price, id 
 	const { imageURL } = useImage(attachments[mainImageIndex], "M")
 	const formattedDesigners = formatDesigners(designers)
 
-	console.log(imageURL)
+	const itemLink = route("ITEM_DETAILS", { id })
 
 	return (
 		<PromotedItemContainer>
 			<InfoContainer>
 				<Designers>{formattedDesigners}</Designers>
-				<Name title={name}>{name}</Name>
+				<Link to={itemLink}>
+					<Name title={name}>{name}</Name>
+				</Link>
 				<ButtonContainer noMargin>
-					<LinkButton to={route("ITEM_DETAILS", { id })}>Kup za {price}zł</LinkButton>
+					<LinkButton wide primary to={itemLink}>
+						Kup za {price}zł
+					</LinkButton>
 				</ButtonContainer>
 			</InfoContainer>
-			<FluidImage url={imageURL} />
+			<Link to={itemLink}>
+				<FluidImage url={imageURL} />
+			</Link>
 		</PromotedItemContainer>
 	)
 }

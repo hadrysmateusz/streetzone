@@ -135,7 +135,7 @@ const Button = styled.button`
 
 	height: ${(p) => (p.big ? "48px" : "40px")};
 	min-width: 0;
-	padding: 0 var(--spacing3);
+	padding: 0 ${(p) => (p.wide ? "var(--spacing5)" : "var(--spacing3)")};
 	margin: 0;
 	border: 1px solid;
 	font-weight: var(--semi-bold);

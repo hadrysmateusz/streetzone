@@ -65,11 +65,11 @@ const MainCarousel = () => (
 			<Carousel autoPlay interval={3500}>
 				{[
 					<Copy
-						main="Cały Polski Streetwear w jednym miejscu"
+						main="Cały polski streetwear w jednym miejscu"
 						secondary="Tablica. Dropy. Artykuły. Newsy."
 						key="1"
 					/>,
-					<Copy main="Jakość i autentyczność" secondary="Cośtam" key="2" />
+					<Copy main="Dbamy o jakość i autentyczność" secondary="Cośtam" key="2" />
 				]}
 			</Carousel>
 		</PageContainer>

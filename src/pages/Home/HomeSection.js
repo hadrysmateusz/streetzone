@@ -1,5 +1,6 @@
 import React from "react"
 import styled from "styled-components/macro"
+import { Link } from "react-router-dom"
 import { withBreakpoints } from "react-breakpoints"
 
 import { PageContainer } from "../../components/Containers"
@@ -110,7 +111,15 @@ const arrayPad = (array, length, fillWith) => {
 }
 
 const HomeSection = withBreakpoints(
-	({ inverse = false, header, body, component: C, indexName, currentBreakpoint }) => {
+	({
+		inverse = false,
+		header,
+		body,
+		component: C,
+		indexName,
+		currentBreakpoint,
+		route
+	}) => {
 		const itemsLimit = currentBreakpoint < 2 ? 3 : 2
 
 		return (
@@ -120,7 +129,9 @@ const HomeSection = withBreakpoints(
 						<PageContainer fullHeight>
 							<InnerContainer inverse={inverse}>
 								<TextContainer inverse={inverse}>
-									<SectionHeader inverse={inverse}>{header}</SectionHeader>
+									<Link to={route}>
+										<SectionHeader inverse={inverse}>{header}</SectionHeader>
+									</Link>
 									<SectionBodyText inverse={inverse}>{body}</SectionBodyText>
 								</TextContainer>
 								<CardsContainer inverse={inverse}>
