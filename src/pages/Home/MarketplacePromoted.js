@@ -15,7 +15,10 @@ import { ellipsis, nLinesHigh } from "../../style-utils"
 const { formatDesigners } = itemDataHelpers
 
 const OuterContainer = styled.div`
-	margin-top: var(--spacing6);
+	margin-top: var(--spacing5);
+	@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
+		margin-top: var(--spacing6);
+	}
 `
 
 const InnerContainer = styled.div`
@@ -28,9 +31,9 @@ const InnerContainer = styled.div`
 `
 const PromotedItemContainer = styled.div`
 	display: grid;
-	grid-template-columns: 1fr minmax(180px, 0.5fr);
+	grid-template-columns: 1fr minmax(140px, 0.5fr);
 	@media (min-width: ${(p) => p.theme.breakpoints[3]}px) {
-		grid-template-columns: 1fr minmax(180px, 0.8fr);
+		grid-template-columns: 1fr minmax(140px, 0.8fr);
 	}
 	gap: var(--spacing3);
 `
@@ -67,7 +70,7 @@ const PromotedItem = ({ attachments, mainImageIndex, name, designers, price, id 
 					<Name title={name}>{name}</Name>
 				</Link>
 				<ButtonContainer noMargin>
-					<LinkButton wide primary to={itemLink}>
+					<LinkButton primary to={itemLink}>
 						Kup za {price}zł
 					</LinkButton>
 				</ButtonContainer>

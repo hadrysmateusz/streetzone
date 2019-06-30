@@ -1,6 +1,7 @@
 import React from "react"
 import { Link } from "react-router-dom"
 import styled from "styled-components/macro"
+import { withBreakpoints } from "react-breakpoints"
 
 import { StatelessSearchWrapper } from "../../components/InstantSearchWrapper"
 import PageHeading from "../../components/PageHeading"
@@ -64,13 +65,15 @@ const Designer = (props) => {
 	)
 }
 
-const PopularDesigners = () => {
+const PopularDesigners = withBreakpoints(({ currentBreakpoint }) => {
+	const limit = +currentBreakpoint < 1 ? 4 : 7
+
 	return (
 		<OuterContainer>
 			<PageHeading>Kupuj popularne marki</PageHeading>
 			<StatelessSearchWrapper
 				indexName={CONST.DESIGNERS_ALGOLIA_INDEX}
-				limit={7}
+				limit={limit}
 				ignoreArchivedStatus
 			>
 				{(hits) => (
@@ -83,6 +86,6 @@ const PopularDesigners = () => {
 			</StatelessSearchWrapper>
 		</OuterContainer>
 	)
-}
+})
 
 export default PopularDesigners
