@@ -35,6 +35,8 @@ const StatelessSearchWrapper = (props) => {
 
 	const isRenderFn = typeof children === "function"
 
+	const contextValue = { refresh }
+
 	return (
 		<InstantSearch
 			appId={process.env.REACT_APP_APP_ID}
@@ -65,7 +67,7 @@ const StatelessSearchWrapper = (props) => {
 			<Results>
 				{(results) => {
 					return (
-						<SearchWrapperContext.Provider value={{ results, refresh }}>
+						<SearchWrapperContext.Provider value={contextValue}>
 							{isRenderFn ? children(results) : children}
 						</SearchWrapperContext.Provider>
 					)

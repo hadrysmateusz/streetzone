@@ -1,22 +1,23 @@
-import React, { useState } from "react"
+import React, { useState, useContext } from "react"
 import moment from "moment"
 import { Link } from "react-router-dom"
 import styled, { css } from "styled-components/macro"
+import { withBreakpoints } from "react-breakpoints"
 
 import Button, { ButtonContainer, LoaderButton } from "../Button"
 import InfoItem from "../InfoItem"
 import { SmallTextBlock } from "../StyledComponents"
 import { FluidImage } from "../Image"
 import DeleteItemButton from "../DeleteItemButton"
+import { SearchWrapperContext } from "../InstantSearchWrapper"
 
 import { translateCondition } from "../../constants/item_schema"
 import promotingLevels from "../../constants/promoting_levels"
 import { useImage, useFlash, useFirebase } from "../../hooks"
-import { itemDataHelpers, route } from "../../utils"
+import { itemDataHelpers, route, sleep } from "../../utils"
 import { nLinesHigh } from "../../style-utils"
 
 import { Designers, TopContainer, cardBorder } from "./Common"
-import withBreakpoints from "react-breakpoints/lib/withBreakpoints"
 
 const { formatPrice, formatSize } = itemDataHelpers
 
@@ -140,10 +141,10 @@ const StatusContainer = styled.div`
 `
 
 const PromoteStatus = ({ promotingLevel, promotedUntil }) => {
-	// TODO: this only shows full days so it effectively shows one less than it should
-	const numDaysLeft = moment(promotedUntil).diff(Date.now(), "days")
+	// const numDaysLeft = moment(promotedUntil).diff(Date.now(), "days")
+	const diff = moment(promotedUntil).diff(moment())
+	const numDaysLeft = moment.duration(diff).humanize()
 	const hasDaysLeft = +numDaysLeft > 0
-	// TODO: map promotion levels to their names
 	const promotionLevel = hasDaysLeft ? promotingLevels[promotingLevel] : "Brak"
 
 	return (
@@ -152,7 +153,7 @@ const PromoteStatus = ({ promotingLevel, promotedUntil }) => {
 				Poziom promowania: <b>{promotionLevel}</b>
 			</div>
 			<div>
-				Pozostało promowania: <b>{`${numDaysLeft} dni` || "Brak"}</b>
+				Pozostało promowania: <b>{numDaysLeft || "Brak"}</b>
 			</div>
 		</StatusContainer>
 	)
@@ -217,19 +218,31 @@ const EditButton = ({ id }) => {
 	)
 }
 
-const RefreshButton = ({ id }) => {
+const RefreshButton = ({ id, bumpsLeft }) => {
 	const flashMessage = useFlash()
 	const [isRefreshing, setIsRefreshing] = useState(false)
 	const firebase = useFirebase()
+	const searchContext = useContext(SearchWrapperContext)
+	const { refresh } = searchContext
+
+	const hasBumps = bumpsLeft && +bumpsLeft > 0
 
 	const refreshItem = async () => {
+		// If already is refreshing, exit
+		if (isRefreshing) return
+
+		// Exit if no bumps left
+		// TODO: show modal or sth to encourage buying more
+		if (!hasBumps) return
+
 		setIsRefreshing(true)
 		try {
-			await firebase.item(id).update({ refreshedAt: Date.now() })
+			await firebase.item(id).update({ refreshedAt: Date.now(), bumps: bumpsLeft - 1 })
 		} catch (err) {
 			throw err
 		} finally {
-			// await sleep(5500)
+			await sleep(5500)
+			refresh()
 			setIsRefreshing(false)
 		}
 	}
@@ -251,6 +264,7 @@ const RefreshButton = ({ id }) => {
 			text="Odśwież"
 			loadingText="Odświeżanie..."
 			onClick={onClick}
+			disabled={!hasBumps}
 			isLoading={isRefreshing}
 		/>
 	)
@@ -329,7 +343,7 @@ const OwnerItemCard = ({
 			<ActionsContainer>
 				<PromoteButton id={id} />
 				<PromoteStatus promotingLevel={promotingLevel} promotedUntil={promotedUntil} />
-				<RefreshButton id={id} />
+				<RefreshButton id={id} bumpsLeft={bumps} />
 				<RefreshStatus bumps={bumps} refreshedAt={refreshedAt} createdAt={createdAt} />
 				<LearnMore />
 				<ButtonContainer noMargin>
