@@ -1,5 +1,6 @@
 import React from "react"
 import styled from "styled-components/macro"
+import { withBreakpoints } from "react-breakpoints"
 
 import { PageContainer } from "../../components/Containers"
 import { StatelessSearchWrapper } from "../../components/InstantSearchWrapper"
@@ -66,18 +67,18 @@ const CardsContainer = styled.div`
 
 const CardsContainerInner = styled.div`
 	display: grid;
-	grid-template-columns: repeat(2, minmax(220px, 1fr));
+	grid-template-columns: repeat(${(p) => p.numItems}, minmax(220px, 1fr));
 	gap: var(--spacing3);
 	justify-items: start;
-	@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
+	@media (min-width: ${(p) => p.theme.breakpoints[3]}px) {
 		${(p) => p.inverse && "justify-items: end;"}
 	}
 
 	/* make the content go from edge to edge on mobile*/
-	@media (max-width: ${(p) => p.theme.breakpoints[1] - 1}px) {
+	@media (max-width: ${(p) => p.theme.breakpoints[3] - 1}px) {
 		display: grid;
 		gap: var(--spacing2);
-		grid-auto-columns: 90%;
+		grid-auto-columns: 250px;
 		overflow: auto;
 		width: auto;
 		grid-auto-flow: column;
@@ -102,35 +103,44 @@ const Placeholder = styled.div`
 `
 
 const arrayPad = (array, length, fillWith) => {
-	const secondArrLen = length - array.length
+	const secondArrLen = Math.max(0, length - array.length)
+	console.log(secondArrLen)
 	const newArray = [...array].concat(Array(secondArrLen).fill(fillWith))
 	return newArray
 }
 
-const HomeSection = ({ inverse = false, header, body, component: C, indexName }) => {
-	return (
-		<OuterContainer inverse={inverse}>
-			<StatelessSearchWrapper indexName={indexName} limit={2}>
-				{(results) => (
-					<PageContainer fullHeight>
-						<InnerContainer inverse={inverse}>
-							<TextContainer inverse={inverse}>
-								<SectionHeader inverse={inverse}>{header}</SectionHeader>
-								<SectionBodyText inverse={inverse}>{body}</SectionBodyText>
-							</TextContainer>
-							<CardsContainer inverse={inverse}>
-								<CardsContainerInner inverse={inverse}>
-									{arrayPad(results, 2, true).map((result) =>
-										result === true ? <Placeholder /> : <C {...result} key={result.id} />
-									)}
-								</CardsContainerInner>
-							</CardsContainer>
-						</InnerContainer>
-					</PageContainer>
-				)}
-			</StatelessSearchWrapper>
-		</OuterContainer>
-	)
-}
+const HomeSection = withBreakpoints(
+	({ inverse = false, header, body, component: C, indexName, currentBreakpoint }) => {
+		const itemsLimit = currentBreakpoint < 2 ? 3 : 2
+
+		return (
+			<OuterContainer inverse={inverse}>
+				<StatelessSearchWrapper indexName={indexName} limit={itemsLimit}>
+					{(results) => (
+						<PageContainer fullHeight>
+							<InnerContainer inverse={inverse}>
+								<TextContainer inverse={inverse}>
+									<SectionHeader inverse={inverse}>{header}</SectionHeader>
+									<SectionBodyText inverse={inverse}>{body}</SectionBodyText>
+								</TextContainer>
+								<CardsContainer inverse={inverse}>
+									<CardsContainerInner inverse={inverse} numItems={itemsLimit}>
+										{arrayPad(results, itemsLimit, true).map((result) =>
+											result === true ? (
+												<Placeholder />
+											) : (
+												<C {...result} key={result.id} />
+											)
+										)}
+									</CardsContainerInner>
+								</CardsContainer>
+							</InnerContainer>
+						</PageContainer>
+					)}
+				</StatelessSearchWrapper>
+			</OuterContainer>
+		)
+	}
+)
 
 export default HomeSection
