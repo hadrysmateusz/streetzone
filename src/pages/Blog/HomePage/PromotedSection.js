@@ -32,7 +32,9 @@ const MobilePromotedSection = ({ results }) => {
 	return (
 		<MobileContainer>
 			<Carousel>
-				{() => results.map((result) => <PromotedPost key={result.id} {...result} />)}
+				{results.map((result) => (
+					<PromotedPost key={result.id} {...result} />
+				))}
 			</Carousel>
 		</MobileContainer>
 	)

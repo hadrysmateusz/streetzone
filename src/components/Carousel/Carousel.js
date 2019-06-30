@@ -20,11 +20,12 @@ const ContentContainer = styled.div`
 
 const AutoSwipeableViews = autoPlay(SwipeableViews)
 
-const Carousel = ({ handleChange, children, autoPlay, interval }) => {
-	const nOfElements = React.Children.count(children)
-	const { changeIndex, current } = useCarousel(nOfElements, handleChange)
-
+const Carousel = ({ handleChange, children, autoPlay, interval, nOfElements }) => {
 	const isRenderFn = typeof children === "function"
+
+	// when using a render function, you have to pass the number of elements manualy
+	nOfElements = isRenderFn ? nOfElements : React.Children.count(children)
+	const { changeIndex, current } = useCarousel(nOfElements, handleChange)
 
 	const swipeableProps = {
 		index: current,
