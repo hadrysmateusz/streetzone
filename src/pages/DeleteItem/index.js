@@ -121,7 +121,7 @@ const DeleteItem = withRouter(({ match, history, location }) => {
 				</EmptyState>
 			) : (
 				<>
-					<PageHeading emoji={"🔥"}>Na pewno usunąć?</PageHeading>
+					<PageHeading emoji={"🗑️"}>Na pewno usunąć?</PageHeading>
 					{item ? (
 						<OuterContainer>
 							<ItemContainer>
