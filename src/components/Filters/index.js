@@ -22,6 +22,11 @@ const FiltersBase = forwardRef((props, ref) => {
 
 	const isMobile = +currentBreakpoint < 3
 
+	const clearFilters = () => {
+		clear()
+		toggle()
+	}
+
 	return (
 		<FiltersContainer ref={ref}>
 			<FilterInnerContainer>
@@ -36,7 +41,7 @@ const FiltersBase = forwardRef((props, ref) => {
 						<Button onClick={toggle} fullWidth primary>
 							Gotowe
 						</Button>
-						<ClearAllFiltersButton onClick={clear.update} fullWidth />
+						<ClearAllFiltersButton onClick={clearFilters} fullWidth />
 					</ButtonContainer>
 				</ActionsContainer>
 			)}

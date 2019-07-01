@@ -5,6 +5,7 @@ import { ROUTES } from "../../constants"
 
 const ClearAllFiltersButton = withRouter(({ history, onClick }) => (
 	<Button
+		danger
 		onClick={() => {
 			history.replace(ROUTES.MARKETPLACE)
 			onClick(true)
