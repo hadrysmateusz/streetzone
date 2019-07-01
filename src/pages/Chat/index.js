@@ -6,6 +6,7 @@ import { compose } from "recompose"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import styled from "styled-components/macro"
 
+import { NotificationsDisabledBar } from "../../components/NotificationsDisabled"
 import LoadingSpinner from "../../components/LoadingSpinner"
 import UserPreview from "../../components/UserPreview"
 import { withAuthorization } from "../../components/UserSession"
@@ -258,6 +259,7 @@ const UserChat = ({ location, history, match, currentBreakpoint }) => {
 					!rooms ? (
 						<div>
 							<Header>Wybierz z listy</Header>
+							<NotificationsDisabledBar noMargin />
 							<LoadingSpinner />
 						</div>
 					) : hasSelectedRoom ? (
@@ -265,11 +267,13 @@ const UserChat = ({ location, history, match, currentBreakpoint }) => {
 					) : hasRooms ? (
 						<div className="menu-content">
 							<Header>Wybierz z listy</Header>
+							<NotificationsDisabledBar noMargin />
 							<RoomsList rooms={rooms} />
 						</div>
 					) : (
 						<div>
 							<Header>Wybierz z listy</Header>
+							<NotificationsDisabledBar noMargin />
 							<NoMessages />
 						</div>
 					)
@@ -282,24 +286,27 @@ const UserChat = ({ location, history, match, currentBreakpoint }) => {
 	return !rooms ? (
 		<LoadingSpinner />
 	) : (
-		<PageContainer>
-			{hasRooms ? (
-				<OuterContainer>
-					<div className="sidebar">
-						<RoomsList rooms={rooms} />
-					</div>
-					<div className="chat-container">
-						{hasSelectedRoom ? (
-							<ChatRoom {...chatRoomProps} />
-						) : (
-							<NoRoomSelected>Wybierz osobę z listy</NoRoomSelected>
-						)}
-					</div>
-				</OuterContainer>
-			) : (
-				<NoMessages />
-			)}
-		</PageContainer>
+		<>
+			<NotificationsDisabledBar />
+			<PageContainer>
+				{hasRooms ? (
+					<OuterContainer>
+						<div className="sidebar">
+							<RoomsList rooms={rooms} />
+						</div>
+						<div className="chat-container">
+							{hasSelectedRoom ? (
+								<ChatRoom {...chatRoomProps} />
+							) : (
+								<NoRoomSelected>Wybierz osobę z listy</NoRoomSelected>
+							)}
+						</div>
+					</OuterContainer>
+				) : (
+					<NoMessages />
+				)}
+			</PageContainer>
+		</>
 	)
 }
 

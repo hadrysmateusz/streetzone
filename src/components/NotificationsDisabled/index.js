@@ -1,5 +1,5 @@
-import React from "react"
-import styled from "styled-components/macro"
+import React, { memo } from "react"
+import styled, { css } from "styled-components/macro"
 import { Link } from "react-router-dom"
 
 import { PageContainer } from "../Containers"
@@ -12,8 +12,12 @@ const OuterContainer = styled.div`
 	background: var(--danger0);
 	font-size: var(--fs-xs);
 
-	margin-top: calc(-1 * var(--page-header-margin));
-	margin-bottom: var(--page-header-margin);
+	${(p) =>
+		!p.noMargin &&
+		css`
+			margin-top: calc(-1 * var(--page-header-margin));
+			margin-bottom: var(--page-header-margin);
+		`}
 `
 
 const InnerContainer = styled.div`
@@ -42,11 +46,11 @@ const Message = styled.div`
 	}
 `
 
-const NotificationsDisabledBar = () => {
+const NotificationsDisabledBar = memo(({ noMargin = false }) => {
 	const areNotificationsDisabled = Notification.permission !== "granted"
 
 	return areNotificationsDisabled ? (
-		<OuterContainer>
+		<OuterContainer noMargin={noMargin}>
 			<PageContainer>
 				<InnerContainer>
 					<Message>
@@ -58,6 +62,6 @@ const NotificationsDisabledBar = () => {
 			</PageContainer>
 		</OuterContainer>
 	) : null
-}
+})
 
 export { NotificationsDisabledBar }
