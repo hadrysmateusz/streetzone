@@ -34,12 +34,11 @@ export const SearchWrapper = withRouter(
 		// use default values and prop overrides to construct initial state
 		const [_initialState] = useState({
 			query: "",
-			page: 1,
 			refinementList: {},
 			...initialState
 		})
 		const [searchState, setSearchState] = useState(_initialState)
-		const [isFirstRender, setIsFirstRender] = useState(true)
+		const [page, setPage] = useState(1)
 
 		const urlToState = useCallback(
 			(parsedSearch) => {
@@ -53,14 +52,17 @@ export const SearchWrapper = withRouter(
 
 				try {
 					for (const [key, val] of Object.entries(parsedSearch)) {
-						// these three always have the same names
-						if (["sortBy", "query", "page"].includes(key)) {
+						// Ignore page as it's handled internally
+						if (key === "page") continue
+
+						// these two always have the same names
+						if (["sortBy", "query"].includes(key)) {
 							// TODO: only allow sorting by whitelisted keys
 							state[key] = val
 							continue
 						}
 
-						// apart from sortBy, query and page all keys must be whitelisted
+						// apart from sortBy and query all keys must be whitelisted
 						if (!allowedKeys.includes(key)) {
 							console.log("key:", key)
 							console.log("value:", val)
@@ -115,31 +117,42 @@ export const SearchWrapper = withRouter(
 			}
 		}, [_initialState, location.search, urlToState])
 
-		const onSearchStateChange = (state) => {
-			let formattedState = {}
+		const onSearchStateChange = useCallback(
+			(state) => {
+				let formattedState = {}
 
-			const flatten = (outerKey) => {
-				for (const [key, val] of Object.entries(state[outerKey])) {
-					formattedState[key] = val
-				}
-			}
-
-			for (const [key, val] of Object.entries(state)) {
-				if (["sortBy", "page", "query"].includes(key)) {
-					// this makes it harder to debug
-					// if new value is equal to default one, don't clutter the url with it
-					// if (val === _initialState[key]) continue
-					formattedState[key] = val
-					continue
+				const flatten = (outerKey) => {
+					for (const [key, val] of Object.entries(state[outerKey])) {
+						formattedState[key] = val
+					}
 				}
 
-				if (["refinementList", "range"].includes(key)) {
-					flatten(key)
-				}
-			}
+				for (const [key, val] of Object.entries(state)) {
+					// Internally increment page
+					if (key === "page") {
+						if (val > page) {
+							setPage((page) => page + 1)
+						}
+						continue
+					}
 
-			return formattedState
-		}
+					if (["sortBy", "query"].includes(key)) {
+						// this makes it harder to debug
+						// if new value is equal to default one, don't clutter the url with it
+						if (val === _initialState[key]) continue
+						formattedState[key] = val
+						continue
+					}
+
+					if (["refinementList", "range"].includes(key)) {
+						flatten(key)
+					}
+				}
+
+				return formattedState
+			},
+			[page, _initialState]
+		)
 
 		const handleSearchStateChange = useCallback(
 			async (newSearchState) => {
@@ -147,21 +160,15 @@ export const SearchWrapper = withRouter(
 				const url = encodeURL(formattedState)
 				history.replace(url)
 			},
-			[history]
+			[history, onSearchStateChange]
 		)
 
 		useEffect(() => {
 			let state = createStateFromURL()
-			if (isFirstRender) {
-				setIsFirstRender(false)
-				if (state.page !== 1) {
-					const newState = { ...state, page: 1 }
-					handleSearchStateChange(newState)
-				}
-			}
 			setSearchState(state)
-		}, [location, createStateFromURL, isFirstRender, handleSearchStateChange])
+		}, [createStateFromURL])
 
+		// this is finicky, don't use if possible
 		const forceRefineWithState = async (partialSearchState) => {
 			const newSearchState = {
 				...searchState,
@@ -180,7 +187,7 @@ export const SearchWrapper = withRouter(
 				appId={process.env.REACT_APP_APP_ID}
 				apiKey={process.env.REACT_APP_ALGOLIA_API_KEY}
 				indexName={indexName}
-				searchState={searchState}
+				searchState={{ ...searchState, page }}
 				onSearchStateChange={handleSearchStateChange}
 				createURL={encodeURL}
 				{...rest}
