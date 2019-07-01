@@ -326,96 +326,100 @@ const PageHeaderMobile = ({ authUser, firebase, location }) => (
 
 const PageHeaderDesktop = ({ authUser, firebase, location }) => {
 	return (
-		<PageHeaderContainerDesktop>
-			<Logo />
-			<Nav main>
-				<DesktopNavItem link={route("BLOG_HOME")} label="Czytaj" alignSubmenu="left">
-					{Object.values(POST_CATEGORIES).map((category) => (
-						<SubmenuItem
-							key={category}
-							link={route("BLOG_CATEGORY", { category })}
-							exact
-							label={category}
-						/>
-					))}
-				</DesktopNavItem>
-
-				<DesktopNavItem
-					link={route("DROPS_SECTION", { id: "newest" })}
-					label="Dropy"
-					alignSubmenu="left"
-				>
-					<SubmenuItem link={route("DROPS_SECTION", { id: "newest" })} label="Nowe" />
-					<SubmenuItem
-						link={route("DROPS_SECTION", { id: "upcoming" })}
-						label="Nadchodzące"
-					/>
-					<SubmenuItem
-						link={route("DROPS_SECTION", { id: "archive" })}
-						label="Archiwum"
-					/>
-				</DesktopNavItem>
-
-				<DesktopNavItem
-					link={route("MARKETPLACE")}
-					exact
-					label="Kupuj"
-					alignSubmenu="left"
-				>
-					<SubmenuItem link={route("MARKETPLACE")} label="Tablica" />
-					<SubmenuItem link={route("DESIGNERS")} label="Projektanci / Marki" />
-				</DesktopNavItem>
-
-				<DesktopNavItem link={route("NEW_ITEM")} label="Sprzedawaj" />
-
-				<DesktopNavItem link={route("ABOUT")} label="Informacje" alignSubmenu="left">
-					<SubmenuItem link={route("ABOUT")} label="O nas" />
-					<SubmenuItem link={route("CONTACT")} label="Kontakt" />
-					<SubmenuItem link={route("FAQ")} label="FAQ" />
-					<SubmenuItem link={route("ADVERTISE")} label="Współpraca" />
-				</DesktopNavItem>
-			</Nav>
-
-			<Nav alignRight>
-				<DesktopNavItem
-					link={route("SEARCH")}
-					label={
-						<IconContainer>
-							<FontAwesomeIcon icon="search" />
-						</IconContainer>
-					}
-				/>
-				{authUser ? (
-					<>
-						<DesktopNavItem link={route("CHAT")} label={<MessagesManager />} />
-						<DesktopNavItem
-							alignSubmenu="right"
-							link={route("ACCOUNT_ITEMS", { id: authUser.uid })}
-							label={
-								<ProfilePicture
-									size={"30px"}
-									url={getProfilePictureURL(authUser, "S")}
-									inline
+		<MobileSignOutWrapper>
+			{(openSignOutModal) => (
+				<PageHeaderContainerDesktop>
+					<Logo />
+					<Nav main>
+						<DesktopNavItem link={route("BLOG_HOME")} label="Czytaj" alignSubmenu="left">
+							{Object.values(POST_CATEGORIES).map((category) => (
+								<SubmenuItem
+									key={category}
+									link={route("BLOG_CATEGORY", { category })}
+									exact
+									label={category}
 								/>
-							}
-						>
-							{ACCOUNT_ROUTES.map((route) =>
-								route.isHidden ? null : (
-									<SubmenuItem label={route.label} link={route.path} />
-								)
-							)}
-
-							<SubmenuItem label="Wyloguj" onClick={firebase.signOut} />
+							))}
 						</DesktopNavItem>
-					</>
-				) : (
-					<DesktopNavItem
-						link={{ pathname: route("SIGN_IN"), state: { redirectTo: location } }}
-						label="Zaloguj"
-					/>
-				)}
-			</Nav>
-		</PageHeaderContainerDesktop>
+
+						<DesktopNavItem
+							link={route("DROPS_SECTION", { id: "newest" })}
+							label="Dropy"
+							alignSubmenu="left"
+						>
+							<SubmenuItem link={route("DROPS_SECTION", { id: "newest" })} label="Nowe" />
+							<SubmenuItem
+								link={route("DROPS_SECTION", { id: "upcoming" })}
+								label="Nadchodzące"
+							/>
+							<SubmenuItem
+								link={route("DROPS_SECTION", { id: "archive" })}
+								label="Archiwum"
+							/>
+						</DesktopNavItem>
+
+						<DesktopNavItem
+							link={route("MARKETPLACE")}
+							exact
+							label="Kupuj"
+							alignSubmenu="left"
+						>
+							<SubmenuItem link={route("MARKETPLACE")} label="Tablica" />
+							<SubmenuItem link={route("DESIGNERS")} label="Projektanci / Marki" />
+						</DesktopNavItem>
+
+						<DesktopNavItem link={route("NEW_ITEM")} label="Sprzedawaj" />
+
+						<DesktopNavItem link={route("ABOUT")} label="Informacje" alignSubmenu="left">
+							<SubmenuItem link={route("ABOUT")} label="O nas" />
+							<SubmenuItem link={route("CONTACT")} label="Kontakt" />
+							<SubmenuItem link={route("FAQ")} label="FAQ" />
+							<SubmenuItem link={route("ADVERTISE")} label="Współpraca" />
+						</DesktopNavItem>
+					</Nav>
+
+					<Nav alignRight>
+						<DesktopNavItem
+							link={route("SEARCH")}
+							label={
+								<IconContainer>
+									<FontAwesomeIcon icon="search" />
+								</IconContainer>
+							}
+						/>
+						{authUser ? (
+							<>
+								<DesktopNavItem link={route("CHAT")} label={<MessagesManager />} />
+								<DesktopNavItem
+									alignSubmenu="right"
+									link={route("ACCOUNT_ITEMS", { id: authUser.uid })}
+									label={
+										<ProfilePicture
+											size={"30px"}
+											url={getProfilePictureURL(authUser, "S")}
+											inline
+										/>
+									}
+								>
+									{ACCOUNT_ROUTES.map((route) =>
+										route.isHidden ? null : (
+											<SubmenuItem label={route.label} link={route.path} />
+										)
+									)}
+
+									<SubmenuItem label="Wyloguj" onClick={openSignOutModal} />
+								</DesktopNavItem>
+							</>
+						) : (
+							<DesktopNavItem
+								link={{ pathname: route("SIGN_IN"), state: { redirectTo: location } }}
+								label="Zaloguj"
+							/>
+						)}
+					</Nav>
+				</PageHeaderContainerDesktop>
+			)}
+		</MobileSignOutWrapper>
 	)
 }
 

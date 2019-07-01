@@ -27,7 +27,7 @@ const SocialSignInButton = ({
 
 			// exit successfully if this isn't the users first login
 			if (!isNewUser) {
-				onSuccess("Witaj ponownie!")
+				return onSuccess("Witaj ponownie!")
 			}
 
 			// extract relevant data from user profile
@@ -38,7 +38,7 @@ const SocialSignInButton = ({
 			await firebase.user(userId).set(userData)
 
 			// exit successfully
-			onSuccess(`Witaj w ${CONST.BRAND_NAME}!`)
+			return onSuccess(`Witaj w ${CONST.BRAND_NAME}!`)
 		} catch (err) {
 			// pass the error to handler
 			onError(err)
