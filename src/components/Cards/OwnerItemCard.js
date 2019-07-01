@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react"
+import React, { useState, useContext, memo } from "react"
 import moment from "moment"
 import { Link } from "react-router-dom"
 import styled, { css } from "styled-components/macro"
@@ -277,81 +277,86 @@ const PromoteButton = ({ id }) => {
 	)
 }
 
-const OwnerItemCard = ({
-	id,
-	attachments,
-	mainImageIndex,
-	condition,
-	designers,
-	price,
-	size,
-	name,
-	description,
-	category,
-	createdAt,
-	refreshedAt,
-	promotedUntil,
-	promotingLevel,
-	bumps,
-	currentBreakpoint
-}) => {
-	const { imageURL } = useImage(attachments[mainImageIndex], "M")
+const OwnerItemCardDumb = memo(
+	({
+		id,
+		condition,
+		designers,
+		price,
+		size,
+		name,
+		description,
+		category,
+		createdAt,
+		refreshedAt,
+		promotedUntil,
+		promotingLevel,
+		bumps,
+		isMobile,
+		imageUrl
+	}) => {
+		let conditionObj = translateCondition(condition)
+		let formattedPrice = formatPrice(price)
+		let formattedSize = formatSize(size)
 
-	let conditionObj = translateCondition(condition)
-	let formattedPrice = formatPrice(price)
-	let formattedSize = formatSize(size)
+		return (
+			<OuterContainer>
+				{!isMobile && <FluidImage url={imageUrl} />}
+				<Link
+					to={route("ITEM_DETAILS", { id })}
+					css={css`
+						min-width: 0;
+						min-height: 0;
+					`}
+				>
+					<InfoContainer>
+						<TopContainer>
+							<div>{category}</div>
+							<Designers value={designers} />
+						</TopContainer>
 
-	const isMobile = +currentBreakpoint < 2
+						<Name>{name}</Name>
 
-	return (
-		<OuterContainer>
-			{!isMobile && <FluidImage url={imageURL} />}
-			<Link
-				to={route("ITEM_DETAILS", { id })}
-				css={css`
-					min-width: 0;
-					min-height: 0;
-				`}
-			>
-				<InfoContainer>
-					<TopContainer>
-						<div>{category}</div>
-						<Designers value={designers} />
-					</TopContainer>
+						<OuterDetailsContainer>
+							{isMobile && (
+								<div className="mobile-image-container">
+									<FluidImage url={imageUrl} />
+								</div>
+							)}
 
-					<Name>{name}</Name>
+							<DetailsContainer>
+								<InfoItem name="Cena">{formattedPrice}</InfoItem>
+								<InfoItem name="Stan">{conditionObj.displayValue}</InfoItem>
+								<InfoItem name="Rozmiar">{formattedSize}</InfoItem>
+							</DetailsContainer>
+						</OuterDetailsContainer>
 
-					<OuterDetailsContainer>
-						{isMobile && (
-							<div className="mobile-image-container">
-								<FluidImage url={imageURL} />
-							</div>
-						)}
+						<Description>{description}</Description>
+					</InfoContainer>
+				</Link>
 
-						<DetailsContainer>
-							<InfoItem name="Cena">{formattedPrice}</InfoItem>
-							<InfoItem name="Stan">{conditionObj.displayValue}</InfoItem>
-							<InfoItem name="Rozmiar">{formattedSize}</InfoItem>
-						</DetailsContainer>
-					</OuterDetailsContainer>
+				<ActionsContainer>
+					<PromoteButton id={id} />
+					<PromoteStatus promotingLevel={promotingLevel} promotedUntil={promotedUntil} />
+					<RefreshButton id={id} bumpsLeft={bumps} />
+					<RefreshStatus bumps={bumps} refreshedAt={refreshedAt} createdAt={createdAt} />
+					<LearnMore />
+					<ButtonContainer noMargin>
+						<EditButton id={id} />
+						<DeleteItemButton id={id} />
+					</ButtonContainer>
+				</ActionsContainer>
+			</OuterContainer>
+		)
+	}
+)
 
-					<Description>{description}</Description>
-				</InfoContainer>
-			</Link>
+const OwnerItemCard = withBreakpoints(
+	({ currentBreakpoint, mainImageIndex, attachments, ...rest }) => {
+		const { imageURL } = useImage(attachments[mainImageIndex], "M")
+		const isMobile = +currentBreakpoint < 2
+		return <OwnerItemCardDumb imageUrl={imageURL} isMobile={isMobile} {...rest} />
+	}
+)
 
-			<ActionsContainer>
-				<PromoteButton id={id} />
-				<PromoteStatus promotingLevel={promotingLevel} promotedUntil={promotedUntil} />
-				<RefreshButton id={id} bumpsLeft={bumps} />
-				<RefreshStatus bumps={bumps} refreshedAt={refreshedAt} createdAt={createdAt} />
-				<LearnMore />
-				<ButtonContainer noMargin>
-					<EditButton id={id} />
-					<DeleteItemButton id={id} />
-				</ButtonContainer>
-			</ActionsContainer>
-		</OuterContainer>
-	)
-}
-
-export default withBreakpoints(OwnerItemCard)
+export default OwnerItemCard

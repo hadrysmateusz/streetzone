@@ -1,4 +1,4 @@
-import React from "react"
+import React, { memo } from "react"
 import { Link } from "react-router-dom"
 import styled from "styled-components/macro"
 import moment from "moment"
@@ -36,44 +36,37 @@ const Container = styled.div`
 	}
 `
 
-export const SmallDropCard = ({
-	id,
-	name,
-	designers,
-	itemCategory,
-	imageUrls,
-	mainImageIndex,
-	dropsAtApproxTimestamp
-}) => {
-	const imageURL = imageUrls[mainImageIndex]
-	const date = moment(dropsAtApproxTimestamp).format("LL")
+export const SmallDropCard = memo(
+	({
+		id,
+		name,
+		designers,
+		itemCategory,
+		imageUrls,
+		mainImageIndex,
+		dropsAtApproxTimestamp
+	}) => {
+		const imageURL = imageUrls[mainImageIndex]
+		const date = moment(dropsAtApproxTimestamp).format("LL")
 
-	return (
-		<Container>
-			<Link to={route("DROP_DETAILS", { id })}>
-				<FluidImage url={imageURL} />
-				<InfoContainer>
-					<TopContainer>
-						<div>{itemCategory}</div>
-						<Designers value={designers} />
-						{/* <Size className="align-right" value={size} /> */}
-					</TopContainer>
-					<MiddleContainer>
-						<Name>{name}</Name>
-					</MiddleContainer>
-					<BottomContainer>
-						<DateContainer>{date}</DateContainer>
-						{/* <HeartButton
-							css={`
-								color: var(--gray25);
-							`}
-							id={id}
-							type={TYPE.ITEM}
-							scale={1.5}
-						/> */}
-					</BottomContainer>
-				</InfoContainer>
-			</Link>
-		</Container>
-	)
-}
+		return (
+			<Container>
+				<Link to={route("DROP_DETAILS", { id })}>
+					<FluidImage url={imageURL} />
+					<InfoContainer>
+						<TopContainer>
+							<div>{itemCategory}</div>
+							<Designers value={designers} />
+						</TopContainer>
+						<MiddleContainer>
+							<Name>{name}</Name>
+						</MiddleContainer>
+						<BottomContainer>
+							<DateContainer>{date}</DateContainer>
+						</BottomContainer>
+					</InfoContainer>
+				</Link>
+			</Container>
+		)
+	}
+)

@@ -24,7 +24,7 @@ export default function useImage(storageRef, size, defer) {
 
 		// fetch the image
 		fetchUrl()
-	}, [storageRef, size, defer])
+	}, [storageRef, size, defer, firebase])
 
 	// for convenience, return an isLoading flag if there is no image yet, but also no error
 	const isLoading = !imageURL && !error

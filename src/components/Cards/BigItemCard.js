@@ -1,4 +1,4 @@
-import React from "react"
+import React, { memo } from "react"
 import { Link } from "react-router-dom"
 import styled from "styled-components/macro"
 import moment from "moment"
@@ -57,52 +57,47 @@ export const Name = styled.div`
 	overflow: hidden;
 `
 
-export const BigItemCard = ({
-	id,
-	name,
-	designers,
-	size,
-	price,
-	attachments,
-	category,
-	mainImageIndex,
-	description,
-	createdAt
-}) => {
-	const { imageURL } = useImage(attachments[mainImageIndex], "M")
-	const date = moment().to(moment(createdAt))
+export const BigItemCardDumb = memo(
+	({ id, name, designers, size, price, imageUrl, category, description, createdAt }) => {
+		const date = moment().to(moment(createdAt))
 
-	return (
-		<BigContainer>
-			<Link to={route("ITEM_DETAILS", { id })}>
-				<InfoContainer>
-					<TopContainer>
-						<div>{category}</div>
-						<Designers value={designers} />
-						<Size value={size} />
-					</TopContainer>
-					<MiddleContainer>
-						<Name>{name}</Name>
-						<DateContainer withMargin>Dodano {date}</DateContainer>
-						<Description>{description}</Description>
-					</MiddleContainer>
-					<BottomContainer pinToBottom>
-						<Price value={price} />
-						<div className="align-right">
-							<HeartButton
-								css={`
-									color: var(--gray25);
-									padding-right: 0;
-								`}
-								id={id}
-								type={TYPE.ITEM}
-								scale={1.5}
-							/>
-						</div>
-					</BottomContainer>
-				</InfoContainer>
-				<FluidImage url={imageURL} />
-			</Link>
-		</BigContainer>
-	)
+		return (
+			<BigContainer>
+				<Link to={route("ITEM_DETAILS", { id })}>
+					<InfoContainer>
+						<TopContainer>
+							<div>{category}</div>
+							<Designers value={designers} />
+							<Size value={size} />
+						</TopContainer>
+						<MiddleContainer>
+							<Name>{name}</Name>
+							<DateContainer withMargin>Dodano {date}</DateContainer>
+							<Description>{description}</Description>
+						</MiddleContainer>
+						<BottomContainer pinToBottom>
+							<Price value={price} />
+							<div className="align-right">
+								<HeartButton
+									css={`
+										color: var(--gray25);
+										padding-right: 0;
+									`}
+									id={id}
+									type={TYPE.ITEM}
+									scale={1.5}
+								/>
+							</div>
+						</BottomContainer>
+					</InfoContainer>
+					<FluidImage url={imageUrl} />
+				</Link>
+			</BigContainer>
+		)
+	}
+)
+
+export const BigItemCard = ({ attachments, mainImageIndex, ...rest }) => {
+	const { imageURL } = useImage(attachments[mainImageIndex], "M")
+	return <BigItemCardDumb imageUrl={imageURL} {...rest} />
 }

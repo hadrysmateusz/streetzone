@@ -117,7 +117,7 @@ const EditItemPage = ({ match, history }) => {
 				await firebase.removeFile(storageRef + S_THUMB_POSTFIX)
 			}
 
-			await sleep(3000)
+			await sleep(5500)
 
 			// Clear form to remove conflict with transition blocking
 			actions.reset()

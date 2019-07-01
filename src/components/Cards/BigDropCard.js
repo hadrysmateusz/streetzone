@@ -1,4 +1,4 @@
-import React from "react"
+import React, { memo } from "react"
 import { Link } from "react-router-dom"
 import styled from "styled-components/macro"
 import moment from "moment"
@@ -54,39 +54,42 @@ const Name = styled.div`
 	}
 `
 
-export const BigDropCard = ({
-	id,
-	name,
-	designers,
-	itemCategory,
-	imageUrls,
-	mainImageIndex,
-	dropsAtApproxTimestamp,
-	dropsAtString,
-	createdAt
-}) => {
-	const imageURL = imageUrls[mainImageIndex]
-	const date = moment(dropsAtApproxTimestamp).format("LL")
-	return (
-		<Container>
-			<Link to={route("DROP_DETAILS", { id })}>
-				<FluidImage url={imageURL} />
-				<InfoContainer>
-					<TopContainer>
-						<div>{itemCategory}</div>
-						<Designers value={designers} />
-					</TopContainer>
-					<MiddleContainer flex>
-						<Name>{name}</Name>
-						<div className="align-right">
-							<DropCountdown dropsAt={dropsAtString} id={id} />
-						</div>
-					</MiddleContainer>
-					<BottomContainer>
-						<DateContainer>{date}</DateContainer>
-					</BottomContainer>
-				</InfoContainer>
-			</Link>
-		</Container>
-	)
-}
+export const BigDropCard = memo(
+	({
+		id,
+		name,
+		designers,
+		itemCategory,
+		imageUrls,
+		mainImageIndex,
+		dropsAtApproxTimestamp,
+		dropsAtString,
+		createdAt
+	}) => {
+		const imageURL = imageUrls[mainImageIndex]
+		const date = moment(dropsAtApproxTimestamp).format("LL")
+
+		return (
+			<Container>
+				<Link to={route("DROP_DETAILS", { id })}>
+					<FluidImage url={imageURL} />
+					<InfoContainer>
+						<TopContainer>
+							<div>{itemCategory}</div>
+							<Designers value={designers} />
+						</TopContainer>
+						<MiddleContainer flex>
+							<Name>{name}</Name>
+							<div className="align-right">
+								<DropCountdown dropsAt={dropsAtString} id={id} />
+							</div>
+						</MiddleContainer>
+						<BottomContainer>
+							<DateContainer>{date}</DateContainer>
+						</BottomContainer>
+					</InfoContainer>
+				</Link>
+			</Container>
+		)
+	}
+)
