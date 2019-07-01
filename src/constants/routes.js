@@ -3,7 +3,7 @@ export const HOME = "/"
 export const BLOG_BASE = "/czytaj"
 export const BLOG_HOME = BLOG_BASE + "/h"
 export const BLOG_POST = BLOG_BASE + "/p/:id"
-export const BLOG_TAG = BLOG_BASE + "/t/:tag"
+export const BLOG_TAG = BLOG_BASE + "/tag"
 export const BLOG_CATEGORY = BLOG_BASE + "/k/:category"
 
 export const DROPS = "/dropy"

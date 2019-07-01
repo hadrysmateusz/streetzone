@@ -39,7 +39,7 @@ const PopularTags = ({ items }) => {
 	return (
 		<Container>
 			{items.map((item) => {
-				let to = route("BLOG_TAG", { tag: item.value })
+				let to = route("BLOG_TAG", null, { tag: item.value })
 
 				return (
 					<StyledLink to={to} key={item.value}>

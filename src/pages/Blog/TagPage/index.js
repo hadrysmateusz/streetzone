@@ -31,22 +31,32 @@ const sidebarElements = [
 	{ title: "Popularne tagi", component: PopularTags }
 ]
 
-const BlogTagPage = ({ currentBreakpoint, match }) => {
+const BlogTagPage = ({ currentBreakpoint, location }) => {
 	const isMobile = currentBreakpoint <= 1
 
-	const { tag } = match.params
+	const searchParams = new URLSearchParams(location.search)
+
+	const tags = searchParams.has("tags")
+		? searchParams.get("tags").split(",")
+		: searchParams.has("tag")
+		? [searchParams.get("tag")]
+		: null
+
+	const numTags = tags.length
+	const hasManyTags = numTags > 1
+	const headingText = tags[0] + (hasManyTags ? ` i (${numTags - 1}) inne` : "")
 
 	return (
 		<StatelessSearchWrapper
 			indexName={CONST.BLOG_POST_ALGOLIA_INDEX}
 			hitsPerPage={6}
-			refinements={{ tags: [tag] }}
+			refinements={{ tags }}
 		>
 			<PageContainer>
 				<LayoutManager>
 					<Main>
 						<PageNav breadcrumbs={[["Czytaj", "BLOG_HOME"]]} noMargin />
-						<Heading>{tag}</Heading>
+						<Heading>{headingText}</Heading>
 						<Section>
 							<IndexResults
 								indexName={CONST.BLOG_DROP_ALGOLIA_INDEX}

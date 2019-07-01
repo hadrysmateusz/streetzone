@@ -34,9 +34,7 @@ const CareAndMaintenanceGroup = () => (
 	<ThematicGroup
 		index={CONST.BLOG_POST_ALGOLIA_INDEX}
 		title="Czyszczenie i Pielęgnacja"
-		linkTo={route("BLOG_TAG", {
-			tag: "Czyszczenie i Pielęgnacja"
-		})}
+		linkTo={route("BLOG_TAG", null, { tags: ["Czyszczenie", "Pielęgnacja"] })}
 		refinements={{ tags: ["Czyszczenie", "Pielęgnacja"] }}
 		component={PostCard}
 	/>

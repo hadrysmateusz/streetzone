@@ -29,7 +29,7 @@ const TagContainer = styled.div`
 
 export const Tag = ({ tag }) => {
 	return (
-		<TagContainer as={Link} to={route("BLOG_TAG", { tag })}>
+		<TagContainer as={Link} to={route("BLOG_TAG", null, { tag })}>
 			{tag}
 		</TagContainer>
 	)
