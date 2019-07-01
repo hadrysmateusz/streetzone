@@ -12,7 +12,6 @@ const { formatDesigners } = itemDataHelpers
 
 export const InfoContainer = styled.div`
 	flex: 0 0 100%;
-	background: white;
 `
 
 export const ItemContainer = styled.div`
