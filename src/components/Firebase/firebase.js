@@ -58,6 +58,7 @@ class Firebase {
 		this.FieldValue = app.firestore.FieldValue
 
 		// Messaging
+
 		if (areNotificationsSupported()) {
 			this.messaging = app.messaging()
 
@@ -65,17 +66,18 @@ class Firebase {
 				"BJgcHagtqijyfb4WcD8UhMUtWEElieyaGrNFz7Az01aEYgqcKaR4CKpzzXtxXb_9rnGMLxkkhdTSSyLNvvzClSU"
 			)
 
-			this.messaging
-				.requestPermission()
-				.then(() => {
-					return this.messaging.getToken()
-				})
-				.then((token) => {
-					this.sendNotificationTokenToDb(token)
-				})
-				.catch((e) => {
-					console.log("error", e)
-				})
+			// TODO: disable this request for permission
+			// this.messaging
+			// 	.requestPermission()
+			// 	.then(() => {
+			// 		return this.messaging.getToken()
+			// 	})
+			// 	.then((token) => {
+			// 		this.sendNotificationTokenToDb(token)
+			// 	})
+			// 	.catch((e) => {
+			// 		console.log("error", e)
+			// 	})
 
 			this.messaging.onTokenRefresh(() => {
 				console.log("token refreshed")
@@ -277,19 +279,20 @@ class Firebase {
 					...dbUser
 				}
 
-				if (areNotificationsSupported()) {
-					this.messaging
-						.requestPermission()
-						.then(() => {
-							return this.messaging.getToken()
-						})
-						.then((token) => {
-							this.sendNotificationTokenToDb(token)
-						})
-						.catch((e) => {
-							console.log("error", e)
-						})
-				}
+				// TODO: disable this request for permission
+				// if (areNotificationsSupported()) {
+				// 	this.messaging
+				// 		.requestPermission()
+				// 		.then(() => {
+				// 			return this.messaging.getToken()
+				// 		})
+				// 		.then((token) => {
+				// 			this.sendNotificationTokenToDb(token)
+				// 		})
+				// 		.catch((e) => {
+				// 			console.log("error", e)
+				// 		})
+				// }
 
 				next(authUser)
 			} else {

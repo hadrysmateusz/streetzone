@@ -35,18 +35,6 @@ export const TabsNavItem = styled(NavLink)`
 	}
 `
 
-export const MainContainer = styled.div`
-	height: 100%;
-	width: 100%;
-	flex: 1;
-	margin: 0 auto;
-	max-width: ${(p) => p.theme.breakpoints[5]}px;
-
-	${"" /* .subroute-container {
-		min-height: 78vh;
-	} */}
-`
-
 export const Section = styled.div`
 	margin: var(--spacing5) auto;
 	max-width: ${(p) => p.theme.breakpoints[1]}px;
