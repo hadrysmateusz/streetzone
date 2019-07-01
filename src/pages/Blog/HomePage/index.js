@@ -25,6 +25,7 @@ const DropsGroup = () => (
 		index={CONST.BLOG_DROP_ALGOLIA_INDEX}
 		title="Nadchodzące Dropy"
 		linkTo={route("DROPS_SECTION", { id: "upcoming" })}
+		filters={`dropsAtApproxTimestamp > ${Date.now()}`}
 		component={SmallDropCard}
 	/>
 )
