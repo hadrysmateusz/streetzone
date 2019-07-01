@@ -10,7 +10,7 @@ import { useFirebase, useAuthentication, useUserData } from "../../hooks"
 import { route } from "../../utils"
 
 export const Submenu = styled.div`
-	background: var(--glass);
+	background: white;
 
 	border: 1px solid var(--gray75);
 
@@ -18,9 +18,6 @@ export const Submenu = styled.div`
 	box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.05);
 	min-width: 200px;
 	min-height: 50px;
-
-	/* reset the changes applied by active link styles */
-	font-weight: initial;
 `
 
 export const SubmenuContainer = styled.div`
@@ -62,6 +59,7 @@ const MessagesContainer = styled.div`
 
 const MessageStyles = styled.div`
 	padding: var(--spacing2) var(--spacing3);
+	font-size: 11px;
 
 	:hover {
 		background: var(--almost-white);
@@ -74,6 +72,7 @@ const MessageStyles = styled.div`
 
 		.name {
 			font-weight: bold;
+			text-transform: uppercase;
 			margin-left: var(--spacing2);
 		}
 	}
@@ -94,6 +93,14 @@ const HasMoreContainer = styled.div`
 	}
 `
 
+const MessagesListOuterContainer = styled.div`
+	/* reset the changes applied by active link styles */
+	font-size: initial;
+	text-transform: initial;
+	color: initial;
+	font-weight: initial;
+`
+
 const ManagerStyles = styled.div`
 	color: black;
 	cursor: pointer;
@@ -112,6 +119,16 @@ const ManagerStyles = styled.div`
 			display: block;
 		}
 	}
+`
+
+const EmptyState = styled.div`
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	font-size: var(--fs-xs);
+	color: var(--gray0);
 `
 
 const useRooms = () => {
@@ -164,7 +181,7 @@ const MessagesList = memo(({ messages, hasMoreMessages }) => {
 	const hasMessages = messages && messages.length > 0
 
 	return (
-		<>
+		<MessagesListOuterContainer>
 			{hasMessages ? (
 				<MessagesContainer>
 					{messages.map((message) => (
@@ -172,10 +189,10 @@ const MessagesList = memo(({ messages, hasMoreMessages }) => {
 					))}
 				</MessagesContainer>
 			) : (
-				<div className="empty-state">Brak nowych wiadomości</div>
+				<EmptyState>Brak nowych wiadomości</EmptyState>
 			)}
 			{hasMoreMessages && <HasMoreMessages />}
-		</>
+		</MessagesListOuterContainer>
 	)
 })
 

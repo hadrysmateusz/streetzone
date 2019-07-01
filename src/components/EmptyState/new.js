@@ -2,7 +2,6 @@ import React from "react"
 import styled from "styled-components/macro"
 
 const EmptyStateContainer = styled.div`
-	height: 400px;
 	max-height: 60vh;
 
 	text-align: center;
@@ -10,9 +9,8 @@ const EmptyStateContainer = styled.div`
 	flex-direction: column;
 	align-items: center;
 
-	color: var(--gray25);
-
 	.header {
+		font-size: var(--fs-s);
 		color: var(--black100);
 		font-weight: var(--semi-bold);
 		margin-bottom: var(--spacing3);
@@ -20,6 +18,8 @@ const EmptyStateContainer = styled.div`
 
 	.content {
 		font-size: var(--fs-xs);
+		color: var(--gray25);
+		font-weight: normal;
 		margin-bottom: var(--spacing3);
 		> * + * {
 			margin-top: var(--spacing3);
