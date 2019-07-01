@@ -200,25 +200,21 @@ exports.removeItemImages = functions.firestore
 	.document(`items/{id}`)
 	.onDelete(async (snap) => {
 		const data = snap.data()
-		let successCount = 0
-		let failureCount = 0
 
 		const removeFile = async (name) => {
 			try {
 				const t = Date.now()
 				await bucket.file(name).delete()
 				console.log(`Deleted ${name} in ${Date.now() - t}ms`)
-				successCount++
 			} catch (err) {
 				console.error(
 					`There was a problem with deleting ${name} it might not have been deleted`,
 					err
 				)
-				failureCount++
 			}
 		}
 
-		const res = await Promise.all(
+		return Promise.all(
 			data.attachments.map(async (ref) => {
 				await removeFile(ref)
 				await removeFile(ref + S_THUMB_POSTFIX)
@@ -226,9 +222,6 @@ exports.removeItemImages = functions.firestore
 				await removeFile(ref + L_THUMB_POSTFIX)
 			})
 		)
-
-		console.log(`Success: ${successCount}, Failure: ${failureCount}`)
-		return res
 	})
 
 // When an item is removed from db remove it from it's owner's items list
@@ -237,23 +230,30 @@ exports.removeItemFromUser = functions.firestore
 	.onDelete(async (snap, context) => {
 		const data = snap.data()
 		const userId = data.userId
-		const id = context.params.id
+		const itemId = context.params.id
 
 		// get owner's data
 		const userSnap = await db
 			.collection("users")
 			.doc(userId)
 			.get()
+
+		// return if user was deleted
+		if (!userSnap.exists) return false
+
 		const userData = userSnap.data()
+
+		console.log("userSnap", userSnap)
+		console.log("userData", userData)
+
 		// filter out the removed item
-		const newItems = userData.items.filter((item) => item.id !== id)
+		const newItems = userData.items.filter((item) => item.id !== itemId)
+
 		// update the db with the new items list
-		const res = await db
+		return db
 			.collection("users")
 			.doc(userId)
 			.update({ items: newItems })
-
-		return res
 	})
 
 // ------------------------------------
@@ -263,35 +263,53 @@ exports.removeItemFromUser = functions.firestore
 // When a user is deleted from db their items are removed from the db
 exports.removeUserItems = functions.firestore
 	.document(`users/{userId}`)
-	.onDelete((snap, context) => {
-		const data = snap.data()
-		data.items.forEach((item) => {
-			db.collection("items")
+	.onDelete((userSnap, context) => {
+		const userData = userSnap.data()
+
+		const promises = userData.items.map((item) =>
+			db
+				.collection("items")
 				.doc(item)
 				.delete()
-				.then(() => {
-					console.log(`deleted ${item}`)
+		)
+
+		return Promise.all(promises)
+	})
+
+// When a user is deleted from db their subcollections are removed from the db
+exports.removeUserSubcollections = functions.firestore
+	.document(`users/{userId}`)
+	.onDelete(async (snap, context) => {
+		const roomsPromise = snap.ref.collection("rooms").get()
+		const notificationTokensPromise = snap.ref.collection("notificationTokens").get()
+		const subcollections = await Promise.all([roomsPromise, notificationTokensPromise])
+
+		console.log("subcollections", subcollections)
+
+		return subcollections.map((snap) => {
+			console.log("docs", snap.docs)
+			return Promise.all(
+				snap.docs.map((doc) => {
+					console.log("document", doc)
+					return doc.delete()
 				})
-				.catch((err) => console.log(err))
+			)
 		})
 	})
 
 // When an authUser is deleted the corresponding user is removed from db
 exports.userDbCleanup = functions.auth.user().onDelete((user, ...rest) => {
 	const userId = user.uid
-	db.collection("users")
+	return db
+		.collection("users")
 		.doc(userId)
 		.delete()
-		.then(() => {
-			console.log(`user ${userId} was deleted`)
-		})
-		.catch((err) => console.log(err))
 })
 
 // TODO: When an authUser is created create a corresponding user in db
-exports.onUserCreated = functions.auth.user().onCreate((...args) => {
-	console.log("args", args)
-})
+// exports.onUserCreated = functions.auth.user().onCreate((...args) => {
+// 	console.log("args", args)
+// })
 
 // ------------------------------------
 // ---------- Image handling ----------
@@ -320,7 +338,7 @@ const uploadThumbnail = async (file, path) => {
 		public: true,
 		gzip: true,
 		metadata: {
-			cacheControl: "public, max-age=31536000"
+			cacheControl: "public, max-age=604800" // cached for a week
 		}
 	})
 	return bucket.file(path).getSignedUrl(signedURLConfig)
