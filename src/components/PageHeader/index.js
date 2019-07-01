@@ -18,7 +18,7 @@ import { POST_CATEGORIES } from "../../constants"
 import getProfilePictureURL from "../../utils/getProfilePictureURL"
 import { swingInFwdTopAnimation } from "../../style-utils/animations"
 import { route } from "../../utils"
-import { useScrollPosition, useAuthentication } from "../../hooks"
+import { useAuthentication } from "../../hooks"
 
 const pageHeaderContainerCommon = css`
 	width: 100%;
@@ -424,7 +424,6 @@ const PageHeaderDesktop = ({ authUser, firebase, location }) => {
 }
 
 const PageHeader = ({ authUser, firebase, currentBreakpoint, location }) => {
-	const scrollPosition = useScrollPosition()
 	const isMobile = currentBreakpoint <= 1
 
 	const commonProps = {
@@ -434,7 +433,7 @@ const PageHeader = ({ authUser, firebase, currentBreakpoint, location }) => {
 	}
 
 	return (
-		<PageHeaderOuter scrollPosition={scrollPosition}>
+		<PageHeaderOuter>
 			{isMobile ? (
 				<PageHeaderMobile {...commonProps} />
 			) : (
