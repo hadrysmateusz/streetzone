@@ -4,6 +4,7 @@ import { withRouter, Link } from "react-router-dom"
 import { withBreakpoints } from "react-breakpoints"
 import { compose } from "recompose"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import styled from "styled-components/macro"
 
 import LoadingSpinner from "../../components/LoadingSpinner"
 import UserPreview from "../../components/UserPreview"
@@ -34,6 +35,10 @@ import {
 	RoomTabStyles
 } from "./StyledComponents"
 
+const NoMessagesContainer = styled.div`
+	padding: var(--spacing4) var(--spacing3);
+`
+
 const Message = ({ id, roomId, message, createdAt, author, user, unread }) => {
 	const firebase = useFirebase()
 	const formattedCreatedAt = moment().to(createdAt)
@@ -60,9 +65,11 @@ const Message = ({ id, roomId, message, createdAt, author, user, unread }) => {
 }
 
 const NoMessages = () => (
-	<EmptyState header="Nie masz jeszcze żadnych wiadomości">
-		Tutaj znajdziesz swoje konwersacje z innymi użytkownikami
-	</EmptyState>
+	<NoMessagesContainer>
+		<EmptyState header="Nie masz jeszcze żadnych wiadomości">
+			Tutaj znajdziesz swoje konwersacje z innymi użytkownikami
+		</EmptyState>
+	</NoMessagesContainer>
 )
 
 const RoomTab = ({ id, otherUserId }) => {
@@ -249,7 +256,10 @@ const UserChat = ({ location, history, match, currentBreakpoint }) => {
 				animate={false}
 				renderWhenOpen={({ close }) =>
 					!rooms ? (
-						<LoadingSpinner />
+						<div>
+							<Header>Wybierz z listy</Header>
+							<LoadingSpinner />
+						</div>
 					) : hasSelectedRoom ? (
 						<ChatRoom {...chatRoomProps} />
 					) : hasRooms ? (
@@ -258,7 +268,10 @@ const UserChat = ({ location, history, match, currentBreakpoint }) => {
 							<RoomsList rooms={rooms} />
 						</div>
 					) : (
-						<NoMessages />
+						<div>
+							<Header>Wybierz z listy</Header>
+							<NoMessages />
+						</div>
 					)
 				}
 			/>
