@@ -101,22 +101,6 @@ export const SearchWrapper = withRouter(
 			[_initialState, allowedKeys]
 		)
 
-		const createStateFromURL = useCallback(() => {
-			try {
-				const parsedSearch = decodeURL(location.search)
-				if (!parsedSearch) throw new Error("empty search string")
-				const formattedState = urlToState(parsedSearch)
-				return formattedState
-			} catch (e) {
-				// EMPTY_SEARCH_ERR is harmless, don't report it
-				if (e.message !== EMPTY_SEARCH_ERR) {
-					console.log(e)
-				}
-				// if there was a problem while parsing, use default state instead
-				return _initialState
-			}
-		}, [_initialState, location.search, urlToState])
-
 		const onSearchStateChange = useCallback(
 			(state) => {
 				let formattedState = {}
@@ -132,6 +116,8 @@ export const SearchWrapper = withRouter(
 					if (key === "page") {
 						if (val > page) {
 							setPage((page) => page + 1)
+						} else {
+							setPage(1)
 						}
 						continue
 					}
@@ -164,9 +150,30 @@ export const SearchWrapper = withRouter(
 		)
 
 		useEffect(() => {
-			let state = createStateFromURL()
-			setSearchState(state)
-		}, [createStateFromURL])
+			console.log("location has changed")
+
+			const createStateFromURL = () => {
+				try {
+					const parsedSearch = decodeURL(location.search)
+					if (!parsedSearch) throw new Error("empty search string")
+					const formattedState = urlToState(parsedSearch)
+					return formattedState
+				} catch (e) {
+					// EMPTY_SEARCH_ERR is harmless, don't report it
+					if (e.message !== EMPTY_SEARCH_ERR) {
+						console.log(e)
+					}
+					// if there was a problem while parsing, use default state instead
+					return _initialState
+				}
+			}
+
+			let newState = createStateFromURL()
+			setSearchState((oldState) => {
+				console.log("updating state", oldState, newState)
+				return newState
+			})
+		}, [_initialState, location, urlToState])
 
 		// this is finicky, don't use if possible
 		const forceRefineWithState = async (partialSearchState) => {
@@ -182,12 +189,15 @@ export const SearchWrapper = withRouter(
 
 		const isChildrenFunction = typeof children === "function"
 
+		const mergedState = { ...searchState, page }
+		console.log("mergedState", mergedState)
+
 		return (
 			<InstantSearch
 				appId={process.env.REACT_APP_APP_ID}
 				apiKey={process.env.REACT_APP_ALGOLIA_API_KEY}
 				indexName={indexName}
-				searchState={{ ...searchState, page }}
+				searchState={mergedState}
 				onSearchStateChange={handleSearchStateChange}
 				createURL={encodeURL}
 				{...rest}
