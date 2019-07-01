@@ -40,6 +40,11 @@ const NoMessagesContainer = styled.div`
 	padding: var(--spacing4) var(--spacing3);
 `
 
+const EmptyRoomTab = styled.div`
+	font-style: italic;
+	color: var(--gray25);
+`
+
 const Message = ({ id, roomId, message, createdAt, author, user, unread }) => {
 	const firebase = useFirebase()
 	const formattedCreatedAt = moment().to(createdAt)
@@ -83,7 +88,13 @@ const RoomTab = ({ id, otherUserId }) => {
 				<span className="name">{user.name}</span>
 			</Link>
 		</RoomTabStyles>
-	) : null
+	) : (
+		<RoomTabStyles>
+			<Link to={route("CHAT_ROOM", { roomId: id })}>
+				<EmptyRoomTab>Konto usunięte</EmptyRoomTab>
+			</Link>
+		</RoomTabStyles>
+	)
 }
 
 const RoomsList = ({ rooms }) => {

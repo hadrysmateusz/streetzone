@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react"
-import styled, { css } from "styled-components/macro"
+import styled from "styled-components/macro"
 import { withBreakpoints } from "react-breakpoints"
 import { disableBodyScroll, enableBodyScroll } from "body-scroll-lock"
 
