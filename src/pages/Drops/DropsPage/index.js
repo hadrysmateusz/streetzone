@@ -10,6 +10,7 @@ import InfiniteScrollingResults from "../../../components/InfiniteScrollingResul
 import sections from "./sections"
 import SectionSelect from "./SectionSelect"
 import PromotedSection from "./PromotedSection"
+import Filters from "./Filters"
 import withDropsSearchWrapper from "./SearchWrapperSelector"
 
 const sidebarElements = [{ title: "Popularne na blogu", component: PopularArticles }]
@@ -50,7 +51,11 @@ const DropsPage = withDropsSearchWrapper(({ currentSection }) => {
 							)}
 						</InfiniteScrollingResults>
 					</Main>
-					<Sidebar availableElements={sidebarElements} isRandom />
+					<Sidebar availableElements={sidebarElements} isRandom>
+						{currentSection.id === "archive" && (
+							<Filters toggle={() => null} clear={() => null} />
+						)}
+					</Sidebar>
 				</LayoutManager>
 			</PageContainer>
 		</>

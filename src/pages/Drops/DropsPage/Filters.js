@@ -17,7 +17,7 @@ const TABS = {
 const Filters = ({ toggle, clear }, ref) => {
 	return (
 		<FiltersBase tabOptions={TABS} defaultTab="category" toggle={toggle} clear={clear}>
-			{({ openTab, switchTab, clearFilters, tabs }) => {
+			{({ openTab, switchTab, tabs }) => {
 				const commonProps = { openTab, toggle: switchTab }
 
 				return (
@@ -27,7 +27,7 @@ const Filters = ({ toggle, clear }, ref) => {
 							<AlgoliaRefinementList
 								{...commonProps}
 								tab={tabs.category}
-								attribute="category"
+								attribute="itemCategory"
 							/>
 						</Section>
 
@@ -38,9 +38,8 @@ const Filters = ({ toggle, clear }, ref) => {
 								{...commonProps}
 								tab={tabs.designers}
 								attribute="designers"
-								show={10}
-								showMore={true}
-								multiColumn
+								show={8}
+								showMore
 							/>
 						</Section>
 					</>
