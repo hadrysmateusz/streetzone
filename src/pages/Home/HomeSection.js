@@ -101,7 +101,7 @@ const CardsContainerInner = styled.div`
 const Placeholder = styled.div`
 	width: 100%;
 	height: 280px;
-	background: var(--gray100);
+	background: var(--almost-white);
 `
 
 const HomeSection = withBreakpoints(

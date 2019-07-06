@@ -14,7 +14,7 @@ export const PromotedPostContainer = styled.div`
 			rgba(0, 0, 0, 0.25) 62%,
 			rgba(0, 0, 0, 0.8) 100%
 		),
-		url(${(p) => p.image}), var(--gray100);
+		url(${(p) => p.image}), var(--almost-white);
 	color: white;
 	padding: var(--spacing3) 0;
 	overflow-y: hidden;
