@@ -4,5 +4,14 @@ import areNotificationsSupported from "./areNotificationsSupported"
 import * as itemDataHelpers from "./itemDataHelpers"
 import getRedirectTo from "./getRedirectTo"
 import sleep from "./sleep"
+import arrayPad from "./arrayPad"
 
-export { mapN, route, areNotificationsSupported, itemDataHelpers, getRedirectTo, sleep }
+export {
+	mapN,
+	route,
+	areNotificationsSupported,
+	itemDataHelpers,
+	getRedirectTo,
+	sleep,
+	arrayPad
+}

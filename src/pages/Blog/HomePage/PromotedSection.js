@@ -4,6 +4,7 @@ import { withBreakpoints } from "react-breakpoints"
 
 import { CONST } from "../../../constants"
 
+import PlaceholderWrapper from "../../../components/PlaceholderWrapper"
 import { StatelessSearchWrapper } from "../../../components/InstantSearchWrapper"
 import { Carousel } from "../../../components/Carousel"
 import { PageContainer } from "../../../components/Containers"
@@ -23,6 +24,7 @@ const DesktopContainer = styled.div`
 `
 
 const MobileContainer = styled.div`
+	background: var(--almost-white);
 	height: 32vh;
 	margin-top: calc(-1 * var(--page-header-margin));
 	margin-bottom: var(--spacing3);
@@ -44,9 +46,11 @@ const DesktopPromotedSection = ({ results }) => {
 	return (
 		<PageContainer>
 			<DesktopContainer>
-				{results.map((result) => (
-					<PromotedPost key={result.id} {...result} />
-				))}
+				<PlaceholderWrapper count={3}>
+					{results.map((result) => (
+						<PromotedPost key={result.id} {...result} />
+					))}
+				</PlaceholderWrapper>
 			</DesktopContainer>
 		</PageContainer>
 	)

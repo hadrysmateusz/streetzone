@@ -3,6 +3,7 @@ import styled from "styled-components/macro"
 import { Link } from "react-router-dom"
 import { withBreakpoints } from "react-breakpoints"
 
+import PlaceholderWrapper from "../../components/PlaceholderWrapper"
 import { PageContainer } from "../../components/Containers"
 import { StatelessSearchWrapper } from "../../components/InstantSearchWrapper"
 
@@ -103,13 +104,6 @@ const Placeholder = styled.div`
 	background: var(--gray100);
 `
 
-const arrayPad = (array, length, fillWith) => {
-	const secondArrLen = Math.max(0, length - array.length)
-	console.log(secondArrLen)
-	const newArray = [...array].concat(Array(secondArrLen).fill(fillWith))
-	return newArray
-}
-
 const HomeSection = withBreakpoints(
 	({
 		inverse = false,
@@ -136,13 +130,11 @@ const HomeSection = withBreakpoints(
 								</TextContainer>
 								<CardsContainer inverse={inverse}>
 									<CardsContainerInner inverse={inverse} numItems={itemsLimit}>
-										{arrayPad(results, itemsLimit, true).map((result) =>
-											result === true ? (
-												<Placeholder />
-											) : (
+										<PlaceholderWrapper placeholder={Placeholder} count={itemsLimit}>
+											{results.map((result) => (
 												<C {...result} key={result.id} />
-											)
-										)}
+											))}
+										</PlaceholderWrapper>
 									</CardsContainerInner>
 								</CardsContainer>
 							</InnerContainer>

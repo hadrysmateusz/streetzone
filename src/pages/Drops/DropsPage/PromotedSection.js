@@ -2,6 +2,7 @@ import React from "react"
 import styled from "styled-components/macro"
 import { withBreakpoints } from "react-breakpoints"
 
+import PlaceholderWrapper from "../../../components/PlaceholderWrapper"
 import { PageContainer } from "../../../components/Containers"
 import { InfiniteResults } from "../../../components/Algolia/Helpers"
 
@@ -34,8 +35,16 @@ const PromotedSection = withBreakpoints(({ currentBreakpoint }) => {
 					<PromotedContainer>
 						<InfiniteResults>
 							{({ results }) => {
+								// TODO: this might fail if there are less than two results
 								const selected = results.slice(0, 2)
-								return selected.map((hit) => <PromotedDrop {...hit} />)
+
+								return (
+									<PlaceholderWrapper count={2}>
+										{selected.map((hit) => (
+											<PromotedDrop {...hit} />
+										))}
+									</PlaceholderWrapper>
+								)
 							}}
 						</InfiniteResults>
 					</PromotedContainer>
