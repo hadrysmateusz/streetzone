@@ -1,5 +1,5 @@
 import React from "react"
-import styled from "styled-components/macro"
+import styled, { css } from "styled-components/macro"
 
 import { BigDropCard } from "../../../components/Cards"
 import { PageContainer } from "../../../components/Containers"
@@ -32,7 +32,31 @@ const Header = styled.h1`
 	}
 `
 
+const InfoBox = ({ header, children }) => (
+	<div
+		css={css`
+			background: var(--black25);
+			color: var(--gray100);
+			padding: var(--spacing3);
+			margin-bottom: var(--spacing3);
+		`}
+	>
+		<div
+			css={css`
+				text-transform: upperCase;
+				color: white;
+				font-weight: bold;
+			`}
+		>
+			{header}
+		</div>
+		<div>{children}</div>
+	</div>
+)
+
 const DropsPage = withDropsSearchWrapper(({ currentSection }) => {
+	const isArchive = currentSection.id === "archive"
+
 	return (
 		<>
 			<PromotedSection />
@@ -41,6 +65,13 @@ const DropsPage = withDropsSearchWrapper(({ currentSection }) => {
 					<Main>
 						<Header>Dropy</Header>
 						<SectionSelect sections={sections.list()} currentSection={currentSection} />
+						{isArchive && (
+							// TODO: better / more accurate copy (with regards to final functionality)
+							<InfoBox header="Dropy Archiwalne">
+								Tutaj znajdują się dropy które miały już miejsce. Możesz tu też sprawdzić
+								czy dostaniesz je u nas tablicy.
+							</InfoBox>
+						)}
 						<InfiniteScrollingResults>
 							{({ results, hasMore, loadMore }) => (
 								<ResultsContainer>
@@ -52,9 +83,7 @@ const DropsPage = withDropsSearchWrapper(({ currentSection }) => {
 						</InfiniteScrollingResults>
 					</Main>
 					<Sidebar availableElements={sidebarElements} isRandom>
-						{currentSection.id === "archive" && (
-							<Filters toggle={() => null} clear={() => null} />
-						)}
+						{isArchive && <Filters toggle={() => null} clear={() => null} />}
 					</Sidebar>
 				</LayoutManager>
 			</PageContainer>
