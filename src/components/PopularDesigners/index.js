@@ -72,23 +72,27 @@ const PopularDesigners = withBreakpoints(({ currentBreakpoint }) => {
 	const limit = +currentBreakpoint < 1 ? 4 : 7
 
 	return (
-		<OuterContainer>
-			<PageHeading>Kupuj popularne marki</PageHeading>
-			<StatelessSearchWrapper
-				indexName={CONST.DESIGNERS_ALGOLIA_INDEX}
-				limit={limit}
-				ignoreArchivedStatus
-			>
-				{(hits) => (
-					<InnerContainer>
-						{hits.map((hit) => (
-							<Designer {...hit} />
-						))}
-					</InnerContainer>
-				)}
-			</StatelessSearchWrapper>
-		</OuterContainer>
+		<StatelessSearchWrapper
+			indexName={CONST.DESIGNERS_ALGOLIA_INDEX}
+			limit={limit}
+			ignoreArchivedStatus
+		>
+			{(hits) => (
+				<InnerContainer>
+					{hits.map((hit) => (
+						<Designer {...hit} />
+					))}
+				</InnerContainer>
+			)}
+		</StatelessSearchWrapper>
 	)
 })
+
+export const PopularDesignersHomeSection = () => (
+	<OuterContainer>
+		<PageHeading>Kupuj popularne marki</PageHeading>
+		<PopularDesigners />
+	</OuterContainer>
+)
 
 export default PopularDesigners
