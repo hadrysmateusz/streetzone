@@ -7,15 +7,15 @@ import { PageContainer } from "../../components/Containers"
 import { TextBlock } from "../../components/StyledComponents"
 import { SearchWrapper } from "../../components/InstantSearchWrapper"
 import AlgoliaSearchBox from "../../components/Algolia/AlgoliaSearchBox"
+import PopularDesigners from "../../components/PopularDesigners"
 
 import { encodeURL } from "../../utils/algoliaURLutils"
 import { CONST, ROUTES } from "../../constants"
 import { ellipsis } from "polished"
 
 const Header = styled.div`
-	margin: var(--spacing4) 0;
-	/* font-family: var(--ff-serif); */
-	font-size: var(--fs-l);
+	margin-bottom: var(--spacing4);
+	font-size: var(--fs-xl);
 	font-weight: bold;
 	text-align: center;
 `
@@ -51,9 +51,10 @@ const ListContainer = styled.div`
 const LetterNavbarContainer = styled.div`
 	overflow: auto;
 	border-bottom: 1px solid var(--gray75);
+	margin-top: var(--spacing4);
 
 	/* make the content go from edge to edge on mobile*/
-	@media (max-width: ${(p) => p.theme.breakpoints[1] - 1}px) {
+	@media (max-width: ${(p) => p.theme.breakpoints[3] - 1}px) {
 		--x-margin: calc(-1 * var(--spacing3));
 		margin-left: var(--x-margin);
 		margin-right: var(--x-margin);
@@ -78,9 +79,12 @@ const LetterNavbar = styled.div`
 
 const NavLetterContainer = styled.div`
 	cursor: ${(p) => (p.isEmpty ? "default" : "pointer")};
+	color: var(--black75);
+	user-select: none;
 	${(p) => p.isEmpty && "color: var(--gray25);"}
 	font-family: var(--font-family--serif);
 	font-size: var(--font-size--l);
+	font-weight: var(--semi-bold);
 `
 
 const StyledLink = styled(Link)`
@@ -90,6 +94,12 @@ const StyledLink = styled(Link)`
 	:hover {
 		color: var(--black0);
 	}
+`
+
+const SectionLetter = styled.div`
+	font-size: 6.4rem;
+	font-weight: bold;
+	color: var(--black75);
 `
 
 const DesignerLink = ({ value }) => {
@@ -103,10 +113,14 @@ const DesignerLink = ({ value }) => {
 }
 
 const NavLetter = ({ value, isEmpty }) => {
-	const onClick = () =>
+	const onClick = () => {
+		// if a section is empty it doesn't appear so exit
+		if (isEmpty) return
+
 		document
 			.getElementById(`designers-list-section-${value}`)
 			.scrollIntoView({ behavior: "smooth", block: "start" })
+	}
 
 	return (
 		<NavLetterContainer isEmpty={isEmpty} onClick={onClick}>
@@ -150,9 +164,7 @@ const ListSection = ({ letter, items }) => {
 
 	return (
 		<SectionContainer id={`designers-list-section-${letter}`}>
-			<TextBlock serif size="6.4rem">
-				{letter}
-			</TextBlock>
+			<SectionLetter>{letter}</SectionLetter>
 			<List>
 				{items.map((designer) => (
 					<DesignerLink value={designer.label} key={designer} />
@@ -219,7 +231,7 @@ const DesignersPage = () => {
 		>
 			<PageContainer>
 				<Header>Projektanci</Header>
-
+				<PopularDesigners />
 				<DesignersList />
 			</PageContainer>
 		</SearchWrapper>
