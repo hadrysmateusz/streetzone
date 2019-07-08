@@ -5,6 +5,9 @@ import { withBreakpoints } from "react-breakpoints"
 import PlaceholderWrapper from "../../../components/PlaceholderWrapper"
 import { PageContainer } from "../../../components/Containers"
 import { InfiniteResults } from "../../../components/Algolia/Helpers"
+import { StatelessSearchWrapper } from "../../../components/InstantSearchWrapper"
+
+import { CONST } from "../../../constants"
 
 import PromotedDrop from "../PromotedDrop"
 
@@ -32,22 +35,20 @@ const PromotedSection = withBreakpoints(({ currentBreakpoint }) => {
 		<div hidden={isMobile}>
 			<PageContainer>
 				<OuterContainer>
-					<PromotedContainer>
-						<InfiniteResults>
-							{({ results }) => {
-								// TODO: this might fail if there are less than two results
-								const selected = results.slice(0, 2)
-
-								return (
-									<PlaceholderWrapper count={2}>
-										{selected.map((hit) => (
-											<PromotedDrop {...hit} />
-										))}
-									</PlaceholderWrapper>
-								)
-							}}
-						</InfiniteResults>
-					</PromotedContainer>
+					<StatelessSearchWrapper
+						limit={2}
+						indexName={CONST.BLOG_DROP_NEWEST_ALGOLIA_INDEX}
+					>
+						{(results) => (
+							<PromotedContainer>
+								<PlaceholderWrapper count={2}>
+									{results.map((hit) => (
+										<PromotedDrop {...hit} />
+									))}
+								</PlaceholderWrapper>
+							</PromotedContainer>
+						)}
+					</StatelessSearchWrapper>
 				</OuterContainer>
 			</PageContainer>
 		</div>
