@@ -51,8 +51,8 @@ const BlogHomePage = () => {
 							{/* Navigation */}
 							<CategoryNav />
 							{/* Preset Groups */}
-							<DropsGroup />
-							<CareAndMaintenanceGroup />
+							{/* <DropsGroup /> */}
+							{/* <CareAndMaintenanceGroup /> */}
 							{/* Infinite Posts List */}
 							<InfinitePosts />
 						</Main>
