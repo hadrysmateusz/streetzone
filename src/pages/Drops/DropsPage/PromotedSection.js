@@ -4,7 +4,6 @@ import { withBreakpoints } from "react-breakpoints"
 
 import PlaceholderWrapper from "../../../components/PlaceholderWrapper"
 import { PageContainer } from "../../../components/Containers"
-import { InfiniteResults } from "../../../components/Algolia/Helpers"
 import { StatelessSearchWrapper } from "../../../components/InstantSearchWrapper"
 
 import { CONST } from "../../../constants"

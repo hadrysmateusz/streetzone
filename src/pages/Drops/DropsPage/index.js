@@ -74,54 +74,57 @@ const InfoBox = ({ header, children }) => (
 	</div>
 )
 
-const DropsPage = withDropsSearchWrapper(({ currentSection }) => {
+const DropsMain = withDropsSearchWrapper(({ currentSection }) => {
 	const isArchive = currentSection.id === "archive"
 	const [isAuthenticated] = useAuthentication(true)
 
 	return (
-		<>
-			<PromotedSection />
-			<PageContainer>
-				<LayoutManager>
-					<Main>
-						<HeaderContainer>
-							<Header>Dropy</Header>
-							<ResultsCount />
-						</HeaderContainer>
+		<PageContainer>
+			<LayoutManager>
+				<Main>
+					<HeaderContainer>
+						<Header>Dropy</Header>
+						<ResultsCount />
+					</HeaderContainer>
 
-						<SectionSelect sections={sections.list()} currentSection={currentSection} />
+					<SectionSelect sections={sections.list()} currentSection={currentSection} />
 
-						{isArchive && (
-							// TODO: better / more accurate copy (with regards to final functionality)
-							<InfoBox header="Dropy Archiwalne">
-								Tutaj znajdują się dropy które miały już miejsce. Możesz tu też sprawdzić
-								czy dostaniesz je u nas tablicy. Możesz również filtrować wyniki by szybko
-								znaleźć interesujące cię przedmioty.
-							</InfoBox>
+					{isArchive && (
+						// TODO: better / more accurate copy (with regards to final functionality)
+						<InfoBox header="Dropy Archiwalne">
+							Tutaj znajdują się dropy które miały już miejsce. Możesz tu też sprawdzić
+							czy dostaniesz je u nas tablicy.
+						</InfoBox>
+					)}
+
+					<InfiniteScrollingResults>
+						{({ results, hasMore, loadMore }) => (
+							<ResultsContainer>
+								{results.map((drop) => (
+									<BigDropCard {...drop} key={drop.id} />
+								))}
+							</ResultsContainer>
 						)}
-
-						<InfiniteScrollingResults>
-							{({ results, hasMore, loadMore }) => (
-								<ResultsContainer>
-									{results.map((drop) => (
-										<BigDropCard {...drop} key={drop.id} />
-									))}
-								</ResultsContainer>
-							)}
-						</InfiniteScrollingResults>
-					</Main>
-					<Sidebar availableElements={sidebarElements} isRandom>
-						{isArchive && <Filters toggle={() => null} clear={() => null} />}
-						{!isAuthenticated && (
-							<InfoBox header="Otrzymuj powiadomienia">
-								Utwórz konto by dostawać powiadomienia o nowych dropach
-							</InfoBox>
-						)}
-					</Sidebar>
-				</LayoutManager>
-			</PageContainer>
-		</>
+					</InfiniteScrollingResults>
+				</Main>
+				<Sidebar availableElements={sidebarElements} isRandom>
+					{isArchive && <Filters toggle={() => null} clear={() => null} />}
+					{!isAuthenticated && (
+						<InfoBox header="Otrzymuj powiadomienia">
+							Utwórz konto by dostawać powiadomienia o nowych dropach
+						</InfoBox>
+					)}
+				</Sidebar>
+			</LayoutManager>
+		</PageContainer>
 	)
 })
+
+const DropsPage = () => (
+	<>
+		<PromotedSection />
+		<DropsMain />
+	</>
+)
 
 export default DropsPage

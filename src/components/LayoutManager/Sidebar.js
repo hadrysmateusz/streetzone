@@ -24,6 +24,8 @@ const SidebarHeader = styled.div`
 	line-height: 1.3;
 `
 
+const StaticContent = styled.div``
+
 const SidebarSectionContainer = styled.div`
 	/* background: rgba(255, 0, 0, 0.2);
 	border-bottom: 1px solid green; */
@@ -82,7 +84,7 @@ const Sidebar = ({ children, availableElements, isRandom }) => {
 
 	return isMobile ? null : (
 		<SidebarContainer ref={sidebarRef}>
-			<div>{children}</div>
+			<StaticContent>{children}</StaticContent>
 			{elements.map(({ title, component: C }, i) => (
 				<SidebarSection title={title} key={i}>
 					<C />
