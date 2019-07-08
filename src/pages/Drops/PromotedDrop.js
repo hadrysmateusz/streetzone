@@ -17,7 +17,7 @@ export const PromotedDropContainer = styled.div`
 	flex-direction: column;
 	align-items: center;
 	justify-content: flex-end;
-	color: var(--black75);
+	color: var(--black25);
 	border: 1px solid var(--gray75);
 	transition: border-color 200ms ease;
 	:hover {
@@ -28,18 +28,23 @@ export const PromotedDropContainer = styled.div`
 		border-top: 1px solid var(--gray75);
 		background: rgba(255, 255, 255, 0.8);
 		margin: 0;
-		height: 140px;
+		height: 100px;
 		display: flex;
 		justify-content: center;
 		flex-direction: column;
 		align-items: center;
 		width: 100%;
 		text-align: center;
-		padding: var(--spacing2) 0;
+		padding: var(--spacing1) 0;
+		@media (min-width: ${(p) => p.theme.breakpoints[4]}px) {
+			height: 140px;
+			padding: var(--spacing2) 0;
+		}
 	}
 
 	.name {
 		font-family: var(--font-family--serif);
+		text-shadow: 2px 2px 1px rgba(0, 0, 0, 0.08);
 		max-width: 90%;
 		font-weight: bold;
 		text-align: center;
@@ -53,7 +58,7 @@ export const PromotedDropContainer = styled.div`
 	}
 
 	.details {
-		font-style: italic;
+		/* font-style: italic; */
 		color: var(--gray0);
 	}
 `
