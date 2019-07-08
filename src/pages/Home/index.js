@@ -70,7 +70,7 @@ const BlogSection = () => (
 		body={
 			<>
 				Artykuły, Newsy, Informacje. Dowiedz się jak czyścić buty i ubrania, nie
-				uszkadzając ich. Sprawdź jak rozpoznać fake'a, i{" "}
+				uszkadzając ich, sprawdź jak rozpoznać fake'a, i{" "}
 				<StyledLink to={route("BLOG_HOME")}>wiele więcej</StyledLink>...
 			</>
 		}
