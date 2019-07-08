@@ -1,5 +1,6 @@
 import React from "react"
 import styled, { css } from "styled-components/macro"
+import { connectStateResults } from "react-instantsearch-dom"
 
 import { BigDropCard } from "../../../components/Cards"
 import { PageContainer } from "../../../components/Containers"
@@ -13,6 +14,8 @@ import PromotedSection from "./PromotedSection"
 import Filters from "./Filters"
 import withDropsSearchWrapper from "./SearchWrapperSelector"
 
+import { useAuthentication } from "../../../hooks"
+
 const sidebarElements = [{ title: "Popularne na blogu", component: PopularArticles }]
 
 const ResultsContainer = styled.div`
@@ -24,6 +27,12 @@ const ResultsContainer = styled.div`
 	}
 `
 
+const HeaderContainer = styled.div`
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+`
+
 const Header = styled.h1`
 	text-align: center;
 	margin: 0;
@@ -31,6 +40,16 @@ const Header = styled.h1`
 		text-align: left;
 	}
 `
+
+const ResultsCountContainer = styled.div`
+	color: var(--gray25);
+`
+
+const ResultsCount = connectStateResults(({ searchResults }) => {
+	const nbHits = searchResults && searchResults.nbHits
+
+	return <ResultsCountContainer>{nbHits} wyników</ResultsCountContainer>
+})
 
 const InfoBox = ({ header, children }) => (
 	<div
@@ -46,6 +65,7 @@ const InfoBox = ({ header, children }) => (
 				text-transform: upperCase;
 				color: white;
 				font-weight: bold;
+				margin-bottom: 4px;
 			`}
 		>
 			{header}
@@ -56,6 +76,7 @@ const InfoBox = ({ header, children }) => (
 
 const DropsPage = withDropsSearchWrapper(({ currentSection }) => {
 	const isArchive = currentSection.id === "archive"
+	const [isAuthenticated] = useAuthentication(true)
 
 	return (
 		<>
@@ -63,15 +84,22 @@ const DropsPage = withDropsSearchWrapper(({ currentSection }) => {
 			<PageContainer>
 				<LayoutManager>
 					<Main>
-						<Header>Dropy</Header>
+						<HeaderContainer>
+							<Header>Dropy</Header>
+							<ResultsCount />
+						</HeaderContainer>
+
 						<SectionSelect sections={sections.list()} currentSection={currentSection} />
+
 						{isArchive && (
 							// TODO: better / more accurate copy (with regards to final functionality)
 							<InfoBox header="Dropy Archiwalne">
 								Tutaj znajdują się dropy które miały już miejsce. Możesz tu też sprawdzić
-								czy dostaniesz je u nas tablicy.
+								czy dostaniesz je u nas tablicy. Możesz również filtrować wyniki by szybko
+								znaleźć interesujące cię przedmioty.
 							</InfoBox>
 						)}
+
 						<InfiniteScrollingResults>
 							{({ results, hasMore, loadMore }) => (
 								<ResultsContainer>
@@ -84,6 +112,11 @@ const DropsPage = withDropsSearchWrapper(({ currentSection }) => {
 					</Main>
 					<Sidebar availableElements={sidebarElements} isRandom>
 						{isArchive && <Filters toggle={() => null} clear={() => null} />}
+						{!isAuthenticated && (
+							<InfoBox header="Otrzymuj powiadomienia">
+								Utwórz konto by dostawać powiadomienia o nowych dropach
+							</InfoBox>
+						)}
 					</Sidebar>
 				</LayoutManager>
 			</PageContainer>
