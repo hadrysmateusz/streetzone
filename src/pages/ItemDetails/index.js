@@ -150,7 +150,7 @@ const ItemDetailsPage = ({ match, history }) => {
 								</>
 							) : (
 								<>
-									<ContactModal userId={item.userId}>
+									<ContactModal userId={item.userId} subject={item.name}>
 										{({ open }) => (
 											<Button primary fullWidth big onClick={open}>
 												Kontakt

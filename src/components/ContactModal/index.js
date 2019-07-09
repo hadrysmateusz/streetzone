@@ -9,7 +9,6 @@ import UserPreview from "../UserPreview/new"
 
 import { useUser } from "../../hooks"
 import { route } from "../../utils"
-import { CONST } from "../../constants"
 
 const ModalOuterContainer = styled.div`
 	max-width: 100vw;
@@ -33,12 +32,22 @@ const ButtonInfo = styled.div`
 	padding-left: var(--spacing2);
 `
 
-const ContactModal = ({ children, userId }) => {
+const getMailtoLink = (email, subject) => {
+	if (!email) return null
+
+	let mailtoLink = `mailto:${email}`
+	if (subject) mailtoLink += `?subject=${subject}`
+
+	return mailtoLink
+}
+
+const ContactModal = ({ children, userId, subject }) => {
 	const [user, error] = useUser(userId)
 
 	const hasEmail = user && user.email
 	const hasMessenger = user && user.messengerLink
 	const hasPhone = user && user.phone
+	const mailtoLink = user && getMailtoLink(user.email, subject)
 
 	return (
 		<StatefulModal>
@@ -63,8 +72,8 @@ const ContactModal = ({ children, userId }) => {
 												Telefon / SMS<ButtonInfo>({user.phone})</ButtonInfo>
 											</Button>
 										)}
-										{hasEmail && (
-											<Button as="a" href={`mailto:${CONST.CONTACT_EMAIL}`}>
+										{hasEmail && mailtoLink && (
+											<Button as="a" href={mailtoLink}>
 												Napisz maila<ButtonInfo>({user.email})</ButtonInfo>
 											</Button>
 										)}
