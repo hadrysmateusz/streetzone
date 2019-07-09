@@ -537,6 +537,7 @@ const routes = [
 				component: AllowAds,
 				title: `Zezwól na reklamy`,
 				label: `Zezwól na reklamy`,
+				hidden: true,
 				category: "Pomoc"
 			},
 			{

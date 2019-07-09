@@ -148,36 +148,37 @@ const InfoPage = compose(
 				) : (
 					<Sidebar>
 						<SidebarHeader>Informacje</SidebarHeader>
-						{Object.entries(groupedRoutes).map(([groupName, group]) => {
-							console.log(groupName, group)
-							return (
-								<Section key={groupName}>
-									<SectionHeader>{groupName}</SectionHeader>
-									{group.map((route) => (
+						{Object.entries(groupedRoutes).map(([groupName, group]) => (
+							<Section key={groupName}>
+								<SectionHeader>{groupName}</SectionHeader>
+								{group.map((route) =>
+									route.hidden ? null : (
 										<StyledLink key={route.label} to={route.path}>
 											{route.label}
 										</StyledLink>
-									))}
-								</Section>
-							)
-						})}
+									)
+								)}
+							</Section>
+						))}
 					</Sidebar>
 				)}
 				<Main>
 					<Switch>
-						{routes.map((route, i) => (
-							<Route
-								exact
-								path={route.path}
-								render={() => (
-									<>
-										<MainHeader>{route.label}</MainHeader>
-										<route.component />
-									</>
-								)}
-								key={i}
-							/>
-						))}
+						{routes.map((route, i) =>
+							route.hidden ? null : (
+								<Route
+									exact
+									path={route.path}
+									render={() => (
+										<>
+											<MainHeader>{route.label}</MainHeader>
+											<route.component />
+										</>
+									)}
+									key={i}
+								/>
+							)
+						)}
 					</Switch>
 				</Main>
 			</Layout>
