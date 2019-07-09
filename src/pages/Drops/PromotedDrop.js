@@ -44,7 +44,7 @@ export const PromotedDropContainer = styled.div`
 
 	.name {
 		font-family: var(--font-family--serif);
-		text-shadow: 2px 2px 1px rgba(0, 0, 0, 0.08);
+		text-shadow: 1px 2px 3px rgba(0, 0, 0, 0.07);
 		max-width: 90%;
 		font-weight: bold;
 		text-align: center;
