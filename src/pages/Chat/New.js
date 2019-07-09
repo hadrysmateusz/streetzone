@@ -2,17 +2,26 @@ import React from "react"
 import { compose } from "recompose"
 import { withRouter } from "react-router-dom"
 import shortid from "shortid"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { Form, Field } from "react-final-form"
+import styled, { css } from "styled-components/macro"
 
 import { withAuthorization } from "../../components/UserSession"
 import { PageContainer } from "../../components/Containers"
-import { LoaderButton, ButtonContainer, Button } from "../../components/Button"
-import { SmallTextBlock, TextBlock } from "../../components/StyledComponents"
+import { LoaderButton, ButtonContainer } from "../../components/Button"
 import { Textarea } from "../../components/FormElements"
-import UserPreview from "../../components/UserPreview"
+import UserPreview from "../../components/UserPreview/new"
+import PageHeading from "../../components/PageHeading"
 
 import { useFirebase, useAuthentication, useUser } from "../../hooks"
+
+const OuterContainer = styled.div`
+	max-width: 430px;
+	margin: 0 auto;
+`
+
+const UserPreviewContainer = styled.div`
+	margin-bottom: var(--spacing3);
+`
 
 const validate = (values) => {
 	const errors = {}
@@ -20,7 +29,7 @@ const validate = (values) => {
 	return errors
 }
 
-export const NewChat = ({ userId }) => {
+export const NewChat = ({ userId, flexibleTextarea = false }) => {
 	const authUser = useAuthentication()
 	const firebase = useFirebase()
 
@@ -91,15 +100,14 @@ export const NewChat = ({ userId }) => {
 				return (
 					<form onSubmit={handleSubmit}>
 						{/* Comment */}
-						<SmallTextBlock>Treść wiadomości</SmallTextBlock>
 						<Field name="message">
 							{({ input, meta }) => {
 								const error = meta.error && meta.touched ? meta.error : null
 								return (
 									<Textarea
 										{...input}
-										autoResize={false}
-										numberOfLines={3}
+										autoResize={flexibleTextarea ? true : false}
+										numberOfLines={flexibleTextarea ? undefined : 3}
 										placeholder="Wiadomość"
 										error={error}
 									/>
@@ -134,21 +142,13 @@ const NewChatPage = ({ match }) => {
 
 	return user ? (
 		<PageContainer>
-			<TextBlock size="m">Napisz do {user.name}</TextBlock>
-			<ButtonContainer>
-				{user.messengerLink && (
-					<Button as="a" href={user.messengerLink}>
-						<FontAwesomeIcon
-							icon={["fab", "facebook-messenger"]}
-							size="2x"
-							color="var(--color-messenger)"
-						/>
-						&nbsp; Na messengerze
-					</Button>
-				)}
-			</ButtonContainer>
-			<UserPreview user={user} />
-			<NewChat userId={userId} />
+			<OuterContainer>
+				<PageHeading emoji={"💬"}>Napisz do {user.name}</PageHeading>
+				<UserPreviewContainer>
+					<UserPreview user={user} noButton />
+				</UserPreviewContainer>
+				<NewChat userId={userId} flexibleTextarea />
+			</OuterContainer>
 		</PageContainer>
 	) : null
 }

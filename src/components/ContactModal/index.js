@@ -19,6 +19,10 @@ const ModalOuterContainer = styled.div`
 	padding-top: var(--spacing3);
 `
 
+const UserPreviewContainer = styled.div`
+	margin-bottom: var(--spacing3);
+`
+
 const Header = styled.div`
 	font-size: var(--fs-l);
 	font-weight: bold;
@@ -61,7 +65,9 @@ const ContactModal = ({ children, userId, subject }) => {
 							) : (
 								<>
 									<Header>Kontakt</Header>
-									<UserPreview user={user} onlyInfo />
+									<UserPreviewContainer>
+										<UserPreview user={user} onlyInfo />
+									</UserPreviewContainer>
 									<ButtonContainer vertical noMargin>
 										<Button primary as={Link} to={route("CHAT_NEW", { id: userId })}>
 											<FontAwesomeIcon icon={["far", "envelope"]} />

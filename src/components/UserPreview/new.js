@@ -26,7 +26,7 @@ const Container = styled.div`
 		}
 	}
 	.info-container {
-		margin: var(--spacing3) 0;
+		margin-top: var(--spacing3);
 	}
 	.error {
 		color: var(--gray0);
@@ -50,12 +50,17 @@ const InfoItem = ({ name, children }) => (
 	</div>
 )
 
+const ButtonContainer = styled.div`
+	margin-top: var(--spacing3);
+`
+
 const DumbUserPreview = ({
 	profilePictureUrl,
 	user,
 	userId,
 	error,
-	onlyInfo = false
+	onlyInfo = false,
+	noButton = false
 }) => {
 	return (
 		<Container onlyInfo={onlyInfo}>
@@ -75,10 +80,12 @@ const DumbUserPreview = ({
 						</InfoItem>
 						{user.city && <InfoItem name="Miasto">{user.city}</InfoItem>}
 					</div>
-					{!onlyInfo && (
-						<Button as={Link} to={route("ACCOUNT_ITEMS", { id: userId })}>
-							Zobacz Profil
-						</Button>
+					{!onlyInfo && !noButton && (
+						<ButtonContainer>
+							<Button as={Link} to={route("ACCOUNT_ITEMS", { id: userId })}>
+								Zobacz Profil
+							</Button>
+						</ButtonContainer>
 					)}
 				</>
 			)}
