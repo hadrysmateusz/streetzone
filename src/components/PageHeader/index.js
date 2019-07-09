@@ -301,7 +301,7 @@ const PageHeaderMobile = ({ authUser, firebase, location }) => (
 							Kupuj
 						</MobileNavLink>
 						<MobileNavLink to={route("NEW_ITEM")}>Sprzedawaj</MobileNavLink>
-						<MobileNavLink to={route("ABOUT")}>Informacje</MobileNavLink>
+						<MobileNavLink to={route("FAQ")}>Informacje</MobileNavLink>
 
 						{authUser && [
 							<MobileNavLink to={route("ACCOUNT_BASE", { id: authUser.uid })}>
@@ -370,7 +370,7 @@ const PageHeaderDesktop = ({ authUser, firebase, location }) => {
 
 						<DesktopNavItem link={route("NEW_ITEM")} label="Sprzedawaj" />
 
-						<DesktopNavItem link={route("ABOUT")} label="Informacje" alignSubmenu="left">
+						<DesktopNavItem link={route("FAQ")} label="Informacje" alignSubmenu="left">
 							<SubmenuItem link={route("ABOUT")} label="O nas" />
 							<SubmenuItem link={route("CONTACT")} label="Kontakt" />
 							<SubmenuItem link={route("FAQ")} label="FAQ" />
