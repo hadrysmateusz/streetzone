@@ -57,10 +57,9 @@ const Filters = ({ toggle, clear, shouldClear }, ref) => {
 								tab={tabs.designers}
 								attribute="designers"
 								searchable
-								show={10}
+								show={5}
 								/* showMore is required by algolia to display a full list */
 								showMore={true}
-								multiColumn
 							/>
 						</Section>
 
