@@ -47,17 +47,30 @@ const Message = styled.div`
 `
 
 const NotificationsDisabledBar = memo(({ noMargin = false }) => {
-	const areNotificationsDisabled = Notification.permission !== "granted"
+	const areNotificationsSupported = window.Notification
+	const areNotificationsDisabled =
+		!areNotificationsSupported || Notification.permission !== "granted"
 
 	return areNotificationsDisabled ? (
 		<OuterContainer noMargin={noMargin}>
 			<PageContainer>
 				<InnerContainer>
-					<Message>
-						<em>Powiadomienia są wyłączone</em> - Nie będziesz otrzymywał powiadomień o
-						dropach i wiadomościach od innych użytkowników.{" "}
-					</Message>
-					<StyledLink to={route("ALLOW_NOTIFICATIONS")}>Włącz powiadomienia</StyledLink>
+					{areNotificationsSupported ? (
+						<>
+							<Message>
+								<em>Powiadomienia są wyłączone</em> - Nie będziesz otrzymywał powiadomień
+								o dropach i wiadomościach od innych użytkowników.{" "}
+							</Message>
+							<StyledLink to={route("ALLOW_NOTIFICATIONS")}>
+								Włącz powiadomienia
+							</StyledLink>
+						</>
+					) : (
+						<Message>
+							<em>Twoja przeglądarka nie wspiera powiadomień</em> - By otrzymywać
+							powiadomienia, użyj innej przeglądarki np. Mozilla Firefox, Google Chrome.
+						</Message>
+					)}
 				</InnerContainer>
 			</PageContainer>
 		</OuterContainer>
