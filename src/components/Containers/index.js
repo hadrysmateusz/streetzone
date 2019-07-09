@@ -27,7 +27,7 @@ export const PageContainer = styled.section`
 `
 
 export const MainPageContainer = styled.div`
-	min-height: 95vh;
+	min-height: calc(100vh - var(--page-header-height));
 	padding-bottom: var(--spacing3);
 `
 

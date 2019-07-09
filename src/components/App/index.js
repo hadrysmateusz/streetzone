@@ -14,27 +14,20 @@ import FlashMessages from "../FlashMessages"
 const AppContainer = styled.div`
 	position: relative;
 	z-index: 0;
-	display: flex;
-	flex-direction: column;
-	min-height: 100vh;
 `
 
 class App extends React.Component {
 	render = () => {
 		return (
 			<Router>
-				<div id="App-Element">
-					{/* <Meta /> */}
-					<FlashMessages>
-						<AppContainer>
-							<PageHeader />
-							<div style={{ flex: 1 }}>
-								<Routes />
-							</div>
-							<Footer />
-						</AppContainer>
-					</FlashMessages>
-				</div>
+				{/* <Meta /> */}
+				<FlashMessages>
+					<AppContainer id="App-Element">
+						<PageHeader />
+						<Routes />
+						<Footer />
+					</AppContainer>
+				</FlashMessages>
 			</Router>
 		)
 	}
