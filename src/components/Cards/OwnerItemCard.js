@@ -143,7 +143,7 @@ const StatusContainer = styled.div`
 const PromoteStatus = ({ promotingLevel, promotedUntil }) => {
 	// const numDaysLeft = moment(promotedUntil).diff(Date.now(), "days")
 	const diff = moment(promotedUntil).diff(moment())
-	const timeLeft = moment.duration(diff).humanize()
+	const timeLeft = promotedUntil ? moment.duration(diff).humanize() : "Brak"
 	const hasTimeLeft = +timeLeft > 0
 	const promotingType = hasTimeLeft ? promotingLevels[promotingLevel] : "Brak"
 
@@ -153,7 +153,7 @@ const PromoteStatus = ({ promotingLevel, promotedUntil }) => {
 				Poziom promowania: <b>{promotingType}</b>
 			</div>
 			<div>
-				Pozostało promowania: <b>{timeLeft || "Brak"}</b>
+				Pozostało promowania: <b>{timeLeft}</b>
 			</div>
 		</StatusContainer>
 	)
