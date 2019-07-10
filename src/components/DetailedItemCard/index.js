@@ -4,7 +4,7 @@ import { withRouter } from "react-router-dom"
 import { compose } from "recompose"
 
 import { withFirebase } from "../Firebase"
-import UserPreview from "../UserPreview"
+import UserPreview from "../UserPreview/old"
 import Button, { ButtonContainer, LoaderButton } from "../Button"
 import { Separator } from "../Basics"
 import { SmallTextBlock, HorizontalContainer, TextBlock } from "../StyledComponents"

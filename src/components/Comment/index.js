@@ -2,7 +2,7 @@ import React from "react"
 import moment from "moment"
 import StarRatings from "react-star-ratings"
 
-import UserPreview from "../UserPreview"
+import UserPreview from "../UserPreview/old"
 import { IconButton, ButtonContainer } from "../Button"
 import MoreButton from "../MoreButton"
 import { Text, SmallText, TextBlock } from "../StyledComponents"

@@ -8,7 +8,7 @@ import styled from "styled-components/macro"
 
 import { NotificationsDisabledBar } from "../../components/NotificationsDisabled"
 import LoadingSpinner from "../../components/LoadingSpinner"
-import UserPreview from "../../components/UserPreview"
+import UserPreview from "../../components/UserPreview/old"
 import { withAuthorization } from "../../components/UserSession"
 import { PageContainer } from "../../components/Containers"
 import ProfilePicture from "../../components/ProfilePicture"

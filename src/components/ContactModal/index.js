@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 import { StatefulModal } from "../Modal/new"
 import { ButtonContainer, Button } from "../Button"
-import UserPreview from "../UserPreview/new"
+import UserPreview from "../UserPreview"
 
 import { useUser } from "../../hooks"
 import { route } from "../../utils"

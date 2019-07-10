@@ -9,7 +9,7 @@ import { withAuthorization } from "../../components/UserSession"
 import { PageContainer } from "../../components/Containers"
 import { LoaderButton, ButtonContainer } from "../../components/Button"
 import { Textarea } from "../../components/FormElements"
-import UserPreview from "../../components/UserPreview/new"
+import UserPreview from "../../components/UserPreview"
 import PageHeading from "../../components/PageHeading"
 
 import { useFirebase, useAuthentication, useUser } from "../../hooks"
