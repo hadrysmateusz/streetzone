@@ -30,6 +30,8 @@ import { dateFormat } from "../../../utils/formatting/formatDropData"
 import { itemDataHelpers } from "../../../utils"
 import { CONST } from "../../../constants"
 
+import WhereToBuyModal from "./WhereToBuyModal"
+
 const { formatDesigners } = itemDataHelpers
 
 const DisclaimerContainer = styled.div`
@@ -116,10 +118,14 @@ const DropDetailsPage = ({ match, history }) => {
 								margin-bottom: var(--spacing3);
 							`}
 						>
-							{/* TODO: make this button functional */}
-							<Button primary fullWidth big>
-								Gdzie kupić
-							</Button>
+							<WhereToBuyModal links={drop.buyAt}>
+								{({ open }) => (
+									<Button primary fullWidth big onClick={open}>
+										Gdzie kupić
+									</Button>
+								)}
+							</WhereToBuyModal>
+
 							<SaveButton type="drop" id={drop.id} />
 						</ButtonContainer>
 
