@@ -99,7 +99,7 @@ const DealPage = ({ match }) => {
 							`}
 						>
 							{/* TODO: make this button functional */}
-							<LinkButton to={deal.link} primary fullWidth big>
+							<LinkButton to={deal.link} primary fullWidth big external>
 								Idź do okazji
 							</LinkButton>
 						</ButtonContainer>

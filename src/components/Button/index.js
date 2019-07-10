@@ -217,7 +217,14 @@ const LoaderButton = styled(LoaderButtonUnstyled)`
 	}
 `
 
-const LinkButton = withProps({ as: Link })(Button)
+const LinkButton = ({ to, external, ...rest }) => (
+	<Button
+		as={external ? "a" : Link}
+		to={external ? undefined : to}
+		href={external ? to : undefined}
+		{...rest}
+	/>
+)
 
 export default Button
 export { LoaderButton, Button, ButtonContainer, IconButton, UnstyledButton, LinkButton }
