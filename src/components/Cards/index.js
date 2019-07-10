@@ -1,6 +1,6 @@
-import { SmallDropCard } from "./DropCard"
+import { SmallDropCard } from "./SmallDropCard"
 import { BigDropCard } from "./BigDropCard"
-import { SmallItemCard } from "./ItemCard"
+import { SmallItemCard } from "./SmallItemCard"
 import { BigItemCard } from "./BigItemCard"
 import { PostCard } from "./PostCard"
 import OwnerItemCard from "./OwnerItemCard"
