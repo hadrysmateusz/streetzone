@@ -29,7 +29,8 @@ const ThematicGroup = ({
 	showArchived,
 	hasMore,
 	component,
-	filters
+	filters,
+	ignoreArchivedStatus = false
 }) => {
 	return (
 		<StatelessSearchWrapper
@@ -38,8 +39,10 @@ const ThematicGroup = ({
 			limit={limit}
 			refinements={refinements}
 			filters={filters}
+			ignoreArchivedStatus={ignoreArchivedStatus}
 		>
 			{(results) => {
+				console.log(results)
 				return (
 					<DumbThematicGroup
 						results={results}

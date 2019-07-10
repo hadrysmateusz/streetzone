@@ -1,5 +1,6 @@
 import { SmallDropCard } from "./SmallDropCard"
 import { BigDropCard } from "./BigDropCard"
+import { SmallDealCard } from "./SmallDealCard"
 import { BigDealCard } from "./BigDealCard"
 import { SmallItemCard } from "./SmallItemCard"
 import { BigItemCard } from "./BigItemCard"
@@ -13,5 +14,6 @@ export {
 	BigItemCard,
 	BigDropCard,
 	OwnerItemCard,
-	BigDealCard
+	BigDealCard,
+	SmallDealCard
 }

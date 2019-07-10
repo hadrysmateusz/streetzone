@@ -65,6 +65,7 @@ const useSave = (type, id) => {
 	const firebase = useFirebase()
 
 	useEffect(() => {
+		if (!authUser) return
 		const isActive = authUser[attribute] && authUser[attribute].includes(id)
 		setIsActive(isActive)
 	}, [authUser, id, setIsActive, attribute])

@@ -18,7 +18,7 @@ const OuterContainer = styled.div`
 	align-content: center;
 	justify-content: space-between;
 	color: white;
-	background: var(--black25);
+	background: var(--black0);
 
 	${"" /* Stay above fixed elements like the blog header */}
 	position: relative;

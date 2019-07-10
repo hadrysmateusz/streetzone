@@ -152,13 +152,6 @@ const DropDetailsPage = ({ match, history }) => {
 							component={SmallDropCard}
 							limit={3}
 						/>
-						{/* <ThematicGroup
-							index={CONST.ITEMS_MARKETPLACE_DEFAULT_ALGOLIA_INDEX}
-							title="Inne przedmioty tego użytkownika"
-							filters={`NOT id:${item.id} AND userId:${item.userId}`}
-							component={SmallItemCard}
-							limit={3}
-						/> */}
 					</Main>
 					<Sidebar
 						availableElements={[{ component: () => <div />, title: "Placeholder" }]}

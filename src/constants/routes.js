@@ -11,7 +11,7 @@ export const DROP_DETAILS = DROPS + "/d/:id"
 export const DROPS_SECTION = DROPS + "/s/:id"
 
 export const DEALS = "/okazje"
-export const DEAL_DETAILS = DROPS + "/d/:id"
+export const DEAL_DETAILS = DEALS + "/d/:id"
 
 export const MARKETPLACE = "/kupuj"
 export const DESIGNER = "/marki/:id"

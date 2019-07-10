@@ -38,6 +38,8 @@ const StatelessSearchWrapper = (props) => {
 
 	const contextValue = { refresh }
 
+	console.log(filters)
+
 	return (
 		<InstantSearch
 			appId={process.env.REACT_APP_APP_ID}
@@ -45,7 +47,7 @@ const StatelessSearchWrapper = (props) => {
 			indexName={indexName}
 			refresh={shouldRefresh}
 		>
-			<Configure filters={filters || undefined} hitsPerPage={limit} />
+			<Configure filters={filters ? filters : undefined} hitsPerPage={limit} />
 
 			{/* apply necessary refinements */}
 			{refinements &&
