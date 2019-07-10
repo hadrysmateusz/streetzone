@@ -473,12 +473,13 @@ exports.processImage = functions
 	.runWith({ memory: "512MB" })
 	.storage.object()
 	.onFinalize(async (file) => {
+		// "attachments/" actually includes many other storage directories because they are named like "something-attachments/"
 		if (file.name.includes("attachments/")) {
 			console.log("Processing an attachment...")
 			return await processImage(file, [
-				{ size: "110x110", mode: "cover" },
-				{ size: "260x335", mode: "cover" },
-				{ size: "770x640", mode: "contain" }
+				{ size: "110x110", mode: "contain" },
+				{ size: "350x350", mode: "contain" },
+				{ size: "770x770", mode: "contain" }
 			])
 		} else if (file.name.includes("profile-pictures/")) {
 			console.log("Processing a profile picture...")
