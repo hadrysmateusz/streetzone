@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react"
-import moment from "moment"
 import styled from "styled-components/macro"
 
 import { LinkButton, ButtonContainer } from "../../components/Button"
@@ -8,10 +7,9 @@ import LoadingSpinner from "../../components/LoadingSpinner"
 import { PageContainer } from "../../components/Containers"
 import ImageGallery from "../../components/ImageGallery"
 import Share from "../../components/Share"
-import Tags from "../../components/Tags"
 import { LayoutManager, Sidebar, Main } from "../../components/LayoutManager"
 import { ThematicGroup } from "../../components/ThematicGroup"
-import { SmallDealCard, SmallDropCard } from "../../components/Cards"
+import { SmallDealCard } from "../../components/Cards"
 import {
 	Header,
 	DetailsContainer,
@@ -24,6 +22,12 @@ import {
 
 import { useFirebase } from "../../hooks"
 import { CONST } from "../../constants"
+
+const OuterContainer = styled.div`
+	@media (max-width: ${(p) => p.theme.breakpoints[2] - 1}px) {
+		margin-top: calc(-1 * var(--page-header-margin));
+	}
+`
 
 const Value = styled.div`
 	font-size: var(--fs-l);
@@ -69,7 +73,7 @@ const DealPage = ({ match }) => {
 	const similarFilters = `NOT id:${deal.id}`
 
 	return (
-		<>
+		<OuterContainer>
 			<PageContainer>
 				<ItemContainer>
 					<ImageGallery storageRefs={[deal.imageRef]} lightboxTitle={deal.title} />
@@ -128,7 +132,7 @@ const DealPage = ({ match }) => {
 					/>
 				</LayoutManager>
 			</PageContainer>
-		</>
+		</OuterContainer>
 	)
 }
 
