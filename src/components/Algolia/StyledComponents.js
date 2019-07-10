@@ -69,18 +69,6 @@ export const RangeContainer = styled.div`
 	display: grid;
 	gap: var(--spacing2);
 	grid-template-columns: 1fr 1fr;
-	input {
-		border: 1px solid ${(p) => p.theme.colors.gray[75]};
-		:hover {
-			border: 1px solid ${(p) => p.theme.colors.gray[25]};
-		}
-		color: ${(p) => p.theme.colors.black[75]};
-		padding: 0 var(--spacing2);
-		height: 100%;
-		min-width: 0;
-		min-height: 0;
-		width: 100%;
-	}
 `
 
 export const SearchBox = styled.div`

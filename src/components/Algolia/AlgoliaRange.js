@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react"
 import { connectRange } from "react-instantsearch-dom"
 
 import { AdaptiveFoldable } from "../Foldable"
+import { Input } from "../FormElements"
 
 import { RangeContainer } from "./StyledComponents"
 
@@ -49,7 +50,7 @@ const AlgoliaRange = (props) => {
 	return (
 		<AdaptiveFoldable {...props} showClear={min || max} resetState={reset}>
 			<RangeContainer>
-				<input
+				<Input
 					type="number"
 					placeholder={props.min}
 					name="min"
@@ -57,7 +58,7 @@ const AlgoliaRange = (props) => {
 					onChange={onChange}
 					value={min}
 				/>
-				<input
+				<Input
 					type="number"
 					placeholder={props.max}
 					name="max"
