@@ -3,10 +3,19 @@ import { connectCurrentRefinements } from "react-instantsearch-core"
 import styled from "styled-components/macro"
 import { compose } from "recompose"
 import { withRouter } from "react-router-dom"
+import { withBreakpoints } from "react-breakpoints"
+
+import ResultsCount from "../ResultsCount"
 
 import { itemDataHelpers, route } from "../../utils"
 
 const { formatSize } = itemDataHelpers
+
+const OuterContainer = styled.div`
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+`
 
 const ClearFiltersButton = styled.div`
 	color: ${(p) => p.theme.colors.danger[50]};
@@ -35,38 +44,42 @@ const Item = styled.div`
 	margin: var(--spacing1);
 `
 
-const CurrentFilters = ({ items, history, clearFilters, refine }) => {
+const CurrentFilters = ({ items, history, clearFilters, refine, currentBreakpoint }) => {
 	// ignore the isArchived refinement
 	items = items.filter((a) => a.attribute !== "isArchived")
 
 	return items && items.length > 0 ? (
-		<Container>
-			{items.map((item) => {
-				if (item.attribute === "price") {
-					return <Item>Cena</Item>
-				} else if (item.attribute === "size") {
-					return item.currentRefinement.map((refinement) => (
-						<Item>{formatSize(refinement)}</Item>
-					))
-				} else {
-					return item.currentRefinement.map((refinement) => <Item>{refinement}</Item>)
-				}
-			})}
-			{items && items.length > 0 && (
-				<ClearFiltersButton
-					onClick={() => {
-						history.replace(route("MARKETPLACE"))
-						clearFilters()
-					}}
-				>
-					Wyczyść wszystko
-				</ClearFiltersButton>
-			)}
-		</Container>
+		<OuterContainer>
+			<Container>
+				{items.map((item) => {
+					if (item.attribute === "price") {
+						return <Item>Cena</Item>
+					} else if (item.attribute === "size") {
+						return item.currentRefinement.map((refinement) => (
+							<Item>{formatSize(refinement)}</Item>
+						))
+					} else {
+						return item.currentRefinement.map((refinement) => <Item>{refinement}</Item>)
+					}
+				})}
+				{items && items.length > 0 && (
+					<ClearFiltersButton
+						onClick={() => {
+							history.replace(route("MARKETPLACE"))
+							clearFilters()
+						}}
+					>
+						Wyczyść wszystko
+					</ClearFiltersButton>
+				)}
+			</Container>
+			{+currentBreakpoint >= 1 && <ResultsCount />}
+		</OuterContainer>
 	) : null
 }
 
 export default compose(
 	connectCurrentRefinements,
-	withRouter
+	withRouter,
+	withBreakpoints
 )(CurrentFilters)

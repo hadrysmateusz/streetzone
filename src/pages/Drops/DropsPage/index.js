@@ -1,6 +1,5 @@
 import React from "react"
 import styled from "styled-components/macro"
-import { connectStateResults } from "react-instantsearch-dom"
 
 import BlackBox from "../../../components/BlackBox"
 import { BigDropCard } from "../../../components/Cards"
@@ -8,6 +7,7 @@ import { PageContainer } from "../../../components/Containers"
 import { LayoutManager, Main, Sidebar } from "../../../components/LayoutManager"
 import { PopularArticles } from "../../../components/SidebarComponents"
 import InfiniteScrollingResults from "../../../components/InfiniteScrollingResults"
+import ResultsCount from "../../../components/ResultsCount"
 
 import sections from "./sections"
 import SectionSelect from "./SectionSelect"
@@ -41,16 +41,6 @@ const Header = styled.h1`
 		text-align: left;
 	}
 `
-
-const ResultsCountContainer = styled.div`
-	color: var(--gray25);
-`
-
-const ResultsCount = connectStateResults(({ searchResults }) => {
-	const nbHits = searchResults && searchResults.nbHits
-
-	return <ResultsCountContainer>{nbHits} wyników</ResultsCountContainer>
-})
 
 const DropsMain = withDropsSearchWrapper(({ currentSection }) => {
 	const isArchive = currentSection.id === "archive"
