@@ -141,10 +141,10 @@ const StatusContainer = styled.div`
 `
 
 const PromoteStatus = ({ promotingLevel, promotedUntil }) => {
-	// const numDaysLeft = moment(promotedUntil).diff(Date.now(), "days")
+	const numDaysLeft = moment(promotedUntil).diff(Date.now(), "days")
 	const diff = moment(promotedUntil).diff(moment())
 	const timeLeft = promotedUntil ? moment.duration(diff).humanize() : "Brak"
-	const hasTimeLeft = +timeLeft > 0
+	const hasTimeLeft = numDaysLeft > 0
 	const promotingType = hasTimeLeft ? promotingLevels[promotingLevel] : "Brak"
 
 	return (
