@@ -52,6 +52,7 @@ const ITEMS_CUSTOM_ALGOLIA_INDEX = isProd ? "prod_custom" : "dev_custom"
 const BLOG_POST_ALGOLIA_INDEX = isProd ? "prod_posts" : "dev_posts"
 const BLOG_DROP_ALGOLIA_INDEX = isProd ? "prod_drops" : "dev_drops"
 const BLOG_DROP_NEWEST_ALGOLIA_INDEX = isProd ? "prod_drops_newest" : "dev_drops_newest"
+const DEALS_ALGOLIA_INDEX = isProd ? "prod_deals" : "dev_deals"
 const DESIGNERS_ALGOLIA_INDEX = isProd ? "prod_designers" : "dev_designers"
 
 // ===============================================================================
@@ -104,7 +105,7 @@ const algoliaDelete = (snap, context, indexName) => {
 }
 
 // ------------------------------------
-// ------------ Item Events -----------
+// -------- Item Algolia Sync ---------
 // ------------------------------------
 
 exports.onItemCreated = functions.firestore
@@ -126,7 +127,7 @@ exports.onItemDeleted = functions.firestore
 	})
 
 // ------------------------------------
-// --------- Blog Post Events ---------
+// -------- Post Algolia Sync ---------
 // ------------------------------------
 
 exports.onBlogPostCreated = functions.firestore
@@ -148,7 +149,29 @@ exports.onBlogPostDeleted = functions.firestore
 	})
 
 // ------------------------------------
-// --------- Drops Events ---------
+// -------- Deals Algolia Sync --------
+// ------------------------------------
+
+exports.onDealCreated = functions.firestore
+	.document(`deals/{id}`)
+	.onCreate((snap, context) => {
+		algoliaAdd(snap, context, DEALS_ALGOLIA_INDEX)
+	})
+
+exports.onDealUpdated = functions.firestore
+	.document(`deals/{id}`)
+	.onUpdate((snap, context) => {
+		algoliaUpdate(snap, context, DEALS_ALGOLIA_INDEX)
+	})
+
+exports.onDealDeleted = functions.firestore
+	.document(`deals/{id}`)
+	.onDelete((snap, context) => {
+		algoliaDelete(snap, context, DEALS_ALGOLIA_INDEX)
+	})
+
+// ------------------------------------
+// -------- Drops Algolia Sync --------
 // ------------------------------------
 
 exports.onDropCreated = functions.firestore

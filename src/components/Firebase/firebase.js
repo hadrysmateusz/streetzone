@@ -213,6 +213,11 @@ class Firebase {
 	drop = (id) => this.db.collection("drops").doc(id)
 	drops = () => this.db.collection("drops")
 
+	// Deals API
+
+	deal = (id) => this.db.collection("deals").doc(id)
+	deals = () => this.db.collection("deals")
+
 	// Designers API
 
 	designer = (id) => this.db.collection("designers").doc(id)
@@ -240,6 +245,17 @@ class Firebase {
 
 	removeFile = async (ref) => {
 		return this.file(ref).delete()
+	}
+
+	/**
+	 * removes all files (original and thumbanails) for a given base storageRef
+	 * @param {string} storageRef storageRef of file to be deleted
+	 */
+	removeAllImagesOfRef = async (storageRef) => {
+		await this.removeFile(storageRef)
+		await this.removeFile(storageRef + L_THUMB_POSTFIX)
+		await this.removeFile(storageRef + M_THUMB_POSTFIX)
+		await this.removeFile(storageRef + S_THUMB_POSTFIX)
 	}
 
 	batchRemoveFiles = async (refs) => {

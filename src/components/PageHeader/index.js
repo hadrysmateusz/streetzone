@@ -290,9 +290,6 @@ const PageHeaderMobile = ({ authUser, firebase, location }) => (
 					)}
 
 					<BurgerNavigation>
-						<MobileNavLink to={route("HOME")} exact>
-							Strona główna
-						</MobileNavLink>
 						<MobileNavLink to={route("BLOG_HOME")}>Czytaj</MobileNavLink>
 						<MobileNavLink to={route("DROPS_SECTION", { id: "newest" })}>
 							Dropy
@@ -324,24 +321,13 @@ const PageHeaderMobile = ({ authUser, firebase, location }) => (
 	</MobileSignOutWrapper>
 )
 
-const PageHeaderDesktop = ({ authUser, firebase, location }) => {
+const PageHeaderDesktop = ({ authUser, location }) => {
 	return (
 		<MobileSignOutWrapper>
 			{(openSignOutModal) => (
 				<PageHeaderContainerDesktop>
 					<Logo />
 					<Nav main>
-						<DesktopNavItem link={route("BLOG_HOME")} label="Czytaj" alignSubmenu="left">
-							{Object.values(POST_CATEGORIES).map((category) => (
-								<SubmenuItem
-									key={category}
-									link={route("BLOG_CATEGORY", { category })}
-									exact
-									label={category}
-								/>
-							))}
-						</DesktopNavItem>
-
 						<DesktopNavItem
 							link={route("DROPS_SECTION", { id: "newest" })}
 							label="Dropy"
@@ -361,20 +347,40 @@ const PageHeaderDesktop = ({ authUser, firebase, location }) => {
 						<DesktopNavItem
 							link={route("MARKETPLACE")}
 							exact
-							label="Kupuj"
+							label="Tablica"
 							alignSubmenu="left"
 						>
 							<SubmenuItem link={route("MARKETPLACE")} label="Tablica" />
 							<SubmenuItem link={route("DESIGNERS")} label="Projektanci / Marki" />
 						</DesktopNavItem>
 
+						<DesktopNavItem link={route("DEALS")} label="Okazje" />
+
+						<DesktopNavItem link={route("BLOG_HOME")} label="Blog" alignSubmenu="left">
+							{Object.values(POST_CATEGORIES).map((category) => (
+								<SubmenuItem
+									key={category}
+									link={route("BLOG_CATEGORY", { category })}
+									exact
+									label={category}
+								/>
+							))}
+						</DesktopNavItem>
+
 						<DesktopNavItem link={route("NEW_ITEM")} label="Sprzedawaj" />
 
-						<DesktopNavItem link={route("FAQ")} label="Informacje" alignSubmenu="left">
-							<SubmenuItem link={route("ABOUT")} label="O nas" />
-							<SubmenuItem link={route("CONTACT")} label="Kontakt" />
+						<DesktopNavItem link={route("CONTACT")} label="Kontakt" />
+
+						<DesktopNavItem
+							link={route("FAQ")}
+							label={<FontAwesomeIcon icon="ellipsis-h" />}
+							alignSubmenu="left"
+						>
 							<SubmenuItem link={route("FAQ")} label="FAQ" />
 							<SubmenuItem link={route("ADVERTISE")} label="Współpraca" />
+							<SubmenuItem link={route("PROMOTING_INFO")} label="O promowaniu" />
+							<SubmenuItem link={route("PARTNERS")} label="Partnerzy" />
+							<SubmenuItem link={route("ABOUT")} label="O nas" />
 						</DesktopNavItem>
 					</Nav>
 

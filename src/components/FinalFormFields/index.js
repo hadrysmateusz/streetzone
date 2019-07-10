@@ -64,89 +64,79 @@ export const Section = styled.div`
 	}
 `
 
-export const TextFF = ({ label, name, placeholder, info, password = false }) => {
-	return (
-		<Section>
-			<div className="header">{label}</div>
-			<Field name={name}>
-				{({ input, meta }) => {
-					const error = meta.error && meta.touched ? meta.error : null
-					return (
-						<Input
-							{...input}
-							type={password ? "password" : "text"}
-							placeholder={placeholder}
-							error={error}
-							info={info}
-						/>
-					)
-				}}
-			</Field>
-		</Section>
-	)
-}
+export const TextFF = ({ label, name, placeholder, info, password = false }) => (
+	<Section>
+		<div className="header">{label}</div>
+		<Field name={name}>
+			{({ input, meta }) => {
+				const error = meta.error && meta.touched ? meta.error : null
+				return (
+					<Input
+						{...input}
+						type={password ? "password" : "text"}
+						placeholder={placeholder}
+						error={error}
+						info={info}
+					/>
+				)
+			}}
+		</Field>
+	</Section>
+)
 
-export const NumberFF = ({ label, name, step, min, max, placeholder, info }) => {
-	return (
-		<Section>
-			<div className="header">{label}</div>
-			<Field name={name}>
-				{({ input, meta }) => {
-					const error = meta.error && meta.touched ? meta.error : null
-					return (
-						<Input
-							{...input}
-							type="number"
-							placeholder={placeholder}
-							error={error}
-							step={step}
-							min={min}
-							max={max}
-							info={info}
-						/>
-					)
-				}}
-			</Field>
-		</Section>
-	)
-}
+export const NumberFF = ({ label, name, step, min, max, placeholder, info }) => (
+	<Section>
+		<div className="header">{label}</div>
+		<Field name={name}>
+			{({ input, meta }) => {
+				const error = meta.error && meta.touched ? meta.error : null
+				return (
+					<Input
+						{...input}
+						type="number"
+						placeholder={placeholder}
+						error={error}
+						step={step}
+						min={min}
+						max={max}
+						info={info}
+					/>
+				)
+			}}
+		</Field>
+	</Section>
+)
 
-export const TextareaFF = ({ label, name, placeholder, info }) => {
-	return (
-		<Section>
-			<div className="header">{label}</div>
-			<Field name={name}>
-				{({ input, meta }) => {
-					const error = meta.error && meta.touched ? meta.error : null
-					return (
-						<Textarea {...input} placeholder={placeholder} error={error} info={info} />
-					)
-				}}
-			</Field>
-		</Section>
-	)
-}
+export const TextareaFF = ({ label, name, placeholder, info }) => (
+	<Section>
+		<div className="header">{label}</div>
+		<Field name={name}>
+			{({ input, meta }) => {
+				const error = meta.error && meta.touched ? meta.error : null
+				return <Textarea {...input} placeholder={placeholder} error={error} info={info} />
+			}}
+		</Field>
+	</Section>
+)
 
-export const MultiTextInputFF = ({ label, name, placeholder, info }) => {
-	return (
-		<Section>
-			<div className="header">{label}</div>
-			<Field name={name} type="select">
-				{({ input, meta }) => {
-					const error = meta.error && meta.touched ? meta.error : null
-					return (
-						<MultiTextInputFinalform
-							{...input}
-							placeholder={placeholder}
-							error={error}
-							info={info}
-						/>
-					)
-				}}
-			</Field>
-		</Section>
-	)
-}
+export const MultiTextInputFF = ({ label, name, placeholder, info }) => (
+	<Section>
+		<div className="header">{label}</div>
+		<Field name={name} type="select">
+			{({ input, meta }) => {
+				const error = meta.error && meta.touched ? meta.error : null
+				return (
+					<MultiTextInputFinalform
+						{...input}
+						placeholder={placeholder}
+						error={error}
+						info={info}
+					/>
+				)
+			}}
+		</Field>
+	</Section>
+)
 
 export const DropdownFF = ({
 	label,
@@ -157,114 +147,123 @@ export const DropdownFF = ({
 	isClearable,
 	isMulti,
 	info
-}) => {
-	return (
-		<Section>
-			<div className="header">{label}</div>
-			<Field name={name} type="select">
-				{({ input, meta }) => {
-					const error = meta.error && meta.touched ? meta.error : null
-					return (
-						<DropdownFinalform
-							{...input}
-							options={options}
-							placeholder={placeholder}
-							error={error}
-							isSearchable={isSearchable}
-							isClearable={isClearable}
-							isMulti={isMulti}
-							info={info}
-						/>
-					)
-				}}
-			</Field>
-		</Section>
-	)
-}
+}) => (
+	<Section>
+		<div className="header">{label}</div>
+		<Field name={name} type="select">
+			{({ input, meta }) => {
+				const error = meta.error && meta.touched ? meta.error : null
+				return (
+					<DropdownFinalform
+						{...input}
+						options={options}
+						placeholder={placeholder}
+						error={error}
+						isSearchable={isSearchable}
+						isClearable={isClearable}
+						isMulti={isMulti}
+						info={info}
+					/>
+				)
+			}}
+		</Field>
+	</Section>
+)
 
-export const FileHandlerFF = ({ label, name, info }) => {
-	return (
-		<Section>
-			<div className="header">{label}</div>
-			<Field name={name}>
-				{({ input, meta }) => {
-					const error = meta.error && meta.touched ? meta.error.main : null
-					const itemErrors = meta.error ? meta.error.specific : null
-					return (
-						<FileHandler {...input} error={error} itemErrors={itemErrors} info={info} />
-					)
-				}}
-			</Field>
-		</Section>
-	)
-}
+export const FileHandlerFF = ({ label, name, info }) => (
+	<Section>
+		<div className="header">{label}</div>
+		<Field name={name}>
+			{({ input, meta }) => {
+				const error = meta.error && meta.touched ? meta.error.main : null
+				const itemErrors = meta.error ? meta.error.specific : null
+				return (
+					<FileHandler {...input} error={error} itemErrors={itemErrors} info={info} />
+				)
+			}}
+		</Field>
+	</Section>
+)
 
-export const ProfilePictureFF = ({ label, name, info }) => {
-	return (
-		<Section>
-			<div className="header">{label}</div>
-			<Field name={name}>
-				{({ input, meta }) => {
-					const error = meta.error && meta.touched ? meta.error : null
+export const FileHandlerSingleFF = ({ label, name, info }) => (
+	<Section>
+		<div className="header">{label}</div>
+		<Field name={name}>
+			{({ input, meta }) => {
+				const error = meta.error && meta.touched ? meta.error : null
 
-					return (
-						<FileHandlerSingle
-							{...input}
-							error={error}
-							info={info}
-							containerStyles={css`
-								width: 220px;
-								height: 220px;
-								border-radius: 50%;
-								margin: 0 auto;
-							`}
-						/>
-					)
-				}}
-			</Field>
-		</Section>
-	)
-}
+				return (
+					<FileHandlerSingle
+						{...input}
+						error={error}
+						info={info}
+						containerStyles={css`
+							width: 280px;
+							height: 280px;
+							margin: 0 auto;
+						`}
+					/>
+				)
+			}}
+		</Field>
+	</Section>
+)
 
-export const LiveFileHandlerFF = ({ label, name, uploadPath, info }) => {
-	return (
-		<Section>
-			<div className="header">{label}</div>
-			<Field name={name}>
-				{({ input, meta }) => {
-					const error = meta.error && meta.touched ? meta.error : null
-					return (
-						<LiveFileHandler
-							{...input}
-							uploadPath={uploadPath}
-							error={error}
-							info={info}
-						/>
-					)
-				}}
-			</Field>
-		</Section>
-	)
-}
+export const ProfilePictureFF = ({ label, name, info }) => (
+	<Section>
+		<div className="header">{label}</div>
+		<Field name={name}>
+			{({ input, meta }) => {
+				const error = meta.error && meta.touched ? meta.error : null
 
-export const MarkdownEditorFF = ({ label, name, info }) => {
-	return (
-		<Section>
-			<div className="header">{label}</div>
-			<Field name={name}>
-				{({ input, meta }) => {
-					const error = meta.error && meta.touched ? meta.error : null
-					const { value } = input
-					return (
-						<ContentEditorContainer>
-							<FileHandlerText {...input} error={error} info={info} />
-							<PreviewStyles>
-								<ReactMarkdown source={value} escapeHtml={false} />
-							</PreviewStyles>
-						</ContentEditorContainer>
-					)
-				}}
-			</Field>
-		</Section>
-	)
-}
+				return (
+					<FileHandlerSingle
+						{...input}
+						error={error}
+						info={info}
+						containerStyles={css`
+							width: 220px;
+							height: 220px;
+							border-radius: 50%;
+							margin: 0 auto;
+						`}
+					/>
+				)
+			}}
+		</Field>
+	</Section>
+)
+
+export const LiveFileHandlerFF = ({ label, name, uploadPath, info }) => (
+	<Section>
+		<div className="header">{label}</div>
+		<Field name={name}>
+			{({ input, meta }) => {
+				const error = meta.error && meta.touched ? meta.error : null
+				return (
+					<LiveFileHandler {...input} uploadPath={uploadPath} error={error} info={info} />
+				)
+			}}
+		</Field>
+	</Section>
+)
+
+export const MarkdownEditorFF = ({ label, name, info }) => (
+	<Section>
+		<div className="header">{label}</div>
+		<Field name={name}>
+			{({ input, meta }) => {
+				const error = meta.error && meta.touched ? meta.error : null
+				const { value } = input
+				return (
+					<ContentEditorContainer>
+						<FileHandlerText {...input} error={error} info={info} />
+						<PreviewStyles>
+							<ReactMarkdown source={value} escapeHtml={false} />
+						</PreviewStyles>
+					</ContentEditorContainer>
+				)
+			}}
+		</Field>
+	</Section>
+)

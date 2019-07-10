@@ -2,6 +2,7 @@ import React, { memo } from "react"
 import { Link } from "react-router-dom"
 import styled from "styled-components/macro"
 import moment from "moment"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 import { FluidImage } from "../Image"
 
@@ -25,7 +26,7 @@ const Container = styled.div`
 	background: white;
 	/* box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.1); */
 
-	a {
+	> a {
 		${cardBorder}
 		overflow: hidden;
 		display: grid;
@@ -40,7 +41,7 @@ const Container = styled.div`
 	}
 `
 
-const Name = styled.div`
+const Title = styled.div`
 	--line-height: 1.5em;
 
 	color: var(--black0);
@@ -55,20 +56,52 @@ const Name = styled.div`
 	}
 `
 
-const BigDropCardDumb = memo(
-	({ id, name, designers, imageUrl, dealFigure, createdAt }) => (
+const ValueContainer = styled.div`
+	border: 1px solid var(--gray75);
+	border-radius: 4px;
+	position: relative;
+	color: var(--gray0);
+	white-space: nowrap;
+	margin-left: var(--spacing1);
+	display: flex;
+	align-items: center;
+
+	.value-container {
+		padding: var(--spacing1) var(--spacing2);
+		:not(:last-child) {
+			border-right: 1px solid var(--gray75);
+		}
+	}
+`
+
+const ExternalLink = styled.a`
+	padding: 0 7px;
+	font-size: 1.3rem;
+`
+
+const Value = ({ value, link }) => (
+	<ValueContainer>
+		<div className="value-container">{value}</div>
+		<ExternalLink href={link} onClick={(e) => e.stopPropagation()}>
+			<FontAwesomeIcon icon="external-link-alt" />
+		</ExternalLink>
+	</ValueContainer>
+)
+
+const BigDealCardDumb = memo(
+	({ id, title, designers, imageUrl, value, link, createdAt }) => (
 		<Container>
-			<Link to={route("DROP_DETAILS", { id })}>
+			<Link to={route("DEAL_DETAILS", { id })}>
 				<FluidImage url={imageUrl} />
 				<InfoContainer>
 					<TopContainer>
 						<Designers value={designers} />
 					</TopContainer>
 					<MiddleContainer flex>
-						<Name>{name}</Name>
-						{/* <div className="align-right">
-								<DropCountdown dropsAt={dropsAtString} id={id} />
-							</div> */}
+						<Title>{title}</Title>
+						<div className="align-right">
+							<Value value={value} link={link} />
+						</div>
 					</MiddleContainer>
 					<BottomContainer>
 						<DateContainer>{createdAt}</DateContainer>
@@ -79,8 +112,8 @@ const BigDropCardDumb = memo(
 	)
 )
 
-export const BigDropCard = memo(({ imageRef, createdAt, ...rest }) => {
+export const BigDealCard = memo(({ imageRef, createdAt, ...rest }) => {
 	const { imageURL } = useImage(imageRef, "M")
 	const formattedCreatedAt = moment(createdAt).format("LL")
-	return <BigDropCardDumb imageUrl={imageURL} createdAt={formattedCreatedAt} {...rest} />
+	return <BigDealCardDumb imageUrl={imageURL} createdAt={formattedCreatedAt} {...rest} />
 })

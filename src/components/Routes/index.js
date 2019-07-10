@@ -119,12 +119,22 @@ const BlogCategory = Loadable({
 })
 
 // ===== DROPS =====
-const BlogDrop = Loadable({
+const Drop = Loadable({
 	loader: () => import("../../pages/Drops/DropPage"),
 	loading: LoadableComponentSpinner
 })
 const Drops = Loadable({
 	loader: () => import("../../pages/Drops/DropsPage"),
+	loading: LoadableComponentSpinner
+})
+
+// ===== DEALS =====
+const Deal = Loadable({
+	loader: () => import("../../pages/Deals/DealPage"),
+	loading: LoadableComponentSpinner
+})
+const Deals = Loadable({
+	loader: () => import("../../pages/Deals/DealsPage"),
 	loading: LoadableComponentSpinner
 })
 
@@ -157,6 +167,19 @@ const AdminEditDrop = Loadable({
 })
 const AdminAddDrop = Loadable({
 	loader: () => import("../../pages/Admin/Drops/Add"),
+	loading: LoadableComponentSpinner
+})
+
+const AdminDeals = Loadable({
+	loader: () => import("../../pages/Admin/Deals"),
+	loading: LoadableComponentSpinner
+})
+const AdminEditDeal = Loadable({
+	loader: () => import("../../pages/Admin/Deals/Edit"),
+	loading: LoadableComponentSpinner
+})
+const AdminAddDeal = Loadable({
+	loader: () => import("../../pages/Admin/Deals/Add"),
 	loading: LoadableComponentSpinner
 })
 
@@ -308,6 +331,176 @@ export const ACCOUNT_ROUTES = [
 	}
 ]
 
+// ===== ADMIN ROUTES CONFIG =====
+export const ADMIN_ROUTES = [
+	{
+		id: "blog",
+		path: ROUTES.ADMIN_BLOG,
+		component: AdminBlog,
+		isNavigable: true
+	},
+	{
+		id: "blogEditPost",
+		path: ROUTES.ADMIN_BLOG_EDIT,
+		component: AdminBlogEditPost,
+		isNavigable: false
+	},
+	{
+		id: "blogAddPost",
+		path: ROUTES.ADMIN_BLOG_ADD,
+		component: AdminBlogAddPost,
+		isNavigable: false
+	},
+	{
+		id: "deals",
+		path: ROUTES.ADMIN_DEALS,
+		component: AdminDeals,
+		isNavigable: true
+	},
+	{
+		id: "edit_deal",
+		path: ROUTES.ADMIN_DEALS_EDIT,
+		component: AdminEditDeal,
+		isNavigable: false
+	},
+	{
+		id: "add_deal",
+		path: ROUTES.ADMIN_DEALS_ADD,
+		component: AdminAddDeal,
+		isNavigable: false
+	},
+	{
+		id: "drops",
+		path: ROUTES.ADMIN_DROPS,
+		component: AdminDrops,
+		isNavigable: true
+	},
+	{
+		id: "edit_drop",
+		path: ROUTES.ADMIN_DROPS_EDIT,
+		component: AdminEditDrop,
+		isNavigable: false
+	},
+	{
+		id: "add_drop",
+		path: ROUTES.ADMIN_DROPS_ADD,
+		component: AdminAddDrop,
+		isNavigable: false
+	},
+	{
+		id: "items",
+		path: ROUTES.ADMIN_ITEMS,
+		component: AdminItems,
+		isNavigable: true
+	},
+	{
+		id: "users",
+		path: ROUTES.ADMIN_USERS,
+		component: AdminUsers,
+		isNavigable: true
+	},
+	{
+		id: "designers",
+		path: ROUTES.ADMIN_DESIGNERS,
+		component: AdminDesigners,
+		isNavigable: true
+	},
+	{
+		id: "designerEdit",
+		path: ROUTES.ADMIN_DESIGNER_EDIT,
+		component: AdminDesignerEdit,
+		isNavigable: false
+	}
+]
+
+const INFO_ROUTES = [
+	{
+		path: ROUTES.ABOUT,
+		component: About,
+		title: "O nas",
+		label: "O nas",
+		category: "Info"
+	},
+	{
+		path: ROUTES.CONTACT,
+		component: Contact,
+		title: "Kontakt",
+		label: "Kontakt",
+		category: "Info"
+	},
+	{
+		path: ROUTES.FAQ,
+		component: FAQ,
+		title: `FAQ`,
+		label: `FAQ`,
+		category: "Pomoc"
+	},
+	{
+		path: ROUTES.PROMOTING_INFO,
+		component: PromotingInfo,
+		title: `Promowanie i odświeżanie`,
+		label: `Promowanie i odświeżanie`,
+		category: "Pomoc"
+	},
+	{
+		path: ROUTES.ALLOW_ADS,
+		component: AllowAds,
+		title: `Zezwól na reklamy`,
+		label: `Zezwól na reklamy`,
+		hidden: true,
+		category: "Pomoc"
+	},
+	{
+		path: ROUTES.ALLOW_NOTIFICATIONS,
+		component: AllowNotifications,
+		title: `Włącz powiadomienia`,
+		label: `Włącz powiadomienia`,
+		category: "Pomoc"
+	},
+	{
+		path: ROUTES.BUG_REPORT,
+		component: BugReport,
+		title: "Zgłoś problem",
+		label: "Zgłoś problem",
+		category: "Pomoc"
+	},
+	{
+		path: ROUTES.ADVERTISE,
+		component: Advertise,
+		title: "Reklamuj się",
+		label: "Reklamuj się",
+		category: "Współpraca"
+	},
+	{
+		path: ROUTES.PARTNERS,
+		component: Partners,
+		title: "Partnerzy",
+		label: "Partnerzy",
+		category: "Współpraca"
+	},
+	{
+		path: ROUTES.WRITE_FOR_US,
+		component: WriteForUs,
+		title: "Pisz dla nas",
+		label: "Pisz dla nas",
+		category: "Współpraca"
+	},
+	{
+		path: ROUTES.TERMS,
+		component: Terms,
+		title: "Regulamin",
+		label: "Regulamin",
+		category: "Prawne"
+	},
+	{
+		path: ROUTES.PRIVACY_POLICY,
+		component: PrivacyPolicy,
+		title: "Polityka Prywatności",
+		label: "Polityka Prywatności",
+		category: "Prawne"
+	}
+]
+
 // ===== CONFIG OBJECT =====
 const routes = [
 	{
@@ -326,68 +519,7 @@ const routes = [
 		path: ROUTES.ADMIN_BASE,
 		component: Admin,
 		exact: false,
-		routes: [
-			{
-				id: "blog",
-				path: ROUTES.ADMIN_BLOG,
-				component: AdminBlog,
-				isNavigable: true
-			},
-			{
-				id: "blogEditPost",
-				path: ROUTES.ADMIN_BLOG_EDIT,
-				component: AdminBlogEditPost,
-				isNavigable: false
-			},
-			{
-				id: "blogAddPost",
-				path: ROUTES.ADMIN_BLOG_ADD,
-				component: AdminBlogAddPost,
-				isNavigable: false
-			},
-			{
-				id: "drops",
-				path: ROUTES.ADMIN_DROPS,
-				component: AdminDrops,
-				isNavigable: true
-			},
-			{
-				id: "edit_drop",
-				path: ROUTES.ADMIN_DROPS_EDIT,
-				component: AdminEditDrop,
-				isNavigable: false
-			},
-			{
-				id: "add_drop",
-				path: ROUTES.ADMIN_DROPS_ADD,
-				component: AdminAddDrop,
-				isNavigable: false
-			},
-			{
-				id: "items",
-				path: ROUTES.ADMIN_ITEMS,
-				component: AdminItems,
-				isNavigable: true
-			},
-			{
-				id: "users",
-				path: ROUTES.ADMIN_USERS,
-				component: AdminUsers,
-				isNavigable: true
-			},
-			{
-				id: "designers",
-				path: ROUTES.ADMIN_DESIGNERS,
-				component: AdminDesigners,
-				isNavigable: true
-			},
-			{
-				id: "designerEdit",
-				path: ROUTES.ADMIN_DESIGNER_EDIT,
-				component: AdminDesignerEdit,
-				isNavigable: false
-			}
-		]
+		routes: ADMIN_ROUTES
 	},
 	{
 		path: ROUTES.BLOG_BASE,
@@ -428,7 +560,15 @@ const routes = [
 	{
 		id: "drop",
 		path: ROUTES.DROP_DETAILS,
-		component: BlogDrop
+		component: Drop
+	},
+	{
+		path: ROUTES.DEALS,
+		component: Deals
+	},
+	{
+		path: ROUTES.DEAL_DETAILS,
+		component: Deal
 	},
 	{
 		path: ROUTES.DESIGNERS,
@@ -503,93 +643,7 @@ const routes = [
 		path: ROUTES.INFO_BASE,
 		exact: false,
 		component: Info,
-		routes: [
-			{
-				path: ROUTES.ABOUT,
-				component: About,
-				title: "O nas",
-				label: "O nas",
-				category: "Info"
-			},
-			{
-				path: ROUTES.CONTACT,
-				component: Contact,
-				title: "Kontakt",
-				label: "Kontakt",
-				category: "Info"
-			},
-			{
-				path: ROUTES.FAQ,
-				component: FAQ,
-				title: `FAQ`,
-				label: `FAQ`,
-				category: "Pomoc"
-			},
-			{
-				path: ROUTES.PROMOTING_INFO,
-				component: PromotingInfo,
-				title: `Promowanie i odświeżanie`,
-				label: `Promowanie i odświeżanie`,
-				category: "Pomoc"
-			},
-			{
-				path: ROUTES.ALLOW_ADS,
-				component: AllowAds,
-				title: `Zezwól na reklamy`,
-				label: `Zezwól na reklamy`,
-				hidden: true,
-				category: "Pomoc"
-			},
-			{
-				path: ROUTES.ALLOW_NOTIFICATIONS,
-				component: AllowNotifications,
-				title: `Włącz powiadomienia`,
-				label: `Włącz powiadomienia`,
-				category: "Pomoc"
-			},
-			{
-				path: ROUTES.BUG_REPORT,
-				component: BugReport,
-				title: "Zgłoś problem",
-				label: "Zgłoś problem",
-				category: "Pomoc"
-			},
-			{
-				path: ROUTES.ADVERTISE,
-				component: Advertise,
-				title: "Reklamuj się",
-				label: "Reklamuj się",
-				category: "Współpraca"
-			},
-			{
-				path: ROUTES.PARTNERS,
-				component: Partners,
-				title: "Partnerzy",
-				label: "Partnerzy",
-				category: "Współpraca"
-			},
-			{
-				path: ROUTES.WRITE_FOR_US,
-				component: WriteForUs,
-				title: "Pisz dla nas",
-				label: "Pisz dla nas",
-				category: "Współpraca"
-			},
-			{
-				path: ROUTES.TERMS,
-				component: Terms,
-				title: "Regulamin",
-				label: "Regulamin",
-				category: "Prawne"
-			},
-			{
-				path: ROUTES.PRIVACY_POLICY,
-				component: PrivacyPolicy,
-				title: "Polityka Prywatności",
-				label: "Polityka Prywatności",
-				category: "Prawne"
-			}
-		]
+		routes: INFO_ROUTES
 	}
 ]
 

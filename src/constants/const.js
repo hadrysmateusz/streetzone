@@ -16,6 +16,7 @@ export const L_THUMB_POSTFIX = "_L_THUMB"
 
 export const STORAGE_BUCKET_BLOG_ATTACHMENTS = "blog-attachments"
 export const STORAGE_BUCKET_DROP_ATTACHMENTS = "drop-attachments"
+export const STORAGE_BUCKET_DEAL_ATTACHMENTS = "deal-attachments"
 export const STORAGE_BUCKET_ITEM_ATTACHMENTS = "attachments"
 
 // eslint-disable-next-line
@@ -31,5 +32,6 @@ export const BLOG_POST_ALGOLIA_INDEX = `${env}_posts`
 export const BLOG_DROP_ALGOLIA_INDEX = `${env}_drops`
 export const BLOG_DROP_ARCHIVE_ALGOLIA_INDEX = `${env}_drops_archive`
 export const BLOG_DROP_NEWEST_ALGOLIA_INDEX = `${env}_drops_newest`
+export const DEALS_ALGOLIA_INDEX = `${env}_deals`
 export const DESIGNERS_ALGOLIA_INDEX = `${env}_designers`
 // ===============================================================================

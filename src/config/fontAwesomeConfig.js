@@ -44,7 +44,8 @@ import {
 	faClipboard,
 	faCode,
 	faBell,
-	faEnvelope
+	faEnvelope,
+	faExternalLinkAlt
 } from "@fortawesome/free-solid-svg-icons"
 import {
 	faHeart as farHeart,
@@ -108,5 +109,6 @@ library.add(
 	faCode,
 	faBell,
 	farBell,
-	faEnvelope
+	faEnvelope,
+	faExternalLinkAlt
 )
