@@ -4,7 +4,7 @@ import styled from "styled-components/macro"
 
 import Button, { ButtonContainer } from "../../../components/Button"
 import { SmallTextBlock } from "../../../components/StyledComponents"
-import FollowButton from "../../../components/DropCountdown/FollowButton"
+import { SaveButton, SaveIconButton } from "../../../components/SaveButton"
 import LoadingSpinner from "../../../components/LoadingSpinner"
 import { PageContainer } from "../../../components/Containers"
 import ImageGallery from "../../../components/ImageGallery"
@@ -99,7 +99,7 @@ const DropDetailsPage = ({ match, history }) => {
 						<DetailsContainer>
 							<InfoItem name="Data Dropu">{dropsAtDate}</InfoItem>
 							{isTimeKnown && <InfoItem name="Data Dropu">{dropsAtTime}</InfoItem>}
-							<FollowButton id={drop.id} />
+							<SaveIconButton type="drop" id={drop.id} scale={1.6} />
 						</DetailsContainer>
 
 						{drop.description && (
@@ -120,9 +120,7 @@ const DropDetailsPage = ({ match, history }) => {
 							<Button primary fullWidth big>
 								Gdzie kupić
 							</Button>
-							<Button>
-								<FollowButton id={drop.id} />
-							</Button>
+							<SaveButton type="drop" id={drop.id} />
 						</ButtonContainer>
 
 						<DisclaimerContainer>

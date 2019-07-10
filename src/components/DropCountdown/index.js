@@ -5,7 +5,7 @@ import moment from "moment"
 import { dateFormat } from "../../utils/formatting/formatDropData"
 import { useAuthentication } from "../../hooks"
 
-import FollowButton from "./FollowButton"
+import { SaveIconButton } from "../SaveButton"
 
 const CountdownContainer = styled.div`
 	border: 1px solid var(--gray75);
@@ -106,13 +106,13 @@ const DropCountdown = ({ dropsAt, id }) => {
 	return value ? (
 		<CountdownContainer>
 			<div className="value-container">{value}</div>
-			<FollowButton id={id} />
+			<SaveIconButton type="drop" id={id} scale={1.4} />
 		</CountdownContainer>
 	) : (
 		<CountdownContainer isArchival>
 			<div className="value-container">Archiwum</div>
 			{/* only show the follow button in archival drops if it is active */}
-			{isSaved && <FollowButton id={id} />}
+			{isSaved && <SaveIconButton type="drop" id={id} scale={1.4} />}
 		</CountdownContainer>
 	)
 }

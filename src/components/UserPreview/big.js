@@ -8,7 +8,7 @@ import ProfilePicture from "../ProfilePicture"
 import LoadingSpinner from "../LoadingSpinner"
 import UserRating from "../UserRating"
 import InfoItem from "../InfoItem"
-import { HeartButton, TYPE } from "../SaveButton"
+import { SaveIconButton } from "../SaveButton"
 
 import getProfilePictureURL from "../../utils/getProfilePictureURL"
 import { useFirebase, useUser } from "../../hooks"
@@ -95,7 +95,7 @@ const BigUserPreview = withRouter(({ userId }) => {
 				<ProfilePicture url={profilePictureUrl} size="40px" />
 				<div className="name">{user.name}</div>
 				<div className="follow-button-container">
-					<HeartButton id={userId} type={TYPE.USER} scale={1.8} />
+					<SaveIconButton id={userId} type="user" scale={1.8} />
 				</div>
 			</div>
 			<DetailsContainer

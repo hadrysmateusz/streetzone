@@ -4,7 +4,7 @@ import { Link } from "react-router-dom"
 import moment from "moment"
 import { withBreakpoints } from "react-breakpoints"
 
-import { HeartButton, TYPE } from "../SaveButton"
+import { SaveIconButton } from "../SaveButton"
 import LoadingSpinner from "../LoadingSpinner"
 
 import { ThumbnailContainer, StyledIcon, Container, FluidImage } from "./StyledComponents"
@@ -53,7 +53,7 @@ export const ItemCard = withBreakpoints(({ item, currentBreakpoint, ...rest }) =
 					<div className="bottom-container">
 						<div className="price">{formattedPrice}</div>
 						<div className="like-button">
-							<HeartButton id={id} type={TYPE.ITEM} scale={1.5} />
+							<SaveIconButton id={id} type="item" scale={1.5} />
 						</div>
 					</div>
 				</div>
@@ -101,7 +101,7 @@ export const ItemCardHorizontal = withBreakpoints(
 						<div className="bottom-container">
 							<div className="price">{formattedPrice}</div>
 							<div className="like-button">
-								<HeartButton id={id} type={TYPE.ITEM} scale={1.5} />
+								<HeartButton id={id} type={"ITEM"} scale={1.5} />
 							</div>
 						</div>
 					</div>

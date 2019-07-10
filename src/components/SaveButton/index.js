@@ -1,74 +1,137 @@
 import React, { useState, useEffect } from "react"
-import styled from "styled-components/macro"
-import PropTypes from "prop-types"
+import styled, { css } from "styled-components/macro"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+
+import { useAuthentication, useFirebase, useFlash } from "../../hooks"
+import { shakeAnimation, heartbeatAnimation } from "../../style-utils/animations"
 
 import AuthModal from "../AuthModal"
 import { Button } from "../Button"
 
-import { useAuthentication, useFirebase, useFlash } from "../../hooks"
-import { heartbeatAnimation } from "../../style-utils/animations"
-
-export const TYPE = {
-	ITEM: "savedItems",
-	USER: "followedUsers"
-}
-
-const INVALID_TYPE_ERR = "SaveButton needs a valid type"
-
-const HeartButtonContainer = styled.div`
+const IconButtonContainer = styled.div`
 	padding: var(--spacing1);
-	color: inherit;
+	color: var(--gray25);
 	display: flex;
 	cursor: pointer;
 	justify-content: center;
 	align-items: center;
 	transition: transform 0.2s ease;
-
 	font-size: ${(p) => 10 * (p.scale || 1)}px;
+	${(p) =>
+		!p.isActive &&
+		css`
+			:hover {
+				${(p) => p.animation}
+			}
+		`}
 
 	.filled {
-		color: var(--accent50);
-	}
-
-	:hover {
-		${heartbeatAnimation}
+		color: var(--gray25);
 	}
 `
 
-const SaveButtonLogic = ({ id, type, children }) => {
-	const firebase = useFirebase()
-	const [authUser, isAuthenticated] = useAuthentication(true)
-	const [isSaved, setIsSaved] = useState(false)
-	const flashMessage = useFlash()
-
-	const checkIfSaved = () => {
-		const isSaved = isAuthenticated && authUser[type] && authUser[type].includes(id)
-
-		setIsSaved(isSaved)
+export const TYPE = {
+	item: {
+		actionType: "save",
+		attribute: "savedItems",
+		text: "Zapisz",
+		activeText: "Zapisano",
+		icon: "heart",
+		animation: heartbeatAnimation
+	},
+	user: {
+		actionType: "save",
+		attribute: "followedUsers",
+		text: "Obserwuj",
+		activeText: "Obserwujesz",
+		icon: "bell",
+		animation: shakeAnimation
+	},
+	drop: {
+		actionType: "follow",
+		attribute: "followedDrops",
+		text: "Obserwuj",
+		activeText: "Obserwujesz",
+		icon: "bell",
+		animation: shakeAnimation
 	}
+}
 
-	const toggleSaved = async () => {
-		const wasSaved = isSaved
+const useSave = (type, id) => {
+	const { attribute, actionType } = TYPE[type]
+	const [authUser, isAuthenticated] = useAuthentication(true)
+	const [isActive, setIsActive] = useState(false)
+	const flashMessage = useFlash()
+	const firebase = useFirebase()
+
+	useEffect(() => {
+		const isActive = authUser[attribute] && authUser[attribute].includes(id)
+		setIsActive(isActive)
+	}, [authUser, id, setIsActive, attribute])
+
+	const toggleSave = async () => {
+		const wasActive = isActive
 		// Assume the operation will be successful and set state early
-		setIsSaved(!wasSaved)
+		setIsActive(!wasActive)
 
 		try {
 			// Get the old list
-			const oldList = authUser[type] || []
+			const oldList = authUser[attribute] || []
 			// Either delete or add to the list
-			const newList = wasSaved ? oldList.filter((a) => a !== id) : [...oldList, id]
+			const newList = wasActive ? oldList.filter((a) => a !== id) : [...oldList, id]
 			// Update the db
-			await firebase.currentUser().update({ [type]: newList })
+			await firebase.currentUser().update({ [attribute]: newList })
 
 			flashMessage({
 				type: "success",
-				textContent: wasSaved ? "Usunięto z zapisanych" : "Zapisano!"
+				textContent: wasActive ? "Usunięto z zapisanych" : "Zapisano!"
 			})
 		} catch (error) {
 			console.log(error)
 			// Revert the state change if there was an error
-			setIsSaved(wasSaved)
+			setIsActive(wasActive)
+		}
+	}
+
+	const toggleFollow = async () => {
+		const wasActive = isActive
+		// Assume the operation will be successful and set state early
+		setIsActive(!wasActive)
+
+		try {
+			if (!wasActive) {
+				// add user to list of subscribers
+				firebase.db
+					.collection(attribute)
+					.doc(id)
+					.collection("subscribers")
+					.doc(authUser.uid)
+					.set({ isSubscribed: true })
+
+				// add to user's list
+				firebase.currentUser().update({
+					[attribute]: firebase.FieldValue.arrayUnion(id)
+				})
+			} else {
+				// remove user from list of subscribers
+				firebase.db
+					.collection(attribute)
+					.doc(id)
+					.collection("subscribers")
+					.doc(authUser.uid)
+					.delete()
+
+				// remove from user's list
+				firebase.currentUser().update({
+					[attribute]: firebase.FieldValue.arrayRemove(id)
+				})
+			}
+
+			flashMessage(wasActive ? "Usunięto z obserwowanych" : "Zaobserwowano!")
+		} catch (error) {
+			console.log(error)
+			// Revert the state change if there was an error
+			setIsActive(wasActive)
 		}
 	}
 
@@ -76,87 +139,64 @@ const SaveButtonLogic = ({ id, type, children }) => {
 		e.preventDefault()
 		e.stopPropagation()
 
-		toggleSaved()
+		switch (actionType) {
+			case "save":
+				toggleSave()
+				break
+			case "follow":
+				toggleFollow()
+				break
+			default:
+				throw Error("Invalid action type")
+		}
 	}
 
-	useEffect(() => {
-		checkIfSaved()
-	}, [authUser, id, type])
-
-	if (!Object.values(TYPE).includes(type)) {
-		console.error(INVALID_TYPE_ERR)
-		return null
-	}
-
-	return isAuthenticated ? (
-		children({ isSaved, onClick })
-	) : (
-		<AuthModal>{({ open }) => children({ isSaved, onClick: open })}</AuthModal>
-	)
+	return { isActive, isAuthenticated, onClick }
 }
 
-export const HeartButton = ({ type, id, scale, ...props }) => {
+const Icon = ({ isActive, icon }) => (
+	<div className="fa-layers fa-fw">
+		{isActive ? (
+			<FontAwesomeIcon className="filled" icon={icon} />
+		) : (
+			<FontAwesomeIcon className="outline" icon={["far", icon]} />
+		)}
+	</div>
+)
+
+export const SaveIconButton = ({ type, id, scale }) => {
+	const { icon, text, activeText, animation } = TYPE[type]
+	const { isActive, onClick, isAuthenticated } = useSave(type, id)
+
 	return (
-		<SaveButtonLogic type={type} id={id}>
-			{({ isSaved, onClick }) => {
-				return (
-					<HeartButtonContainer onClick={onClick} scale={scale} {...props}>
-						<div className="fa-layers fa-fw">
-							{isSaved ? (
-								<FontAwesomeIcon className="filled" icon="heart" />
-							) : (
-								<FontAwesomeIcon className="outline" icon={["far", "heart"]} />
-							)}
-						</div>
-					</HeartButtonContainer>
-				)
-			}}
-		</SaveButtonLogic>
+		<AuthModal>
+			{({ open }) => (
+				<IconButtonContainer
+					onClick={isAuthenticated ? onClick : open}
+					scale={scale}
+					animation={animation}
+					isActive={isActive}
+					title={isActive ? text : activeText}
+				>
+					<Icon isActive={isActive} icon={icon} />
+				</IconButtonContainer>
+			)}
+		</AuthModal>
 	)
 }
 
-export const SaveButton = ({ text, savedText, type, id, ...props }) => {
+export const SaveButton = ({ type, id, ...rest }) => {
+	const { icon, text, activeText } = TYPE[type]
+	const { isActive, onClick, isAuthenticated } = useSave(type, id)
+
 	return (
-		<SaveButtonLogic type={type} id={id}>
-			{({ isSaved, onClick }) => {
-				return (
-					<Button onClick={onClick} {...props}>
-						<div
-							className="fa-layers fa-fw"
-							css={`
-								margin-right: var(--spacing1);
-								font-size: 11px;
-							`}
-						>
-							{isSaved ? (
-								<FontAwesomeIcon className="filled" icon="heart" />
-							) : (
-								<FontAwesomeIcon className="outline" icon={["far", "heart"]} />
-							)}
-						</div>
-						{isSaved ? savedText : text}
-					</Button>
-				)
-			}}
-		</SaveButtonLogic>
+		<AuthModal>
+			{({ open }) => (
+				<Button onClick={isAuthenticated ? onClick : open} {...rest}>
+					<Icon isActive={isActive} icon={icon} />
+					{isActive ? activeText : text}
+				</Button>
+			)}
+		</AuthModal>
 	)
-}
-
-SaveButtonLogic.propTypes = {
-	id: PropTypes.string.isRequired,
-	type: PropTypes.string.isRequired,
-	children: PropTypes.func.isRequired
-}
-
-HeartButton.propTypes = {
-	id: PropTypes.string.isRequired,
-	type: PropTypes.string.isRequired,
-	scale: PropTypes.number
-}
-
-SaveButton.propTypes = {
-	id: PropTypes.string.isRequired,
-	type: PropTypes.string.isRequired,
-	text: PropTypes.string.isRequired,
-	savedText: PropTypes.string.isRequired
 }

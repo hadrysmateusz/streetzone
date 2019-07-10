@@ -7,12 +7,11 @@ import { withBreakpoints } from "react-breakpoints"
 import ProfilePicture from "../../../components/ProfilePicture"
 import getProfilePictureURL from "../../../utils/getProfilePictureURL"
 import Button, { ButtonContainer } from "../../../components/Button"
-import { TYPE, SaveButton } from "../../../components/SaveButton"
+import { SaveButton } from "../../../components/SaveButton"
 import { TextBlock, HorizontalContainer } from "../../../components/StyledComponents"
 import InfoItem from "../../../components/InfoItem"
 import { PageContainer } from "../../../components/Containers"
 import ContactModal from "../../../components/ContactModal"
-// import MoreButton from "../../../components/MoreButton"
 
 import {
 	MainInfoContainer,
@@ -107,13 +106,7 @@ const MainInfo = ({ user, isAuthorized, userId, currentBreakpoint }) => {
 										</Button>
 									)}
 								</ContactModal>
-								<SaveButton
-									id={userId}
-									type={TYPE.USER}
-									text="Obserwuj"
-									savedText="Obserwujesz"
-									fullWidth={currentBreakpoint <= 1}
-								/>
+								<SaveButton id={userId} type="user" fullWidth={currentBreakpoint <= 1} />
 								{/* <MoreButton title="Więcej">
 									<div>Zgłoś naruszenie</div>
 								</MoreButton> */}

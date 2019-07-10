@@ -3,7 +3,7 @@ import { Link } from "react-router-dom"
 import styled from "styled-components/macro"
 import moment from "moment"
 
-import { HeartButton, TYPE } from "../SaveButton"
+import { SaveIconButton } from "../SaveButton"
 import { FluidImage } from "../Image"
 
 import { route } from "../../utils"
@@ -78,13 +78,13 @@ export const BigItemCardDumb = memo(
 						<BottomContainer pinToBottom>
 							<Price value={price} />
 							<div className="align-right">
-								<HeartButton
+								<SaveIconButton
 									css={`
 										color: var(--gray25);
 										padding-right: 0;
 									`}
 									id={id}
-									type={TYPE.ITEM}
+									type="item"
 									scale={1.5}
 								/>
 							</div>

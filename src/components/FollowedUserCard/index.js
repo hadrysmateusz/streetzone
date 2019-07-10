@@ -5,7 +5,7 @@ import LoadingSpinner from "../LoadingSpinner"
 
 import UserPreview from "../UserPreview"
 import { SmallTextBlock } from "../StyledComponents"
-import { HeartButton, TYPE } from "../SaveButton"
+import { SaveIconButton } from "../SaveButton"
 import { AlgoliaScrollableHits } from "../Algolia/AlgoliaHits"
 import { VirtualMenu } from "../Algolia/Virtual"
 import { UncontrolledInstantSearchWrapper } from "../InstantSearchWrapper"
@@ -23,7 +23,7 @@ const FollowedUserCard = ({ id }) => {
 		<OuterContainer>
 			<UpperGrid>
 				<UserPreview user={user} error={error} id={id} />
-				<HeartButton id={id} type={TYPE.USER} scale="2" />
+				<SaveIconButton id={id} type="user" scale="2" />
 			</UpperGrid>
 			{!error && (
 				<>

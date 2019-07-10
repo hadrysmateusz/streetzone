@@ -6,7 +6,7 @@ import { css } from "styled-components/macro"
 import Button, { ButtonContainer } from "../../components/Button"
 import DeleteItemButton from "../../components/DeleteItemButton"
 import { SmallTextBlock } from "../../components/StyledComponents"
-import { SaveButton, TYPE } from "../../components/SaveButton"
+import { SaveButton } from "../../components/SaveButton"
 import LoadingSpinner from "../../components/LoadingSpinner"
 import { PageContainer } from "../../components/Containers"
 import ImageGallery from "../../components/ImageGallery"
@@ -158,13 +158,7 @@ const ItemDetailsPage = ({ match, history }) => {
 										)}
 									</ContactModal>
 
-									<SaveButton
-										fullWidth
-										text="Zapisz"
-										savedText="Zapisano"
-										type={TYPE.ITEM}
-										id={item.id}
-									/>
+									<SaveButton type="item" id={item.id} fullWidth />
 								</>
 							)}
 						</ButtonContainer>

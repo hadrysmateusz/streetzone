@@ -10,12 +10,10 @@ import { OwnerItemCard } from "../../components/Cards"
 import { Button } from "../../components/Button"
 import ItemsView from "../../components/ItemsView"
 import EmptyState from "../../components/EmptyState/new"
+import { SaveButton } from "../../components/SaveButton"
 
 import { CONST } from "../../constants"
 import { route } from "../../utils"
-
-import { SaveButton } from "../../components/SaveButton"
-import { TYPE } from "../../components/DropCountdown/FollowButton"
 
 const ItemsList = styled.div`
 	> * + * {
@@ -64,13 +62,7 @@ const ItemsResults = ({ isAuthorized, userId }) => {
 			emptyState={
 				<EmptyState header="Ten użytkownik nie wystawił aktualnie żadnego przedmiotu">
 					<div>Obserwuj by dowiedzieć się gdy coś wystawi</div>
-					<SaveButton
-						type={TYPE.USER}
-						id={userId}
-						text="Obserwuj"
-						savedText="Obserwujesz"
-						fullWidth
-					/>
+					<SaveButton type="user" id={userId} fullWidth />
 				</EmptyState>
 			}
 		>
