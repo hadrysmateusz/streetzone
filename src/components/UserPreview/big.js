@@ -7,6 +7,7 @@ import { Button, ButtonContainer } from "../Button"
 import ProfilePicture from "../ProfilePicture"
 import LoadingSpinner from "../LoadingSpinner"
 import UserRating from "../UserRating"
+import ContactModal from "../ContactModal"
 import InfoItem from "../InfoItem"
 import { SaveIconButton } from "../SaveButton"
 
@@ -117,9 +118,13 @@ const BigUserPreview = withRouter(({ userId }) => {
 			</DetailsContainer>
 
 			<ButtonContainer vertical noMargin>
-				<Button primary fullWidth>
-					Kontakt
-				</Button>
+				<ContactModal userId={userId}>
+					{({ open }) => (
+						<Button primary fullWidth onClick={open}>
+							Kontakt
+						</Button>
+					)}
+				</ContactModal>
 				<Button fullWidth as={Link} to={route("ACCOUNT_ITEMS", { id: userId })}>
 					Zobacz Profil
 				</Button>
