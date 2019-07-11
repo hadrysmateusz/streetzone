@@ -1,9 +1,9 @@
 import React from "react"
 import styled, { css } from "styled-components/macro"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { withRouter } from "react-router-dom"
 import { Link } from "react-router-dom"
 
-import { withProps } from "../../HOCs"
 import { ellipsis, resetButtonStyles } from "../../style-utils"
 import { SPIN } from "../../style-utils/keyframes"
 
@@ -226,5 +226,17 @@ const LinkButton = ({ to, external, ...rest }) => (
 	/>
 )
 
+const BackButton = withRouter(({ history, children = "Wróć" }) => (
+	<Button onClick={() => history.goBack()}>{children}</Button>
+))
+
 export default Button
-export { LoaderButton, Button, ButtonContainer, IconButton, UnstyledButton, LinkButton }
+export {
+	LoaderButton,
+	Button,
+	ButtonContainer,
+	IconButton,
+	UnstyledButton,
+	LinkButton,
+	BackButton
+}
