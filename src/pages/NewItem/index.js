@@ -6,14 +6,11 @@ import { withFirebase } from "../../components/Firebase"
 import { PageContainer } from "../../components/Containers"
 
 import { formatItemDataForDb, MODE } from "../../utils/formatting/formatItemData"
-import { useDesignerOptions } from "../../hooks"
 import { ROUTES, CONST } from "../../constants"
 
 import NewItemForm from "./NewItemForm"
 
 const NewItemPage = () => {
-	const designerOptions = useDesignerOptions()
-
 	const onSubmit = async (values) => {
 		try {
 			const { firebase, history, authUser } = this.props
@@ -54,7 +51,7 @@ const NewItemPage = () => {
 
 	return (
 		<PageContainer maxWidth={2}>
-			<NewItemForm onSubmit={onSubmit} designerOptions={designerOptions} />
+			<NewItemForm onSubmit={onSubmit} />
 		</PageContainer>
 	)
 }

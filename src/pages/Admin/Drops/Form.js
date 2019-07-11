@@ -15,10 +15,13 @@ import {
 
 import { dateFormat } from "../../../utils/formatting/formatDropData"
 import { ITEM_SCHEMA } from "../../../constants"
+import { useDesignerOptions } from "../../../hooks"
 
 import { StyledForm } from "../Common"
 
 export default ({ onSubmit, initialValues, edit }) => {
+	const designerOptions = useDesignerOptions()
+
 	return !initialValues && edit ? (
 		<LoadingSpinner />
 	) : (
@@ -55,7 +58,7 @@ export default ({ onSubmit, initialValues, edit }) => {
 							label="Projektanci przedmiotu"
 							name="designers"
 							placeholder="Projektanci / Marki"
-							options={ITEM_SCHEMA.designerOptions}
+							options={designerOptions}
 							isClearable={true}
 							isSearchable={true}
 							isMulti={true}
