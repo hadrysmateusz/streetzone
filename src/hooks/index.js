@@ -13,6 +13,7 @@ import useTabs from "./useTabs"
 import useUser from "./useUser"
 import useBodyScrollLock from "./useBodyScrollLock"
 import useStateButton from "./useStateButton"
+import useDesignerOptions from "./useDesignerOptions"
 
 export {
 	useFirestoreCollection,
@@ -29,5 +30,6 @@ export {
 	useUser,
 	useTabs,
 	useBodyScrollLock,
-	useStateButton
+	useStateButton,
+	useDesignerOptions
 }

@@ -5,6 +5,7 @@ import * as itemDataHelpers from "./itemDataHelpers"
 import getRedirectTo from "./getRedirectTo"
 import sleep from "./sleep"
 import arrayPad from "./arrayPad"
+import makeReactSelectOption from "./makeReactSelectOption"
 
 export {
 	mapN,
@@ -13,5 +14,6 @@ export {
 	itemDataHelpers,
 	getRedirectTo,
 	sleep,
-	arrayPad
+	arrayPad,
+	makeReactSelectOption
 }
