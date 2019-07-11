@@ -3,6 +3,7 @@ import { PageContainer } from "../../components/Containers"
 import { withRouter } from "react-router-dom"
 import { Form } from "react-final-form"
 import styled from "styled-components/macro"
+import shortid from "shortid"
 
 import { LoaderButton, ButtonContainer, BackButton } from "../../components/Button"
 import { TextFF } from "../../components/FinalFormFields"
@@ -29,14 +30,20 @@ const RequestDesigner = ({ history }) => {
 	const flashMessage = useFlash()
 
 	const onSubmit = async (values, actions) => {
+		const id = shortid.generate()
+
 		let payload = {
 			name: values.name,
 			user: authUser ? authUser.uid : null,
-			requestedAt: Date.now()
+			requestedAt: Date.now(),
+			id
 		}
 
 		// Add drop to database
-		await firebase.db.collection("requestedDesigners").add(payload)
+		await firebase.db
+			.collection("requestedDesigners")
+			.doc(id)
+			.set(payload)
 
 		// show flash message
 		flashMessage({ type: "success", textContent: "Wysłano prośbę o dodanie" })

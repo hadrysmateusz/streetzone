@@ -1,18 +1,19 @@
 import React from "react"
 import shortid from "shortid"
+import styled from "styled-components/macro"
+import { Form, Field } from "react-final-form"
+import moment from "moment"
 
 import LoadingSpinner from "../../../components/LoadingSpinner"
-import styled from "styled-components/macro"
-
 import Button, { LoaderButton, ButtonContainer } from "../../../components/Button"
 import { Input } from "../../../components/FormElements"
 import { TextBlock } from "../../../components/StyledComponents"
 import { FileHandlerSingle } from "../../../components/FileHandler"
-import { Form, Field } from "react-final-form"
-import useFirebase from "../../../hooks/useFirebase"
-import useDesigners from "../../../hooks/useDesigners"
-import { FORM_ERR } from "../../../constants"
 import { PageContainer } from "../../../components/Containers"
+
+import { FORM_ERR } from "../../../constants"
+
+import { useDesigners, useFirestoreCollection, useFirebase } from "../../../hooks"
 
 const Swatch = styled.div`
 	width: 40px;
@@ -50,6 +51,61 @@ const DesignerItemContainer = styled.div`
 	border: 1px solid black;
 	padding: var(--spacing2);
 `
+
+const DesignerRequest = styled.div`
+	background: white;
+	border: 1px solid var(--gray75);
+	padding: var(--spacing3);
+	margin-bottom: var(--spacing2);
+
+	h3 {
+		margin: 0;
+	}
+`
+
+const RequestedDesigners = () => {
+	const requestedDesigners = useFirestoreCollection("requestedDesigners")
+	const firebase = useFirebase()
+
+	const markAsDone = async (request) => {
+		console.log(request)
+
+		// If the request was anonymous don't send any notifications
+		if (!request.user) return
+
+		const confirmDesignerAdded = firebase.functions.httpsCallable("confirmDesignerAdded")
+		await confirmDesignerAdded({ userId: request.user })
+		await deleteRequest(request)
+	}
+
+	const deleteRequest = async (request) => {
+		const res = window.confirm(`Czy napewno usunąć prośbę (${request.name})`)
+		if (!res) return
+
+		// remove the request from the list
+		await firebase.db
+			.collection("requestedDesigners")
+			.doc(request.id)
+			.delete()
+	}
+
+	return requestedDesigners ? (
+		requestedDesigners.map((request) => (
+			<DesignerRequest>
+				<h3>{request.name}</h3>
+				<div>Requested At: {moment(request.requestedAt).format("LL")}</div>
+				<ButtonContainer>
+					<Button onClick={() => markAsDone(request)}>Potwierdź dodanie</Button>
+					<Button danger onClick={() => deleteRequest(request)}>
+						Usuń
+					</Button>
+				</ButtonContainer>
+			</DesignerRequest>
+		))
+	) : (
+		<div>Brak</div>
+	)
+}
 
 const DesignerItem = ({ designer }) => {
 	const firebase = useFirebase()
@@ -210,6 +266,12 @@ const DesignersDb = () => {
 			<TextBlock size="xl" bold>
 				Designers
 			</TextBlock>
+
+			<TextBlock size="m" color="gray0">
+				Requested Designers
+			</TextBlock>
+
+			<RequestedDesigners />
 
 			<TextBlock size="m" color="gray0">
 				Add designer

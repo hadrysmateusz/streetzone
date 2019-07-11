@@ -722,10 +722,10 @@ exports.promote = functions.https.onCall(async (data, context) => {
 	}
 })
 
-const app = express()
-app.use(express.json()) // for parsing application/json
-app.use(cors({ origin: true }))
-app.post("/", (req, res) => {
+const promoteApp = express()
+promoteApp.use(express.json()) // for parsing application/json
+promoteApp.use(cors({ origin: true }))
+promoteApp.post("/", (req, res) => {
 	try {
 		const order = req.body.order
 		console.log("order:", order)
@@ -752,7 +752,7 @@ app.post("/", (req, res) => {
 })
 
 // Expose Express API as a single Cloud Function:
-exports.promoteNotification = functions.https.onRequest(app)
+exports.promoteNotification = functions.https.onRequest(promoteApp)
 
 const getDropsAt = (drop) => {
 	const now = moment()
@@ -882,3 +882,43 @@ exports.dropNotification = functions.pubsub
 			}
 		}
 	})
+
+// send notification to user who requested the designer to be added
+exports.confirmDesignerAdded = functions.https.onCall(async (data, context) => {
+	const userId = data.userId
+
+	if (!userId) throw Error("No user to send notification to")
+
+	console.log(data)
+	console.log(context)
+	console.log("userId: ", userId)
+
+	// Get the list of device notification tokens.
+	const tokensSnap = await db
+		.doc(`users/${userId}`)
+		.collection("notificationTokens")
+		.get()
+
+	// Check if there are any device tokens.
+	if (tokensSnap.empty) {
+		console.log("There are no notification tokens to send to.")
+		return false
+	}
+
+	const tokens = tokensSnap.docs.map((doc) => doc.id)
+
+	// Notification details
+	const payload = {
+		notification: {
+			title: `Projektant o którego prosiłeś został dodany`,
+			body: `Teraz możesz zaktualizować swoje ogłoszenie.`
+		}
+	}
+
+	console.log(tokens)
+
+	// Send notifications to all tokens.
+	const response = await admin.messaging().sendToDevice(tokens, payload)
+
+	console.log(`Response:`, response)
+})
