@@ -1,44 +1,14 @@
 import React, { useCallback, useEffect } from "react"
 import PropTypes from "prop-types"
 import { useDropzone } from "react-dropzone"
-import styled from "styled-components/macro"
 
-import { FormElementContainer, commonStyles } from "../FormElements"
+import { FormElementContainer } from "../FormElements"
 import { CustomFile } from "."
 import { ButtonContainer, Button } from "../Button"
 import FileItem from "./FileItem"
-import { overlayCommon } from "../../style-utils"
 import { Overlay } from "./common"
 
-const FileHandlerContainer = styled.div`
-	${commonStyles.basicStyles}
-	min-height: 150px;
-
-	&[disabled] {
-		${commonStyles.disabledStyles}
-	}
-
-	&:not([disabled]) {
-		:hover {
-			/* only apply hover styles if the container is empty */
-			${(p) => p.isEmpty && commonStyles.hoverStyles}
-		}
-		:focus {
-			${commonStyles.focusStyles}
-		}
-	}
-
-	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-	gap: var(--spacing3);
-	padding: var(--spacing3);
-	position: relative;
-`
-
-const EmptyState = styled.div`
-	${overlayCommon}
-	${commonStyles.placeholderStyles}
-`
+import { FileHandlerContainer, EmptyState } from "./FileHandlerStyles"
 
 const FileHandler = ({ info, error, itemErrors, disabled, value, onChange, ...rest }) => {
 	// make sure the value is always an array to prevent errors
@@ -125,7 +95,7 @@ const FileHandler = ({ info, error, itemErrors, disabled, value, onChange, ...re
 				<Button type="button" onClick={clickDropzone}>
 					{!isEmpty ? "Dodaj pliki" : "Wybierz pliki"}
 				</Button>
-				<Button type="button" onClick={onClear} disabled={isEmpty}>
+				<Button type="button" onClick={onClear} disabled={isEmpty} danger>
 					Usuń wszystkie
 				</Button>
 			</ButtonContainer>
@@ -145,12 +115,22 @@ const FileHandler = ({ info, error, itemErrors, disabled, value, onChange, ...re
 							return (
 								<FileItem
 									key={file.id}
-									onDelete={onDelete}
-									onSetMain={onSetMain}
 									id={file.id}
 									previewUrl={file.previewUrl}
 									isMain={isMain}
 									error={error}
+									actions={[
+										{
+											label: "Usuń",
+											handler: onDelete,
+											icon: "trash"
+										},
+										{
+											label: "Główne",
+											handler: onSetMain,
+											icon: ["far", "star"]
+										}
+									]}
 								/>
 							)
 					  })}

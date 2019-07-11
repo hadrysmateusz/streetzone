@@ -6,42 +6,66 @@ const spawn = require("child-process-promise").spawn
 const path = require("path")
 const os = require("os")
 const fs = require("fs")
-const serviceAccount = require("./firebase-admin-key.json")
+const axios = require("axios")
+const serviceAccount = require("./firebase-admin-key-dev.json")
+const moment = require("moment")
+const express = require("express")
+const cors = require("cors")
+
+require("moment/locale/pl")
+require("dotenv").config()
+
+// set moment.js locale
+moment.locale("pl")
+
+const dateFormat = "YY-MM-DD HH:mm"
 
 const JPEG_EXTENSION = ".jpg"
 const S_THUMB_POSTFIX = "_S_THUMB"
 const M_THUMB_POSTFIX = "_M_THUMB"
 const L_THUMB_POSTFIX = "_L_THUMB"
 
+const PRODUCTION_DOMAIN = "streetzone.pl"
+
+const CREATE_ORDER_URL = "https://secure.snd.payu.com/api/v2_1/orders"
+const GET_OAUTH_TOKEN_URL = "https://secure.snd.payu.com/pl/standard/user/oauth/authorize"
+
 const signedURLConfig = {
 	action: "read",
 	expires: "03-01-2500"
 }
 
-const GCP_STORAGE_BUCKET = "streetwear-app.appspot.com"
-const DATABASE_URL = "https://streetwear-app.firebaseio.com"
+// The FIREBASE_CONFIG environment variable is included automatically in Cloud Functions for Firebase functions that were deployed via the Firebase CLI
+const adminConfig = JSON.parse(process.env.FIREBASE_CONFIG)
+adminConfig.credential = admin.credential.cert(serviceAccount)
+admin.initializeApp(adminConfig)
 
-const ALGOLIA_ID = functions.config().algolia.app_id
-const ALGOLIA_ADMIN_KEY = functions.config().algolia.api_key
+const isProd = adminConfig.projectId.endsWith("-prod")
 
 // ===============================================================================
 // !!! REMEMBER TO ALSO CHANGE IN "SRC/CONSTANTS/CONST.JS" !!!
-const DEV_ITEMS_MARKETPLACE_DEFAULT_ALGOLIA_INDEX = "dev_items"
-const DEV_ITEMS_MARKETPLACE_PRICE_ASC_ALGOLIA_INDEX = "dev_items_price_asc"
-const DEV_ITEMS_CUSTOM_ALGOLIA_INDEX = "dev_custom"
-const DEV_BLOG_ALGOLIA_INDEX = "dev_posts"
-const DEV_DESIGNERS_ALGOLIA_INDEX = "dev_designers"
+const ITEMS_MARKETPLACE_DEFAULT_ALGOLIA_INDEX = isProd ? "prod_items" : "dev_items"
+const ITEMS_MARKETPLACE_PRICE_ASC_ALGOLIA_INDEX = isProd
+	? "prod_items_price_asc"
+	: "dev_items_price_asc"
+const ITEMS_CUSTOM_ALGOLIA_INDEX = isProd ? "prod_custom" : "dev_custom"
+const BLOG_POST_ALGOLIA_INDEX = isProd ? "prod_posts" : "dev_posts"
+const BLOG_DROP_ALGOLIA_INDEX = isProd ? "prod_drops" : "dev_drops"
+const BLOG_DROP_NEWEST_ALGOLIA_INDEX = isProd ? "prod_drops_newest" : "dev_drops_newest"
+const DEALS_ALGOLIA_INDEX = isProd ? "prod_deals" : "dev_deals"
+const DESIGNERS_ALGOLIA_INDEX = isProd ? "prod_designers" : "dev_designers"
+
 // ===============================================================================
 
+const ALGOLIA_ID = process.env.ALGOLIA_APP_ID || functions.config().algolia.app_id
+const ALGOLIA_ADMIN_KEY = process.env.ALGOLIA_API_KEY || functions.config().algolia.app_id
+const PAYU_CLIENT_ID = process.env.PAYU_CLIENT_ID || functions.config().payu.client_id
+const PAYU_CLIENT_SECRET =
+	process.env.PAYU_CLIENT_SECRET || functions.config().payu.client_secret
+
 const client = algoliasearch(ALGOLIA_ID, ALGOLIA_ADMIN_KEY)
-
-admin.initializeApp({
-	credential: admin.credential.cert(serviceAccount),
-	databaseURL: DATABASE_URL,
-	storageBucket: GCP_STORAGE_BUCKET
-})
-
 const bucket = admin.storage().bucket()
+const db = admin.firestore()
 
 // ------------------------------------
 // ---- Algolia Index Sync Helpers ----
@@ -81,47 +105,91 @@ const algoliaDelete = (snap, context, indexName) => {
 }
 
 // ------------------------------------
-// ------------ Item Events -----------
+// -------- Item Algolia Sync ---------
 // ------------------------------------
 
 exports.onItemCreated = functions.firestore
 	.document(`items/{id}`)
 	.onCreate((snap, context) => {
-		algoliaAdd(snap, context, DEV_ITEMS_MARKETPLACE_DEFAULT_ALGOLIA_INDEX)
+		algoliaAdd(snap, context, ITEMS_MARKETPLACE_DEFAULT_ALGOLIA_INDEX)
 	})
 
 exports.onItemUpdated = functions.firestore
 	.document(`items/{id}`)
 	.onUpdate((snap, context) => {
-		algoliaUpdate(snap, context, DEV_ITEMS_MARKETPLACE_DEFAULT_ALGOLIA_INDEX)
+		algoliaUpdate(snap, context, ITEMS_MARKETPLACE_DEFAULT_ALGOLIA_INDEX)
 	})
 
 exports.onItemDeleted = functions.firestore
 	.document(`items/{id}`)
 	.onDelete((snap, context) => {
-		algoliaDelete(snap, context, DEV_ITEMS_MARKETPLACE_DEFAULT_ALGOLIA_INDEX)
+		algoliaDelete(snap, context, ITEMS_MARKETPLACE_DEFAULT_ALGOLIA_INDEX)
 	})
 
 // ------------------------------------
-// --------- Blog Post Events ---------
+// -------- Post Algolia Sync ---------
 // ------------------------------------
 
 exports.onBlogPostCreated = functions.firestore
 	.document(`posts/{id}`)
 	.onCreate((snap, context) => {
-		algoliaAdd(snap, context, DEV_BLOG_ALGOLIA_INDEX)
+		algoliaAdd(snap, context, BLOG_POST_ALGOLIA_INDEX)
 	})
 
 exports.onBlogPostUpdated = functions.firestore
 	.document(`posts/{id}`)
 	.onUpdate((snap, context) => {
-		algoliaUpdate(snap, context, DEV_BLOG_ALGOLIA_INDEX)
+		algoliaUpdate(snap, context, BLOG_POST_ALGOLIA_INDEX)
 	})
 
 exports.onBlogPostDeleted = functions.firestore
 	.document(`posts/{id}`)
 	.onDelete((snap, context) => {
-		algoliaDelete(snap, context, DEV_BLOG_ALGOLIA_INDEX)
+		algoliaDelete(snap, context, BLOG_POST_ALGOLIA_INDEX)
+	})
+
+// ------------------------------------
+// -------- Deals Algolia Sync --------
+// ------------------------------------
+
+exports.onDealCreated = functions.firestore
+	.document(`deals/{id}`)
+	.onCreate((snap, context) => {
+		algoliaAdd(snap, context, DEALS_ALGOLIA_INDEX)
+	})
+
+exports.onDealUpdated = functions.firestore
+	.document(`deals/{id}`)
+	.onUpdate((snap, context) => {
+		algoliaUpdate(snap, context, DEALS_ALGOLIA_INDEX)
+	})
+
+exports.onDealDeleted = functions.firestore
+	.document(`deals/{id}`)
+	.onDelete((snap, context) => {
+		algoliaDelete(snap, context, DEALS_ALGOLIA_INDEX)
+	})
+
+// ------------------------------------
+// -------- Drops Algolia Sync --------
+// ------------------------------------
+
+exports.onDropCreated = functions.firestore
+	.document(`drops/{id}`)
+	.onCreate((snap, context) => {
+		algoliaAdd(snap, context, BLOG_DROP_ALGOLIA_INDEX)
+	})
+
+exports.onDropUpdated = functions.firestore
+	.document(`drops/{id}`)
+	.onUpdate((snap, context) => {
+		algoliaUpdate(snap, context, BLOG_DROP_ALGOLIA_INDEX)
+	})
+
+exports.onDropDeleted = functions.firestore
+	.document(`drops/{id}`)
+	.onDelete((snap, context) => {
+		algoliaDelete(snap, context, BLOG_DROP_ALGOLIA_INDEX)
 	})
 
 // ------------------------------------
@@ -131,19 +199,19 @@ exports.onBlogPostDeleted = functions.firestore
 exports.onDesignerCreated = functions.firestore
 	.document(`designers/{id}`)
 	.onCreate((snap, context) => {
-		algoliaAdd(snap, context, DEV_DESIGNERS_ALGOLIA_INDEX)
+		algoliaAdd(snap, context, DESIGNERS_ALGOLIA_INDEX)
 	})
 
 exports.onDesignerUpdated = functions.firestore
 	.document(`designers/{id}`)
 	.onUpdate((snap, context) => {
-		algoliaUpdate(snap, context, DEV_DESIGNERS_ALGOLIA_INDEX)
+		algoliaUpdate(snap, context, DESIGNERS_ALGOLIA_INDEX)
 	})
 
 exports.onDesignerDeleted = functions.firestore
 	.document(`designers/{id}`)
 	.onDelete((snap, context) => {
-		algoliaDelete(snap, context, DEV_DESIGNERS_ALGOLIA_INDEX)
+		algoliaDelete(snap, context, DESIGNERS_ALGOLIA_INDEX)
 	})
 
 // ------------------------------------
@@ -155,25 +223,21 @@ exports.removeItemImages = functions.firestore
 	.document(`items/{id}`)
 	.onDelete(async (snap) => {
 		const data = snap.data()
-		let successCount = 0
-		let failureCount = 0
 
 		const removeFile = async (name) => {
 			try {
 				const t = Date.now()
 				await bucket.file(name).delete()
 				console.log(`Deleted ${name} in ${Date.now() - t}ms`)
-				successCount++
 			} catch (err) {
 				console.error(
 					`There was a problem with deleting ${name} it might not have been deleted`,
 					err
 				)
-				failureCount++
 			}
 		}
 
-		const res = await Promise.all(
+		return Promise.all(
 			data.attachments.map(async (ref) => {
 				await removeFile(ref)
 				await removeFile(ref + S_THUMB_POSTFIX)
@@ -181,9 +245,6 @@ exports.removeItemImages = functions.firestore
 				await removeFile(ref + L_THUMB_POSTFIX)
 			})
 		)
-
-		console.log(`Success: ${successCount}, Failure: ${failureCount}`)
-		return res
 	})
 
 // When an item is removed from db remove it from it's owner's items list
@@ -192,24 +253,30 @@ exports.removeItemFromUser = functions.firestore
 	.onDelete(async (snap, context) => {
 		const data = snap.data()
 		const userId = data.userId
-		const id = context.params.id
-		const db = admin.firestore()
+		const itemId = context.params.id
 
 		// get owner's data
 		const userSnap = await db
 			.collection("users")
 			.doc(userId)
 			.get()
+
+		// return if user was deleted
+		if (!userSnap.exists) return false
+
 		const userData = userSnap.data()
+
+		console.log("userSnap", userSnap)
+		console.log("userData", userData)
+
 		// filter out the removed item
-		const newItems = userData.items.filter((item) => item.id !== id)
+		const newItems = userData.items.filter((item) => item.id !== itemId)
+
 		// update the db with the new items list
-		const res = await db
+		return db
 			.collection("users")
 			.doc(userId)
 			.update({ items: newItems })
-
-		return res
 	})
 
 // ------------------------------------
@@ -219,37 +286,53 @@ exports.removeItemFromUser = functions.firestore
 // When a user is deleted from db their items are removed from the db
 exports.removeUserItems = functions.firestore
 	.document(`users/{userId}`)
-	.onDelete((snap, context) => {
-		const db = admin.firestore()
-		const data = snap.data()
-		data.items.forEach((item) => {
-			db.collection("items")
+	.onDelete((userSnap, context) => {
+		const userData = userSnap.data()
+
+		const promises = userData.items.map((item) =>
+			db
+				.collection("items")
 				.doc(item)
 				.delete()
-				.then(() => {
-					console.log(`deleted ${item}`)
+		)
+
+		return Promise.all(promises)
+	})
+
+// When a user is deleted from db their subcollections are removed from the db
+exports.removeUserSubcollections = functions.firestore
+	.document(`users/{userId}`)
+	.onDelete(async (snap, context) => {
+		const roomsPromise = snap.ref.collection("rooms").get()
+		const notificationTokensPromise = snap.ref.collection("notificationTokens").get()
+		const subcollections = await Promise.all([roomsPromise, notificationTokensPromise])
+
+		console.log("subcollections", subcollections)
+
+		return subcollections.map((snap) => {
+			console.log("docs", snap.docs)
+			return Promise.all(
+				snap.docs.map((doc) => {
+					console.log("document", doc)
+					return doc.delete()
 				})
-				.catch((err) => console.log(err))
+			)
 		})
 	})
 
 // When an authUser is deleted the corresponding user is removed from db
 exports.userDbCleanup = functions.auth.user().onDelete((user, ...rest) => {
 	const userId = user.uid
-	const db = admin.firestore()
-	db.collection("users")
+	return db
+		.collection("users")
 		.doc(userId)
 		.delete()
-		.then(() => {
-			console.log(`user ${userId} was deleted`)
-		})
-		.catch((err) => console.log(err))
 })
 
 // TODO: When an authUser is created create a corresponding user in db
-exports.onUserCreated = functions.auth.user().onCreate((...args) => {
-	console.log("args", args)
-})
+// exports.onUserCreated = functions.auth.user().onCreate((...args) => {
+// 	console.log("args", args)
+// })
 
 // ------------------------------------
 // ---------- Image handling ----------
@@ -278,7 +361,7 @@ const uploadThumbnail = async (file, path) => {
 		public: true,
 		gzip: true,
 		metadata: {
-			cacheControl: "public, max-age=31536000"
+			cacheControl: "public, max-age=604800" // cached for a week
 		}
 	})
 	return bucket.file(path).getSignedUrl(signedURLConfig)
@@ -378,7 +461,6 @@ const writeUrlsToDb = async (userId, urls) => {
 	})
 
 	// Add the URLs to the Database
-	const db = admin.firestore()
 	return db
 		.collection("users")
 		.doc(userId)
@@ -391,12 +473,13 @@ exports.processImage = functions
 	.runWith({ memory: "512MB" })
 	.storage.object()
 	.onFinalize(async (file) => {
+		// "attachments/" actually includes many other storage directories because they are named like "something-attachments/"
 		if (file.name.includes("attachments/")) {
 			console.log("Processing an attachment...")
 			return await processImage(file, [
-				{ size: "110x110", mode: "cover" },
-				{ size: "260x335", mode: "cover" },
-				{ size: "770x640", mode: "contain" }
+				{ size: "110x110", mode: "contain" },
+				{ size: "350x350", mode: "contain" },
+				{ size: "770x770", mode: "contain" }
 			])
 		} else if (file.name.includes("profile-pictures/")) {
 			console.log("Processing a profile picture...")
@@ -410,5 +493,392 @@ exports.processImage = functions
 				await writeUrlsToDb(userId, urls)
 			}
 			return
+		}
+	})
+
+// Send push notifications
+exports.onChatMessageSent = functions.firestore
+	.document(`rooms/{roomId}/messages/{messageId}`)
+	.onCreate(async (snap, context) => {
+		const roomId = context.params.roomId
+
+		const messageData = snap.data()
+		const senderId = messageData.author
+
+		const roomSnap = await db.doc(`rooms/${roomId}`).get()
+		const roomData = roomSnap.data()
+		const userA = roomData.userA
+		const userB = roomData.userB
+		const recipientId = userA !== senderId ? userA : userB
+
+		console.log("message data", messageData)
+		console.log("room data", roomData)
+		console.log("senderId", senderId)
+		console.log("recipientId", recipientId)
+
+		// Get the list of device notification tokens.
+		const getDeviceTokensPromise = db
+			.doc(`users/${recipientId}`)
+			.collection("notificationTokens")
+			.get()
+
+		// Get the follower profile.
+		const getSenderData = db.doc(`users/${senderId}`).get()
+
+		const results = await Promise.all([getDeviceTokensPromise, getSenderData])
+		const tokensSnapshot = results[0]
+		const senderSnapshot = results[1]
+
+		// Check if there are any device tokens.
+		if (tokensSnapshot.empty) {
+			return console.log("There are no notification tokens to send to.")
+		} else {
+			console.log("There are", tokensSnapshot.size, "tokens to send notifications to.")
+		}
+
+		const tokens = tokensSnapshot.docs.map((doc) => doc.id)
+		const senderData = senderSnapshot.data()
+
+		console.log("Fetched sender profile", senderData)
+
+		// Notification details.
+		const payload = {
+			notification: {
+				title: `Wiadomość od ${senderData.name}`,
+				body: ("" + messageData.message).trim()
+			}
+		}
+
+		const userIcon = senderData.profilePictureURLs
+			? senderData.profilePictureURLs[0]
+			: null
+		if (userIcon) {
+			payload.notification.icon = userIcon
+		}
+
+		console.log("payload", payload)
+
+		// Send notifications to all tokens.
+		const response = await admin.messaging().sendToDevice(tokens, payload)
+		// For each message check if there was an error.
+		const tokensToRemove = []
+		response.results.forEach((result, index) => {
+			const error = result.error
+			if (error) {
+				console.error("Failure sending notification to", tokens[index], error)
+				// Cleanup the tokens who are not registered anymore.
+				if (
+					error.code === "messaging/invalid-registration-token" ||
+					error.code === "messaging/registration-token-not-registered"
+				) {
+					console.log("docs:", tokensSnapshot.docs)
+					console.log("index:", index)
+					console.log("token:", tokensSnapshot.docs[index])
+					console.log("tokenRef:", tokensSnapshot.docs[index].ref)
+					tokensToRemove.push(tokensSnapshot.docs[index].ref.delete())
+				}
+			}
+		})
+		return Promise.all(tokensToRemove)
+	})
+
+class PromotingLevel {
+	constructor(level, cost, duration, bumps) {
+		this.level = level
+		this.cost = cost
+		this.duration = duration
+		this.bumps = bumps
+	}
+
+	formatForDb(oldData) {
+		const { promotedUntil: startAt = Date.now(), bumps: remainingBumps = 0 } = oldData
+
+		const promotedUntil = moment(startAt)
+			.add(this.duration, "days")
+			.valueOf()
+
+		return {
+			promotedAt: Date.now(),
+			promotedUntil,
+			promotingLevel: this.level,
+			bumps: this.bumps + remainingBumps
+		}
+	}
+}
+
+class PromotingManager {
+	constructor() {
+		this.levels = new Map()
+	}
+
+	addLevel(object) {
+		const level = object.level
+		if (this.levels.has(level)) {
+			throw Error("This promoting level already exists")
+		}
+		this.levels.set(level, object)
+	}
+
+	getLevel(level) {
+		return this.levels.get(level)
+	}
+
+	async promoteItem(itemId, level) {
+		const levelObject = this.getLevel(level)
+
+		const oldItemSnap = await db
+			.collection("items")
+			.doc(itemId)
+			.get()
+		const oldItemData = oldItemSnap.data()
+
+		const formattedData = levelObject.formatForDb(oldItemData)
+
+		console.log("levelObject", levelObject)
+		console.log("formattedData", formattedData)
+
+		return db
+			.collection("items")
+			.doc(itemId)
+			.update(formattedData)
+	}
+}
+
+const promotingManager = new PromotingManager()
+
+promotingManager.addLevel(new PromotingLevel(0, 499, 7, 0))
+promotingManager.addLevel(new PromotingLevel(1, 999, 10, 4))
+promotingManager.addLevel(new PromotingLevel(2, 2500, 14, 10))
+
+// Pay for promoting
+exports.promote = functions.https.onCall(async (data, context) => {
+	const { itemId, customerIp, level } = data
+	let access_token
+
+	try {
+		const res = await axios.post(
+			GET_OAUTH_TOKEN_URL,
+			`grant_type=client_credentials&client_id=${PAYU_CLIENT_ID}&client_secret=${PAYU_CLIENT_SECRET}`
+		)
+
+		access_token = res.data.access_token
+	} catch (err) {
+		return err
+	}
+
+	try {
+		const { cost } = promotingManager.getLevel(level)
+
+		const notifyUrl = isProd
+			? "https://us-central1-streetwear-app-prod.cloudfunctions.net/promoteNotification"
+			: "https://us-central1-streetwear-app.cloudfunctions.net/promoteNotification"
+
+		const continueUrl = isProd
+			? `https://${PRODUCTION_DOMAIN}/po-promowaniu`
+			: "http://localhost:3000/po-promowaniu"
+
+		const merchantPosId = PAYU_CLIENT_ID
+
+		const additionalDescription = JSON.stringify({ itemId, level })
+
+		const createOrderData = {
+			notifyUrl,
+			continueUrl,
+			customerIp,
+			merchantPosId,
+			description: `Promote Listing ${itemId}`,
+			additionalDescription,
+			currencyCode: "PLN",
+			totalAmount: cost,
+			products: [
+				{
+					name: `Promote Listing ${itemId} (Level-${level})`,
+					unitPrice: cost,
+					quantity: "1"
+				}
+			],
+			buyer: {
+				extCustomerId: context.auth.uid || null,
+				email: context.auth.token.email || null,
+				firstName: context.auth.token.name || null,
+				language: "pl"
+			}
+		}
+
+		const createOrderOptions = {
+			maxRedirects: 0,
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${access_token}`
+			}
+		}
+
+		console.log(createOrderData)
+		console.log(createOrderOptions)
+
+		await axios.post(CREATE_ORDER_URL, createOrderData, createOrderOptions)
+	} catch (err) {
+		return err.response.data
+	}
+})
+
+const app = express()
+app.use(express.json()) // for parsing application/json
+app.use(cors({ origin: true }))
+app.post("/", (req, res) => {
+	try {
+		const order = req.body.order
+		console.log("order:", order)
+
+		if (order.status !== "COMPLETED") {
+			return res.status(200).end()
+		}
+
+		const { itemId, level } = JSON.parse(order.additionalDescription)
+
+		promotingManager
+			.promoteItem(itemId, level)
+			.then(() => {
+				return res.status(200).end()
+			})
+			.catch((err) => {
+				console.log("There was a problem with updating the item in firestore", err)
+				return res.status(500).end()
+			})
+	} catch (err) {
+		console.log(err)
+		return res.status(500).end()
+	}
+})
+
+// Expose Express API as a single Cloud Function:
+exports.promoteNotification = functions.https.onRequest(app)
+
+const getDropsAt = (drop) => {
+	const now = moment()
+	const dropsAt = drop.dropsAtString
+	const then = moment(dropsAt, dateFormat)
+
+	const duration = moment.duration(then.diff(now))
+
+	const totalHours = Math.floor(duration.asHours())
+	const totalDays = Math.floor(duration.asDays())
+	const isTimeKnown = dropsAt && dropsAt.length > 9
+	const isToday = now.isSame(then, "day")
+
+	// assume the function runs every at 9am every day
+
+	// Today if time isn't known
+	if (isToday && !isTimeKnown) {
+		return `Dzisiaj`
+	}
+
+	// Today if time is known
+	if (isToday && isTimeKnown) {
+		return `Dzisiaj o ${then.format("HH:mm")}`
+	}
+
+	// Tomorrow
+	if (totalHours <= 48) {
+		return "Jutro"
+	}
+
+	// In a week (6 days because it counts whole days e.g. including 6d 23h 59m)
+	if (totalDays === 6) {
+		return `Za tydzień`
+	}
+
+	return null
+}
+
+// This schedule should run the function at 9am every day
+exports.dropNotification = functions.pubsub
+	.schedule("0 9 * * *")
+	.timeZone("Poland")
+	.onRun(async (context) => {
+		// this is to include drops without specified time
+		const nowTimestamp = moment()
+			.subtract(12, "hours")
+			.valueOf()
+
+		// get all future drops
+		const dropsSnap = await db
+			.collection("drops")
+			.where("dropsAtApproxTimestamp", ">", nowTimestamp)
+			.get()
+		const drops = dropsSnap.docs.map((doc) => doc.data())
+		const dropNames = drops.map((drop) => drop.name)
+
+		console.log(`Upcoming drops (${drops.length}):`, dropNames)
+
+		for (let drop of drops) {
+			const dropsAt = getDropsAt(drop)
+
+			// If dropsAt returns null it means a notification shouldn't be sent
+			if (!dropsAt) {
+				console.log(`Skipped drop (${drop.name})`)
+				continue
+			}
+
+			// Notification details
+			const payload = {
+				notification: {
+					title: `DROP: ${drop.name}`,
+					body: dropsAt,
+					icon: drop.imageUrls[drop.mainImageIndex]
+				}
+			}
+
+			// get all drop subscribers
+			const subscribersSnap = await db
+				.collection("drops")
+				.doc(drop.id)
+				.collection("subscribers")
+				.get()
+
+			for (let subscriberSnap of subscribersSnap.docs) {
+				const subscriberId = subscriberSnap.id
+
+				// Get the list of device notification tokens.
+				const tokensSnap = await db
+					.doc(`users/${subscriberId}`)
+					.collection("notificationTokens")
+					.get()
+
+				// Check if there are any device tokens.
+				if (tokensSnap.empty) {
+					return console.log("There are no notification tokens to send to.")
+				}
+
+				const tokens = tokensSnap.docs.map((doc) => doc.id)
+
+				// Send notifications to all tokens.
+				const response = await admin.messaging().sendToDevice(tokens, payload)
+
+				console.log(`Response (${subscriberId}):`, response)
+
+				// TODO: add token removal
+
+				// // For each message check if there was an error.
+				// const tokensToRemove = []
+				// response.results.forEach((result, index) => {
+				// 	const error = result.error
+				// 	if (error) {
+				// 		console.error("Failure sending notification to", tokens[index], error)
+				// 		// Cleanup the tokens who are not registered anymore.
+				// 		if (
+				// 			error.code === "messaging/invalid-registration-token" ||
+				// 			error.code === "messaging/registration-token-not-registered"
+				// 		) {
+				// 			console.log("docs:", tokensSnapshot.docs)
+				// 			console.log("index:", index)
+				// 			console.log("token:", tokensSnapshot.docs[index])
+				// 			console.log("tokenRef:", tokensSnapshot.docs[index].ref)
+				// 			tokensToRemove.push(tokensSnapshot.docs[index].ref.delete())
+				// 		}
+				// 	}
+				// })
+				// return Promise.all(tokensToRemove)
+			}
 		}
 	})

@@ -1,98 +1,83 @@
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
 import { Route, Switch, Redirect, withRouter } from "react-router-dom"
 import { compose } from "recompose"
 
+import { NotificationsDisabledBar } from "../../components/NotificationsDisabled"
 import { withAuthentication } from "../../components/UserSession"
-import ErrorBoundary from "../../components/ErrorBoundary"
+import LoadingSpinner from "../../components/LoadingSpinner"
+import { useUserData } from "../../hooks"
+
+import MainInfo from "./UserMainInfo"
+import { AccountPageTabs } from "./TabsNav"
 import { PageContainer } from "../../components/Containers"
 
-import { withAuthorization } from "../../components/UserSession"
-import useFirebase from "../../hooks/useFirebase"
-import LoadingSpinner from "../../components/LoadingSpinner"
-import MainInfo from "../../components/UserMainInfo"
-
-import { TabsNav, TabsNavItem, MainContainer } from "./StyledComponents"
-import { AccountPageTabs } from "./TabsNav"
-
-const useUserData = (userId, authUser, isAuthorized) => {
-	const firebase = useFirebase()
-	const [user, setUser] = useState(null)
-	const [error, setError] = useState(null)
-
-	const fetchUser = async () => {
-		if (isAuthorized) {
-			setUser(authUser)
-		} else {
-			const { user, error } = await firebase.getUserData(userId)
-			setUser(user)
-			setError(error)
-		}
-	}
-
-	useEffect(() => {
-		fetchUser()
-	}, [userId, authUser])
-
-	return [user, error]
-}
-
 const AccountPage = ({ routes, match, authUser }) => {
+	const [forceRefetch, setForceRefetch] = useState(false)
 	const userId = match.params.id
 	const isAuthenticated = !!authUser
 	const isAuthorized = isAuthenticated && authUser.uid === userId
 
-	const [user, error] = useUserData(userId, authUser, isAuthorized)
+	const [user, error] = useUserData(
+		userId,
+		authUser,
+		isAuthorized,
+		forceRefetch,
+		setForceRefetch
+	)
+
+	const onForceRefresh = () => {
+		setForceRefetch(true)
+	}
 
 	if (error) throw error
 
-	const commonProps = { user, userId, isAuthorized }
+	const commonProps = { user, userId, isAuthorized, onForceRefresh }
 
 	return (
-		<PageContainer>
-			<ErrorBoundary>
-				<MainContainer>
-					{user ? (
-						<>
-							<MainInfo {...commonProps} />
-							<div>
-								<AccountPageTabs
-									routes={routes}
-									isAuthorized={isAuthorized}
-									userId={userId}
-								/>
+		<>
+			{isAuthorized && <NotificationsDisabledBar />}
 
-								<Switch>
-									{routes.map(
-										(route, i) =>
-											(isAuthorized || !route.isProtected) && (
-												<Route
-													exact
-													path={route.path}
-													render={() => <route.component {...commonProps} />}
-													key={i}
-												/>
-											)
-									)}
-									{/* If no route matches redirect to items subroute */}
-									<Route
-										path="*"
-										render={() => (
-											<Redirect
-												to={routes
-													.find((r) => r.id === "items")
-													.path.replace(":id", userId)}
+			{user ? (
+				<>
+					<MainInfo {...commonProps} />
+					<div>
+						<AccountPageTabs
+							routes={routes}
+							isAuthorized={isAuthorized}
+							userId={userId}
+						/>
+						<div className="subroute-container">
+							<Switch>
+								{routes.map(
+									(route, i) =>
+										(isAuthorized || !route.isProtected) && (
+											<Route
+												exact
+												path={route.path}
+												render={() => <route.component {...commonProps} />}
+												key={i}
 											/>
-										)}
-									/>
-								</Switch>
-							</div>
-						</>
-					) : (
-						<LoadingSpinner />
-					)}
-				</MainContainer>
-			</ErrorBoundary>
-		</PageContainer>
+										)
+								)}
+								{/* If no route matches redirect to items subroute */}
+								<Route
+									path="*"
+									render={() => (
+										<Redirect
+											to={routes
+												.find((r) => r.id === "items")
+												.path.replace(":id", userId)}
+										/>
+									)}
+								/>
+							</Switch>
+						</div>
+					</div>
+				</>
+			) : (
+				<LoadingSpinner />
+			)}
+		</>
 	)
 }
 

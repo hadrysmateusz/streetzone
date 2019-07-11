@@ -16,10 +16,13 @@ export const StyledNavLink = styled(NavLink)`
 	align-items: center;
 	background: none;
 	padding: 0;
-	color: var(--gray0);
+	color: var(--gray25);
 	cursor: pointer;
 
 	text-decoration: none;
+	text-transform: uppercase;
+	font-size: 12px;
+	font-weight: 600;
 
 	&:hover {
 		color: black;
@@ -29,6 +32,8 @@ export const StyledNavLink = styled(NavLink)`
 		color: black;
 		text-decoration: underline;
 	}
+
+	${(p) => p.alwaysBlack && "color: black;"}
 `
 
 // TODO: modify global styles to not overwrite the text-decoration
@@ -170,5 +175,36 @@ export const InfoBlock = styled.div`
 
 	p {
 		max-width: 550px;
+	}
+`
+
+export const ScrollableContainer = styled.div`
+	--x-spacing: ${(p) => p.xSpacing || "var(--spacing3)"};
+	--item-width: ${(p) => p.itemWidth || "200px"};
+	--gap: ${(p) => p.gap || "var(--spacing2)"};
+
+	display: grid;
+	overflow: auto;
+	grid-auto-flow: column;
+	grid-auto-columns: var(--item-width);
+	gap: var(--gap);
+	margin: 0 calc(-1 * var(--x-spacing));
+	padding: 0 var(--x-spacing);
+`
+
+export const Submenu = styled.div`
+	background: white;
+
+	white-space: nowrap;
+
+	border: 1px solid var(--gray75);
+
+	display: grid;
+	padding: var(--spacing2) 0;
+	box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.05);
+
+	> * {
+		padding: var(--spacing2) 0;
+		width: 100%;
 	}
 `

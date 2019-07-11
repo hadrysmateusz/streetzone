@@ -18,6 +18,7 @@ const FileHandlerText = ({
 	value,
 	onChange,
 	containerStyles,
+	placeholder = "Wybierz lub przeciągnij plik (tekstowy lub Markdown), bądź zacznij pisać.",
 	...rest
 }) => {
 	const onDrop = useCallback(
@@ -76,7 +77,7 @@ const FileHandlerText = ({
 					disabled={disabled}
 					value={value}
 					onChange={onChange}
-					placeholder="Wybierz lub przeciągnij plik"
+					placeholder={placeholder}
 				/>
 
 				{isDragActive && <Overlay alwaysShow>Upuść tutaj aby dodać</Overlay>}

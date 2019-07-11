@@ -1,168 +1,132 @@
-import React, { Component } from "react"
+import React, { useState, useRef } from "react"
+import styled from "styled-components/macro"
 import { withBreakpoints } from "react-breakpoints"
-import { compose } from "recompose"
-import cloneDeep from "clone-deep"
-import {
-	disableBodyScroll,
-	enableBodyScroll,
-	clearAllBodyScrollLocks
-} from "body-scroll-lock"
+import { disableBodyScroll, enableBodyScroll } from "body-scroll-lock"
 
-import { withFirebase } from "../../components/Firebase"
-import AlgoliaResults from "../../components/Algolia/AlgoliaResults"
+import { SearchWrapper } from "../../components/InstantSearchWrapper"
 import CurrentFilters from "../../components/CurrentFilters"
-import sortingOptions from "../../constants/sortingOptions"
-import ScrollToTop from "../../components/ScrollToTop"
-import Filters from "../../components/Filters"
-import Topbar from "../../components/Topbar"
-import InstantSearchWrapper from "../../components/InstantSearchWrapper"
 import { PageContainer } from "../../components/Containers"
+import ScrollToTop from "../../components/ScrollToTop"
 
-import PromotedSection from "./PromotedSection"
-import Header from "./Header"
-import { MainGrid, Sidebar, GridContainer } from "./StyledComponents"
 import { CONST } from "../../constants"
 
-const DEFAULT_SORTING = sortingOptions[0].value
-const DEFAULT_HITS_PER_PAGE = 12
-const DEFAULT_SEARCH_STATE = Object.freeze({
-	hitsPerPage: DEFAULT_HITS_PER_PAGE,
-	sortBy: DEFAULT_SORTING,
-	refinementList: {},
-	query: "",
-	page: 1
-})
+import Topbar from "./Topbar"
+import PromotedSection from "./PromotedSection"
+import Header from "./Header"
+import Filters from "./Filters"
+import MarketplaceResults from "./MarketplaceResults"
 
-class HomePage extends Component {
-	state = {
-		areFiltersOpen: this.props.currentBreakpoint > 1,
-		searchState: null,
-		isLoading: true,
-		refreshAlgolia: false,
-		clearFilters: false
+const sortingOptions = [
+	{
+		value: CONST.ITEMS_MARKETPLACE_DEFAULT_ALGOLIA_INDEX,
+		label: "Najnowsze"
+	},
+	{
+		value: CONST.ITEMS_MARKETPLACE_PRICE_ASC_ALGOLIA_INDEX,
+		label: "Cena rosnąco"
 	}
+]
 
-	targetElement = null
-
-	setClearFiltersFlag = (to) => this.setState({ clearFilters: to })
-
-	componentDidMount() {
-		this.targetElement = document.querySelector("#filters-container")
+const MainGrid = styled.div`
+	position: relative;
+	@media (min-width: ${(p) => p.theme.breakpoints[3]}px) {
+		display: grid;
+		grid-template-columns: 270px 1fr;
+		gap: var(--spacing3);
 	}
+`
 
-	urlToState = (parsedSearch) => {
-		let searchState = cloneDeep(DEFAULT_SEARCH_STATE)
-		// format the searchState according to Algolia's spec
-		const { category, designers, size, price, sortBy, query, page } = parsedSearch
+const Sidebar = styled.aside`
+	align-self: flex-start;
+	border: 1px solid var(--gray75);
+	background: white;
 
-		searchState.refinementList.category = category || []
-		searchState.refinementList.designers = designers || []
-		searchState.refinementList.size = size || []
-		if (price) {
-			searchState.range = {}
-			searchState.range.price = price
-		} else {
-			delete searchState.range
-		}
-		searchState.sortBy = sortBy || DEFAULT_SORTING
-		searchState.query = query || ""
-		searchState.page = page || 1
-
-		return searchState
+	/* mobile */
+	@media (max-width: ${(p) => p.theme.breakpoints[3] - 1}px) {
+		width: 0;
+		margin: 0;
+		position: fixed;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		z-index: 9999;
 	}
+`
 
-	onSearchStateChange = async (newSearchState) => {
-		// format the state to keep the url relatively short
-		const { refinementList, query, range, sortBy, page } = newSearchState
-		let formattedState = {}
-		if (refinementList !== undefined) {
-			if (refinementList.category !== undefined)
-				formattedState.category = refinementList.category
-			if (refinementList.designers !== undefined)
-				formattedState.designers = refinementList.designers
-			if (refinementList.size !== undefined) formattedState.size = refinementList.size
-		}
-		if (page !== undefined) formattedState.page = page
-		if (query !== undefined) formattedState.query = query
-		if (sortBy !== undefined) formattedState.sortBy = sortBy
-		if (range && range.price !== undefined) formattedState.price = range.price
+const GridContainer = styled.div`
+	display: grid;
+	gap: var(--spacing3);
+`
 
-		// debugger
+const FiltersHeader = styled.div`
+	text-align: center;
+	padding: var(--spacing2);
+	font-size: var(--fs-l);
+	font-weight: bold;
+	border-bottom: 1px solid var(--gray75);
+`
 
-		return formattedState
-	}
-
-	toggleFilters = () => {
-		const wasOpen = this.state.areFiltersOpen
-		if (wasOpen) {
-			enableBodyScroll(this.targetElement)
-		} else {
-			disableBodyScroll(this.targetElement)
-		}
-
-		this.setState((state) => {
-			const { areFiltersOpen } = state
-			return { areFiltersOpen: !areFiltersOpen }
-		})
-	}
-
-	componentWillUnmount() {
-		clearAllBodyScrollLocks()
-	}
-
-	render() {
-		const { areFiltersOpen } = this.state
-		const { currentBreakpoint } = this.props
-
-		if (currentBreakpoint > 0) {
-			enableBodyScroll(this.targetElement)
-		}
-
-		return (
-			<InstantSearchWrapper
-				indexName={CONST.DEV_ITEMS_MARKETPLACE_DEFAULT_ALGOLIA_INDEX}
-				onSearchStateChange={this.onSearchStateChange}
-				urlToState={this.urlToState}
-				defaultSearchState={DEFAULT_SEARCH_STATE}
-			>
-				<Header />
-				<PromotedSection />
-				<PageContainer extraWide>
-					<GridContainer>
-						<Topbar
-							areFiltersOpen={areFiltersOpen}
-							toggleFilters={this.toggleFilters}
-							clearFilters={this.setClearFiltersFlag}
-						/>
-
-						<CurrentFilters
-							clearFilters={{
-								value: this.state.clearFilters,
-								update: this.setClearFiltersFlag
-							}}
-						/>
-
-						<MainGrid>
-							<Sidebar hidden={!areFiltersOpen && !(currentBreakpoint > 0)}>
-								<Filters
-									toggleFilters={this.toggleFilters}
-									clearFilters={{
-										value: this.state.clearFilters,
-										update: this.setClearFiltersFlag
-									}}
-								/>
-							</Sidebar>
-							<AlgoliaResults />
-						</MainGrid>
-					</GridContainer>
-				</PageContainer>
-				<ScrollToTop>↑</ScrollToTop>
-			</InstantSearchWrapper>
-		)
-	}
+const DEFAULT_SEARCH_STATE = {
+	sortBy: sortingOptions[0].value
 }
 
-export default compose(
-	withBreakpoints,
-	withFirebase
-)(HomePage)
+const MarketplacePage = ({ currentBreakpoint }) => {
+	const [areFiltersOpen, setAreFiltersOpen] = useState(false)
+	const [clearFilters, setClearFilters] = useState(false)
+
+	// TODO: as far as I know this ref is not connected to any component
+	const filtersRef = useRef()
+
+	const toggleFilters = () => {
+		if (areFiltersOpen) {
+			enableBodyScroll(filtersRef.current)
+		} else {
+			disableBodyScroll(filtersRef.current)
+		}
+
+		setAreFiltersOpen((state) => !state)
+	}
+
+	if (currentBreakpoint > 0) {
+		enableBodyScroll(filtersRef.current)
+	}
+
+	const clearFiltersFn = () => {
+		setClearFilters(true)
+	}
+
+	return (
+		<SearchWrapper
+			indexName={CONST.ITEMS_MARKETPLACE_DEFAULT_ALGOLIA_INDEX}
+			initialState={DEFAULT_SEARCH_STATE}
+			allowedKeys={["category", "designers", "price", "size"]}
+			hitsPerPage={4}
+		>
+			<Header />
+			<PromotedSection />
+			<PageContainer extraWide>
+				<GridContainer>
+					<Topbar toggleFilters={toggleFilters} sortingOptions={sortingOptions} />
+
+					<CurrentFilters toggle={toggleFilters} clearFilters={clearFiltersFn} />
+
+					<MainGrid>
+						<Sidebar hidden={!areFiltersOpen && !(currentBreakpoint > 2)}>
+							<FiltersHeader>Filtruj</FiltersHeader>
+							<Filters
+								toggle={toggleFilters}
+								clear={clearFiltersFn}
+								shouldClear={{ value: clearFilters, update: setClearFilters }}
+							/>
+						</Sidebar>
+						<MarketplaceResults />
+					</MainGrid>
+				</GridContainer>
+			</PageContainer>
+			<ScrollToTop />
+		</SearchWrapper>
+	)
+}
+
+export default withBreakpoints(MarketplacePage)

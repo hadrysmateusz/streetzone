@@ -35,15 +35,25 @@ import {
 	faExclamationCircle,
 	faLongArrowAltLeft,
 	faArrowRight,
+	faArrowLeft,
 	faStar,
-	faChevronDown
+	faChevronDown,
+	faLongArrowAltUp,
+	faThLarge,
+	faThList,
+	faClipboard,
+	faCode,
+	faBell,
+	faEnvelope,
+	faExternalLinkAlt
 } from "@fortawesome/free-solid-svg-icons"
 import {
 	faHeart as farHeart,
 	faEnvelope as farEnvelope,
 	faSquare as farSquare,
 	faCheckSquare as farCheckSquare,
-	faStar as farStar
+	faStar as farStar,
+	faBell as farBell
 } from "@fortawesome/free-regular-svg-icons"
 import { fab } from "@fortawesome/free-brands-svg-icons"
 
@@ -90,5 +100,15 @@ library.add(
 	faArrowRight,
 	farStar,
 	faStar,
-	faChevronDown
+	faChevronDown,
+	faLongArrowAltUp,
+	faThLarge,
+	faThList,
+	faClipboard,
+	faArrowLeft,
+	faCode,
+	faBell,
+	farBell,
+	faEnvelope,
+	faExternalLinkAlt
 )

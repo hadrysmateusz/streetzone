@@ -54,6 +54,7 @@ class AlgoliaSortBy extends React.Component {
 								options={items}
 								defaultValue={defaultRefinement}
 								onChange={(data, action) => refine(data.value)}
+								isSearchable={false}
 							/>
 						)
 					} else {

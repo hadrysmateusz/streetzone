@@ -1,7 +1,6 @@
 import styled from "styled-components/macro"
-import { PoweredBy } from "react-instantsearch-dom"
 
-import { resetButtonStyles } from "../../style-utils"
+import { resetButtonStyles, ellipsis } from "../../style-utils"
 
 export const BoxItem = styled.div`
 	border: 1px solid var(--gray75);
@@ -39,12 +38,13 @@ export const OptionsContainer = styled.div`
 	${(p) => p.multiColumn && `grid-template-columns: repeat(2, 1fr);`}
 	${(p) =>
 		p.boxGrid &&
-		"grid-template-columns: repeat(auto-fill, minmax(35px,1fr)); gap: var(--spacing2); "};
+		"grid-template-columns: repeat(auto-fill, minmax(35px,1fr)); gap: var(--spacing2); margin: var(--spacing2) 0;"};
 `
 
 export const FilterItem = styled.div`
 	display: flex;
 	align-items: center;
+	min-width: 0;
 
 	* {
 		cursor: pointer;
@@ -58,6 +58,7 @@ export const FilterItem = styled.div`
 		color: ${(p) => p.theme.colors.black[75]};
 		cursor: pointer;
 		width: 100%;
+		${ellipsis}
 	}
 `
 
@@ -68,18 +69,6 @@ export const RangeContainer = styled.div`
 	display: grid;
 	gap: var(--spacing2);
 	grid-template-columns: 1fr 1fr;
-	input {
-		border: 1px solid ${(p) => p.theme.colors.gray[75]};
-		:hover {
-			border: 1px solid ${(p) => p.theme.colors.gray[25]};
-		}
-		color: ${(p) => p.theme.colors.black[75]};
-		padding: 0 var(--spacing2);
-		height: 100%;
-		min-width: 0;
-		min-height: 0;
-		width: 100%;
-	}
 `
 
 export const SearchBox = styled.div`
@@ -100,11 +89,6 @@ export const SearchBox = styled.div`
 		width: 34px;
 	}
 
-	.powered-by-container {
-		transform: scale(0.84);
-		margin-top: 2px;
-	}
-
 	input {
 		border: none;
 		flex: 1;
@@ -112,31 +96,6 @@ export const SearchBox = styled.div`
 		min-width: 0;
 		width: 100%;
 		padding: 0 var(--spacing1);
-	}
-`
-
-export const MiniContainer = styled.div`
-	display: grid;
-	overflow: auto;
-	grid-auto-rows: auto;
-	grid-template-columns: repeat(6, 46%);
-	grid-gap: var(--spacing1);
-
-	@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
-		grid-gap: var(--spacing2);
-		grid-template-columns: repeat(6, 30%);
-	}
-	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
-		grid-template-columns: repeat(6, 23%);
-	}
-	@media (min-width: ${(p) => p.theme.breakpoints[3]}px) {
-		grid-template-columns: repeat(6, 22%);
-	}
-	@media (min-width: ${(p) => p.theme.breakpoints[4]}px) {
-		grid-template-columns: 1fr 1fr 1fr;
-	}
-	@media (min-width: ${(p) => p.theme.breakpoints[5]}px) {
-		grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
 	}
 `
 
@@ -158,22 +117,16 @@ export const ResultsContainer = styled.main`
 	margin: 0 auto;
 `
 
-export const StyledPoweredBy = styled(PoweredBy)`
-	margin: 0;
-	margin-top: 3px;
-	height: 100%;
-	transform: scale(0.88) translateX(10px);
-
-	.ais-PoweredBy-text {
-		display: none;
-	}
-	.ais-PoweredBy-logo {
-		margin-bottom: -7px;
-	}
-`
-
 export const SizeCategoriesContainer = styled.div`
 	display: grid;
 	gap: var(--spacing1);
 	margin: var(--spacing1) 0 var(--spacing1) var(--spacing1);
+`
+
+export const InfiniteOwnerCardsContainer = styled.div`
+	display: grid;
+	gap: var(--spacing2);
+	@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
+		gap: var(--spacing3);
+	}
 `

@@ -3,11 +3,32 @@ import { connectCurrentRefinements } from "react-instantsearch-core"
 import styled from "styled-components/macro"
 import { compose } from "recompose"
 import { withRouter } from "react-router-dom"
+import { withBreakpoints } from "react-breakpoints"
 
-import { ClearFiltersSubButton } from "../Topbar/StyledComponents"
+import ResultsCount from "../ResultsCount"
 
-import { ROUTES } from "../../constants"
-import formatSize from "../../utils/formatSize"
+import { itemDataHelpers, route } from "../../utils"
+
+const { formatSize } = itemDataHelpers
+
+const OuterContainer = styled.div`
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+`
+
+const ClearFiltersButton = styled.div`
+	color: ${(p) => p.theme.colors.danger[50]};
+	:hover {
+		text-decoration: underline;
+	}
+	cursor: pointer;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex: 0 0 var(--width);
+	margin-left: var(--spacing2);
+`
 
 const Container = styled.div`
 	font-size: var(--font-size--xs);
@@ -23,35 +44,42 @@ const Item = styled.div`
 	margin: var(--spacing1);
 `
 
-const CurrentFiltersView = ({ items, history, clearFilters, refine }) => {
+const CurrentFilters = ({ items, history, clearFilters, refine, currentBreakpoint }) => {
+	// ignore the isArchived refinement
+	items = items.filter((a) => a.attribute !== "isArchived")
+
 	return items && items.length > 0 ? (
-		<Container>
-			{items.map((item) => {
-				if (item.attribute === "price") {
-					return <Item>Cena</Item>
-				} else if (item.attribute === "size") {
-					return item.currentRefinement.map((refinement) => (
-						<Item>{formatSize(refinement)}</Item>
-					))
-				} else {
-					return item.currentRefinement.map((refinement) => <Item>{refinement}</Item>)
-				}
-			})}
-			{items && items.length > 0 && (
-				<ClearFiltersSubButton
-					onClick={() => {
-						history.push(ROUTES.MARKETPLACE)
-						clearFilters.update(true)
-					}}
-				>
-					Wyczyść wszystko
-				</ClearFiltersSubButton>
-			)}
-		</Container>
+		<OuterContainer>
+			<Container>
+				{items.map((item) => {
+					if (item.attribute === "price") {
+						return <Item>Cena</Item>
+					} else if (item.attribute === "size") {
+						return item.currentRefinement.map((refinement) => (
+							<Item>{formatSize(refinement)}</Item>
+						))
+					} else {
+						return item.currentRefinement.map((refinement) => <Item>{refinement}</Item>)
+					}
+				})}
+				{items && items.length > 0 && (
+					<ClearFiltersButton
+						onClick={() => {
+							history.replace(route("MARKETPLACE"))
+							clearFilters()
+						}}
+					>
+						Wyczyść wszystko
+					</ClearFiltersButton>
+				)}
+			</Container>
+			{+currentBreakpoint >= 1 && <ResultsCount />}
+		</OuterContainer>
 	) : null
 }
 
 export default compose(
 	connectCurrentRefinements,
-	withRouter
-)(CurrentFiltersView)
+	withRouter,
+	withBreakpoints
+)(CurrentFilters)

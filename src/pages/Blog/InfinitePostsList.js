@@ -1,28 +1,31 @@
 import React from "react"
-import { connectInfiniteHits } from "react-instantsearch-core"
-import InfiniteScroll from "react-infinite-scroller"
+import styled from "styled-components/macro"
 
-import LoadingSpinner from "../../components/LoadingSpinner"
+import InfiniteScrollingResults from "../../components/InfiniteScrollingResults"
+import PostPreview from "../../components/PostPreview"
 
-import { PostsContainer } from "./StyledComponents"
-import { BasicPost } from "./Previews"
+const PostsContainer = styled.div`
+	display: grid;
+	grid-template-columns: 100%;
 
-const InfinitePosts = connectInfiniteHits(({ hits, hasMore, refine, ...rest }) => {
+	gap: var(--spacing3);
+	@media (max-width: ${(p) => p.theme.breakpoints[2] - 1}px) {
+		margin: 0 calc(var(--spacing3) * -1);
+	}
+`
+
+const InfinitePosts = () => {
 	return (
-		<InfiniteScroll
-			hasMore={hasMore}
-			loader={<LoadingSpinner fixedHeight />}
-			initialLoad={false}
-			loadMore={refine}
-			{...rest}
-		>
-			<PostsContainer>
-				{hits.map((post) => (
-					<BasicPost {...post} />
-				))}
-			</PostsContainer>
-		</InfiniteScroll>
+		<InfiniteScrollingResults>
+			{({ results }) => (
+				<PostsContainer>
+					{results.map((post) => (
+						<PostPreview {...post} key={post.id} />
+					))}
+				</PostsContainer>
+			)}
+		</InfiniteScrollingResults>
 	)
-})
+}
 
 export default InfinitePosts

@@ -1,4 +1,5 @@
 import theme from "../constants/theme"
+import { POST_CATEGORIES as CATEGORIES } from "../constants"
 import { css } from "styled-components/macro"
 
 export const minWidth = theme.breakpoints.reduce((acc, val, i) => {
@@ -56,3 +57,35 @@ export const overlayCommonStyles = css`
 export const overlayTextShadow = css`
 	text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.3), 0 2px 3px rgba(0, 0, 0, 0.5);
 `
+
+export const getCategoryColor = (category) => {
+	switch (category) {
+		case CATEGORIES.SNEAKERS:
+			return "#df783d"
+		case CATEGORIES.STREETWEAR:
+			return "#0e974e"
+		case CATEGORIES.REVIEW:
+			return "#1b78b7"
+		case CATEGORIES.EVENT:
+			return "#b91f7c"
+		case CATEGORIES.VIDEO:
+			return "#cf2316"
+		case CATEGORIES.TECH:
+			return "#cce8ef"
+		default:
+			return "#c4c4c4"
+	}
+}
+
+export const nLinesHigh = (nOfLines, options = {}) => {
+	const useMaxHeight = options.useMaxHeight || false
+	const lineHeight = options.lineHeight || 1.6
+
+	return css`
+		--line-height: ${lineHeight}em;
+		--height: calc(${nOfLines} * var(--line-height));
+		line-height: var(--line-height);
+		${useMaxHeight ? "max-height: var(--height);" : "height: var(--height);"}
+		overflow: hidden;
+	`
+}

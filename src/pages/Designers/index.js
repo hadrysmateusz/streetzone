@@ -1,130 +1,132 @@
-import React from "react"
+import React, { useMemo } from "react"
+import { Link } from "react-router-dom"
 import styled from "styled-components/macro"
-import { ROUTES } from "../../constants"
-import { StyledLink } from "../../components/Basics"
-import { encodeURL } from "../../utils/algoliaURLutils"
+import { connectInfiniteHits } from "react-instantsearch-core"
+
 import { PageContainer } from "../../components/Containers"
 import { TextBlock } from "../../components/StyledComponents"
+import { SearchWrapper } from "../../components/InstantSearchWrapper"
+import AlgoliaSearchBox from "../../components/Algolia/AlgoliaSearchBox"
+import PopularDesigners from "../../components/PopularDesigners"
 
-import cloneDeep from "clone-deep"
+import { encodeURL } from "../../utils/algoliaURLutils"
+import { CONST, ROUTES } from "../../constants"
+import { ellipsis } from "polished"
 
-import InstantSearchWrapper from "../../components/InstantSearchWrapper"
-import { CONST } from "../../constants"
-import connectInfiniteHits from "react-instantsearch-core/dist/cjs/connectors/connectInfiniteHits"
+const Header = styled.div`
+	margin-bottom: var(--spacing4);
+	font-size: var(--fs-xl);
+	font-weight: bold;
+	text-align: center;
+`
 
-const DEFAULT_HITS_PER_PAGE = 12
-
-const DEFAULT_SEARCH_STATE = Object.freeze({
-	hitsPerPage: DEFAULT_HITS_PER_PAGE,
-	refinementList: {},
-	query: "",
-	page: 1
-})
-
-class InstantSearchDesignersWrapper extends React.Component {
-	urlToState = (parsedSearch) => {
-		let searchState = cloneDeep(DEFAULT_SEARCH_STATE)
-		// format the searchState according to Algolia's spec
-		const { tags, section, query, page } = parsedSearch
-
-		searchState.refinementList.section = section || []
-		searchState.refinementList.tags = tags || []
-		searchState.query = query || ""
-		searchState.page = page || 1
-
-		return searchState
-	}
-
-	onSearchStateChange = async (newSearchState) => {
-		// format the state to keep the url relatively short
-		const { refinementList, query, page } = newSearchState
-		let formattedState = {}
-		if (refinementList !== undefined) {
-			if (refinementList.tags !== undefined) formattedState.tags = refinementList.tags
-			if (refinementList.section !== undefined)
-				formattedState.section = refinementList.section
-		}
-		if (page !== undefined) formattedState.page = page
-		if (query !== undefined) formattedState.query = query
-
-		return formattedState
-	}
-
-	render() {
-		return (
-			<InstantSearchWrapper
-				indexName={CONST.DEV_DESIGNERS_ALGOLIA_INDEX}
-				onSearchStateChange={this.onSearchStateChange}
-				urlToState={this.urlToState}
-				defaultSearchState={DEFAULT_SEARCH_STATE}
-			>
-				{this.props.children}
-			</InstantSearchWrapper>
-		)
-	}
-}
-
-// const useDesigners = () => {
-// 	const firebase = useFirebase()
-// 	const [designers, setDesigners] = useState(null)
-
-// 	const getDesigners = async () => {
-// 		const snap = await firebase.designers().get()
-// 		let designersArr = []
-// 		snap.forEach((designer) => {
-// 			console.log(designer, designer.data())
-// 			designersArr.push(designer.data())
-// 		})
-// 		setDesigners(designersArr)
-// 	}
-
-// 	useEffect(() => {
-// 		getDesigners()
-// 	}, [])
-
-// 	return designers
-// }
-
-const DesignerLink = ({ value }) => {
-	return (
-		<StyledLink to={encodeURL({ designers: [value] }, ROUTES.MARKETPLACE)}>
-			{value}
-		</StyledLink>
-	)
-}
+const OuterContainer = styled.div`
+	max-width: 100%;
+`
 
 const SectionContainer = styled.div`
 	margin: var(--spacing4) 0;
 	display: grid;
 	grid-template-columns: 1fr 3fr;
-	gap: var(--spacing1);
+	gap: var(--spacing2);
 `
 
 const List = styled.div`
 	display: grid;
-	grid-template-columns: repeat(3, 1fr);
-	gap: var(--spacing1);
+	grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+
+	> * {
+		${ellipsis}
+	}
+	grid-auto-rows: min-content;
+	gap: var(--spacing2);
+	align-content: center;
 `
 
 const ListContainer = styled.div`
-	margin: 0 auto;
-	max-width: 650px;
+	margin: var(--spacing4) auto 0;
+	max-width: 700px;
 `
 
-const Nav = styled.div`
-	padding: var(--spacing3) 0;
+const LetterNavbarContainer = styled.div`
+	overflow: auto;
 	border-bottom: 1px solid var(--gray75);
+	margin-top: var(--spacing4);
+
+	/* make the content go from edge to edge on mobile*/
+	@media (max-width: ${(p) => p.theme.breakpoints[3] - 1}px) {
+		--x-margin: calc(-1 * var(--spacing3));
+		margin-left: var(--x-margin);
+		margin-right: var(--x-margin);
+		padding: 0 var(--spacing3);
+		&::after {
+			content: "";
+			display: block;
+			width: var(--spacing2);
+		}
+	}
+`
+
+const LetterNavbar = styled.div`
+	overflow: visible;
+
+	padding-bottom: var(--spacing2);
 	display: flex;
 	justify-content: space-around;
+	min-width: 850px;
+	width: 100%;
 `
 
-const NavItemContainer = styled.div`
+const NavLetterContainer = styled.div`
+	cursor: ${(p) => (p.isEmpty ? "default" : "pointer")};
+	color: var(--black75);
+	user-select: none;
+	${(p) => p.isEmpty && "color: var(--gray25);"}
 	font-family: var(--font-family--serif);
 	font-size: var(--font-size--l);
+	font-weight: var(--semi-bold);
 `
 
-const NavItem = ({ value }) => {
-	return <NavItemContainer>{value}</NavItemContainer>
+const StyledLink = styled(Link)`
+	cursor: pointer;
+	color: var(--gray0);
+	text-transform: uppercase;
+	:hover {
+		color: var(--black0);
+	}
+`
+
+const SectionLetter = styled.div`
+	font-size: 6.4rem;
+	font-weight: bold;
+	color: var(--black75);
+`
+
+const DesignerLink = ({ value }) => {
+	return (
+		<div>
+			<StyledLink to={encodeURL({ designers: [value] }, ROUTES.MARKETPLACE)}>
+				{value}
+			</StyledLink>
+		</div>
+	)
+}
+
+const NavLetter = ({ value, isEmpty }) => {
+	const onClick = () => {
+		// if a section is empty it doesn't appear so exit
+		if (isEmpty) return
+
+		document
+			.getElementById(`designers-list-section-${value}`)
+			.scrollIntoView({ behavior: "smooth", block: "start" })
+	}
+
+	return (
+		<NavLetterContainer isEmpty={isEmpty} onClick={onClick}>
+			{value}
+		</NavLetterContainer>
+	)
 }
 
 const chars = [
@@ -157,80 +159,82 @@ const chars = [
 	"Z"
 ]
 
-export const DesignersList = connectInfiniteHits(({ hits, hasMore, refine, ...rest }) => {
-	const sortedHits = hits.reduce(
-		(acc, curr, i) => {
-			var firstLetter = curr.label[0]
-
-			var regex = /[A-Z]/g
-			var isLetter = firstLetter.match(regex)
-			if (!isLetter) {
-				acc["#"].push(curr)
-				return acc
-			}
-
-			if (acc[firstLetter]) {
-				acc[firstLetter].push(curr)
-				return acc
-			} else {
-				acc[firstLetter] = [curr]
-				return acc
-			}
-		},
-		{ "#": [] }
-	)
-
-	// debugger
-	let components = []
-	Object.entries(sortedHits).forEach(([key, value]) => {
-		const header = (
-			<TextBlock serif size="6.4rem">
-				{key}
-			</TextBlock>
-		)
-		const list = value.map((designer) => (
-			<TextBlock uppercase color="gray0">
-				<DesignerLink value={designer.label} />
-			</TextBlock>
-		))
-
-		components.push(
-			<SectionContainer>
-				<div>{header}</div>
-				<List>{list}</List>
-			</SectionContainer>
-		)
-	})
+const ListSection = ({ letter, items }) => {
+	if (!items || items.length === 0) return null
 
 	return (
-		<div>
-			<Nav>
-				{chars.map((char) => (
-					<NavItem value={char} />
+		<SectionContainer id={`designers-list-section-${letter}`}>
+			<SectionLetter>{letter}</SectionLetter>
+			<List>
+				{items.map((designer) => (
+					<DesignerLink value={designer.label} key={designer} />
 				))}
-			</Nav>
-			<ListContainer>{components}</ListContainer>
-		</div>
+			</List>
+		</SectionContainer>
+	)
+}
+
+export const DesignersList = connectInfiniteHits(({ hits }) => {
+	const groupedHits = useMemo(
+		() =>
+			hits.reduce(
+				(acc, curr, i) => {
+					var firstLetter = curr.label[0]
+
+					var regex = /[A-Z]/g
+					var isLetter = firstLetter.match(regex)
+					if (!isLetter) {
+						acc["#"].push(curr)
+						return acc
+					}
+
+					if (acc[firstLetter]) {
+						acc[firstLetter].push(curr)
+						return acc
+					} else {
+						acc[firstLetter] = [curr]
+						return acc
+					}
+				},
+				{ "#": [] }
+			),
+		[hits]
+	)
+
+	return (
+		<OuterContainer>
+			<LetterNavbarContainer>
+				<LetterNavbar>
+					{chars.map((char) => {
+						const isEmpty = !groupedHits[char] || groupedHits[char].length === 0
+						return <NavLetter key={char} isEmpty={isEmpty} value={char} />
+					})}
+				</LetterNavbar>
+			</LetterNavbarContainer>
+
+			<ListContainer>
+				<AlgoliaSearchBox placeholder="Szukaj" />
+				{Object.entries(groupedHits).map(([letter, items]) => (
+					<ListSection letter={letter} items={items} key={letter} />
+				))}
+			</ListContainer>
+		</OuterContainer>
 	)
 })
 
 const DesignersPage = () => {
-	// const designers = useDesigners()
-
 	return (
-		<InstantSearchDesignersWrapper>
+		<SearchWrapper
+			indexName={CONST.DESIGNERS_ALGOLIA_INDEX}
+			hitsPerPage={9999}
+			ignoreArchivedStatus
+		>
 			<PageContainer>
-				<TextBlock centered serif size="l">
-					Projektanci
-				</TextBlock>
-
+				<Header>Projektanci</Header>
+				<PopularDesigners />
 				<DesignersList />
-
-				{/* {designers.map((designer) => (
-							<DesignerLink value={designer.label} />
-						))} */}
 			</PageContainer>
-		</InstantSearchDesignersWrapper>
+		</SearchWrapper>
 	)
 }
 

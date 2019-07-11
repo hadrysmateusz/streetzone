@@ -1,4 +1,5 @@
 import styled, { css } from "styled-components/macro"
+import { Box } from "rebass"
 
 // utils
 
@@ -9,7 +10,6 @@ const fontWeight = css`
 `
 
 const textBase = css`
-	margin: 0;
 	${fontWeight}
 	${(p) => p.uppercase && "text-transform: uppercase"}
 `
@@ -41,8 +41,9 @@ const bodyTextBase = css`
 	}};
 `
 
-export const TextBlock = styled.p`
+export const TextBlock = styled(Box)`
 	${bodyTextBase}
+
 	${(p) => p.centered && "text-align: center;"}
 `
 

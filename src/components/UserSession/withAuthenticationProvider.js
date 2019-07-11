@@ -24,7 +24,6 @@ const withAuthenticationProvider = (Component) => {
 						// Listen to changes in the current user's firestore document
 						// and update local storage and context accordingly
 						this.removeDbListener = firebase.currentUser().onSnapshot((user) => {
-							console.log("updating local storage due to a database change")
 							let authUser = firebase.authUser()
 
 							if (authUser) {
@@ -46,13 +45,11 @@ const withAuthenticationProvider = (Component) => {
 					}
 					// Update state and local storage with the merged user
 					// (the auth and db users get merged in the firebase.onAuthUserListener internals)
-					console.log("updating local storage due to auth state change")
 					localStorage.setItem("authUser", JSON.stringify(authUser))
 					this.setState({ authUser })
 				},
 				() => {
 					// Update state and remove user from local storage
-					console.log("updating local storage due to auth state change")
 					localStorage.removeItem("authUser")
 					this.setState({ authUser: null })
 				}

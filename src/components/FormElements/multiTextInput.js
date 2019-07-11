@@ -4,6 +4,7 @@ import styled from "styled-components/macro"
 
 import FormElementContainer from "./container"
 import { disabledStyles, hoverStyles, focusStyles, basicStyles } from "./commonStyles"
+import { ellipsis } from "../../style-utils"
 
 const StyledCreatableSelect = styled(CreatableSelect).attrs({
 	classNamePrefix: "react-select"
@@ -26,6 +27,10 @@ const StyledCreatableSelect = styled(CreatableSelect).attrs({
 	.react-select__control--is-disabled {
 		${disabledStyles}
 	}
+	.react-select__multi-value {
+		${ellipsis}
+		max-width: 160px;
+	}
 
 	.react-select__value-container {
 		padding: 0 var(--spacing2);
@@ -36,10 +41,12 @@ const components = {
 	DropdownIndicator: null
 }
 
-const createOption = (label) => ({
-	label,
-	value: label
-})
+const createOption = (label) => {
+	return {
+		label,
+		value: label
+	}
+}
 
 export class MultiTextInput extends Component {
 	state = {
@@ -47,7 +54,7 @@ export class MultiTextInput extends Component {
 		value: []
 	}
 
-	handleChange = (value, actions) => {
+	handleChange = (value, action) => {
 		this.setState({ value })
 	}
 
@@ -96,9 +103,9 @@ export class MultiTextInput extends Component {
 export class MultiTextInputControlled extends Component {
 	state = { inputValue: "" }
 
-	handleChange = (value, actions) => {
-		if (actions.action === "clear") {
-			this.props.customSetState(null)
+	handleChange = (value, action) => {
+		if (action.action === "remove-value") {
+			this.props.remove(action.removedValue)
 		}
 	}
 
@@ -112,8 +119,7 @@ export class MultiTextInputControlled extends Component {
 		switch (event.key) {
 			case "Enter":
 			case "Tab":
-				const newOption = createOption(inputValue)
-				this.props.customSetState(newOption)
+				this.props.add(inputValue)
 				this.setState({ inputValue: "" })
 
 				event.preventDefault()
@@ -123,8 +129,9 @@ export class MultiTextInputControlled extends Component {
 		}
 	}
 	render() {
-		const { inputValue, value } = this.state
-		const { info, error, disabled, ...rest } = this.props
+		const { inputValue } = this.state
+		const { info, error, disabled, value, placeholder } = this.props
+
 		return (
 			<FormElementContainer info={info} error={error}>
 				<StyledCreatableSelect
@@ -136,7 +143,8 @@ export class MultiTextInputControlled extends Component {
 					onChange={this.handleChange}
 					onInputChange={this.handleInputChange}
 					onKeyDown={this.handleKeyDown}
-					{...rest}
+					disabled={disabled}
+					placeholder={placeholder}
 				/>
 			</FormElementContainer>
 		)

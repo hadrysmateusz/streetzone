@@ -1,235 +1,203 @@
-import React, { Component } from "react"
+import React, { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
-import { compose } from "recompose"
-import { InstantSearch, Configure } from "react-instantsearch-dom"
 import moment from "moment"
+import { css } from "styled-components/macro"
 
-import DataDisplay from "../../components/DataDisplay"
-import ImageGallery from "../../components/ImageGallery"
-import { withFirebase } from "../../components/Firebase"
-import { withAuthentication } from "../../components/UserSession"
+import Button, { ButtonContainer } from "../../components/Button"
+import DeleteItemButton from "../../components/DeleteItemButton"
+import { SmallTextBlock } from "../../components/StyledComponents"
+import { SaveButton } from "../../components/SaveButton"
 import LoadingSpinner from "../../components/LoadingSpinner"
-import Button, {
-	LoaderButton,
-	ButtonContainer,
-	IconButton
-} from "../../components/Button"
-import EmptyState from "../../components/EmptyState"
+import { PageContainer } from "../../components/Containers"
+import ImageGallery from "../../components/ImageGallery"
 import UserPreview from "../../components/UserPreview"
-import { translateCondition } from "../../constants/item_schema"
-import { PageContainer, GrayContainer } from "../../components/Containers"
-import { AlgoliaMiniHits } from "../../components/Algolia/AlgoliaHits"
-import { VirtualMenu, VirtualRefinementList } from "../../components/Algolia/Virtual"
+import EmptyState from "../../components/EmptyState/new"
+import PageNav from "../../components/PageNav"
+import InfoItem from "../../components/InfoItem"
+import ContactModal from "../../components/ContactModal"
+import { LayoutManager, Sidebar, Main } from "../../components/LayoutManager"
+import { ThematicGroup } from "../../components/ThematicGroup"
+import { SmallItemCard } from "../../components/Cards"
+import Share from "../../components/Share"
 import {
-	TextBlock,
-	SmallTextBlock,
-	HorizontalContainer
-} from "../../components/StyledComponents"
-import { ItemContainer, InfoContainer, SectionContainer } from "./StyledComponents"
-// import { HeartButton } from "../SaveButton"
-import formatDesigners from "../../utils/formatDesigners"
-import formatPrice from "../../utils/formatPrice"
-import formatSize from "../../utils/formatSize"
-import { CONST, ROUTES } from "../../constants"
+	Header,
+	DetailsContainer,
+	DatesContainer,
+	Brands,
+	Description,
+	ItemContainer,
+	InfoContainer,
+	MiscBar
+} from "../../components/ItemDetails"
 
-class ItemDetailsPage extends Component {
-	state = {
-		isLoading: true,
-		item: null,
-		isDeleting: false
-	}
+import { useFirebase, useAuthentication } from "../../hooks"
+import { translateCondition } from "../../constants/item_schema"
+import { CONST } from "../../constants"
+import { route, itemDataHelpers } from "../../utils"
 
-	componentDidUpdate = async (prevProps) => {
-		if (this.props.location !== prevProps.location) {
-			this.setState({ isLoading: true })
+const { formatDesigners, formatPrice, formatSize } = itemDataHelpers
 
-			// Get item from database
-			const item = await this.getItem()
+const ItemDetailsPage = ({ match, history }) => {
+	const firebase = useFirebase()
+	const [authUser, isAuthenticated] = useAuthentication(true)
+	const [isLoading, setIsLoading] = useState(true)
+	const [item, setItem] = useState(null)
 
-			this.setState({ item, isLoading: false })
-		}
-	}
+	const itemId = match.params.id
 
-	getItem = () => {
-		return this.props.firebase.getItemData(this.props.match.params.id)
-	}
-
-	componentDidMount = async () => {
-		// Get item from database
-		const item = await this.getItem()
-
-		this.setState({ item, isLoading: false })
-	}
-
-	deleteItem = async () => {
-		// TODO: better confirmation dialog
-		let confirmation = window.confirm("Czy napewno chcesz usunąć ten przedmiot?")
-
-		if (confirmation) {
-			this.setState({ isDeleting: true })
-			try {
-				const firebase = this.props.firebase
-				const id = this.props.match.params.id
-
-				// Fetch current user's items from database
-				const currentUserSnapshot = await firebase.currentUser().get()
-				const oldItems = currentUserSnapshot.data().items
-
-				// Delete the item
-				await firebase.item(id).delete()
-
-				// Remove the deleted item from user's items
-				const items = oldItems.filter((item) => item !== id)
-				await firebase.currentUser().update({ items })
-
-				this.props.history.push("/")
-				return
-			} catch (e) {
-				this.setState({ isDeleting: false })
-				alert("Usuwanie nie powiodło się")
-			}
-		}
-	}
-
-	render() {
-		const { item, isLoading, isDeleting } = this.state
-		const { authUser } = this.props
-		let isAuthorized
-
-		if (item && authUser) {
-			const ownerId = item.userId
-			const authUserId = this.props.authUser.uid
-			isAuthorized = authUserId && ownerId === authUserId
+	useEffect(() => {
+		const getItem = async () => {
+			setIsLoading(true)
+			const foundItem = await firebase.getItemData(itemId)
+			setItem(foundItem)
+			setIsLoading(false)
 		}
 
-		let conditionObj
-		let formattedDesigners
-		let formattedPrice
-		let formattedSize
-		if (item && !isLoading) {
-			conditionObj = translateCondition(item.condition)
-			formattedDesigners = formatDesigners(item.designers)
-			formattedPrice = formatPrice(item.price)
-			formattedSize = formatSize(item.size)
-		}
+		getItem()
+	}, [itemId, isAuthenticated, firebase])
 
-		return item && !isLoading ? (
-			<>
-				<PageContainer maxWidth={5}>
-					<ItemContainer>
-						<ImageGallery item={item} />
-						<InfoContainer>
-							<SectionContainer>
-								<TextBlock uppercase size="l" bold>
-									{item.designers && formattedDesigners}
-								</TextBlock>
-								<TextBlock size="m">{item.name}</TextBlock>
-							</SectionContainer>
-
-							<SectionContainer>
-								<HorizontalContainer gap="3">
-									<SmallTextBlock>
-										<b>Dodano:&nbsp;</b>
-										{moment(item.createdAt).format("D.M.YY o HH:mm")}
-									</SmallTextBlock>
-									<SmallTextBlock>
-										<b>Edytowano:&nbsp;</b>
-										{moment(item.createdAt).format("D.M.YY o HH:mm")}
-									</SmallTextBlock>
-								</HorizontalContainer>
-								<DataDisplay>
-									<tr>
-										<th>Cena</th>
-										<td>{formattedPrice}</td>
-									</tr>
-									<tr>
-										<th>Rozmiar</th>
-										<td>{formattedSize}</td>
-									</tr>
-									<tr>
-										<th>Stan</th>
-										<td>{conditionObj.displayValue}</td>
-									</tr>
-								</DataDisplay>
-
-								{isAuthorized ? (
-									<>
-										<ButtonContainer>
-											<Button accent fullWidth>
-												Promuj
-											</Button>
-										</ButtonContainer>
-
-										<ButtonContainer noMargin>
-											<Button
-												as={Link}
-												to={ROUTES.EDIT_ITEM.replace(":id", item.id)}
-												fullWidth
-											>
-												Edytuj
-											</Button>
-											<LoaderButton
-												isLoading={isDeleting}
-												text="Usuń"
-												loadingText="Usuwanie..."
-												onClick={this.deleteItem}
-												fullWidth
-											/>
-										</ButtonContainer>
-									</>
-								) : (
-									<ButtonContainer noMargin>
-										<Button primary fullWidth>
-											Kontakt
-										</Button>
-										<Button fullWidth>Zapisz</Button>
-										<IconButton icon="ellipsis-h" />
-									</ButtonContainer>
-								)}
-							</SectionContainer>
-							<SectionContainer>
-								{!isAuthorized && <UserPreview id={item.userId} />}
-								<TextBlock>{item.description}</TextBlock>
-							</SectionContainer>
-						</InfoContainer>
-					</ItemContainer>
-				</PageContainer>
-				<GrayContainer padded>
-					<TextBlock uppercase>Podobne przedmioty</TextBlock>
-					<InstantSearch
-						appId={process.env.REACT_APP_APP_ID}
-						apiKey={process.env.REACT_APP_ALGOLIA_API_KEY}
-						indexName={CONST.DEV_ITEMS_MARKETPLACE_DEFAULT_ALGOLIA_INDEX}
-					>
-						<Configure hitsPerPage={3} />
-						<VirtualRefinementList
-							attribute="designers"
-							defaultRefinement={item.designers}
-						/>
-						<VirtualMenu attribute="category" defaultRefinement={item.category} />
-						<AlgoliaMiniHits />
-					</InstantSearch>
-					<TextBlock uppercase>Inne przedmioty sprzedającego</TextBlock>
-					<InstantSearch
-						appId={process.env.REACT_APP_APP_ID}
-						apiKey={process.env.REACT_APP_ALGOLIA_API_KEY}
-						indexName={CONST.DEV_ITEMS_MARKETPLACE_DEFAULT_ALGOLIA_INDEX}
-					>
-						<Configure hitsPerPage={3} />
-						<VirtualMenu attribute="userId" defaultRefinement={item.userId} />
-						<AlgoliaMiniHits />
-					</InstantSearch>
-				</GrayContainer>
-			</>
-		) : isLoading ? (
-			<LoadingSpinner />
-		) : (
-			<EmptyState text="Nie znaleziono przedmiotu, być może został usunięty." />
+	if (isLoading) return <LoadingSpinner />
+	if (!item) {
+		return (
+			<EmptyState header="Nie znaleziono przedmiotu">Być może został usunięty</EmptyState>
 		)
 	}
+
+	const isAuthorized = authUser && authUser.uid === item.userId
+
+	const conditionObj = translateCondition(item.condition)
+	const formattedPrice = formatPrice(item.price)
+	const formattedSize = formatSize(item.size)
+	const formattedDesigners = formatDesigners(item.designers)
+
+	const similarFilters = `NOT id:${item.id} AND category:${
+		item.category
+	} AND (${item.designers.map((d) => `designers:${d}`).join(" OR ")})`
+
+	return (
+		<>
+			<PageContainer>
+				{/* TODO: make the algolia encoding work with route helper, for this to work */}
+				<PageNav
+					breadcrumbs={[["Kupuj", "MARKETPLACE"], [item.category, "MARKETPLACE"]]}
+				/>
+				<ItemContainer>
+					<ImageGallery
+						storageRefs={item.attachments}
+						showThumbnails
+						lightboxTitle={
+							<div>
+								<b>{item.name}</b> - {formattedDesigners}{" "}
+							</div>
+						}
+					/>
+					<InfoContainer>
+						<Header name={item.name} designers={item.designers} />
+						<DetailsContainer>
+							<InfoItem size="m" name="Cena">
+								{formattedPrice}
+							</InfoItem>
+							<InfoItem size="m" name="Stan">
+								{conditionObj.displayValue}
+							</InfoItem>
+							<InfoItem size="m" name="Rozmiar">
+								{formattedSize}
+							</InfoItem>
+							<Brands designers={item.designers} />
+						</DetailsContainer>
+
+						<Description>
+							<SmallTextBlock>Opis</SmallTextBlock>
+							<div className="content">{item.description}</div>
+						</Description>
+
+						<DatesContainer>
+							<SmallTextBlock>
+								<b>Dodano&nbsp;</b>
+								{moment().to(item.createdAt)}
+							</SmallTextBlock>
+							{item.editedAt && (
+								<SmallTextBlock>
+									<b>Edytowano&nbsp;</b>
+									{moment().to(item.editedAt)}
+								</SmallTextBlock>
+							)}
+						</DatesContainer>
+
+						<ButtonContainer
+							noMargin
+							vertical
+							css={css`
+								margin-bottom: var(--spacing3);
+							`}
+						>
+							{isAuthorized ? (
+								<>
+									<Button
+										accent
+										fullWidth
+										as={Link}
+										to={route("ITEM_PROMOTE", { id: item.id })}
+									>
+										Promuj
+									</Button>
+
+									<Button as={Link} to={route("EDIT_ITEM", { id: item.id })} fullWidth>
+										Edytuj
+									</Button>
+
+									<DeleteItemButton id={item.id} />
+								</>
+							) : (
+								<>
+									<ContactModal userId={item.userId} subject={item.name}>
+										{({ open }) => (
+											<Button primary fullWidth big onClick={open}>
+												Kontakt
+											</Button>
+										)}
+									</ContactModal>
+
+									<SaveButton type="item" id={item.id} fullWidth />
+								</>
+							)}
+						</ButtonContainer>
+
+						{!isAuthorized && <UserPreview id={item.userId} />}
+					</InfoContainer>
+				</ItemContainer>
+			</PageContainer>
+			<MiscBar>
+				<div className="group">
+					<div className="group-name">Udostępnij</div>
+					<Share />
+				</div>
+			</MiscBar>
+			<PageContainer>
+				<LayoutManager>
+					<Main>
+						<ThematicGroup
+							index={CONST.ITEMS_MARKETPLACE_DEFAULT_ALGOLIA_INDEX}
+							title="Podobne przedmioty"
+							filters={similarFilters}
+							component={SmallItemCard}
+							limit={3}
+						/>
+						<ThematicGroup
+							index={CONST.ITEMS_MARKETPLACE_DEFAULT_ALGOLIA_INDEX}
+							title="Inne przedmioty tego użytkownika"
+							filters={`NOT id:${item.id} AND userId:${item.userId}`}
+							component={SmallItemCard}
+							limit={3}
+						/>
+					</Main>
+					<Sidebar
+						availableElements={[{ component: () => <div />, title: "Placeholder" }]}
+					/>
+				</LayoutManager>
+			</PageContainer>
+		</>
+	)
 }
 
-export default compose(
-	withAuthentication,
-	withFirebase
-)(ItemDetailsPage)
+export default ItemDetailsPage

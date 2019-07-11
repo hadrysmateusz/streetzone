@@ -10,7 +10,7 @@ const SeparatorBase = ({ children, ...rest }) => (
 )
 
 const Separator = styled(SeparatorBase)`
-	padding: ${(p) => p.spacing || "var(--spacing1)"} 0;
+	padding: ${(p) => p.spacing || 0} 0;
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -18,7 +18,7 @@ const Separator = styled(SeparatorBase)`
 	.horizontal-rule {
 		height: 1px;
 		width: 100%;
-		background: ${(p) => p.theme.colors.gray[50]};
+		background: var(--gray75);
 	}
 	.children {
 		white-space: nowrap;
@@ -26,8 +26,10 @@ const Separator = styled(SeparatorBase)`
 		grid-auto-flow: column;
 		align-items: center;
 		gap: var(--spacing1);
-		padding: 0 var(--spacing1);
-		color: ${(p) => p.theme.colors.gray[25]};
+		:not(:empty) {
+			padding: 0 var(--spacing1);
+		}
+		color: var(--gray50);
 	}
 `
 

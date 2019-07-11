@@ -26,7 +26,7 @@ const Content = styled.div`
 export const AdaptiveFoldable = withBreakpoints(
 	class extends Component {
 		state = { isFolded: false }
-		changeBreakpoint = 1
+		changeBreakpoint = 3
 
 		componentDidMount = () => {
 			if (this.props.startFolded) {

@@ -30,6 +30,9 @@ class NewItemPage extends Component {
 			// Get user data
 			const oldItems = userSnap.data().items
 
+			// Get main image ref
+			const mainImageIndex = files.findIndex((a) => a.isMain)
+
 			// Upload files to storage and get their refs
 			const attachments = await Promise.all(
 				files.map(async (file) => {
@@ -39,7 +42,10 @@ class NewItemPage extends Component {
 			)
 
 			// Format data
-			const formattedData = formatItemDataForDb({ ...values, attachments }, MODE.CREATE)
+			const formattedData = formatItemDataForDb(
+				{ ...values, attachments, mainImageIndex },
+				MODE.CREATE
+			)
 
 			// Add item to database
 			await firebase.item(formattedData.id).set(formattedData)

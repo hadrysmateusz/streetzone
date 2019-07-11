@@ -1,145 +1,203 @@
-import React, { Component } from "react"
+import React, { useState, useEffect } from "react"
 import styled, { css } from "styled-components/macro"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { withFirebase } from "../Firebase"
-import { withAuthentication } from "../UserSession"
-import { compose } from "recompose"
-import { ROUTES } from "../../constants"
-import Modal from "../Modal"
-import { withGlobalContext } from "../GlobalContext"
 
-function getPropertyName(type) {
-	if (type === "item") {
-		return "savedItems"
-	} else if (type === "user") {
-		return "followedUsers"
-	} else {
-		throw new Error("The SaveButton needs a type")
-	}
-}
+import { useAuthentication, useFirebase, useFlash } from "../../hooks"
+import { shakeAnimation, heartbeatAnimation } from "../../style-utils/animations"
 
-const activeSaveButton = css`
-	.filled {
-		display: block;
-	}
-	.outline {
-		display: none;
-	}
-`
-const HeartButtonContainer = styled.div`
-	background: rgba(255, 255, 255, 1);
+import AuthModal from "../AuthModal"
+import { Button } from "../Button"
+
+const IconButtonContainer = styled.div`
 	padding: var(--spacing1);
-	color: ${(p) => p.theme.colors.black[0]};
+	color: var(--gray25);
 	display: flex;
 	cursor: pointer;
 	justify-content: center;
 	align-items: center;
 	transition: transform 0.2s ease;
-
 	font-size: ${(p) => 10 * (p.scale || 1)}px;
+	${(p) =>
+		!p.isActive &&
+		css`
+			:hover {
+				${(p) => p.animation}
+			}
+		`}
 
 	.filled {
-		color: ${(p) => p.theme.colors.accent};
-		display: none;
+		color: var(--gray25);
 	}
-
-	:hover {
-		transform: scale(1.1);
-	}
-
-	${(p) => p.active && activeSaveButton}
 `
 
-class SaveButtonBase extends Component {
-	state = {
-		isSaved: false,
-		isLoginModalVisible: false
-	}
-
-	componentDidMount = () => {
-		this.checkIfSaved()
-	}
-
-	componentDidUpdate = (prevProps) => {
-		if (prevProps.authUser !== this.props.authUser) {
-			this.checkIfSaved()
-		}
-	}
-
-	checkIfSaved = () => {
-		const { authUser, id, type } = this.props
-
-		// Get the property to modify based on type of button
-		const propertyName = getPropertyName(type)
-
-		const isSaved =
-			authUser && authUser[propertyName] && authUser[propertyName].includes(id)
-
-		this.setState({ isSaved })
-	}
-
-	onClick = (e) => {
-		e.preventDefault()
-
-		if (this.props.authUser) {
-			this.toggleSaved()
-		} else {
-			this.props.globalContext.openModal(ROUTES.SIGN_UP)
-		}
-	}
-
-	toggleSaved = async () => {
-		const { id, authUser, firebase, type = "item" } = this.props
-		if (authUser) {
-			const wasSaved = this.state.isSaved
-			// Assume the operation will be successful and set state early
-			this.setState({ isSaved: !wasSaved })
-
-			// Get the property to modify based on type of button
-			const propertyName = getPropertyName(type)
-
-			try {
-				// get the old list
-				const oldList = authUser[propertyName] || []
-
-				// either delete or add to the list
-				const newList = wasSaved ? oldList.filter((a) => a !== id) : [...oldList, id]
-
-				// update the db
-				await firebase.currentUser().update({ [propertyName]: newList })
-			} catch (error) {
-				console.log(error)
-			}
-
-			// This will make sure the state is correct regardless of the operation's success
-			this.checkIfSaved()
-		}
-	}
-
-	render = () => {
-		return (
-			<HeartButtonContainer
-				className={this.props.className}
-				active={this.state.isSaved}
-				onClick={this.onClick}
-				scale={this.props.scale}
-			>
-				<div className="fa-layers fa-fw">
-					<FontAwesomeIcon className="outline" icon={["far", "heart"]} />
-					<FontAwesomeIcon className="filled" icon="heart" />
-				</div>
-				<Modal>
-					<h2>Zaloguj się</h2>
-				</Modal>
-			</HeartButtonContainer>
-		)
+export const TYPE = {
+	item: {
+		actionType: "save",
+		attribute: "savedItems",
+		text: "Zapisz",
+		activeText: "Zapisano",
+		icon: "heart",
+		animation: heartbeatAnimation
+	},
+	user: {
+		actionType: "save",
+		attribute: "followedUsers",
+		text: "Obserwuj",
+		activeText: "Obserwujesz",
+		icon: "bell",
+		animation: shakeAnimation
+	},
+	drop: {
+		actionType: "follow",
+		attribute: "followedDrops",
+		text: "Obserwuj",
+		activeText: "Obserwujesz",
+		icon: "bell",
+		animation: shakeAnimation
 	}
 }
 
-const HeartButton = compose(
-	withAuthentication,
-	withFirebase,
-	withGlobalContext
-)(SaveButtonBase)
+const useSave = (type, id) => {
+	const { attribute, actionType } = TYPE[type]
+	const [authUser, isAuthenticated] = useAuthentication(true)
+	const [isActive, setIsActive] = useState(false)
+	const flashMessage = useFlash()
+	const firebase = useFirebase()
 
-export { HeartButton }
+	useEffect(() => {
+		if (!authUser) return
+		const isActive = authUser[attribute] && authUser[attribute].includes(id)
+		setIsActive(isActive)
+	}, [authUser, id, setIsActive, attribute])
+
+	const toggleSave = async () => {
+		const wasActive = isActive
+		// Assume the operation will be successful and set state early
+		setIsActive(!wasActive)
+
+		try {
+			// Get the old list
+			const oldList = authUser[attribute] || []
+			// Either delete or add to the list
+			const newList = wasActive ? oldList.filter((a) => a !== id) : [...oldList, id]
+			// Update the db
+			await firebase.currentUser().update({ [attribute]: newList })
+
+			flashMessage({
+				type: "success",
+				textContent: wasActive ? "Usunięto z zapisanych" : "Zapisano!"
+			})
+		} catch (error) {
+			console.log(error)
+			// Revert the state change if there was an error
+			setIsActive(wasActive)
+		}
+	}
+
+	const toggleFollow = async () => {
+		const wasActive = isActive
+		// Assume the operation will be successful and set state early
+		setIsActive(!wasActive)
+
+		try {
+			if (!wasActive) {
+				// add user to list of subscribers
+				firebase.db
+					.collection(attribute)
+					.doc(id)
+					.collection("subscribers")
+					.doc(authUser.uid)
+					.set({ isSubscribed: true })
+
+				// add to user's list
+				firebase.currentUser().update({
+					[attribute]: firebase.FieldValue.arrayUnion(id)
+				})
+			} else {
+				// remove user from list of subscribers
+				firebase.db
+					.collection(attribute)
+					.doc(id)
+					.collection("subscribers")
+					.doc(authUser.uid)
+					.delete()
+
+				// remove from user's list
+				firebase.currentUser().update({
+					[attribute]: firebase.FieldValue.arrayRemove(id)
+				})
+			}
+
+			flashMessage(wasActive ? "Usunięto z obserwowanych" : "Zaobserwowano!")
+		} catch (error) {
+			console.log(error)
+			// Revert the state change if there was an error
+			setIsActive(wasActive)
+		}
+	}
+
+	const onClick = (e) => {
+		e.preventDefault()
+		e.stopPropagation()
+
+		switch (actionType) {
+			case "save":
+				toggleSave()
+				break
+			case "follow":
+				toggleFollow()
+				break
+			default:
+				throw Error("Invalid action type")
+		}
+	}
+
+	return { isActive, isAuthenticated, onClick }
+}
+
+const Icon = ({ isActive, icon }) => (
+	<div className="fa-layers fa-fw">
+		{isActive ? (
+			<FontAwesomeIcon className="filled" icon={icon} />
+		) : (
+			<FontAwesomeIcon className="outline" icon={["far", icon]} />
+		)}
+	</div>
+)
+
+export const SaveIconButton = ({ type, id, scale }) => {
+	const { icon, text, activeText, animation } = TYPE[type]
+	const { isActive, onClick, isAuthenticated } = useSave(type, id)
+
+	return (
+		<AuthModal>
+			{({ open }) => (
+				<IconButtonContainer
+					onClick={isAuthenticated ? onClick : open}
+					scale={scale}
+					animation={animation}
+					isActive={isActive}
+					title={isActive ? text : activeText}
+				>
+					<Icon isActive={isActive} icon={icon} />
+				</IconButtonContainer>
+			)}
+		</AuthModal>
+	)
+}
+
+export const SaveButton = ({ type, id, ...rest }) => {
+	const { icon, text, activeText } = TYPE[type]
+	const { isActive, onClick, isAuthenticated } = useSave(type, id)
+
+	return (
+		<AuthModal>
+			{({ open }) => (
+				<Button onClick={isAuthenticated ? onClick : open} {...rest}>
+					<Icon isActive={isActive} icon={icon} />
+					{isActive ? activeText : text}
+				</Button>
+			)}
+		</AuthModal>
+	)
+}

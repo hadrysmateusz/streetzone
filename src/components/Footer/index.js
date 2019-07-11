@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { Link } from "react-router-dom"
 
 import { ImportantText } from "../Basics"
-import Logo from "../Logo"
+import { TextBlock } from "../StyledComponents"
 
 import { CONST, ROUTES } from "../../constants"
 
@@ -17,25 +17,31 @@ const OuterContainer = styled.div`
 	align-items: center;
 	align-content: center;
 	justify-content: space-between;
-	border-top: 1px solid ${(p) => p.theme.colors.gray[75]};
-	color: ${(p) => p.theme.colors.black[0]};
-	background: white;
+	color: white;
+	background: var(--black0);
+
+	${"" /* Stay above fixed elements like the blog header */}
+	position: relative;
+	z-index: 72;
 `
 
 const IconContainer = styled.div`
 	display: flex;
+	font-size: 2.7rem;
 	* + * {
-		margin-left: var(--spacing2);
+		margin-left: var(--spacing3);
 	}
 `
 
 const Item = styled(Link)`
 	white-space: nowrap;
+	color: var(--gray100);
+	${(p) => p.icon && "color: var(--black100);"}
 	display: block;
 	flex: 0 1;
 	:not(${IconContainer}) {
 		:hover {
-			color: ${(p) => p.theme.colors.accent};
+			color: white;
 			cursor: pointer;
 		}
 	}
@@ -76,8 +82,22 @@ const Footer = () => {
 		<OuterContainer>
 			<InnerContainer>
 				<Group>
-					<Logo>Bumped</Logo>
-					<div>© 2019 {CONST.BRAND_NAME}</div>
+					<TextBlock size="l" bold>
+						{CONST.BRAND_NAME}
+					</TextBlock>
+					<IconContainer>
+						<Item icon to={ROUTES.TWITTER_PROFILE}>
+							<FontAwesomeIcon icon={["fab", "twitter"]} />
+						</Item>
+						<Item icon to={ROUTES.FACEBOOK_PROFILE}>
+							<FontAwesomeIcon icon={["fab", "facebook-square"]} />
+						</Item>
+						<Item icon to={ROUTES.INSTAGRAM_PROFILE}>
+							<FontAwesomeIcon icon={["fab", "instagram"]} />
+						</Item>
+					</IconContainer>
+
+					<Item>© 2019 {CONST.BRAND_NAME}</Item>
 				</Group>
 				<Group>
 					<ImportantText>INFORMACJE</ImportantText>
@@ -88,18 +108,9 @@ const Footer = () => {
 				<Group>
 					<ImportantText>KONTAKT</ImportantText>
 					<Item to={ROUTES.CONTACT}>Kontakt</Item>
-					<div>{CONST.CONTACT_EMAIL}</div>
-					<IconContainer>
-						<Item to={ROUTES.TWITTER_PROFILE}>
-							<FontAwesomeIcon icon={["fab", "twitter"]} />
-						</Item>
-						<Item to={ROUTES.FACEBOOK_PROFILE}>
-							<FontAwesomeIcon icon={["fab", "facebook-square"]} />
-						</Item>
-						<Item to={ROUTES.INSTAGRAM_PROFILE}>
-							<FontAwesomeIcon icon={["fab", "instagram"]} />
-						</Item>
-					</IconContainer>
+					<Item as="a" href={`mailto:${CONST.CONTACT_EMAIL}`}>
+						{CONST.CONTACT_EMAIL}
+					</Item>
 				</Group>
 				<Group>
 					<ImportantText>POMOC</ImportantText>

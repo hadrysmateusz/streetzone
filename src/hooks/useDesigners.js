@@ -9,7 +9,6 @@ export default () => {
 		const snap = await firebase.designers().get()
 		let designersArr = []
 		snap.forEach((designer) => {
-			console.log(designer, designer.data())
 			designersArr.push(designer.data())
 		})
 		setDesigners(designersArr)

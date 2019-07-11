@@ -17,7 +17,7 @@ const Thumbnail = styled.div`
 	position: relative;
 
 	border: 1px solid;
-	border-color: ${(p) => (p.hasError ? "var(--error50)" : "var(--gray25)")};
+	border-color: ${(p) => (p.hasError ? "var(--danger50)" : "var(--gray25)")};
 
 	img {
 		object-fit: cover;
@@ -32,14 +32,21 @@ const IndicatorIcon = styled(FontAwesomeIcon)`
 
 const IndicatorsContainer = styled.div`
 	position: absolute;
-	z-index: 90;
+	z-index: 77;
 	top: var(--spacing2);
 	right: var(--spacing2);
 	display: grid;
 	gap: var(--spacing2);
 `
 
-const PureFileItem = ({ id, previewUrl, error, onDelete, onSetMain, isMain }) => {
+const PureFileItem = ({
+	id,
+	previewUrl,
+	error,
+	actions,
+	isMain = false,
+	uploadProgress
+}) => {
 	const hasError = !!error
 
 	return (
@@ -48,23 +55,25 @@ const PureFileItem = ({ id, previewUrl, error, onDelete, onSetMain, isMain }) =>
 				<IndicatorsContainer>
 					{hasError && (
 						<IndicatorIcon
-							color="var(--error50)"
+							color="var(--danger50)"
 							title={error}
 							icon="exclamation-circle"
 						/>
 					)}
 					{isMain && <IndicatorIcon color="var(--accent50)" icon="star" />}
 				</IndicatorsContainer>
-				<img src={previewUrl} alt="" />
+				{previewUrl ? (
+					<img src={previewUrl} alt="" />
+				) : uploadProgress ? (
+					uploadProgress + "%"
+				) : null}
 				<Overlay>
-					<IconContainer onClick={() => onSetMain(id)}>
-						<FontAwesomeIcon icon={["far", "star"]} size="2x" fixedWidth />
-						<TextBlock centered>Główne</TextBlock>
-					</IconContainer>
-					<IconContainer onClick={() => onDelete(id)}>
-						<FontAwesomeIcon icon="trash" size="2x" fixedWidth />
-						<TextBlock centered>Usuń</TextBlock>
-					</IconContainer>
+					{actions.map((action) => (
+						<IconContainer onClick={() => action.handler(id)}>
+							<FontAwesomeIcon icon={action.icon} size="2x" fixedWidth />
+							<TextBlock centered>{action.label}</TextBlock>
+						</IconContainer>
+					))}
 				</Overlay>
 				{hasError && <ErrorContainer>{error}</ErrorContainer>}
 			</Thumbnail>
@@ -77,12 +86,13 @@ PureFileItem.propTypes = {
 	previewUrl: PropTypes.string.isRequired,
 	isMain: PropTypes.bool,
 	error: PropTypes.string,
-	onDelete: PropTypes.func.isRequired,
-	onSetMain: PropTypes.func.isRequired
-}
-
-PureFileItem.defaultProps = {
-	isMain: false
+	actions: PropTypes.arrayOf(
+		PropTypes.shape({
+			label: PropTypes.string,
+			handler: PropTypes.func.isRequired,
+			icon: PropTypes.oneOfType([PropTypes.string, PropTypes.array])
+		})
+	)
 }
 
 export default PureFileItem

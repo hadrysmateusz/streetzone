@@ -27,7 +27,7 @@ class AvatarChangeForm extends React.Component {
 		if (authUser.profilePictureRef) {
 			try {
 				const file = new CustomFile({
-					ref: authUser.profilePictureRef || null,
+					storageRef: authUser.profilePictureRef || null,
 					previewUrl: getProfilePictureURL(authUser, "L"),
 					isUploaded: true
 				})

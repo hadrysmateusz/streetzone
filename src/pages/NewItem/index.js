@@ -6,6 +6,8 @@ import { withFirebase } from "../../components/Firebase"
 import { PageContainer } from "../../components/Containers"
 import { formatItemDataForDb, MODE } from "../../utils/formatting/formatItemData"
 
+import { ROUTES, CONST } from "../../constants"
+
 import NewItemForm from "./NewItemForm"
 
 class NewItemPage extends Component {
@@ -19,47 +21,19 @@ class NewItemPage extends Component {
 			const oldItems = authUser.items
 
 			// Upload files to storage and get their refs
-			const attachments = await Promise.all(
-				files.map(async (file) => {
-					const snapshot = await firebase.uploadFile("attachments", file.data)
-					return snapshot.ref.fullPath
-				})
+			const attachments = await firebase.batchUploadFiles(
+				CONST.STORAGE_BUCKET_ITEM_ATTACHMENTS,
+				files
 			)
 
-			const formattedData = formatItemDataForDb({ ...values, attachments }, MODE.CREATE)
+			// Get main image ref
+			const mainImageIndex = files.findIndex((a) => a.isMain)
 
-			// // Generate unique id
-			// const id = shortid.generate()
-
-			// console.log("incoming data", values)
-
-			// // Format the data
-			// const data = {
-			// 	name: values.name,
-			// 	designers: values.designers,
-			// 	category: values.category,
-
-			// 	size: values.size || null,
-			// 	description: values.description || "",
-
-			// 	price: Number.parseInt(values.price),
-			// 	condition: Number.parseFloat(values.condition),
-
-			// 	createdAt: Date.now(),
-			// 	bumpedAt: Date.now(),
-			// 	promotedAt: Date.now(),
-			// 	modifiedAt: null,
-
-			// 	status: ITEM_SCHEMA.status.available,
-
-			// 	id,
-			// 	userId,
-			// 	attachments
-			// }
-
-			// console.log("formatted data", data)
-
-			// TODO: add a check against an external schema to make sure all values are present
+			// Format the values for db
+			const formattedData = formatItemDataForDb(
+				{ ...values, mainImageIndex, attachments, userId },
+				MODE.CREATE
+			)
 
 			// Add item to database
 			await firebase.item(formattedData.id).set(formattedData)
@@ -69,7 +43,7 @@ class NewItemPage extends Component {
 			await firebase.user(userId).update({ items })
 
 			// Redirect to home page
-			history.push("/")
+			history.push(ROUTES.HOME)
 			return
 		} catch (error) {
 			alert("Wystąpił problem podczas wystawiania przedmiotu")

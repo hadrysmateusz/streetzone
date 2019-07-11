@@ -1,17 +1,20 @@
-import React, { useState, useEffect } from "react"
+import React from "react"
 import { connectCurrentRefinements, connectStats } from "react-instantsearch-dom"
 import { compose } from "recompose"
-import useFirebase from "../../hooks/useFirebase"
 import styled from "styled-components/macro"
+
 import { PageContainer } from "../../components/Containers"
 import { TextBlock } from "../../components/StyledComponents"
+import { useDesigner } from "../../hooks"
 
 const OuterContainer = styled.div`
+	margin-top: calc(-1 * var(--page-header-margin));
 	height: 140px;
 	background: linear-gradient(135deg, ${(p) => p.colorA}, ${(p) => p.colorB});
 	> * {
 		height: 100%;
 	}
+	margin-bottom: var(--spacing3);
 `
 
 const Logo = styled.img`
@@ -35,9 +38,6 @@ const Header = compose(
 	connectStats,
 	connectCurrentRefinements
 )(({ items, nbHits }) => {
-	const firebase = useFirebase()
-	const [designer, setDesigner] = useState(null)
-
 	const appliedFilters = items
 	const selectedDesigners = appliedFilters.find(
 		(filter) => filter.attribute === "designers"
@@ -46,27 +46,11 @@ const Header = compose(
 	const hasOneDesigner = designerList && designerList.length === 1
 	const selectedDesigner = hasOneDesigner ? designerList[0] : null
 
-	const getDesigner = async (selectedDesigner) => {
-		const snap = await firebase
-			.designers()
-			.where("label", "==", selectedDesigner)
-			.get()
-
-		let designersArr = []
-		snap.forEach((a) => {
-			designersArr.push(a.data())
-		})
-
-		setDesigner(designersArr[0])
-	}
-
-	useEffect(() => {
-		getDesigner(selectedDesigner)
-	}, [selectedDesigner])
+	const designer = useDesigner(selectedDesigner)
 
 	return designer ? (
 		<OuterContainer {...designer}>
-			<PageContainer>
+			<PageContainer noMargin>
 				<InnerContainer>
 					{/* <LogoContainer url={designer.logoURL} /> */}
 					<Logo src={designer.logoURL} alt={`logo ${designer.label}`} />

@@ -8,6 +8,7 @@ import { InfoBlock } from "../Basics"
 
 import useDelayRender from "../../hooks/useDelayRender"
 import { ResultsContainer } from "./StyledComponents"
+import { FEATURES } from "../../constants"
 
 const EndingInfoBlock = () => {
 	const shouldRender = useDelayRender(250)
@@ -37,9 +38,11 @@ const AlgoliaResults = connectStateResults(({ searchResults, searching }) => {
 			<div hidden={hasResults || searching}>
 				<EmptyState state={QueryNoResults} />
 			</div>
-			<div>
-				<EndingInfoBlock />
-			</div>
+			{FEATURES.SAVING_FILTERS && (
+				<div>
+					<EndingInfoBlock />
+				</div>
+			)}
 		</ResultsContainer>
 	)
 })

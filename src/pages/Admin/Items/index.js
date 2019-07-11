@@ -3,6 +3,7 @@ import { Link } from "react-router-dom"
 
 import LoadingSpinner from "../../../components/LoadingSpinner"
 import { TextBlock } from "../../../components/StyledComponents"
+import { PageContainer } from "../../../components/Containers"
 
 import AddItems from "./AddItems"
 
@@ -58,7 +59,7 @@ export class ItemsManagement extends React.Component {
 		return isLoading ? (
 			<LoadingSpinner />
 		) : (
-			<div>
+			<PageContainer>
 				{error && <div>{error.message}</div>}
 
 				<TextBlock size="xl" bold>
@@ -105,7 +106,7 @@ export class ItemsManagement extends React.Component {
 						})}
 					</ul>
 				)}
-			</div>
+			</PageContainer>
 		)
 	}
 }

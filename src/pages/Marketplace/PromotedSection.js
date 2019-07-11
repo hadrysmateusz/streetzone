@@ -1,22 +1,26 @@
 import React from "react"
 import styled from "styled-components/macro"
-import { connectHits } from "react-instantsearch-dom"
-import moment from "moment"
 import { Link } from "react-router-dom"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { withBreakpoints } from "react-breakpoints"
 
-import { UncontrolledInstantSearchWrapper } from "../../components/InstantSearchWrapper"
+import { StatelessSearchWrapper } from "../../components/InstantSearchWrapper"
 import { PageContainer } from "../../components/Containers"
-import { VirtualRange } from "../../components/Algolia/Virtual"
-import { CONST } from "../../constants"
 import { TextBlock } from "../../components/StyledComponents"
-import { ItemCard, useImage } from "../../components/ItemCard"
-import formatDesigners from "../../utils/formatDesigners"
-import formatPrice from "../../utils/formatPrice"
+import { SmallItemCard } from "../../components/Cards"
 import Button, { ButtonContainer } from "../../components/Button"
+
+import { CONST } from "../../constants"
 import { overlayTextShadow } from "../../style-utils"
+import { useImage } from "../../hooks"
+import { mapN, route, itemDataHelpers } from "../../utils"
+
+const { formatDesigners, formatPrice } = itemDataHelpers
+
+const NUMBER_OF_PROMOTED_ITEMS = 3
 
 const OuterContainer = styled.div`
-	padding: var(--spacing3) 0;
+	margin-bottom: var(--spacing3);
 `
 
 const InnerContainerContainer = styled.div``
@@ -25,6 +29,8 @@ const TopContainer = styled.div`
 	margin-top: var(--spacing3);
 	display: grid;
 	gap: var(--spacing2);
+
+	grid-auto-rows: minmax(100px, 22vw);
 
 	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
 		grid-template-columns: 2fr 1fr;
@@ -40,19 +46,56 @@ const TopContainer = styled.div`
 const PromotedItemContainer = styled.div`
 	width: 100%;
 	height: 100%;
-	background: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.24)),
-		url(${(p) => p.image});
-	background-size: cover;
-	background-position: center;
+	color: white;
+	padding: var(--spacing3) 0;
+	${overlayTextShadow}
+
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	text-align: center;
 	justify-content: flex-end;
-	color: white;
-	${overlayTextShadow}
-	padding: var(--spacing3) 0;
+
+	background: linear-gradient(
+			to bottom,
+			rgba(0, 0, 0, 0) 42%,
+			rgba(0, 0, 0, 0.25) 62%,
+			rgba(0, 0, 0, 0.8) 100%
+		),
+		url(${(p) => p.image}), var(--gray100);
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+`
+
+const Name = styled.div`
+	font-weight: bold;
+	font-size: var(--fs-m);
 	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
-		padding: var(--spacing4) 0;
+		font-size: var(--fs-l);
+	}
+`
+
+const Designers = styled.div`
+	font-size: var(--fs-xs);
+	color: var(--gray100);
+	text-transform: uppercase;
+`
+
+const PlaceholderContainer = styled.div`
+	width: 100%;
+	height: 100%;
+	background: var(--almost-white);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	color: var(--gray25);
+	padding: var(--spacing3) 0;
+
+	.icon {
+		font-size: 3rem;
+		color: var(--gray50);
 	}
 `
 
@@ -64,50 +107,77 @@ const BottomContainer = styled.div`
 	overflow: auto;
 	width: auto;
 	grid-auto-flow: column;
+	grid-auto-columns: 220px;
 	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
-		grid-auto-flow: column;
-		grid-template-columns: repeat(auto-fill, 160px);
 		gap: var(--spacing3);
+	}
+
+	/* make the content go from edge to edge on mobile*/
+	@media (max-width: ${(p) => p.theme.breakpoints[1] - 1}px) {
+		--x-margin: calc(-1 * var(--spacing3));
+		margin-left: var(--x-margin);
+		margin-right: var(--x-margin);
+		padding: 0 var(--spacing3);
+		&::after {
+			content: "";
+			display: block;
+			width: var(--spacing2);
+		}
 	}
 `
 
-const InnerContainer = connectHits(({ hits }) => {
-	const main = hits.slice(0, 3)
-	const other = hits.slice(3)
+const InnerContainer = withBreakpoints(({ items, currentBreakpoint }) => {
+	const isMobile = +currentBreakpoint < 2
+
+	const showMain = !isMobile
+
+	const main = isMobile ? [] : items.slice(0, NUMBER_OF_PROMOTED_ITEMS)
+	const other = isMobile ? items : items.slice(NUMBER_OF_PROMOTED_ITEMS)
+	const hasMain = main && main.length > 0
+	const hasOther = other && other.length > 0
+	const nToFill = !hasMain
+		? NUMBER_OF_PROMOTED_ITEMS
+		: NUMBER_OF_PROMOTED_ITEMS - main.length
+
 	return (
 		<InnerContainerContainer>
-			<TextBlock bold uppercase>
-				<span role="img" aria-label="asdf">
+			<TextBlock bold uppercase centered>
+				<span role="img" aria-label="promowane">
 					🔥 Promowane
 				</span>
 			</TextBlock>
-			<TopContainer>
-				{main.map((hit) => (
-					<PromotedItem item={hit} />
-				))}
-			</TopContainer>
-			<BottomContainer>
-				{other.map((hit) => (
-					<ItemCard item={hit} />
-				))}
-			</BottomContainer>
+			{showMain && (
+				<TopContainer>
+					{main.map((item) => (
+						<PromotedItem item={item} />
+					))}
+					{mapN(nToFill, () => (
+						<PromotedPlaceholder />
+					))}
+				</TopContainer>
+			)}
+			{hasOther && (
+				<BottomContainer>
+					{other.map((item) => (
+						<SmallItemCard {...item} />
+					))}
+				</BottomContainer>
+			)}
 		</InnerContainerContainer>
 	)
 })
 
 const PromotedItem = ({ item }) => {
-	const [imageURL, error] = useImage(item.attachments[0], "L")
+	const { imageURL } = useImage(item.attachments[item.mainImageIndex], "L")
 
 	const formattedDesigners = formatDesigners(item.designers)
 	const formattedPrice = formatPrice(item.price)
 
 	return (
-		<Link to={`/i/${item.id}`}>
+		<Link to={route("ITEM_DETAILS", { id: item.id })}>
 			<PromotedItemContainer image={imageURL}>
-				<TextBlock serif size="xl">
-					{item.name}
-				</TextBlock>
-				<TextBlock serif>{formattedDesigners}</TextBlock>
+				<Designers>{formattedDesigners}</Designers>
+				<Name>{item.name}</Name>
 
 				<ButtonContainer centered>
 					<Button>Kup za {formattedPrice}</Button>
@@ -117,21 +187,32 @@ const PromotedItem = ({ item }) => {
 	)
 }
 
-const PromotedSection = () => {
-	const minDate = moment(Date.now())
-		.subtract(7, "days")
-		.valueOf()
+const PromotedPlaceholder = () => {
+	return (
+		<Link to={route("PROMOTING_INFO")}>
+			<PlaceholderContainer>
+				<div className="icon">
+					<FontAwesomeIcon icon="plus" />
+				</div>
+				<div className="main-text">Twój przedmiot tutaj</div>
+			</PlaceholderContainer>
+		</Link>
+	)
+}
 
+const PromotedSection = () => {
 	return (
 		<OuterContainer>
-			<UncontrolledInstantSearchWrapper
-				indexName={CONST.DEV_ITEMS_MARKETPLACE_DEFAULT_ALGOLIA_INDEX}
+			<StatelessSearchWrapper
+				indexName={CONST.ITEMS_MARKETPLACE_DEFAULT_ALGOLIA_INDEX}
+				refinements={{ promotedUntil: { min: Date.now() } }}
 			>
-				<VirtualRange attribute="promotedAt" defaultRefinement={{ min: minDate }} />
-				<PageContainer noMargin>
-					<InnerContainer />
-				</PageContainer>
-			</UncontrolledInstantSearchWrapper>
+				{(hits) => (
+					<PageContainer noMargin>
+						<InnerContainer items={hits} />
+					</PageContainer>
+				)}
+			</StatelessSearchWrapper>
 		</OuterContainer>
 	)
 }

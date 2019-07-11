@@ -18,12 +18,14 @@ const StyledInput = styled.input`
 	height: var(--form-element-height);
 	padding: 0 var(--spacing2);
 	${(p) => p.hasIcon && "padding-left: var(--form-element-height);"}
+	${(p) => p.hasRightSlot && "padding-right: var(--right-slot-width);"}
 
 	${commonStyles}
 `
 
 const InnerContainer = styled.div`
 	position: relative;
+	--right-slot-width: ${(p) => p.rightSlotWidth || "0"};
 `
 
 const IconContainer = styled.div`
@@ -38,17 +40,43 @@ const IconContainer = styled.div`
 	${(p) => p.isDisabled && "color: var(--gray25)"}
 `
 
-const Input = ({ icon, info, error, disabled, ...rest }) => {
-	return (
-		<FormElementContainer error={error} info={info}>
-			<InnerContainer>
-				<IconContainer isDisabled={disabled}>
-					{icon && <FontAwesomeIcon icon={icon} />}
-				</IconContainer>
-				<StyledInput hasIcon={!!icon} hasError={!!error} disabled={disabled} {...rest} />
-			</InnerContainer>
-		</FormElementContainer>
-	)
-}
+const RightSlotContainer = styled.div`
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	height: var(--form-element-height);
+	width: var(--right-slot-width);
+	${"" /* display: flex;
+	align-items: center;
+	justify-content: center; */}
+`
+
+const Input = React.forwardRef(
+	({ icon, info, error, disabled, rightSlot, rightSlotWidth, ...rest }, ref) => {
+		const hasIcon = !!icon
+		const hasRightSlot = !!rightSlot
+
+		return (
+			<FormElementContainer error={error} info={info}>
+				<InnerContainer rightSlotWidth={rightSlotWidth}>
+					{hasIcon && (
+						<IconContainer isDisabled={disabled}>
+							{icon && <FontAwesomeIcon icon={icon} />}
+						</IconContainer>
+					)}
+					<StyledInput
+						ref={ref}
+						hasIcon={hasIcon}
+						hasRightSlot={hasRightSlot}
+						hasError={!!error}
+						disabled={disabled}
+						{...rest}
+					/>
+					{hasRightSlot && <RightSlotContainer>{rightSlot}</RightSlotContainer>}
+				</InnerContainer>
+			</FormElementContainer>
+		)
+	}
+)
 
 export default Input

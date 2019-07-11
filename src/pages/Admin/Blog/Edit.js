@@ -4,15 +4,15 @@ import shortid from "shortid"
 import Datetime from "react-datetime"
 import { Form, Field } from "react-final-form"
 
-import { TextBlock, Text } from "../../../components/StyledComponents"
-import { LoaderButton, ButtonContainer } from "../../../components/Button"
-import { FileHandlerSingle, CustomFile } from "../../../components/FileHandler"
-import useFirebase from "../../../hooks/useFirebase"
-import { Textarea, Input } from "../../../components/FormElements"
 import MultiTextInputFinalform from "../../../components/MultiTextInputFinalform"
-
-import "react-datetime/css/react-datetime.css"
+import { FileHandlerSingle, CustomFile } from "../../../components/FileHandler"
+import { LoaderButton, ButtonContainer } from "../../../components/Button"
+import { TextBlock, Text } from "../../../components/StyledComponents"
+import { Textarea, Input } from "../../../components/FormElements"
 import LoadingSpinner from "../../../components/LoadingSpinner"
+import { PageContainer } from "../../../components/Containers"
+
+import useFirebase from "../../../hooks/useFirebase"
 import { FORM_ERR } from "../../../constants"
 
 const validate = ({ author, title, section, mainContent, mainImage, dropsAt }) => {
@@ -34,7 +34,7 @@ const validate = ({ author, title, section, mainContent, mainImage, dropsAt }) =
 	return errors
 }
 
-const BlogEdit = ({ match }) => {
+const EditPost = ({ match }) => {
 	const firebase = useFirebase()
 	const [item, setItem] = useState(null)
 
@@ -47,7 +47,7 @@ const BlogEdit = ({ match }) => {
 
 		// create CustomFile objects with the fetched previewUrls
 		const file = new CustomFile({
-			ref: data.mainImageRef,
+			storageRef: data.mainImageRef,
 			previewUrl: data.mainImageURL,
 			isUploaded: true
 		})
@@ -66,10 +66,10 @@ const BlogEdit = ({ match }) => {
 		actions
 	) => {
 		try {
-			let mainImageRef = mainImage.ref
+			let mainImageRef = mainImage.storageRef
 			let mainImageURL = mainImage.previewUrl
 
-			if (!mainImage.ref) {
+			if (!mainImage.storageRef) {
 				const imageId = shortid.generate()
 				const mainImageSnap = await firebase.uploadFile(
 					`blog-photos/${imageId}`,
@@ -109,7 +109,7 @@ const BlogEdit = ({ match }) => {
 	}
 
 	return (
-		<>
+		<PageContainer>
 			<TextBlock size="xl" bold>
 				Blog
 			</TextBlock>
@@ -126,7 +126,6 @@ const BlogEdit = ({ match }) => {
 					onSubmit={onSubmit}
 					validate={validate}
 					render={({ handleSubmit, submitting, pristine, form, values }) => {
-						console.log(values.section)
 						return (
 							<form onSubmit={handleSubmit}>
 								{values.section && values.section !== "Dropy" && (
@@ -224,8 +223,8 @@ const BlogEdit = ({ match }) => {
 					}}
 				/>
 			)}
-		</>
+		</PageContainer>
 	)
 }
 
-export default withRouter(BlogEdit)
+export default withRouter(EditPost)

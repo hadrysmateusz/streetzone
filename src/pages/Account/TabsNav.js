@@ -1,15 +1,26 @@
 import React, { useState } from "react"
 import { withBreakpoints } from "react-breakpoints"
+
 import Overlay from "../../components/Overlay"
+import { PageContainer } from "../../components/Containers"
+import { Submenu } from "../../components/Basics"
 
 import {
-	Submenu,
 	SubmenuContainer,
 	Nav,
 	NavItem,
 	StyledNavLink,
-	OuterContainer
+	SubmenuNavItem,
+	SubmenuOuterContainer
 } from "./TabsNav.styles"
+
+const shouldRenderRoute = (route, isAuthorized, isMobile) => {
+	return (
+		(isAuthorized || !route.isProtected) &&
+		(!isMobile || !route.isHiddenOnMobile) &&
+		!route.isHidden
+	)
+}
 
 const DropdownNavItem = ({ label, routes }) => {
 	const [isOpen, setIsOpen] = useState(false)
@@ -18,28 +29,36 @@ const DropdownNavItem = ({ label, routes }) => {
 	}
 
 	return (
-		<NavItem onClick={onClick}>
-			<div>{label}</div>
+		<SubmenuOuterContainer>
+			<NavItem onClick={onClick}>{label}</NavItem>
 			{isOpen && (
 				<>
 					<SubmenuContainer>
-						<Submenu>{routes}</Submenu>
+						<Submenu>
+							{routes.map((route) => (
+								<SubmenuNavItem to={route.path} key={route.id} onClick={onClick}>
+									{route.shortLabel}
+								</SubmenuNavItem>
+							))}
+						</Submenu>
 					</SubmenuContainer>
 					<Overlay onClick={onClick} />
 				</>
 			)}
-		</NavItem>
+		</SubmenuOuterContainer>
 	)
 }
 
 export const AccountPageTabs = withBreakpoints(
 	({ currentBreakpoint, routes, userId, ...rest }) => {
-		routes.forEach((route) => {
-			route.path = route.path.replace(":id", userId)
+		let routesWithIds = routes.map((route) => {
+			return { ...route, path: route.path.replace(":id", userId) }
 		})
 
-		if (currentBreakpoint < 2) {
-			routes = routes.reduce((acc, curr, i) => {
+		const isMobile = currentBreakpoint < 2
+
+		if (isMobile) {
+			routesWithIds = routesWithIds.reduce((acc, curr, i) => {
 				if (!curr.category) {
 					return { ...acc, [curr.id]: curr }
 				} else {
@@ -49,45 +68,40 @@ export const AccountPageTabs = withBreakpoints(
 			}, {})
 		}
 
-		return <TabsNav routes={routes} {...rest} />
+		return <TabsNav routes={routesWithIds} isMobile={isMobile} {...rest} />
 	}
 )
 
-const TabsNav = ({ routes, isAuthorized = false }) => {
-	return (
-		<OuterContainer>
-			<Nav>
-				{Object.entries(routes).map(([key, value], i) => {
-					if (Array.isArray(value)) {
-						let subRoutes = []
-						value.forEach((route) => {
-							if ((isAuthorized || !route.isProtected) && !route.isHidden) {
-								subRoutes.push(
-									<StyledNavLink to={route.path} key={route.id}>
-										{route.shortLabel}
-									</StyledNavLink>
-								)
-							}
-						})
+const TabsNav = ({ routes, isMobile, isAuthorized = false }) => {
+	const routeEntries = Object.entries(routes)
 
-						return subRoutes.length > 0 ? (
-							<DropdownNavItem label={key} routes={subRoutes} />
-						) : null
-					} else {
-						return (
-							(isAuthorized || !value.isProtected) &&
-							!value.isHidden && (
-								<NavItem>
-									<StyledNavLink to={value.path} key={value.id}>
-										{value.label}
-									</StyledNavLink>
-								</NavItem>
-							)
-						)
-					}
+	const renderDropdown = (categoryName, routes) => {
+		routes = routes.reduce((acc, route) => {
+			return shouldRenderRoute(route, isAuthorized, isMobile) ? [...acc, route] : acc
+		}, [])
+
+		return routes.length > 0 ? (
+			<DropdownNavItem label={categoryName} routes={routes} key={categoryName} />
+		) : null
+	}
+
+	const renderSingleRoute = (route) =>
+		shouldRenderRoute(route, isAuthorized, isMobile) ? (
+			<StyledNavLink to={route.path} key={route.id}>
+				{route.label}
+			</StyledNavLink>
+		) : null
+
+	return (
+		<PageContainer extraWide>
+			<Nav>
+				{routeEntries.map(([key, value]) => {
+					return Array.isArray(value)
+						? renderDropdown(key, value)
+						: renderSingleRoute(value)
 				})}
 			</Nav>
-		</OuterContainer>
+		</PageContainer>
 	)
 }
 

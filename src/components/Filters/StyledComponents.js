@@ -2,12 +2,12 @@ import styled from "styled-components/macro"
 
 export const FiltersContainer = styled.div`
 	/* desktop */
-	@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
+	@media (min-width: ${(p) => p.theme.breakpoints[3]}px) {
 		position: relative;
 	}
 
 	/* mobile */
-	@media (max-width: ${(p) => p.theme.breakpoints[1] - 1}px) {
+	@media (max-width: ${(p) => p.theme.breakpoints[3] - 1}px) {
 		/* overflow: hidden; */
 		width: 100%;
 		max-width: 100vw;
@@ -24,10 +24,10 @@ export const FiltersContainer = styled.div`
 
 export const FilterInnerContainer = styled.div`
 	/* mobile */
-	@media (max-width: ${(p) => p.theme.breakpoints[1] - 1}px) {
-		flex: 1 1 100%;
-		overflow-y: scroll;
-		margin-bottom: var(--spacing5);
+	@media (max-width: ${(p) => p.theme.breakpoints[3] - 1}px) {
+		max-height: 100vh;
+		overflow-y: auto;
+		padding-bottom: 100px; /* make sure no content is inaccessible */
 	}
 `
 
@@ -64,18 +64,4 @@ export const ListItem = styled.div`
 	> :first-child {
 		flex: 1;
 	}
-`
-
-export const CloseIconContainer = styled.span`
-	cursor: pointer;
-	padding: var(--spacing1);
-`
-
-export const MobileFiltersHeader = styled.header`
-	border-bottom: 1px solid var(--gray75);
-	padding: var(--spacing3);
-	display: grid;
-	grid-template-columns: 1fr min-content;
-	grid-auto-flow: column;
-	align-items: center;
 `

@@ -56,7 +56,7 @@ export const OptionsList = ({ items, refine, showCount, multiColumn }) => {
 			<OptionsContainer multiColumn={multiColumn}>
 				{items.map((item) => (
 					<FilterItem key={item.value}>
-						<label htmlFor={`filter-value-${item.label}`}>
+						<label htmlFor={`filter-value-${item.label}`} title={item.label}>
 							<input
 								id={`filter-value-${item.label}`}
 								type="checkbox"

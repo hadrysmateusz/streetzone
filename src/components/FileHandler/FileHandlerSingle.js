@@ -9,7 +9,7 @@ import { IconContainer, Overlay } from "./common"
 import { FormElementContainer, commonStyles } from "../FormElements"
 import { TextBlock } from "../StyledComponents"
 
-const FileHandlerContainer = styled.div`
+const FileHandlerSingleContainer = styled.div`
 	${commonStyles.basicStyles}
 	min-height: 150px;
 
@@ -100,7 +100,7 @@ const FileHandlerSingle = ({
 
 	return (
 		<FormElementContainer error={error} info={info} {...rest}>
-			<FileHandlerContainer
+			<FileHandlerSingleContainer
 				{...getRootProps({ hasError: !!error, isEmpty, containerStyles })}
 			>
 				<input {...getInputProps()} />
@@ -114,13 +114,15 @@ const FileHandlerSingle = ({
 							<FontAwesomeIcon icon="plus" size="2x" fixedWidth />
 							<TextBlock centered>{!isEmpty ? "Zmień" : "Dodaj"}</TextBlock>
 						</IconContainer>
-						<IconContainer onClick={onClear}>
-							<FontAwesomeIcon icon="trash" size="2x" fixedWidth />
-							<TextBlock centered>Usuń</TextBlock>
-						</IconContainer>
+						{!isEmpty && (
+							<IconContainer onClick={onClear}>
+								<FontAwesomeIcon icon="trash" size="2x" fixedWidth />
+								<TextBlock centered>Usuń</TextBlock>
+							</IconContainer>
+						)}
 					</Overlay>
 				)}
-			</FileHandlerContainer>
+			</FileHandlerSingleContainer>
 		</FormElementContainer>
 	)
 }

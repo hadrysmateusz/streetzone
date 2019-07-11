@@ -3,6 +3,7 @@ import { connectRefinementList } from "react-instantsearch-dom"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { withBreakpoints } from "react-breakpoints"
 import { compose } from "recompose"
+import { css } from "styled-components/macro"
 
 import { UnstyledButton } from "../../Button"
 import { AdaptiveFoldable } from "../../Foldable"
@@ -94,7 +95,11 @@ class AlgoliaRefinementList extends React.Component {
 
 				{/* More button */}
 				{hasMore && (
-					<UnstyledButton>
+					<UnstyledButton
+						css={css`
+							margin-top: 6px;
+						`}
+					>
 						<Text onClick={this.toggleMenu} size="xs" bold>
 							{isMenuOpen ? (
 								<>

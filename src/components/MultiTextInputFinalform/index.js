@@ -2,35 +2,42 @@ import React from "react"
 import { MultiTextInputControlled } from "../FormElements"
 
 const MultiTextInputFinalform = ({ onChange, value, ...rest }) => {
-	// convert any string value to React Select option object
-	if (value) {
-		value = value.map((a) => {
-			if (typeof a === "string") {
-				return {
-					value: a,
-					label: a
-				}
-			} else {
-				return a
-			}
-		})
-	}
-
-	const customSetState = (newOption) => {
-		if (!newOption) {
-			onChange(null)
+	const add = (newTag) => {
+		if (!newTag) {
+			onChange(undefined)
 		} else {
 			if (value) {
-				value = [...value, newOption]
+				value = [...value, newTag]
 			} else {
-				value = [newOption]
+				value = [newTag]
 			}
 			onChange(value)
 		}
 	}
 
+	const remove = (removedValue) => {
+		value = value.filter((a) => a !== removedValue.value)
+		onChange(value)
+	}
+
+	// convert any string value to React Select option object
+	let formattedValue
+	if (value) {
+		formattedValue = value.map((a) => {
+			return {
+				value: a,
+				label: a
+			}
+		})
+	}
+
 	return (
-		<MultiTextInputControlled {...rest} value={value} customSetState={customSetState} />
+		<MultiTextInputControlled
+			{...rest}
+			value={formattedValue}
+			add={add}
+			remove={remove}
+		/>
 	)
 }
 

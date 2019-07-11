@@ -1,7 +1,7 @@
 import shortid from "shortid"
 
-import isNonEmptyArray from "../isNonEmptyArray"
 import isSet from "./isSet"
+import { formatFloat, formatInt, formatNonEmptyArray, formatString } from "./basicsUtils"
 
 export const MODE = {
 	CREATE: "CREATE",
@@ -18,29 +18,10 @@ export const REQUIRED = [
 	"category",
 	"price",
 	"condition",
-	"attachments",
-	"userId"
+	"userId",
+	"mainImageIndex",
+	"attachments"
 ]
-
-const formatNonEmptyArray = (val) => {
-	if (isNonEmptyArray(val)) {
-		return val
-	} else {
-		throw new Error("a property expected a non-empty array")
-	}
-}
-
-const formatString = (val) => {
-	return "" + val.trim()
-}
-
-const formatFloat = (val) => {
-	return Number.parseFloat(val)
-}
-
-const formatInt = (val) => {
-	return Number.parseInt(val)
-}
 
 export const formatItemDataForDb = (data, mode, flagState = true) => {
 	let formatted = {}
@@ -50,7 +31,7 @@ export const formatItemDataForDb = (data, mode, flagState = true) => {
 			// check if all required values are present
 			for (const field of REQUIRED) {
 				if (!data[field]) {
-					throw new Error("missing required data")
+					throw new Error("missing required data in: " + field)
 				}
 			}
 		}
@@ -63,6 +44,12 @@ export const formatItemDataForDb = (data, mode, flagState = true) => {
 		// attachments
 		if (isSet(data.attachments)) {
 			formatted.attachments = formatNonEmptyArray(data.attachments)
+		}
+
+		// mainImageIndex
+		if (isSet(data.mainImageIndex)) {
+			// the minimum/default index is 0
+			formatted.mainImageIndex = Math.max(0, formatInt(data.mainImageIndex))
 		}
 
 		// name
@@ -109,6 +96,8 @@ export const formatItemDataForDb = (data, mode, flagState = true) => {
 		formatted.modifiedAt = Date.now()
 		/* has to be null, otherwise it would show up in promoted section */
 		formatted.promotedAt = null
+		formatted.promotingLevel = null
+		formatted.bumps = 0
 
 		formatted.isArchived = false
 		formatted.isVerified = false

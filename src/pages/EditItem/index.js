@@ -6,20 +6,24 @@ import { withAuthorization, withAuthentication } from "../../components/UserSess
 import LoadingSpinner from "../../components/LoadingSpinner"
 import { PageContainer } from "../../components/Containers"
 import { CustomFile } from "../../components/FileHandler"
-import useFirebase from "../../hooks/useFirebase"
 import EmptyState from "../../components/EmptyState"
 
 import { NotFoundError } from "../../errors"
-import EditItemForm from "./EditItemForm"
-import useAuthentication from "../../hooks/useAuthentication"
+import { useAuthentication, useFirebase } from "../../hooks"
+import { sleep } from "../../utils"
 import { formatItemDataForDb, MODE } from "../../utils/formatting/formatItemData"
-import { S_THUMB_POSTFIX, M_THUMB_POSTFIX, L_THUMB_POSTFIX } from "../../constants/const"
+import { CONST } from "../../constants"
 
-const formatDataForEditForm = (price, description, files) => ({
+import EditItemForm from "./EditItemForm"
+import PageHeading from "../../components/PageHeading"
+
+const { S_THUMB_POSTFIX, M_THUMB_POSTFIX, L_THUMB_POSTFIX } = CONST
+
+const formatDataForEditForm = (price, condition, description, files) => ({
 	price: Number.parseInt(price),
 	description: description || "",
-	files: files,
-	modifiedAt: Date.now()
+	condition,
+	files: files
 })
 
 const EditItemPage = ({ match, history }) => {
@@ -27,54 +31,72 @@ const EditItemPage = ({ match, history }) => {
 	const authUser = useAuthentication()
 	const [error, setError] = useState(null)
 	const [initialData, setInitialData] = useState(null)
+	const [itemName, setItemName] = useState(null)
 
-	const getItem = async () => {
-		try {
-			// Get item from database
-			let item = await firebase.getItemData(match.params.id)
+	useEffect(() => {
+		const getItem = async () => {
+			try {
+				// Get item from database
+				let item = await firebase.getItemData(match.params.id)
 
-			// Get item attachments' refs and urls for previews
-			const imageURLs = await firebase.batchGetImageURLs(item.attachments)
+				// Get item attachments' refs and urls for previews
+				const imageURLs = await firebase.batchGetImageURLs(item.attachments)
 
-			// create CustomFile objects with the fetched previewUrls
-			const files = item.attachments.map((attachment, i) => {
-				return new CustomFile({
-					ref: attachment,
-					previewUrl: imageURLs[i],
-					isUploaded: true
+				// create CustomFile objects with the fetched previewUrls
+				const files = item.attachments.map((attachment, i) => {
+					return new CustomFile({
+						storageRef: attachment,
+						previewUrl: imageURLs[i],
+						isUploaded: true,
+						isMain: i === item.mainImageIndex
+					})
 				})
-			})
 
-			// Format data for the form
-			const initialData = formatDataForEditForm(item.price, item.description, files)
+				// Format data for the form
+				const initialData = formatDataForEditForm(
+					item.price,
+					item.condition,
+					item.description,
+					files
+				)
 
-			setInitialData(initialData)
-		} catch (err) {
-			if (error instanceof NotFoundError) {
-				setError(err)
-			} else {
-				throw err
+				setInitialData(initialData)
+				setItemName(item.name)
+			} catch (err) {
+				if (err instanceof NotFoundError) {
+					setError(err)
+				} else {
+					throw err
+				}
 			}
 		}
-	}
 
-	const onSubmit = async ({ files, price, description }) => {
+		getItem()
+	}, [match, authUser, firebase])
+
+	const onSubmit = async ({ files, price, description, condition }, actions) => {
 		try {
 			// Upload NEW files and get ALL refs
 			const newRefs = await Promise.all(
 				files.map(async (file) => {
 					// If file already has a ref, return it
-					if (file.ref) return file.ref
+					if (file.storageRef) return file.storageRef
 
-					// Upload the new files and return promise containing ref
-					const snapshot = await firebase.uploadFile("attachments", file.data)
+					// Upload the new file and return promise containing ref
+					const snapshot = await firebase.uploadFile(
+						CONST.STORAGE_BUCKET_ITEM_ATTACHMENTS,
+						file.data
+					)
 					return snapshot.ref.fullPath
 				})
 			)
 
+			// Get main image ref
+			const mainImageIndex = files.findIndex((a) => a.isMain)
+
 			// Format the data
 			const data = formatItemDataForDb(
-				{ price, description, attachments: newRefs },
+				{ price, description, condition, mainImageIndex, attachments: newRefs },
 				MODE.EDIT
 			)
 
@@ -82,31 +104,32 @@ const EditItemPage = ({ match, history }) => {
 			await firebase.item(match.params.id).update(data)
 
 			// Get just the old refs
-			let oldRefs = initialData.files.map((file) => file.ref)
+			let oldRefs = initialData.files.map((file) => file.storageRef)
 
 			// Old refs no longer present in new refs are marked for deletion
 			let refsToDelete = oldRefs.filter((oldRef) => !newRefs.includes(oldRef))
 
 			// Remove files associated with the marked refs
-			for (const ref of refsToDelete) {
-				await firebase.removeFile(ref)
-				await firebase.removeFile(ref + L_THUMB_POSTFIX)
-				await firebase.removeFile(ref + M_THUMB_POSTFIX)
-				await firebase.removeFile(ref + S_THUMB_POSTFIX)
+			for (const storageRef of refsToDelete) {
+				await firebase.removeFile(storageRef)
+				await firebase.removeFile(storageRef + L_THUMB_POSTFIX)
+				await firebase.removeFile(storageRef + M_THUMB_POSTFIX)
+				await firebase.removeFile(storageRef + S_THUMB_POSTFIX)
 			}
 
-			// Redirect to home page
-			history.push("/")
+			await sleep(5500)
+
+			// Clear form to remove conflict with transition blocking
+			actions.reset()
+
+			// Redirect back
+			history.goBack()
 			return
 		} catch (error) {
 			alert("Wystąpił problem podczas edytowania przedmiotu")
 			console.log(error)
 		}
 	}
-
-	useEffect(() => {
-		getItem()
-	}, [match, authUser])
 
 	return (
 		<PageContainer maxWidth={2}>
@@ -115,7 +138,10 @@ const EditItemPage = ({ match, history }) => {
 			) : !initialData ? (
 				<LoadingSpinner />
 			) : (
-				<EditItemForm initialValues={initialData} onSubmit={onSubmit} />
+				<>
+					<PageHeading emoji={"🖊️"}>Edytuj {itemName}</PageHeading>
+					<EditItemForm initialValues={initialData} onSubmit={onSubmit} />
+				</>
 			)}
 		</PageContainer>
 	)
@@ -123,10 +149,10 @@ const EditItemPage = ({ match, history }) => {
 
 const condition = (authUser, pathParams) => {
 	const isAuthenticated = !!authUser
+
 	if (!isAuthenticated) {
-		return
+		return false
 	} else {
-		console.log(pathParams, pathParams.id)
 		const isAuthorized = authUser.items.includes(pathParams.id)
 		return isAuthorized
 	}

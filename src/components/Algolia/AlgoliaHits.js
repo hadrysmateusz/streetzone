@@ -2,16 +2,21 @@ import React from "react"
 import { connectInfiniteHits, connectHits } from "react-instantsearch-dom"
 import InfiniteScroll from "react-infinite-scroller"
 import ContainerDimensions from "react-container-dimensions"
+import { compose } from "recompose"
+import { withBreakpoints } from "react-breakpoints"
 
 import LoadingSpinner from "../LoadingSpinner"
-import { ItemCard, ItemCardMini } from "../ItemCard"
-import { ItemsContainer } from "../ItemsView"
+import { ItemCard } from "../ItemCard"
+import { SmallItemCard, BigItemCard } from "../Cards"
+import { ItemsContainer, ItemsList } from "../ItemsView"
 import Button from "../Button"
+import { ScrollableContainer } from "../Basics"
 
-import { MiniContainer, ItemsLoaderContainer } from "./StyledComponents"
+import { ItemsLoaderContainer, InfiniteOwnerCardsContainer } from "./StyledComponents"
 import useDelayRender from "../../hooks/useDelayRender"
+import OwnerItemCard from "../OwnerItemCard"
 
-const ItemsLoader = ({ refine }) => {
+export const ItemsLoader = ({ refine }) => {
 	const shouldRender = useDelayRender(200)
 
 	return shouldRender ? (
@@ -22,7 +27,13 @@ const ItemsLoader = ({ refine }) => {
 	) : null
 }
 
-const AlgoliaInfiniteHits = connectInfiniteHits(({ hits, hasMore, refine }) => {
+export const AlgoliaInfiniteHits = compose(
+	withBreakpoints,
+	connectInfiniteHits
+)(({ hits, hasMore, refine, currentBreakpoint }) => {
+	// only allow the grid view on smaller viewports
+	const isMobile = currentBreakpoint < 1
+
 	return (
 		<InfiniteScroll
 			hasMore={hasMore}
@@ -30,31 +41,48 @@ const AlgoliaInfiniteHits = connectInfiniteHits(({ hits, hasMore, refine }) => {
 			initialLoad={false}
 			loadMore={refine}
 		>
-			<ContainerDimensions>
-				{({ width }) =>
-					width ? (
-						<ItemsContainer containerWidth={width}>
-							{hits.map((item) => (
-								<ItemCard key={item.objectID} item={item} />
-							))}
-						</ItemsContainer>
-					) : null
-				}
-			</ContainerDimensions>
+			{isMobile ? (
+				<ItemsContainer>
+					{hits.map((item) => (
+						<SmallItemCard key={item.objectID} {...item} />
+					))}
+				</ItemsContainer>
+			) : (
+				<ItemsList>
+					{hits.map((item) => (
+						<BigItemCard key={item.objectID} {...item} />
+					))}
+				</ItemsList>
+			)}
 		</InfiniteScroll>
 	)
 })
 
-const AlgoliaMiniHits = connectHits(({ hits }) => (
+export const AlgoliaScrollableHits = connectHits(({ hits }) => (
 	<ContainerDimensions>
 		{({ width }) => (
-			<MiniContainer containerWidth={width}>
-				{hits.map((hit) => (
-					<ItemCardMini key={hit.objectID} item={hit} />
+			<ScrollableContainer containerWidth={width}>
+				{hits.map((item) => (
+					<ItemCard key={item.objectID} item={item} />
 				))}
-			</MiniContainer>
+			</ScrollableContainer>
 		)}
 	</ContainerDimensions>
 ))
 
-export { AlgoliaInfiniteHits, AlgoliaMiniHits, ItemsLoader }
+export const InfiniteOwnerCards = connectInfiniteHits(({ hits, hasMore, refine }) => {
+	return (
+		<InfiniteScroll
+			hasMore={hasMore}
+			loader={<ItemsLoader refine={refine} key="loader-component" />}
+			initialLoad={false}
+			loadMore={refine}
+		>
+			<InfiniteOwnerCardsContainer>
+				{hits.map((item) => (
+					<OwnerItemCard key={item.objectID} item={item} />
+				))}
+			</InfiniteOwnerCardsContainer>
+		</InfiniteScroll>
+	)
+})

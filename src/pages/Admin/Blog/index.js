@@ -5,10 +5,11 @@ import { Link } from "react-router-dom"
 import LoadingSpinner from "../../../components/LoadingSpinner"
 import Button, { ButtonContainer } from "../../../components/Button"
 import { TextBlock } from "../../../components/StyledComponents"
+import { PageContainer } from "../../../components/Containers"
 
-import useFirebase from "../../../hooks/useFirebase"
-import useFirestoreCollection from "../../../hooks/useFirestoreCollection"
-import { ROUTES } from "../../../constants"
+import { route } from "../../../utils"
+import { formatPostDataForDb, MODE } from "../../../utils/formatting/formatPostData"
+import { useFirebase, useFirestoreCollection } from "../../../hooks"
 
 const BlogImageContainer = styled.div`
 	img {
@@ -17,20 +18,40 @@ const BlogImageContainer = styled.div`
 	}
 `
 
+const List = styled.div`
+	display: grid;
+	gap: var(--spacing2);
+	grid-template-columns: 1fr 1fr;
+
+	> * {
+		overflow: hidden;
+	}
+`
+
 const BlogPostContainer = styled.div`
 	border: 1px solid black;
 	padding: var(--spacing3);
-	margin: var(--spacing2) 0;
 `
 
-const BlogPost = ({ post }) => {
+const BlogPost = ({
+	id,
+	imageUrls,
+	mainImageIndex,
+	title,
+	author,
+	excerpt,
+	promotedAt,
+	category,
+	tags
+}) => {
 	const firebase = useFirebase()
 
-	const { id, mainImageURL, title, author, isPromoted, section } = post
+	const mainImageUrl = imageUrls[mainImageIndex]
+	const isPromoted = !!promotedAt
 
-	const onDelete = (id) => {
+	const onDelete = () => {
 		try {
-			const shouldDelete = window.confirm(`Do you really want to delete "${title}"?`)
+			const shouldDelete = window.confirm(`Czy napewno chcesz USUNĄĆ "${title}"?`)
 			if (shouldDelete) {
 				firebase.post(id).delete()
 			}
@@ -40,24 +61,40 @@ const BlogPost = ({ post }) => {
 		}
 	}
 
+	const onPromote = () => {
+		try {
+			firebase.post(id).update(formatPostDataForDb({}, MODE.PROMOTE, !isPromoted))
+		} catch (error) {
+			console.log(error)
+			alert(error)
+		}
+	}
+
 	return (
 		<BlogPostContainer>
 			<TextBlock color="gray0" uppercase>
-				{section}
+				{category}
 			</TextBlock>
 			<TextBlock bold size="l">
 				{title}
 			</TextBlock>
-			{author && <TextBlock color="#666">by {author}</TextBlock>}
-			{isPromoted && <TextBlock bold>Is Promoted</TextBlock>}
+			<TextBlock color="#666">by {author}</TextBlock>
+
+			{isPromoted && <TextBlock bold>Promowany</TextBlock>}
+
+			<TextBlock color="#333">{excerpt}</TextBlock>
+
+			{tags && <TextBlock color="gray0">{tags.map((tag) => `#${tag} `)}</TextBlock>}
+
 			<BlogImageContainer>
-				<img src={mainImageURL} alt="" />
+				<img src={mainImageUrl} alt="" />
 			</BlogImageContainer>
 			<ButtonContainer>
-				<Button as={Link} to={ROUTES.ADMIN_BLOG_EDIT.replace(":id", post.id)}>
-					Edit
+				<Button as={Link} to={route("ADMIN_BLOG_EDIT", { id })}>
+					Edytuj
 				</Button>
-				<Button onClick={() => onDelete(id)}>Delete</Button>
+				<Button onClick={onDelete}>Usuń</Button>
+				<Button onClick={onPromote}>{isPromoted ? "Przestań promować" : "Promuj"}</Button>
 			</ButtonContainer>
 		</BlogPostContainer>
 	)
@@ -66,28 +103,24 @@ const BlogPost = ({ post }) => {
 const BlogManagement = () => {
 	const posts = useFirestoreCollection("posts")
 
+	const hasPosts = posts && posts.length > 0
+
 	return !posts ? (
 		<LoadingSpinner fixedHeight />
 	) : (
-		<div>
+		<PageContainer>
 			<TextBlock size="xl" bold>
 				Blog
 			</TextBlock>
 
 			<ButtonContainer>
-				<Button primary as={Link} to={ROUTES.ADMIN_BLOG_ADD}>
+				<Button primary big fullWidth as={Link} to={route("ADMIN_BLOG_ADD")}>
 					Dodaj posta
 				</Button>
 			</ButtonContainer>
 
-			{posts.length > 0 && (
-				<div>
-					{posts.map((post) => (
-						<BlogPost post={post} />
-					))}
-				</div>
-			)}
-		</div>
+			<List>{hasPosts && posts.map((post) => <BlogPost {...post} />)}</List>
+		</PageContainer>
 	)
 }
 

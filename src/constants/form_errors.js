@@ -4,7 +4,8 @@ import {
 	ATTACHMENTS_MAX_SIZE,
 	DESC_MAX_CHARACTERS,
 	ACCOUNT_DESC_MAX_CHARACTERS,
-	COMMENT_MAX_CHARACTERS
+	COMMENT_MAX_CHARACTERS,
+	MIN_PASSWORD_LENGTH
 } from "./const"
 
 const formattedMaxFileSize = filesize(ATTACHMENTS_MAX_SIZE, { round: 0 })
@@ -22,3 +23,4 @@ export const PRICE_MAX_LOWER_THAN_MIN =
 	"Cena maksymalna nie może być niższa niż cena minimalna."
 export const NO_FILTERS_APPLIED = "Brak filtrów do zapisania"
 export const NO_NEGATIVE = "Wartość nie może być ujemna"
+export const PASSWORD_TOO_SHORT = `Hasło powinno zawierać przynajmniej  ${MIN_PASSWORD_LENGTH} znaków`

@@ -1,58 +1,97 @@
-import React, { useState, useEffect } from "react"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import React from "react"
+import styled from "styled-components/macro"
+import { connectStats } from "react-instantsearch-dom"
 import { Link } from "react-router-dom"
 
-import EmptyState, { UserNoItems } from "../../components/EmptyState"
-import LoadingSpinner from "../../components/LoadingSpinner"
-import { withFirebase } from "../../components/Firebase"
-import DetailedItemsView from "../../components/DetailedItemsView"
+import { StatelessSearchWrapper } from "../../components/InstantSearchWrapper"
+import InfiniteScrollingResults from "../../components/InfiniteScrollingResults"
+import { PageContainer } from "../../components/Containers"
+import { OwnerItemCard } from "../../components/Cards"
+import { Button } from "../../components/Button"
 import ItemsView from "../../components/ItemsView"
-import Button, { ButtonContainer } from "../../components/Button"
-import { InfoBlock } from "../../components/Basics"
-import { ROUTES } from "../../constants"
+import EmptyState from "../../components/EmptyState/new"
+import { SaveButton } from "../../components/SaveButton"
 
-const UserItems = ({ user, userId, isAuthorized, firebase }) => {
-	const [items, setItems] = useState(null)
-	const [error, setError] = useState(null)
+import { CONST } from "../../constants"
+import { route } from "../../utils"
 
-	const getItems = async () => {
-		let { items, error } = await firebase.getUserItems(user)
-		setItems(items.reverse())
-		setError(error)
+const ItemsList = styled.div`
+	> * + * {
+		margin-top: var(--spacing4);
+	}
+`
+
+const HeaderContainer = styled.div`
+	display: flex;
+	justify-content: center;
+	font-size: var(--fs-m);
+	font-weight: bold;
+	margin: var(--spacing3) 0;
+
+	@media (min-width: ${(p) => p.theme.breakpoints[3]}px) {
+		margin: var(--spacing4) 0;
 	}
 
-	useEffect(() => {
-		getItems()
-	}, [user, userId, isAuthorized])
+	.count {
+		color: var(--gray0);
+		margin-left: var(--spacing2);
+	}
+`
 
-	const isLoading = !items
-	const isEmpty = items && items.length === 0
-
-	if (error) return <div>Wystąpił błąd, spróbuj odświeżyć stronę</div>
-
-	if (isLoading) return <LoadingSpinner />
-
-	if (isEmpty) return <EmptyState state={UserNoItems} />
-
+const ItemsResults = ({ isAuthorized, userId }) => {
 	return isAuthorized ? (
-		<>
-			<DetailedItemsView items={items} isAuthorized={isAuthorized} />
-			<InfoBlock>
-				<h3>
-					<FontAwesomeIcon icon="info-circle" /> PROMOWANIE (BUMP-Y)
-				</h3>
-				<p>
-					Promowanie pomaga sprzedawać szybciej i sprawniej, zwiększając widoczność twoich
-					przedmiotów.
-				</p>
-				<ButtonContainer centered noMargin as={Link} to={ROUTES.BUMP_INFO}>
-					<Button>DOWIEDZ SIĘ WIĘCEJ</Button>
-				</ButtonContainer>
-			</InfoBlock>
-		</>
+		<InfiniteScrollingResults
+			emptyState={
+				<EmptyState header="Nie wystawiłeś jeszcze żadnego przedmiotu">
+					<Button as={Link} to={route("NEW_ITEM")} primary>
+						Zacznij sprzedawać
+					</Button>
+				</EmptyState>
+			}
+		>
+			{({ results, hasMore, loadMore }) => (
+				<ItemsList>
+					{results.map((item) => (
+						<OwnerItemCard key={item.id} {...item} />
+					))}
+				</ItemsList>
+			)}
+		</InfiniteScrollingResults>
 	) : (
-		<ItemsView items={items} />
+		<InfiniteScrollingResults
+			emptyState={
+				<EmptyState header="Ten użytkownik nie wystawił aktualnie żadnego przedmiotu">
+					<div>Obserwuj by dowiedzieć się gdy coś wystawi</div>
+					<SaveButton type="user" id={userId} fullWidth />
+				</EmptyState>
+			}
+		>
+			{({ results, hasMore, loadMore }) => <ItemsView items={results} />}
+		</InfiniteScrollingResults>
 	)
 }
 
-export default withFirebase(UserItems)
+const Header = connectStats(({ nbHits }) => {
+	return (
+		<HeaderContainer>
+			Wszystkie przedmioty <div className="count">{nbHits || 0}</div>
+		</HeaderContainer>
+	)
+})
+
+const UserItems = ({ isAuthorized, userId }) => {
+	return (
+		<PageContainer extraWide>
+			<StatelessSearchWrapper
+				indexName={CONST.ITEMS_MARKETPLACE_DEFAULT_ALGOLIA_INDEX}
+				refinements={{ userId }}
+				limit={6}
+			>
+				<Header />
+				<ItemsResults isAuthorized={isAuthorized} userId={userId} />
+			</StatelessSearchWrapper>
+		</PageContainer>
+	)
+}
+
+export default UserItems

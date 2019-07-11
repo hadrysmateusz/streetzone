@@ -257,17 +257,8 @@ const NewItemForm = ({ initialValues, onSubmit, history, isLoading }) => {
 								/>
 							</ButtonContainer>
 						</FormElement>
-						{/* <Button
-							text="Anuluj"
-							type="button"
-							disabled={submitting}
-							onClick={() => history.push(ROUTES.HOME)}
-						>
-							Anuluj
-						</Button> */}
-						{/* {process.env.NODE_ENV === "development" && (
-							<pre>{JSON.stringify(values, 0, 2)}</pre>
-						)} */}
+
+						{/* <pre>{JSON.stringify(values, 0, 2)}</pre> */}
 					</StyledForm>
 				)
 			}}

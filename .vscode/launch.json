@@ -10,6 +10,15 @@
 			"name": "Launch Chrome against localhost",
 			"url": "http://localhost:3000",
 			"webRoot": "${workspaceFolder}"
+		},
+		{
+			"type": "chrome",
+			"request": "launch",
+			"name": "Launch Vivali against localhost",
+			"url": "http://localhost:3000/",
+			"webRoot": "${workspaceFolder}",
+			"targetTypes": ["page", "webview"],
+			"runtimeExecutable": "C:\\Program Files\\Vivaldi\\Application\\vivaldi.exe"
 		}
 	]
 }
