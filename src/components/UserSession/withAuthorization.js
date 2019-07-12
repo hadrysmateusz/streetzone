@@ -27,7 +27,7 @@ const withAuthorization = (condition) => (Component) =>
 			}
 			// Otherwise deny access with the default message
 			else {
-				props.history.replace("SIGN_IN", {
+				props.history.replace(route("SIGN_IN"), {
 					redirectTo: props.location,
 					redirectReason: {
 						message: "Nie masz wystarczających pozwoleń"
