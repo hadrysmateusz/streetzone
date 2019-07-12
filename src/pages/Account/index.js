@@ -9,7 +9,6 @@ import { useUserData } from "../../hooks"
 
 import MainInfo from "./UserMainInfo"
 import { AccountPageTabs } from "./TabsNav"
-import { PageContainer } from "../../components/Containers"
 
 const AccountPage = ({ routes, match, authUser }) => {
 	const [forceRefetch, setForceRefetch] = useState(false)

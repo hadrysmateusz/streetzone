@@ -32,6 +32,10 @@ const PasswordForget = Loadable({
 })
 
 // ===== ACCOUNT ======
+const MyAccount = Loadable({
+	loader: () => import("../../pages/Account/MyAccount"),
+	loading: LoadableComponentSpinner
+})
 const Account = Loadable({
 	loader: () => import("../../pages/Account"),
 	loading: LoadableComponentSpinner
@@ -606,6 +610,11 @@ const routes = [
 		component: Account,
 		exact: false,
 		routes: ACCOUNT_ROUTES
+	},
+	{
+		path: ROUTES.MY_ACCOUNT,
+		component: MyAccount,
+		exact: false
 	},
 	{
 		path: ROUTES.NEW_ITEM,
