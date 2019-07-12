@@ -644,7 +644,8 @@ const routes = [
 		exact: false,
 		component: Info,
 		routes: INFO_ROUTES
-	}
+	},
+	{ path: "*", component: NotFound }
 ]
 
 const ErrorComponent = ({ error, errorInfo }) => (
@@ -685,7 +686,6 @@ const Routes = () => {
 					)}
 				/>
 			))}
-			<Route path="*" component={NotFound} />
 		</Switch>
 	)
 }
