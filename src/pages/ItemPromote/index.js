@@ -57,6 +57,17 @@ const InnerContainer = styled.div`
 	width: 100%;
 `
 
+const ManualLink = styled.div`
+	margin-top: var(--spacing3);
+	color: var(--gray0);
+	text-transform: uppercase;
+	font-size: var(--fs-xs);
+	text-align: center;
+	:hover {
+		color: var(--black0);
+	}
+`
+
 const Header = styled.div`
 	background: ${(p) => (p.main ? "var(--black0)" : "var(--gray75)")};
 	color: ${(p) => (p.main ? "white" : "var(--black75)")};
@@ -69,6 +80,14 @@ const Header = styled.div`
 	display: flex;
 	justify-content: center;
 	font-weight: bold;
+`
+
+const ErrorContainer = styled.div`
+	margin-top: var(--spacing3);
+	color: var(--danger50);
+	text-transform: uppercase;
+	font-size: var(--fs-xs);
+	text-align: center;
 `
 
 const List = styled.div`
@@ -120,6 +139,8 @@ var getIPAddress = async function() {
 const PromoteOptionCard = ({ name, price, level, items = [], main = false, itemId }) => {
 	const firebase = useFirebase()
 	const [isLoading, setIsLoading] = useState(false)
+	const [redirectUri, setRedirectUri] = useState()
+	const [error, setError] = useState(null)
 
 	const onClick = async () => {
 		setIsLoading(true)
@@ -129,20 +150,19 @@ const PromoteOptionCard = ({ name, price, level, items = [], main = false, itemI
 
 		try {
 			const res = await promote(data)
-			console.log("response:", res)
 
 			if (!res.data.redirectUri) {
 				throw Error("No redirectUri received")
 			}
 
-			const wasOpened = window.open(res.data.redirectUri, "_blank")
-			if (wasOpened === null) {
-				// TODO: handle window being blocked by a popup blocker
-				// TODO: consider using a different way of showing the payment gateway
-				// TODO: add a button/link to manually redirect if it doesn't automatically
-				// https://developer.mozilla.org/en-US/docs/Web/API/Window/open
-			}
+			setRedirectUri(res.data.redirectUri)
+
+			window.open(res.data.redirectUri, "_blank")
+
+			// TODO: investigate this API
+			// https://developer.mozilla.org/en-US/docs/Web/API/Window/open
 		} catch (err) {
+			setError(err)
 			console.log("error:", err)
 		} finally {
 			setIsLoading(false)
@@ -168,6 +188,17 @@ const PromoteOptionCard = ({ name, price, level, items = [], main = false, itemI
 					onClick={onClick}
 					disabled={isLoading}
 				/>
+				{error && (
+					<ErrorContainer>Wystąpił problem, spróbuj ponownie później</ErrorContainer>
+				)}
+				{redirectUri && (
+					<ManualLink>
+						<a href={redirectUri} target="_blank" rel="noopener noreferrer">
+							Jeśli przekierowanie nie nastąpiło automatycznie, kliknij tutaj by przejść
+							do płatności.
+						</a>
+					</ManualLink>
+				)}
 			</InnerContainer>
 		</PromoteOptionCardContainer>
 	)
