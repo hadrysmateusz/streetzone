@@ -173,11 +173,19 @@ export const SaveIconButton = ({ type, id, scale }) => {
 		<AuthModal>
 			{({ open }) => (
 				<IconButtonContainer
-					onClick={isAuthenticated ? onClick : open}
+					onClick={
+						isAuthenticated
+							? onClick
+							: (e) => {
+									e.stopPropagation()
+									e.preventDefault()
+									open()
+							  }
+					}
 					scale={scale}
 					animation={animation}
 					isActive={isActive}
-					title={isActive ? text : activeText}
+					title={isActive ? activeText : text}
 				>
 					<Icon isActive={isActive} icon={icon} />
 				</IconButtonContainer>
@@ -193,9 +201,26 @@ export const SaveButton = ({ type, id, ...rest }) => {
 	return (
 		<AuthModal>
 			{({ open }) => (
-				<Button onClick={isAuthenticated ? onClick : open} {...rest}>
+				<Button
+					onClick={
+						isAuthenticated
+							? onClick
+							: (e) => {
+									e.stopPropagation()
+									e.preventDefault()
+									open()
+							  }
+					}
+					{...rest}
+				>
 					<Icon isActive={isActive} icon={icon} />
-					{isActive ? activeText : text}
+					<div
+						css={css`
+							margin-left: 3px;
+						`}
+					>
+						{isActive ? activeText : text}
+					</div>
 				</Button>
 			)}
 		</AuthModal>
