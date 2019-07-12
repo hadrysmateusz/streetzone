@@ -25,6 +25,26 @@ const EmailContainer = styled.div`
 	margin-bottom: var(--spacing3);
 `
 
+const BannerContainer = styled.div`
+	text-align: center;
+	background: var(--black0);
+	color: white;
+	padding: var(--spacing4) var(--spacing3);
+	@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
+		padding: var(--spacing5) var(--spacing3);
+	}
+	margin-top: calc(-1 * var(--page-header-margin));
+`
+
+const BannerMessage = styled.div`
+	font-size: var(--fs-m);
+	@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
+		font-size: var(--fs-l);
+	}
+	font-weight: var(--semi-bold);
+	text-shadow: 1px 1px #444;
+`
+
 const PasswordForgetLink = () => (
 	<LinkContainer>
 		<StyledLink to={route("PASSWORD_FORGET")}>Zapomniałeś hasła?</StyledLink>
@@ -74,17 +94,8 @@ export const SignIn = withRouter(({ history, location }) => {
 
 	const commonProps = { onSuccess: onSuccessfulSignIn, onError }
 
-	const reason = location.state ? location.state.redirectReason || null : null
-
 	return (
 		<>
-			{reason && (
-				<>
-					{reason.message && <h1>{reason.message}</h1>}
-					{reason.details && <pre>{JSON.stringify(reason.details, 0, 2)}</pre>}
-				</>
-			)}
-
 			<Heading>Zaloguj się</Heading>
 
 			<SocialContainer>
@@ -103,12 +114,26 @@ export const SignIn = withRouter(({ history, location }) => {
 	)
 })
 
+const Banner = withRouter(({ location }) => {
+	const reason = location.state ? location.state.redirectReason || null : null
+
+	return reason ? (
+		<BannerContainer>
+			{reason.message && <BannerMessage>{reason.message}</BannerMessage>}
+			{reason.details && <pre>{JSON.stringify(reason.details, 0, 2)}</pre>}
+		</BannerContainer>
+	) : null
+})
+
 const SignInPage = () => (
-	<CenteredContainer>
-		<SignIn />
-		<Separator />
-		<SignUpLink />
-	</CenteredContainer>
+	<>
+		<Banner />
+		<CenteredContainer>
+			<SignIn />
+			<Separator />
+			<SignUpLink />
+		</CenteredContainer>
+	</>
 )
 
 export default SignInPage
