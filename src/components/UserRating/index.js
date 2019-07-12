@@ -1,7 +1,7 @@
 import React from "react"
 import StarRatings from "react-star-ratings"
 
-export default ({ feedback, size = "20px" }) =>
+export default ({ feedback, size = "16px" }) =>
 	feedback && feedback.length > 0 ? (
 		<span>
 			<StarRatings
@@ -14,6 +14,4 @@ export default ({ feedback, size = "20px" }) =>
 				starSpacing="2px"
 			/>
 		</span>
-	) : (
-		<em style={{ fontSize: "12px" }}>Brak ocen</em>
-	)
+	) : null
