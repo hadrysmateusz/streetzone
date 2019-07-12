@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react"
 import { withRouter } from "react-router-dom"
 
 import useAuthentication from "../../hooks/useAuthentication"
-import { ROUTES } from "../../constants"
+import { route } from "../../utils"
 
 const withAuthorization = (condition) => (Component) =>
 	withRouter((props) => {
@@ -10,11 +10,24 @@ const withAuthorization = (condition) => (Component) =>
 		const [isAuthorized, setIsAuthorized] = useState(false)
 
 		useEffect(() => {
-			const __isAuthorized = condition(authUser, props.match.params)
-			if (__isAuthorized) {
+			const result = condition(authUser, props.match.params)
+
+			// If result is a string treat it as a denial message
+			if (typeof result === "string") {
+				props.history.replace(route("SIGN_IN"), {
+					redirectTo: props.location,
+					redirectReason: {
+						message: result
+					}
+				})
+			}
+			// If the result is exactly true allow access
+			else if (result === true) {
 				setIsAuthorized(true)
-			} else {
-				props.history.replace(ROUTES.SIGN_IN, {
+			}
+			// Otherwise deny access with the default message
+			else {
+				props.history.replace("SIGN_IN", {
 					redirectTo: props.location,
 					redirectReason: {
 						message: "Nie masz wystarczających pozwoleń"
