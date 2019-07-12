@@ -56,7 +56,7 @@ const NewItemPage = () => {
 	)
 }
 
-const condition = (authUser) => !!authUser
+const condition = (authUser) => (!!authUser ? true : "Zaloguj się by zacząć sprzedawać")
 
 export default compose(
 	withFirebase,
