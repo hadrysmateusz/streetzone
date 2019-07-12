@@ -45,7 +45,7 @@ const PromoteOptionCardContainer = styled.div`
 	border: 1px solid var(--gray75);
 	height: auto;
 	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
-		height: ${(p) => (p.main ? "450px" : "390px")};
+		min-height: ${(p) => (p.main ? "480px" : "390px")};
 	}
 `
 
