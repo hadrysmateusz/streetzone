@@ -88,7 +88,7 @@ const MarketplacePromoted = () => {
 			<PageHeading emoji={"🔥"}>Promowane na tablicy</PageHeading>
 			<StatelessSearchWrapper
 				indexName={CONST.ITEMS_MARKETPLACE_DEFAULT_ALGOLIA_INDEX}
-				refinements={{ promotedUntil: { min: Date.now() } }}
+				refinements={{ promotedUntil: { min: Date.now() }, promotingLevel: 2 }}
 			>
 				{(hits) => (
 					<InnerContainer>
