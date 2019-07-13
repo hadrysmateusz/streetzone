@@ -1,7 +1,6 @@
 import React from "react"
 import { Form, Field } from "react-final-form"
 import { OnChange } from "react-final-form-listeners"
-// import AsyncCreatable from "react-select/lib/AsyncCreatable"
 import styled from "styled-components/macro"
 import { withRouter } from "react-router-dom"
 
@@ -14,7 +13,9 @@ import { FileHandler } from "../../components/FileHandler"
 import { StyledLink } from "../../components/Basics"
 
 import validate from "./validate"
+
 import { ITEM_SCHEMA, ROUTES, CONST } from "../../constants"
+import { useDesignerOptions } from "../../hooks"
 
 const StyledForm = styled.form`
 	display: grid;
@@ -32,23 +33,13 @@ const FormElement = styled.div`
 	}
 `
 
-const NewItemForm = ({ initialValues, onSubmit, history, isLoading }) => {
-	if (!initialValues) {
-		initialValues = {
-			name: "",
-			designers: [],
-			category: "",
-			price: "",
-			size: "",
-			description: "",
-			files: []
-		}
-	}
+const NewItemForm = ({ onSubmit, history }) => {
+	const designerOptions = useDesignerOptions()
+
 	return (
 		<Form
 			onSubmit={onSubmit}
 			validate={validate}
-			initialValues={initialValues}
 			render={({ form, handleSubmit, submitting, pristine, values, ...rest }) => {
 				return (
 					<StyledForm onSubmit={handleSubmit}>
@@ -76,7 +67,7 @@ const NewItemForm = ({ initialValues, onSubmit, history, isLoading }) => {
 									return (
 										<DropdownFinalform
 											{...input}
-											options={ITEM_SCHEMA.designerOptions}
+											options={designerOptions}
 											isClearable={true}
 											isSearchable={true}
 											isMulti={true}
@@ -257,8 +248,6 @@ const NewItemForm = ({ initialValues, onSubmit, history, isLoading }) => {
 								/>
 							</ButtonContainer>
 						</FormElement>
-
-						{/* <pre>{JSON.stringify(values, 0, 2)}</pre> */}
 					</StyledForm>
 				)
 			}}

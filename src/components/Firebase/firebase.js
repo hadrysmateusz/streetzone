@@ -295,20 +295,20 @@ class Firebase {
 					...dbUser
 				}
 
-				// TODO: disable this request for permission
-				// if (areNotificationsSupported()) {
-				// 	this.messaging
-				// 		.requestPermission()
-				// 		.then(() => {
-				// 			return this.messaging.getToken()
-				// 		})
-				// 		.then((token) => {
-				// 			this.sendNotificationTokenToDb(token)
-				// 		})
-				// 		.catch((e) => {
-				// 			console.log("error", e)
-				// 		})
-				// }
+				// TODO: disable this request for permission (and replace with a better one)
+				if (areNotificationsSupported()) {
+					this.messaging
+						.requestPermission()
+						.then(() => {
+							return this.messaging.getToken()
+						})
+						.then((token) => {
+							this.sendNotificationTokenToDb(token)
+						})
+						.catch((e) => {
+							console.log("error", e)
+						})
+				}
 
 				next(authUser)
 			} else {

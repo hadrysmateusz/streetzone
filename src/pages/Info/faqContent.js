@@ -10,7 +10,7 @@ const topics = [
 		answer: `Kliknij 'Kontakt' na stronie ogłoszenia i wybierz jedną z opcji udostępnionych przez tego użytkownika. Dla wszystkich użytkowników dostępny jest nasz komunikator, reszta jest opcjonalna i zależy od sprzedawcy.`
 	},
 	{
-		question: "Projektant którego potrzebuje nie jest na waszej liście",
+		question: "Projektant którego potrzebuję nie jest na waszej liście",
 		answer: `Jeśli nie znalazłeś marki której potrzebujesz, by dodać przedmiot napisz do nas na [${
 			CONST.CONTACT_EMAIL
 		}](mailto:${CONST.CONTACT_EMAIL}) lub użyj formularza dostępnego [tutaj](${route(

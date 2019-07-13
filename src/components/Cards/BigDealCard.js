@@ -68,21 +68,22 @@ const ValueContainer = styled.div`
 
 	.value-container {
 		padding: var(--spacing1) var(--spacing2);
-		:not(:last-child) {
-			border-right: 1px solid var(--gray75);
-		}
+		border-right: 1px solid var(--gray75);
 	}
 `
 
 const ExternalLink = styled.a`
-	padding: 0 7px;
+	padding: var(--spacing1) 7px;
 	font-size: 1.3rem;
+	:hover {
+		color: var(--black0);
+	}
 `
 
 const Value = ({ value, link }) => (
 	<ValueContainer>
 		<div className="value-container">{value}</div>
-		<ExternalLink href={link} onClick={(e) => e.stopPropagation()}>
+		<ExternalLink href={link} onClick={(e) => e.stopPropagation()} title="Idź do okazji">
 			<FontAwesomeIcon icon="external-link-alt" />
 		</ExternalLink>
 	</ValueContainer>

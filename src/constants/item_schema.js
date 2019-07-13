@@ -6,37 +6,10 @@ const categories = {
 	akcesoria: "Akcesoria"
 }
 
-// TODO: move designers to database
-const designers = [
-	"Adidas",
-	"Gucci",
-	"Givenchy",
-	"Nike",
-	"Off-White",
-	"Supreme",
-	"Converse",
-	"Louis Vuitton",
-	"Acne Studios",
-	"Balenciaga",
-	"Balmain",
-	"Dior",
-	"Prada"
-]
-
-const status = {
-	available: "AVAILABLE",
-	sold: "SOLD"
-}
-
 // options for react-select
 const categoryOptions = Object.values(categories).map((categoryName) => ({
 	value: categoryName,
 	label: categoryName
-}))
-
-const designerOptions = designers.map((designerName) => ({
-	value: designerName,
-	label: designerName
 }))
 
 const conditionOptions = [
@@ -142,12 +115,9 @@ const translateCondition = (conditionValue) => {
 
 export {
 	categories,
-	designers,
 	categoryOptions,
-	designerOptions,
 	conditionOptions,
 	sizeOptions,
 	translateCondition,
-	status,
 	size
 }

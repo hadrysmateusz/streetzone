@@ -29,6 +29,7 @@ export const SIGN_UP = "/rejestracja"
 export const SIGN_IN = "/login"
 export const PASSWORD_FORGET = "/pw-reset"
 
+export const MY_ACCOUNT = "/twoj_profil"
 export const ACCOUNT_BASE = "/profil/:id"
 export const ACCOUNT_ITEMS = ACCOUNT_BASE + "/oferty"
 export const ACCOUNT_SAVED_ITEMS = ACCOUNT_BASE + "/zapisane_przedmioty"

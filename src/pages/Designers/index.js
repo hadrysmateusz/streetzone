@@ -4,7 +4,6 @@ import styled from "styled-components/macro"
 import { connectInfiniteHits } from "react-instantsearch-core"
 
 import { PageContainer } from "../../components/Containers"
-import { TextBlock } from "../../components/StyledComponents"
 import { SearchWrapper } from "../../components/InstantSearchWrapper"
 import AlgoliaSearchBox from "../../components/Algolia/AlgoliaSearchBox"
 import PopularDesigners from "../../components/PopularDesigners"
