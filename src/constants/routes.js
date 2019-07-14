@@ -76,12 +76,6 @@ export const ADMIN_USERS = ADMIN_BASE + "/users"
 export const ADMIN_DESIGNERS = ADMIN_BASE + "/designers"
 export const ADMIN_DESIGNER_EDIT = ADMIN_BASE + "/designers/:id"
 
-// External
-// TODO: create social media pages and add addresses
-export const FACEBOOK_PROFILE = ""
-export const TWITTER_PROFILE = ""
-export const INSTAGRAM_PROFILE = ""
-
 // Test routes (don't alter or test will fail)
 export const TEST_ROUTE = "route"
 export const TEST_ROUTE_WITH_SUBROUTE = "route/:one"
