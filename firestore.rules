@@ -1,22 +1,46 @@
+// TODO: subcollections can't be accessed (most of them should only be accessed from the server though)
+
+function isAuthenticated() {
+  return request.auth.uid;
+}
+
+function isUserInRoom() {
+  return resource.data.userA == request.auth.uid || resource.data.userB == request.auth.uid;
+}
+
 service cloud.firestore {
   match /databases/{database}/documents {
-    match /{deals} {
+    match /deals {
       allow read;
     }
-    match /{designers} {
+    match /designers {
       allow read;
     }
-    match /{drops} {
+    match /drops {
+      allow read;
+      // subscribers subcollection should only be accessed from the server
+    }
+    match /items {
+      // TODO: prevent all users from modifying promoting-related fields
       allow read;
     }
-    match /{items} {
+    match /posts {
       allow read;
     }
-    match /{posts} {
+    match /rooms {
       allow read;
     }
-    match /{users} {
+    match /users {
       allow read;
+      match /messages {
+        allow read: if isAuthenticated() && isUserInRoom();
+      }
+    }
+    match /requestedDesigners {
+      // currently it is possible for unauthenticated users to submit designer requests
+      // there are genuine reasons to allow that, but maybe I should consider only allowing authenticated users to submit designer requests
+      // TODO: investigate whether the 'create' option allows overwriting an existing document by using 'set' pointing to an existing document id 
+      allow read, create;
     }
   }
 }
