@@ -1,7 +1,22 @@
 service cloud.firestore {
   match /databases/{database}/documents {
-    match /{document=**} {
-      allow read, write;
+    match /{deals} {
+      allow read;
+    }
+    match /{designers} {
+      allow read;
+    }
+    match /{drops} {
+      allow read;
+    }
+    match /{items} {
+      allow read;
+    }
+    match /{posts} {
+      allow read;
+    }
+    match /{users} {
+      allow read;
     }
   }
 }
