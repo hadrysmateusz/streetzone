@@ -34,8 +34,9 @@ const ItemPromoteAfter = withRouter(({ location }) => {
 					<PageHeading emoji={"❌"}>Wystąpił błąd</PageHeading>
 					<Text>
 						Transakcja zakończyła się niepowodzeniem. W razie pytań co do transakcji{" "}
-						<StyledLink to={route("CONTACT")}>skontaktuj się z nami</StyledLink>.
-						Postaramy się odpowiedzieć na wszelkie pytania i rozwiązać ten problem.
+						<StyledLink to={route("CONTACT")}>skontaktuj się z nami</StyledLink> podając
+						numer transakcji, który otrzymałeś w mailu od PayU. Postaramy się odpowiedzieć
+						na wszelkie pytania i rozwiązać ten problem.
 					</Text>
 				</>
 			) : (
@@ -49,7 +50,8 @@ const ItemPromoteAfter = withRouter(({ location }) => {
 					<Text>
 						Jeśli po 5 minutach twoje ogłoszenie nie otrzyma wszystkich benefitów,{" "}
 						{/* TODO: research how long it might take (particularly on weekends etc.) and make sure the copy represents that */}
-						<StyledLink to={route("CONTACT")}>napisz do nas</StyledLink>.
+						<StyledLink to={route("CONTACT")}>napisz do nas</StyledLink> podając numer
+						transakcji, który otrzymałeś w mailu od PayU.
 					</Text>
 				</>
 			)}
