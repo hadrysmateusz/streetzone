@@ -1,46 +1,80 @@
 // TODO: subcollections can't be accessed (most of them should only be accessed from the server though)
 
-function isAuthenticated() {
-  return request.auth.uid;
-}
-
-function isUserInRoom() {
-  return resource.data.userA == request.auth.uid || resource.data.userB == request.auth.uid;
-}
-
 service cloud.firestore {
   match /databases/{database}/documents {
-    match /deals {
-      allow read;
+    // is a user logged in?
+    function isAuthenticated() {
+      return request.auth.uid;
     }
-    match /designers {
-      allow read;
+
+    // does the current user have the admin role?
+    function isUserAdmin() {
+      return "admin" in get(/databases/$(database)/documents/users/$(request.auth.uid)).data.roles;
     }
-    match /drops {
+
+    match /deals/{dealId} {
       allow read;
+      allow write: if isUserAdmin();
+    }
+
+    match /designers/{designerId} {
+      allow read;
+      allow write: if isUserAdmin();
+    }
+
+    match /drops/{dropId} {
+      allow read;
+      allow write: if isUserAdmin();
       // subscribers subcollection should only be accessed from the server
     }
-    match /items {
+
+    match /items/{itemId} {
+      allow read;
+      allow create: if isAuthenticated(); // allow all logged in to create items
       // TODO: prevent all users from modifying promoting-related fields
-      allow read;
+      allow update, delete: if resource.data.userId == request.auth.uid; // allow owners of an item to edit and update it 
     }
-    match /posts {
+
+    match /posts/{postId} {
       allow read;
+      allow write: if isUserAdmin();
     }
-    match /rooms {
+
+    match /rooms/{roomId} {
       allow read;
-    }
-    match /users {
-      allow read;
-      match /messages {
-        allow read: if isAuthenticated() && isUserInRoom();
+      // allow users to create a room in which they are the initiating user (userA)
+      allow create: if request.resource.data.userA == request.auth.uid;
+
+      match /messages/{messageId} {
+        // allow users who are part of the room to read and create messages in it
+        allow read, create: if get(/databases/$(database)/documents/rooms/$(roomId)).data.userA == request.auth.uid 
+                            || get(/databases/$(database)/documents/rooms/$(roomId)).data.userB == request.auth.uid;
       }
     }
+
+    match /users/{userId} {
+      allow read;
+      // allow users to write their own data
+      // TODO: block editing of some sensitive values
+      allow write: if request.auth.uid == userId;
+
+      // the users/rooms subcollection is indexed by the otherUserId rather than the roomId
+      match /rooms/{otherUserId} {
+        // TODO: allow users to read and write their own rooms
+       
+        // allow other users to create rooms for other users when they initiate communication
+        // TODO: make it only possible to create a room with id that the creating user already has in their rooms list
+        allow create: if otherUserId == request.auth.uid && request.resource.data.otherUserId == request.auth.uid;
+      }
+      // notificationTokens subcollection should only be accessed from the server
+    }
+
     match /requestedDesigners {
       // currently it is possible for unauthenticated users to submit designer requests
       // there are genuine reasons to allow that, but maybe I should consider only allowing authenticated users to submit designer requests
       // TODO: investigate whether the 'create' option allows overwriting an existing document by using 'set' pointing to an existing document id 
       allow read, create;
+      allow update, delete: if isUserAdmin();
     }
   }
 }
