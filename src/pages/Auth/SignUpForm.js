@@ -66,7 +66,7 @@ const SignUpForm = ({ onSuccess, onError }) => {
 
 			// Create user in db
 			const userId = authUser.user.uid
-			const userData = formatUserData({ name, email })
+			const userData = formatUserData({ name, email, uid: userId })
 			await firebase.user(userId).set(userData)
 
 			// reset the form

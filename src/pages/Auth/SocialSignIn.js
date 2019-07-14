@@ -32,7 +32,8 @@ const SocialSignInButton = ({
 
 			// extract relevant data from user profile
 			const userId = socialAuthUser.user.uid
-			const userData = getUserInfoFromSocialProfile(nameOfSite, socialAuthUser)
+			let userData = getUserInfoFromSocialProfile(nameOfSite, socialAuthUser)
+			userData = { ...userData, uid: userId }
 
 			// upload the data to firebase
 			await firebase.user(userId).set(userData)

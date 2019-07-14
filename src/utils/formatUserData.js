@@ -19,6 +19,7 @@ export default (input) => {
 		savedDrops: [],
 		followedUsers: [],
 		followedDrops: [],
+		uid: input.uid,
 		importedFrom: input.importedFrom || null
 	}
 }
