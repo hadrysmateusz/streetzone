@@ -9,7 +9,6 @@ export default (input) => {
 		profilePictureRef: null,
 		profilePictureURLs: input.picture ? [input.picture] : null,
 		items: [],
-		permissions: [],
 		roles: [],
 		feedback: [],
 		badges: [],
