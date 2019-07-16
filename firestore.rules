@@ -2,12 +2,10 @@
 
 service cloud.firestore {
   match /databases/{database}/documents {
-    // is a user logged in?
-    function isAuthenticated() {
-      return request.auth.uid;
+    function isLoggedIn() {
+      return request.auth != null;
     }
 
-    // does the current user have the admin role?
     function isUserAdmin() {
       return "admin" in get(/databases/$(database)/documents/users/$(request.auth.uid)).data.roles;
     }
@@ -28,17 +26,67 @@ service cloud.firestore {
       // subscribers subcollection should only be accessed from the server
     }
 
-    match /items/{itemId} {
-      allow read;
-      allow create: if isAuthenticated(); // allow all logged in to create items
-      // TODO: prevent all users from modifying promoting-related fields
-      allow update, delete: if resource.data.userId == request.auth.uid; // allow owners of an item to edit and update it 
-    }
-
     match /posts/{postId} {
       allow read;
       allow write: if isUserAdmin();
     }
+
+    match /items/{itemId} {
+      // TODO: remove write access if I end up moving item creating/editing to cloud functions
+
+
+      // verify that all new items don't set sensitive fields to improper values
+      // TODO: verify that timestamps aren't higher than 'now'
+      function hasValidSensitiveDefaults() {
+        return request.resource.data.bumps == 0
+            && request.resource.data.promotedAt == null
+            && request.resource.data.promotingLevel == null
+            && request.resource.data.isArchived == false
+            && request.resource.data.isVerified == false
+      }
+
+      // verify that the incoming data is valid
+      function hasValidIncomingData() {
+        return request.resource.data.price > 0
+            && request.resource.data.condition > 0 
+            && request.resource.data.condition <= 11
+            && request.resource.data.id == itemId
+      }
+
+      // some fields should never change
+      function doesNotModifyReadOnlyData() {
+        return request.resource.data.createdAt == resource.data.createdAt
+            && request.resource.data.id == resource.data.id
+            && request.resource.data.userId == resource.data.userId;
+      }
+
+      // some fields should only be modified from a secure context
+      function doesNotModifySensitiveData() {
+        return request.resource.data.bumps == resource.data.bumps
+            && request.resource.data.refreshedAt == resource.data.refreshedAt
+            && request.resource.data.promotedAt == resource.data.promotedAt
+            && request.resource.data.promotedUntil == resource.data.promotedUntil
+            && request.resource.data.promotingLevel == resource.data.promotingLevel
+            && request.resource.data.isVerified == resource.data.isVerified
+      }
+
+      allow read;
+
+      allow create: if isLoggedIn() 
+                    && request.resource.data.userId == request.auth.uid;
+                    && hasValidSensitiveDefaults()
+                    && hasValidIncomingData()
+
+      allow update: if isLoggedIn() 
+                    && resource.data.userId == request.auth.uid;
+                    && hasValidIncomingData()
+                    && doesNotModifyReadOnlyData()
+                    && doesNotModifySensitiveData()
+
+      // deleting items should only be done from a secure context
+    }
+
+
 
     match /rooms/{roomId} {
       allow read;
@@ -52,20 +100,82 @@ service cloud.firestore {
       }
     }
 
+
+
+
+
+
+
+
+
     match /users/{userId} {
+      // TODO: prevent users from modifying items lists as it would allow users to pose as owner of other users' listings
+
+      // verify that all new users don't set sensitive fields to improper values
+      function hasValidSensitiveDefaults() {
+        return request.resource.data
+      }
+
+      function onlyModifiesSelf() {
+        return request.auth.uid == userId;
+      }
+
+      function doesNotModifyReadOnlyData() {
+        return request.resource.data.importedFrom == resource.data.importedFrom
+            && request.resource.data.userSince == resource.data.userSince;
+      }
+
+      function doesNotModifySensitiveData() {
+        return request.resource.data.badges == resource.data.badges
+            && request.resource.data.roles == resource.data.roles
+            && request.resource.data.items == resource.data.items; // only edit items list on the server
+      }
+
       allow read;
-      // allow users to write their own data
-      // TODO: block editing of some sensitive values
-      allow write: if request.auth.uid == userId;
+
+      allow create: if onlyModifiesSelf();
+
+      allow update: if onlyModifiesSelf() 
+                    && doesNotModifySensitiveData() 
+                    && doesNotModifyReadOnlyData();
+
+      // delete isn't allowed to prevent deleting and creating a new document to circumvent update restrictions
+
+      // EXPERIMENTAL
+      // TODO: move feedback to a subcollection
+      // it's indexed by the comment author id to keep it one comment per user
+      match /feedback/{authorId} {
+        function hasValidRating() {
+          return request.resource.data.rating > 0 && request.resource.data.rating <= 5;
+        }
+
+        // verify that the author isn't giving the feedback to himself
+        function authorIsNotSubject() {
+          return request.resource.data.author != userId;
+        }
+
+        allow create: if request.resource.data.author == request.auth.uid
+                     && authorIsNotSubject() 
+                     && hasValidRating();
+
+        allow update: if resource.data.author == request.auth.uid && hasValidRating()
+
+        // allow users to delete their own comments
+        allow delete: if resource.data.author == request.auth.uid;
+
+    }
+
 
       // the users/rooms subcollection is indexed by the otherUserId rather than the roomId
       match /rooms/{otherUserId} {
-        // TODO: allow users to read and write their own rooms
+        // TODO: restrict read access somewhat
+        allow read;
        
         // allow other users to create rooms for other users when they initiate communication
         // TODO: make it only possible to create a room with id that the creating user already has in their rooms list
         allow create: if otherUserId == request.auth.uid && request.resource.data.otherUserId == request.auth.uid;
       }
+
       // notificationTokens subcollection should only be accessed from the server
     }
 
