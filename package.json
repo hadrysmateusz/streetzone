@@ -92,6 +92,9 @@
 		"deploy-functions:dev": "firebase deploy --only functions -P dev",
 		"deploy-functions:staging": "firebase deploy --only functions -P staging",
 		"deploy-functions:prod": "firebase deploy --only functions -P prod",
+		"deploy-rules:dev": "firebase deploy --only firestore:rules -P dev",
+		"deploy-rules:staging": "firebase deploy --only firestore:rules -P staging",
+		"deploy-rules:prod": "firebase deploy --only firestore:rules -P prod",
 		"emulate-functions:dev": "set GOOGLE_APPLICATION_CREDENTIALS=functions\\firebase-admin-key-dev.json && firebase emulators:start --only functions"
 	},
 	"eslintConfig": {
