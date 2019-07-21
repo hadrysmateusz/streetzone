@@ -73,12 +73,12 @@ service cloud.firestore {
       allow read;
 
       allow create: if isLoggedIn() 
-                    && request.resource.data.userId == request.auth.uid
+                    && (request.resource.data.userId == request.auth.uid || isUserAdmin())
                     && hasValidSensitiveDefaults()
                     && hasValidIncomingData();
 
       allow update: if isLoggedIn() 
-                    && resource.data.userId == request.auth.uid
+                    && (resource.data.userId == request.auth.uid || isUserAdmin())
                     && hasValidIncomingData()
                     && doesNotModifyReadOnlyData()
                     && doesNotModifySensitiveData();
