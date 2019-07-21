@@ -6,6 +6,8 @@ import { useFirebase } from "../../../hooks"
 import ErrorBox from "../../ErrorBox"
 import InfoBox from "../../InfoBox"
 
+import { CONST } from "../../../constants"
+
 import { Heading } from "../common"
 
 import SocialLoginCard from "./SocialLoginCard"
@@ -51,8 +53,8 @@ const SocialLoginManagement = ({ activeMethods, onSuccess }) => {
 			<Heading>Konta Społecznościowe</Heading>
 
 			<InfoBox>
-				Połącz swoje konto na Bumped z jednym lub więcej kontami społecznościowymi, by móc
-				logować się za ich pomocą do serwisu.
+				Połącz swoje konto na {CONST.BRAND_NAME} z jednym lub więcej kontami
+				społecznościowymi, by móc logować się za ich pomocą do serwisu.
 			</InfoBox>
 
 			<SocialCardsContainer>
