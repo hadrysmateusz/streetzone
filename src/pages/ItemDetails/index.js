@@ -11,7 +11,7 @@ import LoadingSpinner from "../../components/LoadingSpinner"
 import { PageContainer } from "../../components/Containers"
 import ImageGallery from "../../components/ImageGallery"
 import UserPreview from "../../components/UserPreview"
-import EmptyState from "../../components/EmptyState/new"
+import ItemNotFound from "../../components/ItemNotFound"
 import PageNav from "../../components/PageNav"
 import InfoItem from "../../components/InfoItem"
 import ContactModal from "../../components/ContactModal"
@@ -58,9 +58,7 @@ const ItemDetailsPage = ({ match, history }) => {
 
 	if (isLoading) return <LoadingSpinner />
 	if (!item) {
-		return (
-			<EmptyState header="Nie znaleziono przedmiotu">Być może został usunięty</EmptyState>
-		)
+		return <ItemNotFound />
 	}
 
 	const isAuthorized = authUser && authUser.uid === item.userId

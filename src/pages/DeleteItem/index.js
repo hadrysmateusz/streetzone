@@ -6,13 +6,13 @@ import LoadingSpinner from "../../components/LoadingSpinner"
 import { PageContainer } from "../../components/Containers"
 import { SmallItemCard } from "../../components/Cards"
 import { Button, LoaderButton, ButtonContainer } from "../../components/Button"
-import EmptyState from "../../components/EmptyState/new"
+import PageHeading from "../../components/PageHeading"
+import { StatelessSearchWrapper } from "../../components/InstantSearchWrapper"
+import ItemNotFound from "../../components/ItemNotFound"
 
 import { NotFoundError } from "../../errors"
 import { useFlash, useFirebase, useAuthentication } from "../../hooks"
 import { getRedirectTo, sleep, route } from "../../utils"
-import { StatelessSearchWrapper } from "../../components/InstantSearchWrapper"
-import PageHeading from "../../components/PageHeading"
 
 const OuterContainer = styled.div`
 	max-width: 430px;
@@ -75,6 +75,8 @@ const DeleteItem = withRouter(({ match, history, location }) => {
 				// Get item from database
 				let item = await firebase.getItemData(itemId)
 
+				if (!item) throw new NotFoundError()
+
 				if (item.userId !== authUser.uid) {
 					history.replace(route("SIGN_IN"), {
 						redirectTo: location,
@@ -115,12 +117,7 @@ const DeleteItem = withRouter(({ match, history, location }) => {
 	return (
 		<PageContainer>
 			{itemError ? (
-				<EmptyState header="Nie znaleziono przedmiotu">
-					<div>Być może został już usunięty</div>
-					<Button as={Link} to={getRedirectTo(location)}>
-						Nie, wróć
-					</Button>
-				</EmptyState>
+				<ItemNotFound />
 			) : (
 				<>
 					<PageHeading emoji={"🗑️"}>Na pewno usunąć?</PageHeading>

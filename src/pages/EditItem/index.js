@@ -6,7 +6,8 @@ import { withAuthentication } from "../../components/UserSession"
 import LoadingSpinner from "../../components/LoadingSpinner"
 import { PageContainer } from "../../components/Containers"
 import { CustomFile } from "../../components/FileHandler"
-import EmptyState from "../../components/EmptyState"
+import ItemNotFound from "../../components/ItemNotFound"
+import PageHeading from "../../components/PageHeading"
 
 import { NotFoundError } from "../../errors"
 import { useAuthentication, useFirebase } from "../../hooks"
@@ -15,7 +16,6 @@ import { formatItemDataForDb, MODE } from "../../utils/formatting/formatItemData
 import { CONST } from "../../constants"
 
 import EditItemForm from "./EditItemForm"
-import PageHeading from "../../components/PageHeading"
 
 const { S_THUMB_POSTFIX, M_THUMB_POSTFIX, L_THUMB_POSTFIX } = CONST
 
@@ -38,6 +38,8 @@ const EditItemPage = ({ match, history, location }) => {
 			try {
 				// Get item from database
 				let item = await firebase.getItemData(match.params.id)
+
+				if (!item) throw new NotFoundError()
 
 				if (item.userId !== authUser.uid) {
 					history.replace(route("SIGN_IN"), {
@@ -143,7 +145,7 @@ const EditItemPage = ({ match, history, location }) => {
 	return (
 		<PageContainer maxWidth={2}>
 			{error ? (
-				<EmptyState text={error.message} />
+				<ItemNotFound />
 			) : !initialData ? (
 				<LoadingSpinner />
 			) : (

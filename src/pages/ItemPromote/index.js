@@ -6,6 +6,7 @@ import axios from "axios"
 import LoadingSpinner from "../../components/LoadingSpinner"
 import { PageContainer } from "../../components/Containers"
 import { LoaderButton } from "../../components/Button"
+import ItemNotFound from "../../components/ItemNotFound"
 
 import { NotFoundError } from "../../errors"
 import { route } from "../../utils"
@@ -216,6 +217,8 @@ const ItemPromotePage = ({ match, history, location }) => {
 				// Get item from database
 				let item = await firebase.getItemData(itemId)
 
+				if (!item) throw new NotFoundError()
+
 				if (item.userId !== authUser.uid) {
 					history.replace(route("SIGN_IN"), {
 						redirectTo: location,
@@ -240,7 +243,9 @@ const ItemPromotePage = ({ match, history, location }) => {
 
 	return (
 		<PageContainer>
-			{item ? (
+			{itemError ? (
+				<ItemNotFound />
+			) : item ? (
 				<div>
 					<PageHeader>
 						<span role="img" aria-label="promowane">
