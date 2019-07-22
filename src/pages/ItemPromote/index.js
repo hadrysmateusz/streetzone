@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from "react"
-import { compose } from "recompose"
 import { withRouter } from "react-router-dom"
 import styled from "styled-components/macro"
 import axios from "axios"
 
-import { withAuthorization } from "../../components/UserSession"
 import LoadingSpinner from "../../components/LoadingSpinner"
 import { PageContainer } from "../../components/Containers"
 import { LoaderButton } from "../../components/Button"
 
 import { NotFoundError } from "../../errors"
-import { useFirebase } from "../../hooks"
+import { route } from "../../utils"
+import { useFirebase, useAuthentication } from "../../hooks"
 import promotingLevels from "../../constants/promoting_levels"
 
 const PageHeader = styled.div`
@@ -204,9 +203,10 @@ const PromoteOptionCard = ({ name, price, level, items = [], main = false, itemI
 	)
 }
 
-const ItemPromotePage = ({ match, history }) => {
+const ItemPromotePage = ({ match, history, location }) => {
 	const firebase = useFirebase()
-	const [error, setError] = useState(null)
+	const [itemError, setItemError] = useState(null)
+	const authUser = useAuthentication()
 	const [item, setItem] = useState(null)
 	const itemId = match.params.id
 
@@ -216,10 +216,19 @@ const ItemPromotePage = ({ match, history }) => {
 				// Get item from database
 				let item = await firebase.getItemData(itemId)
 
+				if (item.userId !== authUser.uid) {
+					history.replace(route("SIGN_IN"), {
+						redirectTo: location,
+						redirectReason: {
+							message: "Nie masz wystarczających pozwoleń"
+						}
+					})
+				}
+
 				setItem(item)
 			} catch (err) {
 				if (err instanceof NotFoundError) {
-					setError(err)
+					setItemError(err)
 				} else {
 					throw err
 				}
@@ -227,7 +236,7 @@ const ItemPromotePage = ({ match, history }) => {
 		}
 
 		getItem()
-	}, [itemId, firebase])
+	}, [firebase, itemId, authUser.uid, history, location])
 
 	return (
 		<PageContainer>
@@ -295,17 +304,4 @@ const ItemPromotePage = ({ match, history }) => {
 	)
 }
 
-const condition = (authUser, pathParams) => {
-	const isAuthenticated = !!authUser
-	if (!isAuthenticated) {
-		return false
-	} else {
-		const isAuthorized = authUser.items.includes(pathParams.id)
-		return isAuthorized
-	}
-}
-
-export default compose(
-	withRouter,
-	withAuthorization(condition)
-)(ItemPromotePage)
+export default withRouter(ItemPromotePage)

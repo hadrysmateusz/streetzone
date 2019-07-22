@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react"
 import { compose } from "recompose"
 import { withRouter } from "react-router-dom"
 
-import { withAuthorization, withAuthentication } from "../../components/UserSession"
+import { withAuthentication } from "../../components/UserSession"
 import LoadingSpinner from "../../components/LoadingSpinner"
 import { PageContainer } from "../../components/Containers"
 import { CustomFile } from "../../components/FileHandler"
@@ -10,7 +10,7 @@ import EmptyState from "../../components/EmptyState"
 
 import { NotFoundError } from "../../errors"
 import { useAuthentication, useFirebase } from "../../hooks"
-import { sleep } from "../../utils"
+import { sleep, route } from "../../utils"
 import { formatItemDataForDb, MODE } from "../../utils/formatting/formatItemData"
 import { CONST } from "../../constants"
 
@@ -26,7 +26,7 @@ const formatDataForEditForm = (price, condition, description, files) => ({
 	files: files
 })
 
-const EditItemPage = ({ match, history }) => {
+const EditItemPage = ({ match, history, location }) => {
 	const firebase = useFirebase()
 	const authUser = useAuthentication()
 	const [error, setError] = useState(null)
@@ -38,6 +38,15 @@ const EditItemPage = ({ match, history }) => {
 			try {
 				// Get item from database
 				let item = await firebase.getItemData(match.params.id)
+
+				if (item.userId !== authUser.uid) {
+					history.replace(route("SIGN_IN"), {
+						redirectTo: location,
+						redirectReason: {
+							message: "Nie masz wystarczających pozwoleń"
+						}
+					})
+				}
 
 				// Get item attachments' refs and urls for previews
 				const imageURLs = await firebase.batchGetImageURLs(item.attachments)
@@ -147,19 +156,7 @@ const EditItemPage = ({ match, history }) => {
 	)
 }
 
-const condition = (authUser, pathParams) => {
-	const isAuthenticated = !!authUser
-
-	if (!isAuthenticated) {
-		return false
-	} else {
-		const isAuthorized = authUser.items.includes(pathParams.id)
-		return isAuthorized
-	}
-}
-
 export default compose(
 	withAuthentication,
-	withRouter,
-	withAuthorization(condition)
+	withRouter
 )(EditItemPage)

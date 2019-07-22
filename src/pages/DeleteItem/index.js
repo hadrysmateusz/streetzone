@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react"
 import { withRouter, Link } from "react-router-dom"
 import styled from "styled-components/macro"
 
-import { withAuthorization } from "../../components/UserSession"
 import LoadingSpinner from "../../components/LoadingSpinner"
 import { PageContainer } from "../../components/Containers"
 import { SmallItemCard } from "../../components/Cards"
@@ -10,8 +9,8 @@ import { Button, LoaderButton, ButtonContainer } from "../../components/Button"
 import EmptyState from "../../components/EmptyState/new"
 
 import { NotFoundError } from "../../errors"
-import { useFlash, useFirebase } from "../../hooks"
-import { getRedirectTo, sleep } from "../../utils"
+import { useFlash, useFirebase, useAuthentication } from "../../hooks"
+import { getRedirectTo, sleep, route } from "../../utils"
 import { StatelessSearchWrapper } from "../../components/InstantSearchWrapper"
 import PageHeading from "../../components/PageHeading"
 
@@ -61,21 +60,34 @@ const useDeleteItem = (id) => {
 	return [deleteItem, isDeleting]
 }
 
-const useItem = (id) => {
+const DeleteItem = withRouter(({ match, history, location }) => {
+	const itemId = match.params.id
 	const [item, setItem] = useState(null)
-	const [error, setError] = useState(null)
+	const [itemError, setItemError] = useState(null)
 	const firebase = useFirebase()
+	const authUser = useAuthentication()
+	const flashMessage = useFlash()
+	const [deleteItem, isDeleting] = useDeleteItem(itemId)
 
 	useEffect(() => {
 		const getItem = async () => {
 			try {
 				// Get item from database
-				let item = await firebase.getItemData(id)
+				let item = await firebase.getItemData(itemId)
+
+				if (item.userId !== authUser.uid) {
+					history.replace(route("SIGN_IN"), {
+						redirectTo: location,
+						redirectReason: {
+							message: "Nie masz wystarczających pozwoleń"
+						}
+					})
+				}
 
 				setItem(item)
 			} catch (err) {
 				if (err instanceof NotFoundError) {
-					setError(err)
+					setItemError(err)
 				} else {
 					throw err
 				}
@@ -83,17 +95,7 @@ const useItem = (id) => {
 		}
 
 		getItem()
-	}, [id, firebase])
-
-	return [item, error]
-}
-
-const DeleteItem = withRouter(({ match, history, location }) => {
-	const itemId = match.params.id
-
-	const flashMessage = useFlash()
-	const [item, itemError] = useItem(itemId)
-	const [deleteItem, isDeleting] = useDeleteItem(itemId)
+	}, [firebase, itemId, authUser.uid, history, location])
 
 	const onDelete = async () => {
 		try {
@@ -157,14 +159,4 @@ const DeleteItemPage = () => (
 	</StatelessSearchWrapper>
 )
 
-const condition = (authUser, pathParams) => {
-	const isAuthenticated = !!authUser
-	if (!isAuthenticated) {
-		return false
-	} else {
-		const isAuthorized = authUser.items.includes(pathParams.id)
-		return isAuthorized
-	}
-}
-
-export default withAuthorization(condition)(DeleteItemPage)
+export default DeleteItemPage
