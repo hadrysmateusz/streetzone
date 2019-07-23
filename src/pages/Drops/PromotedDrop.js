@@ -63,7 +63,7 @@ export const PromotedDropContainer = styled.div`
 	}
 `
 
-const PromotedPost = ({
+const PromotedDrop = ({
 	id,
 	mainImageIndex,
 	imageUrls,
@@ -85,7 +85,7 @@ const PromotedPost = ({
 	)
 }
 
-PromotedPost.propTypes = {
+PromotedDrop.propTypes = {
 	id: PropTypes.string.isRequired,
 	mainImageIndex: PropTypes.number.isRequired,
 	imageUrls: PropTypes.array.isRequired,
@@ -93,4 +93,4 @@ PromotedPost.propTypes = {
 	dropsAtApproxTimestamp: PropTypes.number.isRequired
 }
 
-export default PromotedPost
+export default PromotedDrop

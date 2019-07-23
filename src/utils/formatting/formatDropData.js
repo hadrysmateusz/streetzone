@@ -17,8 +17,7 @@ export const REQUIRED = [
 	"itemCategory",
 	"attachments",
 	"imageUrls",
-	"mainImageIndex",
-	"tags"
+	"mainImageIndex"
 ]
 
 // this date format is also used in cloud functions
@@ -77,11 +76,6 @@ export const formatDropDataForDb = (data, mode, flagState = true) => {
 			formatted.price = formatString(data.price)
 		}
 
-		// howMany
-		if (isSet(data.howMany)) {
-			formatted.howMany = formatString(data.howMany)
-		}
-
 		// attachments
 		if (isSet(data.attachments)) {
 			formatted.attachments = formatNonEmptyArray(data.attachments)
@@ -104,10 +98,10 @@ export const formatDropDataForDb = (data, mode, flagState = true) => {
 			formatted.buyAt = data.buyAt
 		}
 
-		// tags
-		if (isSet(data.tags)) {
-			formatted.tags = formatNonEmptyArray(data.tags)
-		}
+		// // tags
+		// if (isSet(data.tags)) {
+		// 	formatted.tags = formatNonEmptyArray(data.tags)
+		// }
 	}
 
 	if (mode === MODE.CREATE) {

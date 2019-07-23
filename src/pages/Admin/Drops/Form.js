@@ -80,24 +80,17 @@ export default ({ onSubmit, initialValues, edit }) => {
 							info={"Razem z walutą"}
 						/>
 
-						<TextFF
-							label="Nakład przedmiotu"
-							placeholder="np. 500 sztuk, Limitowany (opcjonalne)"
-							name="howMany"
-							info="Dokładna liczba lub opis"
-						/>
-
 						<MultiTextInputFF
 							label="Gdzie kupić?"
 							placeholder="Linki (zatwierdzaj Enterem) (Opcjonalne)"
 							name="buyAt"
 						/>
 
-						<MultiTextInputFF
+						{/* <MultiTextInputFF
 							label="Tagi"
 							placeholder="Tagi (zatwierdzaj Enterem)"
 							name="tags"
-						/>
+						/> */}
 
 						<FileHandlerFF label="Zdjęcia" name="files" />
 
