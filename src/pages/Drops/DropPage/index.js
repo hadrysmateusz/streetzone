@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react"
 import moment from "moment"
 import styled from "styled-components/macro"
 
-import Button, { ButtonContainer } from "../../../components/Button"
+import Button, { ButtonContainer, LinkButton } from "../../../components/Button"
 import { SmallTextBlock } from "../../../components/StyledComponents"
 import { SaveButton, SaveIconButton } from "../../../components/SaveButton"
 import LoadingSpinner from "../../../components/LoadingSpinner"
@@ -10,11 +10,11 @@ import { PageContainer } from "../../../components/Containers"
 import ImageGallery from "../../../components/ImageGallery"
 import PageNav from "../../../components/PageNav"
 import Share from "../../../components/Share"
-import Tags from "../../../components/Tags"
 import InfoItem from "../../../components/InfoItem"
 import { LayoutManager, Sidebar, Main } from "../../../components/LayoutManager"
 import { ThematicGroup } from "../../../components/ThematicGroup"
 import { SmallDropCard } from "../../../components/Cards"
+import EmptyState from "../../../components/EmptyState/new"
 import {
 	Header,
 	DetailsContainer,
@@ -27,7 +27,7 @@ import {
 
 import { useFirebase } from "../../../hooks"
 import { dateFormat } from "../../../utils/formatting/formatDropData"
-import { itemDataHelpers } from "../../../utils"
+import { itemDataHelpers, route } from "../../../utils"
 import { CONST } from "../../../constants"
 
 import WhereToBuyModal from "./WhereToBuyModal"
@@ -46,6 +46,7 @@ const DisclaimerContainer = styled.div`
 const DropDetailsPage = ({ match, history }) => {
 	const firebase = useFirebase()
 	const [drop, setDrop] = useState(null)
+	const [error, setError] = useState(null)
 
 	const dropId = match.params.id
 
@@ -54,40 +55,49 @@ const DropDetailsPage = ({ match, history }) => {
 			const snap = await firebase.drop(dropId).get()
 
 			if (!snap.exists) {
-				throw Error("Nie znaleziono")
+				setError(true)
 			}
 
 			setDrop(snap.data())
 		}
 
 		getDrop()
-	}, [dropId])
+	}, [dropId, firebase])
 
-	if (!drop) {
-		return <LoadingSpinner />
+	const isLoading = !error && !drop
+
+	let isTimeKnown, dropsAt, dropsAtDate, dropsAtTime, designers, similarFilters
+
+	if (drop) {
+		designers = formatDesigners(drop.designers)
+		isTimeKnown = drop.dropsAtString && drop.dropsAtString.length > 9
+		dropsAt = moment(drop.dropsAtString, dateFormat)
+		dropsAtDate = dropsAt.format("LL")
+		dropsAtTime = dropsAt.format("HH:mm")
+		similarFilters = `NOT id:${drop.id}`
 	}
 
-	const formattedDesigners = formatDesigners(drop.designers)
-
-	const isTimeKnown = drop.dropsAtString && drop.dropsAtString.length > 9
-
-	const dropsAt = moment(drop.dropsAtString, dateFormat)
-	const dropsAtDate = dropsAt.format("LL")
-	const dropsAtTime = dropsAt.format("HH:mm")
-
-	const similarFilters = `NOT id:${drop.id}`
-
-	return (
+	return error ? (
+		<EmptyState header="Nie znaleziono">
+			Nie znaleziono takiego dropu
+			<ButtonContainer>
+				<LinkButton to={route("DROPS_SECTION", { id: "newest" })}>
+					Zobacz wszystkie dropy
+				</LinkButton>
+			</ButtonContainer>
+		</EmptyState>
+	) : isLoading ? (
+		<LoadingSpinner />
+	) : (
 		<>
 			<PageContainer>
-				{/* TODO: make the algolia encoding work with route helper, for this to work */}
-				<PageNav breadcrumbs={[["Dropy", "DROPS"]]} noMargin />
+				<PageNav breadcrumbs={[["Dropy", "DROPS_SECTION", { id: "newest" }]]} noMargin />
 				<ItemContainer>
 					<ImageGallery
 						storageRefs={drop.attachments}
 						lightboxTitle={
 							<div>
-								<b>{drop.name}</b> - {formattedDesigners}{" "}
+								<b>{drop.name}</b> - {designers}{" "}
 							</div>
 						}
 					/>
@@ -143,10 +153,10 @@ const DropDetailsPage = ({ match, history }) => {
 					<div className="group-name">Udostępnij</div>
 					<Share />
 				</div>
-				<div className="group">
+				{/* <div className="group">
 					<div className="group-name">Tagi</div>
 					<Tags tags={drop.tags} />
-				</div>
+				</div> */}
 			</MiscBar>
 			<PageContainer>
 				<LayoutManager>
