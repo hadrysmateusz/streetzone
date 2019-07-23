@@ -60,8 +60,9 @@ const DropsMain = withDropsSearchWrapper(({ currentSection }) => {
 					{isArchive && (
 						// TODO: better / more accurate copy (with regards to final functionality)
 						<BlackBox header="Dropy Archiwalne">
-							Tutaj znajdują się dropy które miały już miejsce. Możesz tu też sprawdzić
-							czy dostaniesz je u nas tablicy.
+							Tutaj znajdują się dropy które miały już miejsce.{" "}
+							{/* Możesz tu też sprawdzić
+							czy dostaniesz je u nas tablicy. */}
 						</BlackBox>
 					)}
 
@@ -76,7 +77,7 @@ const DropsMain = withDropsSearchWrapper(({ currentSection }) => {
 					</InfiniteScrollingResults>
 				</Main>
 				<Sidebar availableElements={sidebarElements} isRandom>
-					{isArchive && <Filters toggle={() => null} clear={() => null} />}
+					{/* {isArchive && <Filters toggle={() => null} clear={() => null} />} */}
 					{!isAuthenticated && (
 						<BlackBox header="Otrzymuj powiadomienia">
 							Utwórz konto by dostawać powiadomienia o nowych dropach
