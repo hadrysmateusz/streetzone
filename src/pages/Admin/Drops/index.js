@@ -119,9 +119,9 @@ const Drop = ({
 				<>
 					<TextBlock color="black100">Gdzie kupić:</TextBlock>
 					<BuyAtList>
-						{buyAt.map((link) => (
+						{buyAt.map(({ link, name }) => (
 							<BuyAtLink href={link} title={link}>
-								{link}
+								{name}
 							</BuyAtLink>
 						))}
 					</BuyAtList>

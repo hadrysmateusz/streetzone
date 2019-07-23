@@ -1,15 +1,17 @@
 import React from "react"
 import { Prompt } from "react-router-dom"
-import { Form } from "react-final-form"
+import { Form, Field } from "react-final-form"
+import arrayMutators from "final-form-arrays"
+import { FieldArray } from "react-final-form-arrays"
+import styled from "styled-components/macro"
 
-import { LoaderButton, ButtonContainer } from "../../../components/Button"
+import { LoaderButton, ButtonContainer, Button } from "../../../components/Button"
 import DisplayJSONButton from "../../../components/DisplayJSONButton"
 import LoadingSpinner from "../../../components/LoadingSpinner"
 import {
 	TextFF,
 	DropdownFF,
 	FileHandlerFF,
-	MultiTextInputFF,
 	TextareaFF
 } from "../../../components/FinalFormFields"
 
@@ -18,6 +20,18 @@ import { ITEM_SCHEMA } from "../../../constants"
 import { useDesignerOptions } from "../../../hooks"
 
 import { StyledForm } from "../Common"
+import { Input } from "../../../components/FormElements"
+
+const BuyAtGroup = styled.div`
+	display: flex;
+	> * + * {
+		margin-left: 8px;
+	}
+`
+
+const Label = styled.div`
+	font-weight: bold;
+`
 
 export default ({ onSubmit, initialValues, edit }) => {
 	const designerOptions = useDesignerOptions()
@@ -28,7 +42,19 @@ export default ({ onSubmit, initialValues, edit }) => {
 		<Form
 			onSubmit={onSubmit}
 			initialValues={initialValues}
-			render={({ form, handleSubmit, submitting, pristine, values, ...rest }) => {
+			mutators={{
+				...arrayMutators
+			}}
+			render={({
+				form: {
+					mutators: { push, pop }
+				},
+				handleSubmit,
+				submitting,
+				pristine,
+				values,
+				...rest
+			}) => {
 				return (
 					<StyledForm onSubmit={handleSubmit}>
 						<Prompt
@@ -80,11 +106,58 @@ export default ({ onSubmit, initialValues, edit }) => {
 							info={"Razem z walutą"}
 						/>
 
-						<MultiTextInputFF
-							label="Gdzie kupić?"
-							placeholder="Linki (zatwierdzaj Enterem) (Opcjonalne)"
-							name="buyAt"
-						/>
+						{/* TODO: currently it's impossible to remove a link field */}
+						{/* TODO: after adding an item a weird error is thrown but the drop gets added */}
+						<div>
+							<Label>Gdzie kupić? (nie usuwaj linkow narazie)</Label>
+							<FieldArray name="buyAt">
+								{({ fields }) =>
+									fields.map((name, index) => (
+										<div key={name}>
+											<Label>Link #{index + 1}</Label>
+											<BuyAtGroup>
+												<Field name={`${name}.name`}>
+													{({ input, meta }) => {
+														const error = meta.error && meta.touched ? meta.error : null
+														return (
+															<Input
+																{...input}
+																type="text"
+																placeholder="Nazwa"
+																error={error}
+																info="Nazwa sklepu/strony"
+															/>
+														)
+													}}
+												</Field>
+												<Field name={`${name}.link`}>
+													{({ input, meta }) => {
+														const error = meta.error && meta.touched ? meta.error : null
+														return (
+															<Input
+																{...input}
+																type="text"
+																placeholder="Link"
+																error={error}
+																info="Link (affiliate lub zwykły)"
+															/>
+														)
+													}}
+												</Field>
+												<Button danger onClick={() => fields.remove(index)}>
+													Usuń
+												</Button>
+											</BuyAtGroup>
+										</div>
+									))
+								}
+							</FieldArray>
+							<ButtonContainer>
+								<Button type="button" onClick={() => push("buyAt", undefined)}>
+									Dodaj Link
+								</Button>
+							</ButtonContainer>
+						</div>
 
 						{/* <MultiTextInputFF
 							label="Tagi"
