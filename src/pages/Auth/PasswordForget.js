@@ -129,12 +129,5 @@ const PasswordForgetForm = ({ onSuccess, onError }) => {
 	)
 }
 
-// deprecated
-const PasswordForgetLink = () => (
-	<p>
-		<StyledLink to={ROUTES.PASSWORD_FORGET}>Zapomniałeś hasła?</StyledLink>
-	</p>
-)
-
 export default PasswordForgetPage
-export { PasswordForgetForm, PasswordForgetLink }
+export { PasswordForgetForm }
