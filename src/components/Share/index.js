@@ -3,6 +3,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import styled from "styled-components/macro"
 
 import { TextBlock } from "../StyledComponents"
+import Facebook from "./Facebook"
+import Reddit from "./Reddit"
+import Twitter from "./Twitter"
+import Email from "./Email"
 
 const ShareContainer = styled.div`
 	display: grid;
@@ -33,15 +37,10 @@ const Share = ({ withHeader }) => {
 				</TextBlock>
 			)}
 			<ShareContainer>
-				<div title="Udostępnij na Twitterze">
-					<FontAwesomeIcon icon={["fab", "twitter"]} />
-				</div>
-				<div title="Udostępnij na Facebooku">
-					<FontAwesomeIcon icon={["fab", "facebook-square"]} />
-				</div>
-				<div title="Udostępnij na Instagramie">
-					<FontAwesomeIcon icon={["fab", "instagram"]} />
-				</div>
+				<Facebook />
+				<Twitter />
+				{/* <Reddit /> */}
+				<Email />
 			</ShareContainer>
 		</>
 	)

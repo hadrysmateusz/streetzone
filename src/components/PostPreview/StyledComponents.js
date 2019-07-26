@@ -45,7 +45,7 @@ export const TagsContainer = styled.div`
 
 export const PostContainer = styled.div`
 	min-width: 0; /* prevent overflow */
-	a {
+	> a {
 		display: grid;
 		grid-template-columns: 100px 1fr;
 		grid-template-rows: auto;
