@@ -57,10 +57,10 @@ const DESIGNERS_ALGOLIA_INDEX = isProd ? "prod_designers" : "dev_designers"
 
 // ===============================================================================
 
-const ALGOLIA_ID = process.env.ALGOLIA_APP_ID
-const ALGOLIA_ADMIN_KEY = process.env.ALGOLIA_API_KEY
-const PAYU_CLIENT_ID = process.env.PAYU_CLIENT_ID
-const PAYU_CLIENT_SECRET = process.env.PAYU_CLIENT_SECRET
+const PAYU_CLIENT_ID = functions.config().payu.client_id
+const PAYU_CLIENT_SECRET = functions.config().payu.client_secret
+const ALGOLIA_ID = functions.config().algolia.app_id
+const ALGOLIA_ADMIN_KEY = functions.config().algolia.api_key
 
 const client = algoliasearch(ALGOLIA_ID, ALGOLIA_ADMIN_KEY)
 const bucket = admin.storage().bucket()
