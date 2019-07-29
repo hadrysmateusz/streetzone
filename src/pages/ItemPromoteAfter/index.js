@@ -6,6 +6,7 @@ import { route } from "../../utils"
 
 import { PageContainer } from "../../components/Containers"
 import PageHeading from "../../components/PageHeading"
+import HelmetBasics from "../../components/HelmetBasics"
 
 const Text = styled.div`
 	color: var(--gray0);
@@ -32,6 +33,9 @@ const ItemPromoteAfter = withRouter(({ location }) => {
 			{hasError ? (
 				<>
 					<PageHeading emoji={"❌"}>Wystąpił błąd</PageHeading>
+
+					<HelmetBasics fullTitle="Wystąpił błąd" />
+
 					<Text>
 						Transakcja zakończyła się niepowodzeniem. W razie pytań co do transakcji{" "}
 						<StyledLink to={route("CONTACT")}>skontaktuj się z nami</StyledLink> podając
@@ -42,6 +46,9 @@ const ItemPromoteAfter = withRouter(({ location }) => {
 			) : (
 				<>
 					<PageHeading emoji={"🎉"}>Dzięki za zakup</PageHeading>
+
+					<HelmetBasics fullTitle="Dzięki za zakup" />
+
 					<Text>
 						Gdy tylko wpłata zostanie zaksięgowana, twoje ogłoszenie otrzyma wszystkie
 						benefity. Może to potrwać do 5 minut. Status promowania ogłoszenia możesz

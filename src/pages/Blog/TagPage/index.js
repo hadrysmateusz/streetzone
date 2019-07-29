@@ -16,6 +16,7 @@ import PageNav from "../../../components/PageNav"
 import { LayoutManager, Main, Sidebar } from "../../../components/LayoutManager"
 import { PoweredByBox } from "../../../components/Algolia/PoweredBy"
 import { PopularArticles, PopularTags } from "../../../components/SidebarComponents"
+import HelmetBasics from "../../../components/HelmetBasics"
 
 import { Heading } from "../common"
 import InfinitePosts from "../InfinitePostsList"
@@ -52,6 +53,7 @@ const BlogTagPage = ({ currentBreakpoint, location }) => {
 			hitsPerPage={6}
 			refinements={{ tags }}
 		>
+			<HelmetBasics title={headingText + " - Blog"} />
 			<PageContainer>
 				<LayoutManager>
 					<Main>

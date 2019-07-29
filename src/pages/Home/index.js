@@ -5,6 +5,7 @@ import { Link } from "react-router-dom"
 import { PageContainer } from "../../components/Containers"
 import { SmallItemCard, SmallDropCard, PostCard } from "../../components/Cards"
 import { PopularDesignersHomeSection } from "../../components/PopularDesigners"
+import HelmetBasics from "../../components/HelmetBasics"
 
 import { CONST } from "../../constants"
 import { route } from "../../utils"
@@ -84,6 +85,8 @@ const BlogSection = () => (
 const HomePage = () => {
 	return (
 		<OuterContainer>
+			{/* TODO: add some sort of slogan to the title here */}
+			<HelmetBasics fullTitle={CONST.BRAND_NAME} />
 			<MainCarousel />
 			<MarketplaceSection />
 			<DropsSection />

@@ -4,6 +4,7 @@ import { compose } from "recompose"
 import { withAuthorization, withAuthentication } from "../../components/UserSession"
 import { withFirebase } from "../../components/Firebase"
 import { PageContainer } from "../../components/Containers"
+import HelmetBasics from "../../components/HelmetBasics"
 
 import { formatItemDataForDb, MODE } from "../../utils/formatting/formatItemData"
 import { ROUTES, CONST } from "../../constants"
@@ -51,6 +52,7 @@ const NewItemPage = () => {
 
 	return (
 		<PageContainer maxWidth={2}>
+			<HelmetBasics title="Wystaw przedmiot" />
 			<NewItemForm onSubmit={onSubmit} />
 		</PageContainer>
 	)

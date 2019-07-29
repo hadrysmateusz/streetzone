@@ -9,6 +9,7 @@ import { Button, LoaderButton, ButtonContainer } from "../../components/Button"
 import PageHeading from "../../components/PageHeading"
 import { StatelessSearchWrapper } from "../../components/InstantSearchWrapper"
 import ItemNotFound from "../../components/ItemNotFound"
+import HelmetBasics from "../../components/HelmetBasics"
 
 import { NotFoundError } from "../../errors"
 import { useFlash, useFirebase, useAuthentication } from "../../hooks"
@@ -116,6 +117,8 @@ const DeleteItem = withRouter(({ match, history, location }) => {
 
 	return (
 		<PageContainer>
+			<HelmetBasics title="Usuń ogłoszenie" />
+
 			{itemError ? (
 				<ItemNotFound />
 			) : (

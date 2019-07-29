@@ -1,7 +1,14 @@
 import React from "react"
 
+import HelmetBasics from "../../components/HelmetBasics"
+
 const TermsPage = () => {
-	return <h2>Regulamin</h2>
+	return (
+		<>
+			<HelmetBasics title="Regulamin" />
+			<p>PLACEHOLDER</p>
+		</>
+	)
 }
 
 export default TermsPage

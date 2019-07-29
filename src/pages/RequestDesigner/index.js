@@ -8,6 +8,7 @@ import shortid from "shortid"
 import { LoaderButton, ButtonContainer, BackButton } from "../../components/Button"
 import { TextFF } from "../../components/FinalFormFields"
 import PageHeading from "../../components/PageHeading"
+import HelmetBasics from "../../components/HelmetBasics"
 
 import { useFirebase, useAuthentication, useFlash } from "../../hooks"
 
@@ -57,6 +58,7 @@ const RequestDesigner = ({ history }) => {
 
 	return (
 		<PageContainer>
+			<HelmetBasics title="Dodaj projektanta / markę" />
 			<PageHeading emoji={"🏷️"}>Dodaj projektanta / markę</PageHeading>
 
 			<Form

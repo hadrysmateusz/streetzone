@@ -9,6 +9,7 @@ import { PopularArticles } from "../../components/SidebarComponents"
 import InfiniteScrollingResults from "../../components/InfiniteScrollingResults"
 import { StatelessSearchWrapper } from "../../components/InstantSearchWrapper"
 import AlgoliaSearchBox from "../../components/Algolia/AlgoliaSearchBox"
+import HelmetBasics from "../../components/HelmetBasics"
 
 import { useAuthentication } from "../../hooks"
 import { CONST } from "../../constants"
@@ -47,6 +48,7 @@ const DealsPage = () => {
 			limit={3}
 			ignoreArchivedStatus
 		>
+			<HelmetBasics title="Okazje" />
 			<PageContainer>
 				<Heading>Okazje</Heading>
 				<Info>Tu znajdziesz najlepsze deale na ubrania i buty</Info>

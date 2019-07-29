@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react"
 import styled from "styled-components/macro"
 
+import HelmetBasics from "../../components/HelmetBasics"
 import { LinkButton, ButtonContainer } from "../../components/Button"
 import { SmallTextBlock } from "../../components/StyledComponents"
 import LoadingSpinner from "../../components/LoadingSpinner"
@@ -74,6 +75,7 @@ const DealPage = ({ match }) => {
 
 	return (
 		<OuterContainer>
+			<HelmetBasics title={deal.title} />
 			<PageContainer>
 				<ItemContainer>
 					<ImageGallery storageRefs={[deal.imageRef]} lightboxTitle={deal.title} />

@@ -3,6 +3,7 @@ import { Link } from "react-router-dom"
 import moment from "moment"
 import { css } from "styled-components/macro"
 
+import HelmetBasics from "../../components/HelmetBasics"
 import Button, { ButtonContainer } from "../../components/Button"
 import DeleteItemButton from "../../components/DeleteItemButton"
 import { SmallTextBlock } from "../../components/StyledComponents"
@@ -74,6 +75,7 @@ const ItemDetailsPage = ({ match, history }) => {
 
 	return (
 		<>
+			<HelmetBasics title={item.name + " - Tablica"} />
 			<PageContainer>
 				{/* TODO: make the algolia encoding work with route helper, for this to work */}
 				<PageNav

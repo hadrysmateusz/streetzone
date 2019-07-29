@@ -24,6 +24,7 @@ import {
 	InfoContainer,
 	MiscBar
 } from "../../../components/ItemDetails"
+import HelmetBasics from "../../../components/HelmetBasics"
 
 import { useFirebase } from "../../../hooks"
 import { dateFormat } from "../../../utils/formatting/formatDropData"
@@ -78,18 +79,22 @@ const DropDetailsPage = ({ match, history, location }) => {
 	}
 
 	return error ? (
-		<EmptyState header="Nie znaleziono">
-			Nie znaleziono takiego dropu
-			<ButtonContainer>
-				<LinkButton to={route("DROPS_SECTION", { id: "newest" })}>
-					Zobacz wszystkie dropy
-				</LinkButton>
-			</ButtonContainer>
-		</EmptyState>
+		<>
+			<HelmetBasics title="Nie znaleziono" />
+			<EmptyState header="Nie znaleziono">
+				Nie znaleziono takiego dropu
+				<ButtonContainer>
+					<LinkButton to={route("DROPS_SECTION", { id: "newest" })}>
+						Zobacz wszystkie dropy
+					</LinkButton>
+				</ButtonContainer>
+			</EmptyState>
+		</>
 	) : isLoading ? (
 		<LoadingSpinner />
 	) : (
 		<>
+			<HelmetBasics title={drop.name} />
 			<PageContainer>
 				<PageNav breadcrumbs={[["Dropy", "DROPS_SECTION", { id: "newest" }]]} noMargin />
 				<ItemContainer>

@@ -7,6 +7,7 @@ import { SearchWrapper } from "../../components/InstantSearchWrapper"
 import CurrentFilters from "../../components/CurrentFilters"
 import { PageContainer } from "../../components/Containers"
 import ScrollToTop from "../../components/ScrollToTop"
+import HelmetBasics from "../../components/HelmetBasics"
 
 import { CONST } from "../../constants"
 
@@ -103,6 +104,7 @@ const MarketplacePage = ({ currentBreakpoint }) => {
 			allowedKeys={["category", "designers", "price", "size"]}
 			hitsPerPage={4}
 		>
+			<HelmetBasics title="Tablica" />
 			<Header />
 			<PromotedSection />
 			<PageContainer extraWide>

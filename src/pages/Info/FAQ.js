@@ -2,6 +2,8 @@ import React from "react"
 import styled from "styled-components/macro"
 import ReactMarkdown from "react-markdown"
 
+import HelmetBasics from "../../components/HelmetBasics"
+
 import topics from "./faqContent"
 
 const Container = styled.div``
@@ -28,19 +30,22 @@ const Answer = styled.p`
 
 const FAQPage = () => {
 	return (
-		<Container>
-			{topics.map((topic) => (
-				<Group>
-					<Question>{topic.question}</Question>
-					<Answer>
-						<ReactMarkdown
-							source={topic.answer.replace(/\\n/g, "\n")}
-							escapeHtml={false}
-						/>
-					</Answer>
-				</Group>
-			))}
-		</Container>
+		<>
+			<HelmetBasics title="FAQ" />
+			<Container>
+				{topics.map((topic) => (
+					<Group>
+						<Question>{topic.question}</Question>
+						<Answer>
+							<ReactMarkdown
+								source={topic.answer.replace(/\\n/g, "\n")}
+								escapeHtml={false}
+							/>
+						</Answer>
+					</Group>
+				))}
+			</Container>
+		</>
 	)
 }
 

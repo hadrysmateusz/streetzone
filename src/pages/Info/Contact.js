@@ -4,6 +4,7 @@ import { Link } from "react-router-dom"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 import { TextBlock } from "../../components/StyledComponents"
+import HelmetBasics from "../../components/HelmetBasics"
 
 import { CONST } from "../../constants"
 import { route } from "../../utils"
@@ -45,6 +46,8 @@ const BigButton = styled.div`
 const ContactPage = () => {
 	return (
 		<>
+			<HelmetBasics title="Kontakt" />
+
 			<TextBlock size="m">
 				Jeśli masz propozycje lub pytania na temat współpracy, albo znalazłeś problem na
 				stronie, wybierz jedną z opcji poniżej.

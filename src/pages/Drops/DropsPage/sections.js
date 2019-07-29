@@ -1,9 +1,10 @@
 import { CONST } from "../../../constants"
 
 class Section {
-	constructor(id, title, description, sortBy, filter) {
+	constructor(id, title, pageTitle, description, sortBy, filter) {
 		this.id = id
 		this.title = title
+		this.pageTitle = pageTitle
 		this.description = description
 		this.sortBy = sortBy
 		this._filter = filter
@@ -49,6 +50,7 @@ sections.addSection(
 	new Section(
 		"newest",
 		"Nowe",
+		"Nowe Dropy",
 		"Świeżo dodane dropy. Bądź na bieżąco.",
 		CONST.BLOG_DROP_NEWEST_ALGOLIA_INDEX
 	)
@@ -57,6 +59,7 @@ sections.addSection(
 	new Section(
 		"upcoming",
 		"Nadchodzące",
+		"Nadchodzące Dropy",
 		"3... 2... 1... Drop xd.",
 		CONST.BLOG_DROP_ALGOLIA_INDEX,
 		":dropTimestamp > :now"
@@ -66,6 +69,7 @@ sections.addSection(
 	new Section(
 		"archive",
 		"Archiwum",
+		"Archiwalne Dropy",
 		"Przeglądaj dropy które miały już miejsce i sprawdź czy dostaniesz je u nas na tablicy.",
 		CONST.BLOG_DROP_ARCHIVE_ALGOLIA_INDEX,
 		":dropTimestamp < :now"

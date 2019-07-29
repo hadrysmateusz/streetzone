@@ -6,6 +6,7 @@ import FormError from "../../components/FormElements/FormError"
 import { CenteredContainer } from "../../components/Containers"
 import { StyledLink } from "../../components/Basics"
 import Separator from "../../components/Separator"
+import HelmetBasics from "../../components/HelmetBasics"
 
 import { useFlash, useFirebase } from "../../hooks"
 import { getRedirectTo, route } from "../../utils"
@@ -127,6 +128,7 @@ const Banner = withRouter(({ location }) => {
 
 const SignInPage = () => (
 	<>
+		<HelmetBasics fullTitle="Zaloguj się" />
 		<Banner />
 		<CenteredContainer>
 			<SignIn />

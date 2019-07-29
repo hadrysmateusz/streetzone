@@ -5,6 +5,8 @@ import { compose } from "recompose"
 import { NotificationsDisabledBar } from "../../components/NotificationsDisabled"
 import { withAuthentication } from "../../components/UserSession"
 import LoadingSpinner from "../../components/LoadingSpinner"
+import HelmetBasics from "../../components/HelmetBasics"
+
 import { useUserData } from "../../hooks"
 
 import MainInfo from "./UserMainInfo"
@@ -32,9 +34,17 @@ const AccountPage = ({ routes, match, authUser }) => {
 
 	const commonProps = { user, userId, isAuthorized, onForceRefresh }
 
+	const pageTitle = isAuthorized
+		? "Twój profil"
+		: user
+		? `Profil - ${user.name}`
+		: "Profil"
+
 	return (
 		<>
 			{isAuthorized && <NotificationsDisabledBar />}
+
+			<HelmetBasics title={pageTitle} />
 
 			{user ? (
 				<>

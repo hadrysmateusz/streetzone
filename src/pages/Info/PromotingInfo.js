@@ -1,7 +1,14 @@
 import React from "react"
 
+import HelmetBasics from "../../components/HelmetBasics"
+
 const BumpInfoPage = () => {
-	return <h2>Promowanie</h2>
+	return (
+		<>
+			<HelmetBasics title="Promowanie i odświeżanie" />
+			<p>PLACEHOLDER</p>
+		</>
+	)
 }
 
 export default BumpInfoPage

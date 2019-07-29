@@ -7,6 +7,7 @@ import LoadingSpinner from "../../components/LoadingSpinner"
 import { PageContainer } from "../../components/Containers"
 import { LoaderButton } from "../../components/Button"
 import ItemNotFound from "../../components/ItemNotFound"
+import HelmetBasics from "../../components/HelmetBasics"
 
 import { NotFoundError } from "../../errors"
 import { route } from "../../utils"
@@ -247,6 +248,7 @@ const ItemPromotePage = ({ match, history, location }) => {
 				<ItemNotFound />
 			) : item ? (
 				<div>
+					<HelmetBasics fullTitle="Promuj ogłoszenie" />
 					<PageHeader>
 						<span role="img" aria-label="promowane">
 							🔥 Promuj {item.name}

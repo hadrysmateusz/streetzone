@@ -8,6 +8,7 @@ import { LayoutManager, Main, Sidebar } from "../../../components/LayoutManager"
 import { PopularArticles } from "../../../components/SidebarComponents"
 import InfiniteScrollingResults from "../../../components/InfiniteScrollingResults"
 import ResultsCount from "../../../components/ResultsCount"
+import HelmetBasics from "../../../components/HelmetBasics"
 
 import sections from "./sections"
 import SectionSelect from "./SectionSelect"
@@ -46,8 +47,11 @@ const DropsMain = withDropsSearchWrapper(({ currentSection }) => {
 	const isArchive = currentSection.id === "archive"
 	const [isAuthenticated] = useAuthentication(true)
 
+	console.log(currentSection)
+
 	return (
 		<PageContainer>
+			<HelmetBasics title={currentSection.pageTitle} />
 			<LayoutManager>
 				<Main>
 					<HeaderContainer>

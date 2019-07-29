@@ -14,6 +14,7 @@ import Share from "../../../components/Share"
 import PageNav from "../../../components/PageNav"
 import { SimilarArticles } from "../../../components/SidebarComponents"
 import { LayoutManager, Main, Sidebar } from "../../../components/LayoutManager"
+import HelmetBasics from "../../../components/HelmetBasics"
 
 import { useFirebase } from "../../../hooks"
 import { ellipsis, getCategoryColor } from "../../../style-utils"
@@ -165,6 +166,8 @@ export const PureBlogPost = withBreakpoints(
 
 		return (
 			<>
+				<HelmetBasics title={title} />
+
 				<HeaderBox category={category}>
 					<PageContainer>
 						{/* Page Nav */}

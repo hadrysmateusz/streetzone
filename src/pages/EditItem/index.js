@@ -8,6 +8,7 @@ import { PageContainer } from "../../components/Containers"
 import { CustomFile } from "../../components/FileHandler"
 import ItemNotFound from "../../components/ItemNotFound"
 import PageHeading from "../../components/PageHeading"
+import HelmetBasics from "../../components/HelmetBasics"
 
 import { NotFoundError } from "../../errors"
 import { useAuthentication, useFirebase } from "../../hooks"
@@ -143,18 +144,21 @@ const EditItemPage = ({ match, history, location }) => {
 	}
 
 	return (
-		<PageContainer maxWidth={2}>
-			{error ? (
-				<ItemNotFound />
-			) : !initialData ? (
-				<LoadingSpinner />
-			) : (
-				<>
-					<PageHeading emoji={"🖊️"}>Edytuj {itemName}</PageHeading>
-					<EditItemForm initialValues={initialData} onSubmit={onSubmit} />
-				</>
-			)}
-		</PageContainer>
+		<>
+			<HelmetBasics title="Usuń ogłoszenie" />
+			<PageContainer maxWidth={2}>
+				{error ? (
+					<ItemNotFound />
+				) : !initialData ? (
+					<LoadingSpinner />
+				) : (
+					<>
+						<PageHeading emoji={"🖊️"}>Edytuj {itemName}</PageHeading>
+						<EditItemForm initialValues={initialData} onSubmit={onSubmit} />
+					</>
+				)}
+			</PageContainer>
+		</>
 	)
 }
 

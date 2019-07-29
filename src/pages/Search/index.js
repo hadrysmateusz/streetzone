@@ -13,6 +13,7 @@ import IndexResults from "../../components/Algolia/IndexResults"
 import { TextBlock } from "../../components/StyledComponents"
 import { PageContainer } from "../../components/Containers"
 import { ItemsGrid } from "../../components/ItemsView"
+import HelmetBasics from "../../components/HelmetBasics"
 
 import InfinitePosts from "../Blog/InfinitePostsList"
 
@@ -61,6 +62,7 @@ const SearchPage = ({ currentBreakpoint, match }) => {
 
 	return (
 		<OuterContainer>
+			<HelmetBasics title="Szukaj na stronie" />
 			<StatelessSearchWrapper indexName={CONST.BLOG_POST_ALGOLIA_INDEX}>
 				<TopContainer>
 					<PageContainer>

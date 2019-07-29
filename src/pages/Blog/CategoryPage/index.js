@@ -9,6 +9,7 @@ import PageNav from "../../../components/PageNav"
 import { LayoutManager, Main, Sidebar } from "../../../components/LayoutManager"
 import { PoweredByBox } from "../../../components/Algolia/PoweredBy"
 import { PopularArticles, PopularTags } from "../../../components/SidebarComponents"
+import HelmetBasics from "../../../components/HelmetBasics"
 
 import { Heading } from "../common"
 import InfinitePosts from "../InfinitePostsList"
@@ -27,6 +28,7 @@ const BlogCategoryPage = ({ match }) => {
 			refinements={{ category }}
 			hitsPerPage={6}
 		>
+			<HelmetBasics title={`${category} - Blog`} />
 			<PageContainer>
 				<LayoutManager>
 					<Main>

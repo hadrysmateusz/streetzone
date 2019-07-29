@@ -7,6 +7,7 @@ import { PageContainer } from "../../components/Containers"
 import { SearchWrapper } from "../../components/InstantSearchWrapper"
 import AlgoliaSearchBox from "../../components/Algolia/AlgoliaSearchBox"
 import PopularDesigners from "../../components/PopularDesigners"
+import HelmetBasics from "../../components/HelmetBasics"
 
 import { encodeURL } from "../../utils/algoliaURLutils"
 import { CONST, ROUTES } from "../../constants"
@@ -228,6 +229,7 @@ const DesignersPage = () => {
 			hitsPerPage={9999}
 			ignoreArchivedStatus
 		>
+			<HelmetBasics title="Projektanci i Marki" />
 			<PageContainer>
 				<Header>Projektanci</Header>
 				<PopularDesigners />
