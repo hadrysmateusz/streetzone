@@ -32,7 +32,7 @@
 		"react-datetime": "^2.16.3",
 		"react-div-100vh": "^0.3.4",
 		"react-dom": "^16.8.6",
-		"react-dropzone": "^10.1.6",
+		"react-dropzone": "10.1.5",
 		"react-final-form": "^6.3.0",
 		"react-final-form-arrays": "^3.1.0",
 		"react-final-form-listeners": "^1.0.2",
