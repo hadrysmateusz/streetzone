@@ -9,7 +9,7 @@ const Facebook = (props) => {
 	return (
 		<ShareButton
 			variant="facebook"
-			icon={["fab", "facebook"]}
+			icon={["fab", "facebook-square"]}
 			fullUrl={fullUrl}
 			tooltip={tooltip}
 			onClick={props.onClick}
