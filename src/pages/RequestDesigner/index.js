@@ -29,7 +29,7 @@ const RequestDesigner = ({ history }) => {
 	const authUser = useAuthentication()
 	const flashMessage = useFlash()
 
-	const onSubmit = async (values, actions) => {
+	const onSubmit = async (values, form) => {
 		const id = shortid.generate()
 
 		let payload = {
@@ -49,7 +49,7 @@ const RequestDesigner = ({ history }) => {
 		flashMessage({ type: "success", textContent: "Wysłano prośbę o dodanie" })
 
 		// Reset form
-		actions.reset()
+		setTimeout(form.reset)
 
 		// Redirect
 		history.goBack()

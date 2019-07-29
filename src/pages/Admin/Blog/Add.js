@@ -12,7 +12,7 @@ import PostForm from "./Form"
 const AddPost = ({ history }) => {
 	const firebase = useFirebase()
 
-	const onSubmit = async (values, actions) => {
+	const onSubmit = async (values, form) => {
 		try {
 			const files = values.files
 
@@ -35,7 +35,7 @@ const AddPost = ({ history }) => {
 			await firebase.post(formattedData.id).set(formattedData)
 
 			// Reset form
-			actions.reset()
+			setTimeout(form.reset)
 
 			// Redirect
 			history.push(ROUTES.ADMIN_BLOG)

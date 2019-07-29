@@ -141,7 +141,7 @@ const DesignerItem = ({ designer }) => {
 const AddDesigner = () => {
 	const firebase = useFirebase()
 
-	const onSubmit = async ({ logo, label, colorA, colorB }, actions) => {
+	const onSubmit = async ({ logo, label, colorA, colorB }, form) => {
 		try {
 			label = label.trim()
 			colorA = colorA.trim()
@@ -167,7 +167,7 @@ const AddDesigner = () => {
 			await firebase.designer(id).set(data)
 
 			// Reset form
-			actions.reset()
+			setTimeout(form.reset)
 		} catch (error) {
 			alert("Wystąpił problem")
 			console.log(error)

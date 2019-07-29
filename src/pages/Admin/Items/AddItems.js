@@ -61,7 +61,7 @@ class NewItemPage extends Component {
 		}
 	}
 
-	onSubmit = async (values, actions) => {
+	onSubmit = async (values, form) => {
 		const availableDesigners = (await this.props.firebase.db
 			.collection("designers")
 			.get()).docs.map((doc) => doc.data())
@@ -161,7 +161,7 @@ class NewItemPage extends Component {
 				files
 			})
 		}
-		actions.reset()
+		setTimeout(form.reset)
 	}
 
 	render() {

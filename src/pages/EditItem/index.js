@@ -85,7 +85,7 @@ const EditItemPage = ({ match, history, location }) => {
 		getItem()
 	}, [match, authUser, firebase])
 
-	const onSubmit = async ({ files, price, description, condition }, actions) => {
+	const onSubmit = async ({ files, price, description, condition }, form) => {
 		try {
 			// Upload NEW files and get ALL refs
 			const newRefs = await Promise.all(
@@ -131,7 +131,7 @@ const EditItemPage = ({ match, history, location }) => {
 			await sleep(5500)
 
 			// Clear form to remove conflict with transition blocking
-			actions.reset()
+			setTimeout(form.reset)
 
 			// Redirect back
 			history.goBack()

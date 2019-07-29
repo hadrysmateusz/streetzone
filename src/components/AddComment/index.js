@@ -17,7 +17,7 @@ const AddComment = ({ user, userId, onForceRefresh }) => {
 	const firebase = useFirebase()
 	const authUser = useAuthentication()
 
-	const onSubmit = async (values, actions) => {
+	const onSubmit = async (values, form) => {
 		// Push the new comment to the list of old ones
 		user.feedback.push({
 			id: shortid.generate(),
@@ -28,7 +28,7 @@ const AddComment = ({ user, userId, onForceRefresh }) => {
 		})
 
 		// Reset the form
-		actions.reset()
+		setTimeout(form.reset)
 
 		// Update
 		firebase.user(userId).update({ feedback: user.feedback })

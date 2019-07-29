@@ -11,7 +11,7 @@ import DropForm from "./Form"
 const AddDrop = ({ history }) => {
 	const firebase = useFirebase()
 
-	const onSubmit = async (values, actions) => {
+	const onSubmit = async (values, form) => {
 		try {
 			const files = values.files
 
@@ -39,7 +39,7 @@ const AddDrop = ({ history }) => {
 			await firebase.drop(formattedData.id).set(formattedData)
 
 			// Reset form
-			actions.reset()
+			setTimeout(form.reset)
 
 			// Redirect
 			history.push(ROUTES.ADMIN_DROPS)

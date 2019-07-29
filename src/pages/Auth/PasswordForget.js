@@ -90,14 +90,14 @@ const PasswordForget = () => {
 const PasswordForgetForm = ({ onSuccess, onError }) => {
 	const firebase = useFirebase()
 
-	const onSubmit = async (values, actions) => {
+	const onSubmit = async (values, form) => {
 		const { email } = values
 
 		try {
 			await firebase.resetPassword(email)
 
 			// Reset form
-			actions.reset()
+			setTimeout(form.reset)
 
 			onSuccess()
 		} catch (err) {

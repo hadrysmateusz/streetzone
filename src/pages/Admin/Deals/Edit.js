@@ -38,7 +38,7 @@ const Edit = ({ match, history }) => {
 		getData()
 	}, [firebase, id])
 
-	const onSubmit = async (values, actions) => {
+	const onSubmit = async (values, form) => {
 		try {
 			const file = values.file
 
@@ -63,7 +63,7 @@ const Edit = ({ match, history }) => {
 			await firebase.removeAllImagesOfRef(initialValues.imageRef)
 
 			// Reset form
-			actions.reset()
+			setTimeout(form.reset)
 
 			// Redirect
 			history.push(route("ADMIN_DEALS"))

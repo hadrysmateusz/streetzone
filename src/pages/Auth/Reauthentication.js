@@ -175,7 +175,7 @@ const ReauthenticationModal = ({ onSuccess, onRequestClose }) => {
 		onRequestClose()
 	}
 
-	const onFormSubmit = async (values, actions) => {
+	const onFormSubmit = async (values, form) => {
 		try {
 			// get credentials from firebase
 			const user = firebase.auth.currentUser

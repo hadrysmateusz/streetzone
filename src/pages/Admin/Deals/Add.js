@@ -11,7 +11,7 @@ import Form from "./Form"
 const Add = ({ history }) => {
 	const firebase = useFirebase()
 
-	const onSubmit = async (values, actions) => {
+	const onSubmit = async (values, form) => {
 		try {
 			const file = values.file
 
@@ -29,7 +29,7 @@ const Add = ({ history }) => {
 			await firebase.deal(formattedData.id).set(formattedData)
 
 			// Reset form
-			actions.reset()
+			setTimeout(form.reset)
 
 			// Redirect
 			history.push(ROUTES.ADMIN_DEALS)

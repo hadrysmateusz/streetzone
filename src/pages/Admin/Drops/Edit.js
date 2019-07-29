@@ -46,7 +46,7 @@ const EditDrop = ({ match, history }) => {
 		getData()
 	}, [id])
 
-	const onSubmit = async (values, actions) => {
+	const onSubmit = async (values, form) => {
 		try {
 			const files = values.files
 
@@ -95,7 +95,7 @@ const EditDrop = ({ match, history }) => {
 			}
 
 			// Reset form
-			actions.reset()
+			setTimeout(form.reset)
 
 			// Redirect
 			history.push(route("ADMIN_DROPS"))

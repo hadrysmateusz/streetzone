@@ -53,7 +53,7 @@ const validate = (values) => {
 const SignUpForm = ({ onSuccess, onError }) => {
 	const firebase = useFirebase()
 
-	const onSubmit = async (values, actions) => {
+	const onSubmit = async (values, form) => {
 		try {
 			// get values and attempt sign-up
 			const { name, email, password } = values
@@ -70,7 +70,7 @@ const SignUpForm = ({ onSuccess, onError }) => {
 			await firebase.user(userId).set(userData)
 
 			// reset the form
-			actions.reset()
+			setTimeout(form.reset)
 
 			// exit successfully
 			onSuccess(`Witaj w ${CONST.BRAND_NAME}!`)

@@ -44,7 +44,7 @@ export class SavedFilters extends Component {
 		}
 	}
 
-	onSubmit = async (values, actions) => {
+	onSubmit = async (values, form) => {
 		const { location, authUser, firebase } = this.props
 
 		const userId = authUser.uid
@@ -65,7 +65,7 @@ export class SavedFilters extends Component {
 		this.getSavedFilters()
 
 		// Reset the form
-		actions.reset()
+		setTimeout(form.reset)
 	}
 
 	removeFilter = async (id) => {

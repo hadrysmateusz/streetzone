@@ -33,10 +33,10 @@ export const NewChat = ({ userId, flexibleTextarea = false }) => {
 	const authUser = useAuthentication()
 	const firebase = useFirebase()
 
-	const onSubmit = async (values, actions) => {
+	const onSubmit = async (values, form) => {
 		const message = values.message
 
-		actions.reset()
+		setTimeout(form.reset)
 
 		let roomId
 		const messageId = shortid.generate()

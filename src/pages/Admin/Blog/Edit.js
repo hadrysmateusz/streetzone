@@ -63,7 +63,7 @@ const EditPost = ({ match }) => {
 
 	const onSubmit = async (
 		{ section, mainImage, title, author, mainContent, dropsAt },
-		actions
+		form
 	) => {
 		try {
 			let mainImageRef = mainImage.storageRef
@@ -101,7 +101,7 @@ const EditPost = ({ match }) => {
 			await firebase.removeFile(item.mainImageRef)
 
 			// Reset form
-			actions.reset()
+			setTimeout(form.reset)
 		} catch (error) {
 			alert("Wystąpił problem")
 			console.log(error)

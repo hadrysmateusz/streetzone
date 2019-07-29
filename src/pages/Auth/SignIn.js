@@ -62,14 +62,14 @@ export const SignIn = withRouter(({ history, location }) => {
 	const flashMessage = useFlash()
 	const [error, setError] = useState()
 
-	const onFormSubmit = async (values, actions) => {
+	const onFormSubmit = async (values, form) => {
 		try {
 			// get values and attempt sign-in
 			const { email, password } = values
 			await firebase.signInWithEmail(email, password)
 
 			// reset the form
-			actions.reset()
+			setTimeout(form.reset)
 
 			onSuccessfulSignIn("Witaj ponownie")
 		} catch (err) {
