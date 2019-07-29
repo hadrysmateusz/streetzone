@@ -325,7 +325,7 @@ exports.userDbCleanup = functions.auth.user().onDelete((user, ...rest) => {
 		.delete()
 })
 
-// TODO: When an authUser is created create a corresponding user in db
+// TODO: When an authUser is created create a corresponding user in db (this might not be necessary with correct security rules)
 // exports.onUserCreated = functions.auth.user().onCreate((...args) => {
 // 	console.log("args", args)
 // })
