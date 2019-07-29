@@ -306,14 +306,11 @@ exports.removeUserSubcollections = functions.firestore
 		const notificationTokensPromise = snap.ref.collection("notificationTokens").get()
 		const subcollections = await Promise.all([roomsPromise, notificationTokensPromise])
 
-		console.log("subcollections", subcollections)
-
 		return subcollections.map((snap) => {
-			console.log("docs", snap.docs)
 			return Promise.all(
 				snap.docs.map((doc) => {
-					console.log("document", doc)
-					return doc.delete()
+					console.log("ref to delete", doc.ref)
+					return doc.ref.delete()
 				})
 			)
 		})
