@@ -36,7 +36,7 @@ const FileHandlerText = ({
 			}
 
 			// Reset the file input to prevent bugs
-			rootRef.current.value = null
+			inputRef.current.value = null
 		},
 		[value]
 	)
@@ -47,7 +47,7 @@ const FileHandlerText = ({
 
 	const isEmpty = !value || value.length === 0
 
-	const { getRootProps, getInputProps, isDragActive, rootRef, open } = useDropzone({
+	const { getRootProps, getInputProps, isDragActive, inputRef, open } = useDropzone({
 		onDrop,
 		onDropRejected,
 		accept: "text/*,.md",

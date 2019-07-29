@@ -45,7 +45,7 @@ const LiveFileHandler = ({
 		})
 
 		// Reset the file input to prevent bugs
-		rootRef.current.value = null
+		inputRef.current.value = null
 
 		// Merge old files and new files
 		const __items = [...items, ...newItems]
@@ -110,7 +110,7 @@ const LiveFileHandler = ({
 	const isEmpty = !items || items.length === 0
 	const hasMain = items.find((fileItem) => fileItem.isMain)
 
-	const { getRootProps, getInputProps, isDragActive, rootRef, open } = useDropzone({
+	const { getRootProps, getInputProps, isDragActive, inputRef, open } = useDropzone({
 		onDrop,
 		onDropRejected,
 		accept: "image/jpeg,image/png",
