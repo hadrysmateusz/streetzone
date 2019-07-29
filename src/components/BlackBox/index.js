@@ -19,7 +19,7 @@ const Content = styled.div``
 
 const BlackBox = ({ header, children }) => (
 	<Container>
-		<Header>{header}</Header>
+		{header && <Header>{header}</Header>}
 		<Content>{children}</Content>
 	</Container>
 )
