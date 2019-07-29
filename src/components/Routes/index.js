@@ -699,29 +699,4 @@ const Routes = () => {
 	)
 }
 
-const Meta = () => {
-	return (
-		<Switch>
-			{routes.map((route, i) => (
-				<Route
-					key={i}
-					exact={route.exact === false ? false : true}
-					path={route.path}
-					render={() => {
-						return route.title ? (
-							<Helmet>
-								<title>{`${route.title} | ${CONST.BRAND_NAME}`}</title>
-							</Helmet>
-						) : (
-							<Helmet>
-								<title>{CONST.BRAND_NAME}</title>
-							</Helmet>
-						)
-					}}
-				/>
-			))}
-		</Switch>
-	)
-}
-
-export { Routes, Meta }
+export default Routes

@@ -6,7 +6,7 @@ import styled from "styled-components/macro"
 import { withAuthenticationProvider } from "../UserSession"
 import { withFirebase } from "../Firebase"
 import { withGlobalContextProvider } from "../GlobalContext"
-import { Routes, Meta } from "../Routes"
+import Routes from "../Routes"
 import PageHeader from "../PageHeader"
 import Footer from "../Footer"
 import FlashMessages from "../FlashMessages"
@@ -20,7 +20,6 @@ class App extends React.Component {
 	render = () => {
 		return (
 			<Router>
-				{/* <Meta /> */}
 				<FlashMessages>
 					<AppContainer id="App-Element">
 						<PageHeader />
