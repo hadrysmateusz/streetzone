@@ -4,6 +4,7 @@ import styled from "styled-components/macro"
 import { Form, Field } from "react-final-form"
 import moment from "moment"
 
+import BlackBox from "../../../components/BlackBox"
 import LoadingSpinner from "../../../components/LoadingSpinner"
 import Button, { LoaderButton, ButtonContainer } from "../../../components/Button"
 import { Input } from "../../../components/FormElements"
@@ -26,6 +27,7 @@ const GradientSwatch = styled.div`
 	width: 100%;
 	height: 120px;
 	background: linear-gradient(135deg, ${(p) => p.colorA}, ${(p) => p.colorB});
+	border: 1px dashed gray;
 `
 
 const FlexContainer = styled.div`
@@ -233,7 +235,13 @@ const AddDesigner = () => {
 
 						<Field name="logo">
 							{({ input, meta }) => {
-								return <FileHandlerSingle {...input} error={meta.error} />
+								return (
+									<FileHandlerSingle
+										{...input}
+										error={meta.error}
+										variant="small-square"
+									/>
+								)
 							}}
 						</Field>
 
@@ -278,6 +286,10 @@ const DesignersDb = () => {
 			</TextBlock>
 
 			<AddDesigner />
+
+			<BlackBox>
+				Dodawanie i usuwanie nie odświeża strony. Odśwież ręcznie by zobaczyć zmiany.
+			</BlackBox>
 
 			<TextBlock size="m" color="gray0">
 				All designers

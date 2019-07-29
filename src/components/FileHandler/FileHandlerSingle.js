@@ -1,13 +1,18 @@
 import React, { useCallback, useEffect } from "react"
 import PropTypes from "prop-types"
 import { useDropzone } from "react-dropzone"
-import styled from "styled-components/macro"
+import styled, { css } from "styled-components/macro"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 import { CustomFile } from "."
 import { IconContainer, Overlay } from "./common"
 import { FormElementContainer, commonStyles } from "../FormElements"
 import { TextBlock } from "../StyledComponents"
+
+export const smallSquare = css`
+	width: 260px;
+	height: 260px;
+`
 
 const FileHandlerSingleContainer = styled.div`
 	${commonStyles.basicStyles}
@@ -40,6 +45,15 @@ const FileHandlerSingleContainer = styled.div`
 		height: 100%;
 	}
 
+	${(p) => {
+		switch (p.variant) {
+			case "small-square":
+				return smallSquare
+			default:
+				return ""
+		}
+	}}
+
 	${(p) => p.containerStyles}
 `
 
@@ -50,6 +64,7 @@ const FileHandlerSingle = ({
 	value,
 	onChange,
 	containerStyles,
+	variant,
 	...rest
 }) => {
 	const onDrop = useCallback(
@@ -60,7 +75,7 @@ const FileHandlerSingle = ({
 			let customFile = new CustomFile({ previewUrl, data: file })
 
 			// Reset the file input to prevent bugs
-			rootRef.current.value = null
+			inputRef.current.value = null
 
 			// Update the state container
 			onChange(customFile)
@@ -86,7 +101,7 @@ const FileHandlerSingle = ({
 
 	const isEmpty = !value || value.length === 0
 
-	const { getRootProps, getInputProps, isDragActive, rootRef, open } = useDropzone({
+	const { getRootProps, getInputProps, isDragActive, inputRef, open } = useDropzone({
 		onDrop,
 		onDropRejected,
 		accept: "image/jpeg,image/png",
@@ -94,14 +109,11 @@ const FileHandlerSingle = ({
 		multiple: false
 	})
 
-	const clickDropzone = () => {
-		open()
-	}
-
 	return (
 		<FormElementContainer error={error} info={info} {...rest}>
 			<FileHandlerSingleContainer
 				{...getRootProps({ hasError: !!error, isEmpty, containerStyles })}
+				variant={variant}
 			>
 				<input {...getInputProps()} />
 
@@ -110,7 +122,7 @@ const FileHandlerSingle = ({
 					<Overlay alwaysShow>Upuść tutaj by dodać</Overlay>
 				) : (
 					<Overlay alwaysShow>
-						<IconContainer onClick={clickDropzone}>
+						<IconContainer onClick={open}>
 							<FontAwesomeIcon icon="plus" size="2x" fixedWidth />
 							<TextBlock centered>{!isEmpty ? "Zmień" : "Dodaj"}</TextBlock>
 						</IconContainer>
