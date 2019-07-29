@@ -7,19 +7,14 @@ const path = require("path")
 const os = require("os")
 const fs = require("fs")
 const axios = require("axios")
-const serviceAccount = require("./firebase-admin-key-dev.json")
 const moment = require("moment")
 const express = require("express")
 const cors = require("cors")
-
 require("moment/locale/pl")
-require("dotenv").config()
 
-// set moment.js locale
-moment.locale("pl")
+// dotenv is not supported by firebase cloud functions (as of v3.0.1)
 
-const dateFormat = "YY-MM-DD HH:mm"
-
+const DATE_FORMAT = "YY-MM-DD HH:mm"
 const JPEG_EXTENSION = ".jpg"
 const S_THUMB_POSTFIX = "_S_THUMB"
 const M_THUMB_POSTFIX = "_M_THUMB"
@@ -27,41 +22,45 @@ const L_THUMB_POSTFIX = "_L_THUMB"
 
 const PRODUCTION_DOMAIN = "streetzone.pl"
 
+// PayU
 const CREATE_ORDER_URL = "https://secure.snd.payu.com/api/v2_1/orders"
 const GET_OAUTH_TOKEN_URL = "https://secure.snd.payu.com/pl/standard/user/oauth/authorize"
 
-const signedURLConfig = {
-	action: "read",
-	expires: "03-01-2500"
-}
-
-// The FIREBASE_CONFIG environment variable is included automatically in Cloud Functions for Firebase functions that were deployed via the Firebase CLI
+/* The FIREBASE_CONFIG environment variable is included automatically in 
+Cloud Functions for Firebase functions that were deployed via the Firebase CLI */
 const adminConfig = JSON.parse(process.env.FIREBASE_CONFIG)
+
+// figure out if project is in production env based on adminConfig
+const isProd = adminConfig.projectId.endsWith("-prod")
+
+// import correct service account file based on env
+const serviceAccount = require(isProd
+	? "./firebase-admin-key-prod.json"
+	: "./firebase-admin-key-dev.json")
+
+// add admin credentials to adminConfig
 adminConfig.credential = admin.credential.cert(serviceAccount)
+
+// initialize firebase app
 admin.initializeApp(adminConfig)
 
-const isProd = adminConfig.projectId.endsWith("-prod")
+// set moment.js locale
+moment.locale("pl")
 
 // ===============================================================================
 // !!! REMEMBER TO ALSO CHANGE IN "SRC/CONSTANTS/CONST.JS" !!!
 const ITEMS_MARKETPLACE_DEFAULT_ALGOLIA_INDEX = isProd ? "prod_items" : "dev_items"
-const ITEMS_MARKETPLACE_PRICE_ASC_ALGOLIA_INDEX = isProd
-	? "prod_items_price_asc"
-	: "dev_items_price_asc"
-const ITEMS_CUSTOM_ALGOLIA_INDEX = isProd ? "prod_custom" : "dev_custom"
 const BLOG_POST_ALGOLIA_INDEX = isProd ? "prod_posts" : "dev_posts"
 const BLOG_DROP_ALGOLIA_INDEX = isProd ? "prod_drops" : "dev_drops"
-const BLOG_DROP_NEWEST_ALGOLIA_INDEX = isProd ? "prod_drops_newest" : "dev_drops_newest"
 const DEALS_ALGOLIA_INDEX = isProd ? "prod_deals" : "dev_deals"
 const DESIGNERS_ALGOLIA_INDEX = isProd ? "prod_designers" : "dev_designers"
 
 // ===============================================================================
 
-const ALGOLIA_ID = process.env.ALGOLIA_APP_ID || functions.config().algolia.app_id
-const ALGOLIA_ADMIN_KEY = process.env.ALGOLIA_API_KEY || functions.config().algolia.app_id
-const PAYU_CLIENT_ID = process.env.PAYU_CLIENT_ID || functions.config().payu.client_id
-const PAYU_CLIENT_SECRET =
-	process.env.PAYU_CLIENT_SECRET || functions.config().payu.client_secret
+const ALGOLIA_ID = process.env.ALGOLIA_APP_ID
+const ALGOLIA_ADMIN_KEY = process.env.ALGOLIA_API_KEY
+const PAYU_CLIENT_ID = process.env.PAYU_CLIENT_ID
+const PAYU_CLIENT_SECRET = process.env.PAYU_CLIENT_SECRET
 
 const client = algoliasearch(ALGOLIA_ID, ALGOLIA_ADMIN_KEY)
 const bucket = admin.storage().bucket()
@@ -337,6 +336,11 @@ exports.userDbCleanup = functions.auth.user().onDelete((user, ...rest) => {
 // ------------------------------------
 // ---------- Image handling ----------
 // ------------------------------------
+
+const signedURLConfig = {
+	action: "read",
+	expires: "03-01-2500"
+}
 
 const generateThumbnail = ({ size, mode }, pathFrom, pathTo) => {
 	if (mode === "cover") {
@@ -757,7 +761,7 @@ exports.promoteNotification = functions.https.onRequest(promoteApp)
 const getDropsAt = (drop) => {
 	const now = moment()
 	const dropsAt = drop.dropsAtString
-	const then = moment(dropsAt, dateFormat)
+	const then = moment(dropsAt, DATE_FORMAT)
 
 	const duration = moment.duration(then.diff(now))
 
