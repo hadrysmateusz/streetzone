@@ -15,7 +15,8 @@ import {
 	Excerpt
 } from "./StyledComponents"
 
-import { ROUTES } from "../../constants"
+import { route } from "../../utils"
+import { CONST } from "../../constants"
 
 const PostPreview = ({
 	id,
@@ -32,9 +33,11 @@ const PostPreview = ({
 
 	const hasTags = tags && Array.isArray(tags) && tags.length > 0
 
+	const postUrl = route("BLOG_POST", { id })
+
 	return (
 		<PostContainer category={category}>
-			<Link to={ROUTES.BLOG_POST.replace(":id", id)}>
+			<Link to={postUrl}>
 				<ImageContainer>
 					<Image url={imageUrl} />
 				</ImageContainer>
@@ -54,7 +57,7 @@ const PostPreview = ({
 							))}
 						</TagsContainer>
 					)}
-					<Share />
+					<Share url={postUrl} />
 				</MainContainer>
 			</Link>
 		</PostContainer>

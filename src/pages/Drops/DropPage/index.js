@@ -43,7 +43,7 @@ const DisclaimerContainer = styled.div`
 	}
 `
 
-const DropDetailsPage = ({ match, history }) => {
+const DropDetailsPage = ({ match, history, location }) => {
 	const firebase = useFirebase()
 	const [drop, setDrop] = useState(null)
 	const [error, setError] = useState(null)
