@@ -24,6 +24,8 @@ const signedURLConfig = {
 }
 
 const generateThumbnail = ({ size, mode }, pathFrom, pathTo) => {
+	console.log(pathFrom, pathTo)
+
 	if (mode === "cover") {
 		return spawn(
 			"convert",
@@ -52,48 +54,9 @@ const uploadThumbnail = async (file, path) => {
 	return bucket.file(path).getSignedUrl(signedURLConfig)
 }
 
-const generateThumbnails = async (object, sizes) => {
-	const filePath = object.name
-
-	if (filePath.endsWith("THUMB")) {
-		console.log("File is already a thumbnail")
-		return false
-	}
-
-	const baseFileName = path.basename(filePath, path.extname(filePath))
-	const fileDir = path.dirname(filePath)
+const downloadFile = async (filePath) => {
 	const tempLocalFile = path.join(os.tmpdir(), filePath)
 	const tempLocalDir = path.dirname(tempLocalFile)
-
-	// Temp JPEG
-	const JPEGFilePath = path.normalize(
-		path.format({ dir: fileDir, name: baseFileName, ext: JPEG_EXTENSION })
-	)
-	let tempLocalJPEGFile = path.join(os.tmpdir(), JPEGFilePath)
-
-	// Temp Small Thumbnail
-	const thumbSPath = path.normalize(
-		path.format({ dir: fileDir, name: baseFileName + S_THUMB_POSTFIX })
-	)
-	const tempLocalThumbSFile = path.join(os.tmpdir(), thumbSPath)
-
-	// Temp Medium Thumbnail
-	const thumbMPath = path.normalize(
-		path.format({ dir: fileDir, name: baseFileName + M_THUMB_POSTFIX })
-	)
-	const tempLocalThumbMFile = path.join(os.tmpdir(), thumbMPath)
-
-	// Temp Large Thumbnail
-	const thumbLPath = path.normalize(
-		path.format({ dir: fileDir, name: baseFileName + L_THUMB_POSTFIX })
-	)
-	const tempLocalThumbLFile = path.join(os.tmpdir(), thumbLPath)
-
-	// Exit if this is triggered on a file that is not an image.
-	if (!object.contentType.startsWith("image/")) {
-		console.log(`This file is not an image (${object.contentType}`)
-		return null
-	}
 
 	// Create the temp directory where the storage file will be downloaded
 	await mkdirp(tempLocalDir)
@@ -101,48 +64,95 @@ const generateThumbnails = async (object, sizes) => {
 	// Download file from bucket
 	await bucket.file(filePath).download({ destination: tempLocalFile })
 
-	// Only convert files that aren't already a JPEG
-	if (!object.contentType.startsWith("image/jpeg")) {
-		// Convert the image to JPEG using ImageMagick.
-		await spawn("convert", [tempLocalFile, tempLocalJPEGFile])
+	return tempLocalFile
+}
 
-		// Remove the original file
-		await bucket.file(filePath).delete()
+const generateThumbnailPath = (sourceFilePath, postfix = "") => {
+	const baseFileName = path.basename(sourceFilePath, path.extname(sourceFilePath))
+	const fileDir = path.dirname(sourceFilePath)
 
-		// Upload the JPEG image (To the location of the original file)
-		await bucket.upload(tempLocalJPEGFile, { destination: filePath })
-	} else {
-		// If the file is already a jpeg point the JPEGFile to its location
-		tempLocalJPEGFile = tempLocalFile
+	const thumbnailPath = path.normalize(
+		path.format({ dir: fileDir, name: baseFileName + postfix })
+	)
+
+	return thumbnailPath
+}
+
+const convertFileToJPEG = async (sourceFile, sourceFilePath) => {
+	const sourceFileName = path.basename(sourceFilePath, path.extname(sourceFilePath))
+	const sourceFileDir = path.dirname(sourceFilePath)
+	const tempFilePath = path.normalize(
+		path.format({ dir: sourceFileDir, name: sourceFileName, ext: JPEG_EXTENSION })
+	)
+	let tempFile = path.join(os.tmpdir(), tempFilePath)
+
+	// Convert the image to JPEG using ImageMagick.
+	await spawn("convert", [sourceFile, tempFile])
+
+	// Remove the original file
+	await bucket.file(sourceFilePath).delete()
+
+	// Upload the JPEG image (To the location of the original file)
+	await bucket.upload(tempFile, { destination: sourceFilePath })
+}
+
+const generateThumbnails = async (object, sizes) => {
+	const filePath = object.name
+	const contentType = object.contentType
+
+	// Exit if the file is not an image
+	if (!object.contentType.startsWith("image/")) {
+		console.log(`This file is not an image (${object.contentType}`)
+		return null
 	}
+
+	// Exit if the file is already a thumbnail
+	if (filePath.endsWith("THUMB")) {
+		console.log("File is already a thumbnail")
+		return false
+	}
+
+	// download file from storage bucket to local (on server) storage
+	const tempLocalFile = await downloadFile(filePath)
+
+	// if file is in other format, convert it to jpeg
+	if (!contentType.startsWith("image/jpeg")) {
+		convertFileToJPEG(tempLocalFile, filePath)
+	}
+
+	const signedUrls = []
+
+	signedUrls.push(bucket.file(filePath).getSignedUrl(signedURLConfig))
+
+	console.log("sizes: ", sizes)
 
 	// Generate thumbnails using ImageMagick
 	if (sizes[0]) {
-		await generateThumbnail(sizes[0], tempLocalJPEGFile, tempLocalThumbSFile)
+		const thumbnailPath = generateThumbnailPath(filePath, S_THUMB_POSTFIX)
+		const thumbnailFile = path.join(os.tmpdir(), thumbnailPath)
+		await generateThumbnail(sizes[0], tempLocalFile, thumbnailFile)
+		const signedUrl = await uploadThumbnail(thumbnailFile, thumbnailPath)
+		signedUrls.push(signedUrl)
+		fs.unlinkSync(thumbnailFile)
 	}
 	if (sizes[1]) {
-		await generateThumbnail(sizes[1], tempLocalJPEGFile, tempLocalThumbMFile)
+		const thumbnailPath = generateThumbnailPath(filePath, M_THUMB_POSTFIX)
+		const thumbnailFile = path.join(os.tmpdir(), thumbnailPath)
+		await generateThumbnail(sizes[1], tempLocalFile, thumbnailFile)
+		const signedUrl = await uploadThumbnail(thumbnailFile, thumbnailPath)
+		signedUrls.push(signedUrl)
+		fs.unlinkSync(thumbnailFile)
 	}
 	if (sizes[2]) {
-		await generateThumbnail(sizes[2], tempLocalJPEGFile, tempLocalThumbLFile)
+		const thumbnailPath = generateThumbnailPath(filePath, L_THUMB_POSTFIX)
+		const thumbnailFile = path.join(os.tmpdir(), thumbnailPath)
+		await generateThumbnail(sizes[2], tempLocalFile, thumbnailFile)
+		const signedUrl = await uploadThumbnail(thumbnailFile, thumbnailPath)
+		signedUrls.push(signedUrl)
+		fs.unlinkSync(thumbnailFile)
 	}
 
-	// Upload the thumbnails
-	const signedURLs = await Promise.all([
-		bucket.file(filePath).getSignedUrl(signedURLConfig),
-		uploadThumbnail(tempLocalThumbSFile, thumbSPath),
-		uploadThumbnail(tempLocalThumbMFile, thumbMPath),
-		uploadThumbnail(tempLocalThumbLFile, thumbLPath)
-	])
-
-	// Once the image has been converted delete the local files to free up disk space.
-	// "tempLocalFile" is not unlinked as the "tempLocalJPEGFile" is saved to that same location
-	fs.unlinkSync(tempLocalJPEGFile)
-	fs.unlinkSync(tempLocalThumbSFile)
-	fs.unlinkSync(tempLocalThumbMFile)
-	fs.unlinkSync(tempLocalThumbLFile)
-
-	return signedURLs
+	return signedUrls
 }
 
 const writeUrlsToDb = async (userId, urls) => {
