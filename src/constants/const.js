@@ -12,14 +12,17 @@ export const COMMENT_MAX_CHARACTERS = 400
 export const ITEM_DESC_PLACEHOLDER =
 	"Oryginalna cena, możliwości wysyłki, informacje o uszkodzeniach itd."
 
+// shared with with client code (ALWAYS UPDATE BOTH)
 export const S_THUMB_POSTFIX = "_S_THUMB"
 export const M_THUMB_POSTFIX = "_M_THUMB"
 export const L_THUMB_POSTFIX = "_L_THUMB"
 
+// shared with with client code (ALWAYS UPDATE BOTH)
 export const STORAGE_BUCKET_BLOG_ATTACHMENTS = "blog-attachments"
 export const STORAGE_BUCKET_DROP_ATTACHMENTS = "drop-attachments"
 export const STORAGE_BUCKET_DEAL_ATTACHMENTS = "deal-attachments"
 export const STORAGE_BUCKET_ITEM_ATTACHMENTS = "attachments"
+export const STORAGE_BUCKET_PROFILE_PICTURES = "profile-pictures"
 
 // eslint-disable-next-line
 export const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/

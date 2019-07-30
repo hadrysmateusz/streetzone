@@ -11,7 +11,7 @@ import ErrorBox from "../ErrorBox"
 
 import { useAuthentication, useFirebase, useFlash } from "../../hooks"
 import getProfilePictureURL from "../../utils/getProfilePictureURL"
-import { FORM_ERR } from "../../constants"
+import { FORM_ERR, CONST } from "../../constants"
 
 import { Heading } from "./common"
 
@@ -148,7 +148,7 @@ const EditProfile = () => {
 
 		// upload the new file
 		const snapshot = await firebase.uploadFile(
-			`profile-pictures/${authUser.uid}`,
+			`${CONST.STORAGE_BUCKET_PROFILE_PICTURES}/${authUser.uid}`,
 			file.data
 		)
 
