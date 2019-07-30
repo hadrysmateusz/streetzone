@@ -362,7 +362,7 @@ const uploadThumbnail = async (file, path) => {
 		public: true,
 		gzip: true,
 		metadata: {
-			cacheControl: "public, max-age=604800" // cached for a week
+			cacheControl: "public, max-age=31557600"
 		}
 	})
 	return bucket.file(path).getSignedUrl(signedURLConfig)
