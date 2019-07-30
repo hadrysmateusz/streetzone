@@ -87,7 +87,8 @@ const BigUserPreview = withRouter(({ userId }) => {
 
 	const profilePictureUrl = getProfilePictureURL(user, "S")
 	const numDays = moment().diff(user.userSince, "days")
-	const numItems = user.items ? user.items.length : 0
+	// TODO: consider a different way to implement items counter
+	// const numItems = user.items ? user.items.length : 0
 	const numOpinions = user.feedback ? user.feedback.length : 0
 
 	return (
@@ -111,9 +112,9 @@ const BigUserPreview = withRouter(({ userId }) => {
 				<InfoItem size="m" name="Opinie">
 					{numOpinions}
 				</InfoItem>
-				<InfoItem size="m" name="Przedmioty">
+				{/* <InfoItem size="m" name="Przedmioty">
 					{numItems}
-				</InfoItem>
+				</InfoItem> */}
 				{user.city && <InfoItem name="Miasto">{user.city}</InfoItem>}
 			</DetailsContainer>
 

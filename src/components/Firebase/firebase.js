@@ -167,28 +167,6 @@ class Firebase {
 		}
 	}
 
-	getUserItems = async (user) => {
-		let res = {
-			items: [],
-			error: null
-		}
-
-		try {
-			// get data from firestore
-			for (let id of user.items) {
-				const item = await this.getItemData(id)
-				res.items.push(item)
-			}
-
-			// filter out items that don't exist anymore
-			res.items = res.items.filter((item) => Object.keys(item).length)
-		} catch (error) {
-			res.error = error
-		} finally {
-			return res
-		}
-	}
-
 	// Item API
 
 	item = (id) => this.db.collection("items").doc(id)

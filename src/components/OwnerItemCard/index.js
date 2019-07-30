@@ -9,7 +9,7 @@ import SingleValueDisplay from "../SingleValueDisplay"
 
 import { ROUTES } from "../../constants"
 import { translateCondition } from "../../constants/item_schema"
-import { useFirebase, useImage, useAuthentication } from "../../hooks"
+import { useFirebase, useImage } from "../../hooks"
 import { itemDataHelpers } from "../../utils"
 
 import { MainContainer, OuterContainer, Image, ImageContainer } from "./StyledComponents"
@@ -19,7 +19,6 @@ const { formatDesigners, formatPrice, formatSize } = itemDataHelpers
 const OwnerItemCard = ({ item, history }) => {
 	const [isDeleting, setIsDeleting] = useState(false)
 	const firebase = useFirebase()
-	const authUser = useAuthentication()
 	const { imageUrl, error: imageError } = useImage(
 		item.attachments[item.mainImageIndex],
 		"M"
@@ -33,14 +32,8 @@ const OwnerItemCard = ({ item, history }) => {
 
 		if (confirmation) {
 			try {
-				const oldItems = authUser.items
-
 				// Delete the item
 				await firebase.item(item.id).delete()
-
-				// Remove the deleted item from user's items
-				const items = oldItems.filter((item) => item !== item.id)
-				await firebase.currentUser().update({ items })
 			} catch (e) {
 				alert("Usuwanie nie powiodło się")
 			}

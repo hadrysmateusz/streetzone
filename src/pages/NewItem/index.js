@@ -1,23 +1,23 @@
 import React from "react"
-import { compose } from "recompose"
 
-import { withAuthorization, withAuthentication } from "../../components/UserSession"
-import { withFirebase } from "../../components/Firebase"
+import { withAuthorization } from "../../components/UserSession"
 import { PageContainer } from "../../components/Containers"
 import HelmetBasics from "../../components/HelmetBasics"
 
 import { formatItemDataForDb, MODE } from "../../utils/formatting/formatItemData"
 import { ROUTES, CONST } from "../../constants"
+import { useAuthentication, useFirebase } from "../../hooks"
 
 import NewItemForm from "./NewItemForm"
 
-const NewItemPage = () => {
+const NewItemPage = ({ history }) => {
+	const firebase = useFirebase()
+	const authUser = useAuthentication()
+
 	const onSubmit = async (values) => {
 		try {
-			const { firebase, history, authUser } = this.props
 			const files = values.files
 			const userId = authUser.uid
-			const oldItems = authUser.items
 
 			// Upload files to storage and get their refs
 			const attachments = await firebase.batchUploadFiles(
@@ -37,10 +37,7 @@ const NewItemPage = () => {
 			// Add item to database
 			await firebase.item(formattedData.id).set(formattedData)
 
-			// Add the new item's id to user's items
-			const items = [...oldItems, formattedData.id]
-			await firebase.user(userId).update({ items })
-
+			// TODO: better behavior after adding item
 			// Redirect to home page
 			history.push(ROUTES.HOME)
 			return
@@ -60,8 +57,4 @@ const NewItemPage = () => {
 
 const condition = (authUser) => (!!authUser ? true : "Zaloguj się by zacząć sprzedawać")
 
-export default compose(
-	withFirebase,
-	withAuthentication,
-	withAuthorization(condition)
-)(NewItemPage)
+export default withAuthorization(condition)(NewItemPage)
