@@ -1,3 +1,5 @@
+// DEPRECATED
+
 const { db } = require("./firebaseConfig")
 
 const removeItemFromUserList = async (snapshot, context) => {

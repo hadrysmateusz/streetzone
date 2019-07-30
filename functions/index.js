@@ -6,7 +6,6 @@ const indices = require("./algoliaIndices")
 const { algoliaAdd, algoliaUpdate, algoliaDelete } = require("./algoliaSync")
 const removeItemsOfUser = require("./removeItemsOfUser")
 const removeSubcollectionsOfUser = require("./removeSubcollectionsOfUser")
-const removeItemFromUserList = require("./removeItemFromUserList")
 const removeUserDataFromDb = require("./removeUserDataFromDb")
 const removeImagesOfItem = require("./removeImagesOfItem")
 const processImage = require("./processImage")
@@ -120,11 +119,6 @@ exports.onDesignerDeleted = functions.firestore
 exports.removeItemImages = functions.firestore
 	.document(`items/{id}`)
 	.onDelete(removeImagesOfItem)
-
-// When an item is removed from db remove it from it's owner's items list
-exports.removeItemFromUser = functions.firestore
-	.document(`items/{id}`)
-	.onDelete(removeItemFromUserList)
 
 // When a user is deleted from db their items are removed from the db
 exports.removeItemsOfUser = functions.firestore
