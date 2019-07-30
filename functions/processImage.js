@@ -10,7 +10,12 @@ const {
 	JPEG_EXTENSION,
 	S_THUMB_POSTFIX,
 	M_THUMB_POSTFIX,
-	L_THUMB_POSTFIX
+	L_THUMB_POSTFIX,
+	STORAGE_BUCKET_BLOG_ATTACHMENTS,
+	STORAGE_BUCKET_DROP_ATTACHMENTS,
+	STORAGE_BUCKET_DEAL_ATTACHMENTS,
+	STORAGE_BUCKET_ITEM_ATTACHMENTS,
+	STORAGE_BUCKET_PROFILE_PICTURES
 } = require("./const")
 
 const signedURLConfig = {
@@ -112,9 +117,15 @@ const generateThumbnails = async (object, sizes) => {
 	}
 
 	// Generate thumbnails using ImageMagick
-	await generateThumbnail(sizes[0], tempLocalJPEGFile, tempLocalThumbSFile)
-	await generateThumbnail(sizes[1], tempLocalJPEGFile, tempLocalThumbMFile)
-	await generateThumbnail(sizes[2], tempLocalJPEGFile, tempLocalThumbLFile)
+	if (sizes[0]) {
+		await generateThumbnail(sizes[0], tempLocalJPEGFile, tempLocalThumbSFile)
+	}
+	if (sizes[1]) {
+		await generateThumbnail(sizes[1], tempLocalJPEGFile, tempLocalThumbMFile)
+	}
+	if (sizes[2]) {
+		await generateThumbnail(sizes[2], tempLocalJPEGFile, tempLocalThumbLFile)
+	}
 
 	// Upload the thumbnails
 	const signedURLs = await Promise.all([
@@ -147,27 +158,57 @@ const writeUrlsToDb = async (userId, urls) => {
 		.update({ profilePictureURLs })
 }
 
+const getStorageBucketName = (file) => {
+	const fileName = file.name
+	const firebaseBucket = fileName.slice(0, fileName.indexOf("/"))
+
+	console.log("fileName: ", fileName)
+	console.log("firebaseBucket: ", firebaseBucket)
+
+	return firebaseBucket
+}
+
 const processImage = async (file) => {
-	// "attachments/" actually includes many other storage directories because they are named like "something-attachments/"
-	if (file.name.includes("attachments/")) {
-		console.log("Processing an attachment...")
-		return await generateThumbnails(file, [
-			{ size: "110x110", mode: "contain" },
-			{ size: "350x350", mode: "contain" },
-			{ size: "770x770", mode: "contain" }
-		])
-	} else if (file.name.includes("profile-pictures/")) {
-		console.log("Processing a profile picture...")
-		const urls = await generateThumbnails(file, [
-			{ size: "60x60", mode: "cover" },
-			{ size: "130x130", mode: "cover" },
-			{ size: "230x230", mode: "cover" }
-		])
-		if (urls) {
-			const userId = file.name.split("/")[1]
-			await writeUrlsToDb(userId, urls)
-		}
-		return
+	const firebaseBucket = getStorageBucketName(file)
+
+	switch (firebaseBucket) {
+		case STORAGE_BUCKET_BLOG_ATTACHMENTS:
+			return await generateThumbnails(file, [
+				null,
+				{ size: "350x350", mode: "contain" },
+				{ size: "700x700", mode: "contain" }
+			])
+		case STORAGE_BUCKET_DROP_ATTACHMENTS:
+			return await generateThumbnails(file, [
+				null,
+				{ size: "420x290", mode: "contain" },
+				{ size: "760x500", mode: "contain" }
+			])
+		case STORAGE_BUCKET_DEAL_ATTACHMENTS:
+			return await generateThumbnails(file, [
+				null,
+				{ size: "420x290", mode: "contain" },
+				{ size: "760x500", mode: "contain" }
+			])
+		case STORAGE_BUCKET_ITEM_ATTACHMENTS:
+			return await generateThumbnails(file, [
+				{ size: "90x90", mode: "contain" },
+				{ size: "260x260", mode: "contain" },
+				{ size: "760x500", mode: "contain" }
+			])
+		case STORAGE_BUCKET_PROFILE_PICTURES:
+			const urls = await generateThumbnails(file, [
+				{ size: "60x60", mode: "cover" },
+				{ size: "130x130", mode: "cover" },
+				{ size: "230x230", mode: "cover" }
+			])
+			if (urls) {
+				const userId = file.name.split("/")[1]
+				await writeUrlsToDb(userId, urls)
+			}
+			return
+		default:
+			throw Error("uploaded file to unknown bucket")
 	}
 }
 
