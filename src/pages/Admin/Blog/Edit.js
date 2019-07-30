@@ -13,7 +13,7 @@ import LoadingSpinner from "../../../components/LoadingSpinner"
 import { PageContainer } from "../../../components/Containers"
 
 import useFirebase from "../../../hooks/useFirebase"
-import { FORM_ERR } from "../../../constants"
+import { FORM_ERR, CONST } from "../../../constants"
 
 const validate = ({ author, title, section, mainContent, mainImage, dropsAt }) => {
 	const errors = {}
@@ -72,7 +72,7 @@ const EditPost = ({ match }) => {
 			if (!mainImage.storageRef) {
 				const imageId = shortid.generate()
 				const mainImageSnap = await firebase.uploadFile(
-					`blog-photos/${imageId}`,
+					`${CONST.STORAGE_BUCKET_BLOG_ATTACHMENTS}/${imageId}`,
 					mainImage.data
 				)
 				mainImageRef = mainImageSnap.ref.fullPath
