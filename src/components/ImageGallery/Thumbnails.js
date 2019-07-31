@@ -14,31 +14,30 @@ const ThumbnailsContainer = styled.div`
 		minmax(calc(100vw / 5.5), 1fr)
 	);
 
-		/* make the content go from edge to edge on mobile*/
-		@media (max-width: ${(p) => p.theme.breakpoints[1] - 1}px) {
-			--x-margin: calc(-1 * var(--spacing3));
-			margin-left: var(--x-margin);
-			margin-right: var(--x-margin);
-			padding: 0 var(--spacing3);
-			&::after {
-				content: "";
-				display: block;
-				width: var(--spacing2);
-			}
+	/* make the content go from edge to edge on mobile*/
+	@media (max-width: ${(p) => p.theme.breakpoints[1] - 1}px) {
+		--x-margin: calc(-1 * var(--spacing3));
+		margin-left: var(--x-margin);
+		margin-right: var(--x-margin);
+		padding: 0 var(--spacing3);
+		&::after {
+			content: "";
+			display: block;
+			width: var(--spacing2);
 		}
+	}
 
-		/* position: relative; */
-		margin-top: var(--spacing2);
+	/* position: relative; */
+	margin-top: var(--spacing2);
 
-		/* remove this if it proves to be too difficult to implement a scrolling indicator */
-		overflow-x: auto;
+	/* remove this if it proves to be too difficult to implement a scrolling indicator */
+	overflow-x: auto;
 
-		@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
-			grid-template-columns: repeat(auto-fill, minmax(75px, 1fr));
-		}
-		@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
-			overflow-x: visible;
-		}
+	@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
+		grid-template-columns: repeat(auto-fill, minmax(75px, 1fr));
+	}
+	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
+		overflow-x: visible;
 	}
 `
 
