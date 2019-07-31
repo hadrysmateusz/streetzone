@@ -1,5 +1,6 @@
 import React, { Component } from "react"
 import { Form, Field } from "react-final-form"
+import shortid from "shortid"
 
 import { withAuthentication } from "../../../components/UserSession"
 import { LoaderButton } from "../../../components/Button"
@@ -22,6 +23,7 @@ class NewItemPage extends Component {
 		try {
 			const { firebase } = this.props
 			const files = values.files
+			const itemId = shortid.generate()
 
 			// Look for the document with correct id
 			const userSnap = await this.props.firebase.user(values.userId).get()
@@ -36,14 +38,17 @@ class NewItemPage extends Component {
 			// Upload files to storage and get their refs
 			const attachments = await Promise.all(
 				files.map(async (file) => {
-					const snapshot = await firebase.uploadFile("attachments", file.data)
+					const snapshot = await firebase.uploadFile(
+						`${CONST.STORAGE_BUCKET_ITEM_ATTACHMENTS}/${values.userId}/${itemId}`,
+						file.data
+					)
 					return snapshot.ref.fullPath
 				})
 			)
 
 			// Format data
 			const formattedData = formatItemDataForDb(
-				{ ...values, attachments, mainImageIndex },
+				{ ...values, attachments, mainImageIndex, itemId },
 				MODE.CREATE
 			)
 

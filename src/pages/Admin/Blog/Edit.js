@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react"
 import { withRouter } from "react-router-dom"
-import shortid from "shortid"
 import Datetime from "react-datetime"
 import { Form, Field } from "react-final-form"
 
@@ -70,9 +69,8 @@ const EditPost = ({ match }) => {
 			let mainImageURL = mainImage.previewUrl
 
 			if (!mainImage.storageRef) {
-				const imageId = shortid.generate()
 				const mainImageSnap = await firebase.uploadFile(
-					`${CONST.STORAGE_BUCKET_BLOG_ATTACHMENTS}/${imageId}`,
+					CONST.STORAGE_BUCKET_BLOG_ATTACHMENTS,
 					mainImage.data
 				)
 				mainImageRef = mainImageSnap.ref.fullPath
