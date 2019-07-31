@@ -32,11 +32,9 @@ service cloud.firestore {
     }
 
     match /items/{itemId} {
-      // TODO: remove write access if I end up moving item creating/editing to cloud functions
-
-
       // verify that all new items don't set sensitive fields to improper values
       // TODO: verify that timestamps aren't higher than 'now'
+
       function hasValidSensitiveDefaults() {
         return request.resource.data.bumps == 0
             && request.resource.data.promotedAt == null
@@ -73,12 +71,12 @@ service cloud.firestore {
       allow read;
 
       allow create: if isLoggedIn() 
-                    && (request.resource.data.userId == request.auth.uid || isUserAdmin())
+                    && ((request.resource.data.userId == request.auth.uid) || isUserAdmin())
                     && hasValidSensitiveDefaults()
                     && hasValidIncomingData();
 
       allow update: if isLoggedIn() 
-                    && (resource.data.userId == request.auth.uid || isUserAdmin())
+                    && ((resource.data.userId == request.auth.uid) || isUserAdmin())
                     && hasValidIncomingData()
                     && doesNotModifyReadOnlyData()
                     && doesNotModifySensitiveData();
