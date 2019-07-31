@@ -1,9 +1,9 @@
 import React from "react"
-import styled from "styled-components/macro"
+import styled, { css } from "styled-components/macro"
 
-import { Image, ErrorIcon } from "../Image"
+import { Image } from "../Image"
 
-import { useImage } from "../../hooks"
+import { getImageUrl } from "../../utils/getImageUrl"
 import { CONST } from "../../constants"
 
 const ThumbnailsContainer = styled.div`
@@ -43,27 +43,44 @@ const ThumbnailsContainer = styled.div`
 `
 
 const ThumbnailContainer = styled.div`
+	position: relative;
 	background: var(--almost-white);
 	cursor: pointer;
+	${(p) =>
+		!p.isCurrent &&
+		css`
+			filter: grayscale(25%);
+		`}
 `
 
-export const Thumbnail = ({ storageRef, onClick }) => {
-	const { imageURL, error } = useImage(storageRef, "S")
+const InactiveOverlay = styled.div`
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(255, 255, 255, 0.5);
+`
+
+export const Thumbnail = ({ storageRef, onClick, isCurrent }) => {
+	const imageUrl = getImageUrl(storageRef, "S")
 
 	return (
-		<ThumbnailContainer onClick={onClick}>
-			{error ? <ErrorIcon /> : <Image url={imageURL} />}
+		<ThumbnailContainer onClick={onClick} isCurrent={isCurrent}>
+			<Image url={imageUrl} />
+			{!isCurrent && <InactiveOverlay />}
 		</ThumbnailContainer>
 	)
 }
 
-export const Thumbnails = ({ storageRefs, onChangeIndex }) => {
+export const Thumbnails = ({ storageRefs, onChangeIndex, current }) => {
 	return (
 		<ThumbnailsContainer>
 			{storageRefs.map((storageRef, i) => (
 				<Thumbnail
 					storageRef={storageRef}
 					key={storageRef}
+					isCurrent={current === i}
 					onClick={() => onChangeIndex(i)}
 				/>
 			))}
