@@ -4,9 +4,9 @@ exports.PRODUCTION_DOMAIN = "streetzone.pl"
 
 // THUMBNAIL POSTFIXES
 // shared with with client code (ALWAYS UPDATE BOTH)
-exports.S_THUMB_POSTFIX = "_S_THUMB"
-exports.M_THUMB_POSTFIX = "_M_THUMB"
-exports.L_THUMB_POSTFIX = "_L_THUMB"
+exports.S_THUMB_POSTFIX = "_100_THUMB"
+exports.M_THUMB_POSTFIX = "_500_THUMB"
+exports.L_THUMB_POSTFIX = "_1000_THUMB"
 
 // STORAGE BUCKETS
 // shared with with client code (ALWAYS UPDATE BOTH)
