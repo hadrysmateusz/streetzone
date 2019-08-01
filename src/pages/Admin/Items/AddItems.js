@@ -29,8 +29,6 @@ class NewItemPage extends Component {
 			const userSnap = await this.props.firebase.user(values.userId).get()
 			// If the user isn't found throw an error
 			if (!userSnap.exists) throw new Error("Nie znaleziono użytkownika")
-			// Get user data
-			const oldItems = userSnap.data().items
 
 			// Get main image ref
 			const mainImageIndex = files.findIndex((a) => a.isMain)
@@ -54,10 +52,6 @@ class NewItemPage extends Component {
 
 			// Add item to database
 			await firebase.item(formattedData.id).set(formattedData)
-
-			// Add the new item's id to user's items
-			const items = [...oldItems, formattedData.id]
-			await firebase.user(values.userId).update({ items })
 
 			return
 		} catch (error) {
