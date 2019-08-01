@@ -11,7 +11,7 @@ const fontWeight = css`
 
 const textBase = css`
 	${fontWeight}
-	${(p) => p.uppercase && "text-transform: uppercase"}
+	${(p) => p.uppercase && "text-transform: uppercase;"}
 `
 
 // text
@@ -24,17 +24,17 @@ const bodyTextBase = css`
 	font-size: ${(p) => {
 		switch (p.size) {
 			case "xs":
-				return "var(--font-size--xs)"
+				return "var(--font-size--xs);"
 			case "s":
-				return "var(--font-size--s)"
+				return "var(--font-size--s);"
 			case "m":
-				return "var(--font-size--m)"
+				return "var(--font-size--m);"
 			case "l":
-				return "var(--font-size--l)"
+				return "var(--font-size--l);"
 			case "xl":
-				return "var(--font-size--xl)"
+				return "var(--font-size--xl);"
 			case "xxl":
-				return "var(--font-size--xxl)"
+				return "var(--font-size--xxl);"
 			default:
 				return p.size
 		}
