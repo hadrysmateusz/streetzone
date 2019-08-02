@@ -177,7 +177,7 @@ service cloud.firestore {
       // notificationTokens subcollection should only be accessed from the server
     }
 
-    match /requestedDesigners {
+    match /requestedDesigners/{requestedDesignerId} {
       // currently it is possible for unauthenticated users to submit designer requests
       // there are genuine reasons to allow that, but maybe I should consider only allowing authenticated users to submit designer requests
       // TODO: investigate whether the 'create' option allows overwriting an existing document by using 'set' pointing to an existing document id 
