@@ -58,8 +58,8 @@ const HeaderBox = styled.div`
 	margin-top: calc(-1 * var(--page-header-margin));
 	background: var(--black25);
 	color: white;
-	padding-top: var(--spacing2);
-	padding-bottom: var(--spacing4);
+	padding-top: 20px;
+	padding-bottom: var(--spacing5);
 
 	--inner-width: 750px;
 
