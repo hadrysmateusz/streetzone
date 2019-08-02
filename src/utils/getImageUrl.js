@@ -49,5 +49,5 @@ export const getImageUrls = (storageRef) => {
 	const medium = `https://firebasestorage.googleapis.com/v0/b/${bucket}/o/${imagePath}${M_THUMB_POSTFIX}?alt=media`
 	const small = `https://firebasestorage.googleapis.com/v0/b/${bucket}/o/${imagePath}${S_THUMB_POSTFIX}?alt=media`
 
-	return { small, medium, large, full }
+	return { S: small, M: medium, L: large, original: full }
 }
