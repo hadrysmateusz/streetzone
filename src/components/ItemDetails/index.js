@@ -1,4 +1,4 @@
-import React from "react"
+import React, { memo } from "react"
 import { Link } from "react-router-dom"
 import styled, { css } from "styled-components/macro"
 
@@ -7,6 +7,7 @@ import { Image } from "../../components/Image"
 import { useDesigner } from "../../hooks"
 import { encodeURL } from "../../utils/algoliaURLutils"
 import { route, itemDataHelpers } from "../../utils"
+import { getImageUrl } from "../../utils/getImageUrl"
 
 const { formatDesigners } = itemDataHelpers
 
@@ -139,41 +140,37 @@ export const MiscBar = styled.div`
 	}
 `
 
-export const DesignerLink = ({ value, children }) => {
-	return (
-		<Link to={encodeURL({ designers: [value] }, route("MARKETPLACE"))}>{children}</Link>
-	)
-}
+const DesignerItemContainer = styled.div`
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	overflow: hidden;
+	border: 1px solid var(--gray75);
+`
 
-export const Brands = ({ designers }) => {
-	return (
-		<BrandsContainer>
-			{designers.map((designer) => (
-				<Logo name={designer} key={designer} />
-			))}
-		</BrandsContainer>
-	)
-}
+export const DesignerLink = ({ value, children }) => (
+	<Link to={encodeURL({ designers: [value] }, route("MARKETPLACE"))}>{children}</Link>
+)
 
-export const Logo = ({ name }) => {
+export const Brands = ({ designers }) => (
+	<BrandsContainer>
+		{designers.map((designer) => (
+			<DesignerItem name={designer} key={designer.id} />
+		))}
+	</BrandsContainer>
+)
+
+export const DesignerItem = memo(({ name }) => {
 	const designer = useDesigner(name)
 
-	return designer ? (
-		<div
-			css={css`
-				width: 40px;
-				height: 40px;
-				border-radius: 50%;
-				overflow: hidden;
-				border: 1px solid var(--gray75);
-			`}
-		>
+	return designer && designer.imageRef ? (
+		<DesignerItemContainer>
 			<DesignerLink value={designer.label}>
-				<Image url={designer.logoURL} title={designer.label} />
+				<Image url={getImageUrl(designer.imageRef, "S")} title={designer.label} />
 			</DesignerLink>
-		</div>
+		</DesignerItemContainer>
 	) : null
-}
+})
 
 export const Header = ({ designers, name }) => {
 	let formattedDesigners = formatDesigners(designers)
