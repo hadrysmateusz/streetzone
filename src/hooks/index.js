@@ -1,4 +1,4 @@
-import useFirestoreCollection from "./useFirestoreCollection"
+import { useFirestoreCollection, useLiveCollection } from "./useFirestoreCollection"
 import useAuthentication from "./useAuthentication"
 import useScrollPosition from "./useScrollPosition"
 import useContentToggle from "./useContentToggle"
@@ -17,6 +17,7 @@ import useDesignerOptions from "./useDesignerOptions"
 
 export {
 	useFirestoreCollection,
+	useLiveCollection,
 	useScrollPosition,
 	useAuthentication,
 	useContentToggle,

@@ -1,9 +1,8 @@
 import React, { useEffect } from "react"
 import { Route, Switch, withRouter } from "react-router-dom"
 import Loadable from "react-loadable"
-import { Helmet } from "react-helmet"
 
-import { ROUTES, CONST } from "../../constants"
+import { ROUTES } from "../../constants"
 
 import { LoadableComponentSpinner } from "../LoadingSpinner"
 import ErrorBoundary from "../ErrorBoundary"
@@ -191,10 +190,15 @@ const AdminDesigners = Loadable({
 	loader: () => import("../../pages/Admin/Designers"),
 	loading: LoadableComponentSpinner
 })
-const AdminDesignerEdit = Loadable({
-	loader: () => import("../../pages/Admin/DesignerEdit"),
+const AdminDesignerAdd = Loadable({
+	loader: () => import("../../pages/Admin/Designers/Add"),
 	loading: LoadableComponentSpinner
 })
+const AdminDesignerEdit = Loadable({
+	loader: () => import("../../pages/Admin/Designers/Edit"),
+	loading: LoadableComponentSpinner
+})
+
 const AdminItems = Loadable({
 	loader: () => import("../../pages/Admin/Items"),
 	loading: LoadableComponentSpinner
@@ -392,6 +396,24 @@ export const ADMIN_ROUTES = [
 		isNavigable: false
 	},
 	{
+		id: "designers",
+		path: ROUTES.ADMIN_DESIGNERS,
+		component: AdminDesigners,
+		isNavigable: true
+	},
+	{
+		id: "add_designer",
+		path: ROUTES.ADMIN_DESIGNER_ADD,
+		component: AdminDesignerAdd,
+		isNavigable: false
+	},
+	{
+		id: "edit_designer",
+		path: ROUTES.ADMIN_DESIGNER_EDIT,
+		component: AdminDesignerEdit,
+		isNavigable: false
+	},
+	{
 		id: "items",
 		path: ROUTES.ADMIN_ITEMS,
 		component: AdminItems,
@@ -402,18 +424,6 @@ export const ADMIN_ROUTES = [
 		path: ROUTES.ADMIN_USERS,
 		component: AdminUsers,
 		isNavigable: true
-	},
-	{
-		id: "designers",
-		path: ROUTES.ADMIN_DESIGNERS,
-		component: AdminDesigners,
-		isNavigable: true
-	},
-	{
-		id: "designerEdit",
-		path: ROUTES.ADMIN_DESIGNER_EDIT,
-		component: AdminDesignerEdit,
-		isNavigable: false
 	}
 ]
 
@@ -421,35 +431,30 @@ const INFO_ROUTES = [
 	{
 		path: ROUTES.ABOUT,
 		component: About,
-		title: "O nas",
 		label: "O nas",
 		category: "Info"
 	},
 	{
 		path: ROUTES.CONTACT,
 		component: Contact,
-		title: "Kontakt",
 		label: "Kontakt",
 		category: "Info"
 	},
 	{
 		path: ROUTES.FAQ,
 		component: FAQ,
-		title: `FAQ`,
 		label: `FAQ`,
 		category: "Pomoc"
 	},
 	{
 		path: ROUTES.PROMOTING_INFO,
 		component: PromotingInfo,
-		title: `Promowanie i odświeżanie`,
 		label: `Promowanie i odświeżanie`,
 		category: "Pomoc"
 	},
 	{
 		path: ROUTES.ALLOW_ADS,
 		component: AllowAds,
-		title: `Zezwól na reklamy`,
 		label: `Zezwól na reklamy`,
 		hidden: true,
 		category: "Pomoc"
@@ -457,49 +462,42 @@ const INFO_ROUTES = [
 	{
 		path: ROUTES.ALLOW_NOTIFICATIONS,
 		component: AllowNotifications,
-		title: `Włącz powiadomienia`,
 		label: `Włącz powiadomienia`,
 		category: "Pomoc"
 	},
 	{
 		path: ROUTES.BUG_REPORT,
 		component: BugReport,
-		title: "Zgłoś problem",
 		label: "Zgłoś problem",
 		category: "Pomoc"
 	},
 	{
 		path: ROUTES.ADVERTISE,
 		component: Advertise,
-		title: "Reklamuj się",
 		label: "Reklamuj się",
 		category: "Współpraca"
 	},
 	{
 		path: ROUTES.PARTNERS,
 		component: Partners,
-		title: "Partnerzy",
 		label: "Partnerzy",
 		category: "Współpraca"
 	},
 	{
 		path: ROUTES.WRITE_FOR_US,
 		component: WriteForUs,
-		title: "Pisz dla nas",
 		label: "Pisz dla nas",
 		category: "Współpraca"
 	},
 	{
 		path: ROUTES.TERMS,
 		component: Terms,
-		title: "Regulamin",
 		label: "Regulamin",
 		category: "Prawne"
 	},
 	{
 		path: ROUTES.PRIVACY_POLICY,
 		component: PrivacyPolicy,
-		title: "Polityka Prywatności",
 		label: "Polityka Prywatności",
 		category: "Prawne"
 	}
@@ -529,7 +527,6 @@ const routes = [
 		path: ROUTES.BLOG_BASE,
 		component: BlogBase,
 		exact: false,
-		title: "Blog",
 		routes: [
 			{
 				id: "home",
@@ -588,18 +585,15 @@ const routes = [
 	},
 	{
 		path: ROUTES.SIGN_UP,
-		component: SignUp,
-		title: `Utwórz konto`
+		component: SignUp
 	},
 	{
 		path: ROUTES.SIGN_IN,
-		component: SignIn,
-		title: `Zaloguj Się`
+		component: SignIn
 	},
 	{
 		path: ROUTES.PASSWORD_FORGET,
-		component: PasswordForget,
-		title: `Zresetuj hasło`
+		component: PasswordForget
 	},
 	{
 		path: ROUTES.MARKETPLACE,
@@ -618,8 +612,7 @@ const routes = [
 	},
 	{
 		path: ROUTES.NEW_ITEM,
-		component: NewItem,
-		title: `Wystaw przedmiot`
+		component: NewItem
 	},
 	{
 		path: ROUTES.HOME,
@@ -631,18 +624,15 @@ const routes = [
 	},
 	{
 		path: ROUTES.EDIT_ITEM,
-		component: EditItem,
-		title: `Edytuj przedmiot`
+		component: EditItem
 	},
 	{
 		path: ROUTES.ITEM_DELETE,
-		component: DeleteItem,
-		title: `Usuń przedmiot`
+		component: DeleteItem
 	},
 	{
 		path: ROUTES.ITEM_PROMOTE,
-		component: ItemPromote,
-		title: `Promuj przedmiot`
+		component: ItemPromote
 	},
 	{
 		path: ROUTES.ITEM_PROMOTE_AFTER,
@@ -671,7 +661,7 @@ const ScrollToTop = withRouter(({ children, shouldScroll, location }) => {
 		if (!shouldScroll) return
 
 		window.scrollTo(0, 0)
-	}, [location.pathname])
+	}, [location.pathname, shouldScroll])
 
 	return children
 })

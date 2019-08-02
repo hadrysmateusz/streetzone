@@ -25,6 +25,14 @@ const StyledForm = styled.form`
 	margin: 0 auto;
 `
 
+const validate = ({ name }) => {
+	const errors = {}
+	if (!name || !name.trim()) {
+		errors.name = "Pole nie może być puste"
+	}
+	return errors
+}
+
 const RequestDesigner = ({ history }) => {
 	const firebase = useFirebase()
 	const authUser = useAuthentication()
@@ -40,11 +48,19 @@ const RequestDesigner = ({ history }) => {
 			id
 		}
 
-		// Add drop to database
-		await firebase.db
-			.collection("requestedDesigners")
-			.doc(id)
-			.set(payload)
+		try {
+			// Add drop to database
+			await firebase.db
+				.collection("requestedDesigners")
+				.doc(id)
+				.set(payload)
+		} catch (e) {
+			flashMessage({
+				type: "error",
+				textContent: "Wystąpił problem, prośba nie została wysłana"
+			})
+			return
+		}
 
 		// show flash message
 		flashMessage({ type: "success", textContent: "Wysłano prośbę o dodanie" })
@@ -63,6 +79,7 @@ const RequestDesigner = ({ history }) => {
 
 			<Form
 				onSubmit={onSubmit}
+				validate={validate}
 				render={({ form, handleSubmit, submitting, pristine, values, ...rest }) => {
 					return (
 						<StyledForm onSubmit={handleSubmit}>
