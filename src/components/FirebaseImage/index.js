@@ -39,10 +39,10 @@ const Image = styled.img`
 	left: 0;
 	z-index: 9;
 	object-position: center;
-	object-fit: cover;
+	object-fit: ${(p) => p.mode};
 `
 
-const ImageLoader = ({ onClick, src }) => {
+const ImageLoader = ({ onClick, src, mode = "cover", deferLoading = false }) => {
 	const [isLoaded, setIsLoaded] = useState(false)
 	const [error, setError] = useState(null)
 
@@ -54,11 +54,22 @@ const ImageLoader = ({ onClick, src }) => {
 		setIsLoaded(true)
 	}
 
+	// only defer loading if the flag is supplied and the image isn't already loaded
+	const isLoadingDeferred = deferLoading && !isLoaded
+
 	return error ? (
 		<ErrorIcon />
 	) : (
 		<>
-			<Image src={src} onClick={onClick} onLoad={onLoad} onError={onError} contain />
+			{!isLoadingDeferred && (
+				<Image
+					src={src}
+					onClick={onClick}
+					onLoad={onLoad}
+					onError={onError}
+					mode={mode}
+				/>
+			)}
 			{!isLoaded && (
 				<LoaderContainer>
 					<LoadingSpinner delay={400} color="var(--gray100)" />
@@ -68,7 +79,14 @@ const ImageLoader = ({ onClick, src }) => {
 	)
 }
 
-const FirebaseImage = ({ storageRef, size, loadOffset = 300, ...rest }) => {
+const FirebaseImage = ({
+	storageRef,
+	size,
+	loadOffset = 300,
+	height = "100%",
+	width = "100%",
+	...rest
+}) => {
 	// get all possible urls for this storageRef
 	const urls = getImageUrls(storageRef)
 
@@ -77,7 +95,13 @@ const FirebaseImage = ({ storageRef, size, loadOffset = 300, ...rest }) => {
 	const url = urls[size]
 
 	return (
-		<LazyLoad debounce={false} throttle={250} offsetVertical={loadOffset}>
+		<LazyLoad
+			debounce={false}
+			throttle={250}
+			offsetVertical={loadOffset}
+			height={height}
+			width={width}
+		>
 			<Container>
 				<ImageLoader src={url} {...rest} />
 			</Container>

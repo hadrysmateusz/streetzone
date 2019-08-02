@@ -3,14 +3,11 @@ import styled from "styled-components/macro"
 import SwipeableViews from "react-swipeable-views"
 import Lightbox from "react-image-lightbox"
 
-import { FluidImage, ErrorIcon } from "../Image"
+import FirebaseImage from "../FirebaseImage"
 import { useCarousel, CarouselIndicator, CarouselButton } from "../Carousel"
-import LoadingSpinner from "../LoadingSpinner"
 
 import { Thumbnails } from "./Thumbnails"
 import useLightbox from "./useLightbox"
-
-import { useImage } from "../../hooks"
 
 const OuterContainer = styled.div`
 	display: grid;
@@ -48,23 +45,17 @@ const MainImageContainer = styled.div`
 	cursor: zoom-in;
 `
 
-const MainImage = ({ storageRef, index, current, onChangeIndex, onClick }) => {
-	// load the image, if the image is not currently shown use the defer flag
-	const defer = index !== current
-	const { imageURL, error, isLoading } = useImage(storageRef, "L", defer)
-
-	return (
-		<MainImageContainer>
-			{error ? (
-				<ErrorIcon />
-			) : isLoading ? (
-				<LoadingSpinner />
-			) : (
-				<FluidImage url={imageURL} contain onClick={onClick} />
-			)}
-		</MainImageContainer>
-	)
-}
+const MainImage = ({ storageRef, isCurrent, openLightbox }) => (
+	<MainImageContainer>
+		<FirebaseImage
+			storageRef={storageRef}
+			size="L"
+			deferLoading={!isCurrent}
+			onClick={openLightbox}
+			mode="contain"
+		/>
+	</MainImageContainer>
+)
 
 const ImageGallery = ({ storageRefs, lightboxTitle, showThumbnails }) => {
 	const nOfElements = storageRefs.length
@@ -90,9 +81,8 @@ const ImageGallery = ({ storageRefs, lightboxTitle, showThumbnails }) => {
 							<MainImage
 								storageRef={storageRef}
 								key={storageRef}
-								index={i}
-								current={current}
-								onClick={openLightbox}
+								isCurrent={i === current}
+								openLightbox={openLightbox}
 							/>
 						))}
 					</SwipeableViews>
