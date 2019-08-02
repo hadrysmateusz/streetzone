@@ -226,8 +226,11 @@ const LinkButton = ({ to, external, ...rest }) => (
 	/>
 )
 
+// has to be type button to prevent accidental submits
 const BackButton = withRouter(({ history, children = "Wróć" }) => (
-	<Button onClick={() => history.goBack()}>{children}</Button>
+	<Button type="button" onClick={() => history.goBack()}>
+		{children}
+	</Button>
 ))
 
 export default Button
