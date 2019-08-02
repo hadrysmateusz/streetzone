@@ -1,5 +1,4 @@
 import React from "react"
-import styled from "styled-components/macro"
 
 import LoadingSpinner from "../../components/LoadingSpinner"
 import { ButtonContainer, LinkButton } from "../../components/Button"
@@ -9,15 +8,7 @@ import { PageContainer } from "../../components/Containers"
 import { useLiveCollection } from "../../hooks"
 import { route } from "../../utils"
 
-export const List = styled.div`
-	display: grid;
-	gap: var(--spacing2);
-	grid-template-columns: 1fr 1fr;
-
-	> * {
-		overflow: hidden;
-	}
-`
+import { List } from "./Common"
 
 const ManagementTemplate = ({
 	firestoreCollection,
