@@ -10,6 +10,15 @@ service cloud.firestore {
       return "admin" in get(/databases/$(database)/documents/users/$(request.auth.uid)).data.roles;
     }
 
+    // [READ] Data that exists on the Firestore document
+    function existingData() {
+      return resource.data;
+    }
+    // [WRITE] Data that is sent to a Firestore document
+    function incomingData() {
+      return request.resource.data;
+    }
+
     match /deals/{dealId} {
       allow read;
       allow write: if isUserAdmin();
@@ -36,47 +45,47 @@ service cloud.firestore {
       // TODO: verify that timestamps aren't higher than 'now'
 
       function hasValidSensitiveDefaults() {
-        return request.resource.data.bumps == 0
-            && request.resource.data.promotedAt == null
-            && request.resource.data.promotingLevel == null
-            && request.resource.data.isArchived == false
-            && request.resource.data.isVerified == false;
+        return incomingData().bumps == 0
+            && incomingData().promotedAt == null
+            && incomingData().promotingLevel == null
+            && incomingData().isArchived == false
+            && incomingData().isVerified == false;
       }
 
       // verify that the incoming data is valid
       function hasValidIncomingData() {
-        return request.resource.data.price > 0
-            && request.resource.data.condition > 0 
-            && request.resource.data.condition <= 11
-            && request.resource.data.id == itemId;
+        return incomingData().price > 0
+            && incomingData().condition > 0 
+            && incomingData().condition <= 11
+            && incomingData().id == itemId;
       }
 
       // some fields should never change
       function doesNotModifyReadOnlyData() {
-        return request.resource.data.createdAt == resource.data.createdAt
-            && request.resource.data.id == resource.data.id
-            && request.resource.data.userId == resource.data.userId;
+        return incomingData().createdAt == existingData().createdAt
+            && incomingData().id == existingData().id
+            && incomingData().userId == existingData().userId;
       }
 
       // some fields should only be modified from a secure context
       function doesNotModifySensitiveData() {
-        return request.resource.data.bumps == resource.data.bumps
-            && request.resource.data.refreshedAt == resource.data.refreshedAt
-            && request.resource.data.promotedAt == resource.data.promotedAt
-            && request.resource.data.promotedUntil == resource.data.promotedUntil
-            && request.resource.data.promotingLevel == resource.data.promotingLevel
-            && request.resource.data.isVerified == resource.data.isVerified;
+        return incomingData().bumps == existingData().bumps
+            && incomingData().refreshedAt == existingData().refreshedAt
+            && incomingData().promotedAt == existingData().promotedAt
+            && incomingData().promotedUntil == existingData().promotedUntil
+            && incomingData().promotingLevel == existingData().promotingLevel
+            && incomingData().isVerified == existingData().isVerified;
       }
 
       allow read;
 
       allow create: if isLoggedIn() 
-                    && ((request.resource.data.userId == request.auth.uid) || isUserAdmin())
+                    && ((incomingData().userId == request.auth.uid) || isUserAdmin())
                     && hasValidSensitiveDefaults()
                     && hasValidIncomingData();
 
       allow update: if isLoggedIn() 
-                    && ((resource.data.userId == request.auth.uid) || isUserAdmin())
+                    && ((existingData().userId == request.auth.uid) || isUserAdmin())
                     && hasValidIncomingData()
                     && doesNotModifyReadOnlyData()
                     && doesNotModifySensitiveData();
@@ -89,7 +98,7 @@ service cloud.firestore {
     match /rooms/{roomId} {
       allow read;
       // allow users to create a room in which they are the initiating user (userA)
-      allow create: if request.resource.data.userA == request.auth.uid;
+      allow create: if incomingData().userA == request.auth.uid;
 
       match /messages/{messageId} {
         // allow users who are part of the room to read and create messages in it
@@ -111,7 +120,7 @@ service cloud.firestore {
 
       // verify that all new users don't set sensitive fields to improper values
       function hasValidSensitiveDefaults() {
-        return request.resource.data;
+        return incomingData();
       }
 
       function onlyModifiesSelf() {
@@ -119,14 +128,14 @@ service cloud.firestore {
       }
 
       function doesNotModifyReadOnlyData() {
-        return request.resource.data.importedFrom == resource.data.importedFrom
-            && request.resource.data.userSince == resource.data.userSince;
+        return incomingData().importedFrom == existingData().importedFrom
+            && incomingData().userSince == existingData().userSince;
       }
 
       function doesNotModifySensitiveData() {
-        return request.resource.data.badges == resource.data.badges
-            && request.resource.data.roles == resource.data.roles
-            && request.resource.data.items == resource.data.items; // only edit items list on the server
+        return incomingData().badges == existingData().badges
+            && incomingData().roles == existingData().roles
+            && incomingData().items == existingData().items; // only edit items list on the server
       }
 
       allow read;
@@ -144,22 +153,22 @@ service cloud.firestore {
       // it's indexed by the comment author id to keep it one comment per user
       match /feedback/{authorId} {
         function hasValidRating() {
-          return request.resource.data.rating > 0 && request.resource.data.rating <= 5;
+          return incomingData().rating > 0 && incomingData().rating <= 5;
         }
 
         // verify that the author isn't giving the feedback to himself
         function authorIsNotSubject() {
-          return request.resource.data.author != userId;
+          return incomingData().author != userId;
         }
 
-        allow create: if request.resource.data.author == request.auth.uid
+        allow create: if incomingData().author == request.auth.uid
                      && authorIsNotSubject() 
                      && hasValidRating();
 
-        allow update: if resource.data.author == request.auth.uid && hasValidRating();
+        allow update: if existingData().author == request.auth.uid && hasValidRating();
 
         // allow users to delete their own comments
-        allow delete: if resource.data.author == request.auth.uid;
+        allow delete: if existingData().author == request.auth.uid;
 
     }
 
@@ -171,7 +180,7 @@ service cloud.firestore {
        
         // allow other users to create rooms for other users when they initiate communication
         // TODO: make it only possible to create a room with id that the creating user already has in their rooms list
-        allow create: if otherUserId == request.auth.uid && request.resource.data.otherUserId == request.auth.uid;
+        allow create: if otherUserId == request.auth.uid && incomingData().otherUserId == request.auth.uid;
       }
 
       // notificationTokens subcollection should only be accessed from the server
