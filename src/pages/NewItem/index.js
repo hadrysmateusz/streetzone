@@ -1,4 +1,5 @@
 import React from "react"
+import shortid from "shortid"
 
 import { withAuthorization } from "../../components/UserSession"
 import { PageContainer } from "../../components/Containers"
@@ -18,10 +19,11 @@ const NewItemPage = ({ history }) => {
 		try {
 			const files = values.files
 			const userId = authUser.uid
+			const itemId = shortid.generate()
 
 			// Upload files to storage and get their refs
 			const attachments = await firebase.batchUploadFiles(
-				CONST.STORAGE_BUCKET_ITEM_ATTACHMENTS,
+				`${CONST.STORAGE_BUCKET_ITEM_ATTACHMENTS}/${userId}/${itemId}`,
 				files
 			)
 
@@ -30,7 +32,7 @@ const NewItemPage = ({ history }) => {
 
 			// Format the values for db
 			const formattedData = formatItemDataForDb(
-				{ ...values, mainImageIndex, attachments, userId },
+				{ ...values, mainImageIndex, attachments, userId, itemId },
 				MODE.CREATE
 			)
 

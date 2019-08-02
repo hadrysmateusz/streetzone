@@ -28,6 +28,7 @@ export const GroupContainer = styled.section`
 
 		@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
 			grid-template-columns: repeat(3, 1fr);
+			gap: var(--spacing3);
 		}
 
 		/* make the content go from edge to edge on mobile*/

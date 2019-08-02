@@ -5,7 +5,7 @@ import { InfiniteResults } from "../Algolia/Helpers"
 import { InfiniteLoadingSpinner } from "../LoadingSpinner"
 import NoResults from "../Algolia/NoResults"
 
-const InfiniteScrollingResults = ({ children, threshold = 450, emptyState }) => {
+const InfiniteScrollingResults = ({ children, threshold = 550, emptyState }) => {
 	const isChildrenFunction = typeof children === "function"
 
 	return (

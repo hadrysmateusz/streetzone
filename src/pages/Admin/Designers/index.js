@@ -12,7 +12,7 @@ import { TextBlock } from "../../../components/StyledComponents"
 import { FileHandlerSingle } from "../../../components/FileHandler"
 import { PageContainer } from "../../../components/Containers"
 
-import { FORM_ERR } from "../../../constants"
+import { FORM_ERR, CONST } from "../../../constants"
 
 import { useDesigners, useFirestoreCollection, useFirebase } from "../../../hooks"
 
@@ -154,9 +154,8 @@ const AddDesigner = () => {
 			let data = { id, label, colorA, colorB }
 
 			if (logo) {
-				const imageId = shortid.generate()
 				const logoSnapshot = await firebase.uploadFile(
-					`brand-logos/${imageId}`,
+					CONST.STORAGE_BUCKET_BRAND_LOGOS,
 					logo.data
 				)
 				const logoRef = logoSnapshot.ref.fullPath

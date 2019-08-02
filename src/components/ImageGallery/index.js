@@ -115,7 +115,11 @@ const ImageGallery = ({ storageRefs, lightboxTitle, showThumbnails }) => {
 
 			{/* Thumbnails */}
 			{showThumbnails && hasMoreThanOne && (
-				<Thumbnails storageRefs={storageRefs} onChangeIndex={changeIndex} />
+				<Thumbnails
+					storageRefs={storageRefs}
+					onChangeIndex={changeIndex}
+					current={current}
+				/>
 			)}
 
 			{/* Lightbox */}

@@ -22,6 +22,7 @@ const ScrollToTopButton = styled.button`
 		background: var(--black50);
 	}
 	position: sticky;
+	z-index: 15;
 	float: right;
 	font-size: var(--font-size);
 	bottom: var(--offset);

@@ -18,8 +18,6 @@ import { CONST } from "../../constants"
 
 import EditItemForm from "./EditItemForm"
 
-const { S_THUMB_POSTFIX, M_THUMB_POSTFIX, L_THUMB_POSTFIX } = CONST
-
 const formatDataForEditForm = (price, condition, description, files) => ({
 	price: Number.parseInt(price),
 	description: description || "",
@@ -32,7 +30,7 @@ const EditItemPage = ({ match, history, location }) => {
 	const authUser = useAuthentication()
 	const [error, setError] = useState(null)
 	const [initialData, setInitialData] = useState(null)
-	const [itemName, setItemName] = useState(null)
+	const [item, setItem] = useState(null)
 
 	useEffect(() => {
 		const getItem = async () => {
@@ -73,7 +71,7 @@ const EditItemPage = ({ match, history, location }) => {
 				)
 
 				setInitialData(initialData)
-				setItemName(item.name)
+				setItem(item)
 			} catch (err) {
 				if (err instanceof NotFoundError) {
 					setError(err)
@@ -84,7 +82,7 @@ const EditItemPage = ({ match, history, location }) => {
 		}
 
 		getItem()
-	}, [match, authUser, firebase])
+	}, [match, authUser, firebase, history, location])
 
 	const onSubmit = async ({ files, price, description, condition }, form) => {
 		try {
@@ -96,7 +94,7 @@ const EditItemPage = ({ match, history, location }) => {
 
 					// Upload the new file and return promise containing ref
 					const snapshot = await firebase.uploadFile(
-						CONST.STORAGE_BUCKET_ITEM_ATTACHMENTS,
+						`${CONST.STORAGE_BUCKET_ITEM_ATTACHMENTS}/${item.userId}/${item.id}`,
 						file.data
 					)
 					return snapshot.ref.fullPath
@@ -123,12 +121,10 @@ const EditItemPage = ({ match, history, location }) => {
 
 			// Remove files associated with the marked refs
 			for (const storageRef of refsToDelete) {
-				await firebase.removeFile(storageRef)
-				await firebase.removeFile(storageRef + L_THUMB_POSTFIX)
-				await firebase.removeFile(storageRef + M_THUMB_POSTFIX)
-				await firebase.removeFile(storageRef + S_THUMB_POSTFIX)
+				firebase.removeAllImagesOfRef(storageRef)
 			}
 
+			// TODO: replace this with flash message saying that you need to wait and refresh to see changes
 			await sleep(5500)
 
 			// Clear form to remove conflict with transition blocking
@@ -149,11 +145,11 @@ const EditItemPage = ({ match, history, location }) => {
 			<PageContainer maxWidth={2}>
 				{error ? (
 					<ItemNotFound />
-				) : !initialData ? (
+				) : !initialData || !item ? (
 					<LoadingSpinner />
 				) : (
 					<>
-						<PageHeading emoji={"🖊️"}>Edytuj {itemName}</PageHeading>
+						<PageHeading emoji={"🖊️"}>Edytuj {item.name}</PageHeading>
 						<EditItemForm initialValues={initialData} onSubmit={onSubmit} />
 					</>
 				)}

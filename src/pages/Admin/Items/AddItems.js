@@ -1,5 +1,6 @@
 import React, { Component } from "react"
 import { Form, Field } from "react-final-form"
+import shortid from "shortid"
 
 import { withAuthentication } from "../../../components/UserSession"
 import { LoaderButton } from "../../../components/Button"
@@ -22,13 +23,12 @@ class NewItemPage extends Component {
 		try {
 			const { firebase } = this.props
 			const files = values.files
+			const itemId = shortid.generate()
 
 			// Look for the document with correct id
 			const userSnap = await this.props.firebase.user(values.userId).get()
 			// If the user isn't found throw an error
 			if (!userSnap.exists) throw new Error("Nie znaleziono użytkownika")
-			// Get user data
-			const oldItems = userSnap.data().items
 
 			// Get main image ref
 			const mainImageIndex = files.findIndex((a) => a.isMain)
@@ -36,23 +36,22 @@ class NewItemPage extends Component {
 			// Upload files to storage and get their refs
 			const attachments = await Promise.all(
 				files.map(async (file) => {
-					const snapshot = await firebase.uploadFile("attachments", file.data)
+					const snapshot = await firebase.uploadFile(
+						`${CONST.STORAGE_BUCKET_ITEM_ATTACHMENTS}/${values.userId}/${itemId}`,
+						file.data
+					)
 					return snapshot.ref.fullPath
 				})
 			)
 
 			// Format data
 			const formattedData = formatItemDataForDb(
-				{ ...values, attachments, mainImageIndex },
+				{ ...values, attachments, mainImageIndex, itemId },
 				MODE.CREATE
 			)
 
 			// Add item to database
 			await firebase.item(formattedData.id).set(formattedData)
-
-			// Add the new item's id to user's items
-			const items = [...oldItems, formattedData.id]
-			await firebase.user(values.userId).update({ items })
 
 			return
 		} catch (error) {

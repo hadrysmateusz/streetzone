@@ -13,9 +13,9 @@ export const ITEM_DESC_PLACEHOLDER =
 	"Oryginalna cena, możliwości wysyłki, informacje o uszkodzeniach itd."
 
 // shared with with client code (ALWAYS UPDATE BOTH)
-export const S_THUMB_POSTFIX = "_S_THUMB"
-export const M_THUMB_POSTFIX = "_M_THUMB"
-export const L_THUMB_POSTFIX = "_L_THUMB"
+export const S_THUMB_POSTFIX = "_100_THUMB"
+export const M_THUMB_POSTFIX = "_500_THUMB"
+export const L_THUMB_POSTFIX = "_1000_THUMB"
 
 // shared with with client code (ALWAYS UPDATE BOTH)
 export const STORAGE_BUCKET_BLOG_ATTACHMENTS = "blog-attachments"

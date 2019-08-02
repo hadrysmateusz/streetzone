@@ -4,10 +4,9 @@ import styled from "styled-components/macro"
 import moment from "moment"
 
 import { SaveIconButton } from "../SaveButton"
-import { FluidImage } from "../Image"
+import FirebaseImage from "../FirebaseImage"
 
 import { route } from "../../utils"
-import { useImage } from "../../hooks"
 
 import {
 	Designers,
@@ -57,8 +56,19 @@ export const Name = styled.div`
 	overflow: hidden;
 `
 
-export const BigItemCardDumb = memo(
-	({ id, name, designers, size, price, imageUrl, category, description, createdAt }) => {
+const BigItemCard = memo(
+	({
+		id,
+		name,
+		designers,
+		size,
+		price,
+		category,
+		description,
+		createdAt,
+		attachments,
+		mainImageIndex
+	}) => {
 		const date = moment().to(moment(createdAt))
 
 		return (
@@ -90,14 +100,11 @@ export const BigItemCardDumb = memo(
 							</div>
 						</BottomContainer>
 					</InfoContainer>
-					<FluidImage url={imageUrl} />
+					<FirebaseImage storageRef={attachments[mainImageIndex]} size="M" />
 				</Link>
 			</BigContainer>
 		)
 	}
 )
 
-export const BigItemCard = ({ attachments, mainImageIndex, ...rest }) => {
-	const { imageURL } = useImage(attachments[mainImageIndex], "M")
-	return <BigItemCardDumb imageUrl={imageURL} {...rest} />
-}
+export default BigItemCard
