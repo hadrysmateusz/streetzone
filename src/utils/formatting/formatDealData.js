@@ -1,14 +1,14 @@
 import shortid from "shortid"
 
 import isSet from "./isSet"
-import { formatNonEmptyArray, formatString } from "./basicsUtils"
+import { formatString } from "./basicsUtils"
 
 export const MODE = {
 	CREATE: "CREATE",
 	EDIT: "EDIT"
 }
 
-export const REQUIRED = ["title", "description", "designers", "value", "imageRef", "link"]
+export const REQUIRED = ["title", "description", "value", "imageRef", "link"]
 
 export const formatDealDataForDb = (data, mode) => {
 	let formatted = {}
@@ -34,11 +34,6 @@ export const formatDealDataForDb = (data, mode) => {
 		// description
 		if (isSet(data.description)) {
 			formatted.description = formatString(data.description)
-		}
-
-		// designers
-		if (isSet(data.designers)) {
-			formatted.designers = formatNonEmptyArray(data.designers)
 		}
 
 		// value

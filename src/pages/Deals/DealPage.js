@@ -83,7 +83,7 @@ const DealPage = ({ match }) => {
 						<Header name={deal.title} designers={deal.designers} />
 						<DetailsContainer>
 							<Value>{deal.value}</Value>
-							<Brands designers={deal.designers} />
+							{/* <Brands designers={deal.designers} /> */}
 						</DetailsContainer>
 
 						{deal.description && (
@@ -100,7 +100,6 @@ const DealPage = ({ match }) => {
 								margin-bottom: var(--spacing3);
 							`}
 						>
-							{/* TODO: make this button functional */}
 							<LinkButton to={deal.link} primary fullWidth big external>
 								Idź do okazji
 							</LinkButton>

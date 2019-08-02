@@ -13,7 +13,7 @@ import HelmetBasics from "../../../components/HelmetBasics"
 import sections from "./sections"
 import SectionSelect from "./SectionSelect"
 import PromotedSection from "./PromotedSection"
-import Filters from "./Filters"
+// import Filters from "./Filters"
 import withDropsSearchWrapper from "./SearchWrapperSelector"
 
 import { useAuthentication } from "../../../hooks"
@@ -95,7 +95,7 @@ const DropsMain = withDropsSearchWrapper(({ currentSection }) => {
 
 const DropsPage = () => (
 	<>
-		<PromotedSection />
+		{/* <PromotedSection /> */}
 		<DropsMain />
 	</>
 )

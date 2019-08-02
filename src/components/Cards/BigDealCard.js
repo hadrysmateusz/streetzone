@@ -9,8 +9,6 @@ import FirebaseImage from "../FirebaseImage"
 import { route } from "../../utils"
 
 import {
-	Designers,
-	TopContainer,
 	MiddleContainer,
 	BottomContainer,
 	DateContainer,
@@ -88,14 +86,14 @@ const Value = ({ value, link }) => (
 	</ValueContainer>
 )
 
-const BigDealCard = memo(({ id, title, designers, imageRef, value, link, createdAt }) => (
+const BigDealCard = memo(({ id, title, imageRef, value, link, createdAt }) => (
 	<Container>
 		<Link to={route("DEAL_DETAILS", { id })}>
 			<FirebaseImage storageRef={imageRef} size="M" />
 			<InfoContainer>
-				<TopContainer>
+				{/* <TopContainer>
 					<Designers value={designers} />
-				</TopContainer>
+				</TopContainer> */}
 				<MiddleContainer flex>
 					<Title>{title}</Title>
 					<div className="align-right">

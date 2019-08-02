@@ -45,7 +45,7 @@ const DealsPage = () => {
 	return (
 		<StatelessSearchWrapper
 			indexName={CONST.DEALS_ALGOLIA_INDEX}
-			limit={3}
+			limit={4}
 			ignoreArchivedStatus
 		>
 			<HelmetBasics title="Okazje" />

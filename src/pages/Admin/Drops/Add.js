@@ -4,7 +4,8 @@ import { PageContainer } from "../../../components/Containers"
 
 import useFirebase from "../../../hooks/useFirebase"
 import { formatDropDataForDb, MODE } from "../../../utils/formatting/formatDropData"
-import { ROUTES, CONST } from "../../../constants"
+import { CONST } from "../../../constants"
+import { route } from "../../../utils"
 
 import DropForm from "./Form"
 
@@ -33,11 +34,10 @@ const AddDrop = ({ history }) => {
 			// Add drop to database
 			await firebase.drop(formattedData.id).set(formattedData)
 
-			// Reset form
-			setTimeout(form.reset)
-
-			// Redirect
-			history.push(ROUTES.ADMIN_DROPS)
+			setTimeout(() => {
+				form.reset()
+				history.push(route("ADMIN_DROPS"))
+			})
 		} catch (error) {
 			alert("Wystąpił problem")
 			console.log(error)

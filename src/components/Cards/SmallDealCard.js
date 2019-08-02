@@ -9,8 +9,6 @@ import { route } from "../../utils"
 
 import {
 	Name,
-	Designers,
-	TopContainer,
 	MiddleContainer,
 	BottomContainer,
 	DateContainer,
@@ -36,14 +34,14 @@ const Container = styled.div`
 	}
 `
 
-const SmallDealCard = memo(({ id, title, designers, imageRef, createdAt }) => (
+const SmallDealCard = memo(({ id, title, imageRef, createdAt }) => (
 	<Container>
 		<Link to={route("DEAL_DETAILS", { id })}>
 			<FirebaseImage storageRef={imageRef} size="M" />
 			<InfoContainer>
-				<TopContainer>
+				{/* <TopContainer>
 					<Designers value={designers} />
-				</TopContainer>
+				</TopContainer> */}
 				<MiddleContainer>
 					<Name>{title}</Name>
 				</MiddleContainer>

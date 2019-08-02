@@ -4,7 +4,8 @@ import { PageContainer } from "../../../components/Containers"
 
 import useFirebase from "../../../hooks/useFirebase"
 import { formatDealDataForDb, MODE } from "../../../utils/formatting/formatDealData"
-import { ROUTES, CONST } from "../../../constants"
+import { CONST } from "../../../constants"
+import { route } from "../../../utils"
 
 import Form from "./Form"
 
@@ -28,11 +29,10 @@ const Add = ({ history }) => {
 			// Add to database
 			await firebase.deal(formattedData.id).set(formattedData)
 
-			// Reset form
-			setTimeout(form.reset)
-
-			// Redirect
-			history.push(ROUTES.ADMIN_DEALS)
+			setTimeout(() => {
+				form.reset()
+				history.push(route("ADMIN_DEALS"))
+			})
 		} catch (error) {
 			alert("Wystąpił problem")
 			console.log(error)
