@@ -91,12 +91,16 @@ const FirebaseImage = ({
 	width = "100%",
 	...rest
 }) => {
+	if (!size) throw Error("FirebaseImage needs a size")
+
 	// get all possible urls for this storageRef
 	const urls = getImageUrls(storageRef)
 
-	// TODO use srcSet to make this dynamic
+	// TODO use srcSet to make this dynamic (this will require handling missing resolutions)
 	// select url of required size
 	const url = urls[size]
+
+	console.log(url)
 
 	return (
 		<LazyLoad

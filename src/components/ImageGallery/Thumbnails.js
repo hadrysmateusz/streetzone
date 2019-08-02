@@ -3,7 +3,7 @@ import styled, { css } from "styled-components/macro"
 
 import { Image } from "../Image"
 
-import { getImageUrls } from "../../utils/getImageUrl"
+import { getImageUrl } from "../../utils/getImageUrl"
 import { CONST } from "../../constants"
 
 const ThumbnailsContainer = styled.div`
@@ -64,11 +64,7 @@ const InactiveOverlay = styled.div`
 export const Thumbnail = ({ storageRef, onClick, isCurrent }) => {
 	// It would require some css magic to get the ratio hack to work with the FirebaseImage component
 
-	// get all possible urls for this storageRef
-	const urls = getImageUrls(storageRef)
-
-	// select url of required size
-	const url = urls["S"]
+	const url = getImageUrl(storageRef, "S")
 
 	return (
 		<ThumbnailContainer onClick={onClick} isCurrent={isCurrent}>

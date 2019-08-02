@@ -3,10 +3,9 @@ import { Link } from "react-router-dom"
 import styled from "styled-components/macro"
 import moment from "moment"
 
-import { FluidImage } from "../Image"
+import FirebaseImage from "../FirebaseImage"
 
 import { route } from "../../utils"
-import { useImage } from "../../hooks"
 
 import {
 	Name,
@@ -37,10 +36,10 @@ const Container = styled.div`
 	}
 `
 
-export const SmallDealCardDumb = memo(({ id, title, designers, imageUrl, createdAt }) => (
+const SmallDealCard = memo(({ id, title, designers, imageRef, createdAt }) => (
 	<Container>
 		<Link to={route("DEAL_DETAILS", { id })}>
-			<FluidImage url={imageUrl} />
+			<FirebaseImage storageRef={imageRef} size="M" />
 			<InfoContainer>
 				<TopContainer>
 					<Designers value={designers} />
@@ -49,17 +48,11 @@ export const SmallDealCardDumb = memo(({ id, title, designers, imageUrl, created
 					<Name>{title}</Name>
 				</MiddleContainer>
 				<BottomContainer>
-					<DateContainer>{createdAt}</DateContainer>
+					<DateContainer>{moment(createdAt).format("LL")}</DateContainer>
 				</BottomContainer>
 			</InfoContainer>
 		</Link>
 	</Container>
 ))
 
-export const SmallDealCard = memo(({ imageRef, createdAt, ...rest }) => {
-	const { imageURL } = useImage(imageRef, "M")
-	const formattedCreatedAt = moment(createdAt).format("LL")
-	return (
-		<SmallDealCardDumb imageUrl={imageURL} createdAt={formattedCreatedAt} {...rest} />
-	)
-})
+export default SmallDealCard

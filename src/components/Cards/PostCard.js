@@ -3,7 +3,7 @@ import { Link } from "react-router-dom"
 import styled from "styled-components/macro"
 import moment from "moment"
 
-import { FluidImage } from "../Image"
+import FirebaseImage from "../FirebaseImage"
 
 import { route } from "../../utils"
 
@@ -35,26 +35,25 @@ export const Container = styled.div`
 	}
 `
 
-export const PostCard = memo(
-	({ id, title, category, imageUrls, mainImageIndex, createdAt }) => {
-		const imageURL = imageUrls[mainImageIndex]
-		const date = moment(createdAt).format("LL")
-
-		return (
-			<Container>
-				<Link to={route("BLOG_POST", { id })}>
-					<FluidImage url={imageURL} />
-					<InfoContainer>
-						<MiddleContainer>
-							<Name>{title}</Name>
-						</MiddleContainer>
-						<BottomContainer>
-							<PostCategory category={category}>{category}</PostCategory>
-							<DateContainer>&nbsp;&nbsp;/&nbsp;&nbsp;{date}</DateContainer>
-						</BottomContainer>
-					</InfoContainer>
-				</Link>
-			</Container>
-		)
-	}
+const PostCard = memo(
+	({ id, title, category, attachments, mainImageIndex, createdAt }) => (
+		<Container>
+			<Link to={route("BLOG_POST", { id })}>
+				<FirebaseImage storageRef={attachments[mainImageIndex]} size="M" />
+				<InfoContainer>
+					<MiddleContainer>
+						<Name>{title}</Name>
+					</MiddleContainer>
+					<BottomContainer>
+						<PostCategory category={category}>{category}</PostCategory>
+						<DateContainer>
+							&nbsp;&nbsp;/&nbsp;&nbsp;{moment(createdAt).format("LL")}
+						</DateContainer>
+					</BottomContainer>
+				</InfoContainer>
+			</Link>
+		</Container>
+	)
 )
+
+export default PostCard

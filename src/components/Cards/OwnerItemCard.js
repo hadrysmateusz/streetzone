@@ -7,13 +7,13 @@ import { withBreakpoints } from "react-breakpoints"
 import Button, { ButtonContainer, LoaderButton } from "../Button"
 import InfoItem from "../InfoItem"
 import { SmallTextBlock } from "../StyledComponents"
-import { FluidImage } from "../Image"
 import DeleteItemButton from "../DeleteItemButton"
 import { SearchWrapperContext } from "../InstantSearchWrapper"
+import FirebaseImage from "../FirebaseImage"
 
 import { translateCondition } from "../../constants/item_schema"
 import promotingLevels from "../../constants/promoting_levels"
-import { useImage, useFlash, useFirebase } from "../../hooks"
+import { useFlash, useFirebase } from "../../hooks"
 import { itemDataHelpers, route, sleep } from "../../utils"
 import { nLinesHigh } from "../../style-utils"
 
@@ -293,7 +293,8 @@ const OwnerItemCardDumb = memo(
 		promotingLevel,
 		bumps,
 		isMobile,
-		imageUrl
+		mainImageIndex,
+		attachments
 	}) => {
 		let conditionObj = translateCondition(condition)
 		let formattedPrice = formatPrice(price)
@@ -301,7 +302,7 @@ const OwnerItemCardDumb = memo(
 
 		return (
 			<OuterContainer>
-				{!isMobile && <FluidImage url={imageUrl} />}
+				{!isMobile && <FirebaseImage storageRef={attachments[mainImageIndex]} size="M" />}
 				<Link
 					to={route("ITEM_DETAILS", { id })}
 					css={css`
@@ -320,7 +321,7 @@ const OwnerItemCardDumb = memo(
 						<OuterDetailsContainer>
 							{isMobile && (
 								<div className="mobile-image-container">
-									<FluidImage url={imageUrl} />
+									<FirebaseImage storageRef={attachments[mainImageIndex]} size="M" />
 								</div>
 							)}
 
@@ -351,12 +352,9 @@ const OwnerItemCardDumb = memo(
 	}
 )
 
-const OwnerItemCard = withBreakpoints(
-	({ currentBreakpoint, mainImageIndex, attachments, ...rest }) => {
-		const { imageURL } = useImage(attachments[mainImageIndex], "M")
-		const isMobile = +currentBreakpoint < 2
-		return <OwnerItemCardDumb imageUrl={imageURL} isMobile={isMobile} {...rest} />
-	}
-)
+const OwnerItemCard = withBreakpoints(({ currentBreakpoint, ...rest }) => {
+	const isMobile = +currentBreakpoint < 2
+	return <OwnerItemCardDumb isMobile={isMobile} {...rest} />
+})
 
 export default OwnerItemCard

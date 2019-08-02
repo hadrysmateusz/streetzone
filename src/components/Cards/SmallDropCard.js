@@ -3,7 +3,7 @@ import { Link } from "react-router-dom"
 import styled from "styled-components/macro"
 import moment from "moment"
 
-import { FluidImage } from "../Image"
+import FirebaseImage from "../FirebaseImage"
 
 import { route } from "../../utils"
 
@@ -36,37 +36,34 @@ const Container = styled.div`
 	}
 `
 
-export const SmallDropCard = memo(
+const SmallDropCard = memo(
 	({
 		id,
 		name,
 		designers,
 		itemCategory,
-		imageUrls,
+		attachments,
 		mainImageIndex,
 		dropsAtApproxTimestamp
-	}) => {
-		const imageURL = imageUrls[mainImageIndex]
-		const date = moment(dropsAtApproxTimestamp).format("LL")
-
-		return (
-			<Container>
-				<Link to={route("DROP_DETAILS", { id })}>
-					<FluidImage url={imageURL} />
-					<InfoContainer>
-						<TopContainer>
-							<div>{itemCategory}</div>
-							<Designers value={designers} />
-						</TopContainer>
-						<MiddleContainer>
-							<Name>{name}</Name>
-						</MiddleContainer>
-						<BottomContainer>
-							<DateContainer>{date}</DateContainer>
-						</BottomContainer>
-					</InfoContainer>
-				</Link>
-			</Container>
-		)
-	}
+	}) => (
+		<Container>
+			<Link to={route("DROP_DETAILS", { id })}>
+				<FirebaseImage storageRef={attachments[mainImageIndex]} size="M" />
+				<InfoContainer>
+					<TopContainer>
+						<div>{itemCategory}</div>
+						<Designers value={designers} />
+					</TopContainer>
+					<MiddleContainer>
+						<Name>{name}</Name>
+					</MiddleContainer>
+					<BottomContainer>
+						<DateContainer>{moment(dropsAtApproxTimestamp).format("LL")}</DateContainer>
+					</BottomContainer>
+				</InfoContainer>
+			</Link>
+		</Container>
+	)
 )
+
+export default SmallDropCard

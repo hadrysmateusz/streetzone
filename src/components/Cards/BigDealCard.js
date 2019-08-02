@@ -4,10 +4,9 @@ import styled from "styled-components/macro"
 import moment from "moment"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
-import { FluidImage } from "../Image"
+import FirebaseImage from "../FirebaseImage"
 
 import { route } from "../../utils"
-import { useImage } from "../../hooks"
 
 import {
 	Designers,
@@ -89,32 +88,26 @@ const Value = ({ value, link }) => (
 	</ValueContainer>
 )
 
-const BigDealCardDumb = memo(
-	({ id, title, designers, imageUrl, value, link, createdAt }) => (
-		<Container>
-			<Link to={route("DEAL_DETAILS", { id })}>
-				<FluidImage url={imageUrl} />
-				<InfoContainer>
-					<TopContainer>
-						<Designers value={designers} />
-					</TopContainer>
-					<MiddleContainer flex>
-						<Title>{title}</Title>
-						<div className="align-right">
-							<Value value={value} link={link} />
-						</div>
-					</MiddleContainer>
-					<BottomContainer>
-						<DateContainer>{createdAt}</DateContainer>
-					</BottomContainer>
-				</InfoContainer>
-			</Link>
-		</Container>
-	)
-)
+const BigDealCard = memo(({ id, title, designers, imageRef, value, link, createdAt }) => (
+	<Container>
+		<Link to={route("DEAL_DETAILS", { id })}>
+			<FirebaseImage storageRef={imageRef} size="M" />
+			<InfoContainer>
+				<TopContainer>
+					<Designers value={designers} />
+				</TopContainer>
+				<MiddleContainer flex>
+					<Title>{title}</Title>
+					<div className="align-right">
+						<Value value={value} link={link} />
+					</div>
+				</MiddleContainer>
+				<BottomContainer>
+					<DateContainer>{moment(createdAt).format("LL")}</DateContainer>
+				</BottomContainer>
+			</InfoContainer>
+		</Link>
+	</Container>
+))
 
-export const BigDealCard = memo(({ imageRef, createdAt, ...rest }) => {
-	const { imageURL } = useImage(imageRef, "M")
-	const formattedCreatedAt = moment(createdAt).format("LL")
-	return <BigDealCardDumb imageUrl={imageURL} createdAt={formattedCreatedAt} {...rest} />
-})
+export default BigDealCard

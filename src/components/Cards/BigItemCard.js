@@ -68,43 +68,39 @@ const BigItemCard = memo(
 		createdAt,
 		attachments,
 		mainImageIndex
-	}) => {
-		const date = moment().to(moment(createdAt))
-
-		return (
-			<BigContainer>
-				<Link to={route("ITEM_DETAILS", { id })}>
-					<InfoContainer>
-						<TopContainer>
-							<div>{category}</div>
-							<Designers value={designers} />
-							<Size value={size} />
-						</TopContainer>
-						<MiddleContainer>
-							<Name>{name}</Name>
-							<DateContainer withMargin>Dodano {date}</DateContainer>
-							<Description>{description}</Description>
-						</MiddleContainer>
-						<BottomContainer pinToBottom>
-							<Price value={price} />
-							<div className="align-right">
-								<SaveIconButton
-									css={`
-										color: var(--gray25);
-										padding-right: 0;
-									`}
-									id={id}
-									type="item"
-									scale={1.5}
-								/>
-							</div>
-						</BottomContainer>
-					</InfoContainer>
-					<FirebaseImage storageRef={attachments[mainImageIndex]} size="M" />
-				</Link>
-			</BigContainer>
-		)
-	}
+	}) => (
+		<BigContainer>
+			<Link to={route("ITEM_DETAILS", { id })}>
+				<InfoContainer>
+					<TopContainer>
+						<div>{category}</div>
+						<Designers value={designers} />
+						<Size value={size} />
+					</TopContainer>
+					<MiddleContainer>
+						<Name>{name}</Name>
+						<DateContainer withMargin>Dodano {moment().to(createdAt)}</DateContainer>
+						<Description>{description}</Description>
+					</MiddleContainer>
+					<BottomContainer pinToBottom>
+						<Price value={price} />
+						<div className="align-right">
+							<SaveIconButton
+								css={`
+									color: var(--gray25);
+									padding-right: 0;
+								`}
+								id={id}
+								type="item"
+								scale={1.5}
+							/>
+						</div>
+					</BottomContainer>
+				</InfoContainer>
+				<FirebaseImage storageRef={attachments[mainImageIndex]} size="M" />
+			</Link>
+		</BigContainer>
+	)
 )
 
 export default BigItemCard

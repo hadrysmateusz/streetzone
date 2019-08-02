@@ -16,20 +16,21 @@ import {
 } from "./StyledComponents"
 
 import { route } from "../../utils"
-import { CONST } from "../../constants"
+import { getImageUrl } from "../../utils/getImageUrl"
 
 const PostPreview = ({
 	id,
 	excerpt,
 	mainImageIndex,
-	imageUrls,
+	attachments,
 	category,
 	title,
 	createdAt,
 	tags
 }) => {
 	const date = moment(createdAt).format("LL")
-	const imageUrl = imageUrls[mainImageIndex]
+	const imageRef = attachments[mainImageIndex]
+	const imageUrl = getImageUrl(imageRef, "M")
 
 	const hasTags = tags && Array.isArray(tags) && tags.length > 0
 
