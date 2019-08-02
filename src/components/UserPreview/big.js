@@ -134,12 +134,10 @@ const BigUserPreview = withRouter(({ userId }) => {
 	)
 })
 
-export const UsersView = ({ users }) => {
-	return (
-		<UsersList>
-			{users.map((userId) => (
-				<BigUserPreview key={userId} userId={userId} />
-			))}
-		</UsersList>
-	)
-}
+export const UsersView = ({ users }) => (
+	<UsersList>
+		{users && users.map((userId) => <BigUserPreview key={userId} userId={userId} />)}
+	</UsersList>
+)
+
+export default BigUserPreview
