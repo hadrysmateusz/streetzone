@@ -21,8 +21,9 @@ export const L_THUMB_POSTFIX = "_1000_THUMB"
 export const STORAGE_BUCKET_BLOG_ATTACHMENTS = "blog-attachments"
 export const STORAGE_BUCKET_DROP_ATTACHMENTS = "drop-attachments"
 export const STORAGE_BUCKET_DEAL_ATTACHMENTS = "deal-attachments"
-export const STORAGE_BUCKET_ITEM_ATTACHMENTS = "attachments"
+export const STORAGE_BUCKET_ITEM_ATTACHMENTS = "item-attachments"
 export const STORAGE_BUCKET_PROFILE_PICTURES = "profile-pictures"
+export const STORAGE_BUCKET_BRAND_LOGOS = "brand-logos"
 
 // eslint-disable-next-line
 export const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/

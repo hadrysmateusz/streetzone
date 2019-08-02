@@ -6,7 +6,6 @@ import { PageContainer } from "../../../components/Containers"
 
 import { CONST } from "../../../constants"
 import { useFirebase } from "../../../hooks"
-import { route } from "../../../utils"
 
 import Form from "./Form"
 import { getImageUrl } from "../../../utils/getImageUrl"
@@ -22,8 +21,6 @@ const EditDesigner = ({ history, match }) => {
 			const snap = await firebase.designer(id).get()
 
 			let data = snap.data()
-
-			console.log(snap, data)
 
 			// Get attachment urls for previews
 			const imageUrl = getImageUrl(data.imageRef, "M")
@@ -51,7 +48,7 @@ const EditDesigner = ({ history, match }) => {
 
 			// TODO: delete old image
 
-			if (logo) {
+			if (logo && !logo.isUploaded) {
 				const logoSnapshot = await firebase.uploadFile(
 					CONST.STORAGE_BUCKET_BRAND_LOGOS,
 					logo.data
@@ -60,7 +57,7 @@ const EditDesigner = ({ history, match }) => {
 				data.imageRef = logoSnapshot.ref.fullPath
 			}
 
-			await firebase.designer(id).set(data)
+			await firebase.designer(id).update(data)
 
 			setTimeout(() => {
 				form.reset()

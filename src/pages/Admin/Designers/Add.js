@@ -25,10 +25,8 @@ const AddDesigner = withRouter(({ history }) => {
 			let data = { id, label, colorA, colorB }
 
 			if (logo) {
-				const logoSnapshot = await firebase.uploadFile(
-					CONST.STORAGE_BUCKET_BRAND_LOGOS,
-					logo.data
-				)
+				const bucket = CONST.STORAGE_BUCKET_BRAND_LOGOS
+				const logoSnapshot = await firebase.uploadFile(bucket, logo.data)
 
 				data.imageRef = logoSnapshot.ref.fullPath
 			}

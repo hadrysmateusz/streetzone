@@ -15,7 +15,8 @@ const {
 	STORAGE_BUCKET_DROP_ATTACHMENTS,
 	STORAGE_BUCKET_DEAL_ATTACHMENTS,
 	STORAGE_BUCKET_ITEM_ATTACHMENTS,
-	STORAGE_BUCKET_PROFILE_PICTURES
+	STORAGE_BUCKET_PROFILE_PICTURES,
+	STORAGE_BUCKET_BRAND_LOGOS
 } = require("./const")
 
 /**
@@ -235,6 +236,12 @@ const processImage = async (file) => {
 				await writeUrlsToDb(userId, urls)
 			}
 			return
+		case STORAGE_BUCKET_BRAND_LOGOS:
+			return await generateThumbnails(file, [
+				{ size: "40x40", mode: "contain" },
+				{ size: "200x200", mode: "contain" },
+				null
+			])
 		default:
 			throw Error("uploaded file to unknown bucket")
 	}

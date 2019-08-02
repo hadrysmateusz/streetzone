@@ -6,6 +6,7 @@ import { TextBlock } from "../../../components/StyledComponents"
 
 import { route } from "../../../utils"
 import { useFirebase } from "../../../hooks"
+import { getImageUrl } from "../../../utils/getImageUrl"
 
 const GradientSwatch = styled.div`
 	width: 100%;
@@ -38,8 +39,10 @@ const DesignerItemContainer = styled.div`
 	padding: var(--spacing2);
 `
 
-const DesignerPreview = ({ id, logoURL, label, colorA, colorB }) => {
+const DesignerPreview = ({ id, imageRef, label, colorA, colorB }) => {
 	const firebase = useFirebase()
+
+	const logoUrl = getImageUrl(imageRef, "M")
 
 	const onDelete = () => {
 		try {
@@ -60,7 +63,7 @@ const DesignerPreview = ({ id, logoURL, label, colorA, colorB }) => {
 			</TextBlock>
 			<FlexContainer>
 				<GradientSwatch colorA={colorA} colorB={colorB} />
-				<LogoContainer url={logoURL} />
+				<LogoContainer url={logoUrl} />
 			</FlexContainer>
 			<ButtonContainer>
 				<Button danger onClick={onDelete}>
