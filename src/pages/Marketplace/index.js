@@ -13,7 +13,7 @@ import { CONST } from "../../constants"
 
 import Topbar from "./Topbar"
 import PromotedSection from "./PromotedSection"
-import Header from "./Header"
+import DesignerBanner from "./DesignerBanner"
 import Filters from "./Filters"
 import MarketplaceResults from "./MarketplaceResults"
 
@@ -105,7 +105,7 @@ const MarketplacePage = ({ currentBreakpoint }) => {
 			hitsPerPage={4}
 		>
 			<HelmetBasics title="Tablica" />
-			<Header />
+			<DesignerBanner />
 			<PromotedSection />
 			<PageContainer extraWide>
 				<GridContainer>

@@ -6,6 +6,7 @@ import styled from "styled-components/macro"
 import { PageContainer } from "../../components/Containers"
 import { TextBlock } from "../../components/StyledComponents"
 import { useDesigner } from "../../hooks"
+import { getImageUrl } from "../../utils/getImageUrl"
 
 const OuterContainer = styled.div`
 	margin-top: calc(-1 * var(--page-header-margin));
@@ -52,8 +53,12 @@ const Header = compose(
 		<OuterContainer {...designer}>
 			<PageContainer noMargin>
 				<InnerContainer>
-					{/* <LogoContainer url={designer.logoURL} /> */}
-					<Logo src={designer.logoURL} alt={`logo ${designer.label}`} />
+					{designer.imageRef && (
+						<Logo
+							src={getImageUrl(designer.imageRef, "M")}
+							alt={`logo ${designer.label}`}
+						/>
+					)}
 					<div className="info-container">
 						<TextBlock size="l" bold color="white">
 							{designer.label}
