@@ -21,17 +21,12 @@ const AddDrop = ({ history }) => {
 				files
 			)
 
-			const urlPromises = attachments.map((storageRef) =>
-				firebase.getImageURL(storageRef)
-			)
-			const imageUrls = await Promise.all(urlPromises)
-
 			// Get main image index
 			const mainImageIndex = files.findIndex((a) => a.isMain)
 
 			// Format the values for db
 			const formattedData = formatDropDataForDb(
-				{ ...values, mainImageIndex, attachments, imageUrls },
+				{ ...values, mainImageIndex, attachments },
 				MODE.CREATE
 			)
 

@@ -39,26 +39,26 @@ const EditPost = ({ match }) => {
 
 	const id = match.params.id
 
-	const getData = async () => {
-		const snap = await firebase.post(id).get()
-
-		let data = snap.data()
-
-		// create CustomFile objects with the fetched previewUrls
-		const file = new CustomFile({
-			storageRef: data.mainImageRef,
-			previewUrl: data.mainImageURL,
-			isUploaded: true
-		})
-
-		data.mainImage = file
-
-		setItem(data)
-	}
-
 	useEffect(() => {
+		const getData = async () => {
+			const snap = await firebase.post(id).get()
+
+			let data = snap.data()
+
+			// create CustomFile objects with the fetched previewUrls
+			const file = new CustomFile({
+				storageRef: data.mainImageRef,
+				// previewUrl: data.mainImageURL,
+				isUploaded: true
+			})
+
+			data.mainImage = file
+
+			setItem(data)
+		}
+
 		getData()
-	}, [id])
+	}, [firebase, id])
 
 	const onSubmit = async (
 		{ section, mainImage, title, author, mainContent, dropsAt },

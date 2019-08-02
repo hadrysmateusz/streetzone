@@ -6,8 +6,7 @@ import { formatInt, formatNonEmptyArray, formatString } from "./basicsUtils"
 
 export const MODE = {
 	CREATE: "CREATE",
-	EDIT: "EDIT",
-	ARCHIVE: "ARCHIVE"
+	EDIT: "EDIT"
 }
 
 export const REQUIRED = [
@@ -16,7 +15,6 @@ export const REQUIRED = [
 	"designers",
 	"itemCategory",
 	"attachments",
-	"imageUrls",
 	"mainImageIndex"
 ]
 
@@ -81,11 +79,6 @@ export const formatDropDataForDb = (data, mode, flagState = true) => {
 			formatted.attachments = formatNonEmptyArray(data.attachments)
 		}
 
-		// imageUrls
-		if (isSet(data.imageUrls)) {
-			formatted.imageUrls = formatNonEmptyArray(data.imageUrls)
-		}
-
 		// mainImageIndex
 		if (isSet(data.mainImageIndex)) {
 			// the minimum/default index is 0
@@ -115,10 +108,6 @@ export const formatDropDataForDb = (data, mode, flagState = true) => {
 
 	if (mode === MODE.EDIT) {
 		formatted.editedAt = Date.now()
-	}
-
-	if (mode === MODE.ARCHIVE) {
-		formatted.isArchived = flagState
 	}
 
 	return formatted

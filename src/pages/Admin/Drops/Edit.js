@@ -22,29 +22,29 @@ const EditDrop = ({ match, history }) => {
 
 	const id = match.params.id
 
-	const getData = async () => {
-		const snap = await firebase.drop(id).get()
-
-		let data = snap.data()
-
-		// Get attachment urls for previews
-		const imageURLs = await firebase.batchGetImageURLs(data.attachments)
-
-		// create CustomFile objects with the fetched previewUrls
-		const files = data.attachments.map((attachment, i) => {
-			return new CustomFile({
-				storageRef: attachment,
-				previewUrl: imageURLs[i],
-				isUploaded: true
-			})
-		})
-
-		setInitialValues({ ...data, files })
-	}
-
 	useEffect(() => {
+		const getData = async () => {
+			const snap = await firebase.drop(id).get()
+
+			let data = snap.data()
+
+			// Get attachment urls for previews
+			const imageURLs = await firebase.batchGetImageURLs(data.attachments)
+
+			// create CustomFile objects with the fetched previewUrls
+			const files = data.attachments.map((attachment, i) => {
+				return new CustomFile({
+					storageRef: attachment,
+					previewUrl: imageURLs[i],
+					isUploaded: true
+				})
+			})
+
+			setInitialValues({ ...data, files })
+		}
+
 		getData()
-	}, [id])
+	}, [firebase, id])
 
 	const onSubmit = async (values, form) => {
 		try {

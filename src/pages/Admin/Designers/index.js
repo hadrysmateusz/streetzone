@@ -158,11 +158,8 @@ const AddDesigner = () => {
 					CONST.STORAGE_BUCKET_BRAND_LOGOS,
 					logo.data
 				)
-				const logoRef = logoSnapshot.ref.fullPath
-				const logoURL = await firebase.getImageURL(logoRef)
 
-				data.logoRef = logoRef
-				data.logoURL = logoURL
+				data.logoRef = logoSnapshot.ref.fullPath
 			}
 
 			await firebase.designer(id).set(data)
@@ -175,7 +172,7 @@ const AddDesigner = () => {
 		}
 	}
 
-	const validate = ({ logo, label, colorA, colorB }) => {
+	const validate = ({ label, colorA, colorB }) => {
 		const errors = {}
 
 		if (!label) {

@@ -19,15 +19,12 @@ const AddPost = ({ history }) => {
 			// Get attachments' refs
 			const attachments = files.map((file) => file.ref)
 
-			// Get attachments' urls
-			const imageUrls = files.map((file) => file.url)
-
 			// Get main image index
 			const mainImageIndex = files.findIndex((a) => a.isMain)
 
 			// Format the values for db
 			const formattedData = formatPostDataForDb(
-				{ ...values, mainImageIndex, attachments, imageUrls },
+				{ ...values, mainImageIndex, attachments },
 				MODE.CREATE
 			)
 
