@@ -240,7 +240,6 @@ const RefreshButton = ({ id, bumpsLeft }) => {
 		} catch (err) {
 			throw err
 		} finally {
-			await sleep(5500)
 			refresh()
 			setIsRefreshing(false)
 		}
@@ -251,9 +250,14 @@ const RefreshButton = ({ id, bumpsLeft }) => {
 			await refreshItem()
 
 			// show flash message
-			flashMessage({ type: "success", textContent: "BUMP" })
+			flashMessage({
+				type: "success",
+				textContent: "Odświeżono",
+				details: "Odśwież stronę za kilka sekund by zobaczyć zmiany"
+			})
 		} catch (err) {
 			// TODO: error handling
+			flashMessage({ type: "error", textContent: "Wystąpił błąd" })
 		}
 	}
 
