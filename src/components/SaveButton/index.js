@@ -83,9 +83,13 @@ const useSave = (type, id) => {
 			// Update the db
 			await firebase.currentUser().update({ [attribute]: newList })
 
+			// TODO: improve the copy here
 			flashMessage({
 				type: "success",
-				textContent: wasActive ? "Usunięto z zapisanych" : "Zapisano!"
+				textContent: wasActive ? "Usunięto z zapisanych" : "Zapisano!",
+				details: !wasActive
+					? "Zapisane rzeczy znajdziesz w odpowiedniej zakładce na swoim profilu"
+					: undefined
 			})
 		} catch (error) {
 			console.log(error)
