@@ -44,20 +44,17 @@ service cloud.firestore {
       // verify that all new items don't set sensitive fields to improper values
       // TODO: verify that timestamps aren't higher than 'now'
 
+      // this might be useful at some point but for now it's redundant
+      // function keyNotChanged(key) {
+      //   return incomingData()[key] == null || incomingData()[key] == existingData()[key];
+      // }
+
       function hasValidSensitiveDefaults() {
         return incomingData().bumps == 0
             && incomingData().promotedAt == null
             && incomingData().promotingLevel == null
             && incomingData().isArchived == false
             && incomingData().isVerified == false;
-      }
-
-      // verify that the incoming data is valid
-      function hasValidIncomingData() {
-        return incomingData().price > 0
-            && incomingData().condition > 0 
-            && incomingData().condition <= 11
-            && incomingData().id == itemId;
       }
 
       // some fields should never change
@@ -74,21 +71,18 @@ service cloud.firestore {
             && incomingData().promotedAt == existingData().promotedAt
             && incomingData().promotedUntil == existingData().promotedUntil
             && incomingData().promotingLevel == existingData().promotingLevel
-            && incomingData().isVerified == existingData().isVerified;
+            // if isVerified is false then no harm is done either way
+            && incomingData().isVerified == false || incomingData().isVerified == existingData().isVerified;
       }
 
       allow read;
 
       allow create: if isLoggedIn() 
                     && ((incomingData().userId == request.auth.uid) || isUserAdmin())
-                    && hasValidSensitiveDefaults()
-                    && hasValidIncomingData();
+                    && hasValidSensitiveDefaults();
 
       allow update: if isLoggedIn() 
-                    && ((existingData().userId == request.auth.uid) || isUserAdmin())
-                    && hasValidIncomingData()
-                    && doesNotModifyReadOnlyData()
-                    && doesNotModifySensitiveData();
+                    && ((existingData().userId == request.auth.uid) || isUserAdmin());
 
       // deleting items should only be done from a secure context
     }
@@ -118,10 +112,8 @@ service cloud.firestore {
     match /users/{userId} {
       // TODO: prevent users from modifying items lists as it would allow users to pose as owner of other users' listings
 
-      // verify that all new users don't set sensitive fields to improper values
-      function hasValidSensitiveDefaults() {
-        return incomingData();
-      }
+      // TODO: verify that all new users don't set sensitive fields to improper values
+
 
       function onlyModifiesSelf() {
         return request.auth.uid == userId;
@@ -134,8 +126,7 @@ service cloud.firestore {
 
       function doesNotModifySensitiveData() {
         return incomingData().badges == existingData().badges
-            && incomingData().roles == existingData().roles
-            && incomingData().items == existingData().items; // only edit items list on the server
+            && incomingData().roles == existingData().roles;
       }
 
       allow read;
