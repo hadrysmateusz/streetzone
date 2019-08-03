@@ -11,8 +11,8 @@ import PageHeading from "../../components/PageHeading"
 import HelmetBasics from "../../components/HelmetBasics"
 
 import { NotFoundError } from "../../errors"
-import { useAuthentication, useFirebase } from "../../hooks"
-import { sleep, route } from "../../utils"
+import { useAuthentication, useFirebase, useFlash } from "../../hooks"
+import { route } from "../../utils"
 import { formatItemDataForDb, MODE } from "../../utils/formatting/formatItemData"
 import { CONST } from "../../constants"
 
@@ -28,6 +28,7 @@ const formatDataForEditForm = (price, condition, description, files) => ({
 const EditItemPage = ({ match, history, location }) => {
 	const firebase = useFirebase()
 	const authUser = useAuthentication()
+	const flashMessage = useFlash()
 	const [error, setError] = useState(null)
 	const [initialData, setInitialData] = useState(null)
 	const [item, setItem] = useState(null)
@@ -124,15 +125,13 @@ const EditItemPage = ({ match, history, location }) => {
 				firebase.removeAllImagesOfRef(storageRef)
 			}
 
-			// TODO: replace this with flash message saying that you need to wait and refresh to see changes
-			await sleep(5500)
-
-			// Clear form to remove conflict with transition blocking
-			setTimeout(form.reset)
-
-			// Redirect back
-			history.goBack()
-			return
+			setTimeout(() => {
+				// TODO: add details saying to refresh the page after a bit
+				flashMessage({ type: "success", textContent: "Edytowano pomyślnie" })
+				form.reset()
+				history.goBack()
+				return
+			})
 		} catch (error) {
 			alert("Wystąpił problem podczas edytowania przedmiotu")
 			console.log(error)

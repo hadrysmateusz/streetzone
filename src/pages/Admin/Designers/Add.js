@@ -36,6 +36,7 @@ const AddDesigner = withRouter(({ history }) => {
 			setTimeout(() => {
 				form.reset()
 				history.goBack()
+				return
 			})
 		} catch (error) {
 			alert("Wystąpił problem")
