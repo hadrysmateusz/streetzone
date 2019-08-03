@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react"
 import styled, { keyframes } from "styled-components/macro"
 import { Portal } from "react-portal"
 import shortid from "shortid"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 const OuterContainer = styled.div`
 	position: fixed;
@@ -14,23 +15,23 @@ const OuterContainer = styled.div`
 
 const fadein = keyframes`
 from {
-  transform: translateX(-120%);
+  transform: translateY(120%);
   opacity: 0;
 }
 
 to {
-  transform: translateX(0);
+  transform: translateY(0);
   opacity: 1;
 }
 `
 const fadeout = keyframes`
 from {
-  transform: translateX(0);
+  transform: translateY(0);
   opacity: 1;
 }
 
 to {
-  transform: translateX(120%);
+  transform: translateY(120%);
   opacity: 0;
 }
 `
@@ -41,18 +42,42 @@ const MessageContainer = styled.div`
 	--exit-delay: calc(${(p) => p.ttl}ms - var(--animation-duration));
 
 	margin-bottom: var(--spacing3);
-	background: var(--black50);
-	${"" /* border: 1px solid var(--black100); */}
-	padding: var(--spacing1) var(--spacing2);
-	color: white;
 	animation-name: ${fadein}, ${fadeout};
 	animation-duration: var(--animation-duration);
 	animation-fill-mode: both, forwards;
-	animation-timing-function: ease-out, ease-in;
+	animation-timing-function: ease-out, ease-out;
 	animation-delay: 0s, var(--exit-delay);
+
+	color: #303030;
+	/* border-radius: 3px; */
+	border-left: 4px solid var(--success50);
+	padding: var(--spacing3) 0;
+	background: white;
+	box-shadow: 0 3px 14px rgba(0, 0, 0, 0.12);
 `
 
-const Message = ({ ttl = 4000, id, textContent, type, onDelete }) => {
+const IconContainer = styled.div`
+	color: var(--success50);
+	font-size: 25px;
+	padding-left: 14px;
+`
+const Heading = styled.div`
+	font-size: var(--fs-s);
+	font-weight: bold;
+`
+const Details = styled.div`
+	font-size: 13px;
+	color: var(--gray0);
+`
+const ContentContainer = styled.div`
+	padding-left: 14px;
+	padding-right: var(--spacing3);
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+`
+
+const Message = ({ ttl = 4000, id, textContent, details, type, onDelete }) => {
 	useEffect(() => {
 		const timeoutId = setTimeout(() => {
 			onDelete(id)
@@ -61,7 +86,32 @@ const Message = ({ ttl = 4000, id, textContent, type, onDelete }) => {
 		return () => clearTimeout(timeoutId)
 	})
 
-	return <MessageContainer ttl={ttl}>{textContent}</MessageContainer>
+	let icon
+	switch (type) {
+		case "success":
+			icon = "check-circle"
+			break
+		case "error":
+			icon = "exclamation-circle"
+			break
+		case "info":
+			icon = "info-circle"
+			break
+		default:
+			throw Error(`invalid flash message type (${type})`)
+	}
+
+	return (
+		<MessageContainer ttl={ttl}>
+			<IconContainer>
+				<FontAwesomeIcon icon={icon} />
+			</IconContainer>
+			<ContentContainer>
+				<Heading>{textContent}</Heading>
+				{details && <Details>{details}</Details>}
+			</ContentContainer>
+		</MessageContainer>
+	)
 }
 
 export const FlashContext = React.createContext()
@@ -71,13 +121,7 @@ const FlashMessages = ({ children }) => {
 
 	const addMessage = (message, ttl) => {
 		const id = shortid.generate()
-
-		const isTextOnly = typeof message === "string"
-
-		const _message = isTextOnly
-			? { textContent: message, id, ttl }
-			: { ...message, id, ttl }
-
+		const _message = { ...message, id, ttl }
 		setMessages((messages) => [...messages, _message])
 	}
 
