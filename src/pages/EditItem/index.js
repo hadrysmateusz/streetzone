@@ -129,7 +129,8 @@ const EditItemPage = ({ match, history, location }) => {
 				flashMessage({
 					type: "success",
 					text: "Edytowano pomyślnie",
-					details: "Odśwież stronę za kilka sekund by zobaczyć zmiany"
+					details: "Odśwież stronę za kilka sekund by zobaczyć zmiany",
+					ttl: 6000
 				})
 				form.reset()
 				history.goBack()

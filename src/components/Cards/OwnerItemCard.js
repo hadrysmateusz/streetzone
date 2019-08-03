@@ -253,7 +253,8 @@ const RefreshButton = ({ id, bumpsLeft }) => {
 			flashMessage({
 				type: "success",
 				text: "Odświeżono",
-				details: "Odśwież stronę za kilka sekund by zobaczyć zmiany"
+				details: "Odśwież stronę za kilka sekund by zobaczyć zmiany",
+				ttl: 6000
 			})
 		} catch (err) {
 			// TODO: error handling

@@ -77,7 +77,7 @@ const ContentContainer = styled.div`
 	justify-content: center;
 `
 
-const Message = ({ ttl = 4000, id, text, details, type, onDelete }) => {
+const Message = ({ ttl = 5000, id, text, details, type, onDelete }) => {
 	useEffect(() => {
 		const timeoutId = setTimeout(() => {
 			onDelete(id)
