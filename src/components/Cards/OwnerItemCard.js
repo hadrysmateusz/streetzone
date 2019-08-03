@@ -252,12 +252,12 @@ const RefreshButton = ({ id, bumpsLeft }) => {
 			// show flash message
 			flashMessage({
 				type: "success",
-				textContent: "Odświeżono",
+				text: "Odświeżono",
 				details: "Odśwież stronę za kilka sekund by zobaczyć zmiany"
 			})
 		} catch (err) {
 			// TODO: error handling
-			flashMessage({ type: "error", textContent: "Wystąpił błąd" })
+			flashMessage({ type: "error", text: "Wystąpił błąd" })
 		}
 	}
 

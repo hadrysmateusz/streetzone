@@ -21,7 +21,7 @@ const DeleteAccountButton = withRouter(({ history }) => {
 		await firebase.auth.currentUser.delete()
 
 		// exit successfully
-		flashMessage("Konto zostało usunięte")
+		flashMessage({ type: "success", text: "Konto zostało usunięte" })
 		history.push(route("HOME"))
 	})
 
@@ -35,7 +35,10 @@ const DeleteAccountButton = withRouter(({ history }) => {
 			await onDeleteWithReauthentication()
 		} catch (err) {
 			console.log(err)
-			alert("Wystąpił problem. Konto mogło nie zostać usunięte.")
+			flashMessage({
+				type: "error",
+				text: "Wystąpił problem. Konto mogło nie zostać usunięte."
+			})
 		}
 	}
 

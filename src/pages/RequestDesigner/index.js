@@ -57,19 +57,23 @@ const RequestDesigner = ({ history }) => {
 		} catch (e) {
 			flashMessage({
 				type: "error",
-				textContent: "Wystąpił problem, prośba nie została wysłana"
+				text: "Wystąpił problem",
+				details: "Prośba nie została wysłana"
 			})
 			return
 		}
 
-		// show flash message
-		flashMessage({ type: "success", textContent: "Wysłano prośbę o dodanie" })
-
-		// Reset form
-		setTimeout(form.reset)
-
-		// Redirect
-		history.goBack()
+		setTimeout(() => {
+			flashMessage({
+				type: "success",
+				text: "Wysłano prośbę o dodanie",
+				details: "Włącz powiadomienia, a my damy ci znać gdy marka zostanie dodana",
+				ttl: 6000
+			})
+			form.reset()
+			history.goBack()
+			return
+		})
 	}
 
 	return (
@@ -80,25 +84,23 @@ const RequestDesigner = ({ history }) => {
 			<Form
 				onSubmit={onSubmit}
 				validate={validate}
-				render={({ form, handleSubmit, submitting, pristine, values, ...rest }) => {
-					return (
-						<StyledForm onSubmit={handleSubmit}>
-							<Info>
-								{/* TODO: make this copy more accurate once all of the functionality is finished */}
-								Podaj nazwę marki lub projektanta. Po weryfikacji, dodamy ją do systemu. W
-								międzyczasie możesz użyć marki "Inny" by wystawić swój przedmiot. Gdy
-								marka zostanie dodana, będziesz mógł zedytować swoje ogłoszenie.
-							</Info>
+				render={({ form, handleSubmit, submitting, pristine, values, ...rest }) => (
+					<StyledForm onSubmit={handleSubmit}>
+						<Info>
+							{/* TODO: make this copy more accurate once all of the functionality is finished */}
+							Podaj nazwę marki lub projektanta. Po weryfikacji, dodamy ją do systemu. W
+							międzyczasie możesz użyć marki "Inny" by wystawić swój przedmiot. Gdy marka
+							zostanie dodana, będziesz mógł zedytować swoje ogłoszenie.
+						</Info>
 
-							<TextFF label="Nazwa projektanta / marki" placeholder="Nazwa" name="name" />
+						<TextFF label="Nazwa projektanta / marki" placeholder="Nazwa" name="name" />
 
-							<ButtonContainer vertical>
-								<LoaderButton text="OK" isLoading={submitting} primary big />
-								<BackButton />
-							</ButtonContainer>
-						</StyledForm>
-					)
-				}}
+						<ButtonContainer vertical>
+							<LoaderButton text="OK" isLoading={submitting} primary big />
+							<BackButton />
+						</ButtonContainer>
+					</StyledForm>
+				)}
 			/>
 		</PageContainer>
 	)

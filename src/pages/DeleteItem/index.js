@@ -13,7 +13,7 @@ import HelmetBasics from "../../components/HelmetBasics"
 
 import { NotFoundError } from "../../errors"
 import { useFlash, useFirebase, useAuthentication } from "../../hooks"
-import { getRedirectTo, sleep, route } from "../../utils"
+import { getRedirectTo, route } from "../../utils"
 
 const OuterContainer = styled.div`
 	max-width: 430px;
@@ -48,12 +48,6 @@ const useDeleteItem = (id) => {
 		} catch (err) {
 			throw err
 		} finally {
-			/* 
-			Sleep is used here to prevent redirect before the algolia index gets updated.
-			Redirecting too early would mean displaying the deleted item because algolia 
-			is not yet aware of its deletion.
-			*/
-			await sleep(5500)
 			setIsDeleting(false)
 		}
 	}
@@ -105,13 +99,23 @@ const DeleteItem = withRouter(({ match, history, location }) => {
 			await deleteItem()
 
 			// show flash message
-			flashMessage({ type: "success", textContent: "Usunięto" })
+			flashMessage({
+				type: "success",
+				text: "Usunięto",
+				details: "Odśwież stronę za kilka sekund by zobaczyć zmiany"
+			})
 
 			// redirect
 			const redirectTo = getRedirectTo(location)
 			history.replace(redirectTo)
 		} catch (err) {
-			// TODO: error handling
+			// TODO: better error handling
+			// show flash message
+			flashMessage({
+				type: "error",
+				text: "Wystąpił błąd",
+				details: "Ogłoszenie mogło nie zostać usunięte"
+			})
 		}
 	}
 

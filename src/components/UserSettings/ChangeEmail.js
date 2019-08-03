@@ -85,13 +85,21 @@ const ChangeEmail = () => {
 		updateEmailWithReauthentication,
 		reauthenticationModal
 	] = useFunctionWithReauthentication(async (email) => {
-		// update auth user email
-		await firebase.updateEmail(email)
+		try {
+			// update auth user email
+			await firebase.updateEmail(email)
 
-		// update email in database
-		await firebase.user(authUser.uid).update({ email })
+			// update email in database
+			await firebase.user(authUser.uid).update({ email })
 
-		flashMessage("Zmiany zostały zapisane")
+			flashMessage({ type: "success", text: "Zmiany zostały zapisane" })
+		} catch (error) {
+			flashMessage({
+				type: "error",
+				text: "Wystąpił błąd",
+				details: "Zmiany mogły nie zostać zapisane"
+			})
+		}
 	})
 
 	// set initialValues for the form

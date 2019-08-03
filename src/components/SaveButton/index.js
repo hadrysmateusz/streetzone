@@ -86,7 +86,7 @@ const useSave = (type, id) => {
 			// TODO: improve the copy here
 			flashMessage({
 				type: "success",
-				textContent: wasActive ? "Usunięto z zapisanych" : "Zapisano!",
+				text: wasActive ? "Usunięto z zapisanych" : "Zapisano!",
 				details: !wasActive
 					? "Zapisane rzeczy znajdziesz w odpowiedniej zakładce na swoim profilu"
 					: undefined
@@ -132,7 +132,10 @@ const useSave = (type, id) => {
 				})
 			}
 
-			flashMessage(wasActive ? "Usunięto z obserwowanych" : "Zaobserwowano!")
+			flashMessage({
+				type: "success",
+				text: wasActive ? "Usunięto z obserwowanych" : "Zaobserwowano!"
+			})
 		} catch (error) {
 			console.log(error)
 			// Revert the state change if there was an error

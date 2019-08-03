@@ -28,7 +28,7 @@ export const SignUp = withRouter(({ location, history }) => {
 	const onSuccess = (message) => {
 		// show flash message
 		if (message) {
-			flashMessage({ type: "success", textContent: message })
+			flashMessage({ type: "success", text: message })
 		}
 
 		// redirect

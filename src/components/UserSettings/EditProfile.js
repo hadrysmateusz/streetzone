@@ -185,9 +185,12 @@ const EditProfile = () => {
 				await firebase.file(oldFileRef).delete()
 			}
 
-			flashMessage("Zmiany zostały zapisane")
+			flashMessage({ type: "success", text: "Zmiany zostały zapisane" })
 		} catch (err) {
-			console.log(err)
+			flashMessage({
+				type: "error",
+				text: "Wystąpił błąd, zmiany mogły nie zostać zapisane"
+			})
 			setError("Wystąpił błąd, zmiany mogły nie zostać zapisane")
 		}
 	}

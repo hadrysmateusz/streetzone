@@ -64,7 +64,7 @@ const SmartFileItem = ({
 				await navigator.clipboard.writeText(previewUrl)
 				console.log("Link dodano do schowka")
 
-				flashMessage({ type: "success", textContent: "Link skopiowano do schowka" })
+				flashMessage({ type: "success", text: "Link skopiowano do schowka" })
 			} catch (err) {
 				if ("permissions" in navigator) {
 					const result = await navigator.permissions.query({ name: "clipboard" })

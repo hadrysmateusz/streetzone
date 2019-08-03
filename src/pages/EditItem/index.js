@@ -126,14 +126,21 @@ const EditItemPage = ({ match, history, location }) => {
 			}
 
 			setTimeout(() => {
-				// TODO: add details saying to refresh the page after a bit
-				flashMessage({ type: "success", textContent: "Edytowano pomyślnie" })
+				flashMessage({
+					type: "success",
+					text: "Edytowano pomyślnie",
+					details: "Odśwież stronę za kilka sekund by zobaczyć zmiany"
+				})
 				form.reset()
 				history.goBack()
 				return
 			})
 		} catch (error) {
-			alert("Wystąpił problem podczas edytowania przedmiotu")
+			flashMessage({
+				type: "error",
+				text: "Wystąpił błąd",
+				details: "Zmiany mogły nie zostać zapisane"
+			})
 			console.log(error)
 		}
 	}

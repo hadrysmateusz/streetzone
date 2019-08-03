@@ -77,7 +77,7 @@ const ContentContainer = styled.div`
 	justify-content: center;
 `
 
-const Message = ({ ttl = 4000, id, textContent, details, type, onDelete }) => {
+const Message = ({ ttl = 4000, id, text, details, type, onDelete }) => {
 	useEffect(() => {
 		const timeoutId = setTimeout(() => {
 			onDelete(id)
@@ -107,7 +107,7 @@ const Message = ({ ttl = 4000, id, textContent, details, type, onDelete }) => {
 				<FontAwesomeIcon icon={icon} />
 			</IconContainer>
 			<ContentContainer>
-				<Heading>{textContent}</Heading>
+				<Heading>{text}</Heading>
 				{details && <Details>{details}</Details>}
 			</ContentContainer>
 		</MessageContainer>
@@ -119,9 +119,9 @@ export const FlashContext = React.createContext()
 const FlashMessages = ({ children }) => {
 	const [messages, setMessages] = useState([])
 
-	const addMessage = (message, ttl) => {
+	const addMessage = (message) => {
 		const id = shortid.generate()
-		const _message = { ...message, id, ttl }
+		const _message = { ...message, id }
 		setMessages((messages) => [...messages, _message])
 	}
 
