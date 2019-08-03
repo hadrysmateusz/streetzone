@@ -41,6 +41,7 @@ const StyledSelect = styled(Select).attrs({
 
 	.react-select__menu {
 		border-radius: 0;
+		z-index: 20;
 	}
 	.react-select__menu-list {
 	}
