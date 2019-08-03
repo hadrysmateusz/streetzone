@@ -290,19 +290,20 @@ const PageHeaderMobile = ({ authUser, firebase, location }) => (
 					)}
 
 					<BurgerNavigation>
-						<MobileNavLink to={route("BLOG_HOME")}>Czytaj</MobileNavLink>
 						<MobileNavLink to={route("DROPS_SECTION", { id: "newest" })}>
 							Dropy
 						</MobileNavLink>
 						<MobileNavLink to={route("MARKETPLACE")} exact>
-							Kupuj
+							Tablica
 						</MobileNavLink>
+						<MobileNavLink to={route("DEALS")}>Okazje</MobileNavLink>
+						<MobileNavLink to={route("BLOG_HOME")}>Blog</MobileNavLink>
 						<MobileNavLink to={route("NEW_ITEM")}>Sprzedawaj</MobileNavLink>
 						<MobileNavLink to={route("FAQ")}>Informacje</MobileNavLink>
 
 						{authUser && [
 							<MobileNavLink to={route("ACCOUNT_BASE", { id: authUser.uid })}>
-								Profil
+								Twój Profil
 							</MobileNavLink>,
 							<MobileNavItem onClick={openSignOutModal}>Wyloguj</MobileNavItem>
 						]}
@@ -413,7 +414,13 @@ const PageHeaderDesktop = ({ authUser, location }) => {
 										)
 									)}
 
-									<SubmenuItem label="Wyloguj" onClick={openSignOutModal} />
+									<SubmenuItem
+										label="Wyloguj"
+										onClick={(e) => {
+											e.preventDefault() // prevent redirect to account page
+											openSignOutModal()
+										}}
+									/>
 								</DesktopNavItem>
 							</>
 						) : (

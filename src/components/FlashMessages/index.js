@@ -41,7 +41,6 @@ const MessageContainer = styled.div`
 	/* when to start the exit animation */
 	--exit-delay: calc(${(p) => p.ttl}ms - var(--animation-duration));
 
-	margin-bottom: var(--spacing3);
 	animation-name: ${fadein}, ${fadeout};
 	animation-duration: var(--animation-duration);
 	animation-fill-mode: both, forwards;
@@ -54,6 +53,7 @@ const MessageContainer = styled.div`
 	padding: var(--spacing3) 0;
 	background: white;
 	box-shadow: 0 3px 14px rgba(0, 0, 0, 0.12);
+	margin-bottom: var(--spacing3);
 `
 
 const IconContainer = styled.div`
