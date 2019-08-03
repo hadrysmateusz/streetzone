@@ -18,7 +18,7 @@ const GlobalStyle = createGlobalStyle`
 	--danger100: #ffdeda;
 
 	--success25: #196014;
-	--success50: #66c978;
+	--success50: #40B15A;
 	--success75: #d0f4cd;
 
 	--black0: #06080a;
