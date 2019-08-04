@@ -32,12 +32,21 @@ const RequestedDesigners = () => {
 	const firebase = useFirebase()
 
 	const markAsDone = async (request) => {
-		// If the request was anonymous don't send any notifications
-		if (!request.user) return
+		const res = window.confirm(`Na pewno?`)
+		if (!res) return
 
-		const confirmDesignerAdded = firebase.functions.httpsCallable("confirmDesignerAdded")
-		await confirmDesignerAdded({ userId: request.user })
-		await deleteRequest(request)
+		if (request.user) {
+			const confirmDesignerAdded = firebase.functions.httpsCallable(
+				"confirmDesignerAdded"
+			)
+			await confirmDesignerAdded({ userId: request.user })
+		}
+
+		// remove the request from the list
+		await firebase.db
+			.collection("requestedDesigners")
+			.doc(request.id)
+			.delete()
 	}
 
 	const deleteRequest = async (request) => {
