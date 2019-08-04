@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState, useEffect } from "react"
 
 import LoadingSpinner from "../../components/LoadingSpinner"
 import Comment from "../../components/Comment"
@@ -18,46 +18,49 @@ const Header = ({ numFeedback = 0 }) => {
 	)
 }
 
-const UserFeedback = ({ user, userId, isAuthorized, onForceRefresh }) => {
+const UserFeedback = ({ user, userId, isAuthorized }) => {
 	const firebase = useFirebase()
-	let feedback = [...user.feedback]
-	feedback.sort((a, b) => b.createdAt - a.createdAt) /* put newest first */
+	const [opinions, setOpinions] = useState([])
+	const [isEmpty, setIsEmpty] = useState(false)
 
-	const onDelete = async (id) => {
-		const newFeedback = feedback.filter((a) => a.id !== id)
-		await firebase.user(userId).update({ feedback: newFeedback })
-		onForceRefresh()
-	}
+	// TODO: add orderBy, where and complex path functionality to useLiveCollection and useCollection
+	useEffect(() => {
+		const unsubscribe = firebase
+			.user(userId)
+			.collection("opinions")
+			.orderBy("createdAt", "desc")
+			.onSnapshot((snap) => {
+				console.log("snap", snap)
+				if (snap.empty) {
+					setIsEmpty(true)
+					setOpinions([])
+					return
+				} else {
+					setIsEmpty(false)
+				}
 
-	const numFeedback = feedback ? feedback.length : 0
-	const hasUsers = numFeedback > 0
-	const error = !feedback
+				setOpinions(snap.docs.map((doc) => doc.data()))
+			})
 
-	return !feedback ? (
+		return unsubscribe
+	}, [firebase, firebase.db, userId])
+
+	const numOpinions = opinions ? opinions.length : 0
+	const isLoading = !isEmpty && !opinions
+
+	return isLoading ? (
 		<LoadingSpinner />
 	) : (
 		<PageContainer maxWidth={2} extraWide>
-			<Header numFeedback={numFeedback} />
+			<Header numFeedback={numOpinions} />
 
-			{!isAuthorized && (
-				<AddComment user={user} userId={userId} onForceRefresh={onForceRefresh} />
-			)}
+			{!isAuthorized && <AddComment userId={userId} />}
 
-			{error ? (
-				<div>Wystąpił problem, spróbuj odświeżyć stronę</div>
-			) : hasUsers ? (
+			{!isEmpty ? (
 				<div>
-					{feedback.map((data) => {
-						return (
-							<Comment
-								key={data.id}
-								{...data}
-								user={user}
-								userId={userId}
-								onDelete={onDelete}
-							/>
-						)
-					})}
+					{opinions.map((data) => (
+						<Comment key={data.author} {...data} userId={userId} />
+					))}
 				</div>
 			) : isAuthorized ? (
 				<EmptyState header="Nie masz jeszcze żadnych opinii">

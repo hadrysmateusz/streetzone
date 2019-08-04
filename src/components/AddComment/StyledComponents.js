@@ -11,10 +11,9 @@ export const RatingContainer = styled.div`
 `
 
 export const OuterContainer = styled.div`
+	border-top: 6px solid var(--gray100);
 	margin-bottom: var(--spacing4);
-	/* border: 1px solid var(--gray75); */
 	background: var(--almost-white);
-	/* border: 1px solid var(--gray100); */
-	/* box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.04); */
 	padding: var(--spacing3);
+	padding-top: 18px;
 `

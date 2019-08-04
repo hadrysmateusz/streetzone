@@ -37,6 +37,8 @@ export const useLiveCollection = (collection) => {
 				setIsEmpty(true)
 				setResults([])
 				return
+			} else {
+				setIsEmpty(false)
 			}
 
 			const __results = snap.docs.map((doc) => doc.data())
@@ -72,6 +74,8 @@ export const useCollection = (collection) => {
 				setIsEmpty(true)
 				setResults([])
 				return
+			} else {
+				setIsEmpty(false)
 			}
 
 			const __results = snap.docs.map((doc) => doc.data())

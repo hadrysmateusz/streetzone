@@ -183,5 +183,12 @@ service cloud.firestore {
       allow read, create;
       allow update, delete: if isUserAdmin();
     }
+
+    match /reportedComments/{reportId} {
+      // admins should have full access
+      allow read, write: if isUserAdmin();
+      // other users should only be able to create reports
+      allow create;
+    }
   }
 }

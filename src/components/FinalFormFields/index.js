@@ -2,8 +2,9 @@ import React from "react"
 import { Field } from "react-final-form"
 import ReactMarkdown from "react-markdown"
 import styled, { css } from "styled-components/macro"
+import StarRatings from "react-star-ratings"
 
-import { Input, Textarea } from "../FormElements"
+import { Input, Textarea, FormElementContainer } from "../FormElements"
 import {
 	LiveFileHandler,
 	FileHandlerText,
@@ -113,6 +114,7 @@ export const TextareaFF = ({ label, name, placeholder, info }) => (
 		<Field name={name}>
 			{({ input, meta }) => {
 				const error = meta.error && meta.touched ? meta.error : null
+				console.log(error)
 				return <Textarea {...input} placeholder={placeholder} error={error} info={info} />
 			}}
 		</Field>
@@ -262,6 +264,30 @@ export const MarkdownEditorFF = ({ label, name, info }) => (
 							<ReactMarkdown source={value} escapeHtml={false} />
 						</PreviewStyles>
 					</ContentEditorContainer>
+				)
+			}}
+		</Field>
+	</Section>
+)
+
+export const RatingFF = ({ label, name, info }) => (
+	<Section>
+		<div className="header">{label}</div>
+		<Field name={name}>
+			{({ input, meta }) => {
+				const error = meta.error && meta.touched ? meta.error : null
+				return (
+					<FormElementContainer error={error} info={info}>
+						<StarRatings
+							rating={+input.value}
+							changeRating={input.onChange}
+							starRatedColor="gold"
+							starHoverColor="#ffc311"
+							numberOfStars={5}
+							starDimension="20px"
+							starSpacing="2px"
+						/>
+					</FormElementContainer>
 				)
 			}}
 		</Field>
