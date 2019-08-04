@@ -66,6 +66,7 @@ const ImageLoader = ({
 		setIsLoaded(true)
 	}
 
+	// TODO: rework this when using srcSet
 	// only defer loading if the flag is supplied and the image isn't already loaded
 	const isLoadingDeferred = deferLoading && !isLoaded
 

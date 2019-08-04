@@ -6,12 +6,10 @@ import moment from "moment"
 import Button, { ButtonContainer } from "../../../components/Button"
 import { TextBlock } from "../../../components/StyledComponents"
 
-import { route, itemDataHelpers } from "../../../utils"
+import { route } from "../../../utils"
 import { ellipsis } from "../../../style-utils"
 import { useFirebase } from "../../../hooks"
 import { getImageUrl } from "../../../utils/getImageUrl"
-
-const { formatDesigners } = itemDataHelpers
 
 const ImageContainer = styled.div`
 	img {
@@ -34,7 +32,6 @@ const DealPreview = ({
 	imageRef,
 	title,
 	description,
-	designers,
 	value,
 	link,
 	createdAt,
@@ -42,8 +39,6 @@ const DealPreview = ({
 }) => {
 	const firebase = useFirebase()
 	const imageUrl = getImageUrl(imageRef, "M")
-
-	const formattedDesigners = formatDesigners(designers)
 
 	const onDelete = (id) => {
 		try {
@@ -59,10 +54,6 @@ const DealPreview = ({
 
 	return (
 		<OuterContainer>
-			<TextBlock color="gray0" uppercase>
-				<b>{formattedDesigners}</b>
-			</TextBlock>
-
 			<TextBlock bold size="l">
 				{title}
 			</TextBlock>
