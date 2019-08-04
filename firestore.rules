@@ -140,9 +140,8 @@ service cloud.firestore {
       // delete isn't allowed to prevent deleting and creating a new document to circumvent update restrictions
 
       // EXPERIMENTAL
-      // TODO: move feedback to a subcollection
       // it's indexed by the comment author id to keep it one comment per user
-      match /feedback/{authorId} {
+      match /opinions/{authorId} {
         function hasValidRating() {
           return incomingData().rating > 0 && incomingData().rating <= 5;
         }
@@ -152,15 +151,12 @@ service cloud.firestore {
           return incomingData().author != userId;
         }
 
-        allow create: if incomingData().author == request.auth.uid
-                     && authorIsNotSubject() 
-                     && hasValidRating();
 
-        allow update: if existingData().author == request.auth.uid && hasValidRating();
 
-        // allow users to delete their own comments
-        allow delete: if existingData().author == request.auth.uid;
+        allow read;
 
+        allow create, update: if authorId == request.auth.uid && incomingData().author == request.auth.uid && hasValidRating();
+        allow delete: if authorId == request.auth.uid;
     }
 
 
