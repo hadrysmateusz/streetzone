@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react"
 import LoadingSpinner from "../../components/LoadingSpinner"
 import { PageContainer } from "../../components/Containers"
 import ItemsView from "../../components/ItemsView"
-import EmptyState from "../../components/EmptyState/new"
+import EmptyState from "../../components/EmptyState"
 
 import { useFirebase } from "../../hooks"
 

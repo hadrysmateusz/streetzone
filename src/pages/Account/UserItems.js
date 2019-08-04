@@ -9,7 +9,7 @@ import { PageContainer } from "../../components/Containers"
 import { OwnerItemCard } from "../../components/Cards"
 import { Button } from "../../components/Button"
 import ItemsView from "../../components/ItemsView"
-import EmptyState from "../../components/EmptyState/new"
+import EmptyState from "../../components/EmptyState"
 import { SaveButton } from "../../components/SaveButton"
 
 import { CONST } from "../../constants"

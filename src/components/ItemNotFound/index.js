@@ -2,7 +2,7 @@ import React from "react"
 import { withRouter } from "react-router-dom"
 
 import { LinkButton } from "../Button"
-import EmptyState from "../EmptyState/new"
+import EmptyState from "../EmptyState"
 
 import { getRedirectTo } from "../../utils"
 

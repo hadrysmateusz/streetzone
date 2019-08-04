@@ -57,14 +57,14 @@ const LoadableComponentSpinner = ({ error, pastDelay, timedOut }) => {
 	if (error) {
 		console.log(error)
 		return (
-			<EmptyState src="SadFace.png">
-				Coś poszło nie tak, odśwież stronę lub spróbuj później
+			<EmptyState header="Coś poszło nie tak">
+				Odśwież stronę lub spróbuj później
 			</EmptyState>
 		)
 	} else if (timedOut) {
 		return (
-			<EmptyState src="SadFace.png">
-				Serwer długo nie odpowiada, odśwież stronę lub spróbuj później
+			<EmptyState header="Serwer długo nie odpowiada">
+				Odśwież stronę lub spróbuj później
 			</EmptyState>
 		)
 	} else if (pastDelay) {

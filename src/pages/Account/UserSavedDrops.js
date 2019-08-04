@@ -4,7 +4,7 @@ import styled from "styled-components/macro"
 import LoadingSpinner from "../../components/LoadingSpinner"
 import { PageContainer } from "../../components/Containers"
 import { BigDropCard } from "../../components/Cards"
-import EmptyState from "../../components/EmptyState/new"
+import EmptyState from "../../components/EmptyState"
 
 import { useFirebase } from "../../hooks"
 

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react"
 
 import { PageContainer } from "../../components/Containers"
 import { UsersView } from "../../components/UserPreview/big"
-import EmptyState from "../../components/EmptyState/new"
+import EmptyState from "../../components/EmptyState"
 
 import { HeaderContainer } from "./Common"
 

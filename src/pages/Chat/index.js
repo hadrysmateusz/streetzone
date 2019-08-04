@@ -12,7 +12,7 @@ import UserPreview from "../../components/UserPreview/old"
 import { withAuthorization } from "../../components/UserSession"
 import { PageContainer } from "../../components/Containers"
 import ProfilePicture from "../../components/ProfilePicture"
-import EmptyState from "../../components/EmptyState/new"
+import EmptyState from "../../components/EmptyState"
 import FullscreenMenu, {
 	Header,
 	FullscreenMenuContext

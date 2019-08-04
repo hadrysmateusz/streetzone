@@ -14,7 +14,7 @@ import InfoItem from "../../../components/InfoItem"
 import { LayoutManager, Sidebar, Main } from "../../../components/LayoutManager"
 import { ThematicGroup } from "../../../components/ThematicGroup"
 import { SmallDropCard } from "../../../components/Cards"
-import EmptyState from "../../../components/EmptyState/new"
+import EmptyState from "../../../components/EmptyState"
 import {
 	Header,
 	DetailsContainer,

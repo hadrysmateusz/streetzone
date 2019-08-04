@@ -4,7 +4,7 @@ import LoadingSpinner from "../../components/LoadingSpinner"
 import Comment from "../../components/Comment"
 import AddComment from "../../components/AddComment"
 import { PageContainer } from "../../components/Containers"
-import EmptyState from "../../components/EmptyState/new"
+import EmptyState from "../../components/EmptyState"
 
 import { useFirebase } from "../../hooks"
 
