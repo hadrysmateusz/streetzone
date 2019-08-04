@@ -174,7 +174,10 @@ service cloud.firestore {
         allow create: if otherUserId == request.auth.uid && incomingData().otherUserId == request.auth.uid;
       }
 
-      // notificationTokens subcollection should only be accessed from the server
+      match /notificationTokens/{tokenId} {
+        // TODO: verify that this works
+        allow write: if userId == request.auth.uid;
+      }
     }
 
     match /requestedDesigners/{requestedDesignerId} {
