@@ -5,18 +5,17 @@ import moment from "moment"
 
 import Button, { ButtonContainer } from "../../../components/Button"
 import { TextBlock } from "../../../components/StyledComponents"
+import FirebaseImage from "../../../components/FirebaseImage"
 
 import { route, itemDataHelpers } from "../../../utils"
 import { ellipsis } from "../../../style-utils"
-import { useImage, useFirebase } from "../../../hooks"
+import { useFirebase } from "../../../hooks"
 
 const { formatDesigners } = itemDataHelpers
 
 const BlogImageContainer = styled.div`
-	img {
-		max-height: 100px;
-		max-width: 300px;
-	}
+	height: 150px;
+	width: 150px;
 `
 
 const DropContainer = styled.div`
@@ -51,8 +50,6 @@ const DropPreview = ({
 	editedAt
 }) => {
 	const firebase = useFirebase()
-
-	const { imageURL } = useImage(attachments[mainImageIndex], "M")
 
 	const formattedDesigners = formatDesigners(designers)
 
@@ -119,7 +116,7 @@ const DropPreview = ({
 			<TextBlock color="#333">Opis: {description}</TextBlock>
 
 			<BlogImageContainer>
-				<img src={imageURL} alt="" />
+				<FirebaseImage storageRef={attachments[mainImageIndex]} size="M" />
 			</BlogImageContainer>
 
 			<ButtonContainer>

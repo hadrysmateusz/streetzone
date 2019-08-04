@@ -46,7 +46,14 @@ const Image = styled.img`
 	object-fit: ${(p) => p.mode};
 `
 
-const ImageLoader = ({ onClick, src, mode = "cover", deferLoading = false }) => {
+const ImageLoader = ({
+	onClick,
+	src,
+	mode = "cover",
+	deferLoading = false,
+	title,
+	alt
+}) => {
 	const [isLoaded, setIsLoaded] = useState(false)
 	const [error, setError] = useState(null)
 
@@ -72,6 +79,8 @@ const ImageLoader = ({ onClick, src, mode = "cover", deferLoading = false }) => 
 					onLoad={onLoad}
 					onError={onError}
 					mode={mode}
+					title={title}
+					alt={alt}
 				/>
 			)}
 			{!isLoaded && (

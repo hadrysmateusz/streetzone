@@ -3,14 +3,13 @@ import styled from "styled-components/macro"
 import { Link } from "react-router-dom"
 
 import { LinkButton, ButtonContainer } from "../../components/Button"
-import { FluidImage } from "../../components/Image"
 import { StatelessSearchWrapper } from "../../components/InstantSearchWrapper"
 import PageHeading from "../../components/PageHeading"
 
 import { CONST } from "../../constants"
-import { useImage } from "../../hooks"
 import { itemDataHelpers, route } from "../../utils"
 import { ellipsis, nLinesHigh } from "../../style-utils"
+import FirebaseImage from "../../components/FirebaseImage"
 
 const { formatDesigners } = itemDataHelpers
 
@@ -57,9 +56,7 @@ const Name = styled.div`
 `
 
 const PromotedItem = ({ attachments, mainImageIndex, name, designers, price, id }) => {
-	const { imageURL } = useImage(attachments[mainImageIndex], "M")
 	const formattedDesigners = formatDesigners(designers)
-
 	const itemLink = route("ITEM_DETAILS", { id })
 
 	return (
@@ -76,7 +73,7 @@ const PromotedItem = ({ attachments, mainImageIndex, name, designers, price, id 
 				</ButtonContainer>
 			</InfoContainer>
 			<Link to={itemLink}>
-				<FluidImage url={imageURL} />
+				<FirebaseImage storageRef={attachments[mainImageIndex]} />
 			</Link>
 		</PromotedItemContainer>
 	)

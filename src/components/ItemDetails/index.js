@@ -1,13 +1,12 @@
 import React, { memo } from "react"
 import { Link } from "react-router-dom"
-import styled, { css } from "styled-components/macro"
+import styled from "styled-components/macro"
+import Ratio from "react-ratio"
 
-import { Image } from "../../components/Image"
-
+import FirebaseImage from "../FirebaseImage"
 import { useDesigner } from "../../hooks"
 import { encodeURL } from "../../utils/algoliaURLutils"
 import { route, itemDataHelpers } from "../../utils"
-import { getImageUrl } from "../../utils/getImageUrl"
 
 const { formatDesigners } = itemDataHelpers
 
@@ -166,7 +165,9 @@ export const DesignerItem = memo(({ name }) => {
 	return designer && designer.imageRef ? (
 		<DesignerItemContainer>
 			<DesignerLink value={designer.label}>
-				<Image url={getImageUrl(designer.imageRef, "S")} title={designer.label} />
+				<Ratio>
+					<FirebaseImage storageRef={designer.imageRef} size="S" title={designer.label} />
+				</Ratio>
 			</DesignerLink>
 		</DesignerItemContainer>
 	) : null

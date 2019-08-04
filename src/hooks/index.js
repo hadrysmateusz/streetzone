@@ -7,7 +7,6 @@ import useDesigners from "./useDesigners"
 import useFirebase from "./useFirebase"
 import useDesigner from "./useDesigner"
 import useUserData from "./useUserData"
-import useImage from "./useImage"
 import useFlash from "./useFlash"
 import useTabs from "./useTabs"
 import useUser from "./useUser"
@@ -26,7 +25,6 @@ export {
 	useFirebase,
 	useUserData,
 	useDesigner,
-	useImage,
 	useFlash,
 	useUser,
 	useTabs,

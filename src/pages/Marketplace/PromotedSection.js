@@ -12,8 +12,8 @@ import Button, { ButtonContainer } from "../../components/Button"
 
 import { CONST } from "../../constants"
 import { overlayTextShadow } from "../../style-utils"
-import { useImage } from "../../hooks"
 import { mapN, route, itemDataHelpers } from "../../utils"
+import { getImageUrl } from "../../utils/getImageUrl"
 
 const { formatDesigners, formatPrice } = itemDataHelpers
 
@@ -168,14 +168,13 @@ const InnerContainer = withBreakpoints(({ items, currentBreakpoint }) => {
 })
 
 const PromotedItem = ({ item }) => {
-	const { imageURL } = useImage(item.attachments[item.mainImageIndex], "L")
-
+	const imageUrl = getImageUrl(item.attachments[item.mainImageIndex], "L")
 	const formattedDesigners = formatDesigners(item.designers)
 	const formattedPrice = formatPrice(item.price)
 
 	return (
 		<Link to={route("ITEM_DETAILS", { id: item.id })}>
-			<PromotedItemContainer image={imageURL}>
+			<PromotedItemContainer image={imageUrl}>
 				<Designers>{formattedDesigners}</Designers>
 				<Name>{item.name}</Name>
 
@@ -187,34 +186,30 @@ const PromotedItem = ({ item }) => {
 	)
 }
 
-const PromotedPlaceholder = () => {
-	return (
-		<Link to={route("PROMOTING_INFO")}>
-			<PlaceholderContainer>
-				<div className="icon">
-					<FontAwesomeIcon icon="plus" />
-				</div>
-				<div className="main-text">Twój przedmiot tutaj</div>
-			</PlaceholderContainer>
-		</Link>
-	)
-}
+const PromotedPlaceholder = () => (
+	<Link to={route("PROMOTING_INFO")}>
+		<PlaceholderContainer>
+			<div className="icon">
+				<FontAwesomeIcon icon="plus" />
+			</div>
+			<div className="main-text">Twój przedmiot tutaj</div>
+		</PlaceholderContainer>
+	</Link>
+)
 
-const PromotedSection = () => {
-	return (
-		<OuterContainer>
-			<StatelessSearchWrapper
-				indexName={CONST.ITEMS_MARKETPLACE_DEFAULT_ALGOLIA_INDEX}
-				refinements={{ promotedUntil: { min: Date.now() } }}
-			>
-				{(hits) => (
-					<PageContainer noMargin>
-						<InnerContainer items={hits} />
-					</PageContainer>
-				)}
-			</StatelessSearchWrapper>
-		</OuterContainer>
-	)
-}
+const PromotedSection = () => (
+	<OuterContainer>
+		<StatelessSearchWrapper
+			indexName={CONST.ITEMS_MARKETPLACE_DEFAULT_ALGOLIA_INDEX}
+			refinements={{ promotedUntil: { min: Date.now() } }}
+		>
+			{(hits) => (
+				<PageContainer noMargin>
+					<InnerContainer items={hits} />
+				</PageContainer>
+			)}
+		</StatelessSearchWrapper>
+	</OuterContainer>
+)
 
 export default PromotedSection

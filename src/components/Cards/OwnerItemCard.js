@@ -14,7 +14,7 @@ import FirebaseImage from "../FirebaseImage"
 import { translateCondition } from "../../constants/item_schema"
 import promotingLevels from "../../constants/promoting_levels"
 import { useFlash, useFirebase } from "../../hooks"
-import { itemDataHelpers, route, sleep } from "../../utils"
+import { itemDataHelpers, route } from "../../utils"
 import { nLinesHigh } from "../../style-utils"
 
 import { Designers, TopContainer, cardBorder } from "./Common"
