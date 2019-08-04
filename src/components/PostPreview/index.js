@@ -1,12 +1,13 @@
 import React from "react"
 import { Link } from "react-router-dom"
 import moment from "moment"
+import Ratio from "react-ratio"
 
+import FirebaseImage from "../FirebaseImage"
 import Share from "../Share"
 
 import {
 	PostContainer,
-	Image,
 	ImageContainer,
 	MainContainer,
 	TagsContainer,
@@ -16,7 +17,6 @@ import {
 } from "./StyledComponents"
 
 import { route } from "../../utils"
-import { getImageUrl } from "../../utils/getImageUrl"
 
 const PostPreview = ({
 	id,
@@ -30,7 +30,6 @@ const PostPreview = ({
 }) => {
 	const date = moment(createdAt).format("LL")
 	const imageRef = attachments[mainImageIndex]
-	const imageUrl = getImageUrl(imageRef, "M")
 
 	const hasTags = tags && Array.isArray(tags) && tags.length > 0
 
@@ -40,7 +39,9 @@ const PostPreview = ({
 		<PostContainer category={category}>
 			<Link to={postUrl}>
 				<ImageContainer>
-					<Image url={imageUrl} />
+					<Ratio>
+						<FirebaseImage storageRef={imageRef} size="M" />
+					</Ratio>
 				</ImageContainer>
 				<MainContainer>
 					<TopContainer category={category}>

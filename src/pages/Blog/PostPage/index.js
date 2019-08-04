@@ -4,12 +4,13 @@ import { withRouter } from "react-router-dom"
 import styled from "styled-components/macro"
 import ReactMarkdown from "react-markdown"
 import { withBreakpoints } from "react-breakpoints"
+import Ratio from "react-ratio"
 
-import { FluidImage } from "../../../components/Image"
 import { PageContainer } from "../../../components/Containers"
 import { TextBlock } from "../../../components/StyledComponents"
 import Tags from "../../../components/Tags"
 import LoadingSpinner from "../../../components/LoadingSpinner"
+import FirebaseImage from "../../../components/FirebaseImage"
 import Share from "../../../components/Share"
 import PageNav from "../../../components/PageNav"
 import { SimilarArticles } from "../../../components/SidebarComponents"
@@ -18,7 +19,6 @@ import HelmetBasics from "../../../components/HelmetBasics"
 
 import { useFirebase } from "../../../hooks"
 import { ellipsis, getCategoryColor } from "../../../style-utils"
-// import { route } from "../../../utils"
 
 const InnerContainer = styled.div`
 	display: grid;
@@ -110,10 +110,6 @@ const MainImageContainer = styled.div`
 	position: relative;
 	margin-bottom: var(--spacing3);
 
-	> * {
-		height: 0;
-		padding-top: 56%;
-	}
 	@media (max-width: ${(p) => p.theme.breakpoints[2] - 1}px) {
 		margin: calc(-1 * var(--spacing3));
 		margin-bottom: var(--spacing3);
@@ -155,13 +151,12 @@ export const PureBlogPost = withBreakpoints(
 		title,
 		excerpt,
 		createdAt,
-		imageUrls,
 		mainImageIndex,
 		author,
 		tags,
-		mainContent
+		mainContent,
+		attachments
 	}) => {
-		const imageUrl = imageUrls[mainImageIndex]
 		const isMobile = currentBreakpoint <= 1
 
 		return (
@@ -195,7 +190,9 @@ export const PureBlogPost = withBreakpoints(
 							<Main>
 								{/* Header image */}
 								<MainImageContainer>
-									<FluidImage url={imageUrl} />
+									<Ratio ratio={16 / 9}>
+										<FirebaseImage storageUrl={attachments[mainImageIndex]} size="L" />
+									</Ratio>
 								</MainImageContainer>
 
 								<InnerContainer>

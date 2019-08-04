@@ -1,9 +1,9 @@
 import React from "react"
 import styled, { css } from "styled-components/macro"
+import Ratio from "react-ratio"
 
-import { Image } from "../Image"
+import FirebaseImage from "../FirebaseImage"
 
-import { getImageUrl } from "../../utils/getImageUrl"
 import { CONST } from "../../constants"
 
 const ThumbnailsContainer = styled.div`
@@ -41,7 +41,7 @@ const ThumbnailsContainer = styled.div`
 	}
 `
 
-const ThumbnailContainer = styled.div`
+const ThumbnailContainer = styled(Ratio)`
 	position: relative;
 	background: var(--almost-white);
 	cursor: pointer;
@@ -61,30 +61,24 @@ const InactiveOverlay = styled.div`
 	background: rgba(255, 255, 255, 0.5);
 `
 
-export const Thumbnail = ({ storageRef, onClick, isCurrent }) => {
-	// It would require some css magic to get the ratio hack to work with the FirebaseImage component
-
-	const url = getImageUrl(storageRef, "S")
-
-	return (
-		<ThumbnailContainer onClick={onClick} isCurrent={isCurrent}>
-			<Image url={url} />
+export const Thumbnail = React.memo(({ storageRef, onClick, isCurrent }) => (
+	<ThumbnailContainer onClick={onClick} isCurrent={isCurrent}>
+		<Ratio>
+			<FirebaseImage storageRef={storageRef} size="S" />
 			{!isCurrent && <InactiveOverlay />}
-		</ThumbnailContainer>
-	)
-}
+		</Ratio>
+	</ThumbnailContainer>
+))
 
-export const Thumbnails = ({ storageRefs, onChangeIndex, current }) => {
-	return (
-		<ThumbnailsContainer>
-			{storageRefs.map((storageRef, i) => (
-				<Thumbnail
-					storageRef={storageRef}
-					key={storageRef}
-					isCurrent={current === i}
-					onClick={() => onChangeIndex(i)}
-				/>
-			))}
-		</ThumbnailsContainer>
-	)
-}
+export const Thumbnails = ({ storageRefs, onChangeIndex, current }) => (
+	<ThumbnailsContainer>
+		{storageRefs.map((storageRef, i) => (
+			<Thumbnail
+				storageRef={storageRef}
+				key={storageRef}
+				isCurrent={current === i}
+				onClick={() => onChangeIndex(i)}
+			/>
+		))}
+	</ThumbnailsContainer>
+)

@@ -77,21 +77,11 @@ export const ImageContainer = styled.div`
 
 	cursor: pointer;
 
-	display: flex;
+	/* display: flex;
 	justify-content: center;
-	align-items: flex-start;
+	align-items: flex-start; */
 
 	overflow: hidden;
-`
-
-export const Image = styled.div`
-	width: 100%;
-	height: 0;
-	padding-bottom: 100%;
-	background-image: url("${(p) => p.url}");
-	background-size: cover;
-	background-repeat: no-repeat;
-	background-position: center;
 `
 
 export const MainContainer = styled.div`

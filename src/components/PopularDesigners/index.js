@@ -2,10 +2,11 @@ import React from "react"
 import { Link } from "react-router-dom"
 import styled from "styled-components/macro"
 import { withBreakpoints } from "react-breakpoints"
+import Ratio from "react-ratio"
 
-import { StatelessSearchWrapper } from "../../components/InstantSearchWrapper"
-import PageHeading from "../../components/PageHeading"
-// import { Image } from "../../components/Image"
+import FirebaseImage from "../FirebaseImage"
+import { StatelessSearchWrapper } from "../InstantSearchWrapper"
+import PageHeading from "../PageHeading"
 
 import { CONST } from "../../constants"
 import { route } from "../../utils"
@@ -38,17 +39,6 @@ const DesignerContainer = styled.div`
 	align-items: center;
 `
 
-const Image = styled.div`
-	width: ${(p) => (p.width ? p.width : "100%")};
-	height: 0;
-	padding-bottom: 100%;
-	background-image: url("${(p) => p.url}");
-	background-color: white;
-	background-size: cover;
-	background-repeat: no-repeat;
-	background-position: center;
-`
-
 const ImageContainer = styled.div`
 	padding: 18%;
 	width: 100%;
@@ -61,7 +51,9 @@ const Designer = (props) => {
 		<Link to={encodeURL({ designers: [props.label] }, route("MARKETPLACE"))}>
 			<DesignerContainer>
 				<ImageContainer>
-					<Image url={props.logoURL} />
+					<Ratio>
+						<FirebaseImage storageRef={props.imageRef} size="M" />
+					</Ratio>
 				</ImageContainer>
 			</DesignerContainer>
 		</Link>
