@@ -52,6 +52,7 @@ const ImageLoader = ({
 	mode = "cover",
 	deferLoading = false,
 	title,
+	useSmallLoadingSpinner,
 	alt
 }) => {
 	const [isLoaded, setIsLoaded] = useState(false)
@@ -85,7 +86,11 @@ const ImageLoader = ({
 			)}
 			{!isLoaded && (
 				<LoaderContainer>
-					<LoadingSpinner delay={400} color="var(--gray100)" />
+					<LoadingSpinner
+						delay={400}
+						color="var(--gray100)"
+						size={useSmallLoadingSpinner ? 4 : 9}
+					/>
 				</LoaderContainer>
 			)}
 		</>
@@ -109,7 +114,7 @@ const FirebaseImage = ({
 	// select url of required size
 	const url = urls[size]
 
-	console.log(url)
+	const useSmallLoadingSpinner = size === "S"
 
 	return (
 		<LazyLoad
@@ -120,7 +125,11 @@ const FirebaseImage = ({
 			width={width}
 		>
 			<Container>
-				<ImageLoader src={url} {...rest} />
+				<ImageLoader
+					src={url}
+					{...rest}
+					useSmallLoadingSpinner={useSmallLoadingSpinner}
+				/>
 			</Container>
 		</LazyLoad>
 	)

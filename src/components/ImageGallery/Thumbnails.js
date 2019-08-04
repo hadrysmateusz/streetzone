@@ -54,6 +54,7 @@ const ThumbnailContainer = styled(Ratio)`
 
 const InactiveOverlay = styled.div`
 	position: absolute;
+	z-index: 10;
 	top: 0;
 	left: 0;
 	width: 100%;
@@ -65,8 +66,8 @@ export const Thumbnail = React.memo(({ storageRef, onClick, isCurrent }) => (
 	<ThumbnailContainer onClick={onClick} isCurrent={isCurrent}>
 		<Ratio>
 			<FirebaseImage storageRef={storageRef} size="S" />
-			{!isCurrent && <InactiveOverlay />}
 		</Ratio>
+		{!isCurrent && <InactiveOverlay />}
 	</ThumbnailContainer>
 ))
 
