@@ -129,7 +129,7 @@ const LiveFileHandler = ({
 				<Button type="button" onClick={clickDropzone}>
 					{!isEmpty ? "Dodaj pliki" : "Wybierz pliki"}
 				</Button>
-				<Button type="button" onClick={onClear} disabled={isEmpty}>
+				<Button type="button" onClick={onClear} disabled={isEmpty} danger>
 					Usuń wszystkie
 				</Button>
 			</ButtonContainer>
