@@ -6,7 +6,7 @@ import styled from "styled-components/macro"
 import LoadingSpinner from "../LoadingSpinner"
 import { CustomFile } from "../FileHandler"
 import Button, { LoaderButton, ButtonContainer } from "../Button"
-import { ProfilePictureFF, TextFF, TextareaFF } from "../FinalFormFields"
+import { UserImageFF, TextFF, TextareaFF } from "../FinalFormFields"
 import ErrorBox from "../ErrorBox"
 
 import { useAuthentication, useFirebase, useFlash } from "../../hooks"
@@ -53,6 +53,7 @@ const ProfileEditForm = ({ onSubmit, initialValues, onCancel }) => {
 							label="Nazwa użytkownika"
 							placeholder="Nazwa użytkownika"
 						/>
+
 						<TextFF name="city" label="Miasto" placeholder="Miasto" />
 
 						<TextFF
@@ -71,7 +72,7 @@ const ProfileEditForm = ({ onSubmit, initialValues, onCancel }) => {
 
 						<TextareaFF name="info" label="Opis" placeholder="Dodatkowe informacje" />
 
-						<ProfilePictureFF name="file" />
+						<UserImageFF name="file" />
 
 						<ButtonContainer centered>
 							<LoaderButton

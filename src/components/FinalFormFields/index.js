@@ -211,7 +211,7 @@ export const FileHandlerSingleFF = ({ label, name, info }) => (
 	</Section>
 )
 
-export const ProfilePictureFF = ({ label, name, info }) => (
+export const UserImageFF = ({ label, name, info }) => (
 	<Section>
 		<div className="header">{label}</div>
 		<Field name={name}>
