@@ -1,10 +1,11 @@
 import React from "react"
-import { Prompt } from "react-router-dom"
 import { Form } from "react-final-form"
 
+import BlackBox from "../../../components/BlackBox"
 import { LoaderButton, ButtonContainer } from "../../../components/Button"
 import DisplayJSONButton from "../../../components/DisplayJSONButton"
 import LoadingSpinner from "../../../components/LoadingSpinner"
+import PreventFormTransition from "../../../components/PreventFormTransition"
 import {
 	TextFF,
 	DropdownFF,
@@ -19,7 +20,10 @@ import { CONST } from "../../../constants"
 import categoryOptions from "./post_category_options"
 import { StyledForm } from "../Common"
 
-export default ({ onSubmit, initialValues, edit }) => {
+export default ({ onSubmit, initialValues, edit, postId }) => {
+	// use postId to group images by the post they belong to
+	const imagesPath = `${CONST.STORAGE_BUCKET_BLOG_ATTACHMENTS}/${postId}`
+
 	return !initialValues && edit ? (
 		<LoadingSpinner />
 	) : (
@@ -29,12 +33,7 @@ export default ({ onSubmit, initialValues, edit }) => {
 			render={({ form, handleSubmit, submitting, pristine, values, ...rest }) => {
 				return (
 					<StyledForm onSubmit={handleSubmit}>
-						<Prompt
-							when={Object.values(values).length > 0}
-							message={(location) =>
-								"Zmiany nie zostały zapisane. Czy napewno chcesz wyjść?"
-							}
-						/>
+						<PreventFormTransition />
 
 						<TextFF label="Autor" placeholder="Autor" name="author" />
 
@@ -42,11 +41,10 @@ export default ({ onSubmit, initialValues, edit }) => {
 
 						<DropdownFF label="Kategoria" name="category" options={categoryOptions} />
 
-						<LiveFileHandlerFF
-							label="Zdjęcia"
-							name="files"
-							uploadPath={CONST.STORAGE_BUCKET_BLOG_ATTACHMENTS}
-						/>
+						<LiveFileHandlerFF label="Zdjęcia" name="files" uploadPath={imagesPath} />
+						<BlackBox>
+							Pamiętaj usunąć nieużyte zdjęcia przed opuszczeniem strony
+						</BlackBox>
 
 						<MarkdownEditorFF label="Treść" name="mainContent" />
 

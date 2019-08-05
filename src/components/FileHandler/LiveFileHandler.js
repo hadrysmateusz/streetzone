@@ -77,9 +77,11 @@ const LiveFileHandler = ({
 
 		items.forEach((item) => {
 			if (item.id === id) {
+				// if item matches id, delete its images and DON'T add it to new array
 				const storageRef = item.storageRef
-				firebase.removeFile(storageRef)
+				firebase.removeAllImagesOfRef(storageRef)
 			} else {
+				// all other images should be added to new array
 				__items.push(item)
 			}
 		})

@@ -1,5 +1,6 @@
-import React from "react"
+import React, { useState } from "react"
 import { withRouter } from "react-router-dom"
+import shortid from "shortid"
 
 import { PageContainer } from "../../../components/Containers"
 
@@ -11,6 +12,7 @@ import PostForm from "./Form"
 
 const AddPost = ({ history }) => {
 	const firebase = useFirebase()
+	const [postId] = useState(shortid.generate())
 
 	const onSubmit = async (values, form) => {
 		try {
@@ -44,7 +46,8 @@ const AddPost = ({ history }) => {
 
 	return (
 		<PageContainer>
-			<PostForm onSubmit={onSubmit} />
+			PostId: {postId}
+			<PostForm onSubmit={onSubmit} postId={postId} />
 		</PageContainer>
 	)
 }

@@ -1,5 +1,3 @@
-import shortid from "shortid"
-
 import isSet from "./isSet"
 import { formatInt, formatNonEmptyArray, formatString } from "./basicsUtils"
 
@@ -20,7 +18,7 @@ export const REQUIRED = [
 	"mainImageIndex"
 ]
 
-export const formatPostDataForDb = (data, mode, flagState = true) => {
+export const formatPostDataForDb = (data, mode) => {
 	let formatted = {}
 
 	// check if all required values are present while creating
@@ -77,7 +75,7 @@ export const formatPostDataForDb = (data, mode, flagState = true) => {
 	}
 
 	if (mode === MODE.CREATE) {
-		formatted.id = shortid.generate()
+		formatted.id = data.id
 
 		formatted.createdAt = Date.now()
 		formatted.editedAt = Date.now()
