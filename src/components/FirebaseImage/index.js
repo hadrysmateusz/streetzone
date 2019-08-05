@@ -36,8 +36,8 @@ const LoaderContainer = styled.div`
 `
 
 const Image = styled.img`
-	width: 100%;
-	height: 100%;
+	width: ${(p) => p.width || "100%"};
+	height: ${(p) => p.height || "100%"};
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -53,6 +53,8 @@ const ImageLoader = ({
 	deferLoading = false,
 	title,
 	useSmallLoadingSpinner,
+	width,
+	height,
 	alt
 }) => {
 	const [isLoaded, setIsLoaded] = useState(false)
@@ -83,6 +85,8 @@ const ImageLoader = ({
 					mode={mode}
 					title={title}
 					alt={alt}
+					width={width}
+					height={height}
 				/>
 			)}
 			{!isLoaded && (
