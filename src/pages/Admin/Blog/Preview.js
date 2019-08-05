@@ -9,13 +9,7 @@ import { TextBlock } from "../../../components/StyledComponents"
 import { route } from "../../../utils"
 import { formatPostDataForDb, MODE } from "../../../utils/formatting/formatPostData"
 import { useFirebase } from "../../../hooks"
-
-const BlogImageContainer = styled.div`
-	img {
-		max-height: 100px;
-		max-width: 300px;
-	}
-`
+import FirebaseImage from "../../../components/FirebaseImage"
 
 const BlogPostContainer = styled.div`
 	border: 1px solid black;
@@ -24,7 +18,7 @@ const BlogPostContainer = styled.div`
 
 const PostPreview = ({
 	id,
-	imageUrls,
+	attachments,
 	mainImageIndex,
 	title,
 	author,
@@ -35,7 +29,6 @@ const PostPreview = ({
 }) => {
 	const firebase = useFirebase()
 
-	const mainImageUrl = imageUrls[mainImageIndex]
 	const isPromoted = !!promotedAt
 
 	const onDelete = () => {
@@ -75,9 +68,12 @@ const PostPreview = ({
 
 			{tags && <TextBlock color="gray0">{tags.map((tag) => `#${tag} `)}</TextBlock>}
 
-			<BlogImageContainer>
-				<img src={mainImageUrl} alt="" />
-			</BlogImageContainer>
+			<FirebaseImage
+				storageRef={attachments[mainImageIndex]}
+				size="M"
+				width="150px"
+				height="150px"
+			/>
 			<ButtonContainer>
 				<Button as={Link} to={route("ADMIN_BLOG_EDIT", { id })}>
 					Edytuj

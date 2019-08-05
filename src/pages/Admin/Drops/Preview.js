@@ -13,11 +13,6 @@ import { useFirebase } from "../../../hooks"
 
 const { formatDesigners } = itemDataHelpers
 
-const BlogImageContainer = styled.div`
-	height: 150px;
-	width: 150px;
-`
-
 const DropContainer = styled.div`
 	border: 1px solid black;
 	padding: var(--spacing3);
@@ -115,9 +110,12 @@ const DropPreview = ({
 
 			<TextBlock color="#333">Opis: {description}</TextBlock>
 
-			<BlogImageContainer>
-				<FirebaseImage storageRef={attachments[mainImageIndex]} size="M" />
-			</BlogImageContainer>
+			<FirebaseImage
+				storageRef={attachments[mainImageIndex]}
+				size="M"
+				height="150px"
+				width="150px"
+			/>
 
 			<ButtonContainer>
 				<Button as={Link} to={route("ADMIN_DROPS_EDIT", { id })}>
