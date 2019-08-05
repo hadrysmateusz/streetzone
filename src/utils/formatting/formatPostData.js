@@ -14,7 +14,6 @@ export const REQUIRED = [
 	"excerpt",
 	"tags",
 	"attachments",
-	"imageUrls",
 	"mainImageIndex"
 ]
 
