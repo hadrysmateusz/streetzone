@@ -13,6 +13,7 @@ import useUser from "./useUser"
 import useBodyScrollLock from "./useBodyScrollLock"
 import useStateButton from "./useStateButton"
 import useDesignerOptions from "./useDesignerOptions"
+import useDeleteDocument from "./useDeleteDocument"
 
 export {
 	useFirestoreCollection,
@@ -30,5 +31,6 @@ export {
 	useTabs,
 	useBodyScrollLock,
 	useStateButton,
-	useDesignerOptions
+	useDesignerOptions,
+	useDeleteDocument
 }
