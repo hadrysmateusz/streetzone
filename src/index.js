@@ -12,7 +12,7 @@ import * as serviceWorker from "./serviceWorker"
 import "./normalize.css"
 import "./config/fontAwesomeConfig"
 
-import { THEME } from "./constants"
+import breakpoints from "./constants/breakpoints"
 import App from "./components/App"
 import { Firebase, FirebaseContext } from "./components/Firebase"
 import GlobalStyles from "./components/GlobalStyles"
@@ -28,8 +28,8 @@ Sentry.init({
 
 ReactDOM.render(
 	<FirebaseContext.Provider value={new Firebase()}>
-		<ThemeProvider theme={THEME}>
-			<ReactBreakpoints breakpoints={{ ...THEME.breakpoints }}>
+		<ThemeProvider theme={{ breakpoints }}>
+			<ReactBreakpoints breakpoints={{ ...breakpoints }}>
 				<GlobalStyles />
 				<App />
 			</ReactBreakpoints>

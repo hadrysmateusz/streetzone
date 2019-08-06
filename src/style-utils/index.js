@@ -1,8 +1,8 @@
-import theme from "../constants/theme"
+import breakpoints from "../constants/breakpoints"
 import { POST_CATEGORIES as CATEGORIES } from "../constants"
 import { css } from "styled-components/macro"
 
-export const minWidth = theme.breakpoints.reduce((acc, val, i) => {
+export const minWidth = breakpoints.reduce((acc, val, i) => {
 	acc[i] = (...args) => css`
 		@media (min-width: ${val}px) {
 			${css(...args)}
@@ -11,7 +11,7 @@ export const minWidth = theme.breakpoints.reduce((acc, val, i) => {
 	return acc
 }, {})
 
-export const maxWidth = theme.breakpoints.reduce((acc, val, i) => {
+export const maxWidth = breakpoints.reduce((acc, val, i) => {
 	acc[i] = (...args) => css`
 		@media (max-width: ${val - 1}px) {
 			${css(...args)}
