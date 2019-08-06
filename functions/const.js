@@ -1,3 +1,5 @@
+// !!! CLOUD FUNCTIONS !!!
+
 exports.DATE_FORMAT = "YY-MM-DD HH:mm"
 exports.JPEG_EXTENSION = ".jpg"
 exports.PRODUCTION_DOMAIN = "streetzone.pl"

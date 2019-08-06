@@ -1,3 +1,5 @@
+// FRONT-END
+
 export const BRAND_NAME = "StreetZone"
 export const CONTACT_EMAIL = "kontakt@streetzone.pl"
 export const PROD_DOMAIN = "streetzone.pl"
@@ -23,6 +25,7 @@ export const STORAGE_BUCKET_DROP_ATTACHMENTS = "drop-attachments"
 export const STORAGE_BUCKET_DEAL_ATTACHMENTS = "deal-attachments"
 export const STORAGE_BUCKET_ITEM_ATTACHMENTS = "item-attachments"
 export const STORAGE_BUCKET_PROFILE_PICTURES = "profile-pictures"
+export const STORAGE_BUCKET_AUTHOR_PICTURES = "author-pictures"
 export const STORAGE_BUCKET_BRAND_LOGOS = "brand-logos"
 
 // eslint-disable-next-line
