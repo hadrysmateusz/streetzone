@@ -8,14 +8,14 @@ import { useFlash, useFirebase } from "."
  */
 const useDeleteDocument = (path, message = "Na pewno? Tej akcji nie da się cofnąć.") => {
 	const flashMessage = useFlash()
-	const firebase = useFirebase
+	const firebase = useFirebase()
 
 	const deleteDocument = useCallback(async () => {
 		try {
 			const shouldDelete = window.confirm(message)
 
 			if (shouldDelete) {
-				await firebase.doc(path).delete()
+				await firebase.db.doc(path).delete()
 			}
 
 			flashMessage({ type: "success", text: "Usunięto" })
