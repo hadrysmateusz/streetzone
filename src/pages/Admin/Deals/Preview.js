@@ -8,7 +8,7 @@ import { TextBlock } from "../../../components/StyledComponents"
 
 import { route } from "../../../utils"
 import { ellipsis } from "../../../style-utils"
-import { useFirebase } from "../../../hooks"
+import { useDeleteDocument } from "../../../hooks"
 import { getImageUrl } from "../../../utils/getImageUrl"
 
 const ImageContainer = styled.div`
@@ -37,20 +37,8 @@ const DealPreview = ({
 	createdAt,
 	editedAt
 }) => {
-	const firebase = useFirebase()
 	const imageUrl = getImageUrl(imageRef, "M")
-
-	const onDelete = (id) => {
-		try {
-			const shouldDelete = window.confirm(`Czy napewno chcesz USUNĄĆ "${title}"?`)
-			if (shouldDelete) {
-				firebase.deal(id).delete()
-			}
-		} catch (error) {
-			console.log(error)
-			alert("Wystąpił błąd, więcej informacji w konsoli")
-		}
-	}
+	const deleteDocument = useDeleteDocument(`deals/${id}`)
 
 	return (
 		<OuterContainer>
@@ -84,7 +72,9 @@ const DealPreview = ({
 				<Button as={Link} to={route("ADMIN_DEALS_EDIT", { id })}>
 					Edytuj
 				</Button>
-				<Button onClick={() => onDelete(id)}>Usuń</Button>
+				<Button danger onClick={deleteDocument}>
+					Usuń
+				</Button>
 			</ButtonContainer>
 		</OuterContainer>
 	)

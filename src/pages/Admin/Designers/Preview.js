@@ -5,7 +5,7 @@ import Button, { LinkButton, ButtonContainer } from "../../../components/Button"
 import { TextBlock } from "../../../components/StyledComponents"
 
 import { route } from "../../../utils"
-import { useFirebase } from "../../../hooks"
+import { useDeleteDocument } from "../../../hooks"
 import { getImageUrl } from "../../../utils/getImageUrl"
 
 const GradientSwatch = styled.div`
@@ -40,21 +40,8 @@ const DesignerItemContainer = styled.div`
 `
 
 const DesignerPreview = ({ id, imageRef, label, colorA, colorB }) => {
-	const firebase = useFirebase()
-
 	const logoUrl = getImageUrl(imageRef, "M")
-
-	const onDelete = () => {
-		try {
-			const shouldDelete = window.confirm(`Do you really want to delete "${label}"?`)
-			if (shouldDelete) {
-				firebase.designer(id).delete()
-			}
-		} catch (error) {
-			console.log(error)
-			alert(error)
-		}
-	}
+	const deleteDocument = useDeleteDocument(`designers/${id}`)
 
 	return (
 		<DesignerItemContainer>
@@ -66,7 +53,7 @@ const DesignerPreview = ({ id, imageRef, label, colorA, colorB }) => {
 				<LogoContainer url={logoUrl} />
 			</FlexContainer>
 			<ButtonContainer>
-				<Button danger onClick={onDelete}>
+				<Button danger onClick={deleteDocument}>
 					Usuń
 				</Button>
 				<LinkButton to={route("ADMIN_DESIGNER_EDIT", { id })}>Edytuj</LinkButton>

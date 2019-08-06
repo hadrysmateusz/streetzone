@@ -9,7 +9,7 @@ import FirebaseImage from "../../../components/FirebaseImage"
 
 import { route, itemDataHelpers } from "../../../utils"
 import { ellipsis } from "../../../style-utils"
-import { useFirebase } from "../../../hooks"
+import { useDeleteDocument } from "../../../hooks"
 
 const { formatDesigners } = itemDataHelpers
 
@@ -44,21 +44,8 @@ const DropPreview = ({
 	createdAt,
 	editedAt
 }) => {
-	const firebase = useFirebase()
-
 	const formattedDesigners = formatDesigners(designers)
-
-	const onDelete = (id) => {
-		try {
-			const shouldDelete = window.confirm(`Czy napewno chcesz USUNĄĆ "${name}"?`)
-			if (shouldDelete) {
-				firebase.drop(id).delete()
-			}
-		} catch (error) {
-			console.log(error)
-			alert(error)
-		}
-	}
+	const deleteDocument = useDeleteDocument(`drops/${id}`)
 
 	return (
 		<DropContainer>
@@ -121,7 +108,9 @@ const DropPreview = ({
 				<Button as={Link} to={route("ADMIN_DROPS_EDIT", { id })}>
 					Edytuj
 				</Button>
-				<Button onClick={() => onDelete(id)}>Usuń</Button>
+				<Button danger onClick={deleteDocument}>
+					Usuń
+				</Button>
 			</ButtonContainer>
 		</DropContainer>
 	)

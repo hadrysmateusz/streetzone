@@ -30,7 +30,9 @@ const Preview = ({ id, imageRef, name, about }) => {
 
 			<ButtonContainer>
 				<LinkButton to={route("ADMIN_AUTHORS_EDIT", { id })}>Edytuj</LinkButton>
-				<Button onClick={deleteDocument}>Usuń</Button>
+				<Button danger onClick={deleteDocument}>
+					Usuń
+				</Button>
 			</ButtonContainer>
 		</BlogPostContainer>
 	)
