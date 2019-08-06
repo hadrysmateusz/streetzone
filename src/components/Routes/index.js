@@ -199,6 +199,19 @@ const AdminDesignerEdit = Loadable({
 	loading: LoadableComponentSpinner
 })
 
+const AdminAuthors = Loadable({
+	loader: () => import("../../pages/Admin/Authors"),
+	loading: LoadableComponentSpinner
+})
+const AdminAuthorsAdd = Loadable({
+	loader: () => import("../../pages/Admin/Authors/Add"),
+	loading: LoadableComponentSpinner
+})
+const AdminAuthorsEdit = Loadable({
+	loader: () => import("../../pages/Admin/Authors/Edit"),
+	loading: LoadableComponentSpinner
+})
+
 const AdminItems = Loadable({
 	loader: () => import("../../pages/Admin/Items"),
 	loading: LoadableComponentSpinner
@@ -411,6 +424,24 @@ export const ADMIN_ROUTES = [
 		id: "edit_designer",
 		path: ROUTES.ADMIN_DESIGNER_EDIT,
 		component: AdminDesignerEdit,
+		isNavigable: false
+	},
+	{
+		id: "authors",
+		path: ROUTES.ADMIN_AUTHORS,
+		component: AdminAuthors,
+		isNavigable: true
+	},
+	{
+		id: "add_author",
+		path: ROUTES.ADMIN_AUTHORS_ADD,
+		component: AdminAuthorsAdd,
+		isNavigable: false
+	},
+	{
+		id: "edit_author",
+		path: ROUTES.ADMIN_AUTHORS_EDIT,
+		component: AdminAuthorsEdit,
 		isNavigable: false
 	},
 	{

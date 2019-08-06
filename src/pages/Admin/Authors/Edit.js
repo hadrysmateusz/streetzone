@@ -1,56 +1,21 @@
 import React, { useState, useEffect } from "react"
 import { withRouter } from "react-router-dom"
 
-import { CustomFile } from "../../../components/FileHandler"
 import { PageContainer } from "../../../components/Containers"
 
 import { CONST } from "../../../constants"
 import { route } from "../../../utils"
-import { useFlash, useFirebase } from "../../../hooks"
-import { getImageUrl } from "../../../utils/getImageUrl"
+import { useFlash, useFirebase, useInitialValues } from "../../../hooks"
 
 import Form from "./Form"
 
-const imageOptionsMock = [
-	{
-		key: "mainImageRef",
-		fieldName: "image",
-		isList: false
-	},
-	{ key: "imageRefs", fieldName: "images", isList: true }
-]
+const imagesConfig = [{ key: "imageRef", name: "image" }]
 
 const Edit = ({ match, history }) => {
 	const firebase = useFirebase()
 	const flashMessage = useFlash()
-	const [initialValues, setInitialValues] = useState(null)
-	const id = match.params.id
-
-	useEffect(() => {
-		const getData = async () => {
-			let imageFile
-
-			const snap = await firebase.db
-				.collection("authors")
-				.doc(id)
-				.get()
-
-			let data = snap.data()
-
-			// if author has image fetch it and create CustomFile
-			if (data.imageRef) {
-				imageFile = new CustomFile({
-					storageRef: data.imageRef,
-					previewUrl: getImageUrl(data.imageRef, "M"),
-					isUploaded: true
-				})
-			}
-
-			setInitialValues({ ...data, image: imageFile })
-		}
-
-		getData()
-	}, [firebase, id])
+	const authorId = match.params.id
+	const initialValues = useInitialValues(`authors/${authorId}`, imagesConfig)
 
 	const onSubmit = async (values, form) => {
 		try {
@@ -62,6 +27,8 @@ const Edit = ({ match, history }) => {
 			if (imageFile) {
 				// check for changes
 				if (imageFile.data && !imageFile.isUploaded) {
+					console.log(imageFile)
+
 					// if changed upload it and use new ref
 					const snapshot = await firebase.uploadFile(
 						CONST.STORAGE_BUCKET_AUTHOR_PICTURES,
@@ -81,7 +48,7 @@ const Edit = ({ match, history }) => {
 			const authorObject = {}
 			authorObject.name = values.name
 			authorObject.about = values.about || null
-			authorObject.image = imageRef || null
+			authorObject.imageRef = imageRef || null
 
 			// Add to database
 			await firebase.db

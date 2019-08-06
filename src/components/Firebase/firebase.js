@@ -213,6 +213,7 @@ class Firebase {
 
 	uploadFile = async (bucket, file) => {
 		const name = uuidv1()
+		console.log("childArg", `${bucket}/${name}`)
 		const ref = this.file(`${bucket}/${name}`)
 		return ref.put(file)
 	}

@@ -4,7 +4,22 @@ import { CustomFile } from "../components/FileHandler"
 
 import { useFirebase } from "."
 
-const useInitialValues = (path, imagesConfig = [], transform = (a) => a) => {
+// default transform function simply returns data unmodified
+const defaultTransformFunction = (data) => data
+
+const defaultImagesConfig = []
+
+/**
+ * Fetches and prepares data for an edit form, it's important for the config to be the same array every time to prevent an endless loop
+ * @param {string} path path of document to fetch
+ * @param {array} imagesConfig
+ * @param {function} transform function transforming fetched data to work with the form
+ */
+const useInitialValues = (
+	path,
+	imagesConfig = defaultImagesConfig,
+	transform = defaultTransformFunction
+) => {
 	const firebase = useFirebase()
 	const [initialValues, setInitialValues] = useState(null)
 
@@ -14,13 +29,13 @@ const useInitialValues = (path, imagesConfig = [], transform = (a) => a) => {
 
 			let data = snap.data()
 
-			imagesConfig.forEach(({ key, fieldName }) => {
+			imagesConfig.forEach(({ key, name }) => {
 				// look for key specified in config
 				let value = data[key]
 
 				if (Array.isArray(value)) {
 					// if value is array, process all of its elements
-					data[fieldName] = value.map(
+					data[name] = value.map(
 						(ref) =>
 							new CustomFile({
 								storageRef: ref,
@@ -30,7 +45,7 @@ const useInitialValues = (path, imagesConfig = [], transform = (a) => a) => {
 					)
 				} else {
 					// otherwise process the single element
-					data[fieldName] = new CustomFile({
+					data[name] = new CustomFile({
 						storageRef: value,
 						previewUrl: getImageUrl(value, "M"),
 						isUploaded: true
@@ -40,10 +55,9 @@ const useInitialValues = (path, imagesConfig = [], transform = (a) => a) => {
 
 			data = transform(data)
 
-			return data
+			setInitialValues(data)
 		}
-
-		setInitialValues(getData())
+		getData()
 	}, [firebase.db, imagesConfig, path, transform])
 
 	return initialValues

@@ -14,6 +14,7 @@ import useBodyScrollLock from "./useBodyScrollLock"
 import useStateButton from "./useStateButton"
 import useDesignerOptions from "./useDesignerOptions"
 import useDeleteDocument from "./useDeleteDocument"
+import useInitialValues from "./useInitialValues"
 
 export {
 	useFirestoreCollection,
@@ -32,5 +33,6 @@ export {
 	useBodyScrollLock,
 	useStateButton,
 	useDesignerOptions,
-	useDeleteDocument
+	useDeleteDocument,
+	useInitialValues
 }

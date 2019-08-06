@@ -76,6 +76,9 @@ export const ADMIN_DEALS_EDIT = ADMIN_BASE + "/deals/e/:id"
 export const ADMIN_DESIGNERS = ADMIN_BASE + "/designers"
 export const ADMIN_DESIGNER_ADD = ADMIN_BASE + "/designers/n"
 export const ADMIN_DESIGNER_EDIT = ADMIN_BASE + "/designers/e/:id"
+export const ADMIN_AUTHORS = ADMIN_BASE + "/author"
+export const ADMIN_AUTHORS_ADD = ADMIN_BASE + "/author/n"
+export const ADMIN_AUTHORS_EDIT = ADMIN_BASE + "/author/e/:id"
 
 // Test routes (don't alter or test will fail)
 export const TEST_ROUTE = "route"

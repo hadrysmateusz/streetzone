@@ -31,7 +31,7 @@ const AddAuthor = ({ history }) => {
 			const authorId = shortid.generate()
 			const authorObject = { id: authorId, name: values.name }
 			authorObject.about = values.about || null
-			authorObject.image = imageRef || null
+			authorObject.imageRef = imageRef || null
 
 			// Add to database
 			await firebase.db
