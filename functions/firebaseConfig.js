@@ -18,13 +18,15 @@ adminConfig.credential = admin.credential.cert(serviceAccount)
 // initialize firebase app
 admin.initializeApp(adminConfig)
 
-const bucket = admin.storage().bucket()
+const storage = admin.storage()
 const db = admin.firestore()
 const messaging = admin.messaging()
+const bucket = storage.bucket()
 
 module.exports = {
-	bucket,
 	db,
+	storage,
+	bucket,
 	isProd,
 	messaging
 }
