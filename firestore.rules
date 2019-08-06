@@ -184,6 +184,11 @@ service cloud.firestore {
       allow update, delete: if isUserAdmin();
     }
 
+    match /authors/{authorId} {
+      allow read;
+      allow write: if isUserAdmin();
+    }
+
     match /reportedComments/{reportId} {
       // admins should have full access
       allow read, write: if isUserAdmin();
