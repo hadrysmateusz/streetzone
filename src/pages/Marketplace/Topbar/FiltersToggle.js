@@ -4,13 +4,13 @@ import { withBreakpoints } from "react-breakpoints"
 import styled from "styled-components/macro"
 
 const Toggle = styled.div`
-	border: 1px solid ${(p) => p.theme.colors.gray[75]};
+	border: 1px solid var(--gray75);
 	:hover {
-		border: 1px solid ${(p) => p.theme.colors.gray[25]};
+		border: 1px solid var(--gray25);
 	}
 	background: white;
 	padding: 0 var(--spacing3);
-	color: ${(p) => p.theme.colors.black[75]};
+	color: var(--black75);
 	display: flex;
 	justify-content: center;
 	align-items: center;

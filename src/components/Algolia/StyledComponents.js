@@ -55,7 +55,7 @@ export const FilterItem = styled.div`
 	}
 
 	label {
-		color: ${(p) => p.theme.colors.black[75]};
+		color: var(--black75);
 		cursor: pointer;
 		width: 100%;
 		${ellipsis}
@@ -75,12 +75,12 @@ export const SearchBox = styled.div`
 	width: 100%;
 	height: var(--form-element-height);
 	flex: 1;
-	border: 1px solid ${(p) => p.theme.colors.gray[75]};
+	border: 1px solid var(--gray75);
 	:hover {
-		border: 1px solid ${(p) => p.theme.colors.gray[25]};
+		border: 1px solid var(--gray25);
 	}
 	display: flex;
-	color: ${(p) => p.theme.colors.black[75]};
+	color: var(--black75);
 
 	.icon-container {
 		display: flex;
@@ -105,9 +105,11 @@ export const ItemsLoaderContainer = styled.div`
 
 export const ClearButton = styled.button`
 	${resetButtonStyles}
-	color: ${(p) => p.theme.colors.danger[50]};
+	color: var(--danger50);
+	font-weight: var(--semi-bold);
 	font-size: var(--font-size--xs);
 	margin: 0 var(--spacing1);
+	padding-left: 3px;
 `
 
 export const ResultsContainer = styled.main`

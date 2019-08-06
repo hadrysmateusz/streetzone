@@ -18,7 +18,7 @@ export const VerticalSeparator = styled.div`
 	height: 100%;
 	margin: 0 var(--spacing3);
 	width: 0;
-	border-left: 1px solid ${(p) => p.theme.colors.gray[75]};
+	border-left: 1px solid var(--gray75);
 `
 
 export const Header = styled.div`

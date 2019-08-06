@@ -24,7 +24,7 @@ export const SeparatedContainer = styled.div`
 		padding: var(--spacing1) var(--spacing2);
 	}
 	> * + * {
-		border-left: 1px solid ${(p) => p.theme.colors.gray[75]};
+		border-left: 1px solid var(--gray75);
 	}
 `
 

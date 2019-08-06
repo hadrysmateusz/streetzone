@@ -30,7 +30,7 @@ const LogoContainer = styled.div`
 		width: 120px;
 	}
 
-	color: ${(p) => p.theme.colors.black[75]};
+	color: var(--black75);
 
 	${(p) =>
 		p.centered &&

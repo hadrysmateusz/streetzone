@@ -23,9 +23,9 @@ const Container = styled.label`
 	min-width: 0;
 	background: white;
 	padding: 0 var(--spacing3);
-	border: 1px solid ${(p) => p.theme.colors.gray[75]};
+	border: 1px solid var(--gray75);
 	:hover {
-		border: 1px solid ${(p) => p.theme.colors.gray[25]};
+		border: 1px solid var(--gray25);
 	}
 	svg {
 		margin-right: var(--spacing2);

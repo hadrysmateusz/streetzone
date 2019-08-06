@@ -7,7 +7,7 @@ import { gridArea } from "styled-system"
 export const StyledLink = styled(Link)`
 	text-decoration: underline !important;
 	:hover {
-		color: ${(p) => p.theme.colors.accent};
+		color: var(--accent50);
 	}
 `
 

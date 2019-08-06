@@ -49,7 +49,7 @@ const LinkButton = styled.span`
 	cursor: pointer;
 	text-decoration: underline;
 	:hover {
-		color: ${(p) => p.theme.colors.accent};
+		color: var(--accent50);
 	}
 `
 
