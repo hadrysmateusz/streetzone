@@ -4,7 +4,7 @@ const path = require("path")
 const os = require("os")
 const fs = require("fs")
 
-const { db, bucket } = require("./firebaseConfig")
+const { bucket } = require("./firebaseConfig")
 
 const {
 	JPEG_EXTENSION,
@@ -16,7 +16,8 @@ const {
 	STORAGE_BUCKET_DEAL_ATTACHMENTS,
 	STORAGE_BUCKET_ITEM_ATTACHMENTS,
 	STORAGE_BUCKET_PROFILE_PICTURES,
-	STORAGE_BUCKET_BRAND_LOGOS
+	STORAGE_BUCKET_BRAND_LOGOS,
+	STORAGE_BUCKET_AUTHOR_PICTURES
 } = require("./const")
 
 /**
@@ -26,29 +27,33 @@ const {
  * @param {string} filePath path to file in cloud storage
  */
 const convertFileToJPEG = async (sourceFilePath, filePath) => {
-	const fileName = path.basename(filePath, path.extname(filePath))
-	const fileDir = path.dirname(filePath)
-	const thumbnailPath = path.normalize(
-		path.format({ dir: fileDir, name: fileName, ext: JPEG_EXTENSION })
-	)
-	const localTempPath = path.join(os.tmpdir(), thumbnailPath)
+	try {
+		const fileName = path.basename(filePath, path.extname(filePath))
+		const fileDir = path.dirname(filePath)
+		const thumbnailPath = path.normalize(
+			path.format({ dir: fileDir, name: fileName, ext: JPEG_EXTENSION })
+		)
+		const localTempPath = path.join(os.tmpdir(), thumbnailPath)
 
-	// Convert the image to JPEG using ImageMagick.
-	await spawn("convert", [sourceFilePath, localTempPath])
+		// Convert the image to JPEG using ImageMagick.
+		await spawn("convert", [sourceFilePath, localTempPath])
 
-	// Remove the original file
-	await bucket.file(filePath).delete()
+		// Remove the original file
+		await bucket.file(filePath).delete()
 
-	// Upload the JPEG image (To the location of the original file)
-	await bucket.upload(localTempPath, { destination: filePath })
+		// Upload the JPEG image (To the location of the original file)
+		await bucket.upload(localTempPath, { destination: filePath })
 
-	fs.unlinkSync(localTempPath)
+		fs.unlinkSync(localTempPath)
+	} catch (error) {
+		console.error("error while converting file to JPEG")
+	}
 }
 
-const signedURLConfig = {
-	action: "read",
-	expires: "03-01-2500"
-}
+// const signedURLConfig = {
+// 	action: "read",
+// 	expires: "03-01-2500"
+// }
 
 const generateThumbnail = async (pathFrom, pathTo, options) => {
 	const { size, mode } = options
@@ -93,6 +98,8 @@ const createThumbnail = async (filePath, sourceFilePath, postfix, thumbnailOptio
 	)
 	const localTempPath = path.join(os.tmpdir(), thumbnailPath)
 
+	console.log(`creating thumbnail (${localTempPath})`)
+
 	// generate thumbnail
 	try {
 		await generateThumbnail(sourceFilePath, localTempPath, thumbnailOptions)
@@ -116,6 +123,8 @@ const generateThumbnails = async (object, sizes) => {
 	const filePath = object.name
 	const contentType = object.contentType
 
+	console.log(`generating thumbnails for ${filePath}`)
+
 	// Exit if the file is not an image
 	if (!object.contentType.startsWith("image/")) {
 		console.log(`Exiting because file (${filePath}) is not an image (${contentType})`)
@@ -134,8 +143,14 @@ const generateThumbnails = async (object, sizes) => {
 	// Make sure temporary directories exist
 	await mkdirp(path.dirname(sourceFilePath))
 
-	// Download file from bucket
-	await bucket.file(filePath).download({ destination: sourceFilePath })
+	try {
+		// Download file from bucket
+		console.log(`downloading ${filePath} to ${sourceFilePath}`)
+		await bucket.file(filePath).download({ destination: sourceFilePath })
+	} catch (error) {
+		console.error("Failed to download file from storage bucket")
+		throw error
+	}
 
 	// if file is in other format, convert it to jpeg
 	if (!contentType.startsWith("image/jpeg")) {
@@ -171,26 +186,22 @@ const generateThumbnails = async (object, sizes) => {
 	return paths
 }
 
-const writeUrlsToDb = async (userId, urls) => {
-	const profilePictureURLs = urls.map((result, i) => {
-		console.log(`url ${i}:`, result)
-		return result[0]
-	})
+// const writeUrlsToDb = async (userId, urls) => {
+// 	const profilePictureURLs = urls.map((result, i) => {
+// 		console.log(`url ${i}:`, result)
+// 		return result[0]
+// 	})
 
-	// Add the URLs to the Database
-	return db
-		.collection("users")
-		.doc(userId)
-		.update({ profilePictureURLs })
-}
+// 	// Add the URLs to the Database
+// 	return db
+// 		.collection("users")
+// 		.doc(userId)
+// 		.update({ profilePictureURLs })
+// }
 
 const getStorageBucketName = (file) => {
 	const fileName = file.name
 	const firebaseBucket = fileName.slice(0, fileName.indexOf("/"))
-
-	console.log("fileName: ", fileName)
-	console.log("firebaseBucket: ", firebaseBucket)
-
 	return firebaseBucket
 }
 
@@ -222,20 +233,18 @@ const processImage = async (file) => {
 				{ size: "260x260", mode: "contain" },
 				{ size: "760x500", mode: "contain" }
 			])
+		case STORAGE_BUCKET_AUTHOR_PICTURES:
+			return await generateThumbnails(file, [
+				{ size: "80x80", mode: "contain" },
+				{ size: "200x200", mode: "contain" },
+				null
+			])
 		case STORAGE_BUCKET_PROFILE_PICTURES:
-			const filePaths = await generateThumbnails(file, [
+			return await generateThumbnails(file, [
 				{ size: "60x60", mode: "cover" },
 				{ size: "130x130", mode: "cover" },
 				{ size: "230x230", mode: "cover" }
 			])
-			if (filePaths) {
-				const userId = file.name.split("/")[1]
-				const urls = await Promise.all(
-					filePaths.map((path) => bucket.file(path).getSignedUrl(signedURLConfig))
-				)
-				await writeUrlsToDb(userId, urls)
-			}
-			return
 		case STORAGE_BUCKET_BRAND_LOGOS:
 			return await generateThumbnails(file, [
 				{ size: "40x40", mode: "contain" },
@@ -243,7 +252,7 @@ const processImage = async (file) => {
 				null
 			])
 		default:
-			throw Error("uploaded file to unknown bucket")
+			throw Error(`uploaded file to unknown bucket (${firebaseBucket})`)
 	}
 }
 
