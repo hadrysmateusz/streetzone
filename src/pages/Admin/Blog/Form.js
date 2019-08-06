@@ -17,7 +17,8 @@ import {
 
 import { CONST } from "../../../constants"
 
-import categoryOptions from "./post_category_options"
+import categoryOptions from "./postCategoryOptions"
+import authorOptions from "./authorOptions"
 import { StyledForm } from "../Common"
 
 export default ({ onSubmit, initialValues, edit, postId }) => {
@@ -30,12 +31,12 @@ export default ({ onSubmit, initialValues, edit, postId }) => {
 		<Form
 			onSubmit={onSubmit}
 			initialValues={initialValues}
-			render={({ form, handleSubmit, submitting, pristine, values, ...rest }) => {
+			render={({ form, handleSubmit, submitting, pristine, values }) => {
 				return (
 					<StyledForm onSubmit={handleSubmit}>
 						<PreventFormTransition />
 
-						<TextFF label="Autor" placeholder="Autor" name="author" />
+						<DropdownFF label="Autor" name="author" options={authorOptions} />
 
 						<TextFF label="Tytuł" placeholder="Tytuł" name="title" />
 

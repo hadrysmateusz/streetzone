@@ -6,7 +6,6 @@ import FiltersBase, { Section } from "../../components/Filters"
 import SavedFilters from "../../components/Filters/SavedFilters"
 
 import { useAuthentication } from "../../hooks"
-import { FEATURES } from "../../constants"
 
 export const TABS = {
 	category: {
@@ -86,11 +85,11 @@ const Filters = ({ toggle, clear, shouldClear }, ref) => {
 						</Section>
 
 						{/* Saved Filters */}
-						{authUser && FEATURES.FILTER_SAVING && (
+						{/* {authUser &&  (
 							<Section id="saved-filters-filters-section">
 								<SavedFilters {...commonProps} tab={tabs.saved} startFolded />
 							</Section>
-						)}
+						)} */}
 					</>
 				)
 			}}

@@ -32,7 +32,7 @@ import {
 } from "../../components/ItemDetails"
 
 import { useFirebase, useAuthentication } from "../../hooks"
-import { translateCondition } from "../../constants/item_schema"
+import { translateCondition } from "../../constants/itemSchema"
 import { CONST } from "../../constants"
 import { route, itemDataHelpers } from "../../utils"
 

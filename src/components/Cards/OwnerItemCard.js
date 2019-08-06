@@ -11,8 +11,8 @@ import DeleteItemButton from "../DeleteItemButton"
 import { SearchWrapperContext } from "../InstantSearchWrapper"
 import FirebaseImage from "../FirebaseImage"
 
-import { translateCondition } from "../../constants/item_schema"
-import promotingLevels from "../../constants/promoting_levels"
+import { translateCondition } from "../../constants/itemSchema"
+import promotingTiers from "../../constants/promotingTiers"
 import { useFlash, useFirebase } from "../../hooks"
 import { itemDataHelpers, route } from "../../utils"
 import { nLinesHigh } from "../../style-utils"
@@ -145,7 +145,7 @@ const PromoteStatus = ({ promotingLevel, promotedUntil }) => {
 	const diff = moment(promotedUntil).diff(moment())
 	const timeLeft = promotedUntil ? moment.duration(diff).humanize() : "Brak"
 	const hasTimeLeft = numDaysLeft > 0
-	const promotingType = hasTimeLeft ? promotingLevels[promotingLevel] : "Brak"
+	const promotingType = hasTimeLeft ? promotingTiers[promotingLevel] : "Brak"
 
 	return (
 		<StatusContainer>

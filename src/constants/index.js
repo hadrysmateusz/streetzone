@@ -1,19 +1,9 @@
 import * as ROUTES from "./routes"
-import * as FORM_ERR from "./form_errors"
-import * as AUTH_ERR from "./auth_errors"
+import * as FORM_ERR from "./formErrors"
 import * as CONST from "./const"
-import * as ITEM_SCHEMA from "./item_schema"
+import * as ITEM_SCHEMA from "./itemSchema"
 import THEME from "./theme"
-import * as FEATURES from "./features"
-import POST_CATEGORIES from "./post_categories"
+import POST_CATEGORIES from "./postCategories"
+import AUTHORS from "./authors"
 
-export {
-	ROUTES,
-	FORM_ERR,
-	AUTH_ERR,
-	CONST,
-	ITEM_SCHEMA,
-	THEME,
-	FEATURES,
-	POST_CATEGORIES
-}
+export { ROUTES, FORM_ERR, CONST, ITEM_SCHEMA, THEME, POST_CATEGORIES, AUTHORS }

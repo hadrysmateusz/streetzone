@@ -12,7 +12,7 @@ import HelmetBasics from "../../components/HelmetBasics"
 import { NotFoundError } from "../../errors"
 import { route } from "../../utils"
 import { useFirebase, useAuthentication } from "../../hooks"
-import promotingLevels from "../../constants/promoting_levels"
+import promotingTiers from "../../constants/promotingTiers"
 
 const PageHeader = styled.div`
 	font-weight: bold;
@@ -257,7 +257,7 @@ const ItemPromotePage = ({ match, history, location }) => {
 
 					<PromoteOptionsContainer>
 						<PromoteOptionCard
-							name={promotingLevels[0]}
+							name={promotingTiers[0]}
 							level={0}
 							price={4.99}
 							itemId={itemId}
@@ -268,7 +268,7 @@ const ItemPromotePage = ({ match, history, location }) => {
 							]}
 						/>
 						<PromoteOptionCard
-							name={promotingLevels[1]}
+							name={promotingTiers[1]}
 							level={1}
 							price={9.99}
 							itemId={itemId}
@@ -283,7 +283,7 @@ const ItemPromotePage = ({ match, history, location }) => {
 							]}
 						/>
 						<PromoteOptionCard
-							name={promotingLevels[2]}
+							name={promotingTiers[2]}
 							level={2}
 							price={25}
 							itemId={itemId}
