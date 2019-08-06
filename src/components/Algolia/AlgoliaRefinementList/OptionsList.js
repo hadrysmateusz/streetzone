@@ -30,7 +30,7 @@ const BoxItemsContainer = ({ title, items, refine }) => {
 export const BoxOptionsList = ({ items, refine }) => {
 	if (items && items.length > 0) {
 		// divide items by category
-		let sizes = { top: [], spodnie: [], buty: [] }
+		let sizes = { clothes: [], accessories: [], shoes: [] }
 		items.forEach((size) => {
 			// split the string to get category and value of the size
 			const [category, label] = size.label.split("-")
@@ -40,9 +40,9 @@ export const BoxOptionsList = ({ items, refine }) => {
 
 		return (
 			<SizeCategoriesContainer>
-				<BoxItemsContainer title="Buty" items={sizes.buty} refine={refine} />
-				<BoxItemsContainer title="Tee / Longsleeve" items={sizes.top} refine={refine} />
-				<BoxItemsContainer title="Spodnie" items={sizes.spodnie} refine={refine} />
+				<BoxItemsContainer title="Buty" items={sizes.shoes} refine={refine} />
+				<BoxItemsContainer title="Ubrania" items={sizes.clothes} refine={refine} />
+				<BoxItemsContainer title="Akcesoria" items={sizes.accessories} refine={refine} />
 			</SizeCategoriesContainer>
 		)
 	} else {

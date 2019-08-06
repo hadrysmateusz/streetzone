@@ -3,9 +3,6 @@ import React from "react"
 import AlgoliaRefinementList from "../../components/Algolia/AlgoliaRefinementList"
 import AlgoliaRange from "../../components/Algolia/AlgoliaRange"
 import FiltersBase, { Section } from "../../components/Filters"
-import SavedFilters from "../../components/Filters/SavedFilters"
-
-import { useAuthentication } from "../../hooks"
 
 export const TABS = {
 	category: {
@@ -31,8 +28,6 @@ export const TABS = {
 }
 
 const Filters = ({ toggle, clear, shouldClear }, ref) => {
-	const authUser = useAuthentication()
-
 	return (
 		<FiltersBase tabOptions={TABS} defaultTab="category" toggle={toggle} clear={clear}>
 			{({ openTab, switchTab, tabs }) => {
@@ -83,13 +78,6 @@ const Filters = ({ toggle, clear, shouldClear }, ref) => {
 								startFolded
 							/>
 						</Section>
-
-						{/* Saved Filters */}
-						{/* {authUser &&  (
-							<Section id="saved-filters-filters-section">
-								<SavedFilters {...commonProps} tab={tabs.saved} startFolded />
-							</Section>
-						)} */}
 					</>
 				)
 			}}

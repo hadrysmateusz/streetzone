@@ -8,6 +8,8 @@ import { FieldRow, FieldLabel } from "../../../components/Basics"
 import { FormError, Input } from "../../../components/FormElements"
 import { FileHandler } from "../../../components/FileHandler"
 import { ITEM_SCHEMA, CONST } from "../../../constants"
+import categories from "../../../constants/itemCategories"
+import sizes from "../../../constants/sizes"
 import { formatItemDataForDb, MODE } from "../../../utils/formatting/formatItemData"
 
 function randInt(min, max) {
@@ -114,25 +116,17 @@ class NewItemPage extends Component {
 
 			// size
 			let sizeCategory
-			if (category === ITEM_SCHEMA.categories.akcesoria) {
-				sizeCategory = null
-			} else if (category === ITEM_SCHEMA.categories.spodnie) {
-				sizeCategory = "spodnie"
-			} else if (category === ITEM_SCHEMA.categories.buty) {
-				sizeCategory = "buty"
-			} else if (
-				[ITEM_SCHEMA.categories.tee, ITEM_SCHEMA.categories.longsleeve].includes(category)
-			) {
-				sizeCategory = "top"
+			if (category === categories.akcesoria) {
+				sizeCategory = "accessories"
+			} else if (category === categories.buty) {
+				sizeCategory = "shoes"
+			} else {
+				sizeCategory = "clothes"
 			}
 
 			let size
-			if (sizeCategory) {
-				const availablSizes = ITEM_SCHEMA.size[sizeCategory]
-				size = sizeCategory + "-" + availablSizes[randInt(0, availablSizes.length - 1)]
-			} else {
-				size = null
-			}
+			const availableSizes = sizes[sizeCategory]
+			size = sizeCategory + "-" + availableSizes[randInt(0, availableSizes.length - 1)]
 
 			// description
 			let description = await fetch(

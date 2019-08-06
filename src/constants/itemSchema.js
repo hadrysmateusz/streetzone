@@ -1,10 +1,5 @@
-const categories = {
-	buty: "Buty",
-	tee: "Tee",
-	longsleeve: "Longsleeve",
-	spodnie: "Spodnie",
-	akcesoria: "Akcesoria"
-}
+import categories from "./itemCategories"
+import sizes from "./sizes"
 
 // options for react-select
 const categoryOptions = Object.values(categories).map((categoryName) => ({
@@ -63,33 +58,25 @@ const conditionOptions = [
 	}
 ]
 
-const size = {
-	top: ["XS", "S", "M", "L", "XL", "XXL", "3XL", "4XL"],
-	buty: [32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51],
-	spodnie: [26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44]
-}
-
 const sizeOptions = (category) => {
-	switch (category) {
-		case categories.tee:
-		case categories.longsleeve:
-			return size.top.map((size) => ({
-				value: `top-${size}`,
-				label: size
-			}))
-		case categories.buty:
-			return size.buty.map((size) => ({
-				value: `buty-${size}`,
-				label: size
-			}))
-		case categories.spodnie:
-			return size.spodnie.map((size) => ({
-				value: `spodnie-${size}`,
-				label: size
-			}))
-		default:
-			return []
+	if (category === categories.buty) {
+		return sizes.shoes.map((size) => ({
+			value: `shoes-${size}`,
+			label: size
+		}))
 	}
+
+	if (category === categories.akcesoria) {
+		return sizes.accessories.map((size) => ({
+			value: `accessories-${size}`,
+			label: size === "OS" ? "One Size" : size
+		}))
+	}
+
+	return sizes.clothes.map((size) => ({
+		value: `clothes-${size}`,
+		label: size
+	}))
 }
 
 const translateCondition = (conditionValue) => {
@@ -119,5 +106,5 @@ export {
 	conditionOptions,
 	sizeOptions,
 	translateCondition,
-	size
+	sizes
 }

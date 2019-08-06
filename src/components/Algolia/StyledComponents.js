@@ -3,7 +3,7 @@ import styled from "styled-components/macro"
 import { resetButtonStyles, ellipsis } from "../../style-utils"
 
 export const BoxItem = styled.div`
-	border: 1px solid var(--gray75);
+	border: 1px solid ${(p) => (p.checked ? "black" : "var(--gray75)")};
 	font-size: var(--font-size--xs);
 	height: 100%;
 	transform: border 0.2s ease;

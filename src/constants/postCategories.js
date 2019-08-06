@@ -6,3 +6,9 @@ export default Object.freeze({
 	VIDEO: "Video",
 	TECH: "Technologicznie"
 })
+
+// New categories are supposed to look like this:
+// - Poradniki
+// - Wydarzenia
+// - Recenzje
+// - Streetwear

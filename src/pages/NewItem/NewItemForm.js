@@ -82,9 +82,9 @@ const NewItemForm = ({ onSubmit, history }) => {
 
 						<InfoBox span={2}>
 							<TextBlock>
-								Jeśli nie znalazłeś marki której potrzebujesz napisz do nas na{" "}
-								<b>bumped@gmail.com</b> lub użyj formularza dostępnego{" "}
-								<StyledLink to={ROUTES.REQUEST_DESIGNER}>tutaj</StyledLink>.
+								Jeśli nie znalazłeś marki której potrzebujesz, użyj formularza dostępnego{" "}
+								<StyledLink to={ROUTES.REQUEST_DESIGNER}>tutaj</StyledLink> by dać nam
+								znać
 							</TextBlock>
 						</InfoBox>
 
@@ -129,10 +129,7 @@ const NewItemForm = ({ onSubmit, history }) => {
 												{...input}
 												options={options}
 												isSearchable={false}
-												disabled={
-													!values.category ||
-													values.category === ITEM_SCHEMA.categories.akcesoria
-												}
+												disabled={!values.category}
 												placeholder="Rozmiar"
 												error={error}
 												info="Dostępne rozmiary zależne są od wybranej kategorii"
