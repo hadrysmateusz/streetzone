@@ -106,10 +106,8 @@ export default ({ onSubmit, initialValues, edit }) => {
 							info={"Razem z walutą"}
 						/>
 
-						{/* TODO: currently it's impossible to remove a link field */}
-						{/* TODO: after adding an item a weird error is thrown but the drop gets added */}
 						<div>
-							<Label>Gdzie kupić? (nie usuwaj linkow narazie)</Label>
+							<Label>Gdzie kupić?</Label>
 							<FieldArray name="buyAt">
 								{({ fields }) =>
 									fields.map((name, index) => (
