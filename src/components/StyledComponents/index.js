@@ -1,5 +1,4 @@
 import styled, { css } from "styled-components/macro"
-import { Box } from "rebass"
 
 // utils
 
@@ -41,7 +40,7 @@ const bodyTextBase = css`
 	}};
 `
 
-export const TextBlock = styled(Box)`
+export const TextBlock = styled.div`
 	${bodyTextBase}
 
 	${(p) => p.centered && "text-align: center;"}

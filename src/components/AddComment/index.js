@@ -1,14 +1,22 @@
 import React from "react"
 import { Form } from "react-final-form"
+import styled from "styled-components/macro"
 
 import { LoaderButton, ButtonContainer } from "../Button"
 import { TextareaFF, RatingFF } from "../FinalFormFields"
-import { SmallTextBlock, TextBlock } from "../StyledComponents"
+import { SmallTextBlock } from "../StyledComponents"
 
 import { useFirebase, useAuthentication, useFlash } from "../../hooks"
 
 import { RatingContainer, OuterContainer, Group } from "./StyledComponents"
 import validate from "./validate"
+
+const Heading = styled.div`
+	font-size: var(--fs-m);
+	font-weight: bold;
+	margin-bottom: var(--spacing3);
+	color: var(--black50);
+`
 
 const AddComment = ({ userId }) => {
 	const firebase = useFirebase()
@@ -57,9 +65,7 @@ const AddComment = ({ userId }) => {
 
 	return (
 		<OuterContainer>
-			<TextBlock size="m" bold mb="var(--spacing3)" color="black50">
-				Wystaw opinie o sprzedawcy
-			</TextBlock>
+			<Heading>Wystaw opinie o sprzedawcy</Heading>
 			<Form
 				onSubmit={onSubmit}
 				validate={validate}

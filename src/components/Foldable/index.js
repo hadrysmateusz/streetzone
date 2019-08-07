@@ -4,7 +4,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { withBreakpoints } from "react-breakpoints"
 import Clear, { ClearRange } from "../Algolia/ClearCategoryButton"
 import { TextBlock } from "../StyledComponents"
-import { Flex } from "rebass"
 
 const Header = styled.header`
 	padding: ${(p) => (p.noMargin ? "0" : "var(--spacing3)")};
@@ -17,6 +16,10 @@ const Header = styled.header`
 		transition: transform 0.32s ease;
 		${(p) => p.isFolded && "transform: rotate(-180deg);"}
 	}
+`
+
+const Flex = styled.div`
+	display: flex;
 `
 
 const Content = styled.div`
