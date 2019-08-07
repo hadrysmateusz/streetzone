@@ -34,6 +34,7 @@ const StyledSelect = styled(Select).attrs({
 
 	.react-select__value-container {
 		padding: 0 var(--spacing2);
+		overflow: visible;
 	}
 
 	.react-select__indicators {
