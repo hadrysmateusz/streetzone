@@ -2,7 +2,6 @@ import React from "react"
 import { Form, Field } from "react-final-form"
 import { OnChange } from "react-final-form-listeners"
 import styled from "styled-components/macro"
-import { withRouter } from "react-router-dom"
 
 import { LoaderButton, ButtonContainer } from "../../components/Button"
 import DropdownFinalform from "../../components/DropdownFinalform"
@@ -33,7 +32,7 @@ const FormElement = styled.div`
 	}
 `
 
-const NewItemForm = ({ onSubmit, history }) => {
+const NewItemForm = ({ onSubmit }) => {
 	const designerOptions = useDesignerOptions()
 
 	return (
@@ -252,4 +251,4 @@ const NewItemForm = ({ onSubmit, history }) => {
 	)
 }
 
-export default withRouter(NewItemForm)
+export default NewItemForm
