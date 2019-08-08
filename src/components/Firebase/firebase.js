@@ -27,6 +27,10 @@ class Firebase {
 		this.functions = app.functions()
 		this.fn = this.functions.httpsCallable
 
+		if (process.env.NODE_ENV === "development") {
+			this.functions.useFunctionsEmulator("http://localhost:5001")
+		}
+
 		// use the locally emulated functions in development
 		// if (process.env.NODE_ENV === "development") {
 		// 	this.functions._url = function(name) {
