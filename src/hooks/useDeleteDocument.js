@@ -18,7 +18,12 @@ const useDeleteDocument = (path, message = "Na pewno? Tej akcji nie da się cofn
 
 				if (!shouldDelete) return
 
-				await firebase.db.doc(overridePath || path).delete()
+				// check if overridePath is an actual path and not undefined or an event object
+				if (typeof overridePath === "string") {
+					await firebase.db.doc(overridePath).delete()
+				} else {
+					await firebase.db.doc(path).delete()
+				}
 
 				flashMessage({ type: "success", text: "Usunięto" })
 			} catch (error) {
