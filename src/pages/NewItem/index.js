@@ -6,8 +6,9 @@ import { PageContainer } from "../../components/Containers"
 import HelmetBasics from "../../components/HelmetBasics"
 
 import { formatItemDataForDb, MODE } from "../../utils/formatting/formatItemData"
-import { ROUTES, CONST } from "../../constants"
+import { CONST } from "../../constants"
 import { useAuthentication, useFirebase, useFlash } from "../../hooks"
+import { route } from "../../utils"
 
 import NewItemForm from "./NewItemForm"
 
@@ -16,7 +17,7 @@ const NewItemPage = ({ history }) => {
 	const authUser = useAuthentication()
 	const flashMessage = useFlash()
 
-	const onSubmit = async (values) => {
+	const onSubmit = async (values, form) => {
 		try {
 			const files = values.files
 			const userId = authUser.uid
@@ -40,10 +41,15 @@ const NewItemPage = ({ history }) => {
 			// Add item to database
 			await firebase.item(formattedData.id).set(formattedData)
 
-			// TODO: better behavior after adding item
-			// Redirect to home page
-			history.push(ROUTES.HOME)
-			return
+			setTimeout(() => {
+				form.reset()
+				flashMessage({
+					type: "success",
+					text: "Dodano ogłoszenie!",
+					details: "Odśwież stronę za kilka sekund by zobaczyć zmiany"
+				})
+				history.push(route("ACCOUNT_ITEMS", { id: userId }))
+			})
 		} catch (error) {
 			console.error(error)
 			flashMessage({
