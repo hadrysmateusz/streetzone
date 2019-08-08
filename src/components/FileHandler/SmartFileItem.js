@@ -62,21 +62,25 @@ const SmartFileItem = ({
 		if ("clipboard" in navigator) {
 			try {
 				await navigator.clipboard.writeText(previewUrl)
-				console.log("Link dodano do schowka")
-
 				flashMessage({ type: "success", text: "Link skopiowano do schowka" })
 			} catch (err) {
 				if ("permissions" in navigator) {
 					await navigator.permissions.query({ name: "clipboard" })
 				} else {
-					console.log("Permission API isn't supported")
-					flashMessage({ type: "error", text: "Permission API isn't supported" })
+					flashMessage({
+						type: "error",
+						text: "Permission API isn't supported",
+						details: `You can copy the link manually: ${previewUrl}`
+					})
 				}
 			}
 		} else {
-			// TODO: fallback for browser without support for Clipboard API
 			console.log("Clipboard API isn't supported")
-			flashMessage({ type: "error", text: "Clipboard API isn't supported" })
+			flashMessage({
+				type: "error",
+				text: "Clipboard API isn't supported",
+				details: `You can copy the link manually: ${previewUrl}`
+			})
 		}
 	}
 
