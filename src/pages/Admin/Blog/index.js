@@ -8,7 +8,7 @@ const BlogManagement = () => (
 		firestoreCollection="posts"
 		addRouteName="ADMIN_BLOG_ADD"
 		addRouteText="Dodaj Post"
-		heading="Blog"
+		heading="Posty"
 		PreviewComponent={PostPreview}
 	/>
 )

@@ -357,6 +357,7 @@ export const ACCOUNT_ROUTES = [
 export const ADMIN_ROUTES = [
 	{
 		id: "blog",
+		name: "Posty",
 		path: ROUTES.ADMIN_BLOG,
 		component: AdminBlog,
 		isNavigable: true
@@ -375,6 +376,7 @@ export const ADMIN_ROUTES = [
 	},
 	{
 		id: "deals",
+		name: "Okazje",
 		path: ROUTES.ADMIN_DEALS,
 		component: AdminDeals,
 		isNavigable: true
@@ -393,6 +395,7 @@ export const ADMIN_ROUTES = [
 	},
 	{
 		id: "drops",
+		name: "Dropy",
 		path: ROUTES.ADMIN_DROPS,
 		component: AdminDrops,
 		isNavigable: true
@@ -411,6 +414,7 @@ export const ADMIN_ROUTES = [
 	},
 	{
 		id: "designers",
+		name: "Projektanci/Marki",
 		path: ROUTES.ADMIN_DESIGNERS,
 		component: AdminDesigners,
 		isNavigable: true
@@ -448,12 +452,14 @@ export const ADMIN_ROUTES = [
 	// },
 	{
 		id: "items",
+		name: "Ogłoszenia",
 		path: ROUTES.ADMIN_ITEMS,
 		component: AdminItems,
 		isNavigable: true
 	},
 	{
 		id: "users",
+		name: "Użytkownicy",
 		path: ROUTES.ADMIN_USERS,
 		component: AdminUsers,
 		isNavigable: true

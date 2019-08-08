@@ -63,17 +63,17 @@ export class ItemsManagement extends React.Component {
 				{error && <div>{error.message}</div>}
 
 				<TextBlock size="xl" bold>
-					Items
+					Ogłoszenia
 				</TextBlock>
 
 				<TextBlock size="m" color="gray0">
-					Add item
+					Dodaj
 				</TextBlock>
 
 				<AddItems firebase={this.props.firebase} />
 
 				<TextBlock size="m" color="gray0">
-					Find by ID
+					Znajdź po ID
 				</TextBlock>
 
 				<form onSubmit={this.onSubmit}>
@@ -83,13 +83,13 @@ export class ItemsManagement extends React.Component {
 
 				{foundItem && (
 					<div>
-						<h3>Found item</h3>
+						<h3>Znaleziony</h3>
 						{foundItem.name} {foundItem.email}
 					</div>
 				)}
 
 				<TextBlock size="m" color="gray0">
-					All items
+					Wszystkie ogłoszenia
 				</TextBlock>
 
 				{items.length > 0 && (

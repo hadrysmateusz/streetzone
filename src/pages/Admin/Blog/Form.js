@@ -43,6 +43,7 @@ export default ({ onSubmit, initialValues, edit, postId }) => {
 						<DropdownFF label="Kategoria" name="category" options={categoryOptions} />
 
 						<LiveFileHandlerFF label="Zdjęcia" name="files" uploadPath={imagesPath} />
+
 						<BlackBox>
 							Pamiętaj usunąć nieużyte zdjęcia przed opuszczeniem strony
 						</BlackBox>
