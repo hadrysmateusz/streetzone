@@ -6,8 +6,7 @@ import FormElementContainer from "./container"
 import { disabledStyles, hoverStyles, focusStyles, basicStyles } from "./commonStyles"
 
 const StyledSelect = styled(Select).attrs({
-	classNamePrefix: "react-select",
-	placeholder: "Wybierz..."
+	classNamePrefix: "react-select"
 })`
 	.react-select--container {
 	}

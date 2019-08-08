@@ -7,8 +7,7 @@ import { disabledStyles, hoverStyles, focusStyles, basicStyles } from "./commonS
 import { useFirebase, useFlash, useTagsOptions } from "../../hooks"
 
 const StyledSelect = styled(CreatableSelect).attrs({
-	classNamePrefix: "react-select",
-	placeholder: "Wybierz..."
+	classNamePrefix: "react-select"
 })`
 	.react-select--container {
 	}
@@ -64,23 +63,35 @@ const StyledSelect = styled(CreatableSelect).attrs({
 	}
 `
 
-const TagsInput = ({ onChange: setValue, value, info, error, disabled, ...rest }) => {
+const TagsInput = ({
+	onChange: setValue,
+	placeholder = "Tagi (zatwierdzaj enterem)",
+	value,
+	info,
+	error,
+	disabled,
+	...rest
+}) => {
 	const firebase = useFirebase()
 	const flashMessage = useFlash()
 	const { options, isLoading } = useTagsOptions()
 	const [isCreating, setIsCreating] = useState(false)
 
-	// only null resets the field so if a value
-	// wasn't found set it to null to clear the field
-	if (!value) {
-		value = null
-	} else {
-		value = value.map((singleValue) =>
-			options.find((option) => option.value === singleValue)
-		)
+	const transformValue = (value) => {
+		// only null resets the field so if a value
+		// wasn't found set it to null to clear the field
+		if (!value) {
+			return null
+		} else {
+			return value.map((singleValue) =>
+				options.find((option) => option.value === singleValue)
+			)
+		}
 	}
 
 	const onChange = (data, action) => {
+		console.log("onChange", data, action)
+
 		if (action.action === "clear") {
 			setValue(undefined)
 		} else {
@@ -96,7 +107,7 @@ const TagsInput = ({ onChange: setValue, value, info, error, disabled, ...rest }
 			// the same process as for encoding can be used for decoding if the need arises
 			// const key = inputValue.toLowerCase().replace(/\W/g, "")
 
-			// setIsCreating(true)
+			setIsCreating(true)
 
 			await firebase.db
 				.collection("tags")
@@ -105,11 +116,7 @@ const TagsInput = ({ onChange: setValue, value, info, error, disabled, ...rest }
 
 			const newValue = value ? [...value, inputValue] : [inputValue]
 
-			// TODO: make sure the new value doesn't  override the old one
-
 			setValue(newValue)
-
-			// setIsCreating(false)
 		} catch (error) {
 			console.error(error)
 			flashMessage({
@@ -118,23 +125,27 @@ const TagsInput = ({ onChange: setValue, value, info, error, disabled, ...rest }
 				details: "Tag mógł nie zostać dodany, więcej informacji w konsoli"
 			})
 		}
-	}
 
-	console.log("rest", rest)
+		setIsCreating(false)
+	}
 
 	return (
 		<FormElementContainer info={info} error={error}>
 			<StyledSelect
-				{...rest}
 				onCreateOption={onCreateOption}
 				onChange={onChange}
-				value={value}
+				value={transformValue(value)}
 				hasError={!!error}
 				options={options}
+				placeholder={placeholder}
 				isMulti
 				isSearchable
-				isDisabled={disabled || isLoading || isCreating}
+				isDisabled={disabled || isLoading}
 				isLoading={isLoading || isCreating}
+				// noOptionsMessage is a function that receives inputValue but I don't care about that
+				noOptionsMessage={() => "Wpisz by dodać"}
+				formatCreateLabel={(inputValue) => `Dodaj "${inputValue}"`}
+				{...rest}
 			/>
 		</FormElementContainer>
 	)
