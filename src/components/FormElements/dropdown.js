@@ -63,12 +63,24 @@ const StyledSelect = styled(Select).attrs({
 	}
 `
 
-const Dropdown = ({ info, error, disabled, ...rest }) => {
-	return (
-		<FormElementContainer info={info} error={error}>
-			<StyledSelect hasError={!!error} isDisabled={disabled} {...rest} />
-		</FormElementContainer>
-	)
-}
+const Dropdown = ({
+	placeholder = "Wybierz",
+	noOptionsMessage = "Brak opcji",
+	info,
+	error,
+	disabled,
+	...rest
+}) => (
+	<FormElementContainer info={info} error={error}>
+		<StyledSelect
+			hasError={!!error}
+			isDisabled={disabled}
+			placeholder={placeholder}
+			// noOptionsMessage is a function that receives inputValue but I don't care about that
+			noOptionsMessage={() => noOptionsMessage}
+			{...rest}
+		/>
+	</FormElementContainer>
+)
 
 export default Dropdown
