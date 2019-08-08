@@ -7,14 +7,14 @@
 		{
 			"type": "chrome",
 			"request": "launch",
-			"name": "Launch Chrome against localhost",
+			"name": "Chrome",
 			"url": "http://localhost:3000",
-			"webRoot": "${workspaceFolder}"
+			"webRoot": "${workspaceFolder}/src"
 		},
 		{
 			"type": "chrome",
 			"request": "launch",
-			"name": "Launch Vivali against localhost",
+			"name": "Vivaldi",
 			"url": "http://localhost:3000/",
 			"webRoot": "${workspaceFolder}",
 			"targetTypes": ["page", "webview"],
