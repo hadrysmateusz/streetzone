@@ -55,7 +55,7 @@ LoadingSpinner.propTypes = {
 
 const LoadableComponentSpinner = ({ error, pastDelay, timedOut }) => {
 	if (error) {
-		console.log(error)
+		console.error(error)
 		return (
 			<EmptyState header="Coś poszło nie tak">
 				Odśwież stronę lub spróbuj później

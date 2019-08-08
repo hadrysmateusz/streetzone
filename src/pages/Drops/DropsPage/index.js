@@ -47,8 +47,6 @@ const DropsMain = withDropsSearchWrapper(({ currentSection }) => {
 	const isArchive = currentSection.id === "archive"
 	const [isAuthenticated] = useAuthentication(true)
 
-	console.log(currentSection)
-
 	return (
 		<PageContainer>
 			<HelmetBasics title={currentSection.pageTitle} />

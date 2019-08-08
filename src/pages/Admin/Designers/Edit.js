@@ -5,7 +5,7 @@ import { CustomFile } from "../../../components/FileHandler"
 import { PageContainer } from "../../../components/Containers"
 
 import { CONST } from "../../../constants"
-import { useFirebase } from "../../../hooks"
+import { useFirebase, useFlash } from "../../../hooks"
 
 import Form from "./Form"
 import { getImageUrl } from "../../../utils/getImageUrl"
@@ -14,6 +14,7 @@ import { TextBlock } from "../../../components/StyledComponents"
 const EditDesigner = ({ history, match }) => {
 	const firebase = useFirebase()
 	const [initialValues, setInitialValues] = useState(null)
+	const flashMessage = useFlash()
 	const id = match.params.id
 
 	useEffect(() => {
@@ -64,8 +65,12 @@ const EditDesigner = ({ history, match }) => {
 				history.goBack()
 			})
 		} catch (error) {
-			alert("Wystąpił problem")
-			console.log(error)
+			console.error(error)
+			flashMessage({
+				type: "error",
+				text: "Wystąpił błąd",
+				details: "Więcej informacji w konsoli"
+			})
 		}
 	}
 

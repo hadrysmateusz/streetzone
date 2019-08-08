@@ -30,7 +30,6 @@ const UserFeedback = ({ user, userId, isAuthorized }) => {
 			.collection("opinions")
 			.orderBy("createdAt", "desc")
 			.onSnapshot((snap) => {
-				console.log("snap", snap)
 				if (snap.empty) {
 					setIsEmpty(true)
 					setOpinions([])

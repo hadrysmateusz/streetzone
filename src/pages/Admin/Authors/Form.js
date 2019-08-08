@@ -19,7 +19,7 @@ const validate = ({ name }) => {
 	// 'image' is optional
 	// 'about' is optional
 
-	console.log(errors)
+	console.warn(errors)
 	return errors
 }
 

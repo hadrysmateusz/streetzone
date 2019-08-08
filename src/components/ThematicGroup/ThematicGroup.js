@@ -41,18 +41,15 @@ const ThematicGroup = ({
 			filters={filters}
 			ignoreArchivedStatus={ignoreArchivedStatus}
 		>
-			{(results) => {
-				console.log(results)
-				return (
-					<DumbThematicGroup
-						results={results}
-						title={title}
-						linkTo={linkTo}
-						hasMore={hasMore}
-						component={component}
-					/>
-				)
-			}}
+			{(results) => (
+				<DumbThematicGroup
+					results={results}
+					title={title}
+					linkTo={linkTo}
+					hasMore={hasMore}
+					component={component}
+				/>
+			)}
 		</StatelessSearchWrapper>
 	)
 }

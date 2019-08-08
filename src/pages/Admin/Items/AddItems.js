@@ -58,7 +58,7 @@ class NewItemPage extends Component {
 			return
 		} catch (error) {
 			alert("Wystąpił problem podczas wystawiania przedmiotu")
-			console.log(error)
+			console.error(error)
 		}
 	}
 

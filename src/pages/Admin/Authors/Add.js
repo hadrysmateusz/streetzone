@@ -46,7 +46,7 @@ const AddAuthor = ({ history }) => {
 				return
 			})
 		} catch (error) {
-			console.log(error)
+			console.error(error)
 			flashMessage({
 				type: "error",
 				text: "Wystąpił problem"

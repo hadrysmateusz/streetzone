@@ -5,7 +5,7 @@ import shortid from "shortid"
 import { PageContainer } from "../../../components/Containers"
 
 import { CONST } from "../../../constants"
-import { useFirebase } from "../../../hooks"
+import { useFirebase, useFlash } from "../../../hooks"
 
 import Form from "./Form"
 import RequestedDesigners from "./RequestedDesigners"
@@ -13,6 +13,7 @@ import { TextBlock } from "../../../components/StyledComponents"
 
 const AddDesigner = withRouter(({ history }) => {
 	const firebase = useFirebase()
+	const flashMessage = useFlash()
 
 	const onSubmit = async ({ logo, label, colorA, colorB }, form) => {
 		try {
@@ -39,8 +40,12 @@ const AddDesigner = withRouter(({ history }) => {
 				return
 			})
 		} catch (error) {
-			alert("Wystąpił problem")
-			console.log(error)
+			console.error(error)
+			flashMessage({
+				type: "error",
+				text: "Wystąpił błąd",
+				details: "Więcej informacji w konsoli"
+			})
 		}
 	}
 

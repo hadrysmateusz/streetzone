@@ -47,7 +47,7 @@ const Comment = ({ author, rating, comment, createdAt, userId }) => {
 
 			flashMessage({ type: "success", text: "Usunięto" })
 		} catch (error) {
-			console.log(error)
+			console.error(error)
 			flashMessage({ type: "error", text: "Wystąpił problem" })
 		}
 	}
@@ -64,7 +64,7 @@ const Comment = ({ author, rating, comment, createdAt, userId }) => {
 			// TODO: add copy saying that action will be taken if the comment violates our rules
 			flashMessage({ type: "success", text: "Komentarz został zgłoszony" })
 		} catch (error) {
-			console.log(error)
+			console.error(error)
 			flashMessage({
 				type: "error",
 				text: "Wystąpił problem",

@@ -8,9 +8,11 @@ import { CONST } from "../../../constants"
 import { route } from "../../../utils"
 
 import Form from "./Form"
+import { useFlash } from "../../../hooks"
 
 const Add = ({ history }) => {
 	const firebase = useFirebase()
+	const flashMessage = useFlash()
 
 	const onSubmit = async (values, form) => {
 		try {
@@ -34,8 +36,12 @@ const Add = ({ history }) => {
 				history.push(route("ADMIN_DEALS"))
 			})
 		} catch (error) {
-			alert("Wystąpił problem")
-			console.log(error)
+			console.error(error)
+			flashMessage({
+				type: "error",
+				text: "Wystąpił błąd",
+				details: "Więcej informacji w konsoli"
+			})
 		}
 	}
 

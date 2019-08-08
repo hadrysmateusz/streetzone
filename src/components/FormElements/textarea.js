@@ -29,19 +29,16 @@ const Textarea = ({
 	autoResize = true,
 	numberOfLines = 4,
 	...rest
-}) => {
-	console.log("in", error)
-	return (
-		<FormElementContainer error={error} info={info}>
-			<StyledTextarea
-				disabled={disabled}
-				autoResize={autoResize}
-				numberOfLines={numberOfLines}
-				hasError={!!error}
-				{...rest}
-			/>
-		</FormElementContainer>
-	)
-}
+}) => (
+	<FormElementContainer error={error} info={info}>
+		<StyledTextarea
+			disabled={disabled}
+			autoResize={autoResize}
+			numberOfLines={numberOfLines}
+			hasError={!!error}
+			{...rest}
+		/>
+	</FormElementContainer>
+)
 
 export default Textarea

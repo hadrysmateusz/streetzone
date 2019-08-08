@@ -54,7 +54,6 @@ export const useFunctionWithReauthentication = (fn) => {
 		try {
 			return await fn(...newArgs)
 		} catch (error) {
-			console.log("caught", error)
 			// rethrow errors other than requires-recent-login
 			if (error.code !== "auth/requires-recent-login") {
 				throw error
@@ -65,7 +64,6 @@ export const useFunctionWithReauthentication = (fn) => {
 	}
 
 	const openModal = () => {
-		console.log("open modal")
 		setIsModalOpen(true)
 	}
 

@@ -9,10 +9,12 @@ import { formatPostDataForDb, MODE } from "../../../utils/formatting/formatPostD
 import { ROUTES } from "../../../constants"
 
 import PostForm from "./Form"
+import { useFlash } from "../../../hooks"
 
 const AddPost = ({ history }) => {
 	const firebase = useFirebase()
 	const [postId] = useState(shortid.generate())
+	const flashMessage = useFlash()
 
 	const onSubmit = async (values, form) => {
 		try {
@@ -39,8 +41,12 @@ const AddPost = ({ history }) => {
 			// Redirect
 			history.push(ROUTES.ADMIN_BLOG)
 		} catch (error) {
-			alert("Wystąpił problem")
-			console.log(error)
+			console.error(error)
+			flashMessage({
+				type: "error",
+				text: "Wystąpił błąd",
+				details: "Więcej informacji w konsoli"
+			})
 		}
 	}
 

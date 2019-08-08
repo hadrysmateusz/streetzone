@@ -13,6 +13,7 @@ import { PageContainer } from "../../../components/Containers"
 
 import useFirebase from "../../../hooks/useFirebase"
 import { FORM_ERR, CONST } from "../../../constants"
+import { useFlash } from "../../../hooks"
 
 const validate = ({ author, title, section, mainContent, mainImage, dropsAt }) => {
 	const errors = {}
@@ -29,13 +30,14 @@ const validate = ({ author, title, section, mainContent, mainImage, dropsAt }) =
 		errors.mainImage = FORM_ERR.IS_REQUIRED
 	}
 
-	console.log(errors)
+	console.warn(errors)
 	return errors
 }
 
 const EditPost = ({ match }) => {
 	const firebase = useFirebase()
 	const [item, setItem] = useState(null)
+	const flashMessage = useFlash()
 
 	const id = match.params.id
 
@@ -101,8 +103,12 @@ const EditPost = ({ match }) => {
 			// Reset form
 			setTimeout(form.reset)
 		} catch (error) {
-			alert("Wystąpił problem")
-			console.log(error)
+			console.error(error)
+			flashMessage({
+				type: "error",
+				text: "Wystąpił błąd",
+				details: "Więcej informacji w konsoli"
+			})
 		}
 	}
 

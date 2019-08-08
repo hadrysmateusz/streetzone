@@ -45,20 +45,17 @@ const ImageContainer = styled.div`
 	height: 100%;
 `
 
-const Designer = (props) => {
-	console.log(props)
-	return (
-		<Link to={encodeURL({ designers: [props.label] }, route("MARKETPLACE"))}>
-			<DesignerContainer>
-				<ImageContainer>
-					<Ratio>
-						<FirebaseImage storageRef={props.imageRef} size="M" />
-					</Ratio>
-				</ImageContainer>
-			</DesignerContainer>
-		</Link>
-	)
-}
+const Designer = (props) => (
+	<Link to={encodeURL({ designers: [props.label] }, route("MARKETPLACE"))}>
+		<DesignerContainer>
+			<ImageContainer>
+				<Ratio>
+					<FirebaseImage storageRef={props.imageRef} size="M" />
+				</Ratio>
+			</ImageContainer>
+		</DesignerContainer>
+	</Link>
+)
 
 const PopularDesigners = withBreakpoints(({ currentBreakpoint }) => {
 	const limit = +currentBreakpoint < 1 ? 4 : 7

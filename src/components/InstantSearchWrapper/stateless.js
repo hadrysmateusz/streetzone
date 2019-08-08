@@ -23,22 +23,15 @@ const StatelessSearchWrapper = (props) => {
 		setShouldRefresh(true)
 	}
 
-	// console.log("pre hook", shouldRefresh)
-
 	useEffect(() => {
 		if (shouldRefresh) {
 			setShouldRefresh(false)
 		}
 	}, [shouldRefresh])
 
-	// console.log("post hook", shouldRefresh)
-	// console.log("---")
-
 	const isRenderFn = typeof children === "function"
 
 	const contextValue = { refresh }
-
-	console.log(filters)
 
 	return (
 		<InstantSearch

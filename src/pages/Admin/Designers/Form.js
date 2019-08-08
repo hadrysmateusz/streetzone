@@ -1,21 +1,14 @@
-import moment from "moment"
 import styled from "styled-components/macro"
 
 import React from "react"
-import shortid from "shortid"
 import { Form, Field } from "react-final-form"
 
-import BlackBox from "../../../components/BlackBox"
-import Button, { LoaderButton, ButtonContainer } from "../../../components/Button"
+import { LoaderButton, ButtonContainer } from "../../../components/Button"
 import { Input } from "../../../components/FormElements"
-import { TextBlock } from "../../../components/StyledComponents"
 import { FileHandlerSingle } from "../../../components/FileHandler"
-import { PageContainer } from "../../../components/Containers"
 import LoadingSpinner from "../../../components/LoadingSpinner"
 
-import { FORM_ERR, CONST } from "../../../constants"
-
-import { useFirestoreCollection, useFirebase } from "../../../hooks"
+import { FORM_ERR } from "../../../constants"
 
 const validate = ({ label, colorA, colorB }) => {
 	const errors = {}
@@ -32,7 +25,7 @@ const validate = ({ label, colorA, colorB }) => {
 		errors.colorB = FORM_ERR.IS_REQUIRED
 	}
 
-	console.log(errors)
+	console.warn(errors)
 	return errors
 }
 

@@ -7,13 +7,14 @@ import HelmetBasics from "../../components/HelmetBasics"
 
 import { formatItemDataForDb, MODE } from "../../utils/formatting/formatItemData"
 import { ROUTES, CONST } from "../../constants"
-import { useAuthentication, useFirebase } from "../../hooks"
+import { useAuthentication, useFirebase, useFlash } from "../../hooks"
 
 import NewItemForm from "./NewItemForm"
 
 const NewItemPage = ({ history }) => {
 	const firebase = useFirebase()
 	const authUser = useAuthentication()
+	const flashMessage = useFlash()
 
 	const onSubmit = async (values) => {
 		try {
@@ -44,8 +45,12 @@ const NewItemPage = ({ history }) => {
 			history.push(ROUTES.HOME)
 			return
 		} catch (error) {
-			alert("Wystąpił problem podczas wystawiania przedmiotu")
-			console.log(error)
+			console.error(error)
+			flashMessage({
+				type: "error",
+				text: "Wystąpił błąd",
+				details: "Ogłoszenie mogło nie zostać dodane"
+			})
 		}
 	}
 

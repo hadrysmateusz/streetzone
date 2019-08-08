@@ -10,11 +10,13 @@ import { CONST } from "../../../constants"
 import { route } from "../../../utils"
 
 import Form from "./Form"
+import { useFlash } from "../../../hooks"
 
 const Edit = ({ match, history }) => {
 	const firebase = useFirebase()
 	const [initialValues, setInitialValues] = useState(null)
 	const id = match.params.id
+	const flashMessage = useFlash()
 
 	useEffect(() => {
 		const getData = async () => {
@@ -68,8 +70,12 @@ const Edit = ({ match, history }) => {
 			// Redirect
 			history.push(route("ADMIN_DEALS"))
 		} catch (error) {
-			alert("Wystąpił problem, więcej informacji w konsoli")
-			console.log(error)
+			console.error(error)
+			flashMessage({
+				type: "error",
+				text: "Wystąpił błąd",
+				details: "Więcej informacji w konsoli"
+			})
 		}
 	}
 	return (

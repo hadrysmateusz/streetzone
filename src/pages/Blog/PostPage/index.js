@@ -132,7 +132,7 @@ const usePost = (id) => {
 
 				setPost(post)
 			} catch (e) {
-				console.log(e)
+				console.error(e)
 			}
 		}
 

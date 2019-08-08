@@ -75,7 +75,6 @@ const SmartFileItem = ({
 				}
 			}
 		} else {
-			console.log("Clipboard API isn't supported")
 			flashMessage({
 				type: "error",
 				text: "Clipboard API isn't supported",

@@ -27,8 +27,6 @@ const Edit = ({ match, history }) => {
 			if (imageFile) {
 				// check for changes
 				if (imageFile.data && !imageFile.isUploaded) {
-					console.log(imageFile)
-
 					// if changed upload it and use new ref
 					const snapshot = await firebase.uploadFile(
 						CONST.STORAGE_BUCKET_AUTHOR_PICTURES,
@@ -68,7 +66,7 @@ const Edit = ({ match, history }) => {
 				return
 			})
 		} catch (error) {
-			console.log(error)
+			console.error(error)
 			flashMessage({
 				type: "error",
 				text: "Wystąpił problem"

@@ -45,7 +45,7 @@ const validate = (values) => {
 		errors.passwordConfirm = FORM_ERR.PASSWORDS_NOT_MATCHING
 	}
 
-	console.log(errors)
+	console.warn(errors)
 
 	return errors
 }

@@ -131,9 +131,9 @@ var getIPAddress = async function() {
 	try {
 		const res = await axios.get("https://api.ipify.org")
 		return res.data
-	} catch (err) {
+	} catch (error) {
 		// TODO: figure out how to handle this
-		console.log(err)
+		console.error(error)
 	}
 }
 
@@ -162,9 +162,9 @@ const PromoteOptionCard = ({ name, price, level, items = [], main = false, itemI
 
 			// TODO: investigate this API
 			// https://developer.mozilla.org/en-US/docs/Web/API/Window/open
-		} catch (err) {
-			setError(err)
-			console.log("error:", err)
+		} catch (error) {
+			console.error(error)
+			setError(error)
 		} finally {
 			setIsLoading(false)
 		}

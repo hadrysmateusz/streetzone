@@ -43,7 +43,6 @@ const Modal = ({ isOpen = true, children, onRequestClose, render }) => {
 						e.stopPropagation()
 					}}
 					onKeyDown={(e) => {
-						console.log(e)
 						if (e.key === "Escape") {
 							e.stopPropagation()
 							onRequestClose()

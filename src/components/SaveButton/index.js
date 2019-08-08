@@ -92,7 +92,8 @@ const useSave = (type, id) => {
 					: undefined
 			})
 		} catch (error) {
-			console.log(error)
+			flashMessage({ type: "error", text: "Wystąpił błąd" })
+			console.error(error)
 			// Revert the state change if there was an error
 			setIsActive(wasActive)
 		}
@@ -137,7 +138,8 @@ const useSave = (type, id) => {
 				text: wasActive ? "Usunięto z obserwowanych" : "Zaobserwowano!"
 			})
 		} catch (error) {
-			console.log(error)
+			flashMessage({ type: "error", text: "Wystąpił błąd" })
+			console.error(error)
 			// Revert the state change if there was an error
 			setIsActive(wasActive)
 		}

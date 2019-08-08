@@ -115,7 +115,6 @@ export const TextareaFF = ({ label, name, placeholder, info }) => (
 		<Field name={name}>
 			{({ input, meta }) => {
 				const error = meta.error && meta.touched ? meta.error : null
-				console.log(error)
 				return <Textarea {...input} placeholder={placeholder} error={error} info={info} />
 			}}
 		</Field>

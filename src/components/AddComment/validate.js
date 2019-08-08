@@ -15,7 +15,7 @@ export default ({ rating, comment }) => {
 		errors.comment = FORM_ERR.DESC_TOO_LONG
 	}
 
-	console.log(errors)
+	console.warn(errors)
 
 	return errors
 }

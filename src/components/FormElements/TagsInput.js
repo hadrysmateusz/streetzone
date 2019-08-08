@@ -90,8 +90,6 @@ const TagsInput = ({
 	}
 
 	const onChange = (data, action) => {
-		console.log("onChange", data, action)
-
 		if (action.action === "clear") {
 			setValue(undefined)
 		} else {

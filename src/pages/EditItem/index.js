@@ -137,12 +137,12 @@ const EditItemPage = ({ match, history, location }) => {
 				return
 			})
 		} catch (error) {
+			console.error(error)
 			flashMessage({
 				type: "error",
 				text: "Wystąpił błąd",
 				details: "Zmiany mogły nie zostać zapisane"
 			})
-			console.log(error)
 		}
 	}
 

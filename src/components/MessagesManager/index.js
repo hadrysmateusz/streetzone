@@ -222,7 +222,6 @@ const MessagesManager = memo(({ rooms }) => {
 					.where("unread", "==", true)
 					.where("author", "==", room.otherUserId)
 					.onSnapshot((snap) => {
-						console.log("new messages snap:", snap)
 						const __messages = {}
 						snap.docs.forEach((snap) => {
 							// add message along with room id to object for merging

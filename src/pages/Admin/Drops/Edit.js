@@ -15,10 +15,12 @@ import {
 } from "../../../constants/const"
 
 import DropForm from "./Form"
+import { useFlash } from "../../../hooks"
 
 const EditDrop = ({ match, history }) => {
 	const firebase = useFirebase()
 	const [initialValues, setInitialValues] = useState(null)
+	const flashMessage = useFlash()
 
 	const id = match.params.id
 
@@ -100,8 +102,12 @@ const EditDrop = ({ match, history }) => {
 			// Redirect
 			history.push(route("ADMIN_DROPS"))
 		} catch (error) {
-			alert("Wystąpił problem, więcej informacji w konsoli")
-			console.log(error)
+			console.error(error)
+			flashMessage({
+				type: "error",
+				text: "Wystąpił błąd",
+				details: "Więcej informacji w konsoli"
+			})
 		}
 	}
 	return (

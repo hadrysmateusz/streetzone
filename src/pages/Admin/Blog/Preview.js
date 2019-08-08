@@ -6,8 +6,7 @@ import Button, { ButtonContainer, LinkButton } from "../../../components/Button"
 import { TextBlock } from "../../../components/StyledComponents"
 
 import { route } from "../../../utils"
-import { formatPostDataForDb, MODE } from "../../../utils/formatting/formatPostData"
-import { useFirebase, useDeleteDocument } from "../../../hooks"
+import { useFirebase, useDeleteDocument, useFlash } from "../../../hooks"
 import FirebaseImage from "../../../components/FirebaseImage"
 
 const BlogPostContainer = styled.div`
@@ -28,13 +27,18 @@ const PostPreview = ({
 }) => {
 	const firebase = useFirebase()
 	const deleteDocument = useDeleteDocument(`posts/${id}`)
+	const flashMessage = useFlash()
 
-	const onPromote = () => {
+	const onPromote = async () => {
 		try {
-			firebase.post(id).update({ isPromoted: !isPromoted })
+			await firebase.post(id).update({ isPromoted: !isPromoted })
 		} catch (error) {
-			console.log(error)
-			alert(error)
+			console.error(error)
+			flashMessage({
+				type: "error",
+				text: "Wystąpił błąd",
+				details: "Więcej informacji w konsoli"
+			})
 		}
 	}
 

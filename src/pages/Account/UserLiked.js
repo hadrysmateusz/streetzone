@@ -68,14 +68,16 @@ const UserSavedItems = ({ user }) => {
 				setItems(items)
 
 				removeMarkedItems(idsToDelete)
-			} catch (e) {
-				setError(e)
-				console.log(e)
+			} catch (error) {
+				console.error(error)
+				setError(error)
 			}
 		}
 
 		getSavedItems()
-	}, [userId, firebase])
+
+		// intentionally don't include itemIds as dependency
+	}, [userId, firebase, user.uid])
 
 	const numItems = items ? items.length : 0
 	const hasItems = numItems > 0

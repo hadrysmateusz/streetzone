@@ -78,14 +78,15 @@ const UserSavedDrops = ({ user }) => {
 				setDrops(drops)
 
 				removeMarkedDrops(idsToDelete)
-			} catch (e) {
-				setError(e)
-				console.log(e)
+			} catch (error) {
+				console.error(error)
+				setError(error)
 			}
 		}
 
+		// intentionally don't include dropIds in dependencies
 		getSavedDrops()
-	}, [userId, firebase])
+	}, [userId, firebase, user.uid])
 
 	const numDrops = drops ? drops.length : 0
 	const hasDrops = numDrops > 0

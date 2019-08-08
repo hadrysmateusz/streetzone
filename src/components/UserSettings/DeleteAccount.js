@@ -33,8 +33,8 @@ const DeleteAccountButton = withRouter(({ history }) => {
 
 		try {
 			await onDeleteWithReauthentication()
-		} catch (err) {
-			console.log(err)
+		} catch (error) {
+			console.error(error)
 			flashMessage({
 				type: "error",
 				text: "Wystąpił problem. Konto mogło nie zostać usunięte."
