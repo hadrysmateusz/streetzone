@@ -199,18 +199,19 @@ const AdminDesignerEdit = Loadable({
 	loading: LoadableComponentSpinner
 })
 
-const AdminAuthors = Loadable({
-	loader: () => import("../../pages/Admin/Authors"),
-	loading: LoadableComponentSpinner
-})
-const AdminAuthorsAdd = Loadable({
-	loader: () => import("../../pages/Admin/Authors/Add"),
-	loading: LoadableComponentSpinner
-})
-const AdminAuthorsEdit = Loadable({
-	loader: () => import("../../pages/Admin/Authors/Edit"),
-	loading: LoadableComponentSpinner
-})
+// currently disabled in favor of hardcoded list of authors
+// const AdminAuthors = Loadable({
+// 	loader: () => import("../../pages/Admin/Authors"),
+// 	loading: LoadableComponentSpinner
+// })
+// const AdminAuthorsAdd = Loadable({
+// 	loader: () => import("../../pages/Admin/Authors/Add"),
+// 	loading: LoadableComponentSpinner
+// })
+// const AdminAuthorsEdit = Loadable({
+// 	loader: () => import("../../pages/Admin/Authors/Edit"),
+// 	loading: LoadableComponentSpinner
+// })
 
 const AdminItems = Loadable({
 	loader: () => import("../../pages/Admin/Items"),
@@ -426,24 +427,25 @@ export const ADMIN_ROUTES = [
 		component: AdminDesignerEdit,
 		isNavigable: false
 	},
-	{
-		id: "authors",
-		path: ROUTES.ADMIN_AUTHORS,
-		component: AdminAuthors,
-		isNavigable: true
-	},
-	{
-		id: "add_author",
-		path: ROUTES.ADMIN_AUTHORS_ADD,
-		component: AdminAuthorsAdd,
-		isNavigable: false
-	},
-	{
-		id: "edit_author",
-		path: ROUTES.ADMIN_AUTHORS_EDIT,
-		component: AdminAuthorsEdit,
-		isNavigable: false
-	},
+	// currently disabled in favor of hardcoded list of authors
+	// {
+	// 	id: "authors",
+	// 	path: ROUTES.ADMIN_AUTHORS,
+	// 	component: AdminAuthors,
+	// 	isNavigable: true
+	// },
+	// {
+	// 	id: "add_author",
+	// 	path: ROUTES.ADMIN_AUTHORS_ADD,
+	// 	component: AdminAuthorsAdd,
+	// 	isNavigable: false
+	// },
+	// {
+	// 	id: "edit_author",
+	// 	path: ROUTES.ADMIN_AUTHORS_EDIT,
+	// 	component: AdminAuthorsEdit,
+	// 	isNavigable: false
+	// },
 	{
 		id: "items",
 		path: ROUTES.ADMIN_ITEMS,
