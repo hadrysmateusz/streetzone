@@ -189,6 +189,11 @@ service cloud.firestore {
       allow write: if isUserAdmin();
     }
 
+    match /tags/{tagId} {
+      allow read;
+      allow write: if isUserAdmin();
+    }
+
     match /reportedComments/{reportId} {
       // admins should have full access
       allow read, write: if isUserAdmin();

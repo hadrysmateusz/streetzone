@@ -20,9 +20,9 @@ const OuterContainer = styled.div`
 	color: white;
 	background: var(--black0);
 
-	${"" /* Stay above fixed elements like the blog header */}
+	/* Stay above fixed elements like the blog header */
 	position: relative;
-	z-index: 72;
+	z-index: 10;
 `
 
 const IconContainer = styled.div`

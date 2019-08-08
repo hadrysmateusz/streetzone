@@ -11,8 +11,8 @@ import {
 	DropdownFF,
 	LiveFileHandlerFF,
 	MarkdownEditorFF,
-	MultiTextInputFF,
-	TextareaFF
+	TextareaFF,
+	TagsInputFF
 } from "../../../components/FinalFormFields"
 
 import { CONST } from "../../../constants"
@@ -31,7 +31,7 @@ export default ({ onSubmit, initialValues, edit, postId }) => {
 		<Form
 			onSubmit={onSubmit}
 			initialValues={initialValues}
-			render={({ form, handleSubmit, submitting, pristine, values }) => {
+			render={({ handleSubmit, submitting, pristine, values }) => {
 				return (
 					<StyledForm onSubmit={handleSubmit}>
 						<PreventFormTransition />
@@ -55,11 +55,7 @@ export default ({ onSubmit, initialValues, edit, postId }) => {
 							name="excerpt"
 						/>
 
-						<MultiTextInputFF
-							label="Tagi"
-							placeholder="Tagi (zatwierdzaj Enterem)"
-							name="tags"
-						/>
+						<TagsInputFF label="Tagi" placeholder="Tagi" name="tags" disabled />
 
 						<ButtonContainer>
 							<LoaderButton

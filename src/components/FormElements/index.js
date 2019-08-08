@@ -1,4 +1,5 @@
 import FormError from "./FormError"
+import TagsInput from "./TagsInput"
 import FormElementContainer from "./container"
 import * as commonStyles from "./commonStyles"
 import Input from "./input"
@@ -14,5 +15,6 @@ export {
 	MultiTextInput,
 	MultiTextInputControlled,
 	FormElementContainer,
-	commonStyles
+	commonStyles,
+	TagsInput
 }

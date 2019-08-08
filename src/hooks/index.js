@@ -15,6 +15,7 @@ import useStateButton from "./useStateButton"
 import useDesignerOptions from "./useDesignerOptions"
 import useDeleteDocument from "./useDeleteDocument"
 import useInitialValues from "./useInitialValues"
+import useTagsOptions from "./useTagsOptions"
 
 export {
 	useFirestoreCollection,
@@ -34,5 +35,6 @@ export {
 	useStateButton,
 	useDesignerOptions,
 	useDeleteDocument,
-	useInitialValues
+	useInitialValues,
+	useTagsOptions
 }

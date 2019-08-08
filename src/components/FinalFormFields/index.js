@@ -15,6 +15,7 @@ import DropdownFinalform from "../DropdownFinalform"
 import MultiTextInputFinalform from "../MultiTextInputFinalform"
 
 import { overlayCommon } from "../../style-utils"
+import TagsInput from "../FormElements/TagsInput"
 
 export const ContentEditorContainer = styled.div`
 	display: grid;
@@ -164,6 +165,26 @@ export const DropdownFF = ({
 						isSearchable={isSearchable}
 						isClearable={isClearable}
 						isMulti={isMulti}
+						info={info}
+					/>
+				)
+			}}
+		</Field>
+	</Section>
+)
+
+export const TagsInputFF = ({ label, name, placeholder, isClearable, info }) => (
+	<Section>
+		<div className="header">{label}</div>
+		<Field name={name} type="select">
+			{({ input, meta }) => {
+				const error = meta.error && meta.touched ? meta.error : null
+				return (
+					<TagsInput
+						{...input}
+						placeholder={placeholder}
+						error={error}
+						isClearable={isClearable}
 						info={info}
 					/>
 				)
