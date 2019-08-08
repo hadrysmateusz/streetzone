@@ -28,6 +28,8 @@ const Thumbnail = styled.div`
 
 const IndicatorIcon = styled(FontAwesomeIcon)`
 	color: ${(p) => p.color};
+	position: relative;
+	z-index: 75;
 `
 
 const IndicatorsContainer = styled.div`
