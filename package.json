@@ -83,21 +83,21 @@
 		"storybook": "start-storybook -p 9009 -s public",
 		"build-storybook": "build-storybook -s public",
 		"build:dev": "env-cmd .env.development yarn build",
-		"build:staging": "env-cmd .env.staging yarn build",
 		"build:prod": "yarn build",
 		"predeploy:dev": "yarn build:dev",
 		"deploy:dev": "firebase deploy --only hosting -P dev",
-		"predeploy:staging": "yarn build:staging",
-		"deploy:staging": "firebase deploy --only hosting -P staging",
 		"predeploy:prod": "yarn build:prod",
 		"deploy:prod": "firebase deploy --only hosting -P prod",
 		"deploy-functions:dev": "firebase deploy --only functions -P dev",
-		"deploy-functions:staging": "firebase deploy --only functions -P staging",
 		"deploy-functions:prod": "firebase deploy --only functions -P prod",
 		"deploy-rules:dev": "firebase deploy --only firestore:rules -P dev",
-		"deploy-rules:staging": "firebase deploy --only firestore:rules -P staging",
 		"deploy-rules:prod": "firebase deploy --only firestore:rules -P prod",
-		"emulate-functions:dev": "set GOOGLE_APPLICATION_CREDENTIALS=functions\\firebase-admin-key-dev.json && firebase emulators:start --only functions"
+		"dump-config:dev": "firebase functions:config:get --project dev > functions/.runtimeconfig.json",
+		"dump-config:prod": "firebase functions:config:get --project prod > functions/.runtimeconfig.json",
+		"preemulators:dev": "yarn dump-config:dev && set GOOGLE_APPLICATION_CREDENTIALS=functions\\firebase-admin-key-dev.json",
+		"preemulators:prod": "yarn dump-config:prod && set GOOGLE_APPLICATION_CREDENTIALS=functions\\firebase-admin-key-prod.json",
+		"emulators:dev": "firebase emulators:start --project dev --only functions,firestore",
+		"emulators:prod": "firebase emulators:start --project prod --only functions,firestore"
 	},
 	"eslintConfig": {
 		"extends": "react-app"
