@@ -8,6 +8,7 @@ import "firebase/functions"
 import { S_THUMB_POSTFIX, M_THUMB_POSTFIX, L_THUMB_POSTFIX } from "../../constants/const"
 import areNotificationsSupported from "../../utils/areNotificationsSupported"
 
+// environment variables are used here because this allows me to load correct config using env-cmd instead of relying on NODE_ENV
 const config = {
 	apiKey: process.env.REACT_APP_API_KEY,
 	authDomain: process.env.REACT_APP_AUTH_DOMAIN,
@@ -64,7 +65,7 @@ class Firebase {
 			this.messaging = app.messaging()
 
 			this.messaging.usePublicVapidKey(
-				"BJgcHagtqijyfb4WcD8UhMUtWEElieyaGrNFz7Az01aEYgqcKaR4CKpzzXtxXb_9rnGMLxkkhdTSSyLNvvzClSU"
+				"BLWCrtJ5HTzxbZF88ibi1LqlV_WEU7jbjZ7h1wtHXPcQ1NfiQsFhVyqY5YzI4yRDie6aG_V1DJUny_DwjC1JOJA"
 			)
 
 			// TODO: disable this request for permission

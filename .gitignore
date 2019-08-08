@@ -18,6 +18,14 @@ functions/firebase-admin-key-staging.json
 functions/firebase-admin-key-prod.json
 functions/.env
 
+# functions config dumps
+functions.config.txt
+functions/.runtimeconfig.json
+
+# firebase logs
+firebase-debug.log
+firestore-debug.log
+
 # misc
 .DS_Store
 /.vscode
@@ -25,4 +33,3 @@ functions/.env
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-firebase-debug.log
