@@ -40,7 +40,12 @@ export default ({ onSubmit, initialValues, edit, postId }) => {
 
 						<TextFF label="Tytuł" placeholder="Tytuł" name="title" />
 
-						<DropdownFF label="Kategoria" name="category" options={categoryOptions} />
+						<DropdownFF
+							label="Kategoria"
+							name="category"
+							options={categoryOptions}
+							isSearchable={false}
+						/>
 
 						<LiveFileHandlerFF label="Zdjęcia" name="files" uploadPath={imagesPath} />
 

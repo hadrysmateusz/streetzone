@@ -6,7 +6,7 @@ import { PageContainer } from "../../../components/Containers"
 
 import useFirebase from "../../../hooks/useFirebase"
 import { formatPostDataForDb, MODE } from "../../../utils/formatting/formatPostData"
-import { ROUTES } from "../../../constants"
+import { route } from "../../../utils"
 
 import PostForm from "./Form"
 import { useFlash } from "../../../hooks"
@@ -39,7 +39,7 @@ const AddPost = ({ history }) => {
 			setTimeout(form.reset)
 
 			// Redirect
-			history.push(ROUTES.ADMIN_BLOG)
+			history.push(route("ADMIN_BLOG"))
 		} catch (error) {
 			console.error(error)
 			flashMessage({
