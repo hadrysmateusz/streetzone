@@ -1,3 +1,5 @@
+// DEPRECATED - see PostEditor
+
 import React, { useCallback } from "react"
 import { useDropzone } from "react-dropzone"
 import styled from "styled-components/macro"

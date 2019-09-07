@@ -46,7 +46,10 @@ import {
 	faCode,
 	faBell,
 	faEnvelope,
-	faExternalLinkAlt
+	faExternalLinkAlt,
+	faEye,
+	faEdit,
+	faQuestion
 } from "@fortawesome/free-solid-svg-icons"
 import {
 	faHeart as farHeart,
@@ -112,5 +115,8 @@ library.add(
 	faBell,
 	farBell,
 	faEnvelope,
-	faExternalLinkAlt
+	faExternalLinkAlt,
+	faEye,
+	faEdit,
+	faQuestion
 )

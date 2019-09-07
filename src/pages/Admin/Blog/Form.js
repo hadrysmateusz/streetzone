@@ -10,10 +10,10 @@ import {
 	TextFF,
 	DropdownFF,
 	LiveFileHandlerFF,
-	MarkdownEditorFF,
 	TextareaFF,
 	TagsInputFF
 } from "../../../components/FinalFormFields"
+import { FinalFormPostEditor } from "../../../components/PostEditor"
 
 import { CONST } from "../../../constants"
 
@@ -53,7 +53,11 @@ export default ({ onSubmit, initialValues, edit, postId }) => {
 							Pamiętaj usunąć nieużyte zdjęcia przed opuszczeniem strony
 						</BlackBox>
 
-						<MarkdownEditorFF label="Treść" name="mainContent" />
+						<FinalFormPostEditor
+							label="Treść"
+							contentName="mainContent"
+							attachmentsName="attachments"
+						/>
 
 						<TextareaFF
 							label="Streszczenie"

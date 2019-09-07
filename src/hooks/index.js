@@ -16,6 +16,7 @@ import useDesignerOptions from "./useDesignerOptions"
 import useDeleteDocument from "./useDeleteDocument"
 import useInitialValues from "./useInitialValues"
 import useTagsOptions from "./useTagsOptions"
+import useCopyToClipboard from "./useCopyToClipboard"
 
 export {
 	useFirestoreCollection,
@@ -36,5 +37,6 @@ export {
 	useDesignerOptions,
 	useDeleteDocument,
 	useInitialValues,
-	useTagsOptions
+	useTagsOptions,
+	useCopyToClipboard
 }

@@ -31,4 +31,13 @@ const FormElementContainer = ({ info, error, children }) => {
 	)
 }
 
+/**
+ * Adds a message showing additional info or error message under the component
+ */
+export const withFormElementWrapper = (C) => (props) => (
+	<FormElementContainer info={props.info} error={props.error}>
+		<C {...props} />
+	</FormElementContainer>
+)
+
 export default FormElementContainer
