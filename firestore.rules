@@ -5,3 +5,210 @@ service cloud.firestore {
     }
   }
 }
+
+
+
+// // TODO: subcollections can't be accessed (most of them should only be accessed from the server though)
+
+// service cloud.firestore {
+//   match /databases/{database}/documents {
+//     function isLoggedIn() {
+//       return request.auth != null;
+//     }
+
+//     function isUserAdmin() {
+//       return "admin" in get(/databases/$(database)/documents/users/$(request.auth.uid)).data.roles;
+//     }
+
+//     // [READ] Data that exists on the Firestore document
+//     function existingData() {
+//       return resource.data;
+//     }
+//     // [WRITE] Data that is sent to a Firestore document
+//     function incomingData() {
+//       return request.resource.data;
+//     }
+
+//     match /deals/{dealId} {
+//       allow read;
+//       allow write: if isUserAdmin();
+//     }
+
+//     match /designers/{designerId} {
+//       allow read;
+//       allow write: if isUserAdmin();
+//     }
+
+//     match /drops/{dropId} {
+//       allow read;
+//       allow write: if isUserAdmin();
+//       // subscribers subcollection should only be accessed from the server
+//     }
+
+//     match /posts/{postId} {
+//       allow read;
+//       allow write: if isUserAdmin();
+//     }
+
+//     match /items/{itemId} {
+//       // verify that all new items don't set sensitive fields to improper values
+//       // TODO: verify that timestamps aren't higher than 'now'
+
+//       // this might be useful at some point but for now it's redundant
+//       // function keyNotChanged(key) {
+//       //   return incomingData()[key] == null || incomingData()[key] == existingData()[key];
+//       // }
+
+//       function hasValidSensitiveDefaults() {
+//         return incomingData().bumps == 0
+//             && incomingData().promotedAt == null
+//             && incomingData().promotingLevel == null
+//             && incomingData().isArchived == false
+//             && incomingData().isVerified == false;
+//       }
+
+//       // some fields should never change
+//       function doesNotModifyReadOnlyData() {
+//         return incomingData().createdAt == existingData().createdAt
+//             && incomingData().id == existingData().id
+//             && incomingData().userId == existingData().userId;
+//       }
+
+//       // some fields should only be modified from a secure context
+//       function doesNotModifySensitiveData() {
+//         return incomingData().bumps == existingData().bumps
+//             && incomingData().refreshedAt == existingData().refreshedAt
+//             && incomingData().promotedAt == existingData().promotedAt
+//             && incomingData().promotedUntil == existingData().promotedUntil
+//             && incomingData().promotingLevel == existingData().promotingLevel
+//             // if isVerified is false then no harm is done either way
+//             && incomingData().isVerified == false || incomingData().isVerified == existingData().isVerified;
+//       }
+
+//       allow read;
+
+//       allow create: if isLoggedIn() 
+//                     && ((incomingData().userId == request.auth.uid) || isUserAdmin())
+//                     && hasValidSensitiveDefaults();
+
+//       allow update: if isLoggedIn() 
+//                     && ((existingData().userId == request.auth.uid) || isUserAdmin());
+
+//       // deleting items should only be done from a secure context
+//     }
+
+
+
+//     match /rooms/{roomId} {
+//       allow read;
+//       // allow users to create a room in which they are the initiating user (userA)
+//       allow create: if incomingData().userA == request.auth.uid;
+
+//       match /messages/{messageId} {
+//         // allow users who are part of the room to read and create messages in it
+//         allow read, create: if get(/databases/$(database)/documents/rooms/$(roomId)).data.userA == request.auth.uid 
+//                             || get(/databases/$(database)/documents/rooms/$(roomId)).data.userB == request.auth.uid;
+//       }
+//     }
+
+
+
+
+
+
+
+
+
+//     match /users/{userId} {
+//       // TODO: prevent users from modifying items lists as it would allow users to pose as owner of other users' listings
+
+//       // TODO: verify that all new users don't set sensitive fields to improper values
+
+
+//       function onlyModifiesSelf() {
+//         return request.auth.uid == userId;
+//       }
+
+//       function doesNotModifyReadOnlyData() {
+//         return incomingData().importedFrom == existingData().importedFrom
+//             && incomingData().userSince == existingData().userSince;
+//       }
+
+//       function doesNotModifySensitiveData() {
+//         return incomingData().badges == existingData().badges
+//             && incomingData().roles == existingData().roles;
+//       }
+
+//       allow read;
+
+//       allow create: if onlyModifiesSelf();
+
+//       allow update: if onlyModifiesSelf() 
+//                     && doesNotModifySensitiveData() 
+//                     && doesNotModifyReadOnlyData();
+
+//       // delete isn't allowed to prevent deleting and creating a new document to circumvent update restrictions
+
+//       // EXPERIMENTAL
+//       // it's indexed by the comment author id to keep it one comment per user
+//       match /opinions/{authorId} {
+//         function hasValidRating() {
+//           return incomingData().rating > 0 && incomingData().rating <= 5;
+//         }
+
+//         // verify that the author isn't giving the feedback to himself
+//         function authorIsNotSubject() {
+//           return incomingData().author != userId;
+//         }
+
+
+
+//         allow read;
+
+//         allow create, update: if authorId == request.auth.uid && incomingData().author == request.auth.uid && hasValidRating();
+//         allow delete: if authorId == request.auth.uid;
+//     }
+
+
+//       // the users/rooms subcollection is indexed by the otherUserId rather than the roomId
+//       match /rooms/{otherUserId} {
+//         // TODO: restrict read access somewhat
+//         allow read;
+       
+//         // allow other users to create rooms for other users when they initiate communication
+//         // TODO: make it only possible to create a room with id that the creating user already has in their rooms list
+//         allow create: if otherUserId == request.auth.uid && incomingData().otherUserId == request.auth.uid;
+//       }
+
+//       match /notificationTokens/{tokenId} {
+//         // TODO: verify that this works
+//         allow write: if userId == request.auth.uid;
+//       }
+//     }
+
+//     match /requestedDesigners/{requestedDesignerId} {
+//       // currently it is possible for unauthenticated users to submit designer requests
+//       // there are genuine reasons to allow that, but maybe I should consider only allowing authenticated users to submit designer requests
+//       // TODO: investigate whether the 'create' option allows overwriting an existing document by using 'set' pointing to an existing document id 
+//       allow read, create;
+//       allow update, delete: if isUserAdmin();
+//     }
+
+//     match /authors/{authorId} {
+//       allow read;
+//       allow write: if isUserAdmin();
+//     }
+
+//     match /tags/{tagId} {
+//       allow read;
+//       allow write: if isUserAdmin();
+//     }
+
+//     match /reportedComments/{reportId} {
+//       // admins should have full access
+//       allow read, write: if isUserAdmin();
+//       // other users should only be able to create reports
+//       allow create;
+//     }
+//   }
+// }
