@@ -1,6 +1,6 @@
 {
   "projects": {
-    "dev": "streetwear-app",
-    "prod": "streetzone-prod"
+    "prod": "streetzone-prod",
+    "dev": "streetwear-app"
   }
 }
