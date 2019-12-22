@@ -17,15 +17,14 @@ export const StyledButton = styled.button`
 	transition: all 0.2s;
 	cursor: pointer;
 	outline: none;
-	/* border: 1px solid var(--gray100); */
 	border: none;
-	padding-${(p) => p.direction}: 4px;
+	${(p) => `padding-${p.direction}: 4px`}
 	&:hover {
 		opacity: 1;
 	}
 
 	/* positioning */
-	top: calc(50% - var(--size) );
+	top: calc(50% - var(--size));
 	position: absolute;
 	${(p) => p.direction}: 0;
 `
