@@ -15,18 +15,16 @@ const cors = require("cors")
 require("moment/locale/pl")
 require("dotenv").config()
 
-// set moment.js locale
-moment.locale("pl")
+// functions config: https://firebase.google.com/docs/functions/config-env?authuser=0
+
+moment.locale("pl") // set moment.js locale
 
 const dateFormat = "YY-MM-DD HH:mm"
-
 const JPEG_EXTENSION = ".jpg"
 const S_THUMB_POSTFIX = "_S_THUMB"
 const M_THUMB_POSTFIX = "_M_THUMB"
 const L_THUMB_POSTFIX = "_L_THUMB"
-
 const PRODUCTION_DOMAIN = "streetzone.pl"
-
 const CREATE_ORDER_URL = "https://secure.snd.payu.com/api/v2_1/orders"
 const GET_OAUTH_TOKEN_URL = "https://secure.snd.payu.com/pl/standard/user/oauth/authorize"
 
