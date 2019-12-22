@@ -66,7 +66,7 @@ export const BigDropCard = memo(
 		dropsAtApproxTimestamp,
 		dropsAtString
 	}) => {
-		const imageURL = imageUrls[mainImageIndex]
+		const imageURL = imageUrls ? imageUrls[mainImageIndex] : ""
 		const date = moment(dropsAtApproxTimestamp).format("LL")
 
 		return (

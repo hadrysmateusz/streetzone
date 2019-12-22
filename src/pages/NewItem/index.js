@@ -10,10 +10,9 @@ import { ROUTES, CONST } from "../../constants"
 
 import NewItemForm from "./NewItemForm"
 
-const NewItemPage = () => {
+const NewItemPage = ({ firebase, history, authUser }) => {
 	const onSubmit = async (values) => {
 		try {
-			const { firebase, history, authUser } = this.props
 			const files = values.files
 			const userId = authUser.uid
 			const oldItems = authUser.items

@@ -70,8 +70,8 @@ const PromotedPost = ({
 	name,
 	dropsAtApproxTimestamp
 }) => {
+	const imageUrl = imageUrls ? imageUrls[mainImageIndex] : ""
 	const date = moment().to(moment(dropsAtApproxTimestamp))
-	const imageUrl = imageUrls[mainImageIndex]
 
 	return (
 		<Link to={route("DROP_DETAILS", { id })}>
