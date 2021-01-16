@@ -8,7 +8,7 @@ export const DESC_MAX_CHARACTERS = 500
 export const ACCOUNT_DESC_MAX_CHARACTERS = 200
 export const COMMENT_MAX_CHARACTERS = 400
 export const ITEM_DESC_PLACEHOLDER =
-	"Oryginalna cena, możliwości wysyłki, informacje o uszkodzeniach itd."
+  "Oryginalna cena, możliwości wysyłki, informacje o uszkodzeniach itd."
 
 export const S_THUMB_POSTFIX = "_S_THUMB"
 export const M_THUMB_POSTFIX = "_M_THUMB"
@@ -21,6 +21,8 @@ export const STORAGE_BUCKET_ITEM_ATTACHMENTS = "attachments"
 
 // eslint-disable-next-line
 export const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+
+console.log("ENV:", process.env)
 
 // ===============================================================================
 // !!! REMEMBER TO ALSO CHANGE IN THE CLOUD FUNCTIONS DIRECTORY !!!

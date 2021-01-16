@@ -1,7 +1,11 @@
 import React from "react"
 
 const TermsPage = () => {
-	return <h2>Regulamin</h2>
+  return (
+    <div>
+      <p>Placeholder: Regulamin</p>
+    </div>
+  )
 }
 
 export default TermsPage

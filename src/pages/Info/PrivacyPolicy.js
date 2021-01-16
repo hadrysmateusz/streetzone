@@ -1,7 +1,11 @@
 import React from "react"
 
 const PrivacyPolicyPage = () => {
-	return <h2>Polityka Prywatności</h2>
+  return (
+    <div>
+      <p>Placeholder: Polityka Prywatności</p>
+    </div>
+  )
 }
 
 export default PrivacyPolicyPage

@@ -9,51 +9,51 @@ import { ROUTES, CONST } from "../../../constants"
 import DropForm from "./Form"
 
 const AddDrop = ({ history }) => {
-	const firebase = useFirebase()
+  const firebase = useFirebase()
 
-	const onSubmit = async (values, actions) => {
-		try {
-			const files = values.files
+  const onSubmit = async (values, actions) => {
+    try {
+      const files = values.files
 
-			// Upload files to storage and get their refs
-			const attachments = await firebase.batchUploadFiles(
-				CONST.STORAGE_BUCKET_DROP_ATTACHMENTS,
-				files
-			)
+      // Upload files to storage and get their refs
+      const attachments = await firebase.batchUploadFiles(
+        CONST.STORAGE_BUCKET_DROP_ATTACHMENTS,
+        files
+      )
 
-			const urlPromises = attachments.map((storageRef) =>
-				firebase.getImageURL(storageRef)
-			)
-			const imageUrls = await Promise.all(urlPromises)
+      const urlPromises = attachments.map((storageRef) => firebase.getImageURL(storageRef))
+      const imageUrls = await Promise.all(urlPromises)
 
-			// Get main image index
-			const mainImageIndex = files.findIndex((a) => a.isMain)
+      // Get main image index
+      const mainImageIndex = files.findIndex((a) => a.isMain)
 
-			// Format the values for db
-			const formattedData = formatDropDataForDb(
-				{ ...values, mainImageIndex, attachments, imageUrls },
-				MODE.CREATE
-			)
+      // Format the values for db
+      const formattedData = formatDropDataForDb(
+        { ...values, mainImageIndex, attachments, imageUrls },
+        MODE.CREATE
+      )
 
-			// Add drop to database
-			await firebase.drop(formattedData.id).set(formattedData)
+      console.log(formattedData)
 
-			// Reset form
-			actions.reset()
+      // Add drop to database
+      await firebase.drop(formattedData.id).set(formattedData)
 
-			// Redirect
-			history.push(ROUTES.ADMIN_DROPS)
-		} catch (error) {
-			alert("Wystąpił problem")
-			console.log(error)
-		}
-	}
+      // Reset form
+      actions.reset()
 
-	return (
-		<PageContainer>
-			<DropForm onSubmit={onSubmit} />
-		</PageContainer>
-	)
+      // Redirect
+      history.push(ROUTES.ADMIN_DROPS)
+    } catch (error) {
+      alert("Wystąpił problem")
+      console.log(error)
+    }
+  }
+
+  return (
+    <PageContainer>
+      <DropForm onSubmit={onSubmit} />
+    </PageContainer>
+  )
 }
 
 export default withRouter(AddDrop)
