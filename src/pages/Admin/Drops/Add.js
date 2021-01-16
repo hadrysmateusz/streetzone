@@ -11,50 +11,50 @@ import DropForm from "./Form"
 import { useFlash } from "../../../hooks"
 
 const AddDrop = ({ history }) => {
-	const firebase = useFirebase()
-	const flashMessage = useFlash()
+  const firebase = useFirebase()
+  const flashMessage = useFlash()
 
-	const onSubmit = async (values, form) => {
-		try {
-			const files = values.files
+  const onSubmit = async (values, form) => {
+    try {
+      const files = values.files
 
-			// Upload files to storage and get their refs
-			const attachments = await firebase.batchUploadFiles(
-				CONST.STORAGE_BUCKET_DROP_ATTACHMENTS,
-				files
-			)
+      // Upload files to storage and get their refs
+      const attachments = await firebase.batchUploadFiles(
+        CONST.STORAGE_BUCKET_DROP_ATTACHMENTS,
+        files
+      )
 
-			// Get main image index
-			const mainImageIndex = files.findIndex((a) => a.isMain)
+      // Get main image index
+      const mainImageIndex = files.findIndex((a) => a.isMain)
 
-			// Format the values for db
-			const formattedData = formatDropDataForDb(
-				{ ...values, mainImageIndex, attachments },
-				MODE.CREATE
-			)
+      // Format the values for db
+      const formattedData = formatDropDataForDb(
+        { ...values, mainImageIndex, attachments },
+        MODE.CREATE
+      )
 
-			// Add drop to database
-			await firebase.drop(formattedData.id).set(formattedData)
+      // Add drop to database
+      await firebase.drop(formattedData.id).set(formattedData)
 
-			setTimeout(() => {
-				form.reset()
-				history.push(route("ADMIN_DROPS"))
-			})
-		} catch (error) {
-			console.error(error)
-			flashMessage({
-				type: "error",
-				text: "Wystąpił błąd",
-				details: "Więcej informacji w konsoli"
-			})
-		}
-	}
+      setTimeout(() => {
+        form.reset()
+        history.push(route("ADMIN_DROPS"))
+      })
+    } catch (error) {
+      console.error(error)
+      flashMessage({
+        type: "error",
+        text: "Wystąpił błąd",
+        details: "Więcej informacji w konsoli",
+      })
+    }
+  }
 
-	return (
-		<PageContainer>
-			<DropForm onSubmit={onSubmit} />
-		</PageContainer>
-	)
+  return (
+    <PageContainer>
+      <DropForm onSubmit={onSubmit} />
+    </PageContainer>
+  )
 }
 
 export default withRouter(AddDrop)

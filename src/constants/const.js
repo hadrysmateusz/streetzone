@@ -12,7 +12,7 @@ export const DESC_MAX_CHARACTERS = 500
 export const ACCOUNT_DESC_MAX_CHARACTERS = 200
 export const COMMENT_MAX_CHARACTERS = 400
 export const ITEM_DESC_PLACEHOLDER =
-	"Oryginalna cena, możliwości wysyłki, informacje o uszkodzeniach itd."
+  "Oryginalna cena, możliwości wysyłki, informacje o uszkodzeniach itd."
 
 // shared with with client code (ALWAYS UPDATE BOTH)
 export const S_THUMB_POSTFIX = "_100_THUMB"
@@ -29,13 +29,8 @@ export const STORAGE_BUCKET_AUTHOR_PICTURES = "author-pictures"
 export const STORAGE_BUCKET_BRAND_LOGOS = "brand-logos"
 
 // eslint-disable-next-line
-export const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-
-// Social Media
-// TODO: create social media pages and add addresses
-export const FACEBOOK_PROFILE = ""
-export const TWITTER_PROFILE = ""
-export const INSTAGRAM_PROFILE = ""
+export const EMAIL_REGEX =
+  /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 
 // ===============================================================================
 // !!! REMEMBER TO ALSO CHANGE IN THE CLOUD FUNCTIONS DIRECTORY !!!

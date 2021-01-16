@@ -17,8 +17,8 @@ import CategoryNav from "./CategoryNav"
 import InfinitePosts from "../InfinitePostsList"
 
 const sidebarElements = [
-	{ title: "Popularne artykuły", component: PopularArticles },
-	{ title: "Popularne tagi", component: PopularTags }
+  { title: "Popularne artykuły", component: PopularArticles },
+  { title: "Popularne tagi", component: PopularTags },
 ]
 
 // const DropsGroup = () => (
@@ -42,28 +42,28 @@ const sidebarElements = [
 // )
 
 const BlogHomePage = () => (
-	<>
-		<HelmetBasics title="Blog" />
-		<PromotedSection />
-		<StatelessSearchWrapper indexName={CONST.BLOG_POST_ALGOLIA_INDEX} limit={3}>
-			<PageContainer>
-				<LayoutManager>
-					<Main>
-						{/* Navigation */}
-						<CategoryNav />
-						{/* Preset Groups */}
-						{/* <DropsGroup /> */}
-						{/* <CareAndMaintenanceGroup /> */}
-						{/* Infinite Posts List */}
-						<InfinitePosts />
-					</Main>
-					<Sidebar availableElements={sidebarElements} isRandom>
-						<PoweredByBox />
-					</Sidebar>
-				</LayoutManager>
-			</PageContainer>
-		</StatelessSearchWrapper>
-	</>
+  <>
+    <HelmetBasics title="Blog" />
+    <PromotedSection />
+    <StatelessSearchWrapper indexName={CONST.BLOG_POST_ALGOLIA_INDEX} limit={3}>
+      <PageContainer>
+        <LayoutManager>
+          <Main>
+            {/* Navigation */}
+            <CategoryNav />
+            {/* Preset Groups */}
+            {/* <DropsGroup /> */}
+            {/* <CareAndMaintenanceGroup /> */}
+            {/* Infinite Posts List */}
+            <InfinitePosts />
+          </Main>
+          <Sidebar availableElements={sidebarElements} isRandom>
+            <PoweredByBox />
+          </Sidebar>
+        </LayoutManager>
+      </PageContainer>
+    </StatelessSearchWrapper>
+  </>
 )
 
 export default BlogHomePage
