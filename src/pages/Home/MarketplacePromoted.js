@@ -94,7 +94,7 @@ const MarketplacePromoted = () => {
         {(hits) => (
           <InnerContainer>
             {hits.map((result) => (
-              <PromotedItem {...result} />
+              <PromotedItem key={result.id} {...result} />
             ))}
           </InnerContainer>
         )}

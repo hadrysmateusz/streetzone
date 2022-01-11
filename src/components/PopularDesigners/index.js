@@ -80,7 +80,7 @@ const PopularDesigners = withBreakpoints(({ currentBreakpoint }) => {
 			{(hits) => (
 				<InnerContainer>
 					{hits.map((hit) => (
-						<Designer {...hit} />
+            <Designer key={hit.id} {...hit} />
 					))}
 				</InnerContainer>
 			)}

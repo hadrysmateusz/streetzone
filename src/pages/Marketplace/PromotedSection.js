@@ -155,7 +155,7 @@ const InnerContainer = withBreakpoints((props) => {
       {showMain && (
         <TopContainer>
           {main.map((item) => (
-            <PromotedItem item={item} />
+            <PromotedItem key={item.id} item={item} />
           ))}
           {mapN(nToFill, (i) => (
             <PromotedPlaceholder key={i} />
@@ -165,7 +165,7 @@ const InnerContainer = withBreakpoints((props) => {
       {hasOther && (
         <BottomContainer>
           {other.map((item) => (
-            <SmallItemCard {...item} />
+            <SmallItemCard key={item.id} {...item} />
           ))}
         </BottomContainer>
       )}
