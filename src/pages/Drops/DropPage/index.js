@@ -63,7 +63,7 @@ const DropDetailsPage = ({ match, history }) => {
     }
 
     getDrop()
-  }, [dropId])
+  }, [dropId, firebase])
 
   if (!drop) {
     return <LoadingSpinner />
@@ -88,7 +88,13 @@ const DropDetailsPage = ({ match, history }) => {
   return (
     <>
       <PageContainer>
-        <PageNav breadcrumbs={[["Dropy", "DROPS_SECTION", { id: "newest" }]]} noMargin />
+        <PageNav
+          breadcrumbs={[
+            ["Dropy", "DROPS_SECTION", { id: "newest" }],
+            [drop.name, "DROP_DETAILS", { id: drop.id }],
+          ]}
+          noMargin
+        />
         <ItemContainer>
           <ImageGallery
             storageRefs={drop.attachments}
