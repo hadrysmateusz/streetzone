@@ -101,7 +101,13 @@ const DropDetailsPage = ({ match }) => {
     <>
       <HelmetBasics title={drop.name} />
       <PageContainer>
-        <PageNav breadcrumbs={[["Dropy", "DROPS_SECTION", { id: "newest" }]]} noMargin />
+        <PageNav
+          breadcrumbs={[
+            ["Dropy", "DROPS_SECTION", { id: "newest" }],
+            [drop.name, "DROP_DETAILS", { id: drop.id }],
+          ]}
+          noMargin
+        />
         <ItemContainer>
           <ImageGallery
             storageRefs={drop.attachments}
