@@ -1,7 +1,11 @@
 import React from "react"
 
 const AboutPage = () => {
-  return <h2>O nas</h2>
+  return (
+    <div>
+      <p>Placeholder: O nas</p>
+    </div>
+  )
 }
 
 export default AboutPage
