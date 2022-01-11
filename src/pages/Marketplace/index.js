@@ -2,6 +2,7 @@ import React, { useState, useRef } from "react"
 import styled from "styled-components/macro"
 import { withBreakpoints } from "react-breakpoints"
 import { disableBodyScroll, enableBodyScroll } from "body-scroll-lock"
+import { Link } from "react-router-dom"
 
 import { SearchWrapper } from "../../components/InstantSearchWrapper"
 import CurrentFilters from "../../components/CurrentFilters"
@@ -16,6 +17,8 @@ import PromotedSection from "./PromotedSection"
 import DesignerBanner from "./DesignerBanner"
 import Filters from "./Filters"
 import MarketplaceResults from "./MarketplaceResults"
+import Button from "../../components/Button"
+import { route } from "../../utils"
 
 const sortingOptions = [
   {
@@ -39,8 +42,6 @@ const MainGrid = styled.div`
 
 const Sidebar = styled.aside`
   align-self: flex-start;
-  border: 1px solid var(--gray75);
-  background: white;
 
   /* mobile */
   @media (max-width: ${(p) => p.theme.breakpoints[3] - 1}px) {
@@ -55,6 +56,11 @@ const Sidebar = styled.aside`
   }
 `
 
+const SidebarInner = styled.div`
+  border: 1px solid var(--gray75);
+  background: white;
+`
+
 const GridContainer = styled.div`
   display: grid;
   gap: var(--spacing3);
@@ -66,6 +72,25 @@ const FiltersHeader = styled.div`
   font-size: var(--fs-l);
   font-weight: bold;
   border-bottom: 1px solid var(--gray75);
+`
+
+const StartSellingBox = styled.div`
+  background: var(--black25);
+  color: var(--gray75);
+  font-size: var(--fs-s);
+  padding: 16px;
+  margin-top: 16px;
+
+  .ssb-heading {
+    text-transform: uppercase;
+    color: white;
+    margin-bottom: 6px;
+    font-weight: 700;
+  }
+
+  .ssb-body {
+    margin-bottom: 14px;
+  }
 `
 
 const DEFAULT_SEARCH_STATE = {
@@ -115,12 +140,21 @@ const MarketplacePage = ({ currentBreakpoint }) => {
 
           <MainGrid>
             <Sidebar hidden={!areFiltersOpen && !(currentBreakpoint > 2)}>
-              <FiltersHeader>Filtruj</FiltersHeader>
-              <Filters
-                toggle={toggleFilters}
-                clear={clearFiltersFn}
-                shouldClear={{ value: clearFilters, update: setClearFilters }}
-              />
+              <SidebarInner>
+                <FiltersHeader>Filtruj</FiltersHeader>
+                <Filters
+                  toggle={toggleFilters}
+                  clear={clearFiltersFn}
+                  shouldClear={{ value: clearFilters, update: setClearFilters }}
+                />
+              </SidebarInner>
+              <StartSellingBox>
+                <div className="ssb-heading">Wystaw Przedmiot</div>
+                <div className="ssb-body">I zacznij zarabiać na swojej kolekcji!</div>
+                <Link to={route("NEW_ITEM")}>
+                  <Button blackBox>Zacznij Sprzedawać</Button>
+                </Link>
+              </StartSellingBox>
             </Sidebar>
             <MarketplaceResults />
           </MainGrid>
