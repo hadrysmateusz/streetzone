@@ -15,91 +15,92 @@ import { ellipsis, nLinesHigh } from "../../style-utils"
 const { formatDesigners } = itemDataHelpers
 
 const OuterContainer = styled.div`
-	margin-top: var(--spacing5);
-	@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
-		margin-top: var(--spacing6);
-	}
+  margin-top: var(--spacing5);
+  @media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
+    margin-top: var(--spacing6);
+  }
 `
 
 const InnerContainer = styled.div`
-	display: grid;
-	gap: var(--spacing3);
-	@media (min-width: ${(p) => p.theme.breakpoints[3]}px) {
-		grid-template-columns: 1fr 1fr;
-		gap: var(--spacing4);
-	}
+  display: grid;
+  gap: var(--spacing3);
+  @media (min-width: ${(p) => p.theme.breakpoints[3]}px) {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing4);
+  }
 `
 const PromotedItemContainer = styled.div`
-	display: grid;
-	grid-template-columns: 1fr minmax(140px, 0.5fr);
-	@media (min-width: ${(p) => p.theme.breakpoints[3]}px) {
-		grid-template-columns: 1fr minmax(140px, 0.8fr);
-	}
-	gap: var(--spacing3);
+  display: grid;
+  grid-template-columns: 1fr minmax(140px, 0.5fr);
+  @media (min-width: ${(p) => p.theme.breakpoints[3]}px) {
+    grid-template-columns: 1fr minmax(140px, 0.8fr);
+  }
+  gap: var(--spacing3);
 `
 const InfoContainer = styled.div`
-	padding: var(--spacing3) 0;
+  padding: var(--spacing3) 0;
 `
 const Designers = styled.div`
-	font-size: var(--font-size--s);
-	color: var(--gray0);
-	text-transform: uppercase;
-	margin-bottom: var(--spacing3);
+  font-size: var(--font-size--s);
+  color: var(--gray0);
+  text-transform: uppercase;
+  margin-bottom: var(--spacing3);
 
-	${ellipsis}
+  ${ellipsis}
 `
 const Name = styled.div`
-	font-size: var(--font-size--l);
-	font-weight: var(--semi-bold);
-	${nLinesHigh(2, { lineHeight: 1.3 })}
-	margin-bottom: var(--spacing3);
-	text-overflow: ellipsis;
+  font-size: var(--font-size--l);
+  font-weight: var(--semi-bold);
+  ${nLinesHigh(2, { lineHeight: 1.3 })}
+  margin-bottom: var(--spacing3);
+  text-overflow: ellipsis;
 `
 
 const PromotedItem = ({ attachments, mainImageIndex, name, designers, price, id }) => {
-	const { imageURL } = useImage(attachments[mainImageIndex], "M")
-	const formattedDesigners = formatDesigners(designers)
+  const { imageURL } = useImage(attachments[mainImageIndex], "M")
+  const formattedDesigners = formatDesigners(designers)
 
-	const itemLink = route("ITEM_DETAILS", { id })
+  const itemLink = route("ITEM_DETAILS", { id })
 
-	return (
-		<PromotedItemContainer>
-			<InfoContainer>
-				<Designers>{formattedDesigners}</Designers>
-				<Link to={itemLink}>
-					<Name title={name}>{name}</Name>
-				</Link>
-				<ButtonContainer noMargin>
-					<LinkButton primary to={itemLink}>
-						Kup za {price}zł
-					</LinkButton>
-				</ButtonContainer>
-			</InfoContainer>
-			<Link to={itemLink}>
-				<FluidImage url={imageURL} />
-			</Link>
-		</PromotedItemContainer>
-	)
+  return (
+    <PromotedItemContainer>
+      <InfoContainer>
+        <Designers>{formattedDesigners}</Designers>
+        <Link to={itemLink}>
+          <Name title={name}>{name}</Name>
+        </Link>
+        <ButtonContainer noMargin>
+          <LinkButton primary to={itemLink}>
+            Kup za {price}zł
+          </LinkButton>
+        </ButtonContainer>
+      </InfoContainer>
+      <Link to={itemLink}>
+        <FluidImage url={imageURL} />
+      </Link>
+    </PromotedItemContainer>
+  )
 }
 
 const MarketplacePromoted = () => {
-	return (
-		<OuterContainer>
-			<PageHeading emoji={"🔥"}>Promowane na tablicy</PageHeading>
-			<StatelessSearchWrapper
-				indexName={CONST.ITEMS_MARKETPLACE_DEFAULT_ALGOLIA_INDEX}
-				refinements={{ promotedUntil: { min: Date.now() } }}
-			>
-				{(hits) => (
-					<InnerContainer>
-						{hits.map((result) => (
-							<PromotedItem {...result} />
-						))}
-					</InnerContainer>
-				)}
-			</StatelessSearchWrapper>
-		</OuterContainer>
-	)
+  return (
+    <OuterContainer>
+      <PageHeading emoji={"🔥"}>Promowane na tablicy</PageHeading>
+      <StatelessSearchWrapper
+        indexName={CONST.ITEMS_MARKETPLACE_DEFAULT_ALGOLIA_INDEX}
+        refinements={{ promotedUntil: { min: Date.now() } }}
+        limit={4}
+      >
+        {(hits) => (
+          <InnerContainer>
+            {hits.map((result) => (
+              <PromotedItem {...result} />
+            ))}
+          </InnerContainer>
+        )}
+      </StatelessSearchWrapper>
+    </OuterContainer>
+  )
 }
 
 export default MarketplacePromoted
