@@ -12,7 +12,7 @@ import {
 } from "../StyledComponents"
 
 const BoxItemsContainer = ({ title, items, refine }) => {
-  console.log("ITEMSSSSS:", items)
+  // console.log("ITEMSSSSS:", items)
 
   return (
     <Foldable title={title} onlyVisual startFolded>
@@ -36,7 +36,7 @@ export const BoxOptionsList = ({ items, refine }) => {
     items.forEach((size) => {
       // split the string to get category and value of the size
       const [category, label] = size.label.split("-")
-      console.log("category/label", category, label, size)
+      // console.log("category/label", category, label, size)
       // push the label to the proper category's array
       sizes[category].push({ ...size, label })
     })

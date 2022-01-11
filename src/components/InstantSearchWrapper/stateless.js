@@ -38,7 +38,7 @@ const StatelessSearchWrapper = (props) => {
 
   const contextValue = { refresh }
 
-  console.log(filters)
+  // console.log(filters)
 
   return (
     <InstantSearch

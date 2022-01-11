@@ -37,7 +37,7 @@ class AlgoliaSortBy extends React.Component {
   render() {
     const { refine, currentRefinement, items, placeholder, defaultRefinement, ...rest } = this.props
 
-    console.log("sort by items:", items)
+    // console.log("sort by items:", items)
 
     return (
       <Media>

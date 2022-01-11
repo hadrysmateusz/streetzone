@@ -127,13 +127,13 @@ const BottomContainer = styled.div`
 `
 
 const InnerContainer = withBreakpoints((props) => {
-  console.log("InnerContainer props:", props)
+  // console.log("InnerContainer props:", props)
 
   const { items, currentBreakpoint } = props
 
   const isMobile = +currentBreakpoint < 2
 
-  console.log("PROMOTED. items:", items)
+  // console.log("PROMOTED. items:", items)
 
   const showMain = !isMobile
 
@@ -143,7 +143,7 @@ const InnerContainer = withBreakpoints((props) => {
   const hasOther = other && other.length > 0
   const nToFill = !hasMain ? NUMBER_OF_PROMOTED_ITEMS : NUMBER_OF_PROMOTED_ITEMS - main.length
 
-  console.log("PROMOTED. main:", main)
+  // console.log("PROMOTED. main:", main)
 
   return (
     <InnerContainerContainer>
