@@ -1,11 +1,10 @@
 import React from "react"
-import { Switch, Route, withRouter, NavLink } from "react-router-dom"
+import { Switch, Route, withRouter } from "react-router-dom"
 import { withBreakpoints } from "react-breakpoints"
 import { compose } from "recompose"
 import styled from "styled-components/macro"
 
 import { PageContainer } from "../../components/Containers"
-import { ROUTES } from "../../constants"
 
 const Layout = styled.div`
   gap: var(--spacing4);
@@ -65,57 +64,57 @@ const Main = styled.main``
 //   }
 // `
 
-const ScrollableNavbarContainer = styled.nav`
-  display: grid;
-  gap: 0;
-  overflow: auto;
-  width: auto;
-  grid-auto-flow: column;
+// const ScrollableNavbarContainer = styled.nav`
+//   display: grid;
+//   gap: 0;
+//   overflow: auto;
+//   width: auto;
+//   grid-auto-flow: column;
 
-  &::after {
-    content: "";
-    display: block;
-    width: 0;
-  }
-`
+//   &::after {
+//     content: "";
+//     display: block;
+//     width: 0;
+//   }
+// `
 
-const OuterScrollableNavbarContainer = styled.div`
-  background: linear-gradient(to right, rgba(0, 0, 0, 0) 94%, rgba(0, 0, 0, 0.06));
-  margin-right: calc(-1 * var(--spacing3));
-  margin-left: calc(-1 * var(--spacing3));
-`
+// const OuterScrollableNavbarContainer = styled.div`
+//   background: linear-gradient(to right, rgba(0, 0, 0, 0) 94%, rgba(0, 0, 0, 0.06));
+//   margin-right: calc(-1 * var(--spacing3));
+//   margin-left: calc(-1 * var(--spacing3));
+// `
 
-const NavbarItemContainer = styled(NavLink)`
-  color: var(--gray25);
-  font-weight: var(--semi-bold);
-  font-size: var(--fs-xs);
-  text-transform: uppercase;
-  text-align: center;
-  white-space: nowrap;
-  user-select: none;
-  cursor: pointer;
-  position: relative;
-  display: flex;
-  align-items: center;
-  height: 36px;
-  padding: 0 var(--spacing4);
-  box-sizing: padding-box;
-  border-bottom: 1px solid var(--gray75);
-  transition: border-color 0.25s linear, border-width 0.25s linear;
+// const NavbarItemContainer = styled(NavLink)`
+//   color: var(--gray25);
+//   font-weight: var(--semi-bold);
+//   font-size: var(--fs-xs);
+//   text-transform: uppercase;
+//   text-align: center;
+//   white-space: nowrap;
+//   user-select: none;
+//   cursor: pointer;
+//   position: relative;
+//   display: flex;
+//   align-items: center;
+//   height: 36px;
+//   padding: 0 var(--spacing4);
+//   box-sizing: padding-box;
+//   border-bottom: 1px solid var(--gray75);
+//   transition: border-color 0.25s linear, border-width 0.25s linear;
 
-  &:hover {
-    color: black;
-  }
+//   &:hover {
+//     color: black;
+//   }
 
-  &.active {
-    color: black;
-    border-bottom: 3px solid black;
-  }
-`
+//   &.active {
+//     color: black;
+//     border-bottom: 3px solid black;
+//   }
+// `
 
-const NavbarItem = ({ label, path }) => {
-  return <NavbarItemContainer to={path}>{label}</NavbarItemContainer>
-}
+// const NavbarItem = ({ label, path }) => {
+//   return <NavbarItemContainer to={path}>{label}</NavbarItemContainer>
+// }
 
 // const ScrollableNavbar = ({ routes }) => {
 //   return (
