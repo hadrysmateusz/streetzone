@@ -7,77 +7,77 @@ import { Results, VirtualRefinement } from "../Algolia/Helpers"
 export const SearchWrapperContext = createContext()
 
 const StatelessSearchWrapper = (props) => {
-	const {
-		indexName,
-		refinements,
-		filters,
-		limit = 3,
-		children,
-		ignoreArchivedStatus = false,
-		showArchived = false
-	} = props
+  const {
+    indexName,
+    refinements,
+    filters,
+    limit = 3,
+    children,
+    ignoreArchivedStatus = false,
+    showArchived = false,
+  } = props
 
-	const [shouldRefresh, setShouldRefresh] = useState(false)
+  const [shouldRefresh, setShouldRefresh] = useState(false)
 
-	const refresh = () => {
-		setShouldRefresh(true)
-	}
+  const refresh = () => {
+    setShouldRefresh(true)
+  }
 
-	// console.log("pre hook", shouldRefresh)
+  // console.log("pre hook", shouldRefresh)
 
-	useEffect(() => {
-		if (shouldRefresh) {
-			setShouldRefresh(false)
-		}
-	}, [shouldRefresh])
+  useEffect(() => {
+    if (shouldRefresh) {
+      setShouldRefresh(false)
+    }
+  }, [shouldRefresh])
 
-	// console.log("post hook", shouldRefresh)
-	// console.log("---")
+  // console.log("post hook", shouldRefresh)
+  // console.log("---")
 
-	const isRenderFn = typeof children === "function"
+  const isRenderFn = typeof children === "function"
 
-	const contextValue = { refresh }
+  const contextValue = { refresh }
 
-	console.log(filters)
+  console.log(filters)
 
-	return (
-		<InstantSearch
-			appId={process.env.REACT_APP_APP_ID}
-			apiKey={process.env.REACT_APP_ALGOLIA_API_KEY}
-			indexName={indexName}
-			refresh={shouldRefresh}
-		>
-			<Configure filters={filters ? filters : undefined} hitsPerPage={limit} />
+  return (
+    <InstantSearch
+      appId={process.env.REACT_APP_APP_ID}
+      apiKey={process.env.REACT_APP_ALGOLIA_API_KEY}
+      indexName={indexName}
+      refresh={shouldRefresh}
+    >
+      <Configure filters={filters ? filters : undefined} hitsPerPage={limit} />
 
-			{/* apply necessary refinements */}
-			{refinements &&
-				Object.entries(refinements).map(([key, value]) => (
-					<VirtualRefinement key={key} attribute={key} value={value} />
-				))}
+      {/* apply necessary refinements */}
+      {refinements &&
+        Object.entries(refinements).map(([key, value]) => (
+          <VirtualRefinement key={key} attribute={key} value={value} />
+        ))}
 
-			{/* TODO: verify that this works */}
-			{/* Hide archived results unless told otherwise */}
-			{!ignoreArchivedStatus && !showArchived && (
-				<VirtualToggle
-					attribute="isArchived"
-					value={false}
-					defaultRefinement={true}
-					label="Hide Archived"
-				/>
-			)}
+      {/* TODO: verify that this works */}
+      {/* Hide archived results unless told otherwise */}
+      {!ignoreArchivedStatus && !showArchived && (
+        <VirtualToggle
+          attribute="isArchived"
+          value={false}
+          defaultRefinement={true}
+          label="Hide Archived"
+        />
+      )}
 
-			{/* render children (using renderProps if applicable) */}
-			<Results>
-				{(results) => {
-					return (
-						<SearchWrapperContext.Provider value={contextValue}>
-							{isRenderFn ? children(results) : children}
-						</SearchWrapperContext.Provider>
-					)
-				}}
-			</Results>
-		</InstantSearch>
-	)
+      {/* render children (using renderProps if applicable) */}
+      <Results>
+        {(results) => {
+          return (
+            <SearchWrapperContext.Provider value={contextValue}>
+              {isRenderFn ? children(results) : children}
+            </SearchWrapperContext.Provider>
+          )
+        }}
+      </Results>
+    </InstantSearch>
+  )
 }
 
 export default StatelessSearchWrapper

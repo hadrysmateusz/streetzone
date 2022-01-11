@@ -9,70 +9,65 @@ import { decodeURL } from "../../utils/algoliaURLutils"
 import { PoweredBy } from "./PoweredBy"
 
 const AlgoliaSearchBox = ({
-	location,
-	refine,
-	currentBreakpoint,
-	placeholderLong,
-	placeholder
+  location,
+  refine,
+  currentBreakpoint,
+  placeholderLong,
+  placeholder,
 }) => {
-	const DELAY = 350
+  const DELAY = 350
 
-	const [value, setValue] = useState("")
+  const [value, setValue] = useState("")
 
-	const inputRef = useRef()
+  const inputRef = useRef()
 
-	let rateLimitedRefine
+  let rateLimitedRefine
 
-	useEffect(() => {
-		try {
-			const parsedSearch = decodeURL(location.search)
+  useEffect(() => {
+    try {
+      const parsedSearch = decodeURL(location.search)
 
-			/* if there was a problem with parsing or query wasn't present 
+      /* if there was a problem with parsing or query wasn't present 
 			 default to empty string */
-			const query = parsedSearch && parsedSearch.query ? parsedSearch.query : ""
+      const query = parsedSearch && parsedSearch.query ? parsedSearch.query : ""
 
-			setValue(query)
-		} catch (error) {
-			setValue("")
-			throw error
-		}
-	}, [location])
+      setValue(query)
+    } catch (error) {
+      setValue("")
+      throw error
+    }
+  }, [location])
 
-	const onChange = () => {
-		// don't write the value to a variable, it is a ref and that is required
+  const onChange = () => {
+    // don't write the value to a variable, it is a ref and that is required
 
-		setValue(inputRef.current.value)
+    setValue(inputRef.current.value)
 
-		// the timeout makes it so the query only gets updated when you stop typing
-		clearTimeout(rateLimitedRefine)
-		rateLimitedRefine = setTimeout(() => {
-			refine(inputRef.current.value)
-		}, DELAY)
-	}
+    // the timeout makes it so the query only gets updated when you stop typing
+    clearTimeout(rateLimitedRefine)
+    rateLimitedRefine = setTimeout(() => {
+      refine(inputRef.current.value)
+    }, DELAY)
+  }
 
-	const onClear = () => {
-		setValue("")
-		refine()
-	}
+  // const onClear = () => {
+  //   setValue("")
+  //   refine()
+  // }
 
-	const placeholderText =
-		currentBreakpoint > 0 ? placeholderLong || placeholder : placeholder
+  const placeholderText = currentBreakpoint > 0 ? placeholderLong || placeholder : placeholder
 
-	return (
-		<Input
-			icon="search"
-			value={value}
-			placeholder={placeholderText}
-			onChange={onChange}
-			ref={inputRef}
-			rightSlot={<PoweredBy small />}
-			rightSlotWidth="100px"
-		/>
-	)
+  return (
+    <Input
+      icon="search"
+      value={value}
+      placeholder={placeholderText}
+      onChange={onChange}
+      ref={inputRef}
+      rightSlot={<PoweredBy small />}
+      rightSlotWidth="100px"
+    />
+  )
 }
 
-export default compose(
-	withRouter,
-	connectSearchBox,
-	withBreakpoints
-)(AlgoliaSearchBox)
+export default compose(withRouter, connectSearchBox, withBreakpoints)(AlgoliaSearchBox)

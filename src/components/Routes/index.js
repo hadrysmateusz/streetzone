@@ -671,7 +671,7 @@ const ScrollToTop = withRouter(({ children, shouldScroll, location }) => {
     if (!shouldScroll) return
 
     window.scrollTo(0, 0)
-  }, [location.pathname])
+  }, [location.pathname, shouldScroll])
 
   return children
 })

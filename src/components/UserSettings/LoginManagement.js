@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useCallback } from "react"
 import styled from "styled-components/macro"
 
 import { PageContainer } from "../Containers"
@@ -12,55 +12,55 @@ import PasswordManagement from "./PasswordManagement"
 import SocialLoginManagement from "./SocialLoginManagement"
 
 const Section = styled.div`
-	margin: var(--spacing5) 0;
+  margin: var(--spacing5) 0;
 `
 
 const LoginManagement = () => {
-	const firebase = useFirebase()
-	const authUser = useAuthentication()
-	const flashMessage = useFlash()
-	const [activeMethods, setActiveMethods] = useState(null)
-	const [error, setError] = useState(null)
+  const firebase = useFirebase()
+  const authUser = useAuthentication()
+  const flashMessage = useFlash()
+  const [activeMethods, setActiveMethods] = useState(null)
+  const [error, setError] = useState(null)
 
-	const fetchActiveMethods = async () => {
-		try {
-			const activeMethods = await firebase.auth.fetchSignInMethodsForEmail(authUser.email)
-			setActiveMethods(activeMethods)
-		} catch (error) {
-			setError(error)
-		}
-	}
+  const fetchActiveMethods = useCallback(async () => {
+    try {
+      const activeMethods = await firebase.auth.fetchSignInMethodsForEmail(authUser.email)
+      setActiveMethods(activeMethods)
+    } catch (error) {
+      setError(error)
+    }
+  }, [authUser.email, firebase.auth])
 
-	useEffect(() => {
-		fetchActiveMethods()
-	}, [authUser, firebase])
+  useEffect(() => {
+    fetchActiveMethods()
+  }, [fetchActiveMethods])
 
-	const onSuccess = (message) => {
-		flashMessage(message)
-		fetchActiveMethods()
-	}
+  const onSuccess = (message) => {
+    flashMessage(message)
+    fetchActiveMethods()
+  }
 
-	return error ? (
-		<ErrorBox error={error} />
-	) : !activeMethods ? (
-		<LoadingSpinner />
-	) : (
-		<>
-			<Section>
-				<PageContainer maxWidth={1}>
-					<PasswordManagement activeMethods={activeMethods} onSuccess={onSuccess} />
-				</PageContainer>
-			</Section>
+  return error ? (
+    <ErrorBox error={error} />
+  ) : !activeMethods ? (
+    <LoadingSpinner />
+  ) : (
+    <>
+      <Section>
+        <PageContainer maxWidth={1}>
+          <PasswordManagement activeMethods={activeMethods} onSuccess={onSuccess} />
+        </PageContainer>
+      </Section>
 
-			<Separator />
+      <Separator />
 
-			<Section>
-				<PageContainer maxWidth={1}>
-					<SocialLoginManagement activeMethods={activeMethods} onSuccess={onSuccess} />
-				</PageContainer>
-			</Section>
-		</>
-	)
+      <Section>
+        <PageContainer maxWidth={1}>
+          <SocialLoginManagement activeMethods={activeMethods} onSuccess={onSuccess} />
+        </PageContainer>
+      </Section>
+    </>
+  )
 }
 
 export default LoginManagement

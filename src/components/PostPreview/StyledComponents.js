@@ -28,7 +28,7 @@ export const Title = styled.h3`
 
 export const Excerpt = styled.div`
   color: var(--black50);
-  max-width: 300px;
+  max-width: 460px;
 `
 
 export const TagsContainer = styled.div`
