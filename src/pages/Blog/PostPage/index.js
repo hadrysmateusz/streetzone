@@ -92,6 +92,7 @@ const HeaderBox = styled.div`
     }
 
     .category {
+      margin-top: var(--spacing2);
       padding-left: var(--spacing2);
       text-transform: uppercase;
       border-left: 3px solid ${(p) => (p.category ? getCategoryColor(p.category) : "var(--gray50)")};
@@ -100,6 +101,7 @@ const HeaderBox = styled.div`
     .date {
       font-size: var(--font-size--xs);
       color: var(--gray75);
+      margin-bottom: var(--spacing4);
     }
   }
 `
@@ -184,6 +186,7 @@ export const PureBlogPost = withBreakpoints(
             <div className="excerpt">{excerpt}</div>
             {/* Crated Date */}
             <div className="date">{moment(createdAt).format("LL")}</div>
+            {/* </InnerHeaderContainer> */}
           </PageContainer>
         </HeaderBox>
 
@@ -200,7 +203,7 @@ export const PureBlogPost = withBreakpoints(
                   {!isMobile && (
                     <InfoAside>
                       {/* Share buttons */}
-                      <Share />
+                      <Share text={title} />
 
                       {/* Info */}
                       <Info>
