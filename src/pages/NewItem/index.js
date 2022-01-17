@@ -1,5 +1,5 @@
 import React from "react"
-import shortid from "shortid"
+import { nanoid } from "nanoid"
 
 import { withAuthorization } from "../../components/UserSession"
 import { PageContainer } from "../../components/Containers"
@@ -21,7 +21,7 @@ const NewItemPage = ({ history }) => {
     try {
       const files = values.files
       const userId = authUser.uid
-      const itemId = shortid.generate()
+      const itemId = nanoid()
 
       // Upload files to storage and get their refs
       const attachments = await firebase.batchUploadFiles(

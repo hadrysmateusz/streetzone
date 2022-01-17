@@ -1,4 +1,4 @@
-import uuidv1 from "uuid/v1"
+import { nanoid } from "nanoid"
 import app from "firebase/app"
 import "firebase/auth"
 import "firebase/storage"
@@ -205,7 +205,7 @@ class Firebase {
   file = (ref) => this.storageRef.child(ref)
 
   uploadFile = async (bucket, file) => {
-    const name = uuidv1()
+    const name = nanoid()
     const ref = this.file(`${bucket}/${name}`)
     return ref.put(file)
   }

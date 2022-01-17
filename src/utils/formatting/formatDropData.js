@@ -1,4 +1,4 @@
-import shortid from "shortid"
+import { nanoid } from "nanoid"
 import moment from "moment"
 
 import isSet from "./isSet"
@@ -98,7 +98,7 @@ export const formatDropDataForDb = (data, mode, flagState = true) => {
   }
 
   if (mode === MODE.CREATE) {
-    formatted.id = shortid.generate()
+    formatted.id = nanoid()
 
     formatted.createdAt = Date.now()
     formatted.editedAt = Date.now()
