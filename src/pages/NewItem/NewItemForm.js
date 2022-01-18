@@ -15,7 +15,6 @@ import validate from "./validate"
 
 import { ITEM_SCHEMA, ROUTES, CONST } from "../../constants"
 import { useDesignerOptions } from "../../hooks"
-import { CONTACT_EMAIL } from "../../constants/const"
 
 const StyledForm = styled.form`
   display: grid;

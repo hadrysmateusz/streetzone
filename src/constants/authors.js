@@ -1,3 +1,3 @@
-const authors = [{ name: "Krzysiu" }, { name: "Tomek" }]
+export const AUTHORS = [{ name: "Krzysiu" }, { name: "Tomek" }]
 
-export default authors
+export default AUTHORS

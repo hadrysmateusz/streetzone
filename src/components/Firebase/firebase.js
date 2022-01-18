@@ -5,10 +5,13 @@ import "firebase/storage"
 import "firebase/firestore"
 import "firebase/messaging"
 import "firebase/functions"
-import { S_THUMB_POSTFIX, M_THUMB_POSTFIX, L_THUMB_POSTFIX } from "../../constants/const"
+
+import CONST from "../../constants/const"
 import areNotificationsSupported from "../../utils/areNotificationsSupported"
 
 import config from "./config"
+
+const { S_THUMB_POSTFIX, M_THUMB_POSTFIX, L_THUMB_POSTFIX } = CONST
 
 const publicVapidKey =
   process.env.NODE_ENV === "development"

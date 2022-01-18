@@ -2,7 +2,7 @@ import React, { useEffect } from "react"
 import { Route, Switch, withRouter } from "react-router-dom"
 import Loadable from "react-loadable"
 
-import { ROUTES } from "../../constants"
+import { BASE_ROUTES, ROUTES } from "../../constants"
 
 // import ErrorBoundary from "../ErrorBoundary"
 
@@ -556,13 +556,13 @@ const routes = [
     component: ChatRoom,
   },
   {
-    path: ROUTES.ADMIN_BASE,
+    path: BASE_ROUTES.ADMIN_BASE,
     component: Admin,
     exact: false,
     routes: ADMIN_ROUTES,
   },
   {
-    path: ROUTES.BLOG_BASE,
+    path: BASE_ROUTES.BLOG_BASE,
     component: BlogBase,
     exact: false,
     routes: [
@@ -638,7 +638,7 @@ const routes = [
     component: Marketplace,
   },
   {
-    path: ROUTES.ACCOUNT_BASE,
+    path: BASE_ROUTES.ACCOUNT_BASE,
     component: Account,
     exact: false,
     routes: ACCOUNT_ROUTES,
@@ -677,7 +677,7 @@ const routes = [
     component: ItemPromoteAfter,
   },
   {
-    path: ROUTES.INFO_BASE,
+    path: BASE_ROUTES.INFO_BASE,
     exact: false,
     component: Info,
     routes: INFO_ROUTES,
