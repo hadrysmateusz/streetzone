@@ -95,7 +95,7 @@ const Message = ({ ttl = 5000, id, text, details, type, onDelete }) => {
     }, ttl)
 
     return () => clearTimeout(timeoutId)
-  })
+  }, [id, onDelete, ttl])
 
   let icon, color
   switch (type) {

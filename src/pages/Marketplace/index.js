@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react"
+import React, { useState, useRef, useLayoutEffect } from "react"
 import styled from "styled-components/macro"
 import { withBreakpoints } from "react-breakpoints"
 import { disableBodyScroll, enableBodyScroll } from "body-scroll-lock"
@@ -114,9 +114,11 @@ const MarketplacePage = ({ currentBreakpoint }) => {
     setAreFiltersOpen((state) => !state)
   }
 
-  if (currentBreakpoint > 0) {
-    enableBodyScroll(filtersRef.current)
-  }
+  useLayoutEffect(() => {
+    if (currentBreakpoint > 0) {
+      enableBodyScroll(filtersRef.current)
+    }
+  }, [currentBreakpoint])
 
   const clearFiltersFn = () => {
     setClearFilters(true)

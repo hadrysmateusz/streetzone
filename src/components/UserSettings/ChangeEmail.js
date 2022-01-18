@@ -105,9 +105,9 @@ const ChangeEmail = () => {
 	// set initialValues for the form
 	useEffect(() => {
 		setInitialValues({
-			email: authUser.email
+      email: authUser.email,
 		})
-	}, [authUser])
+  }, [authUser.email])
 
 	// submit handler
 	const onSubmit = async (values) => {

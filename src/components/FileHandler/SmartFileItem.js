@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useCallback } from "react"
 import { nanoid } from "nanoid"
 
 import FileItem from "./FileItem"
@@ -21,7 +21,7 @@ const SmartFileItem = ({
   const flashMessage = useFlash()
 
   // TODO: if the component gets unmounted without submitting the image doesn't get removed
-  const upload = async () => {
+  const upload = useCallback(async () => {
     const name = nanoid()
     const uploadTask = firebase.file(`${uploadPath}/${name}`).put(data)
 
@@ -56,7 +56,7 @@ const SmartFileItem = ({
       unsubscribe()
       uploadTask.cancel()
     }
-  }
+  }, [data, firebase, id, onUpload, uploadPath])
 
   const onCopyLinkToClipboard = async (id) => {
     if ("clipboard" in navigator) {
@@ -87,7 +87,7 @@ const SmartFileItem = ({
     upload()
 
     // TODO: remove item from storage to prevent stranded files
-  }, [])
+  }, [upload])
 
   return (
     <FileItem
