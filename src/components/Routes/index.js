@@ -4,10 +4,11 @@ import Loadable from "react-loadable"
 
 import { BASE_ROUTES, ROUTES } from "../../constants"
 
-// import ErrorBoundary from "../ErrorBoundary"
+import { LoadableComponentSpinner } from "../LoadingSpinner"
+import ErrorBoundary from "../ErrorBoundary"
 
 import NotFound from "../../pages/NotFound"
-import {  MainPageContainer } from "../Containers"
+import { PageContainer, MainPageContainer } from "../Containers"
 
 // ===== HOME PAGE =====
 const Home = Loadable({
@@ -685,12 +686,12 @@ const routes = [
   { path: "*", component: NotFound },
 ]
 
-// const ErrorComponent = ({ error, errorInfo }) => (
-//   <PageContainer>
-//     <h2>Wystąpił problem</h2>
-//     <p>Odśwież stronę lub spróbuj ponownie później</p>
-//   </PageContainer>
-// )
+const ErrorComponent = ({ error, errorInfo }) => (
+  <PageContainer>
+    <h2>Wystąpił problem</h2>
+    <p>Odśwież stronę lub spróbuj ponownie później</p>
+  </PageContainer>
+)
 
 const ScrollToTop = withRouter(({ children, shouldScroll, location }) => {
   // scroll to top on location
@@ -715,9 +716,9 @@ const Routes = () => {
           render={(props) => (
             <MainPageContainer>
               <ScrollToTop shouldScroll={route.scrollToTop !== false}>
-                {/* <ErrorBoundary ErrorComponent={ErrorComponent}> */}
+                <ErrorBoundary ErrorComponent={ErrorComponent}>
                   <route.component {...props} routes={route.routes} />
-                {/* </ErrorBoundary> */}
+                </ErrorBoundary>
               </ScrollToTop>
             </MainPageContainer>
           )}
