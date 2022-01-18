@@ -4,7 +4,7 @@ import { nanoid } from "nanoid"
 
 import { withAuthentication } from "../../../components/UserSession"
 import { LoaderButton } from "../../../components/Button"
-import { FieldRow, FieldLabel } from "../../../components/Basics"
+import { FieldLabel } from "../../../components/Basics"
 import { FormError, Input } from "../../../components/FormElements"
 import { FileHandler } from "../../../components/FileHandler"
 import { ITEM_SCHEMA, CONST } from "../../../constants"
@@ -158,8 +158,8 @@ class NewItemPage extends Component {
           return (
             <form onSubmit={handleSubmit}>
               {/* Number of items */}
-              <FieldRow gridArea="numberOfItems">
-                <Field name="numberOfItems">
+              <div>
+                <Field>
                   {({ input, meta }) => {
                     const error = meta.error && meta.touched ? meta.error : null
                     return (
@@ -174,10 +174,10 @@ class NewItemPage extends Component {
                     )
                   }}
                 </Field>
-              </FieldRow>
+              </div>
 
               {/* Random users */}
-              <FieldRow gridArea="randomUsers">
+              <div>
                 <Field name="randomUsers">
                   {({ input, meta }) => (
                     <>
@@ -187,10 +187,10 @@ class NewItemPage extends Component {
                     </>
                   )}
                 </Field>
-              </FieldRow>
+              </div>
 
               {/* Files (handled by separate component) */}
-              <FieldRow gridArea="files">
+              <div>
                 <FieldLabel>Zdjęcia</FieldLabel>
 
                 <Field name="files">
@@ -200,7 +200,7 @@ class NewItemPage extends Component {
                     return <FileHandler {...input} error={error} itemErrors={itemErrors} />
                   }}
                 </Field>
-              </FieldRow>
+              </div>
 
               <LoaderButton
                 text="Gotowe"

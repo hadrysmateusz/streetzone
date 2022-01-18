@@ -195,7 +195,7 @@ export const PureBlogPost = withBreakpoints(
                 {/* Header image */}
                 <MainImageContainer>
                   <Ratio ratio={16 / 9}>
-                    <FirebaseImage storageUrl={attachments[mainImageIndex]} size="L" />
+                    <FirebaseImage storageRef={attachments[mainImageIndex]} size="L" />
                   </Ratio>
                 </MainImageContainer>
 
@@ -229,7 +229,7 @@ export const PureBlogPost = withBreakpoints(
                   )}
                   <Article>
                     {isMobile && <Share withHeader />}
-                    <ReactMarkdown source={mainContent} />
+                    <ReactMarkdown>{mainContent}</ReactMarkdown>
                     {isMobile && [
                       <TextBlock size="m" bold uppercase>
                         Tagi

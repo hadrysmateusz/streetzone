@@ -1,7 +1,8 @@
 import React, { useMemo } from "react"
 import { Link } from "react-router-dom"
-import styled from "styled-components/macro"
+import styled, { css } from "styled-components/macro"
 import { connectInfiniteHits } from "react-instantsearch-core"
+// import { ellipsis } from "polished"
 
 import { PageContainer } from "../../components/Containers"
 import { SearchWrapper } from "../../components/InstantSearchWrapper"
@@ -11,232 +12,235 @@ import HelmetBasics from "../../components/HelmetBasics"
 
 import { encodeURL } from "../../utils/algoliaURLutils"
 import { CONST, ROUTES } from "../../constants"
-import { ellipsis } from "polished"
+
+export const ellipsis = css`
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+`
 
 const Header = styled.div`
-	margin-bottom: var(--spacing4);
-	font-size: var(--fs-xl);
-	font-weight: bold;
-	text-align: center;
+  margin-bottom: var(--spacing4);
+  font-size: var(--fs-xl);
+  font-weight: bold;
+  text-align: center;
 `
 
 const OuterContainer = styled.div`
-	max-width: 100%;
+  max-width: 100%;
 `
 
 const SectionContainer = styled.div`
-	margin: var(--spacing4) 0;
-	display: grid;
-	grid-template-columns: 1fr 3fr;
-	gap: var(--spacing2);
+  margin: var(--spacing4) 0;
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  gap: var(--spacing2);
 `
 
 const List = styled.div`
-	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
 
-	> * {
-		${ellipsis}
-	}
-	grid-auto-rows: min-content;
-	gap: var(--spacing2);
-	align-content: center;
+  > * {
+    ${ellipsis}
+  }
+  grid-auto-rows: min-content;
+  gap: var(--spacing2);
+  align-content: center;
 `
 
 const ListContainer = styled.div`
-	margin: var(--spacing4) auto 0;
-	max-width: 700px;
+  margin: var(--spacing4) auto 0;
+  max-width: 700px;
 `
 
 const LetterNavbarContainer = styled.div`
-	overflow: auto;
-	border-bottom: 1px solid var(--gray75);
-	margin-top: var(--spacing4);
+  overflow: auto;
+  border-bottom: 1px solid var(--gray75);
+  margin-top: var(--spacing4);
 
-	/* make the content go from edge to edge on mobile*/
-	@media (max-width: ${(p) => p.theme.breakpoints[3] - 1}px) {
-		--x-margin: calc(-1 * var(--spacing3));
-		margin-left: var(--x-margin);
-		margin-right: var(--x-margin);
-		padding: 0 var(--spacing3);
-		&::after {
-			content: "";
-			display: block;
-			width: var(--spacing2);
-		}
-	}
+  /* make the content go from edge to edge on mobile*/
+  @media (max-width: ${(p) => p.theme.breakpoints[3] - 1}px) {
+    --x-margin: calc(-1 * var(--spacing3));
+    margin-left: var(--x-margin);
+    margin-right: var(--x-margin);
+    padding: 0 var(--spacing3);
+    &::after {
+      content: "";
+      display: block;
+      width: var(--spacing2);
+    }
+  }
 `
 
 const LetterNavbar = styled.div`
-	overflow: visible;
+  overflow: visible;
 
-	padding-bottom: var(--spacing2);
-	display: flex;
-	justify-content: space-around;
-	min-width: 850px;
-	width: 100%;
+  padding-bottom: var(--spacing2);
+  display: flex;
+  justify-content: space-around;
+  min-width: 850px;
+  width: 100%;
 `
 
 const NavLetterContainer = styled.div`
-	cursor: ${(p) => (p.isEmpty ? "default" : "pointer")};
-	color: var(--black75);
-	user-select: none;
-	${(p) => p.isEmpty && "color: var(--gray25);"}
-	font-family: var(--font-family--serif);
-	font-size: var(--font-size--l);
-	font-weight: var(--semi-bold);
+  cursor: ${(p) => (p.isEmpty ? "default" : "pointer")};
+  color: var(--black75);
+  user-select: none;
+  ${(p) => p.isEmpty && "color: var(--gray25);"}
+  font-family: var(--font-family--serif);
+  font-size: var(--font-size--l);
+  font-weight: var(--semi-bold);
 `
 
 const StyledLink = styled(Link)`
-	cursor: pointer;
-	color: var(--gray0);
-	text-transform: uppercase;
-	:hover {
-		color: var(--black0);
-	}
+  cursor: pointer;
+  color: var(--gray0);
+  text-transform: uppercase;
+  :hover {
+    color: var(--black0);
+  }
 `
 
 const SectionLetter = styled.div`
-	font-size: 6.4rem;
-	font-weight: bold;
-	color: var(--black75);
+  font-size: 6.4rem;
+  font-weight: bold;
+  color: var(--black75);
 `
 
 const DesignerLink = ({ value }) => {
-	return (
-		<div>
-			<StyledLink to={encodeURL({ designers: [value] }, ROUTES.MARKETPLACE)}>
-				{value}
-			</StyledLink>
-		</div>
-	)
+  return (
+    <div>
+      <StyledLink to={encodeURL({ designers: [value] }, ROUTES.MARKETPLACE)}>{value}</StyledLink>
+    </div>
+  )
 }
 
 const NavLetter = ({ value, isEmpty }) => {
-	const onClick = () => {
-		// if a section is empty it doesn't appear so exit
-		if (isEmpty) return
+  const onClick = () => {
+    // if a section is empty it doesn't appear so exit
+    if (isEmpty) return
 
-		document
-			.getElementById(`designers-list-section-${value}`)
-			.scrollIntoView({ behavior: "smooth", block: "start" })
-	}
+    document
+      .getElementById(`designers-list-section-${value}`)
+      .scrollIntoView({ behavior: "smooth", block: "start" })
+  }
 
-	return (
-		<NavLetterContainer isEmpty={isEmpty} onClick={onClick}>
-			{value}
-		</NavLetterContainer>
-	)
+  return (
+    <NavLetterContainer isEmpty={isEmpty} onClick={onClick}>
+      {value}
+    </NavLetterContainer>
+  )
 }
 
 const chars = [
-	"#",
-	"A",
-	"B",
-	"C",
-	"D",
-	"E",
-	"F",
-	"G",
-	"H",
-	"I",
-	"J",
-	"K",
-	"L",
-	"M",
-	"N",
-	"O",
-	"P",
-	"Q",
-	"R",
-	"S",
-	"T",
-	"U",
-	"V",
-	"W",
-	"X",
-	"Y",
-	"Z"
+  "#",
+  "A",
+  "B",
+  "C",
+  "D",
+  "E",
+  "F",
+  "G",
+  "H",
+  "I",
+  "J",
+  "K",
+  "L",
+  "M",
+  "N",
+  "O",
+  "P",
+  "Q",
+  "R",
+  "S",
+  "T",
+  "U",
+  "V",
+  "W",
+  "X",
+  "Y",
+  "Z",
 ]
 
 const ListSection = ({ letter, items }) => {
-	if (!items || items.length === 0) return null
+  if (!items || items.length === 0) return null
 
-	return (
-		<SectionContainer id={`designers-list-section-${letter}`}>
-			<SectionLetter>{letter}</SectionLetter>
-			<List>
-				{items.map((designer) => (
-					<DesignerLink value={designer.label} key={designer} />
-				))}
-			</List>
-		</SectionContainer>
-	)
+  return (
+    <SectionContainer id={`designers-list-section-${letter}`}>
+      <SectionLetter>{letter}</SectionLetter>
+      <List>
+        {items.map((designer) => (
+          <DesignerLink value={designer.label} key={designer.id} />
+        ))}
+      </List>
+    </SectionContainer>
+  )
 }
 
 export const DesignersList = connectInfiniteHits(({ hits }) => {
-	const groupedHits = useMemo(
-		() =>
-			hits.reduce(
-				(acc, curr, i) => {
-					var firstLetter = curr.label[0]
+  const groupedHits = useMemo(
+    () =>
+      hits.reduce(
+        (acc, curr, i) => {
+          var firstLetter = curr.label[0]
 
-					var regex = /[A-Z]/g
-					var isLetter = firstLetter.match(regex)
-					if (!isLetter) {
-						acc["#"].push(curr)
-						return acc
-					}
+          var regex = /[A-Z]/g
+          var isLetter = firstLetter.match(regex)
+          if (!isLetter) {
+            acc["#"].push(curr)
+            return acc
+          }
 
-					if (acc[firstLetter]) {
-						acc[firstLetter].push(curr)
-						return acc
-					} else {
-						acc[firstLetter] = [curr]
-						return acc
-					}
-				},
-				{ "#": [] }
-			),
-		[hits]
-	)
+          if (acc[firstLetter]) {
+            acc[firstLetter].push(curr)
+            return acc
+          } else {
+            acc[firstLetter] = [curr]
+            return acc
+          }
+        },
+        { "#": [] }
+      ),
+    [hits]
+  )
 
-	return (
-		<OuterContainer>
-			<LetterNavbarContainer>
-				<LetterNavbar>
-					{chars.map((char) => {
-						const isEmpty = !groupedHits[char] || groupedHits[char].length === 0
-						return <NavLetter key={char} isEmpty={isEmpty} value={char} />
-					})}
-				</LetterNavbar>
-			</LetterNavbarContainer>
+  return (
+    <OuterContainer>
+      <LetterNavbarContainer>
+        <LetterNavbar>
+          {chars.map((char) => {
+            const isEmpty = !groupedHits[char] || groupedHits[char].length === 0
+            return <NavLetter key={char} isEmpty={isEmpty} value={char} />
+          })}
+        </LetterNavbar>
+      </LetterNavbarContainer>
 
-			<ListContainer>
-				<AlgoliaSearchBox placeholder="Szukaj" />
-				{Object.entries(groupedHits).map(([letter, items]) => (
-					<ListSection letter={letter} items={items} key={letter} />
-				))}
-			</ListContainer>
-		</OuterContainer>
-	)
+      <ListContainer>
+        <AlgoliaSearchBox placeholder="Szukaj" />
+        {Object.entries(groupedHits).map(([letter, items]) => (
+          <ListSection letter={letter} items={items} key={letter} />
+        ))}
+      </ListContainer>
+    </OuterContainer>
+  )
 })
 
 const DesignersPage = () => {
-	return (
-		<SearchWrapper
-			indexName={CONST.DESIGNERS_ALGOLIA_INDEX}
-			hitsPerPage={9999}
-			ignoreArchivedStatus
-		>
-			<HelmetBasics title="Projektanci i Marki" />
-			<PageContainer>
-				<Header>Projektanci</Header>
-				<PopularDesigners />
-				<DesignersList />
-			</PageContainer>
-		</SearchWrapper>
-	)
+  return (
+    <SearchWrapper
+      indexName={CONST.DESIGNERS_ALGOLIA_INDEX}
+      hitsPerPage={9999}
+      ignoreArchivedStatus
+    >
+      <HelmetBasics title="Projektanci i Marki" />
+      <PageContainer>
+        <Header>Projektanci</Header>
+        <PopularDesigners />
+        <DesignersList />
+      </PageContainer>
+    </SearchWrapper>
+  )
 }
 
 export default DesignersPage

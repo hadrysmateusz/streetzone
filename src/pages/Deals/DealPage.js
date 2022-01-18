@@ -14,7 +14,6 @@ import { SmallDealCard } from "../../components/Cards"
 import {
   Header,
   DetailsContainer,
-  Brands,
   Description,
   ItemContainer,
   InfoContainer,
@@ -37,14 +36,14 @@ const Value = styled.div`
   font-weight: bold;
 `
 
-const DisclaimerContainer = styled.div`
-  font-size: var(--fs-xs);
-  color: var(--gray0);
-  text-transform: uppercase;
-  a {
-    color: var(--black0);
-  }
-`
+// const DisclaimerContainer = styled.div`
+//   font-size: var(--fs-xs);
+//   color: var(--gray0);
+//   text-transform: uppercase;
+//   a {
+//     color: var(--black0);
+//   }
+// `
 
 const DealPage = ({ match }) => {
   const firebase = useFirebase()
@@ -114,7 +113,7 @@ const DealPage = ({ match }) => {
             </ButtonContainer>
 
             {/* TODO: add affiliate link disclaimer */}
-            <DisclaimerContainer>PLACEHOLDER</DisclaimerContainer>
+            {/* <DisclaimerContainer>PLACEHOLDER</DisclaimerContainer> */}
           </InfoContainer>
         </ItemContainer>
       </PageContainer>
