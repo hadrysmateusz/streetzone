@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect } from "react"
-import PropTypes from "prop-types"
+// import PropTypes from "prop-types"
 import { useDropzone } from "react-dropzone"
 import styled, { css } from "styled-components/macro"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
@@ -139,13 +139,13 @@ const FileHandlerSingle = ({
 	)
 }
 
-FileHandlerSingle.propTypes = {
-	info: PropTypes.string,
-	error: PropTypes.string,
-	disabled: PropTypes.bool,
-	value: PropTypes.object.isRequired,
-	onChange: PropTypes.func.isRequired,
-	containerStyles: PropTypes.any
-}
+// FileHandlerSingle.propTypes = {
+//   info: PropTypes.string,
+//   error: PropTypes.string,
+//   disabled: PropTypes.bool,
+//   value: PropTypes.object.isRequired,
+//   onChange: PropTypes.func.isRequired,
+//   containerStyles: PropTypes.any,
+// }
 
 export default FileHandlerSingle

@@ -1,7 +1,7 @@
 import React from "react"
 import styled from "styled-components/macro"
 import Ratio from "react-ratio"
-import PropTypes from "prop-types"
+// import PropTypes from "prop-types"
 import { TextBlock } from "../StyledComponents"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { IconContainer, ErrorContainer, Overlay } from "./common"
@@ -83,18 +83,18 @@ const PureFileItem = ({
 	)
 }
 
-PureFileItem.propTypes = {
-	id: PropTypes.string.isRequired,
-	previewUrl: PropTypes.string.isRequired,
-	isMain: PropTypes.bool,
-	error: PropTypes.string,
-	actions: PropTypes.arrayOf(
-		PropTypes.shape({
-			label: PropTypes.string,
-			handler: PropTypes.func.isRequired,
-			icon: PropTypes.oneOfType([PropTypes.string, PropTypes.array])
-		})
-	)
-}
+// PureFileItem.propTypes = {
+//   id: PropTypes.string.isRequired,
+//   previewUrl: PropTypes.string.isRequired,
+//   isMain: PropTypes.bool,
+//   error: PropTypes.string,
+//   actions: PropTypes.arrayOf(
+//     PropTypes.shape({
+//       label: PropTypes.string,
+//       handler: PropTypes.func.isRequired,
+//       icon: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
+//     })
+//   ),
+// }
 
 export default PureFileItem

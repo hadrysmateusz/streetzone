@@ -1,7 +1,7 @@
 import React from "react"
 import { Link } from "react-router-dom"
 import moment from "moment"
-import PropTypes from "prop-types"
+// import PropTypes from "prop-types"
 import styled from "styled-components/macro"
 
 import { route } from "../../utils"
@@ -102,12 +102,12 @@ const PromotedDrop = ({ id, mainImageIndex, imageUrls, name, dropsAtApproxTimest
   )
 }
 
-PromotedDrop.propTypes = {
-  id: PropTypes.string.isRequired,
-  mainImageIndex: PropTypes.number.isRequired,
-  imageUrls: PropTypes.array.isRequired,
-  name: PropTypes.string.isRequired,
-  dropsAtApproxTimestamp: PropTypes.number.isRequired,
-}
+// PromotedDrop.propTypes = {
+//   id: PropTypes.string.isRequired,
+//   mainImageIndex: PropTypes.number.isRequired,
+//   imageUrls: PropTypes.array.isRequired,
+//   name: PropTypes.string.isRequired,
+//   dropsAtApproxTimestamp: PropTypes.number.isRequired,
+// }
 
 export default PromotedDrop

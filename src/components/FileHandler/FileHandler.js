@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect } from "react"
-import PropTypes from "prop-types"
 import { useDropzone } from "react-dropzone"
 
 import { FormElementContainer } from "../FormElements"
@@ -139,18 +138,18 @@ const FileHandler = ({ info, error, itemErrors, disabled, value, onChange, ...re
 	)
 }
 
-FileHandler.propTypes = {
-	info: PropTypes.string,
-	error: PropTypes.string,
-	itemErrors: PropTypes.array,
-	disabled: PropTypes.bool,
-	value: PropTypes.array.isRequired,
-	onChange: PropTypes.func.isRequired
-}
+// FileHandler.propTypes = {
+// 	info: PropTypes.string,
+// 	error: PropTypes.string,
+// 	itemErrors: PropTypes.array,
+// 	disabled: PropTypes.bool,
+// 	value: PropTypes.array.isRequired,
+// 	onChange: PropTypes.func.isRequired
+// }
 
-FileHandler.defaultProps = {
-	value: [],
-	itemErrors: []
-}
+// FileHandler.defaultProps = {
+//   value: [],
+//   itemErrors: [],
+// }
 
 export default FileHandler

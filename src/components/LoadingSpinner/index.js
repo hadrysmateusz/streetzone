@@ -1,6 +1,5 @@
 import React from "react"
-import { BarLoader } from "react-css-loaders"
-import PropTypes from "prop-types"
+// import PropTypes from "prop-types"
 import styled from "styled-components/macro"
 
 import { LoaderButton } from "../Button"
@@ -47,11 +46,11 @@ const LoadingSpinner = ({ size = 9, color = "#cfcfcf", delay = 200 }) => {
 	)
 }
 
-LoadingSpinner.propTypes = {
-	size: PropTypes.number,
-	color: PropTypes.string,
-	delay: PropTypes.number
-}
+// LoadingSpinner.propTypes = {
+//   size: PropTypes.number,
+//   color: PropTypes.string,
+//   delay: PropTypes.number,
+// }
 
 const LoadableComponentSpinner = ({ error, pastDelay, timedOut }) => {
 	if (error) {
