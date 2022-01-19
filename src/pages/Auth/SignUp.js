@@ -5,6 +5,7 @@ import { StyledLink } from "../../components/Basics"
 import { CenteredContainer } from "../../components/Containers"
 import Separator from "../../components/Separator"
 import FormError from "../../components/FormElements/FormError"
+import HelmetBasics from "../../components/HelmetBasics"
 
 import { useFlash } from "../../hooks"
 import { getRedirectTo, route } from "../../utils"
@@ -27,7 +28,7 @@ export const SignUp = withRouter(({ location, history }) => {
 	const onSuccess = (message) => {
 		// show flash message
 		if (message) {
-			flashMessage({ type: "success", textContent: message })
+			flashMessage({ type: "success", text: message })
 		}
 
 		// redirect
@@ -50,11 +51,14 @@ export const SignUp = withRouter(({ location, history }) => {
 
 const SignUpPage = () => {
 	return (
-		<CenteredContainer>
-			<SignUp />
-			<Separator />
-			<SignInLink />
-		</CenteredContainer>
+		<>
+			<HelmetBasics fullTitle="Utwórz konto" />
+			<CenteredContainer>
+				<SignUp />
+				<Separator />
+				<SignInLink />
+			</CenteredContainer>
+		</>
 	)
 }
 

@@ -1,92 +1,89 @@
 import React from "react"
-import { Form, Field } from "react-final-form"
-import StarRatings from "react-star-ratings"
-import shortid from "shortid"
+import { Form } from "react-final-form"
+import styled from "styled-components/macro"
 
 import { LoaderButton, ButtonContainer } from "../Button"
-import { FieldRow } from "../Basics"
-import { FormError, Textarea } from "../FormElements"
-import { SmallTextBlock, TextBlock } from "../StyledComponents"
+import { TextareaFF, RatingFF } from "../FinalFormFields"
+import { SmallTextBlock } from "../StyledComponents"
 
-import { useFirebase, useAuthentication } from "../../hooks"
+import { useFirebase, useAuthentication, useFlash } from "../../hooks"
 
 import { RatingContainer, OuterContainer, Group } from "./StyledComponents"
 import validate from "./validate"
 
-const AddComment = ({ user, userId, onForceRefresh }) => {
+const Heading = styled.div`
+	font-size: var(--fs-m);
+	font-weight: bold;
+	margin-bottom: var(--spacing3);
+	color: var(--black50);
+`
+
+const AddComment = ({ userId }) => {
 	const firebase = useFirebase()
 	const authUser = useAuthentication()
+	const flashMessage = useFlash()
 
-	const onSubmit = async (values, actions) => {
-		// Push the new comment to the list of old ones
-		user.feedback.push({
-			id: shortid.generate(),
-			author: authUser.uid,
-			comment: values.comment,
-			rating: values.rating,
-			createdAt: Date.now()
-		})
+	const onSubmit = async (values, form) => {
+		try {
+			const authorId = authUser.uid
 
-		// Reset the form
-		actions.reset()
+			const payload = {
+				author: authorId,
+				comment: values.comment,
+				rating: values.rating,
+				createdAt: Date.now()
+			}
 
-		// Update
-		firebase.user(userId).update({ feedback: user.feedback })
+			const commentRef = firebase
+				.user(userId)
+				.collection("opinions")
+				.doc(authorId)
 
-		// Refresh the list
-		onForceRefresh()
+			const commentDoc = await commentRef.get()
+
+			const commentExisted = commentDoc.exists
+
+			// Add opinion to opinions subcollection under the id of its author to enforce one comment per author
+			await commentRef.set(payload)
+
+			// Reset the form
+			setTimeout(form.reset)
+
+			flashMessage({
+				type: "success",
+				text: commentExisted ? "Opinia została edytowana" : "Dodano"
+			})
+		} catch (error) {
+			console.error(error)
+			flashMessage({
+				type: "error",
+				text: "Wystąpił błąd",
+				details: "Komentarz mogł nie zostać dodany"
+			})
+		}
 	}
 
 	return (
 		<OuterContainer>
-			<TextBlock size="m" bold mb="var(--spacing2)" color="black50">
-				Wystaw opinie o sprzedawcy
-			</TextBlock>
+			<Heading>Wystaw opinie o sprzedawcy</Heading>
 			<Form
 				onSubmit={onSubmit}
 				validate={validate}
-				render={({ form, handleSubmit, submitting, pristine, values, ...rest }) => {
+				render={({ handleSubmit, submitting, pristine }) => {
 					return (
 						<form onSubmit={handleSubmit}>
 							<Group>
 								{/* Comment */}
 								<SmallTextBlock>Treść komentarza</SmallTextBlock>
-								<FieldRow>
-									<Field name="comment">
-										{({ input, meta }) => {
-											const error = meta.error && meta.touched ? meta.error : null
-											return <Textarea {...input} placeholder="Komentarz" error={error} />
-										}}
-									</Field>
-								</FieldRow>
+								<TextareaFF name="comment" placeholder="Komentarz" />
 							</Group>
 
 							<Group>
 								{/* Rating */}
 								<SmallTextBlock>Ocena sprzedawcy</SmallTextBlock>
-								<FieldRow>
-									<Field name="rating">
-										{({ input, meta }) => (
-											<>
-												<RatingContainer>
-													<StarRatings
-														rating={+input.value}
-														changeRating={input.onChange}
-														starRatedColor="gold"
-														starHoverColor="#ffc311"
-														numberOfStars={5}
-														starDimension="20px"
-														starSpacing="2px"
-													/>
-												</RatingContainer>
-												<FormError
-													message={meta.error}
-													show={meta.error && meta.touched}
-												/>
-											</>
-										)}
-									</Field>
-								</FieldRow>
+								<RatingContainer>
+									<RatingFF name="rating" />
+								</RatingContainer>
 							</Group>
 
 							<ButtonContainer noMargin>
@@ -96,6 +93,8 @@ const AddComment = ({ user, userId, onForceRefresh }) => {
 									isLoading={submitting}
 									disabled={submitting || pristine}
 									primary
+									big
+									fullWidth
 								/>
 							</ButtonContainer>
 						</form>

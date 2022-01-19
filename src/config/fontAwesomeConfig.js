@@ -28,6 +28,7 @@ import {
 	faImage,
 	faEllipsisH,
 	faCheck,
+	faCheckCircle,
 	faInfoCircle,
 	faFlag,
 	faPhone,
@@ -45,7 +46,10 @@ import {
 	faCode,
 	faBell,
 	faEnvelope,
-	faExternalLinkAlt
+	faExternalLinkAlt,
+	faEye,
+	faEdit,
+	faQuestion
 } from "@fortawesome/free-solid-svg-icons"
 import {
 	faHeart as farHeart,
@@ -65,6 +69,7 @@ library.add(
 	faUserCircle,
 	farSquare,
 	farCheckSquare,
+	faCheckCircle,
 	faAngleRight,
 	faAngleDoubleRight,
 	faAngleLeft,
@@ -110,5 +115,8 @@ library.add(
 	faBell,
 	farBell,
 	faEnvelope,
-	faExternalLinkAlt
+	faExternalLinkAlt,
+	faEye,
+	faEdit,
+	faQuestion
 )

@@ -1,7 +1,14 @@
 import React from "react"
 
+import HelmetBasics from "../../components/HelmetBasics"
+
 const AboutPage = () => {
-	return <h2>O nas</h2>
+  return (
+    <>
+      <HelmetBasics title="O nas" />
+      <p>PLACEHOLDER: O nas</p>
+    </>
+  )
 }
 
 export default AboutPage

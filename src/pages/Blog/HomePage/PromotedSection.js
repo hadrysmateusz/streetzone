@@ -59,6 +59,8 @@ const DesktopPromotedSection = ({ results }) => {
 const PromotedSection = withBreakpoints(({ currentBreakpoint }) => {
 	const isMobile = currentBreakpoint <= 1
 
+	// TODO: decide whether to manually promoted posts (implement it here) or just display newest stuff at the top (then remove promoting-related stuff from admin interface and db)
+
 	return (
 		<StatelessSearchWrapper limit={3} indexName={CONST.BLOG_POST_ALGOLIA_INDEX}>
 			{(results) =>

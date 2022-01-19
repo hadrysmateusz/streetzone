@@ -1,9 +1,9 @@
 import React from "react"
-import styled from "styled-components/macro"
+import styled, { css } from "styled-components/macro"
+import Ratio from "react-ratio"
 
-import { Image, ErrorIcon } from "../Image"
+import FirebaseImage from "../FirebaseImage"
 
-import { useImage } from "../../hooks"
 import { CONST } from "../../constants"
 
 const ThumbnailsContainer = styled.div`
@@ -14,59 +14,72 @@ const ThumbnailsContainer = styled.div`
 		minmax(calc(100vw / 5.5), 1fr)
 	);
 
-		/* make the content go from edge to edge on mobile*/
-		@media (max-width: ${(p) => p.theme.breakpoints[1] - 1}px) {
-			--x-margin: calc(-1 * var(--spacing3));
-			margin-left: var(--x-margin);
-			margin-right: var(--x-margin);
-			padding: 0 var(--spacing3);
-			&::after {
-				content: "";
-				display: block;
-				width: var(--spacing2);
-			}
+	/* make the content go from edge to edge on mobile*/
+	@media (max-width: ${(p) => p.theme.breakpoints[1] - 1}px) {
+		--x-margin: calc(-1 * var(--spacing3));
+		margin-left: var(--x-margin);
+		margin-right: var(--x-margin);
+		padding: 0 var(--spacing3);
+		&::after {
+			content: "";
+			display: block;
+			width: var(--spacing2);
 		}
+	}
 
-		/* position: relative; */
-		margin-top: var(--spacing2);
+	/* position: relative; */
+	margin-top: var(--spacing2);
 
-		/* remove this if it proves to be too difficult to implement a scrolling indicator */
-		overflow-x: auto;
+	/* remove this if it proves to be too difficult to implement a scrolling indicator */
+	overflow-x: auto;
 
-		@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
-			grid-template-columns: repeat(auto-fill, minmax(75px, 1fr));
-		}
-		@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
-			overflow-x: visible;
-		}
+	@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
+		grid-template-columns: repeat(auto-fill, minmax(75px, 1fr));
+	}
+	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
+		overflow-x: visible;
 	}
 `
 
-const ThumbnailContainer = styled.div`
+const ThumbnailContainer = styled(Ratio)`
+	position: relative;
 	background: var(--almost-white);
 	cursor: pointer;
+	${(p) =>
+		!p.isCurrent &&
+		css`
+			filter: grayscale(25%);
+		`}
 `
 
-export const Thumbnail = ({ storageRef, onClick }) => {
-	const { imageURL, error } = useImage(storageRef, "S")
+const InactiveOverlay = styled.div`
+	position: absolute;
+	z-index: 10;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(255, 255, 255, 0.5);
+`
 
-	return (
-		<ThumbnailContainer onClick={onClick}>
-			{error ? <ErrorIcon /> : <Image url={imageURL} />}
-		</ThumbnailContainer>
-	)
-}
+export const Thumbnail = React.memo(({ storageRef, onClick, isCurrent }) => (
+	<ThumbnailContainer onClick={onClick} isCurrent={isCurrent}>
+		<Ratio>
+			<FirebaseImage storageRef={storageRef} size="S" />
+		</Ratio>
+		{!isCurrent && <InactiveOverlay />}
+	</ThumbnailContainer>
+))
 
-export const Thumbnails = ({ storageRefs, onChangeIndex }) => {
-	return (
-		<ThumbnailsContainer>
-			{storageRefs.map((storageRef, i) => (
-				<Thumbnail
-					storageRef={storageRef}
-					key={storageRef}
-					onClick={() => onChangeIndex(i)}
-				/>
-			))}
-		</ThumbnailsContainer>
-	)
-}
+export const Thumbnails = ({ storageRefs, onChangeIndex, current }) => (
+	<ThumbnailsContainer>
+		{storageRefs.map((storageRef, i) => (
+			<Thumbnail
+				storageRef={storageRef}
+				key={storageRef}
+				isCurrent={current === i}
+				onClick={() => onChangeIndex(i)}
+			/>
+		))}
+	</ThumbnailsContainer>
+)

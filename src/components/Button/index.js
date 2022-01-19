@@ -123,7 +123,7 @@ const disabled = css`
 	font-weight: normal;
 `
 
-const Button = styled.button`
+const StyledButton = styled.button`
 	display: flex;
 	flex-flow: row nowrap;
 	justify-content: center;
@@ -168,6 +168,11 @@ const Button = styled.button`
 	${ellipsis}
 `
 
+// make button use type=button by default to prevent accidental form submits
+const Button = ({ type = "button", ...props }) => {
+	return <StyledButton type={type} {...props} />
+}
+
 const ButtonContainer = styled.div`
 	width: 100%;
 	display: flex;
@@ -190,8 +195,12 @@ const IconButtonUnstyled = ({ icon, ...rest }) => (
 	</Button>
 )
 
+// TODO: move from boolean big prop to a size prop
 const IconButton = styled(IconButtonUnstyled)`
-	padding: 0 var(--spacing3);
+	padding: 0;
+	height: ${(p) => (p.big ? "48px" : "40px")};
+	width: ${(p) => (p.big ? "48px" : "40px")};
+	flex-shrink: 0;
 `
 
 const LoaderButtonUnstyled = ({ isLoading, text, loadingText = text, ...rest }) => (
@@ -226,8 +235,11 @@ const LinkButton = ({ to, external, ...rest }) => (
 	/>
 )
 
+// has to be type button to prevent accidental submits
 const BackButton = withRouter(({ history, children = "Wróć" }) => (
-	<Button onClick={() => history.goBack()}>{children}</Button>
+	<Button type="button" onClick={() => history.goBack()}>
+		{children}
+	</Button>
 ))
 
 export default Button

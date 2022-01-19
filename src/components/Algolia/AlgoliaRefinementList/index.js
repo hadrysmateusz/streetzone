@@ -1,17 +1,40 @@
-import React from "react"
+import React, { useState } from "react"
 import { connectRefinementList } from "react-instantsearch-dom"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { withBreakpoints } from "react-breakpoints"
 import { compose } from "recompose"
-import { css } from "styled-components/macro"
+import styled from "styled-components/macro"
 
-import { UnstyledButton } from "../../Button"
+import { resetButtonStyles } from "../../../style-utils"
 import { AdaptiveFoldable } from "../../Foldable"
-import { Text } from "../../StyledComponents"
 
 import SearchBox from "./SearchBox"
 import { BoxOptionsList, OptionsList } from "./OptionsList"
-import { Box } from "rebass"
+
+const MoreButtonContainer = styled.button`
+	${resetButtonStyles}
+	margin-top: 6px;
+	font-size: var(--fs-xs);
+	font-weight: bold;
+`
+
+const SearchBoxContainer = styled.div`
+	margin-bottom: 6px;
+`
+
+const MoreButton = ({ toggleMenu, isMenuOpen }) => (
+	<MoreButtonContainer onClick={toggleMenu}>
+		{isMenuOpen ? (
+			<>
+				<FontAwesomeIcon icon="minus" size="xs" /> MNIEJ
+			</>
+		) : (
+			<>
+				<FontAwesomeIcon icon="plus" size="xs" /> WIĘCEJ
+			</>
+		)}
+	</MoreButtonContainer>
+)
 
 export const BasicRefinementList = connectRefinementList(
 	({
@@ -30,95 +53,53 @@ export const BasicRefinementList = connectRefinementList(
 	}
 )
 
-class AlgoliaRefinementList extends React.Component {
-	state = { isMenuOpen: false, inputValue: "" }
+const RefinementList = ({
+	items,
+	refine,
+	searchable,
+	multiColumn,
+	show,
+	currentBreakpoint,
+	currentRefinement,
+	boxGrid,
+	searchForItems,
+	...rest
+}) => {
+	const [isMenuOpen, setIsMenuOpen] = useState(false)
 
-	toggleMenu = async () => {
-		await this.setState((state) => ({ isMenuOpen: !state.isMenuOpen }))
-	}
+	const toggleMenu = () => setIsMenuOpen((state) => !state)
 
-	onInputChange = (e) => {
-		// get the currentTarget from the synthetic event before it's inaccessible
-		const currentTarget = e.currentTarget
-		// update the internal state
-		this.setState({ inputValue: currentTarget.value })
-		// trigger algolia's search
-		this.props.searchForItems(currentTarget.value)
-	}
+	const hasRefinements = currentRefinement && currentRefinement.length !== 0
+	const hasItems = items && items.length > 0
+	const hasMore = hasItems && show && items.length > show
 
-	clearInput = () => {
-		this.setState({ inputValue: "" })
-		this.props.searchForItems("")
-	}
+	/* if the show prop is provided limit the number of items displayed
+	based on whether the menu is toggled or not */
+	let itemsToShow = show && isMenuOpen ? items : items.slice(0, show)
 
-	render() {
-		const {
-			items,
-			refine,
-			searchable,
-			multiColumn,
-			show,
-			currentRefinement,
-			currentBreakpoint,
-			boxGrid,
-			...rest
-		} = this.props
+	return (
+		<AdaptiveFoldable {...rest} showClear={hasRefinements}>
+			{/* Search bar */}
+			{searchable && (
+				<SearchBoxContainer>
+					<SearchBox search={searchForItems} />
+				</SearchBoxContainer>
+			)}
 
-		const { isMenuOpen } = this.state
-		const hasRefinements = currentRefinement && currentRefinement.length !== 0
-		const hasItems = items && items.length > 0
-		const hasMore = hasItems && show && items.length > show
+			{/* Refinement list */}
+			{boxGrid ? (
+				<BoxOptionsList items={itemsToShow} refine={refine} />
+			) : (
+				<OptionsList items={itemsToShow} refine={refine} multiColumn={multiColumn} />
+			)}
 
-		/* if the show prop is provided limit the number of items displayed
-		based on whether the menu is toggled or not */
-		let itemsToShow = show && isMenuOpen ? items : items.slice(0, show)
-
-		return (
-			<AdaptiveFoldable {...rest} showClear={hasRefinements}>
-				{/* Search bar */}
-				{searchable && (
-					<Box mb="var(--spacing2)">
-						<SearchBox
-							value={this.state.inputValue}
-							onChange={this.onInputChange}
-							clear={this.clearInput}
-						/>
-					</Box>
-				)}
-
-				{/* Refinement list */}
-				{boxGrid ? (
-					<BoxOptionsList items={itemsToShow} refine={refine} />
-				) : (
-					<OptionsList items={itemsToShow} refine={refine} multiColumn={multiColumn} />
-				)}
-
-				{/* More button */}
-				{hasMore && (
-					<UnstyledButton
-						css={css`
-							margin-top: 6px;
-						`}
-					>
-						<Text onClick={this.toggleMenu} size="xs" bold>
-							{isMenuOpen ? (
-								<>
-									<FontAwesomeIcon icon="minus" size="xs" /> MNIEJ
-								</>
-							) : (
-								<>
-									<FontAwesomeIcon icon="plus" size="xs" /> WIĘCEJ
-								</>
-							)}
-						</Text>
-					</UnstyledButton>
-				)}
-			</AdaptiveFoldable>
-		)
-	}
+			{/* More button */}
+			{hasMore && <MoreButton toggleMenu={toggleMenu} isMenuOpen={isMenuOpen} />}
+		</AdaptiveFoldable>
+	)
 }
 
 export default compose(
 	withBreakpoints,
 	connectRefinementList
-)(AlgoliaRefinementList)
+)(RefinementList)

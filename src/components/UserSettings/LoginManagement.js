@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useCallback } from "react"
 import styled from "styled-components/macro"
 
 import { PageContainer } from "../Containers"
@@ -22,21 +22,21 @@ const LoginManagement = () => {
 	const [activeMethods, setActiveMethods] = useState(null)
 	const [error, setError] = useState(null)
 
-	const fetchActiveMethods = async () => {
+	const fetchActiveMethods = useCallback(async () => {
 		try {
 			const activeMethods = await firebase.auth.fetchSignInMethodsForEmail(authUser.email)
 			setActiveMethods(activeMethods)
 		} catch (error) {
 			setError(error)
 		}
-	}
+	}, [authUser.email, firebase.auth])
 
 	useEffect(() => {
 		fetchActiveMethods()
-	}, [authUser, firebase])
+	}, [authUser, fetchActiveMethods, firebase])
 
 	const onSuccess = (message) => {
-		flashMessage(message)
+		flashMessage({ type: "success", text: message })
 		fetchActiveMethods()
 	}
 

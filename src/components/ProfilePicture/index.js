@@ -33,7 +33,7 @@ const PlaceholderIcon = styled(FontAwesomeIcon)`
 	z-index: 60;
 	top: 0;
 	left: 0;
-	color: ${(p) => p.theme.colors.gray[75]};
+	color: var(--gray75);
 `
 
 const ProfilePicture = ({ url, size = "100%", inline, ...rest }) => (

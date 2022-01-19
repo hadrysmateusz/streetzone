@@ -1,88 +1,98 @@
-export const HOME = "/"
+export const BASE_ROUTES = {
+  BLOG_BASE: "/czytaj",
+  DROPS_BASE: "/dropy",
+  DEALS_BASE: "/okazje",
+  ACCOUNT_BASE: "/profil/:id",
+  ITEM_BASE: "/i/:id",
+  INFO_BASE: "/info",
+  ADMIN_BASE: "/admin",
+  CHAT_BASE: "/wiadomosci",
+}
 
-export const BLOG_BASE = "/czytaj"
-export const BLOG_HOME = BLOG_BASE + "/h"
-export const BLOG_POST = BLOG_BASE + "/p/:id"
-export const BLOG_TAG = BLOG_BASE + "/tag"
-export const BLOG_CATEGORY = BLOG_BASE + "/k/:category"
+export const ROUTES = {
+  HOME: "/",
 
-export const DROPS = "/dropy"
-export const DROP_DETAILS = DROPS + "/d/:id"
-export const DROPS_SECTION = DROPS + "/s/:id"
+  BLOG_HOME: BASE_ROUTES.BLOG_BASE + "/h",
+  BLOG_POST: BASE_ROUTES.BLOG_BASE + "/p/:id",
+  BLOG_TAG: BASE_ROUTES.BLOG_BASE + "/tag",
+  BLOG_CATEGORY: BASE_ROUTES.BLOG_BASE + "/k/:category",
 
-export const DEALS = "/okazje"
-export const DEAL_DETAILS = DEALS + "/d/:id"
+  DROPS: BASE_ROUTES.DROPS_BASE,
+  DROP_DETAILS: BASE_ROUTES.DROPS_BASE + "/d/:id",
+  DROPS_SECTION: BASE_ROUTES.DROPS_BASE + "/s/:id",
 
-export const MARKETPLACE = "/kupuj"
-export const DESIGNER = "/marki/:id"
+  DEALS: BASE_ROUTES.DEALS_BASE,
+  DEAL_DETAILS: BASE_ROUTES.DEALS_BASE + "/d/:id",
 
-export const NEW_ITEM = "/wystaw-przedmiot"
-export const ITEM_DETAILS = "/i/:id"
-export const ITEM_DELETE = "/i/:id/usun"
-export const EDIT_ITEM = "/i/:id/edytuj"
-export const ITEM_PROMOTE = "/i/:id/promuj"
-export const ITEM_PROMOTE_AFTER = "/po-promowaniu"
+  MARKETPLACE: "/kupuj",
+  DESIGNER: "/marki/:id",
 
-export const DESIGNERS = "/marki"
+  NEW_ITEM: "/wystaw-przedmiot",
+  ITEM_DETAILS: BASE_ROUTES.ITEM_BASE,
+  ITEM_DELETE: BASE_ROUTES.ITEM_BASE + "/usun",
+  EDIT_ITEM: BASE_ROUTES.ITEM_BASE + "/edytuj",
+  ITEM_PROMOTE: BASE_ROUTES.ITEM_BASE + "/promuj",
+  ITEM_PROMOTE_AFTER: "/po-promowaniu",
 
-export const SIGN_UP = "/rejestracja"
-export const SIGN_IN = "/login"
-export const PASSWORD_FORGET = "/pw-reset"
+  DESIGNERS: "/marki",
 
-export const MY_ACCOUNT = "/twoj_profil"
-export const ACCOUNT_BASE = "/profil/:id"
-export const ACCOUNT_ITEMS = ACCOUNT_BASE + "/oferty"
-export const ACCOUNT_SAVED_ITEMS = ACCOUNT_BASE + "/zapisane_przedmioty"
-export const ACCOUNT_SAVED_FILTERS = ACCOUNT_BASE + "/zapisane_filtry"
-export const ACCOUNT_SAVED_USERS = ACCOUNT_BASE + "/obserwowani"
-export const ACCOUNT_SAVED_DROPS = ACCOUNT_BASE + "/dropy"
-export const ACCOUNT_FEEDBACK = ACCOUNT_BASE + "/opinie"
-export const ACCOUNT_SETTINGS = ACCOUNT_BASE + "/edytuj"
-export const ACCOUNT_CHAT = ACCOUNT_BASE + "/wiadomosci"
+  SIGN_UP: "/rejestracja",
+  SIGN_IN: "/login",
+  PASSWORD_FORGET: "/pw-reset",
 
-export const CHAT = "/wiadomosci"
-export const CHAT_ROOM = "/wiadomosci/r/:roomId"
-export const CHAT_NEW = "/wiadomosci/n/:id"
+  MY_ACCOUNT: "/twoj_profil",
+  ACCOUNT_BASE: BASE_ROUTES.ACCOUNT_BASE,
+  ACCOUNT_ITEMS: BASE_ROUTES.ACCOUNT_BASE + "/oferty",
+  ACCOUNT_SAVED_ITEMS: BASE_ROUTES.ACCOUNT_BASE + "/zapisane_przedmioty",
+  ACCOUNT_SAVED_FILTERS: BASE_ROUTES.ACCOUNT_BASE + "/zapisane_filtry",
+  ACCOUNT_SAVED_USERS: BASE_ROUTES.ACCOUNT_BASE + "/obserwowani",
+  ACCOUNT_SAVED_DROPS: BASE_ROUTES.ACCOUNT_BASE + "/dropy",
+  ACCOUNT_FEEDBACK: BASE_ROUTES.ACCOUNT_BASE + "/opinie",
+  ACCOUNT_SETTINGS: BASE_ROUTES.ACCOUNT_BASE + "/edytuj",
+  ACCOUNT_CHAT: BASE_ROUTES.ACCOUNT_BASE + "/wiadomosci",
 
-export const SEARCH = "/szukaj"
-export const REQUEST_DESIGNER = "/req_des"
+  CHAT: BASE_ROUTES.CHAT_BASE,
+  CHAT_ROOM: BASE_ROUTES.CHAT_BASE + "/r/:roomId",
+  CHAT_NEW: BASE_ROUTES.CHAT_BASE + "/n/:id",
 
-export const INFO_BASE = "/info"
-export const ABOUT = INFO_BASE + "/o-nas"
-export const CONTACT = INFO_BASE + "/kontakt"
-export const FAQ = INFO_BASE + "/faq"
-export const PROMOTING_INFO = INFO_BASE + "/promowanie"
-export const ALLOW_ADS = INFO_BASE + "/reklamy"
-export const ALLOW_NOTIFICATIONS = INFO_BASE + "/powiadomienia"
-export const BUG_REPORT = INFO_BASE + "/zglos_problem"
-export const ADVERTISE = INFO_BASE + "/reklamuj_sie"
-export const PARTNERS = INFO_BASE + "/partnerzy"
-export const WRITE_FOR_US = INFO_BASE + "/pisz_dla_nas"
-export const TERMS = INFO_BASE + "/regulamin"
-export const PRIVACY_POLICY = INFO_BASE + "/polityka-prywatnosci"
+  SEARCH: "/szukaj",
+  REQUEST_DESIGNER: "/req_des",
 
-export const ADMIN_BASE = "/admin"
-export const ADMIN_BLOG = ADMIN_BASE + "/blog"
-export const ADMIN_BLOG_ADD = ADMIN_BASE + "/blog/n"
-export const ADMIN_BLOG_EDIT = ADMIN_BASE + "/blog/e/:id"
-export const ADMIN_DROPS = ADMIN_BASE + "/drops"
-export const ADMIN_DROPS_ADD = ADMIN_BASE + "/drops/n"
-export const ADMIN_DROPS_EDIT = ADMIN_BASE + "/drops/e/:id"
-export const ADMIN_DEALS = ADMIN_BASE + "/deals"
-export const ADMIN_DEALS_ADD = ADMIN_BASE + "/deals/n"
-export const ADMIN_DEALS_EDIT = ADMIN_BASE + "/deals/e/:id"
-export const ADMIN_ITEMS = ADMIN_BASE + "/items"
-export const ADMIN_USERS = ADMIN_BASE + "/users"
-export const ADMIN_DESIGNERS = ADMIN_BASE + "/designers"
-export const ADMIN_DESIGNER_EDIT = ADMIN_BASE + "/designers/:id"
+  ABOUT: BASE_ROUTES.INFO_BASE + "/o-nas",
+  CONTACT: BASE_ROUTES.INFO_BASE + "/kontakt",
+  FAQ: BASE_ROUTES.INFO_BASE + "/faq",
+  PROMOTING_INFO: BASE_ROUTES.INFO_BASE + "/promowanie",
+  ALLOW_ADS: BASE_ROUTES.INFO_BASE + "/reklamy",
+  ALLOW_NOTIFICATIONS: BASE_ROUTES.INFO_BASE + "/powiadomienia",
+  BUG_REPORT: BASE_ROUTES.INFO_BASE + "/zglos_problem",
+  ADVERTISE: BASE_ROUTES.INFO_BASE + "/reklamuj_sie",
+  PARTNERS: BASE_ROUTES.INFO_BASE + "/partnerzy",
+  WRITE_FOR_US: BASE_ROUTES.INFO_BASE + "/pisz_dla_nas",
+  TERMS: BASE_ROUTES.INFO_BASE + "/regulamin",
+  PRIVACY_POLICY: BASE_ROUTES.INFO_BASE + "/polityka-prywatnosci",
 
-// External
-// TODO: create social media pages and add addresses
-export const FACEBOOK_PROFILE = ""
-export const TWITTER_PROFILE = ""
-export const INSTAGRAM_PROFILE = ""
+  ADMIN_USERS: BASE_ROUTES.ADMIN_BASE + "/users",
+  ADMIN_ITEMS: BASE_ROUTES.ADMIN_BASE + "/items",
+  ADMIN_BLOG: BASE_ROUTES.ADMIN_BASE + "/blog",
+  ADMIN_BLOG_ADD: BASE_ROUTES.ADMIN_BASE + "/blog/n",
+  ADMIN_BLOG_EDIT: BASE_ROUTES.ADMIN_BASE + "/blog/e/:id",
+  ADMIN_DROPS: BASE_ROUTES.ADMIN_BASE + "/drops",
+  ADMIN_DROPS_ADD: BASE_ROUTES.ADMIN_BASE + "/drops/n",
+  ADMIN_DROPS_EDIT: BASE_ROUTES.ADMIN_BASE + "/drops/e/:id",
+  ADMIN_DEALS: BASE_ROUTES.ADMIN_BASE + "/deals",
+  ADMIN_DEALS_ADD: BASE_ROUTES.ADMIN_BASE + "/deals/n",
+  ADMIN_DEALS_EDIT: BASE_ROUTES.ADMIN_BASE + "/deals/e/:id",
+  ADMIN_DESIGNERS: BASE_ROUTES.ADMIN_BASE + "/designers",
+  ADMIN_DESIGNER_ADD: BASE_ROUTES.ADMIN_BASE + "/designers/n",
+  ADMIN_DESIGNER_EDIT: BASE_ROUTES.ADMIN_BASE + "/designers/e/:id",
+  ADMIN_AUTHORS: BASE_ROUTES.ADMIN_BASE + "/author",
+  ADMIN_AUTHORS_ADD: BASE_ROUTES.ADMIN_BASE + "/author/n",
+  ADMIN_AUTHORS_EDIT: BASE_ROUTES.ADMIN_BASE + "/author/e/:id",
+}
 
 // Test routes (don't alter or test will fail)
 export const TEST_ROUTE = "route"
 export const TEST_ROUTE_WITH_SUBROUTE = "route/:one"
 export const TEST_ROUTE_WITH_MULTIPLE_SUBROUTES = "route/:one/:two"
+
+export default ROUTES

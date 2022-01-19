@@ -1,18 +1,13 @@
-import shortid from "shortid"
-
 import isSet from "./isSet"
 import { formatFloat, formatInt, formatNonEmptyArray, formatString } from "./basicsUtils"
 
 export const MODE = {
 	CREATE: "CREATE",
-	EDIT: "EDIT",
-	REFRESH: "REFRESH",
-	PROMOTE: "PROMOTE",
-	ARCHIVE: "ARCHIVE",
-	VERIFY: "VERIFY"
+	EDIT: "EDIT"
 }
 
 export const REQUIRED = [
+	"itemId",
 	"name",
 	"designers",
 	"category",
@@ -23,7 +18,7 @@ export const REQUIRED = [
 	"attachments"
 ]
 
-export const formatItemDataForDb = (data, mode, flagState = true) => {
+export const formatItemDataForDb = (data, mode) => {
 	let formatted = {}
 
 	if ([MODE.CREATE, MODE.EDIT].includes(mode)) {
@@ -89,7 +84,7 @@ export const formatItemDataForDb = (data, mode, flagState = true) => {
 	}
 
 	if (mode === MODE.CREATE) {
-		formatted.id = shortid.generate()
+		formatted.id = data.itemId
 
 		formatted.createdAt = Date.now()
 		formatted.refreshedAt = Date.now()
@@ -106,22 +101,6 @@ export const formatItemDataForDb = (data, mode, flagState = true) => {
 	if (mode === MODE.EDIT) {
 		formatted.modifiedAt = Date.now()
 		formatted.isVerified = false
-	}
-
-	if (mode === MODE.REFRESH) {
-		formatted.refreshedAt = Date.now()
-	}
-
-	if (mode === MODE.PROMOTE) {
-		formatted.promotedAt = Date.now()
-	}
-
-	if (mode === MODE.ARCHIVE) {
-		formatted.isArchived = flagState
-	}
-
-	if (mode === MODE.VERIFY) {
-		formatted.isVerified = flagState
 	}
 
 	return formatted

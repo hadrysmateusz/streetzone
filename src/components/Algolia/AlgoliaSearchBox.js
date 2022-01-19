@@ -8,27 +8,26 @@ import { Input } from "../FormElements"
 import { decodeURL } from "../../utils/algoliaURLutils"
 import { PoweredBy } from "./PoweredBy"
 
+// TODO: add a small loading indicator
+// TODO: add a clear button
+
 const AlgoliaSearchBox = ({
 	location,
 	refine,
 	currentBreakpoint,
 	placeholderLong,
-	placeholder
+	placeholder,
+	debounce = 900
 }) => {
-	const DELAY = 350
-
 	const [value, setValue] = useState("")
-
 	const inputRef = useRef()
-
-	let rateLimitedRefine
+	const timeoutRef = useRef(null)
 
 	useEffect(() => {
 		try {
 			const parsedSearch = decodeURL(location.search)
 
-			/* if there was a problem with parsing or query wasn't present 
-			 default to empty string */
+			// if there was a problem with parsing or query wasn't present default to empty string
 			const query = parsedSearch && parsedSearch.query ? parsedSearch.query : ""
 
 			setValue(query)
@@ -39,15 +38,20 @@ const AlgoliaSearchBox = ({
 	}, [location])
 
 	const onChange = () => {
-		// don't write the value to a variable, it is a ref and that is required
+		// reset the timeout (debouncing)
+		// don't write the value to a variable, the ref is required
+		clearTimeout(timeoutRef.current)
 
+		// update internal value
 		setValue(inputRef.current.value)
 
-		// the timeout makes it so the query only gets updated when you stop typing
-		clearTimeout(rateLimitedRefine)
-		rateLimitedRefine = setTimeout(() => {
+		// set the timeout (debouncing)
+		timeoutRef.current = setTimeout(() => {
+			// update the algolia search state
 			refine(inputRef.current.value)
-		}, DELAY)
+			// remove the timeout (can be used to create a loading state indicator)
+			timeoutRef.current = null
+		}, debounce)
 	}
 
 	const onClear = () => {

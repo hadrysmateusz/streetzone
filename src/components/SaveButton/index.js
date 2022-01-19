@@ -83,12 +83,17 @@ const useSave = (type, id) => {
 			// Update the db
 			await firebase.currentUser().update({ [attribute]: newList })
 
+			// TODO: improve the copy here
 			flashMessage({
 				type: "success",
-				textContent: wasActive ? "Usunięto z zapisanych" : "Zapisano!"
+				text: wasActive ? "Usunięto z zapisanych" : "Zapisano!",
+				details: !wasActive
+					? "Zapisane rzeczy znajdziesz w odpowiedniej zakładce na swoim profilu"
+					: undefined
 			})
 		} catch (error) {
-			console.log(error)
+			flashMessage({ type: "error", text: "Wystąpił błąd" })
+			console.error(error)
 			// Revert the state change if there was an error
 			setIsActive(wasActive)
 		}
@@ -128,9 +133,13 @@ const useSave = (type, id) => {
 				})
 			}
 
-			flashMessage(wasActive ? "Usunięto z obserwowanych" : "Zaobserwowano!")
+			flashMessage({
+				type: "success",
+				text: wasActive ? "Usunięto z obserwowanych" : "Zaobserwowano!"
+			})
 		} catch (error) {
-			console.log(error)
+			flashMessage({ type: "error", text: "Wystąpił błąd" })
+			console.error(error)
 			// Revert the state change if there was an error
 			setIsActive(wasActive)
 		}

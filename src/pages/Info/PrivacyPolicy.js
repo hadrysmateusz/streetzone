@@ -1,7 +1,14 @@
 import React from "react"
 
+import HelmetBasics from "../../components/HelmetBasics"
+
 const PrivacyPolicyPage = () => {
-	return <h2>Polityka Prywatności</h2>
+  return (
+    <>
+      <HelmetBasics title="Polityka Prywatności" />
+      <p>Placeholder: Polityka Prywatności</p>
+    </>
+  )
 }
 
 export default PrivacyPolicyPage

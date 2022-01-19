@@ -25,7 +25,7 @@ const AlgoliaClearRefinements = styled(ClearRefinements)`
 			color: "white";
 		}
 		:focus {
-			border: 1px solid ${(p) => p.theme.colors.accent};
+			border: 1px solid var(--accent50);
 			outline: none;
 		}
 	}

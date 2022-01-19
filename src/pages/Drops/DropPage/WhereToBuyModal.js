@@ -71,9 +71,9 @@ const WhereToBuyModal = ({ children, links = [] }) => {
 								</IconContainer>
 							</Header>
 							<List>
-								{links.map((link) => (
+								{links.map(({ link, name }) => (
 									<ListItem>
-										<StyledLink href={link}>{link}</StyledLink>
+										<StyledLink href={link}>{name}</StyledLink>
 										<GoToButton href={link}>
 											<span>Przejdź do strony</span>
 											<FontAwesomeIcon icon="external-link-alt" />

@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from "react"
-import { compose } from "recompose"
 import { withRouter } from "react-router-dom"
 import styled from "styled-components/macro"
 import axios from "axios"
 
-import { withAuthorization } from "../../components/UserSession"
 import LoadingSpinner from "../../components/LoadingSpinner"
 import { PageContainer } from "../../components/Containers"
 import { LoaderButton } from "../../components/Button"
+import ItemNotFound from "../../components/ItemNotFound"
+import HelmetBasics from "../../components/HelmetBasics"
 
 import { NotFoundError } from "../../errors"
-import { useFirebase } from "../../hooks"
-import promotingLevels from "../../constants/promoting_levels"
+import { route } from "../../utils"
+import { useFirebase, useAuthentication } from "../../hooks"
+import promotingTiers from "../../constants/promotingTiers"
 
 const PageHeader = styled.div`
 	font-weight: bold;
@@ -130,9 +131,9 @@ var getIPAddress = async function() {
 	try {
 		const res = await axios.get("https://api.ipify.org")
 		return res.data
-	} catch (err) {
+	} catch (error) {
 		// TODO: figure out how to handle this
-		console.log(err)
+		console.error(error)
 	}
 }
 
@@ -161,9 +162,9 @@ const PromoteOptionCard = ({ name, price, level, items = [], main = false, itemI
 
 			// TODO: investigate this API
 			// https://developer.mozilla.org/en-US/docs/Web/API/Window/open
-		} catch (err) {
-			setError(err)
-			console.log("error:", err)
+		} catch (error) {
+			console.error(error)
+			setError(error)
 		} finally {
 			setIsLoading(false)
 		}
@@ -204,9 +205,10 @@ const PromoteOptionCard = ({ name, price, level, items = [], main = false, itemI
 	)
 }
 
-const ItemPromotePage = ({ match, history }) => {
+const ItemPromotePage = ({ match, history, location }) => {
 	const firebase = useFirebase()
-	const [error, setError] = useState(null)
+	const [itemError, setItemError] = useState(null)
+	const authUser = useAuthentication()
 	const [item, setItem] = useState(null)
 	const itemId = match.params.id
 
@@ -216,10 +218,21 @@ const ItemPromotePage = ({ match, history }) => {
 				// Get item from database
 				let item = await firebase.getItemData(itemId)
 
+				if (!item) throw new NotFoundError()
+
+				if (item.userId !== authUser.uid) {
+					history.replace(route("SIGN_IN"), {
+						redirectTo: location,
+						redirectReason: {
+							message: "Nie masz wystarczających pozwoleń"
+						}
+					})
+				}
+
 				setItem(item)
 			} catch (err) {
 				if (err instanceof NotFoundError) {
-					setError(err)
+					setItemError(err)
 				} else {
 					throw err
 				}
@@ -227,12 +240,15 @@ const ItemPromotePage = ({ match, history }) => {
 		}
 
 		getItem()
-	}, [itemId, firebase])
+	}, [firebase, itemId, authUser.uid, history, location])
 
 	return (
 		<PageContainer>
-			{item ? (
+			{itemError ? (
+				<ItemNotFound />
+			) : item ? (
 				<div>
+					<HelmetBasics fullTitle="Promuj ogłoszenie" />
 					<PageHeader>
 						<span role="img" aria-label="promowane">
 							🔥 Promuj {item.name}
@@ -241,7 +257,7 @@ const ItemPromotePage = ({ match, history }) => {
 
 					<PromoteOptionsContainer>
 						<PromoteOptionCard
-							name={promotingLevels[0]}
+							name={promotingTiers[0]}
 							level={0}
 							price={4.99}
 							itemId={itemId}
@@ -252,7 +268,7 @@ const ItemPromotePage = ({ match, history }) => {
 							]}
 						/>
 						<PromoteOptionCard
-							name={promotingLevels[1]}
+							name={promotingTiers[1]}
 							level={1}
 							price={9.99}
 							itemId={itemId}
@@ -267,7 +283,7 @@ const ItemPromotePage = ({ match, history }) => {
 							]}
 						/>
 						<PromoteOptionCard
-							name={promotingLevels[2]}
+							name={promotingTiers[2]}
 							level={2}
 							price={25}
 							itemId={itemId}
@@ -295,17 +311,4 @@ const ItemPromotePage = ({ match, history }) => {
 	)
 }
 
-const condition = (authUser, pathParams) => {
-	const isAuthenticated = !!authUser
-	if (!isAuthenticated) {
-		return false
-	} else {
-		const isAuthorized = authUser.items.includes(pathParams.id)
-		return isAuthorized
-	}
-}
-
-export default compose(
-	withRouter,
-	withAuthorization(condition)
-)(ItemPromotePage)
+export default withRouter(ItemPromotePage)

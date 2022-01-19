@@ -1,13 +1,9 @@
-import shortid from "shortid"
-
 import isSet from "./isSet"
 import { formatInt, formatNonEmptyArray, formatString } from "./basicsUtils"
 
 export const MODE = {
 	CREATE: "CREATE",
-	EDIT: "EDIT",
-	PROMOTE: "PROMOTE",
-	ARCHIVE: "ARCHIVE"
+	EDIT: "EDIT"
 }
 
 export const REQUIRED = [
@@ -18,11 +14,10 @@ export const REQUIRED = [
 	"excerpt",
 	"tags",
 	"attachments",
-	"imageUrls",
 	"mainImageIndex"
 ]
 
-export const formatPostDataForDb = (data, mode, flagState = true) => {
+export const formatPostDataForDb = (data, mode) => {
 	let formatted = {}
 
 	// check if all required values are present while creating
@@ -71,11 +66,6 @@ export const formatPostDataForDb = (data, mode, flagState = true) => {
 			formatted.attachments = formatNonEmptyArray(data.attachments)
 		}
 
-		// imageUrls
-		if (isSet(data.imageUrls)) {
-			formatted.imageUrls = formatNonEmptyArray(data.imageUrls)
-		}
-
 		// mainImageIndex
 		if (isSet(data.mainImageIndex)) {
 			// the minimum/default index is 0
@@ -84,26 +74,16 @@ export const formatPostDataForDb = (data, mode, flagState = true) => {
 	}
 
 	if (mode === MODE.CREATE) {
-		formatted.id = shortid.generate()
+		formatted.id = data.id
 
 		formatted.createdAt = Date.now()
 		formatted.editedAt = Date.now()
-		/* has to be null, otherwise it would show up in promoted section */
-		formatted.isPromoted = false
 
 		formatted.isArchived = false
 	}
 
 	if (mode === MODE.EDIT) {
 		formatted.editedAt = Date.now()
-	}
-
-	if (mode === MODE.PROMOTE) {
-		formatted.isPromoted = flagState
-	}
-
-	if (mode === MODE.ARCHIVE) {
-		formatted.isArchived = flagState
 	}
 
 	return formatted

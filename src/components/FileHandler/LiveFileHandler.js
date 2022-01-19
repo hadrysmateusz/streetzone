@@ -45,7 +45,7 @@ const LiveFileHandler = ({
 		})
 
 		// Reset the file input to prevent bugs
-		rootRef.current.value = null
+		inputRef.current.value = null
 
 		// Merge old files and new files
 		const __items = [...items, ...newItems]
@@ -77,9 +77,11 @@ const LiveFileHandler = ({
 
 		items.forEach((item) => {
 			if (item.id === id) {
+				// if item matches id, delete its images and DON'T add it to new array
 				const storageRef = item.storageRef
-				firebase.removeFile(storageRef)
+				firebase.removeAllImagesOfRef(storageRef)
 			} else {
+				// all other images should be added to new array
 				__items.push(item)
 			}
 		})
@@ -110,7 +112,7 @@ const LiveFileHandler = ({
 	const isEmpty = !items || items.length === 0
 	const hasMain = items.find((fileItem) => fileItem.isMain)
 
-	const { getRootProps, getInputProps, isDragActive, rootRef, open } = useDropzone({
+	const { getRootProps, getInputProps, isDragActive, inputRef, open } = useDropzone({
 		onDrop,
 		onDropRejected,
 		accept: "image/jpeg,image/png",
@@ -127,7 +129,7 @@ const LiveFileHandler = ({
 				<Button type="button" onClick={clickDropzone}>
 					{!isEmpty ? "Dodaj pliki" : "Wybierz pliki"}
 				</Button>
-				<Button type="button" onClick={onClear} disabled={isEmpty}>
+				<Button type="button" onClick={onClear} disabled={isEmpty} danger>
 					Usuń wszystkie
 				</Button>
 			</ButtonContainer>

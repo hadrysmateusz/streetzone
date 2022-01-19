@@ -1,320 +1,300 @@
-import uuidv1 from "uuid/v1"
+import { nanoid } from "nanoid"
 import app from "firebase/app"
 import "firebase/auth"
 import "firebase/storage"
 import "firebase/firestore"
 import "firebase/messaging"
 import "firebase/functions"
-import { S_THUMB_POSTFIX, M_THUMB_POSTFIX, L_THUMB_POSTFIX } from "../../constants/const"
+
+import CONST from "../../constants/const"
 import areNotificationsSupported from "../../utils/areNotificationsSupported"
 
-const config = {
-	apiKey: process.env.REACT_APP_API_KEY,
-	authDomain: process.env.REACT_APP_AUTH_DOMAIN,
-	databaseURL: process.env.REACT_APP_DATABASE_URL,
-	projectId: process.env.REACT_APP_PROJECT_ID,
-	storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
-	messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID
-}
+import config from "./config"
+
+const { S_THUMB_POSTFIX, M_THUMB_POSTFIX, L_THUMB_POSTFIX } = CONST
+
+const publicVapidKey =
+  process.env.NODE_ENV === "development"
+    ? "BJgcHagtqijyfb4WcD8UhMUtWEElieyaGrNFz7Az01aEYgqcKaR4CKpzzXtxXb_9rnGMLxkkhdTSSyLNvvzClSU"
+    : "BLWCrtJ5HTzxbZF88ibi1LqlV_WEU7jbjZ7h1wtHXPcQ1NfiQsFhVyqY5YzI4yRDie6aG_V1DJUny_DwjC1JOJA"
 
 class Firebase {
-	constructor() {
-		app.initializeApp(config)
+  constructor() {
+    app.initializeApp(config)
 
-		// Cloud Functions
-		this.functions = app.functions()
-		this.fn = this.functions.httpsCallable
+    // Cloud Functions
+    this.functions = app.functions()
+    this.fn = this.functions.httpsCallable
 
-		// use the locally emulated functions in development
-		// if (process.env.NODE_ENV === "development") {
-		// 	this.functions._url = function(name) {
-		// 		return `http://localhost:5001/streetwear-app/us-central1/${name}`
-		// 	}
-		// }
+    if (process.env.NODE_ENV === "development") {
+      this.functions.useFunctionsEmulator("http://localhost:5001")
+    }
 
-		// Auth
-		/* emailAuthProvider needs to be on top or else it will be overriden */
-		this.emailAuthProvider = app.auth.EmailAuthProvider
-		this.auth = app.auth()
-		this.auth.languageCode = "pl"
+    // use the locally emulated functions in development
+    // if (process.env.NODE_ENV === "development") {
+    // 	this.functions._url = function(name) {
+    // 		return `http://localhost:5001/streetwear-app/us-central1/${name}`
+    // 	}
+    // }
 
-		this.googleProvider = new app.auth.GoogleAuthProvider()
-		this.facebookProvider = new app.auth.FacebookAuthProvider()
+    // Auth
+    /* emailAuthProvider needs to be on top or else it will be overriden */
+    this.emailAuthProvider = app.auth.EmailAuthProvider
+    this.auth = app.auth()
+    this.auth.languageCode = "pl"
 
-		this.signInMethods = {
-			google: app.auth.GoogleAuthProvider.GOOGLE_SIGN_IN_METHOD,
-			facebook: app.auth.GoogleAuthProvider.FACEBOOK_SIGN_IN_METHOD,
-			email: app.auth.EmailAuthProvider.EMAIL_PASSWORD_SIGN_IN_METHOD
-		}
+    this.googleProvider = new app.auth.GoogleAuthProvider()
+    this.facebookProvider = new app.auth.FacebookAuthProvider()
 
-		// Storage
-		this.storage = app.storage()
-		this.storageRef = this.storage.ref()
+    this.signInMethods = {
+      google: app.auth.GoogleAuthProvider.GOOGLE_SIGN_IN_METHOD,
+      facebook: app.auth.GoogleAuthProvider.FACEBOOK_SIGN_IN_METHOD,
+      email: app.auth.EmailAuthProvider.EMAIL_PASSWORD_SIGN_IN_METHOD,
+    }
 
-		// Firestore (Database)
-		this.db = app.firestore()
+    // Storage
+    this.storage = app.storage()
+    this.storageRef = this.storage.ref()
 
-		// FieldValue - used for things like arrayUnion, increment etc.
-		this.FieldValue = app.firestore.FieldValue
+    // Firestore (Database)
+    this.db = app.firestore()
 
-		// Messaging
+    // FieldValue - used for things like arrayUnion, increment etc.
+    this.FieldValue = app.firestore.FieldValue
 
-		if (areNotificationsSupported()) {
-			this.messaging = app.messaging()
+    // Messaging
 
-			this.messaging.usePublicVapidKey(
-				"BJgcHagtqijyfb4WcD8UhMUtWEElieyaGrNFz7Az01aEYgqcKaR4CKpzzXtxXb_9rnGMLxkkhdTSSyLNvvzClSU"
-			)
+    if (areNotificationsSupported()) {
+      this.messaging = app.messaging()
 
-			// TODO: disable this request for permission
-			// this.messaging
-			// 	.requestPermission()
-			// 	.then(() => {
-			// 		return this.messaging.getToken()
-			// 	})
-			// 	.then((token) => {
-			// 		this.sendNotificationTokenToDb(token)
-			// 	})
-			// 	.catch((e) => {
-			// 		console.log("error", e)
-			// 	})
+      this.messaging.usePublicVapidKey(publicVapidKey)
 
-			this.messaging.onTokenRefresh(() => {
-				console.log("token refreshed")
-				this.messaging
-					.getToken()
-					.then((token) => {
-						this.sendNotificationTokenToDb(token)
-					})
-					.catch((e) => {
-						console.log("error", e)
-					})
-			})
+      // this.messaging
+      // 	.requestPermission()
+      // 	.then(() => {
+      // 		return this.messaging.getToken()
+      // 	})
+      // 	.then((token) => {
+      // 		this.sendNotificationTokenToDb(token)
+      // 	})
+      // 	.catch((e) => {
+      // 		console.log("error", e)
+      // 	})
 
-			this.messaging.onMessage(function(payload) {
-				console.log("Message received. ", payload)
-				// ...
-			})
-		}
-	}
+      this.messaging.onTokenRefresh(() => {
+        this.messaging
+          .getToken()
+          .then((token) => {
+            this.sendNotificationTokenToDb(token)
+          })
+          .catch((e) => {
+            console.error("error", e)
+          })
+      })
 
-	// Messaging API
-	sendNotificationTokenToDb = (token) => {
-		if (!this.authUser()) return
+      this.messaging.onMessage(function (payload) {
+        console.log("Message received. ", payload)
+        // ...
+      })
+    }
+  }
 
-		const tokenRef = this.currentUser()
-			.collection("notificationTokens")
-			.doc(token)
+  // Messaging API
+  sendNotificationTokenToDb = (token) => {
+    if (!this.authUser()) return
 
-		if (!tokenRef.exists) {
-			return tokenRef.set({ createdAt: Date.now() })
-		}
-	}
+    const tokenRef = this.currentUser().collection("notificationTokens").doc(token)
 
-	// Auth API
+    if (!tokenRef.exists) {
+      return tokenRef.set({ createdAt: Date.now() })
+    }
+  }
 
-	signUpWithEmail = (email, password) =>
-		this.auth.createUserWithEmailAndPassword(email, password)
+  // Auth API
 
-	signInWithEmail = (email, password) =>
-		this.auth.signInWithEmailAndPassword(email, password)
+  signUpWithEmail = (email, password) => this.auth.createUserWithEmailAndPassword(email, password)
 
-	signInWithGoogle = () => this.auth.signInWithPopup(this.googleProvider)
+  signInWithEmail = (email, password) => this.auth.signInWithEmailAndPassword(email, password)
 
-	signInWithFacebook = () => this.auth.signInWithPopup(this.facebookProvider)
+  signInWithGoogle = () => this.auth.signInWithPopup(this.googleProvider)
 
-	signOut = () => this.auth.signOut()
+  signInWithFacebook = () => this.auth.signInWithPopup(this.facebookProvider)
 
-	resetPassword = (email) => this.auth.sendPasswordResetEmail(email)
+  signOut = () => this.auth.signOut()
 
-	updatePassword = (password) => this.auth.currentUser.updatePassword(password)
+  resetPassword = (email) => this.auth.sendPasswordResetEmail(email)
 
-	updateEmail = (email) => this.auth.currentUser.updateEmail(email)
+  updatePassword = (password) => this.auth.currentUser.updatePassword(password)
 
-	sendEmailVerification = () => this.auth.currentUser.sendEmailVerification()
+  updateEmail = (email) => this.auth.currentUser.updateEmail(email)
 
-	deleteUser = () => this.auth.currentUser.delete()
+  sendEmailVerification = () => this.auth.currentUser.sendEmailVerification()
 
-	authUser = () => this.auth.currentUser
+  deleteUser = () => this.auth.currentUser.delete()
 
-	// User API
+  authUser = () => this.auth.currentUser
 
-	users = () => this.db.collection("users")
-	user = (uid) => this.db.collection("users").doc(uid)
+  // User API
 
-	currentUser = () => {
-		return this.authUser() ? this.db.collection("users").doc(this.authUser().uid) : null
-	}
+  users = () => this.db.collection("users")
+  user = (uid) => this.db.collection("users").doc(uid)
 
-	getUserData = async (userId) => {
-		let res = {
-			user: null,
-			error: null
-		}
-		try {
-			// Look for the document with correct id
-			const userSnap = await this.user(userId).get()
-			// If the user isn't found throw an error
-			if (!userSnap.exists) throw new Error("Nie znaleziono użytkownika")
-			// Get user data
-			const userData = userSnap.data()
-			res.user = userData
-		} catch (error) {
-			res.error = error
-		} finally {
-			return res
-		}
-	}
+  currentUser = () => {
+    return this.authUser() ? this.db.collection("users").doc(this.authUser().uid) : null
+  }
 
-	getUserItems = async (user) => {
-		let res = {
-			items: [],
-			error: null
-		}
+  getUserData = async (userId) => {
+    let res = {
+      user: null,
+      error: null,
+    }
+    try {
+      // Look for the document with correct id
+      const userSnap = await this.user(userId).get()
+      // If the user isn't found throw an error
+      if (!userSnap.exists) throw new Error("Nie znaleziono użytkownika")
+      // Get user data
+      const userData = userSnap.data()
+      res.user = userData
+    } catch (error) {
+      res.error = error
+    } finally {
+      return res
+    }
+  }
 
-		try {
-			// get data from firestore
-			for (let id of user.items) {
-				const item = await this.getItemData(id)
-				res.items.push(item)
-			}
+  // Item API
 
-			// filter out items that don't exist anymore
-			res.items = res.items.filter((item) => Object.keys(item).length)
-		} catch (error) {
-			res.error = error
-		} finally {
-			return res
-		}
-	}
+  item = (id) => this.db.collection("items").doc(id)
+  items = () => this.db.collection("items")
 
-	// Item API
+  getItemData = async (id) => {
+    const itemDoc = await this.item(id).get()
+    if (!itemDoc.exists) {
+      console.warn(`Item with id ${id} wasn't found`)
+      return null
+    } else {
+      return itemDoc.data()
+    }
+  }
 
-	item = (id) => this.db.collection("items").doc(id)
-	items = () => this.db.collection("items")
+  // Posts API
 
-	getItemData = async (id) => {
-		const itemDoc = await this.item(id).get()
-		if (!itemDoc.exists) {
-			console.warn(`Item with id ${id} wasn't found`)
-			return null
-		} else {
-			return itemDoc.data()
-		}
-	}
+  post = (id) => this.db.collection("posts").doc(id)
+  posts = () => this.db.collection("posts")
 
-	// Posts API
+  // Drops API
 
-	post = (id) => this.db.collection("posts").doc(id)
-	posts = () => this.db.collection("posts")
+  drop = (id) => this.db.collection("drops").doc(id)
+  drops = () => this.db.collection("drops")
 
-	// Drops API
+  // Deals API
 
-	drop = (id) => this.db.collection("drops").doc(id)
-	drops = () => this.db.collection("drops")
+  deal = (id) => this.db.collection("deals").doc(id)
+  deals = () => this.db.collection("deals")
 
-	// Deals API
+  // Designers API
 
-	deal = (id) => this.db.collection("deals").doc(id)
-	deals = () => this.db.collection("deals")
+  designer = (id) => this.db.collection("designers").doc(id)
+  designers = () => this.db.collection("designers")
 
-	// Designers API
+  // Authors API
 
-	designer = (id) => this.db.collection("designers").doc(id)
-	designers = () => this.db.collection("designers")
+  author = (id) => this.db.collection("authors").doc(id)
+  authors = () => this.db.collection("authors")
 
-	// Storage API
+  // Storage API
 
-	file = (ref) => this.storageRef.child(ref)
+  file = (ref) => this.storageRef.child(ref)
 
-	uploadFile = async (bucket, file) => {
-		const name = uuidv1()
-		const ref = this.file(`${bucket}/${name}`)
-		return ref.put(file)
-	}
+  uploadFile = async (bucket, file) => {
+    const name = nanoid()
+    const ref = this.file(`${bucket}/${name}`)
+    return ref.put(file)
+  }
 
-	// this method uses CustomFile class
-	batchUploadFiles = async (uploadPath, files) => {
-		return Promise.all(
-			files.map(async (file) => {
-				const snapshot = await this.uploadFile(uploadPath, file.data)
-				return snapshot.ref.fullPath
-			})
-		)
-	}
+  // this method uses CustomFile class
+  batchUploadFiles = async (uploadPath, files) => {
+    return Promise.all(
+      files.map(async (file) => {
+        const snapshot = await this.uploadFile(uploadPath, file.data)
+        return snapshot.ref.fullPath
+      })
+    )
+  }
 
-	removeFile = async (ref) => {
-		return this.file(ref).delete()
-	}
+  removeFile = async (ref) => {
+    return this.file(ref).delete()
+  }
 
-	/**
-	 * removes all files (original and thumbanails) for a given base storageRef
-	 * @param {string} storageRef storageRef of file to be deleted
-	 */
-	removeAllImagesOfRef = async (storageRef) => {
-		await this.removeFile(storageRef)
-		await this.removeFile(storageRef + L_THUMB_POSTFIX)
-		await this.removeFile(storageRef + M_THUMB_POSTFIX)
-		await this.removeFile(storageRef + S_THUMB_POSTFIX)
-	}
+  /**
+   * removes all files (original and thumbanails) for a given base storageRef
+   * @param {string} storageRef storageRef of file to be deleted
+   */
+  removeAllImagesOfRef = async (storageRef) => {
+    await this.removeFile(storageRef)
+    await this.removeFile(storageRef + L_THUMB_POSTFIX)
+    await this.removeFile(storageRef + M_THUMB_POSTFIX)
+    await this.removeFile(storageRef + S_THUMB_POSTFIX)
+  }
 
-	batchRemoveFiles = async (refs) => {
-		return Promise.all(refs.map((ref) => this.removeFile(ref)))
-	}
+  batchRemoveFiles = async (refs) => {
+    return Promise.all(refs.map((ref) => this.removeFile(ref)))
+  }
 
-	getImageURL = async (ref, size) => {
-		if (size === "S") {
-			ref += S_THUMB_POSTFIX
-		} else if (size === "M") {
-			ref += M_THUMB_POSTFIX
-		} else if (size === "L") {
-			ref += L_THUMB_POSTFIX
-		}
-		return this.file(ref).getDownloadURL()
-	}
+  getImageURL = async (ref, size) => {
+    if (size === "S") {
+      ref += S_THUMB_POSTFIX
+    } else if (size === "M") {
+      ref += M_THUMB_POSTFIX
+    } else if (size === "L") {
+      ref += L_THUMB_POSTFIX
+    }
+    return this.file(ref).getDownloadURL()
+  }
 
-	batchGetImageURLs = async (refs, size) => {
-		return refs && Array.isArray(refs)
-			? Promise.all(refs.map((ref) => this.getImageURL(ref, size)))
-			: []
-	}
+  batchGetImageURLs = async (refs, size) => {
+    return refs && Array.isArray(refs)
+      ? Promise.all(refs.map((ref) => this.getImageURL(ref, size)))
+      : []
+  }
 
-	// Marge Auth and DB Users
+  // Marge Auth and DB Users
 
-	onAuthUserListener = (next, fallback) =>
-		this.auth.onAuthStateChanged(async (authUser) => {
-			if (authUser) {
-				// get current user's info from database
-				const snapshot = await this.user(authUser.uid).get()
-				const dbUser = snapshot.data()
+  onAuthUserListener = (next, fallback) =>
+    this.auth.onAuthStateChanged(async (authUser) => {
+      if (authUser) {
+        // get current user's info from database
+        const snapshot = await this.user(authUser.uid).get()
+        const dbUser = snapshot.data()
 
-				// merge auth and db user
-				authUser = {
-					uid: authUser.uid,
-					emailVerified: authUser.emailVerified,
-					...dbUser
-				}
+        // merge auth and db user
+        authUser = {
+          uid: authUser.uid,
+          emailVerified: authUser.emailVerified,
+          ...dbUser,
+        }
 
-				// TODO: disable this request for permission (and replace with a better one)
-				if (areNotificationsSupported()) {
-					this.messaging
-						.requestPermission()
-						.then(() => {
-							return this.messaging.getToken()
-						})
-						.then((token) => {
-							this.sendNotificationTokenToDb(token)
-						})
-						.catch((e) => {
-							console.log("error", e)
-						})
-				}
+        // TODO: disable this request for permission (and replace with a better one)
+        if (areNotificationsSupported()) {
+          this.messaging
+            .requestPermission()
+            .then(() => {
+              return this.messaging.getToken()
+            })
+            .then((token) => {
+              this.sendNotificationTokenToDb(token)
+            })
+            .catch((e) => {
+              console.log("error", e)
+            })
+        }
 
-				next(authUser)
-			} else {
-				fallback()
-			}
-		})
+        next(authUser)
+      } else {
+        fallback()
+      }
+    })
 }
 
 export default Firebase

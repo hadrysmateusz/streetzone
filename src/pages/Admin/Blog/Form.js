@@ -1,54 +1,63 @@
 import React from "react"
-import { Prompt } from "react-router-dom"
 import { Form } from "react-final-form"
 
+import BlackBox from "../../../components/BlackBox"
 import { LoaderButton, ButtonContainer } from "../../../components/Button"
 import DisplayJSONButton from "../../../components/DisplayJSONButton"
 import LoadingSpinner from "../../../components/LoadingSpinner"
+import PreventFormTransition from "../../../components/PreventFormTransition"
 import {
 	TextFF,
 	DropdownFF,
 	LiveFileHandlerFF,
-	MarkdownEditorFF,
-	MultiTextInputFF,
-	TextareaFF
+	TextareaFF,
+	TagsInputFF
 } from "../../../components/FinalFormFields"
+import { FinalFormPostEditor } from "../../../components/PostEditor"
 
 import { CONST } from "../../../constants"
 
-import categoryOptions from "./post_category_options"
+import categoryOptions from "./postCategoryOptions"
+import authorOptions from "./authorOptions"
 import { StyledForm } from "../Common"
 
-export default ({ onSubmit, initialValues, edit }) => {
+export default ({ onSubmit, initialValues, edit, postId }) => {
+	// use postId to group images by the post they belong to
+	const imagesPath = `${CONST.STORAGE_BUCKET_BLOG_ATTACHMENTS}/${postId}`
+
 	return !initialValues && edit ? (
 		<LoadingSpinner />
 	) : (
 		<Form
 			onSubmit={onSubmit}
 			initialValues={initialValues}
-			render={({ form, handleSubmit, submitting, pristine, values, ...rest }) => {
+			render={({ handleSubmit, submitting, pristine, values }) => {
 				return (
 					<StyledForm onSubmit={handleSubmit}>
-						<Prompt
-							when={Object.values(values).length > 0}
-							message={(location) =>
-								"Zmiany nie zostały zapisane. Czy napewno chcesz wyjść?"
-							}
-						/>
+						<PreventFormTransition />
 
-						<TextFF label="Autor" placeholder="Autor" name="author" />
+						<DropdownFF label="Autor" name="author" options={authorOptions} />
 
 						<TextFF label="Tytuł" placeholder="Tytuł" name="title" />
 
-						<DropdownFF label="Kategoria" name="category" options={categoryOptions} />
-
-						<LiveFileHandlerFF
-							label="Zdjęcia"
-							name="files"
-							uploadPath={CONST.STORAGE_BUCKET_BLOG_ATTACHMENTS}
+						<DropdownFF
+							label="Kategoria"
+							name="category"
+							options={categoryOptions}
+							isSearchable={false}
 						/>
 
-						<MarkdownEditorFF label="Treść" name="mainContent" />
+						<LiveFileHandlerFF label="Zdjęcia" name="files" uploadPath={imagesPath} />
+
+						<BlackBox>
+							Pamiętaj usunąć nieużyte zdjęcia przed opuszczeniem strony
+						</BlackBox>
+
+						<FinalFormPostEditor
+							label="Treść"
+							contentName="mainContent"
+							attachmentsName="attachments"
+						/>
 
 						<TextareaFF
 							label="Streszczenie"
@@ -56,11 +65,7 @@ export default ({ onSubmit, initialValues, edit }) => {
 							name="excerpt"
 						/>
 
-						<MultiTextInputFF
-							label="Tagi"
-							placeholder="Tagi (zatwierdzaj Enterem)"
-							name="tags"
-						/>
+						<TagsInputFF label="Tagi" placeholder="Tagi" name="tags" disabled />
 
 						<ButtonContainer>
 							<LoaderButton

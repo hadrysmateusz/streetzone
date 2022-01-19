@@ -4,56 +4,57 @@ import { PageContainer } from "../../../components/Containers"
 
 import useFirebase from "../../../hooks/useFirebase"
 import { formatDropDataForDb, MODE } from "../../../utils/formatting/formatDropData"
-import { ROUTES, CONST } from "../../../constants"
+import { CONST } from "../../../constants"
+import { route } from "../../../utils"
 
 import DropForm from "./Form"
+import { useFlash } from "../../../hooks"
 
 const AddDrop = ({ history }) => {
-	const firebase = useFirebase()
+  const firebase = useFirebase()
+  const flashMessage = useFlash()
 
-	const onSubmit = async (values, actions) => {
-		try {
-			const files = values.files
+  const onSubmit = async (values, form) => {
+    try {
+      const files = values.files
 
-			// Upload files to storage and get their refs
-			const attachments = await firebase.batchUploadFiles(
-				CONST.STORAGE_BUCKET_DROP_ATTACHMENTS,
-				files
-			)
+      // Upload files to storage and get their refs
+      const attachments = await firebase.batchUploadFiles(
+        CONST.STORAGE_BUCKET_DROP_ATTACHMENTS,
+        files
+      )
 
-			const urlPromises = attachments.map((storageRef) =>
-				firebase.getImageURL(storageRef)
-			)
-			const imageUrls = await Promise.all(urlPromises)
+      // Get main image index
+      const mainImageIndex = files.findIndex((a) => a.isMain)
 
-			// Get main image index
-			const mainImageIndex = files.findIndex((a) => a.isMain)
+      // Format the values for db
+      const formattedData = formatDropDataForDb(
+        { ...values, mainImageIndex, attachments },
+        MODE.CREATE
+      )
 
-			// Format the values for db
-			const formattedData = formatDropDataForDb(
-				{ ...values, mainImageIndex, attachments, imageUrls },
-				MODE.CREATE
-			)
+      // Add drop to database
+      await firebase.drop(formattedData.id).set(formattedData)
 
-			// Add drop to database
-			await firebase.drop(formattedData.id).set(formattedData)
+      setTimeout(() => {
+        form.reset()
+        history.push(route("ADMIN_DROPS"))
+      })
+    } catch (error) {
+      console.error(error)
+      flashMessage({
+        type: "error",
+        text: "Wystąpił błąd",
+        details: "Więcej informacji w konsoli",
+      })
+    }
+  }
 
-			// Reset form
-			actions.reset()
-
-			// Redirect
-			history.push(ROUTES.ADMIN_DROPS)
-		} catch (error) {
-			alert("Wystąpił problem")
-			console.log(error)
-		}
-	}
-
-	return (
-		<PageContainer>
-			<DropForm onSubmit={onSubmit} />
-		</PageContainer>
-	)
+  return (
+    <PageContainer>
+      <DropForm onSubmit={onSubmit} />
+    </PageContainer>
+  )
 }
 
 export default withRouter(AddDrop)

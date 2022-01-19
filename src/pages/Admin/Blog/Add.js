@@ -1,55 +1,61 @@
-import React from "react"
+import React, { useState } from "react"
 import { withRouter } from "react-router-dom"
+import { nanoid } from "nanoid"
 
 import { PageContainer } from "../../../components/Containers"
 
 import useFirebase from "../../../hooks/useFirebase"
 import { formatPostDataForDb, MODE } from "../../../utils/formatting/formatPostData"
-import { ROUTES } from "../../../constants"
+import { route } from "../../../utils"
 
 import PostForm from "./Form"
+import { useFlash } from "../../../hooks"
 
 const AddPost = ({ history }) => {
-	const firebase = useFirebase()
+  const firebase = useFirebase()
+  const [postId] = useState(nanoid())
+  const flashMessage = useFlash()
 
-	const onSubmit = async (values, actions) => {
-		try {
-			const files = values.files
+  const onSubmit = async (values, form) => {
+    try {
+      const files = values.files
 
-			// Get attachments' refs
-			const attachments = files.map((file) => file.ref)
+      // Get attachments' refs
+      const attachments = files.map((file) => file.ref)
 
-			// Get attachments' urls
-			const imageUrls = files.map((file) => file.url)
+      // Get main image index
+      const mainImageIndex = files.findIndex((a) => a.isMain)
 
-			// Get main image index
-			const mainImageIndex = files.findIndex((a) => a.isMain)
+      // Format the values for db
+      const formattedData = formatPostDataForDb(
+        { ...values, mainImageIndex, attachments },
+        MODE.CREATE
+      )
 
-			// Format the values for db
-			const formattedData = formatPostDataForDb(
-				{ ...values, mainImageIndex, attachments, imageUrls },
-				MODE.CREATE
-			)
+      // Add post to database
+      await firebase.post(formattedData.id).set(formattedData)
 
-			// Add post to database
-			await firebase.post(formattedData.id).set(formattedData)
+      // Reset form
+      setTimeout(form.reset)
 
-			// Reset form
-			actions.reset()
+      // Redirect
+      history.push(route("ADMIN_BLOG"))
+    } catch (error) {
+      console.error(error)
+      flashMessage({
+        type: "error",
+        text: "Wystąpił błąd",
+        details: "Więcej informacji w konsoli",
+      })
+    }
+  }
 
-			// Redirect
-			history.push(ROUTES.ADMIN_BLOG)
-		} catch (error) {
-			alert("Wystąpił problem")
-			console.log(error)
-		}
-	}
-
-	return (
-		<PageContainer>
-			<PostForm onSubmit={onSubmit} />
-		</PageContainer>
-	)
+  return (
+    <PageContainer>
+      PostId: {postId}
+      <PostForm onSubmit={onSubmit} postId={postId} />
+    </PageContainer>
+  )
 }
 
 export default withRouter(AddPost)

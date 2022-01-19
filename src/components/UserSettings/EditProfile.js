@@ -6,12 +6,12 @@ import styled from "styled-components/macro"
 import LoadingSpinner from "../LoadingSpinner"
 import { CustomFile } from "../FileHandler"
 import Button, { LoaderButton, ButtonContainer } from "../Button"
-import { ProfilePictureFF, TextFF, TextareaFF } from "../FinalFormFields"
+import { UserImageFF, TextFF, TextareaFF } from "../FinalFormFields"
 import ErrorBox from "../ErrorBox"
 
 import { useAuthentication, useFirebase, useFlash } from "../../hooks"
 import getProfilePictureURL from "../../utils/getProfilePictureURL"
-import { FORM_ERR } from "../../constants"
+import { FORM_ERR, CONST } from "../../constants"
 
 import { Heading } from "./common"
 
@@ -53,6 +53,7 @@ const ProfileEditForm = ({ onSubmit, initialValues, onCancel }) => {
 							label="Nazwa użytkownika"
 							placeholder="Nazwa użytkownika"
 						/>
+
 						<TextFF name="city" label="Miasto" placeholder="Miasto" />
 
 						<TextFF
@@ -71,7 +72,7 @@ const ProfileEditForm = ({ onSubmit, initialValues, onCancel }) => {
 
 						<TextareaFF name="info" label="Opis" placeholder="Dodatkowe informacje" />
 
-						<ProfilePictureFF name="file" />
+						<UserImageFF name="file" />
 
 						<ButtonContainer centered>
 							<LoaderButton
@@ -148,7 +149,7 @@ const EditProfile = () => {
 
 		// upload the new file
 		const snapshot = await firebase.uploadFile(
-			`profile-pictures/${authUser.uid}`,
+			`${CONST.STORAGE_BUCKET_PROFILE_PICTURES}/${authUser.uid}`,
 			file.data
 		)
 
@@ -185,9 +186,12 @@ const EditProfile = () => {
 				await firebase.file(oldFileRef).delete()
 			}
 
-			flashMessage("Zmiany zostały zapisane")
+			flashMessage({ type: "success", text: "Zmiany zostały zapisane" })
 		} catch (err) {
-			console.log(err)
+			flashMessage({
+				type: "error",
+				text: "Wystąpił błąd, zmiany mogły nie zostać zapisane"
+			})
 			setError("Wystąpił błąd, zmiany mogły nie zostać zapisane")
 		}
 	}

@@ -2,22 +2,21 @@ import React, { useState, useEffect } from "react"
 import { compose } from "recompose"
 import { withRouter } from "react-router-dom"
 
-import { withAuthorization, withAuthentication } from "../../components/UserSession"
+import { withAuthentication } from "../../components/UserSession"
 import LoadingSpinner from "../../components/LoadingSpinner"
 import { PageContainer } from "../../components/Containers"
 import { CustomFile } from "../../components/FileHandler"
-import EmptyState from "../../components/EmptyState"
+import ItemNotFound from "../../components/ItemNotFound"
+import PageHeading from "../../components/PageHeading"
+import HelmetBasics from "../../components/HelmetBasics"
 
 import { NotFoundError } from "../../errors"
-import { useAuthentication, useFirebase } from "../../hooks"
-import { sleep } from "../../utils"
+import { useAuthentication, useFirebase, useFlash } from "../../hooks"
+import { route } from "../../utils"
 import { formatItemDataForDb, MODE } from "../../utils/formatting/formatItemData"
 import { CONST } from "../../constants"
 
 import EditItemForm from "./EditItemForm"
-import PageHeading from "../../components/PageHeading"
-
-const { S_THUMB_POSTFIX, M_THUMB_POSTFIX, L_THUMB_POSTFIX } = CONST
 
 const formatDataForEditForm = (price, condition, description, files) => ({
 	price: Number.parseInt(price),
@@ -26,18 +25,30 @@ const formatDataForEditForm = (price, condition, description, files) => ({
 	files: files
 })
 
-const EditItemPage = ({ match, history }) => {
+const EditItemPage = ({ match, history, location }) => {
 	const firebase = useFirebase()
 	const authUser = useAuthentication()
+	const flashMessage = useFlash()
 	const [error, setError] = useState(null)
 	const [initialData, setInitialData] = useState(null)
-	const [itemName, setItemName] = useState(null)
+	const [item, setItem] = useState(null)
 
 	useEffect(() => {
 		const getItem = async () => {
 			try {
 				// Get item from database
 				let item = await firebase.getItemData(match.params.id)
+
+				if (!item) throw new NotFoundError()
+
+				if (item.userId !== authUser.uid) {
+					history.replace(route("SIGN_IN"), {
+						redirectTo: location,
+						redirectReason: {
+							message: "Nie masz wystarczających pozwoleń"
+						}
+					})
+				}
 
 				// Get item attachments' refs and urls for previews
 				const imageURLs = await firebase.batchGetImageURLs(item.attachments)
@@ -61,7 +72,7 @@ const EditItemPage = ({ match, history }) => {
 				)
 
 				setInitialData(initialData)
-				setItemName(item.name)
+				setItem(item)
 			} catch (err) {
 				if (err instanceof NotFoundError) {
 					setError(err)
@@ -72,9 +83,9 @@ const EditItemPage = ({ match, history }) => {
 		}
 
 		getItem()
-	}, [match, authUser, firebase])
+	}, [match, authUser, firebase, history, location])
 
-	const onSubmit = async ({ files, price, description, condition }, actions) => {
+	const onSubmit = async ({ files, price, description, condition }, form) => {
 		try {
 			// Upload NEW files and get ALL refs
 			const newRefs = await Promise.all(
@@ -84,7 +95,7 @@ const EditItemPage = ({ match, history }) => {
 
 					// Upload the new file and return promise containing ref
 					const snapshot = await firebase.uploadFile(
-						CONST.STORAGE_BUCKET_ITEM_ATTACHMENTS,
+						`${CONST.STORAGE_BUCKET_ITEM_ATTACHMENTS}/${item.userId}/${item.id}`,
 						file.data
 					)
 					return snapshot.ref.fullPath
@@ -111,55 +122,50 @@ const EditItemPage = ({ match, history }) => {
 
 			// Remove files associated with the marked refs
 			for (const storageRef of refsToDelete) {
-				await firebase.removeFile(storageRef)
-				await firebase.removeFile(storageRef + L_THUMB_POSTFIX)
-				await firebase.removeFile(storageRef + M_THUMB_POSTFIX)
-				await firebase.removeFile(storageRef + S_THUMB_POSTFIX)
+				firebase.removeAllImagesOfRef(storageRef)
 			}
 
-			await sleep(5500)
-
-			// Clear form to remove conflict with transition blocking
-			actions.reset()
-
-			// Redirect back
-			history.goBack()
-			return
+			setTimeout(() => {
+				flashMessage({
+					type: "success",
+					text: "Edytowano pomyślnie",
+					details: "Odśwież stronę za kilka sekund by zobaczyć zmiany",
+					ttl: 6000
+				})
+				form.reset()
+				history.goBack()
+				return
+			})
 		} catch (error) {
-			alert("Wystąpił problem podczas edytowania przedmiotu")
-			console.log(error)
+			console.error(error)
+			flashMessage({
+				type: "error",
+				text: "Wystąpił błąd",
+				details: "Zmiany mogły nie zostać zapisane"
+			})
 		}
 	}
 
 	return (
-		<PageContainer maxWidth={2}>
-			{error ? (
-				<EmptyState text={error.message} />
-			) : !initialData ? (
-				<LoadingSpinner />
-			) : (
-				<>
-					<PageHeading emoji={"🖊️"}>Edytuj {itemName}</PageHeading>
-					<EditItemForm initialValues={initialData} onSubmit={onSubmit} />
-				</>
-			)}
-		</PageContainer>
+		<>
+			<HelmetBasics title="Usuń ogłoszenie" />
+			<PageContainer maxWidth={2}>
+				{error ? (
+					<ItemNotFound />
+				) : !initialData || !item ? (
+					<LoadingSpinner />
+				) : (
+					<>
+						<PageHeading emoji={"🖊️"}>Edytuj {item.name}</PageHeading>
+						<EditItemForm initialValues={initialData} onSubmit={onSubmit} />
+					</>
+				)}
+			</PageContainer>
+		</>
 	)
-}
-
-const condition = (authUser, pathParams) => {
-	const isAuthenticated = !!authUser
-
-	if (!isAuthenticated) {
-		return false
-	} else {
-		const isAuthorized = authUser.items.includes(pathParams.id)
-		return isAuthorized
-	}
 }
 
 export default compose(
 	withAuthentication,
-	withRouter,
-	withAuthorization(condition)
+	withRouter
 )(EditItemPage)

@@ -4,10 +4,9 @@ import styled from "styled-components/macro"
 import moment from "moment"
 
 import { SaveIconButton } from "../SaveButton"
-import { FluidImage } from "../Image"
+import FirebaseImage from "../FirebaseImage"
 
 import { route } from "../../utils"
-import { useImage } from "../../hooks"
 
 import {
 	Designers,
@@ -57,47 +56,51 @@ export const Name = styled.div`
 	overflow: hidden;
 `
 
-export const BigItemCardDumb = memo(
-	({ id, name, designers, size, price, imageUrl, category, description, createdAt }) => {
-		const date = moment().to(moment(createdAt))
-
-		return (
-			<BigContainer>
-				<Link to={route("ITEM_DETAILS", { id })}>
-					<InfoContainer>
-						<TopContainer>
-							<div>{category}</div>
-							<Designers value={designers} />
-							<Size value={size} />
-						</TopContainer>
-						<MiddleContainer>
-							<Name>{name}</Name>
-							<DateContainer withMargin>Dodano {date}</DateContainer>
-							<Description>{description}</Description>
-						</MiddleContainer>
-						<BottomContainer pinToBottom>
-							<Price value={price} />
-							<div className="align-right">
-								<SaveIconButton
-									css={`
-										color: var(--gray25);
-										padding-right: 0;
-									`}
-									id={id}
-									type="item"
-									scale={1.5}
-								/>
-							</div>
-						</BottomContainer>
-					</InfoContainer>
-					<FluidImage url={imageUrl} />
-				</Link>
-			</BigContainer>
-		)
-	}
+const BigItemCard = memo(
+	({
+		id,
+		name,
+		designers,
+		size,
+		price,
+		category,
+		description,
+		createdAt,
+		attachments,
+		mainImageIndex
+	}) => (
+		<BigContainer>
+			<Link to={route("ITEM_DETAILS", { id })}>
+				<InfoContainer>
+					<TopContainer>
+						<div>{category}</div>
+						<Designers value={designers} />
+						<Size value={size} />
+					</TopContainer>
+					<MiddleContainer>
+						<Name>{name}</Name>
+						<DateContainer withMargin>Dodano {moment().to(createdAt)}</DateContainer>
+						<Description>{description}</Description>
+					</MiddleContainer>
+					<BottomContainer pinToBottom>
+						<Price value={price} />
+						<div className="align-right">
+							<SaveIconButton
+								css={`
+									color: var(--gray25);
+									padding-right: 0;
+								`}
+								id={id}
+								type="item"
+								scale={1.5}
+							/>
+						</div>
+					</BottomContainer>
+				</InfoContainer>
+				<FirebaseImage storageRef={attachments[mainImageIndex]} size="M" />
+			</Link>
+		</BigContainer>
+	)
 )
 
-export const BigItemCard = ({ attachments, mainImageIndex, ...rest }) => {
-	const { imageURL } = useImage(attachments[mainImageIndex], "M")
-	return <BigItemCardDumb imageUrl={imageURL} {...rest} />
-}
+export default BigItemCard

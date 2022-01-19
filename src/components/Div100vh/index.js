@@ -1,26 +1,25 @@
-import React, { forwardRef, useState, useEffect } from "react"
+import React, { forwardRef, useState, useEffect, useCallback } from "react"
 
 function getWindowHeight() {
-	return window.innerHeight
+  return window.innerHeight
 }
 
-const Div100vh = forwardRef(({ style, ...rest }, ref) => {
-	const [newStyle, setNewStyle] = useState()
+const Div100vh = forwardRef(({ style = {}, ...rest }, ref) => {
+  const [newStyle, setNewStyle] = useState()
 
-	const updateStyle = () => {
-		style = style || {}
-		const height = getWindowHeight()
-		const newStyle = height ? { ...style, height: height + "px" } : style
-		setNewStyle(newStyle)
-	}
+  const updateStyle = useCallback(() => {
+    const height = getWindowHeight()
+    const newStyle = height ? { ...style, height: height + "px" } : style
+    setNewStyle(newStyle)
+  }, [style])
 
-	useEffect(() => {
-		updateStyle()
-		window.addEventListener("resize", updateStyle)
-		return () => window.removeEventListener("resize", updateStyle)
-	})
+  useEffect(() => {
+    updateStyle()
+    window.addEventListener("resize", updateStyle)
+    return () => window.removeEventListener("resize", updateStyle)
+  }, [updateStyle])
 
-	return <div {...rest} style={newStyle} ref={ref} />
+  return <div {...rest} style={newStyle} ref={ref} />
 })
 
 export default Div100vh

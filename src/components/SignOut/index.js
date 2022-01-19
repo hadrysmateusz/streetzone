@@ -20,10 +20,10 @@ const SignOut = withRouter(({ history, children }) => {
 	const onSignOut = () => {
 		try {
 			firebase.signOut()
-			flashMessage("Wylogowano")
+			flashMessage({ type: "success", text: "Wylogowano" })
 			history.push(route("HOME"))
 		} catch {
-			flashMessage("Wystąpił błąd")
+			flashMessage({ type: "error", text: "Wystąpił błąd" })
 		}
 	}
 
@@ -65,10 +65,10 @@ export const StatelessSignOut = withRouter(({ history, children }) => {
 	const onSignOut = () => {
 		try {
 			firebase.signOut()
-			flashMessage("Wylogowano")
+			flashMessage({ type: "success", text: "Wylogowano" })
 			history.push(route("HOME"))
 		} catch {
-			flashMessage("Wystąpił błąd")
+			flashMessage({ type: "error", text: "Wystąpił błąd" })
 		}
 	}
 

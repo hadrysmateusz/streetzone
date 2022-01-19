@@ -1,7 +1,14 @@
 import React from "react"
 
+import HelmetBasics from "../../components/HelmetBasics"
+
 const AllowAds = () => {
-	return <h2>Włącz reklamy</h2>
+	return (
+		<>
+			<HelmetBasics title="Włącz reklamy" />
+			<p>PLACEHOLDER</p>
+		</>
+	)
 }
 
 export default AllowAds

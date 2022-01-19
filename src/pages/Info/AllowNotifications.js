@@ -1,7 +1,14 @@
 import React from "react"
 
+import HelmetBasics from "../../components/HelmetBasics"
+
 const AllowNotifications = () => {
-	return <h2>Włącz powiadomienia</h2>
+  return (
+    <>
+      <HelmetBasics title="Włącz powiadomienia" />
+      <p>Placeholder: Instrukcje włączenia powiadomień</p>
+    </>
+  )
 }
 
 export default AllowNotifications

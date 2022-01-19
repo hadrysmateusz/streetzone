@@ -1,19 +1,14 @@
 import React, { useState, useEffect } from "react"
 import { withRouter } from "react-router-dom"
-import shortid from "shortid"
-import Datetime from "react-datetime"
-import { Form, Field } from "react-final-form"
 
-import MultiTextInputFinalform from "../../../components/MultiTextInputFinalform"
-import { FileHandlerSingle, CustomFile } from "../../../components/FileHandler"
-import { LoaderButton, ButtonContainer } from "../../../components/Button"
-import { TextBlock, Text } from "../../../components/StyledComponents"
-import { Textarea, Input } from "../../../components/FormElements"
-import LoadingSpinner from "../../../components/LoadingSpinner"
 import { PageContainer } from "../../../components/Containers"
 
-import useFirebase from "../../../hooks/useFirebase"
-import { FORM_ERR } from "../../../constants"
+import { FORM_ERR, CONST } from "../../../constants"
+import { useFlash, useFirebase, useInitialValues } from "../../../hooks"
+
+import { formatPostDataForDb, MODE } from "../../../utils/formatting/formatPostData"
+
+import PostForm from "./Form"
 
 const validate = ({ author, title, section, mainContent, mainImage, dropsAt }) => {
 	const errors = {}
@@ -30,49 +25,31 @@ const validate = ({ author, title, section, mainContent, mainImage, dropsAt }) =
 		errors.mainImage = FORM_ERR.IS_REQUIRED
 	}
 
-	console.log(errors)
+	console.warn(errors)
 	return errors
 }
 
+const imagesConfig = [{ key: "attachments", name: "images" }]
+
 const EditPost = ({ match }) => {
 	const firebase = useFirebase()
-	const [item, setItem] = useState(null)
+	const flashMessage = useFlash()
+	const postId = match.params.id
+	const initialValues = useInitialValues(`posts/${postId}`, imagesConfig)
 
 	const id = match.params.id
 
-	const getData = async () => {
-		const snap = await firebase.post(id).get()
-
-		let data = snap.data()
-
-		// create CustomFile objects with the fetched previewUrls
-		const file = new CustomFile({
-			storageRef: data.mainImageRef,
-			previewUrl: data.mainImageURL,
-			isUploaded: true
-		})
-
-		data.mainImage = file
-
-		setItem(data)
-	}
-
-	useEffect(() => {
-		getData()
-	}, [id])
-
 	const onSubmit = async (
 		{ section, mainImage, title, author, mainContent, dropsAt },
-		actions
+		form
 	) => {
 		try {
 			let mainImageRef = mainImage.storageRef
 			let mainImageURL = mainImage.previewUrl
 
 			if (!mainImage.storageRef) {
-				const imageId = shortid.generate()
 				const mainImageSnap = await firebase.uploadFile(
-					`blog-photos/${imageId}`,
+					CONST.STORAGE_BUCKET_BLOG_ATTACHMENTS,
 					mainImage.data
 				)
 				mainImageRef = mainImageSnap.ref.fullPath
@@ -97,132 +74,22 @@ const EditPost = ({ match }) => {
 
 			await firebase.post(id).update(data)
 
-			// remove the old image
-			await firebase.removeFile(item.mainImageRef)
-
 			// Reset form
-			actions.reset()
+			setTimeout(form.reset)
 		} catch (error) {
-			alert("Wystąpił problem")
-			console.log(error)
+			console.error(error)
+			flashMessage({
+				type: "error",
+				text: "Wystąpił błąd",
+				details: "Więcej informacji w konsoli"
+			})
 		}
 	}
 
 	return (
 		<PageContainer>
-			<TextBlock size="xl" bold>
-				Blog
-			</TextBlock>
-
-			<TextBlock size="m" color="gray0">
-				Editing {id} <b>{item && `(${item.section} - ${item.title})`}</b>
-			</TextBlock>
-
-			{!item ? (
-				<LoadingSpinner fixedHeight />
-			) : (
-				<Form
-					initialValues={item}
-					onSubmit={onSubmit}
-					validate={validate}
-					render={({ handleSubmit, submitting, pristine, form, values }) => {
-						return (
-							<form onSubmit={handleSubmit}>
-								{values.section && values.section !== "Dropy" && (
-									<Field name="author">
-										{({ input, meta }) => {
-											const error = meta.error && meta.touched ? meta.error : null
-											return (
-												<Input
-													{...input}
-													type="text"
-													placeholder="Author"
-													error={error}
-												/>
-											)
-										}}
-									</Field>
-								)}
-
-								<Field name="title">
-									{({ input, meta }) => {
-										const error = meta.error && meta.touched ? meta.error : null
-										return (
-											<Input {...input} type="text" placeholder="Title" error={error} />
-										)
-									}}
-								</Field>
-
-								<Field name="mainContent">
-									{({ input, meta }) => {
-										const error = meta.error && meta.touched ? meta.error : null
-										return (
-											<Textarea
-												{...input}
-												placeholder="Main text content"
-												error={error}
-											/>
-										)
-									}}
-								</Field>
-
-								{values.section === "drops" && (
-									<>
-										<Text size="m" bold>
-											Data dropu
-										</Text>
-										<Field name="dropsAt">
-											{({ input, meta }) => {
-												const error = meta.error && meta.touched ? meta.error : null
-												return (
-													<Datetime
-														{...input}
-														error={error}
-														input={false}
-														timeFormat="HH:mm"
-													/>
-												)
-											}}
-										</Field>
-									</>
-								)}
-
-								<Field name="mainImage">
-									{({ input, meta }) => {
-										return <FileHandlerSingle {...input} />
-									}}
-								</Field>
-
-								<Field name="tags" type="select">
-									{({ input, meta }) => {
-										const error = meta.error && meta.touched ? meta.error : null
-										return (
-											<MultiTextInputFinalform
-												{...input}
-												placeholder="Tagi"
-												error={error}
-											/>
-										)
-									}}
-								</Field>
-
-								<ButtonContainer centered>
-									<LoaderButton
-										text="Gotowe"
-										type="submit"
-										isLoading={submitting}
-										disabled={submitting || pristine}
-										primary
-									/>
-								</ButtonContainer>
-								{process.env.NODE_ENV === "development" && (
-									<pre>{JSON.stringify(values, 0, 2)}</pre>
-								)}
-							</form>
-						)
-					}}
-				/>
-			)}
+			PostId: {postId}
+			<PostForm onSubmit={onSubmit} postId={postId} initialValues={initialValues} />
 		</PageContainer>
 	)
 }

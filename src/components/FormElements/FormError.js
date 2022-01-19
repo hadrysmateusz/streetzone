@@ -91,8 +91,6 @@ const FormError = ({ error }) => {
 
 	const message = translateErrorMessage(error)
 
-	console.log(error)
-
 	return (
 		<ErrorContainer>
 			<FontAwesomeIcon className="icon" icon="exclamation" />

@@ -12,6 +12,7 @@ import { TextBlock, HorizontalContainer } from "../../../components/StyledCompon
 import InfoItem from "../../../components/InfoItem"
 import { PageContainer } from "../../../components/Containers"
 import ContactModal from "../../../components/ContactModal"
+import UserRating from "../../../components/UserRating"
 
 import {
 	MainInfoContainer,
@@ -42,7 +43,7 @@ const MainInfo = ({ user, isAuthorized, userId, currentBreakpoint }) => {
 					</div>
 					<InfoContainer>
 						<TextBlock bold size="m">
-							{user.name}
+							{user.name} <UserRating feedback={user.feedback} />
 						</TextBlock>
 						<HorizontalContainer gap="3">
 							<InfoItem name="W serwisie od" size={infoItemSize}>

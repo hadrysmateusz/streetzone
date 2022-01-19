@@ -6,6 +6,7 @@ import FormError from "../../components/FormElements/FormError"
 import { CenteredContainer } from "../../components/Containers"
 import { StyledLink } from "../../components/Basics"
 import Separator from "../../components/Separator"
+import HelmetBasics from "../../components/HelmetBasics"
 
 import { useFlash, useFirebase } from "../../hooks"
 import { getRedirectTo, route } from "../../utils"
@@ -62,14 +63,14 @@ export const SignIn = withRouter(({ history, location }) => {
 	const flashMessage = useFlash()
 	const [error, setError] = useState()
 
-	const onFormSubmit = async (values, actions) => {
+	const onFormSubmit = async (values, form) => {
 		try {
 			// get values and attempt sign-in
 			const { email, password } = values
 			await firebase.signInWithEmail(email, password)
 
 			// reset the form
-			actions.reset()
+			setTimeout(form.reset)
 
 			onSuccessfulSignIn("Witaj ponownie")
 		} catch (err) {
@@ -80,7 +81,7 @@ export const SignIn = withRouter(({ history, location }) => {
 	const onSuccessfulSignIn = (message) => {
 		// show flash message
 		if (message) {
-			flashMessage({ type: "success", textContent: message })
+			flashMessage({ type: "success", text: message })
 		}
 
 		// redirect
@@ -127,6 +128,7 @@ const Banner = withRouter(({ location }) => {
 
 const SignInPage = () => (
 	<>
+		<HelmetBasics fullTitle="Zaloguj się" />
 		<Banner />
 		<CenteredContainer>
 			<SignIn />

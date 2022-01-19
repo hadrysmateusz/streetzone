@@ -64,8 +64,10 @@ export const SearchWrapper = withRouter(
 
 						// apart from sortBy and query all keys must be whitelisted
 						if (!allowedKeys.includes(key)) {
+							console.groupCollapsed("Query info")
 							console.log("key:", key)
 							console.log("value:", val)
+							console.groupEnd()
 							throw new Error(`Tried to query a forbidden key, more info in the console`)
 						}
 
@@ -150,18 +152,16 @@ export const SearchWrapper = withRouter(
 		)
 
 		useEffect(() => {
-			console.log("location has changed")
-
 			const createStateFromURL = () => {
 				try {
 					const parsedSearch = decodeURL(location.search)
 					if (!parsedSearch) throw new Error("empty search string")
 					const formattedState = urlToState(parsedSearch)
 					return formattedState
-				} catch (e) {
+				} catch (error) {
 					// EMPTY_SEARCH_ERR is harmless, don't report it
-					if (e.message !== EMPTY_SEARCH_ERR) {
-						console.log(e)
+					if (error.message !== EMPTY_SEARCH_ERR) {
+						console.error(error)
 					}
 					// if there was a problem while parsing, use default state instead
 					return _initialState
@@ -170,7 +170,6 @@ export const SearchWrapper = withRouter(
 
 			let newState = createStateFromURL()
 			setSearchState((oldState) => {
-				console.log("updating state", oldState, newState)
 				return newState
 			})
 		}, [_initialState, location, urlToState])
@@ -183,14 +182,12 @@ export const SearchWrapper = withRouter(
 			}
 			const formattedState = await onSearchStateChange(newSearchState)
 			const url = encodeURL(formattedState)
-			console.log("forced", formattedState)
 			history.replace(url)
 		}
 
 		const isChildrenFunction = typeof children === "function"
 
 		const mergedState = { ...searchState, page }
-		console.log("mergedState", mergedState)
 
 		return (
 			<InstantSearch

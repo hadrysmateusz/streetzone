@@ -8,8 +8,6 @@ export default (input) => {
 		userSince: Date.now(),
 		profilePictureRef: null,
 		profilePictureURLs: input.picture ? [input.picture] : null,
-		items: [],
-		permissions: [],
 		roles: [],
 		feedback: [],
 		badges: [],
@@ -19,6 +17,7 @@ export default (input) => {
 		savedDrops: [],
 		followedUsers: [],
 		followedDrops: [],
+		uid: input.uid,
 		importedFrom: input.importedFrom || null
 	}
 }

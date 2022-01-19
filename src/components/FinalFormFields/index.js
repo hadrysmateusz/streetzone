@@ -1,52 +1,16 @@
 import React from "react"
-import { Field } from "react-final-form"
-import ReactMarkdown from "react-markdown"
+import { Field, useField } from "react-final-form"
 import styled, { css } from "styled-components/macro"
+import StarRatings from "react-star-ratings"
 
-import { Input, Textarea } from "../FormElements"
-import {
-	LiveFileHandler,
-	FileHandlerText,
-	FileHandler,
-	FileHandlerSingle
-} from "../FileHandler"
+import { Input, Textarea, FormElementContainer } from "../FormElements"
+import { LiveFileHandler, FileHandler, FileHandlerSingle } from "../FileHandler"
 import DropdownFinalform from "../DropdownFinalform"
 import MultiTextInputFinalform from "../MultiTextInputFinalform"
+import TagsInput from "../FormElements/TagsInput"
 
-import { overlayCommon } from "../../style-utils"
-
-export const ContentEditorContainer = styled.div`
-	display: grid;
-	max-width: 100%;
-	grid-template-columns: 1fr 1fr;
-	gap: var(--spacing2);
-
-	> * {
-		min-width: 0;
-	}
-`
-
-export const PreviewStyles = styled.div`
-	width: 100%;
-	margin: 0 auto;
-	border: 1px solid var(--gray25);
-	padding: 0 var(--spacing2);
-	position: relative;
-
-	:empty {
-		::before {
-			${overlayCommon}
-			content: "Podgląd";
-			color: var(--gray100);
-			font-size: 3.5rem;
-			font-weight: bold;
-		}
-	}
-
-	img {
-		max-width: 100%;
-		max-height: 900px;
-	}
+export const FieldLabel = styled.div`
+	font-weight: bold;
 `
 
 export const Section = styled.div`
@@ -170,6 +134,26 @@ export const DropdownFF = ({
 	</Section>
 )
 
+export const TagsInputFF = ({ label, name, placeholder, isClearable, info }) => (
+	<Section>
+		<div className="header">{label}</div>
+		<Field name={name} type="select">
+			{({ input, meta }) => {
+				const error = meta.error && meta.touched ? meta.error : null
+				return (
+					<TagsInput
+						{...input}
+						placeholder={placeholder}
+						error={error}
+						isClearable={isClearable}
+						info={info}
+					/>
+				)
+			}}
+		</Field>
+	</Section>
+)
+
 export const FileHandlerFF = ({ label, name, info }) => (
 	<Section>
 		<div className="header">{label}</div>
@@ -209,7 +193,7 @@ export const FileHandlerSingleFF = ({ label, name, info }) => (
 	</Section>
 )
 
-export const ProfilePictureFF = ({ label, name, info }) => (
+export const UserImageFF = ({ label, name, info }) => (
 	<Section>
 		<div className="header">{label}</div>
 		<Field name={name}>
@@ -248,22 +232,88 @@ export const LiveFileHandlerFF = ({ label, name, uploadPath, info }) => (
 	</Section>
 )
 
-export const MarkdownEditorFF = ({ label, name, info }) => (
+export const RatingFF = ({ label, name, info }) => (
 	<Section>
 		<div className="header">{label}</div>
 		<Field name={name}>
 			{({ input, meta }) => {
 				const error = meta.error && meta.touched ? meta.error : null
-				const { value } = input
 				return (
-					<ContentEditorContainer>
-						<FileHandlerText {...input} error={error} info={info} />
-						<PreviewStyles>
-							<ReactMarkdown source={value} escapeHtml={false} />
-						</PreviewStyles>
-					</ContentEditorContainer>
+					<FormElementContainer error={error} info={info}>
+						<StarRatings
+							rating={+input.value}
+							changeRating={input.onChange}
+							starRatedColor="gold"
+							starHoverColor="#ffc311"
+							numberOfStars={5}
+							starDimension="20px"
+							starSpacing="2px"
+						/>
+					</FormElementContainer>
 				)
 			}}
 		</Field>
 	</Section>
 )
+
+export const withFormFieldWrapper = (C) => (props) => {
+	let { label, showLabel = true, placeholder, name, ...rest } = props
+
+	if (showLabel && !label && process.env.NODE_ENV === "development") {
+		console.warn(
+			"A form field is missing a label. If you don't want to use a label for this field, give it showLabel={false}"
+		)
+	}
+
+	// show label if it's provided and not intentionally hidden
+	showLabel = !!label && showLabel !== false
+	// if placeholder is not provided it defaults to the same value as label
+	// if set to null, no placeholder will be shown
+	placeholder = props.placeholder !== undefined ? props.placeholder : props.label
+
+	return (
+		<Section>
+			{showLabel && <FieldLabel>{props.label}</FieldLabel>}
+			<C placeholder={placeholder} {...rest} />
+		</Section>
+	)
+}
+
+export const useFinalFormFieldAdapter = (name) => {
+	const { input, meta } = useField(name)
+	const error = meta.error && meta.touched ? meta.error : null
+	return { ...input, error }
+}
+
+export const withFinalFormFieldAdapter = (C) => (props) => {
+	const finalFormAdapterProps = useFinalFormFieldAdapter(props.name)
+	return <C {...props} {...finalFormAdapterProps} />
+}
+
+// export const withFinalFormWrapper = (C) => (props) => {
+// 	let { label, showLabel = true, placeholder, name, ...rest } = props
+
+// 	if (showLabel && !label && process.env.NODE_ENV === "development") {
+// 		console.warn(
+// 			"A final form field is missing a label. If you don't want to use a label for this field, give it showLabel={false}"
+// 		)
+// 	}
+
+// 	// show label if it's provided and not intentionally hidden
+// 	showLabel = !!label && showLabel !== false
+// 	// if placeholder is not provided it defaults to the same value as label
+// 	// if set to null, no placeholder will be shown
+// 	placeholder = props.placeholder !== undefined ? props.placeholder : props.label
+
+// 	return (
+// 		<Section>
+// 			{showLabel && <FieldLabel>{props.label}</FieldLabel>}
+// 			<Field name={props.name}>
+// 				{({ input, meta }) => {
+// 					const error = meta.error && meta.touched ? meta.error : null
+// 					return <C {...input} placeholder={placeholder} error={error} {...rest} />
+// 				}}
+// 			</Field>
+// 		</Section>
+// 	)
+// }

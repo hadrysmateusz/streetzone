@@ -18,7 +18,8 @@ const OuterContainer = styled.div`
 `
 
 const ClearFiltersButton = styled.div`
-	color: ${(p) => p.theme.colors.danger[50]};
+	color: var(--danger50);
+	font-weight: var(--semi-bold);
 	:hover {
 		text-decoration: underline;
 	}
@@ -40,7 +41,7 @@ const Container = styled.div`
 const Item = styled.div`
 	padding: var(--spacing2);
 	background: white;
-	border: 1px solid ${(p) => p.theme.colors.gray[75]};
+	border: 1px solid var(--gray75);
 	margin: var(--spacing1);
 `
 

@@ -45,7 +45,7 @@ const validate = (values) => {
 		errors.passwordConfirm = FORM_ERR.PASSWORDS_NOT_MATCHING
 	}
 
-	console.log(errors)
+	console.warn(errors)
 
 	return errors
 }
@@ -53,7 +53,7 @@ const validate = (values) => {
 const SignUpForm = ({ onSuccess, onError }) => {
 	const firebase = useFirebase()
 
-	const onSubmit = async (values, actions) => {
+	const onSubmit = async (values, form) => {
 		try {
 			// get values and attempt sign-up
 			const { name, email, password } = values
@@ -66,11 +66,11 @@ const SignUpForm = ({ onSuccess, onError }) => {
 
 			// Create user in db
 			const userId = authUser.user.uid
-			const userData = formatUserData({ name, email })
+			const userData = formatUserData({ name, email, uid: userId })
 			await firebase.user(userId).set(userData)
 
 			// reset the form
-			actions.reset()
+			setTimeout(form.reset)
 
 			// exit successfully
 			onSuccess(`Witaj w ${CONST.BRAND_NAME}!`)

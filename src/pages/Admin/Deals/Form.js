@@ -7,19 +7,14 @@ import DisplayJSONButton from "../../../components/DisplayJSONButton"
 import LoadingSpinner from "../../../components/LoadingSpinner"
 import {
 	TextFF,
-	DropdownFF,
 	FileHandlerSingleFF,
 	TextareaFF
 } from "../../../components/FinalFormFields"
 
-import { useDesignerOptions } from "../../../hooks"
-
 import { StyledForm } from "../Common"
 
-export default ({ onSubmit, initialValues, edit }) => {
-	const designerOptions = useDesignerOptions()
-
-	return !initialValues && edit ? (
+export default ({ onSubmit, initialValues, edit }) =>
+	!initialValues && edit ? (
 		<LoadingSpinner />
 	) : (
 		<Form
@@ -41,17 +36,6 @@ export default ({ onSubmit, initialValues, edit }) => {
 							label="Opis"
 							placeholder="Gdzie, jak, ile itd."
 							name="description"
-						/>
-
-						<DropdownFF
-							label="Projektanci / Marki"
-							name="designers"
-							placeholder="Projektanci lub marki, których dotyczy okazja"
-							options={designerOptions}
-							isClearable={true}
-							isSearchable={true}
-							isMulti={true}
-							info="Jedna lub więcej"
 						/>
 
 						<TextFF
@@ -86,4 +70,3 @@ export default ({ onSubmit, initialValues, edit }) => {
 			}}
 		/>
 	)
-}

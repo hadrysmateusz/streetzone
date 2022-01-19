@@ -2,7 +2,7 @@ import React from "react"
 import styled from "styled-components/macro"
 import { Link } from "react-router-dom"
 
-import { FluidImage } from "../Image"
+import FirebaseImage from "../FirebaseImage"
 
 import { route } from "../../utils"
 
@@ -26,21 +26,17 @@ const Title = styled.div`
 	align-items: center;
 `
 
-const Article = ({ id, title, imageUrls, mainImageIndex }) => {
-	const imageURL = imageUrls[mainImageIndex]
+const Article = React.memo(({ id, title, attachments, mainImageIndex }) => (
+	<ArticleContainer>
+		<Link to={route("BLOG_POST", { id })}>
+			<FirebaseImage storageRef={attachments[mainImageIndex]} size="M" />
+			<Title>{title}</Title>
+		</Link>
+	</ArticleContainer>
+))
 
-	return (
-		<ArticleContainer>
-			<Link to={route("BLOG_POST", { id })}>
-				<FluidImage url={imageURL} />
-				<Title>{title}</Title>
-			</Link>
-		</ArticleContainer>
-	)
-}
-
-const ArticleList = ({ articles }) => {
-	return articles.map((article) => <Article key={article.id} {...article} />)
-}
+const ArticleList = React.memo(({ articles }) =>
+	articles.map((article) => <Article key={article.id} {...article} />)
+)
 
 export default ArticleList

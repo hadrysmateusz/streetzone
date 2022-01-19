@@ -5,12 +5,12 @@ import styled from "styled-components/macro"
 import { StyledLink } from "../../components/Basics"
 import { LoaderButton } from "../../components/Button"
 import FormError from "../../components/FormElements/FormError"
-
+import HelmetBasics from "../../components/HelmetBasics"
 import { TextFF } from "../../components/FinalFormFields"
 import { CenteredContainer } from "../../components/Containers"
 import Separator from "../../components/Separator"
 
-import { ROUTES, FORM_ERR, CONST } from "../../constants"
+import { FORM_ERR, CONST } from "../../constants"
 import { route } from "../../utils"
 import { useFirebase } from "../../hooks"
 
@@ -44,15 +44,6 @@ const validate = ({ email }) => {
 	}
 
 	return errors
-}
-
-const PasswordForgetPage = () => {
-	return (
-		<CenteredContainer>
-			<Heading>Zresetuj hasło</Heading>
-			<PasswordForget />
-		</CenteredContainer>
-	)
 }
 
 const PasswordForget = () => {
@@ -90,14 +81,14 @@ const PasswordForget = () => {
 const PasswordForgetForm = ({ onSuccess, onError }) => {
 	const firebase = useFirebase()
 
-	const onSubmit = async (values, actions) => {
+	const onSubmit = async (values, form) => {
 		const { email } = values
 
 		try {
 			await firebase.resetPassword(email)
 
 			// Reset form
-			actions.reset()
+			setTimeout(form.reset)
 
 			onSuccess()
 		} catch (err) {
@@ -129,12 +120,15 @@ const PasswordForgetForm = ({ onSuccess, onError }) => {
 	)
 }
 
-// deprecated
-const PasswordForgetLink = () => (
-	<p>
-		<StyledLink to={ROUTES.PASSWORD_FORGET}>Zapomniałeś hasła?</StyledLink>
-	</p>
+const PasswordForgetPage = () => (
+	<>
+		<HelmetBasics fullTitle="Zresetuj hasło" />
+		<CenteredContainer>
+			<Heading>Zresetuj hasło</Heading>
+			<PasswordForget />
+		</CenteredContainer>
+	</>
 )
 
 export default PasswordForgetPage
-export { PasswordForgetForm, PasswordForgetLink }
+export { PasswordForgetForm }

@@ -6,8 +6,7 @@ import FormElementContainer from "./container"
 import { disabledStyles, hoverStyles, focusStyles, basicStyles } from "./commonStyles"
 
 const StyledSelect = styled(Select).attrs({
-	classNamePrefix: "react-select",
-	placeholder: "Wybierz..."
+	classNamePrefix: "react-select"
 })`
 	.react-select--container {
 	}
@@ -34,6 +33,7 @@ const StyledSelect = styled(Select).attrs({
 
 	.react-select__value-container {
 		padding: 0 var(--spacing2);
+		overflow: visible;
 	}
 
 	.react-select__indicators {
@@ -41,6 +41,7 @@ const StyledSelect = styled(Select).attrs({
 
 	.react-select__menu {
 		border-radius: 0;
+		z-index: 80;
 	}
 	.react-select__menu-list {
 	}
@@ -61,12 +62,24 @@ const StyledSelect = styled(Select).attrs({
 	}
 `
 
-const Dropdown = ({ info, error, disabled, ...rest }) => {
-	return (
-		<FormElementContainer info={info} error={error}>
-			<StyledSelect hasError={!!error} isDisabled={disabled} {...rest} />
-		</FormElementContainer>
-	)
-}
+const Dropdown = ({
+	placeholder = "Wybierz",
+	noOptionsMessage = "Brak opcji",
+	info,
+	error,
+	disabled,
+	...rest
+}) => (
+	<FormElementContainer info={info} error={error}>
+		<StyledSelect
+			hasError={!!error}
+			isDisabled={disabled}
+			placeholder={placeholder}
+			// noOptionsMessage is a function that receives inputValue but I don't care about that
+			noOptionsMessage={() => noOptionsMessage}
+			{...rest}
+		/>
+	</FormElementContainer>
+)
 
 export default Dropdown

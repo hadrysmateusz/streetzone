@@ -1,10 +1,10 @@
 import React from "react"
 import styled from "styled-components/macro"
 import FormElementContainer from "./container"
-import Textarea from "react-textarea-autosize"
+import AutosizeTextarea from "react-textarea-autosize"
 import commonStyles from "./commonStyles"
 
-const StyledTextarea = styled(Textarea)`
+const StyledTextarea = styled(AutosizeTextarea)`
 	display: block;
 	font-size: var(--font-size--s) !important;
 	padding: var(--spacing2);
@@ -16,9 +16,12 @@ const StyledTextarea = styled(Textarea)`
 	${(p) => !p.autoResize && "max-height: var(--min-height);"}
 
 	${commonStyles}
+
+	border-color: ${(p) => p.hasError && "var(--danger50)"};
+
 `
 
-const Input = ({
+const Textarea = ({
 	icon,
 	info,
 	error,
@@ -26,17 +29,16 @@ const Input = ({
 	autoResize = true,
 	numberOfLines = 4,
 	...rest
-}) => {
-	return (
-		<FormElementContainer error={error} info={info}>
-			<StyledTextarea
-				disabled={disabled}
-				autoResize={autoResize}
-				numberOfLines={numberOfLines}
-				{...rest}
-			/>
-		</FormElementContainer>
-	)
-}
+}) => (
+	<FormElementContainer error={error} info={info}>
+		<StyledTextarea
+			disabled={disabled}
+			autoResize={autoResize}
+			numberOfLines={numberOfLines}
+			hasError={!!error}
+			{...rest}
+		/>
+	</FormElementContainer>
+)
 
-export default Input
+export default Textarea

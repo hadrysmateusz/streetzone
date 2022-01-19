@@ -4,14 +4,17 @@ import { PageContainer } from "../../../components/Containers"
 
 import useFirebase from "../../../hooks/useFirebase"
 import { formatDealDataForDb, MODE } from "../../../utils/formatting/formatDealData"
-import { ROUTES, CONST } from "../../../constants"
+import { CONST } from "../../../constants"
+import { route } from "../../../utils"
 
 import Form from "./Form"
+import { useFlash } from "../../../hooks"
 
 const Add = ({ history }) => {
 	const firebase = useFirebase()
+	const flashMessage = useFlash()
 
-	const onSubmit = async (values, actions) => {
+	const onSubmit = async (values, form) => {
 		try {
 			const file = values.file
 
@@ -28,14 +31,17 @@ const Add = ({ history }) => {
 			// Add to database
 			await firebase.deal(formattedData.id).set(formattedData)
 
-			// Reset form
-			actions.reset()
-
-			// Redirect
-			history.push(ROUTES.ADMIN_DEALS)
+			setTimeout(() => {
+				form.reset()
+				history.push(route("ADMIN_DEALS"))
+			})
 		} catch (error) {
-			alert("Wystąpił problem")
-			console.log(error)
+			console.error(error)
+			flashMessage({
+				type: "error",
+				text: "Wystąpił błąd",
+				details: "Więcej informacji w konsoli"
+			})
 		}
 	}
 

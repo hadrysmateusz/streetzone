@@ -10,10 +10,12 @@ export default ({ rating, comment }) => {
 
 	// Comment
 	if (!comment || comment.trim().length === 0) {
-		errors.description = FORM_ERR.IS_REQUIRED
+		errors.comment = FORM_ERR.IS_REQUIRED
 	} else if (comment && comment.length > CONST.COMMENT_MAX_CHARACTERS) {
-		errors.description = FORM_ERR.DESC_TOO_LONG
+		errors.comment = FORM_ERR.DESC_TOO_LONG
 	}
+
+	console.warn(errors)
 
 	return errors
 }
