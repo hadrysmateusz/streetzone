@@ -384,7 +384,13 @@ const PageHeaderDesktop = ({ authUser, location }) => {
                   }
                 >
                   {ACCOUNT_ROUTES.map((route) =>
-                    route.isHidden ? null : <SubmenuItem label={route.label} link={route.path} />
+                    route.isHidden ? null : (
+                      <SubmenuItem
+                        key={route.path + route.label}
+                        label={route.label}
+                        link={route.path}
+                      />
+                    )
                   )}
 
                   <SubmenuItem

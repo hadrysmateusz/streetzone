@@ -54,9 +54,9 @@ const FilterItem = ({ id, filterName, ...values }) => {
               <TextBlock>
                 <Text bold>{key}</Text>{" "}
                 {Object.entries(val).map(([subKey, subVal]) => (
-                  <>
+                  <React.Fragment key={subKey}>
                     <Text bold>{subKey}</Text> <Text>{subVal}</Text>
-                  </>
+                  </React.Fragment>
                 ))}
               </TextBlock>,
             ]

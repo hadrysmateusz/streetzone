@@ -114,7 +114,7 @@ export class SavedFilters extends Component {
         />
         <div>
           {this.state.filters.map((filter) => (
-            <ListItem>
+            <ListItem key={filter.id}>
               <Link to={{ search: `?search=${filter.query}` }}>{filter.name} </Link>
               <FontAwesomeIcon icon="times" onClick={() => this.removeFilter(filter.id)} />
             </ListItem>

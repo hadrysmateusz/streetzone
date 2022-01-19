@@ -12,75 +12,73 @@ import { itemDataHelpers, route } from "../../utils"
 const { formatSize } = itemDataHelpers
 
 const OuterContainer = styled.div`
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 `
 
 const ClearFiltersButton = styled.div`
-	color: var(--danger50);
-	font-weight: var(--semi-bold);
-	:hover {
-		text-decoration: underline;
-	}
-	cursor: pointer;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	flex: 0 0 var(--width);
-	margin-left: var(--spacing2);
+  color: var(--danger50);
+  font-weight: var(--semi-bold);
+  :hover {
+    text-decoration: underline;
+  }
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 0 0 var(--width);
+  margin-left: var(--spacing2);
 `
 
 const Container = styled.div`
-	font-size: var(--font-size--xs);
-	display: flex;
-	flex-flow: row wrap;
-	margin: calc(-1 * var(--spacing1));
+  font-size: var(--font-size--xs);
+  display: flex;
+  flex-flow: row wrap;
+  margin: calc(-1 * var(--spacing1));
 `
 
 const Item = styled.div`
-	padding: var(--spacing2);
-	background: white;
-	border: 1px solid var(--gray75);
-	margin: var(--spacing1);
+  padding: var(--spacing2);
+  background: white;
+  border: 1px solid var(--gray75);
+  margin: var(--spacing1);
 `
 
 const CurrentFilters = ({ items, history, clearFilters, refine, currentBreakpoint }) => {
-	// ignore the isArchived refinement
-	items = items.filter((a) => a.attribute !== "isArchived")
+  // ignore the isArchived refinement
+  items = items.filter((a) => a.attribute !== "isArchived")
 
-	return items && items.length > 0 ? (
-		<OuterContainer>
-			<Container>
-				{items.map((item) => {
-					if (item.attribute === "price") {
-						return <Item>Cena</Item>
-					} else if (item.attribute === "size") {
-						return item.currentRefinement.map((refinement) => (
-							<Item>{formatSize(refinement)}</Item>
-						))
-					} else {
-						return item.currentRefinement.map((refinement) => <Item>{refinement}</Item>)
-					}
-				})}
-				{items && items.length > 0 && (
-					<ClearFiltersButton
-						onClick={() => {
-							history.replace(route("MARKETPLACE"))
-							clearFilters()
-						}}
-					>
-						Wyczyść wszystko
-					</ClearFiltersButton>
-				)}
-			</Container>
-			{+currentBreakpoint >= 1 && <ResultsCount />}
-		</OuterContainer>
-	) : null
+  return items && items.length > 0 ? (
+    <OuterContainer>
+      <Container>
+        {items.map((item) => {
+          if (item.attribute === "price") {
+            return <Item key={item.attribute}>Cena</Item>
+          } else if (item.attribute === "size") {
+            return item.currentRefinement.map((refinement) => (
+              <Item key={refinement}>{formatSize(refinement)}</Item>
+            ))
+          } else {
+            return item.currentRefinement.map((refinement) => (
+              <Item key={refinement}>{refinement}</Item>
+            ))
+          }
+        })}
+        {items && items.length > 0 && (
+          <ClearFiltersButton
+            onClick={() => {
+              history.replace(route("MARKETPLACE"))
+              clearFilters()
+            }}
+          >
+            Wyczyść wszystko
+          </ClearFiltersButton>
+        )}
+      </Container>
+      {+currentBreakpoint >= 1 && <ResultsCount />}
+    </OuterContainer>
+  ) : null
 }
 
-export default compose(
-	connectCurrentRefinements,
-	withRouter,
-	withBreakpoints
-)(CurrentFilters)
+export default compose(connectCurrentRefinements, withRouter, withBreakpoints)(CurrentFilters)

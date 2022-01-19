@@ -708,9 +708,9 @@ const ScrollToTop = withRouter(({ children, shouldScroll, location }) => {
 const Routes = () => {
   return (
     <Switch>
-      {routes.map((route, i) => (
+      {routes.map((route) => (
         <Route
-          key={i}
+          key={(route.path ?? "") + (route.id ?? "") + (route.label ?? "")}
           exact={route.exact === false ? false : true}
           path={route.path}
           render={(props) => (

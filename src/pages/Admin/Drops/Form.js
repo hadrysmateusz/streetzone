@@ -28,7 +28,7 @@ const Label = styled.div`
   font-weight: bold;
 `
 
-export default ({ onSubmit, initialValues, edit }) => {
+const DropsForm = ({ onSubmit, initialValues, edit }) => {
   const designerOptions = useDesignerOptions()
 
   return !initialValues && edit ? (
@@ -176,3 +176,5 @@ export default ({ onSubmit, initialValues, edit }) => {
     />
   )
 }
+
+export default DropsForm

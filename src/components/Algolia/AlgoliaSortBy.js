@@ -37,6 +37,8 @@ class AlgoliaSortBy extends React.Component {
   render() {
     const { refine, currentRefinement, items, placeholder, defaultRefinement, ...rest } = this.props
 
+    console.log("sort by", items)
+
     return (
       <Media>
         {({ currentBreakpoint }) => {
@@ -58,8 +60,8 @@ class AlgoliaSortBy extends React.Component {
                   Sortuj
                 </label>
                 <StyledSelect id="filter-select" onChange={(e) => refine(e.currentTarget.value)}>
-                  {items.map((item, i) => (
-                    <option key={i} value={item.value}>
+                  {items.map((item) => (
+                    <option key={item.value} value={item.value}>
                       {item.label}
                     </option>
                   ))}

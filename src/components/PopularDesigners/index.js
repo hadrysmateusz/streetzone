@@ -66,13 +66,16 @@ const PopularDesigners = withBreakpoints(({ currentBreakpoint }) => {
       limit={limit}
       ignoreArchivedStatus
     >
-      {(hits) => (
-        <InnerContainer>
-          {hits.map((hit) => (
-            <Designer {...hit} />
-          ))}
-        </InnerContainer>
-      )}
+      {(hits) => {
+        console.log(hits)
+        return (
+          <InnerContainer>
+            {hits.map((hit) => (
+              <Designer key={hit.id} {...hit} />
+            ))}
+          </InnerContainer>
+        )
+      }}
     </StatelessSearchWrapper>
   )
 })

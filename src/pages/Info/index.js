@@ -166,7 +166,7 @@ const InfoPage = compose(
         )} */}
         <Main>
           <Switch>
-            {routes.map((route, i) =>
+            {routes.map((route) =>
               route.hidden ? null : (
                 <Route
                   exact
@@ -177,7 +177,7 @@ const InfoPage = compose(
                       <route.component />
                     </>
                   )}
-                  key={i}
+                  key={route.path}
                 />
               )
             )}
