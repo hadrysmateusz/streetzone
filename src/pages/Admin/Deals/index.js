@@ -15,126 +15,126 @@ import { useImage, useFirebase, useFirestoreCollection } from "../../../hooks"
 const { formatDesigners } = itemDataHelpers
 
 const ImageContainer = styled.div`
-  img {
-    max-height: 100px;
-    max-width: 300px;
-  }
+	img {
+		max-height: 100px;
+		max-width: 300px;
+	}
 `
 
 const DealLink = styled.a`
-  ${ellipsis}
+	${ellipsis}
 `
 
 const List = styled.div`
-  display: grid;
-  gap: var(--spacing2);
-  grid-template-columns: 1fr 1fr;
+	display: grid;
+	gap: var(--spacing2);
+	grid-template-columns: 1fr 1fr;
 
-  > * {
-    overflow: hidden;
-  }
+	> * {
+		overflow: hidden;
+	}
 `
 
 const OuterContainer = styled.div`
-  border: 1px solid black;
-  padding: var(--spacing3);
+	border: 1px solid black;
+	padding: var(--spacing3);
 `
 
 const Deal = ({
-  id,
-  imageRef,
-  title,
-  description,
-  designers,
-  value,
-  link,
-  createdAt,
-  editedAt,
+	id,
+	imageRef,
+	title,
+	description,
+	designers,
+	value,
+	link,
+	createdAt,
+	editedAt
 }) => {
-  const firebase = useFirebase()
+	const firebase = useFirebase()
 
-  // console.log(imageRef)
+	console.log(imageRef)
 
-  const { imageURL } = useImage(imageRef)
+	const { imageURL } = useImage(imageRef)
 
-  const formattedDesigners = formatDesigners(designers)
+	const formattedDesigners = formatDesigners(designers)
 
-  const onDelete = (id) => {
-    try {
-      const shouldDelete = window.confirm(`Czy napewno chcesz USUNĄĆ "${title}"?`)
-      if (shouldDelete) {
-        firebase.deal(id).delete()
-      }
-    } catch (error) {
-      console.log(error)
-      alert(error)
-    }
-  }
+	const onDelete = (id) => {
+		try {
+			const shouldDelete = window.confirm(`Czy napewno chcesz USUNĄĆ "${title}"?`)
+			if (shouldDelete) {
+				firebase.deal(id).delete()
+			}
+		} catch (error) {
+			console.log(error)
+			alert(error)
+		}
+	}
 
-  return (
-    <OuterContainer>
-      <TextBlock color="gray0" uppercase>
-        <b>{formattedDesigners}</b>
-      </TextBlock>
+	return (
+		<OuterContainer>
+			<TextBlock color="gray0" uppercase>
+				<b>{formattedDesigners}</b>
+			</TextBlock>
 
-      <TextBlock bold size="l">
-        {title}
-      </TextBlock>
+			<TextBlock bold size="l">
+				{title}
+			</TextBlock>
 
-      <TextBlock color="gray0" size="xs" uppercase>
-        Dodano {moment(createdAt).format("D.M.YY o HH:mm")}
-      </TextBlock>
+			<TextBlock color="gray0" size="xs" uppercase>
+				Dodano {moment(createdAt).format("D.M.YY o HH:mm")}
+			</TextBlock>
 
-      <TextBlock color="gray0" size="xs" uppercase>
-        Edytowano {moment(editedAt).format("D.M.YY o HH:mm")}
-      </TextBlock>
+			<TextBlock color="gray0" size="xs" uppercase>
+				Edytowano {moment(editedAt).format("D.M.YY o HH:mm")}
+			</TextBlock>
 
-      {value && (
-        <TextBlock color="black100">
-          Wartość: <b>{value}</b>
-        </TextBlock>
-      )}
+			{value && (
+				<TextBlock color="black100">
+					Wartość: <b>{value}</b>
+				</TextBlock>
+			)}
 
-      <DealLink href={link}>{link}</DealLink>
+			<DealLink href={link}>{link}</DealLink>
 
-      <TextBlock color="#333">Opis: {description}</TextBlock>
+			<TextBlock color="#333">Opis: {description}</TextBlock>
 
-      <ImageContainer>
-        <img src={imageURL} alt="" />
-      </ImageContainer>
+			<ImageContainer>
+				<img src={imageURL} alt="" />
+			</ImageContainer>
 
-      <ButtonContainer>
-        <Button as={Link} to={route("ADMIN_DEALS_EDIT", { id })}>
-          Edytuj
-        </Button>
-        <Button onClick={() => onDelete(id)}>Usuń</Button>
-      </ButtonContainer>
-    </OuterContainer>
-  )
+			<ButtonContainer>
+				<Button as={Link} to={route("ADMIN_DEALS_EDIT", { id })}>
+					Edytuj
+				</Button>
+				<Button onClick={() => onDelete(id)}>Usuń</Button>
+			</ButtonContainer>
+		</OuterContainer>
+	)
 }
 
 const DealsManagement = () => {
-  const deals = useFirestoreCollection("deals")
+	const deals = useFirestoreCollection("deals")
 
-  const hasDeals = deals && deals.length > 0
+	const hasDeals = deals && deals.length > 0
 
-  return !deals ? (
-    <LoadingSpinner fixedHeight />
-  ) : (
-    <PageContainer>
-      <TextBlock size="xl" bold>
-        Okazje
-      </TextBlock>
+	return !deals ? (
+		<LoadingSpinner fixedHeight />
+	) : (
+		<PageContainer>
+			<TextBlock size="xl" bold>
+				Okazje
+			</TextBlock>
 
-      <ButtonContainer>
-        <Button primary big fullWidth as={Link} to={route("ADMIN_DEALS_ADD")}>
-          Dodaj okazje
-        </Button>
-      </ButtonContainer>
+			<ButtonContainer>
+				<Button primary big fullWidth as={Link} to={route("ADMIN_DEALS_ADD")}>
+					Dodaj okazje
+				</Button>
+			</ButtonContainer>
 
-      <List>{hasDeals && deals.map((deal) => <Deal {...deal} />)}</List>
-    </PageContainer>
-  )
+			<List>{hasDeals && deals.map((deal) => <Deal {...deal} />)}</List>
+		</PageContainer>
+	)
 }
 
 export default DealsManagement

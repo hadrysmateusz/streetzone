@@ -14,295 +14,298 @@ import { useFirebase } from "../../hooks"
 import promotingLevels from "../../constants/promoting_levels"
 
 const PageHeader = styled.div`
-  font-weight: bold;
-  text-align: center;
-  text-transform: uppercase;
-  margin: 0 0 var(--spacing3);
-  @media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
-    margin: var(--spacing3) 0 var(--spacing4);
-  }
+	font-weight: bold;
+	text-align: center;
+	text-transform: uppercase;
+	margin: 0 0 var(--spacing3);
+	@media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
+		margin: var(--spacing3) 0 var(--spacing4);
+	}
 `
 
 const PromoteOptionsContainer = styled.div`
-  display: grid;
-  gap: var(--spacing3);
-  @media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
-    grid-template-columns: 1fr 1.12fr 1fr;
-    align-items: center;
-  }
+	display: grid;
+	gap: var(--spacing3);
+	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
+		grid-template-columns: 1fr 1.12fr 1fr;
+		align-items: center;
+	}
 
-  @media (min-width: ${(p) => p.theme.breakpoints[5]}px) {
-    gap: var(--spacing4);
-  }
+	@media (min-width: ${(p) => p.theme.breakpoints[5]}px) {
+		gap: var(--spacing4);
+	}
 `
 
 const PromoteOptionCardContainer = styled.div`
-  @media (max-width: ${(p) => p.theme.breakpoints[2] - 1}px) {
-    order: ${(p) => (p.main ? 1 : 2)};
-  }
-  display: flex;
-  flex-direction: column;
-  border: 1px solid var(--gray75);
-  height: auto;
-  @media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
-    min-height: ${(p) => (p.main ? "480px" : "390px")};
-  }
+	@media (max-width: ${(p) => p.theme.breakpoints[2] - 1}px) {
+		order: ${(p) => (p.main ? 1 : 2)};
+	}
+	display: flex;
+	flex-direction: column;
+	border: 1px solid var(--gray75);
+	height: auto;
+	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
+		min-height: ${(p) => (p.main ? "480px" : "390px")};
+	}
 `
 
 const InnerContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  padding: var(--spacing3);
-  width: 100%;
+	display: flex;
+	flex-direction: column;
+	flex: 1;
+	padding: var(--spacing3);
+	width: 100%;
 `
 
 const ManualLink = styled.div`
-  margin-top: var(--spacing3);
-  color: var(--gray0);
-  text-transform: uppercase;
-  font-size: var(--fs-xs);
-  text-align: center;
-  :hover {
-    color: var(--black0);
-  }
+	margin-top: var(--spacing3);
+	color: var(--gray0);
+	text-transform: uppercase;
+	font-size: var(--fs-xs);
+	text-align: center;
+	:hover {
+		color: var(--black0);
+	}
 `
 
 const Header = styled.div`
-  background: ${(p) => (p.main ? "var(--black0)" : "var(--gray75)")};
-  color: ${(p) => (p.main ? "white" : "var(--black75)")};
-  font-size: var(--fs-m);
-  @media (min-width: ${(p) => p.theme.breakpoints[4]}px) {
-    font-size: ${(p) => (p.main ? "var(--fs-l)" : "var(--fs-m)")};
-  }
-  padding: var(--spacing2) 0;
-  text-transform: uppercase;
-  display: flex;
-  justify-content: center;
-  font-weight: bold;
+	background: ${(p) => (p.main ? "var(--black0)" : "var(--gray75)")};
+	color: ${(p) => (p.main ? "white" : "var(--black75)")};
+	font-size: var(--fs-m);
+	@media (min-width: ${(p) => p.theme.breakpoints[4]}px) {
+		font-size: ${(p) => (p.main ? "var(--fs-l)" : "var(--fs-m)")};
+	}
+	padding: var(--spacing2) 0;
+	text-transform: uppercase;
+	display: flex;
+	justify-content: center;
+	font-weight: bold;
 `
 
 const ErrorContainer = styled.div`
-  margin-top: var(--spacing3);
-  color: var(--danger50);
-  text-transform: uppercase;
-  font-size: var(--fs-xs);
-  text-align: center;
+	margin-top: var(--spacing3);
+	color: var(--danger50);
+	text-transform: uppercase;
+	font-size: var(--fs-xs);
+	text-align: center;
 `
 
 const List = styled.div`
-  display: grid;
-  gap: var(--spacing3);
-  margin-bottom: auto;
-  align-content: start;
-  flex-grow: 1;
+	display: grid;
+	gap: var(--spacing3);
+	margin-bottom: auto;
+	align-content: start;
+	flex-grow: 1;
 `
 
 const ListItem = styled.div`
-  text-align: center;
-  color: var(--black0);
-  font-size: var(--fs-s);
-  @media (min-width: ${(p) => p.theme.breakpoints[4]}px) {
-    font-size: var(--fs-m);
-  }
+	text-align: center;
+	color: var(--black0);
+	font-size: var(--fs-s);
+	@media (min-width: ${(p) => p.theme.breakpoints[4]}px) {
+		font-size: var(--fs-m);
+	}
 `
 
 const Price = styled.div`
-  font-size: var(--fs-xl);
-  font-weight: bold;
-  color: var(--black50);
-  text-align: center;
-  margin: var(--spacing3) 0;
+	font-size: var(--fs-xl);
+	font-weight: bold;
+	color: var(--black50);
+	text-align: center;
+	margin: var(--spacing3) 0;
 
-  ::after {
-    content: "zł";
-    color: var(--gray50);
-    font-size: var(--fs-l);
-    margin-left: var(--spacing2);
-  }
+	::after {
+		content: "zł";
+		color: var(--gray50);
+		font-size: var(--fs-l);
+		margin-left: var(--spacing2);
+	}
 
-  @media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
-    font-size: 42px;
-  }
+	@media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
+		font-size: 42px;
+	}
 `
 
-var getIPAddress = async function () {
-  try {
-    const res = await axios.get("https://api.ipify.org")
-    return res.data
-  } catch (err) {
-    // TODO: figure out how to handle this
-    console.log(err)
-  }
+var getIPAddress = async function() {
+	try {
+		const res = await axios.get("https://api.ipify.org")
+		return res.data
+	} catch (err) {
+		// TODO: figure out how to handle this
+		console.log(err)
+	}
 }
 
 const PromoteOptionCard = ({ name, price, level, items = [], main = false, itemId }) => {
-  const firebase = useFirebase()
-  const [isLoading, setIsLoading] = useState(false)
-  const [redirectUri, setRedirectUri] = useState()
-  const [error, setError] = useState(null)
+	const firebase = useFirebase()
+	const [isLoading, setIsLoading] = useState(false)
+	const [redirectUri, setRedirectUri] = useState()
+	const [error, setError] = useState(null)
 
-  const onClick = async () => {
-    setIsLoading(true)
-    const ip = await getIPAddress()
-    const data = { itemId, level, customerIp: ip }
-    const promote = firebase.functions.httpsCallable("promote")
+	const onClick = async () => {
+		setIsLoading(true)
+		const ip = await getIPAddress()
+		const data = { itemId, level, customerIp: ip }
+		const promote = firebase.functions.httpsCallable("promote")
 
-    try {
-      const res = await promote(data)
+		try {
+			const res = await promote(data)
 
-      if (!res.data.redirectUri) {
-        throw Error("No redirectUri received")
-      }
+			if (!res.data.redirectUri) {
+				throw Error("No redirectUri received")
+			}
 
-      setRedirectUri(res.data.redirectUri)
+			setRedirectUri(res.data.redirectUri)
 
-      window.open(res.data.redirectUri, "_blank")
+			window.open(res.data.redirectUri, "_blank")
 
-      // TODO: investigate this API
-      // https://developer.mozilla.org/en-US/docs/Web/API/Window/open
-    } catch (err) {
-      setError(err)
-      console.log("error:", err)
-    } finally {
-      setIsLoading(false)
-    }
-  }
+			// TODO: investigate this API
+			// https://developer.mozilla.org/en-US/docs/Web/API/Window/open
+		} catch (err) {
+			setError(err)
+			console.log("error:", err)
+		} finally {
+			setIsLoading(false)
+		}
+	}
 
-  return (
-    <PromoteOptionCardContainer main={main}>
-      <Header main={main}>{name}</Header>
-      <InnerContainer>
-        <List>
-          {items.map((item, i) => (
-            <ListItem key={i}>{item}</ListItem>
-          ))}
-        </List>
-        <Price>{price}</Price>
-        <LoaderButton
-          isLoading={isLoading}
-          text="Wybierz"
-          loadingText="Przekierowywanie do płatności"
-          fullWidth
-          primary
-          onClick={onClick}
-          disabled={isLoading}
-        />
-        {error && <ErrorContainer>Wystąpił problem, spróbuj ponownie później</ErrorContainer>}
-        {redirectUri && (
-          <ManualLink>
-            <a href={redirectUri} target="_blank" rel="noopener noreferrer">
-              Jeśli przekierowanie nie nastąpiło automatycznie, kliknij tutaj by przejść do
-              płatności.
-            </a>
-          </ManualLink>
-        )}
-      </InnerContainer>
-    </PromoteOptionCardContainer>
-  )
+	return (
+		<PromoteOptionCardContainer main={main}>
+			<Header main={main}>{name}</Header>
+			<InnerContainer>
+				<List>
+					{items.map((item, i) => (
+						<ListItem key={i}>{item}</ListItem>
+					))}
+				</List>
+				<Price>{price}</Price>
+				<LoaderButton
+					isLoading={isLoading}
+					text="Wybierz"
+					loadingText="Przekierowywanie do płatności"
+					fullWidth
+					primary
+					onClick={onClick}
+					disabled={isLoading}
+				/>
+				{error && (
+					<ErrorContainer>Wystąpił problem, spróbuj ponownie później</ErrorContainer>
+				)}
+				{redirectUri && (
+					<ManualLink>
+						<a href={redirectUri} target="_blank" rel="noopener noreferrer">
+							Jeśli przekierowanie nie nastąpiło automatycznie, kliknij tutaj by przejść
+							do płatności.
+						</a>
+					</ManualLink>
+				)}
+			</InnerContainer>
+		</PromoteOptionCardContainer>
+	)
 }
 
 const ItemPromotePage = ({ match, history }) => {
-  const firebase = useFirebase()
-  // const [error, setError] = useState(null)
-  const [item, setItem] = useState(null)
-  const itemId = match.params.id
+	const firebase = useFirebase()
+	const [error, setError] = useState(null)
+	const [item, setItem] = useState(null)
+	const itemId = match.params.id
 
-  useEffect(() => {
-    const getItem = async () => {
-      try {
-        // Get item from database
-        let item = await firebase.getItemData(itemId)
+	useEffect(() => {
+		const getItem = async () => {
+			try {
+				// Get item from database
+				let item = await firebase.getItemData(itemId)
 
-        setItem(item)
-      } catch (err) {
-        if (err instanceof NotFoundError) {
-          // TODO: better error handling
-          console.log(err)
-          // setError(err)
-        } else {
-          throw err
-        }
-      }
-    }
+				setItem(item)
+			} catch (err) {
+				if (err instanceof NotFoundError) {
+					setError(err)
+				} else {
+					throw err
+				}
+			}
+		}
 
-    getItem()
-  }, [itemId, firebase])
+		getItem()
+	}, [itemId, firebase])
 
-  return (
-    <PageContainer>
-      {item ? (
-        <div>
-          <PageHeader>
-            <span role="img" aria-label="promowane">
-              🔥 Promuj {item.name}
-            </span>
-          </PageHeader>
+	return (
+		<PageContainer>
+			{item ? (
+				<div>
+					<PageHeader>
+						<span role="img" aria-label="promowane">
+							🔥 Promuj {item.name}
+						</span>
+					</PageHeader>
 
-          <PromoteOptionsContainer>
-            <PromoteOptionCard
-              name={promotingLevels[0]}
-              level={0}
-              price={4.99}
-              itemId={itemId}
-              items={[
-                <div>
-                  <b>7 dni</b> promowania na tablicy
-                </div>,
-              ]}
-            />
-            <PromoteOptionCard
-              name={promotingLevels[1]}
-              level={1}
-              price={9.99}
-              itemId={itemId}
-              main
-              items={[
-                <div>
-                  <b>10 dni</b> promowania na tablicy
-                </div>,
-                <div>
-                  <b>5</b> dodatkowych odświeżeń
-                </div>,
-              ]}
-            />
-            <PromoteOptionCard
-              name={promotingLevels[2]}
-              level={2}
-              price={25}
-              itemId={itemId}
-              items={[
-                <div>
-                  <b>14 dni</b> promowania na tablicy
-                </div>,
-                <div>
-                  <b>10</b> dodatkowych odświeżeń
-                </div>,
-                <div>
-                  <b>7 dni</b> promowania na stronie głównej
-                </div>,
-                <div>
-                  <b>Promowanie na instagramie</b>
-                </div>,
-              ]}
-            />
-          </PromoteOptionsContainer>
-        </div>
-      ) : (
-        <LoadingSpinner />
-      )}
-    </PageContainer>
-  )
+					<PromoteOptionsContainer>
+						<PromoteOptionCard
+							name={promotingLevels[0]}
+							level={0}
+							price={4.99}
+							itemId={itemId}
+							items={[
+								<div>
+									<b>7 dni</b> promowania na tablicy
+								</div>
+							]}
+						/>
+						<PromoteOptionCard
+							name={promotingLevels[1]}
+							level={1}
+							price={9.99}
+							itemId={itemId}
+							main
+							items={[
+								<div>
+									<b>10 dni</b> promowania na tablicy
+								</div>,
+								<div>
+									<b>5</b> dodatkowych odświeżeń
+								</div>
+							]}
+						/>
+						<PromoteOptionCard
+							name={promotingLevels[2]}
+							level={2}
+							price={25}
+							itemId={itemId}
+							items={[
+								<div>
+									<b>14 dni</b> promowania na tablicy
+								</div>,
+								<div>
+									<b>10</b> dodatkowych odświeżeń
+								</div>,
+								<div>
+									<b>7 dni</b> promowania na stronie głównej
+								</div>,
+								<div>
+									<b>Promowanie na instagramie</b>
+								</div>
+							]}
+						/>
+					</PromoteOptionsContainer>
+				</div>
+			) : (
+				<LoadingSpinner />
+			)}
+		</PageContainer>
+	)
 }
 
 const condition = (authUser, pathParams) => {
-  const isAuthenticated = !!authUser
-  if (!isAuthenticated) {
-    return false
-  } else {
-    const isAuthorized = authUser.items.includes(pathParams.id)
-    return isAuthorized
-  }
+	const isAuthenticated = !!authUser
+	if (!isAuthenticated) {
+		return false
+	} else {
+		const isAuthorized = authUser.items.includes(pathParams.id)
+		return isAuthorized
+	}
 }
 
-export default compose(withRouter, withAuthorization(condition))(ItemPromotePage)
+export default compose(
+	withRouter,
+	withAuthorization(condition)
+)(ItemPromotePage)

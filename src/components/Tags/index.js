@@ -36,11 +36,11 @@ export const Tag = ({ tag }) => {
 }
 
 export default ({ tags }) => {
-	return tags ? (
+	return (
 		<TagsContainer>
 			{tags.map((tag) => (
 				<Tag tag={tag} key={tag} />
 			))}
 		</TagsContainer>
-	) : null
+	)
 }

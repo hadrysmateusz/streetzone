@@ -14,39 +14,33 @@ import { Heading } from "../common"
 import InfinitePosts from "../InfinitePostsList"
 
 const sidebarElements = [
-  { title: "Popularne artykuły", component: PopularArticles },
-  { title: "Popularne tagi", component: PopularTags },
+	{ title: "Popularne artykuły", component: PopularArticles },
+	{ title: "Popularne tagi", component: PopularTags }
 ]
 
 const BlogCategoryPage = ({ match }) => {
-  const { category } = match.params
+	const { category } = match.params
 
-  return (
-    <StatelessSearchWrapper
-      indexName={CONST.BLOG_POST_ALGOLIA_INDEX}
-      refinements={{ category }}
-      hitsPerPage={6}
-    >
-      <PageContainer>
-        <LayoutManager>
-          <Main>
-            <PageNav
-              breadcrumbs={[
-                ["Blog", "BLOG_HOME"],
-                [category, "BLOG_CATEGORY", { category: category }],
-              ]}
-              noMargin
-            />
-            <Heading category={category}>{category}</Heading>
-            <InfinitePosts />
-          </Main>
-          <Sidebar availableElements={sidebarElements} isRandom>
-            <PoweredByBox />
-          </Sidebar>
-        </LayoutManager>
-      </PageContainer>
-    </StatelessSearchWrapper>
-  )
+	return (
+		<StatelessSearchWrapper
+			indexName={CONST.BLOG_POST_ALGOLIA_INDEX}
+			refinements={{ category }}
+			hitsPerPage={6}
+		>
+			<PageContainer>
+				<LayoutManager>
+					<Main>
+						<PageNav breadcrumbs={[["Czytaj", "BLOG_HOME"]]} noMargin />
+						<Heading category={category}>{category}</Heading>
+						<InfinitePosts />
+					</Main>
+					<Sidebar availableElements={sidebarElements} isRandom>
+						<PoweredByBox />
+					</Sidebar>
+				</LayoutManager>
+			</PageContainer>
+		</StatelessSearchWrapper>
+	)
 }
 
 export default withRouter(BlogCategoryPage)

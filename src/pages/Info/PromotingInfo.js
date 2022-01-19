@@ -1,11 +1,7 @@
 import React from "react"
 
 const BumpInfoPage = () => {
-  return (
-    <div>
-      <p>Placeholder: Informacje o promowaniu i odświeżaniu</p>
-    </div>
-  )
+	return <h2>Promowanie</h2>
 }
 
 export default BumpInfoPage

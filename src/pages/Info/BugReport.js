@@ -1,11 +1,7 @@
 import React from "react"
 
 const BugReportPage = () => {
-  return (
-    <div>
-      <p>Placeholder: Formularz zgłaszania problemów</p>
-    </div>
-  )
+	return <h2>Zgłoś problem</h2>
 }
 
 export default BugReportPage

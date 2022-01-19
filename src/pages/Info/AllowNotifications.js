@@ -1,11 +1,7 @@
 import React from "react"
 
 const AllowNotifications = () => {
-  return (
-    <div>
-      <p>Placeholder: Instrukcje włączenia powiadomień</p>
-    </div>
-  )
+	return <h2>Włącz powiadomienia</h2>
 }
 
 export default AllowNotifications

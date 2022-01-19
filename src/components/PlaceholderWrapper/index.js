@@ -5,7 +5,7 @@ import styled from "styled-components/macro"
 import { arrayPad } from "../../utils"
 
 const DefaultPlaceholder = styled.div`
-  background: var(--almost-white);
+	background: var(--almost-white);
 `
 
 /**
@@ -13,22 +13,22 @@ const DefaultPlaceholder = styled.div`
  * where missing elements should be replaced by a placeholder
  */
 const PlaceholderWrapper = ({
-  children,
-  placeholder: PlaceholderComponent = DefaultPlaceholder,
-  placeholderProps = {},
-  count,
+	children,
+	placeholder: PlaceholderComponent = DefaultPlaceholder,
+	placeholderProps = {},
+	count
 }) => {
-  const childrenArray = React.Children.toArray(children)
+	const childrenArray = React.Children.toArray(children)
 
-  return arrayPad(childrenArray, count, null).map((child, i) =>
-    child === null ? <PlaceholderComponent key={`placeholder-${i}`} /> : child
-  )
+	return arrayPad(childrenArray, count, null).map((child, i) =>
+		child === null ? <PlaceholderComponent key={`placeholder-${i}`} /> : child
+	)
 }
 
 PlaceholderWrapper.propTypes = {
-  placeholder: PropTypes.component,
-  placeholderProps: PropTypes.object,
-  count: PropTypes.number.required,
+	placeholder: PropTypes.component,
+	placeholderProps: PropTypes.object,
+	count: PropTypes.number.required
 }
 
 export default PlaceholderWrapper
