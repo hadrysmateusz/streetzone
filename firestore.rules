@@ -1,5 +1,7 @@
 // TODO: subcollections can't be accessed (most of them should only be accessed from the server though)
 
+// TODO: overhaul security rules 
+
 service cloud.firestore {
   match /databases/{database}/documents {
     function isLoggedIn() {
