@@ -1,10 +1,10 @@
 import { nanoid } from "nanoid"
-import app from "firebase/app"
-import "firebase/auth"
-import "firebase/storage"
-import "firebase/firestore"
-import "firebase/messaging"
-import "firebase/functions"
+import app from "firebase/compat/app"
+import "firebase/compat/auth"
+import "firebase/compat/storage"
+import "firebase/compat/firestore"
+import "firebase/compat/messaging"
+import "firebase/compat/functions"
 
 import CONST from "../../constants/const"
 import areNotificationsSupported from "../../utils/areNotificationsSupported"
@@ -26,9 +26,9 @@ class Firebase {
     this.functions = app.functions()
     this.fn = this.functions.httpsCallable
 
-    if (process.env.NODE_ENV === "development") {
-      this.functions.useFunctionsEmulator("http://localhost:5001")
-    }
+    // if (process.env.NODE_ENV === "development") {
+    //   this.functions.useFunctionsEmulator("http://localhost:5001")
+    // }
 
     // use the locally emulated functions in development
     // if (process.env.NODE_ENV === "development") {
@@ -63,34 +63,15 @@ class Firebase {
     this.FieldValue = app.firestore.FieldValue
 
     // Messaging
-
     if (areNotificationsSupported()) {
+      // TODO: better handling for getting permissions and handling different possible scenarios
       this.messaging = app.messaging()
-
-      this.messaging.usePublicVapidKey(publicVapidKey)
-
-      // this.messaging
-      // 	.requestPermission()
-      // 	.then(() => {
-      // 		return this.messaging.getToken()
-      // 	})
-      // 	.then((token) => {
-      // 		this.sendNotificationTokenToDb(token)
-      // 	})
-      // 	.catch((e) => {
-      // 		console.log("error", e)
-      // 	})
-
-      this.messaging.onTokenRefresh(() => {
-        this.messaging
-          .getToken()
-          .then((token) => {
-            this.sendNotificationTokenToDb(token)
-          })
-          .catch((e) => {
-            console.error("error", e)
-          })
-      })
+      this.messaging
+        .getToken({ vapidKey: publicVapidKey })
+        .then((token) => this.sendNotificationTokenToDb(token))
+        .catch((e) => {
+          console.error("error", e)
+        })
 
       this.messaging.onMessage(function (payload) {
         console.log("Message received. ", payload)
@@ -277,17 +258,16 @@ class Firebase {
 
         // TODO: disable this request for permission (and replace with a better one)
         if (areNotificationsSupported()) {
-          this.messaging
-            .requestPermission()
-            .then(() => {
-              return this.messaging.getToken()
+          if (Notification.permission !== "granted") {
+            // TODO: support Safari's old callback API https://developer.mozilla.org/en-US/docs/Web/API/Notifications_API/Using_the_Notifications_API
+            Notification.requestPermission().then((permission) => {
+              if (permission === "granted") {
+                this.messaging.getToken().then((token) => {
+                  this.sendNotificationTokenToDb(token)
+                })
+              }
             })
-            .then((token) => {
-              this.sendNotificationTokenToDb(token)
-            })
-            .catch((e) => {
-              console.log("error", e)
-            })
+          }
         }
 
         next(authUser)
