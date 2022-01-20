@@ -1,9 +1,9 @@
 import React from "react"
 import { compose } from "recompose"
-import { withRouter } from "react-router-dom"
+import { withRouter, useHistory } from "react-router-dom"
 import { nanoid } from "nanoid"
 import { Form, Field } from "react-final-form"
-import styled, { css } from "styled-components/macro"
+import styled from "styled-components/macro"
 
 import { withAuthorization } from "../../components/UserSession"
 import { PageContainer } from "../../components/Containers"
@@ -13,6 +13,7 @@ import UserPreview from "../../components/UserPreview"
 import PageHeading from "../../components/PageHeading"
 
 import { useFirebase, useAuthentication, useUser } from "../../hooks"
+import { route } from "../../utils"
 
 const OuterContainer = styled.div`
   max-width: 430px;
@@ -32,6 +33,7 @@ const validate = (values) => {
 export const NewChat = ({ userId, flexibleTextarea = false }) => {
   const authUser = useAuthentication()
   const firebase = useFirebase()
+  const history = useHistory()
 
   const onSubmit = async (values, form) => {
     const message = values.message
@@ -81,6 +83,9 @@ export const NewChat = ({ userId, flexibleTextarea = false }) => {
       author: senderId,
       unread: true,
     })
+
+    // navigate to correct room in chat view
+    history.push(route("CHAT_ROOM", { roomId }))
   }
 
   return (

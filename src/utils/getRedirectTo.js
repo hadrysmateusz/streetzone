@@ -1,4 +1,6 @@
-import { route } from "."
+import { route } from "./route"
 
-export default (location) =>
-	location.state ? location.state.redirectTo : { pathname: route("HOME") }
+export const getRedirectTo = (location) =>
+  location.state ? location.state.redirectTo : { pathname: route("HOME") }
+
+export default getRedirectTo
