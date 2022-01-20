@@ -36,11 +36,11 @@ const Container = styled.div`
 `
 
 const InfoItemContainer = styled.div`
-      display: flex;
-      justify-content: space-between;
-      .value {
-        font-weight: bold;
-      }
+  display: flex;
+  justify-content: space-between;
+  .value {
+    font-weight: bold;
+  }
 `
 
 const InfoItem = ({ name, children }) => (
@@ -95,7 +95,7 @@ const DumbUserPreview = ({
 const SmartUserPreview = ({ userId, ...rest }) => {
   const [user, error] = useUser(userId)
   const profilePictureUrl = getProfilePictureURL(user, "S")
-  return (
+  return user ? (
     <DumbUserPreview
       user={user}
       userId={userId}
@@ -103,7 +103,7 @@ const SmartUserPreview = ({ userId, ...rest }) => {
       profilePictureUrl={profilePictureUrl}
       {...rest}
     />
-  )
+  ) : null
 }
 
 const NewUserPreviewWrapper = ({ user, id, ...rest }) => {
