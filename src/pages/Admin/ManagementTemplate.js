@@ -11,34 +11,38 @@ import { route } from "../../utils"
 import { List } from "./Common"
 
 const ManagementTemplate = ({
-	firestoreCollection,
-	addRouteName,
-	addRouteText,
-	heading,
-	PreviewComponent,
-	children
+  firestoreCollection,
+  addRouteName,
+  addRouteText,
+  heading,
+  PreviewComponent,
+  children,
 }) => {
-	const { results, isEmpty, isLoading } = useLiveCollection(firestoreCollection)
+  const { results, isEmpty, isLoading } = useLiveCollection(firestoreCollection)
 
-	return isLoading ? (
-		<LoadingSpinner fixedHeight />
-	) : (
-		<PageContainer>
-			<TextBlock size="xl" bold>
-				{heading}
-			</TextBlock>
+  console.log("ManagementTemplate", results)
 
-			<div>{children}</div>
+  return isLoading ? (
+    <LoadingSpinner fixedHeight />
+  ) : (
+    <PageContainer>
+      <TextBlock size="xl" bold>
+        {heading}
+      </TextBlock>
 
-			<ButtonContainer>
-				<LinkButton primary big fullWidth to={route(addRouteName)}>
-					{addRouteText}
-				</LinkButton>
-			</ButtonContainer>
+      <div>{children}</div>
 
-			<List>{!isEmpty && results.map((hit) => <PreviewComponent {...hit} />)}</List>
-		</PageContainer>
-	)
+      <ButtonContainer>
+        <LinkButton primary big fullWidth to={route(addRouteName)}>
+          {addRouteText}
+        </LinkButton>
+      </ButtonContainer>
+
+      <List>
+        {!isEmpty && results.map((hit, i) => <PreviewComponent key={hit.id ?? i} {...hit} />)}
+      </List>
+    </PageContainer>
+  )
 }
 
 export default ManagementTemplate

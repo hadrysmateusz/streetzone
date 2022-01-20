@@ -14,8 +14,7 @@
     "filesize": "^8.0.6",
     "final-form": "^4.20.6",
     "final-form-arrays": "^3.0.2",
-    "firebase": "^6.3.3",
-    "firebase-admin": "^6.5.0",
+    "firebase": "^9.6.3",
     "lodash.throttle": "^4.1.1",
     "moment": "^2.29.1",
     "qs": "^6.10.3",
@@ -79,7 +78,26 @@
     "emulators:prod": "firebase emulators:start --project prod --only functions,firestore"
   },
   "eslintConfig": {
-    "extends": "react-app"
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ],
+    "rules": {
+      "no-restricted-imports": [
+        "error",
+        {
+          "paths": [
+            {
+              "name": "styled-components",
+              "message": "Please import from styled-components/macro."
+            }
+          ],
+          "patterns": [
+            "!styled-components/macro"
+          ]
+        }
+      ]
+    }
   },
   "browserslist": [
     ">0.2%",

@@ -131,13 +131,7 @@ const ItemDetailsPage = ({ match, history }) => {
               )}
             </DatesContainer>
 
-            <ButtonContainer
-              noMargin
-              vertical
-              css={css`
-                margin-bottom: var(--spacing3);
-              `}
-            >
+            <ButtonContainer noMargin vertical style={{ marginBottom: "var(--spacing3)" }}>
               {isAuthorized ? (
                 <>
                   <Button accent fullWidth as={Link} to={route("ITEM_PROMOTE", { id: item.id })}>

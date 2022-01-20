@@ -5,8 +5,8 @@
  * @returns array of react components
  */
 const mapN = (number, fn) =>
-	Array(number)
-		.fill()
-		.map((el, i, arr) => fn(i))
+  Array(number)
+    .fill()
+    .map((el, i, arr) => fn(i))
 
 export default mapN

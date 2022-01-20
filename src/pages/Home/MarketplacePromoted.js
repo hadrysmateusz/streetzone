@@ -55,7 +55,9 @@ const Name = styled.div`
   text-overflow: ellipsis;
 `
 
-const PromotedItem = ({ attachments, mainImageIndex, name, designers, price, id }) => {
+const PromotedItem = (props) => {
+  const { attachments, mainImageIndex, name, designers, price, id } = props
+
   const formattedDesigners = formatDesigners(designers)
   const itemLink = route("ITEM_DETAILS", { id })
 
@@ -73,7 +75,7 @@ const PromotedItem = ({ attachments, mainImageIndex, name, designers, price, id 
         </ButtonContainer>
       </InfoContainer>
       <Link to={itemLink}>
-        <FirebaseImage storageRef={attachments[mainImageIndex]} />
+        <FirebaseImage storageRef={attachments[mainImageIndex]} size="M" />
       </Link>
     </PromotedItemContainer>
   )
@@ -85,16 +87,18 @@ const MarketplacePromoted = () => {
       <PageHeading emoji={"🔥"}>Promowane na tablicy</PageHeading>
       <StatelessSearchWrapper
         indexName={CONST.ITEMS_MARKETPLACE_DEFAULT_ALGOLIA_INDEX}
-        refinements={{ promotedUntil: { min: Date.now() }, promotingLevel: 2 }}
+        refinements={{ promotedUntil: { min: Date.now() } }}
         limit={4}
       >
-        {(hits) => (
-          <InnerContainer>
-            {hits.map((result) => (
-              <PromotedItem {...result} />
-            ))}
-          </InnerContainer>
-        )}
+        {(hits) => {
+          return (
+            <InnerContainer>
+              {hits.map((result) => (
+                <PromotedItem key={result.id} {...result} />
+              ))}
+            </InnerContainer>
+          )
+        }}
       </StatelessSearchWrapper>
     </OuterContainer>
   )

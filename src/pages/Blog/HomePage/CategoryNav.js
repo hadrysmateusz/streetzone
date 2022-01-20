@@ -38,7 +38,7 @@ const CategoryNav = () => {
   return (
     <Container>
       {Object.values(POST_CATEGORIES).map((category) => (
-        <CategoryLink category={category} to={route("BLOG_CATEGORY", { category })}>
+        <CategoryLink key={category} category={category} to={route("BLOG_CATEGORY", { category })}>
           {category}
         </CategoryLink>
       ))}

@@ -137,13 +137,7 @@ const DropDetailsPage = ({ match }) => {
               </Description>
             )}
 
-            <ButtonContainer
-              noMargin
-              vertical
-              css={`
-                margin-bottom: var(--spacing3);
-              `}
-            >
+            <ButtonContainer noMargin vertical style={{ marginBottom: "var(--spacing3)" }}>
               <WhereToBuyModal links={drop.buyAt}>
                 {({ open }) => (
                   <Button primary fullWidth big onClick={open}>

@@ -1,5 +1,7 @@
 // TODO: subcollections can't be accessed (most of them should only be accessed from the server though)
 
+// TODO: overhaul security rules 
+
 service cloud.firestore {
   match /databases/{database}/documents {
     function isLoggedIn() {
@@ -95,18 +97,12 @@ service cloud.firestore {
       allow create: if incomingData().userA == request.auth.uid;
 
       match /messages/{messageId} {
+        // TODO: these rules will probably need to get split into two: for creating new messages (only with them as the sender) and for changing the read status (only the recipient)
         // allow users who are part of the room to read and create messages in it
-        allow read, create: if get(/databases/$(database)/documents/rooms/$(roomId)).data.userA == request.auth.uid 
+        allow read, write: if get(/databases/$(database)/documents/rooms/$(roomId)).data.userA == request.auth.uid 
                             || get(/databases/$(database)/documents/rooms/$(roomId)).data.userB == request.auth.uid;
       }
     }
-
-
-
-
-
-
-
 
 
     match /users/{userId} {
@@ -164,10 +160,11 @@ service cloud.firestore {
       match /rooms/{otherUserId} {
         // TODO: restrict read access somewhat
         allow read;
+        allow create; // TODO: this is a temporary fix, these rules need tightening
        
         // allow other users to create rooms for other users when they initiate communication
         // TODO: make it only possible to create a room with id that the creating user already has in their rooms list
-        allow create: if otherUserId == request.auth.uid && incomingData().otherUserId == request.auth.uid;
+        // allow create: if otherUserId == request.auth.uid && incomingData().otherUserId == request.auth.uid;
       }
 
       match /notificationTokens/{tokenId} {
