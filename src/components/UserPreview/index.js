@@ -35,19 +35,19 @@ const Container = styled.div`
   }
 `
 
-const InfoItem = ({ name, children }) => (
-  <div
-    css={css`
+const InfoItemContainer = styled.div`
       display: flex;
       justify-content: space-between;
       .value {
         font-weight: bold;
       }
-    `}
-  >
+`
+
+const InfoItem = ({ name, children }) => (
+  <InfoItemContainer>
     <div>{name}</div>
     <div className="value">{children}</div>
-  </div>
+  </InfoItemContainer>
 )
 
 const ButtonContainer = styled.div`

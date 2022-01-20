@@ -218,11 +218,7 @@ export const PureBlogPost = withBreakpoints(
                         </div>
                       </Info>
                       {/* Tags */}
-                      <div
-                        css={`
-                          margin-top: var(--spacing2);
-                        `}
-                      >
+                      <div style={{ marginTop: "var(--spacing2)" }}>
                         <Tags tags={tags} />
                       </div>
                     </InfoAside>

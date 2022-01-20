@@ -100,13 +100,7 @@ const DealPage = ({ match }) => {
               </Description>
             )}
 
-            <ButtonContainer
-              noMargin
-              vertical
-              css={`
-                margin-bottom: var(--spacing3);
-              `}
-            >
+            <ButtonContainer noMargin vertical style={{ marginBottom: "var(--spacing3)" }}>
               <LinkButton to={deal.link} primary fullWidth big external>
                 Idź do okazji
               </LinkButton>
