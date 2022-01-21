@@ -1,11 +1,15 @@
 import CONST from "../constants/const"
+import { ThumbnailSizePostfix } from "../types"
+
 const { S_THUMB_POSTFIX, M_THUMB_POSTFIX, L_THUMB_POSTFIX } = CONST
+
+export type ThumbnailSize = "S" | "M" | "L"
 
 /**
  * Returns a suffix used to mark resized versions of an image in firebase storage
  * @param {string} size Can be one of (S M L). If not specified the function will return an empty string
  */
-export const getSuffixForSize = (size) => {
+export function getSuffixForSize(size: ThumbnailSize): ThumbnailSizePostfix {
   switch (size) {
     case "S":
       return S_THUMB_POSTFIX
@@ -13,8 +17,6 @@ export const getSuffixForSize = (size) => {
       return M_THUMB_POSTFIX
     case "L":
       return L_THUMB_POSTFIX
-    default:
-      return ""
   }
 }
 
@@ -23,7 +25,7 @@ export const getSuffixForSize = (size) => {
  * @param {string} storageRef Firebase storage ref of the image
  * @param {string} size Size of image to fetch, can be one of (S M L). If not specified the full size image will be used
  */
-export const getImageUrl = (storageRef, size) => {
+export function getImageUrl(storageRef: string, size: ThumbnailSize) {
   // get suffix for the specified size
   let suffix = getSuffixForSize(size)
   // encode the storage path to match the actual url
@@ -37,7 +39,7 @@ export const getImageUrl = (storageRef, size) => {
  * Returns urls for the full-size image as well as all size variations
  * @param {string} storageRef Firebase storage ref of the image
  */
-export const getImageUrls = (storageRef) => {
+export const getImageUrls = (storageRef: string) => {
   // encode the storage path to match the actual url
   let imagePath = encodeURIComponent(storageRef)
   // construct all urls

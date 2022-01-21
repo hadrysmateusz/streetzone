@@ -8,12 +8,12 @@ import arrayPad from "./arrayPad"
 import makeReactSelectOption from "./makeReactSelectOption"
 
 export {
-	mapN,
-	route,
-	areNotificationsSupported,
-	itemDataHelpers,
-	getRedirectTo,
-	sleep,
-	arrayPad,
-	makeReactSelectOption
+  mapN,
+  route,
+  areNotificationsSupported,
+  itemDataHelpers,
+  getRedirectTo,
+  sleep,
+  arrayPad,
+  makeReactSelectOption,
 }
