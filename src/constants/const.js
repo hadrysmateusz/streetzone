@@ -1,6 +1,7 @@
 import config from "../components/Firebase/config"
 
-const env = process.env.REACT_APP_ENV
+// There aren't 2 separate environments anymore which is why the "dev" needs to be hardcoded now
+const env = /* process.env.REACT_APP_ENV */ "dev"
 
 export const CONST = {
   BRAND_NAME: "StreetZone",
