@@ -2,7 +2,7 @@ import React from "react"
 import styled from "styled-components/macro"
 import { withBreakpoints } from "react-breakpoints"
 import { compose } from "recompose"
-import { withRouter } from "react-router"
+import { withRouter } from "react-router-dom"
 
 import { CONST } from "../../../constants"
 
