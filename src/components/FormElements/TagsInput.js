@@ -1,67 +1,9 @@
-import React, { useState } from "react"
-import CreatableSelect from "react-select/creatable"
-import styled from "styled-components/macro"
+import { useState } from "react"
 
-import FormElementContainer from "./container"
-import { disabledStyles, hoverStyles, focusStyles, basicStyles } from "./commonStyles"
 import { useFirebase, useFlash, useTagsOptions } from "../../hooks"
 
-const StyledSelect = styled(CreatableSelect).attrs({
-  classNamePrefix: "react-select",
-})`
-  .react-select--container {
-  }
-
-  .react-select__control {
-    ${basicStyles}
-
-    border-radius: 0;
-    height: var(--form-element-height);
-
-    &:not([disabled]) {
-      :hover {
-        ${hoverStyles}
-      }
-    }
-  }
-  .react-select__control--menu-is-open,
-  .react-select__control--is-focused {
-    ${focusStyles}
-  }
-  .react-select__control--is-disabled {
-    ${disabledStyles}
-  }
-
-  .react-select__value-container {
-    padding: 0 var(--spacing2);
-    overflow: visible;
-  }
-
-  .react-select__indicators {
-  }
-
-  .react-select__menu {
-    border-radius: 0;
-    z-index: 80;
-  }
-  .react-select__menu-list {
-  }
-
-  .react-select__option {
-    &:active {
-      background: var(--black0);
-      color: white;
-    }
-  }
-  .react-select__option--is-selected {
-    background: var(--gray100);
-    color: black;
-  }
-  .react-select__option--is-focused {
-    background: var(--black25);
-    color: white;
-  }
-`
+import { StyledSelect } from "./Dropdown.styles"
+import FormElementContainer from "./FormElementContainer"
 
 const TagsInput = ({
   onChange: setValue,

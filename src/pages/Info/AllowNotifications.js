@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import { useHistory } from "react-router-dom"
 
 import HelmetBasics from "../../components/HelmetBasics"
-import Button, { ButtonContainer } from "../../components/Button"
+import { Button, ButtonContainer } from "../../components/Button"
 
 const AllowNotifications = () => {
   const history = useHistory()

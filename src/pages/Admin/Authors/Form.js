@@ -1,58 +1,45 @@
-import React from "react"
 import { Form } from "react-final-form"
 
 import { TextFF, TextareaFF, UserImageFF } from "../../../components/FinalFormFields"
 import { LoaderButton, ButtonContainer } from "../../../components/Button"
 import LoadingSpinner from "../../../components/LoadingSpinner"
 
-import { FORM_ERR } from "../../../constants"
-
 import { StyledForm } from "../Common"
 
-const validate = ({ name }) => {
-	const errors = {}
+import validate from "./Form.validate"
 
-	if (!name) {
-		errors.name = FORM_ERR.IS_REQUIRED
-	}
+const AuthorsForm = ({ onSubmit, initialValues, edit }) =>
+  !initialValues && edit ? (
+    <LoadingSpinner />
+  ) : (
+    <Form
+      onSubmit={onSubmit}
+      validate={validate}
+      initialValues={initialValues}
+      render={({ handleSubmit, submitting, pristine }) => (
+        <StyledForm onSubmit={handleSubmit}>
+          <TextFF name="name" label="Imię / Pseudonim" placeholder="Imię / Pseudonim" />
 
-	// 'image' is optional
-	// 'about' is optional
+          <TextareaFF
+            name="about"
+            label="O autorze (OPCJONALNE)"
+            placeholder="Kilka informacji czy cuś"
+          />
 
-	console.warn(errors)
-	return errors
-}
+          <UserImageFF label="Zdjęcie (OPCJONALNE)" name="image" />
 
-export default ({ onSubmit, initialValues, edit }) =>
-	!initialValues && edit ? (
-		<LoadingSpinner />
-	) : (
-		<Form
-			onSubmit={onSubmit}
-			validate={validate}
-			initialValues={initialValues}
-			render={({ handleSubmit, submitting, pristine }) => (
-				<StyledForm onSubmit={handleSubmit}>
-					<TextFF name="name" label="Imię / Pseudonim" placeholder="Imię / Pseudonim" />
+          <ButtonContainer centered>
+            <LoaderButton
+              text="Gotowe"
+              type="submit"
+              isLoading={submitting}
+              disabled={submitting || pristine}
+              primary
+            />
+          </ButtonContainer>
+        </StyledForm>
+      )}
+    />
+  )
 
-					<TextareaFF
-						name="about"
-						label="O autorze (OPCJONALNE)"
-						placeholder="Kilka informacji czy cuś"
-					/>
-
-					<UserImageFF label="Zdjęcie (OPCJONALNE)" name="image" />
-
-					<ButtonContainer centered>
-						<LoaderButton
-							text="Gotowe"
-							type="submit"
-							isLoading={submitting}
-							disabled={submitting || pristine}
-							primary
-						/>
-					</ButtonContainer>
-				</StyledForm>
-			)}
-		/>
-	)
+export default AuthorsForm

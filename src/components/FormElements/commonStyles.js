@@ -1,52 +1,54 @@
 import { css } from "styled-components/macro"
 
 export const disabledStyles = css`
-	background: var(--almost-white);
-	border-color: var(--gray50);
+  background: var(--almost-white);
+  border-color: var(--gray50);
 `
 
 export const hoverStyles = css`
-	border-color: var(--black75);
+  border-color: var(--black75);
 `
 
 export const focusStyles = css`
-	border-color: var(--black75);
-	outline: none;
-	box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
+  border-color: var(--black75);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
 `
 
 export const placeholderStyles = css`
-	color: var(--gray0);
+  color: var(--gray0);
 `
 
 export const basicStyles = css`
-	border: 1px solid;
-	border-radius: 0;
-	:not([type="radio"]):not([type="checkbox"]) {
-		-webkit-appearance: none;
-	}
-	width: 100%;
-	border-color: ${(p) => (!!p.hasError ? "var(--danger50)" : "var(--gray75)")};
-	transition: box-shadow 0.15s ease, border-color 0.15s ease;
+  border: 1px solid;
+  border-radius: 0;
+  :not([type="radio"]):not([type="checkbox"]) {
+    -webkit-appearance: none;
+  }
+  width: 100%;
+  border-color: ${(p) => (!!p.hasError ? "var(--danger50)" : "var(--gray75)")};
+  transition: box-shadow 0.15s ease, border-color 0.15s ease;
 `
 
-export default css`
-	${basicStyles}
+export const commonStyles = css`
+  ${basicStyles}
 
-	::placeholder {
-		${placeholderStyles}
-	}
+  ::placeholder {
+    ${placeholderStyles}
+  }
 
-	&[disabled] {
-		${disabledStyles}
-	}
+  &[disabled] {
+    ${disabledStyles}
+  }
 
-	&:not([disabled]) {
-		:hover {
-			${hoverStyles}
-		}
-		:focus {
-			${focusStyles}
-		}
-	}
+  &:not([disabled]) {
+    :hover {
+      ${hoverStyles}
+    }
+    :focus {
+      ${focusStyles}
+    }
+  }
 `
+
+export default commonStyles

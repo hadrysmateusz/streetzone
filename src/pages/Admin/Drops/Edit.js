@@ -10,7 +10,7 @@ import { useFlash } from "../../../hooks"
 import { route } from "../../../utils"
 import { CONST } from "../../../constants"
 
-import DropForm from "./Form"
+import DropForm from "./DropsForm"
 
 const { S_THUMB_POSTFIX, M_THUMB_POSTFIX, L_THUMB_POSTFIX } = CONST
 

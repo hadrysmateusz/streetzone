@@ -11,8 +11,6 @@ export const useDelayRender = (time) => {
   return isDone
 }
 
-export default useDelayRender
-
 export const useNewDelayRender = (render, delay) => {
   const [isDone, setIsDone] = useState(delay === 0)
 
@@ -32,3 +30,5 @@ export const useNewDelayRender = (render, delay) => {
 
   return isDone ? render : null
 }
+
+export default useDelayRender

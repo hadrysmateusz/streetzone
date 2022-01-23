@@ -28,7 +28,7 @@ export const wobble = keyframes`
   }`
 
 export const wobbleAnimation = css`
-	animation: ${wobble} 0.8s both;
+  animation: ${wobble} 0.8s both;
 `
 
 export const shake = keyframes`
@@ -56,10 +56,10 @@ export const shake = keyframes`
   90% {
     transform: rotate(8deg);
   }
-}`
+`
 
 export const shakeAnimation = css`
-	animation: ${shake} 0.7s cubic-bezier(0.455, 0.03, 0.515, 0.955) both;
+  animation: ${shake} 0.7s cubic-bezier(0.455, 0.03, 0.515, 0.955) both;
 `
 
 export const heartbeat = keyframes`
@@ -87,7 +87,7 @@ export const heartbeat = keyframes`
 `
 
 export const heartbeatAnimation = css`
-	animation: ${heartbeat} 1.5s ease-in-out infinite both;
+  animation: ${heartbeat} 1.5s ease-in-out infinite both;
 `
 
 export const scaleInCenter = keyframes` 
@@ -102,7 +102,7 @@ export const scaleInCenter = keyframes`
 `
 
 export const scaleInCenterAnimation = css`
-	animation: ${scaleInCenter} 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+  animation: ${scaleInCenter} 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
 `
 
 export const swingInFwdTop = keyframes` 
@@ -119,5 +119,15 @@ export const swingInFwdTop = keyframes`
 `
 
 export const swingInFwdTopAnimation = css`
-	animation: ${swingInFwdTop} 0.2s cubic-bezier(0.175, 0.885, 0.3, 1) both;
+  animation: ${swingInFwdTop} 0.2s cubic-bezier(0.175, 0.885, 0.3, 1) both;
+`
+
+export const SPIN = keyframes`
+	from {
+		transform: rotate(0deg);
+	}
+
+	to {
+		transform: rotate(360deg);
+	}
 `

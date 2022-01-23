@@ -1,19 +1,20 @@
-import React from "react"
 import { withRouter } from "react-router-dom"
-import Button from "../Button"
+
 import { ROUTES } from "../../constants"
 
+import { Button } from "../Button"
+
 const ClearAllFiltersButton = withRouter(({ history, onClick }) => (
-	<Button
-		danger
-		onClick={() => {
-			history.replace(ROUTES.MARKETPLACE)
-			onClick(true)
-		}}
-		fullWidth
-	>
-		Wyczyść filtry
-	</Button>
+  <Button
+    danger
+    onClick={() => {
+      history.replace(ROUTES.MARKETPLACE)
+      onClick(true)
+    }}
+    fullWidth
+  >
+    Wyczyść filtry
+  </Button>
 ))
 
 export default ClearAllFiltersButton

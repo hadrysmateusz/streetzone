@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import { useState, useEffect } from "react"
 
 import LoadingSpinner from "../../components/LoadingSpinner"
 import { PageContainer } from "../../components/Containers"
@@ -7,22 +7,13 @@ import EmptyState from "../../components/EmptyState"
 
 import { useFirebase } from "../../hooks"
 
-import { HeaderContainer } from "./Common"
-
-const Header = ({ numItems = 0 }) => {
-  return (
-    <HeaderContainer>
-      Zapisane przedmioty <div className="count">{numItems}</div>
-    </HeaderContainer>
-  )
-}
+import { Header } from "./Header"
 
 const UserSavedItems = ({ user }) => {
   const firebase = useFirebase()
   const [items, setItems] = useState(null)
   const [error, setError] = useState(null)
 
-  const userId = user.uid
   const itemIds = user.savedItems
 
   // intentionally only include userId as dependency
@@ -85,7 +76,7 @@ const UserSavedItems = ({ user }) => {
 
   return (
     <PageContainer extraWide>
-      <Header numItems={numItems} />
+      <Header count={numItems}>Zapisane przedmioty</Header>
       {error ? (
         <div>Wystąpił problem, spróbuj odświeżyć stronę</div>
       ) : isLoading ? (

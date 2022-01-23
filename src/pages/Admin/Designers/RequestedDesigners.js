@@ -1,11 +1,10 @@
-import React from "react"
 import moment from "moment"
 import styled from "styled-components/macro"
 
-import Button, { ButtonContainer } from "../../../components/Button"
+import { Button, ButtonContainer } from "../../../components/Button"
+import LoadingSpinner from "../../../components/LoadingSpinner"
 
 import { useFirebase, useLiveCollection } from "../../../hooks"
-import LoadingSpinner from "../../../components/LoadingSpinner"
 
 const DesignerRequest = styled.div`
   background: white;

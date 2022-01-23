@@ -1,6 +1,6 @@
 import { nanoid } from "nanoid"
 
-export default class CustomFile {
+export class CustomFile {
   constructor(params) {
     this.id = nanoid()
     this.storageRef = params.storageRef || ""
@@ -10,3 +10,5 @@ export default class CustomFile {
     this.isMain = params.isMain || false
   }
 }
+
+export default CustomFile

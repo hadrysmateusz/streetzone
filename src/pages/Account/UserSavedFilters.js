@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react"
+import React /* , { useState, useEffect, useCallback } */ from "react"
 import { Link } from "react-router-dom"
 
 import { PageContainer } from "../../components/Containers"
@@ -6,33 +6,33 @@ import { TextBlock, Text } from "../../components/StyledComponents"
 import { ROUTES } from "../../constants"
 
 import { encodeURL } from "../../utils/algoliaURLutils"
-import { useFirebase } from "../../hooks"
+// import { useFirebase } from "../../hooks"
 
-import { FiltersItemContainer } from "./StyledComponents"
+import { FiltersItemContainer } from "./Common.styles"
 
 const FilterItem = ({ id, filterName, ...values }) => {
-  const [designer, setDesigner] = useState(null)
-  const firebase = useFirebase()
+  // const [designer, setDesigner] = useState(null)
+  // const firebase = useFirebase()
 
-  const getDesigner = useCallback(
-    async (selectedDesigner) => {
-      const snap = await firebase.designers().where("label", "==", selectedDesigner).get()
+  // const getDesigner = useCallback(
+  //   async (selectedDesigner) => {
+  //     const snap = await firebase.designers().where("label", "==", selectedDesigner).get()
 
-      let designersArr = []
-      snap.forEach((a) => {
-        designersArr.push(a.data())
-      })
+  //     let designersArr = []
+  //     snap.forEach((a) => {
+  //       designersArr.push(a.data())
+  //     })
 
-      setDesigner(designersArr[0])
-    },
-    [firebase]
-  )
+  //     setDesigner(designersArr[0])
+  //   },
+  //   [firebase]
+  // )
 
-  useEffect(() => {
-    if (values.designers.length === 1) {
-      getDesigner(values.designers)
-    }
-  }, [getDesigner, values.designers])
+  // useEffect(() => {
+  //   if (values.designers.length === 1) {
+  //     getDesigner(values.designers)
+  //   }
+  // }, [getDesigner, values.designers])
 
   return (
     <Link to={encodeURL(values, ROUTES.MARKETPLACE)}>
@@ -74,26 +74,24 @@ const FilterItem = ({ id, filterName, ...values }) => {
   )
 }
 
-const UserSavedFilters = ({ user, isAuthorized }) => {
-  return (
-    <PageContainer>
-      {user.savedFilters.map((filter) => {
-        const parsedQuery = JSON.parse(filter.query)
-        return (
-          <FilterItem
-            id={filter.id}
-            filterName={filter.name}
-            categories={parsedQuery.category}
-            designers={parsedQuery.designers}
-            size={parsedQuery.size}
-            condition={parsedQuery.condition}
-            price={parsedQuery.price}
-            query={parsedQuery.query}
-          />
-        )
-      })}
-    </PageContainer>
-  )
-}
+const UserSavedFilters = ({ user }) => (
+  <PageContainer>
+    {user.savedFilters.map((filter) => {
+      const parsedQuery = JSON.parse(filter.query)
+      return (
+        <FilterItem
+          id={filter.id}
+          filterName={filter.name}
+          categories={parsedQuery.category}
+          designers={parsedQuery.designers}
+          size={parsedQuery.size}
+          condition={parsedQuery.condition}
+          price={parsedQuery.price}
+          query={parsedQuery.query}
+        />
+      )
+    })}
+  </PageContainer>
+)
 
 export default UserSavedFilters

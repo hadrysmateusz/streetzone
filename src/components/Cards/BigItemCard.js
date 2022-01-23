@@ -1,30 +1,28 @@
-import React, { memo } from "react"
+import { memo } from "react"
 import { Link } from "react-router-dom"
 import styled from "styled-components/macro"
 import moment from "moment"
 
+import { route } from "../../utils"
+
 import { SaveIconButton } from "../SaveButton"
 import FirebaseImage from "../FirebaseImage"
 
-import { route } from "../../utils"
-
 import {
-  Designers,
-  Size,
-  Price,
   TopContainer,
   MiddleContainer,
   BottomContainer,
   InfoContainer,
   DateContainer,
   cardBorder,
-} from "./Common"
+} from "./Common.styles"
+import { Designers, Size, Price } from "./Common"
 
 export const BigContainer = styled.div`
-  min-width: 0; /* this has to be on the outermost component*/
   background: white;
+  min-width: 0; /* this has to be on the outermost component*/
 
-  a {
+  > a {
     ${cardBorder}
     overflow: hidden;
     display: grid;

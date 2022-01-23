@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useCallback } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { nanoid } from "nanoid"
 
-import FileItem from "./FileItem"
 import { useFirebase, useFlash } from "../../hooks"
+
+import FileItem from "./FileItem"
 
 const SmartFileItem = ({
   onUpload,

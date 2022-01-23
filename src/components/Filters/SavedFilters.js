@@ -1,4 +1,4 @@
-import React, { Component } from "react"
+import { Component } from "react"
 import { compose } from "recompose"
 import withRouter from "react-router-dom/withRouter"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
@@ -8,27 +8,12 @@ import { Form, Field } from "react-final-form"
 
 import { LoaderButton, ButtonContainer } from "../Button"
 import { withAuthentication } from "../UserSession"
-import { withFirebase } from "../Firebase"
 import { AdaptiveFoldable } from "../Foldable"
+import { withFirebase } from "../Firebase"
 import { Input } from "../FormElements"
 
 import { ListItem } from "./StyledComponents"
-import { FORM_ERR } from "../../constants"
-
-const validate = ({ name }) => {
-  let errors = {}
-
-  if (!name) {
-    errors.name = FORM_ERR.IS_REQUIRED
-  } else {
-    name = name.trim()
-    if (name.length === 0) {
-      errors.name = FORM_ERR.IS_REQUIRED
-    }
-  }
-
-  return errors
-}
+import validate from "./SavedFilters.validate"
 
 export class SavedFilters extends Component {
   state = { filters: [] }

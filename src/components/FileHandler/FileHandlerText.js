@@ -44,7 +44,8 @@ const FileHandlerText = ({
   )
 
   const onDropRejected = (...args) => {
-    debugger
+    // debugger
+    console.log("drop rejected")
   }
 
   const isEmpty = !value || value.length === 0

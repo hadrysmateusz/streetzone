@@ -1,16 +1,14 @@
-import React, { useCallback, useState } from "react"
+import { useCallback, useState } from "react"
 import styled from "styled-components/macro"
 import { useDropzone } from "react-dropzone"
+
+import { useFlash } from "../../hooks"
 
 import { Textarea } from "../FormElements"
 import { Button, ButtonContainer, IconButton } from "../Button"
 import { Overlay } from "../FileHandler/common"
 
-import { useFlash } from "../../hooks"
-
 import { AttachmentsManager, PostPreview } from "."
-
-export const OuterContainer = styled.div``
 
 const FileHandlerContainer = styled.div`
   position: relative;
@@ -32,7 +30,7 @@ const HelpButton = () => (
   </a>
 )
 
-const PostEditor = (props) => {
+export const PostEditor = (props) => {
   const [isEditing, setIsEditing] = useState(true)
   const flashMessage = useFlash()
 
@@ -93,7 +91,7 @@ const PostEditor = (props) => {
         <ViewSwitchButton isEditing={isEditing} setIsEditing={setIsEditing} />
         <HelpButton />
       </ButtonContainer>
-      <OuterContainer>
+      <div>
         {isEditing ? (
           <FileHandlerContainer {...getRootProps({ hasError: !!error, isEmpty })}>
             <input {...getInputProps()} />
@@ -114,9 +112,7 @@ const PostEditor = (props) => {
         ) : (
           <PostPreview attachments={attachmentsValue} markdownSource={value} />
         )}
-      </OuterContainer>
+      </div>
     </div>
   )
 }
-
-export default PostEditor

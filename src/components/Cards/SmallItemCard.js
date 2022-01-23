@@ -1,44 +1,23 @@
-import React, { memo } from "react"
+import { memo } from "react"
 import { Link } from "react-router-dom"
-import styled from "styled-components/macro"
+
+import { route } from "../../utils"
 
 import FirebaseImage from "../FirebaseImage"
 import { SaveIconButton } from "../SaveButton"
 
-import { route } from "../../utils"
-
 import {
   Name,
-  Designers,
-  Size,
-  Price,
   TopContainer,
   MiddleContainer,
   BottomContainer,
   InfoContainer,
-  cardBorder,
-} from "./Common"
-
-export const SmallContainer = styled.div`
-  min-width: 0; /* this has to be on the outermost component*/
-  max-width: 300px;
-  width: 100%;
-  background: white;
-
-  > a {
-    ${cardBorder}
-    overflow: hidden;
-    display: grid;
-    grid-template-columns: 100%;
-    grid-template-rows: 140px min-content;
-    @media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
-      grid-template-rows: 165px min-content;
-    }
-  }
-`
+  SmallCardContainer,
+} from "./Common.styles"
+import { Designers, Size, Price } from "./Common"
 
 const SmallItemCard = memo(({ id, name, designers, size, price, attachments, mainImageIndex }) => (
-  <SmallContainer>
+  <SmallCardContainer>
     <Link to={route("ITEM_DETAILS", { id })}>
       <FirebaseImage storageRef={attachments[mainImageIndex]} size="M" />
       <InfoContainer>
@@ -62,7 +41,7 @@ const SmallItemCard = memo(({ id, name, designers, size, price, attachments, mai
         </BottomContainer>
       </InfoContainer>
     </Link>
-  </SmallContainer>
+  </SmallCardContainer>
 ))
 
 export default SmallItemCard

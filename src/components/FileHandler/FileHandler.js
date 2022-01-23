@@ -1,13 +1,12 @@
-import React, { useCallback, useEffect } from "react"
+import { useCallback, useEffect } from "react"
 import { useDropzone } from "react-dropzone"
 
 import { FormElementContainer } from "../FormElements"
-import { CustomFile } from "."
 import { ButtonContainer, Button } from "../Button"
-import FileItem from "./FileItem"
-import { Overlay } from "./common"
 
-import { FileHandlerContainer, EmptyState } from "./FileHandlerStyles"
+import FileItem from "./FileItem"
+import { Overlay, FileHandlerContainer, EmptyState } from "./common"
+import { CustomFile } from "./CustomFile"
 
 const FileHandler = ({ info, error, itemErrors, disabled, value, onChange, ...rest }) => {
   // make sure the value is always an array to prevent errors

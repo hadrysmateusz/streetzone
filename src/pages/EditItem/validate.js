@@ -1,44 +1,46 @@
 import { FORM_ERR, CONST } from "../../constants"
 
-export default (values) => {
-	const { price, description, files } = values
-	const errors = {}
+const validate = (values) => {
+  const { price, description, files } = values
+  const errors = {}
 
-	// Price
-	if (!price) {
-		errors.price = FORM_ERR.IS_REQUIRED
-	}
+  // Price
+  if (!price) {
+    errors.price = FORM_ERR.IS_REQUIRED
+  }
 
-	// Description
-	if (description && description.length > CONST.DESC_MAX_CHARACTERS) {
-		errors.description = FORM_ERR.DESC_TOO_LONG
-	}
+  // Description
+  if (description && description.length > CONST.DESC_MAX_CHARACTERS) {
+    errors.description = FORM_ERR.DESC_TOO_LONG
+  }
 
-	// Files
-	errors.files = (() => {
-		let main
-		let specific = {}
+  // Files
+  errors.files = (() => {
+    let main
+    let specific = {}
 
-		if (!files || files.length === 0) {
-			// Empty field
-			main = FORM_ERR.FILES_REQUIRED
-		} else {
-			// Too many files
-			if (files.length > CONST.ATTACHMENTS_MAX_COUNT) {
-				main = FORM_ERR.TOO_MANY_FILES
-			}
-			// Attachment too big
-			files.forEach((file) => {
-				const fileId = file.id
+    if (!files || files.length === 0) {
+      // Empty field
+      main = FORM_ERR.FILES_REQUIRED
+    } else {
+      // Too many files
+      if (files.length > CONST.ATTACHMENTS_MAX_COUNT) {
+        main = FORM_ERR.TOO_MANY_FILES
+      }
+      // Attachment too big
+      files.forEach((file) => {
+        const fileId = file.id
 
-				if (file.data.size > CONST.ATTACHMENTS_MAX_SIZE) {
-					specific[fileId] = FORM_ERR.FILE_TOO_BIG
-				}
-			})
-		}
-		let errObj = { main, specific }
-		return errObj
-	})()
+        if (file.data.size > CONST.ATTACHMENTS_MAX_SIZE) {
+          specific[fileId] = FORM_ERR.FILE_TOO_BIG
+        }
+      })
+    }
+    let errObj = { main, specific }
+    return errObj
+  })()
 
-	return errors
+  return errors
 }
+
+export default validate

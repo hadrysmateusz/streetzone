@@ -1,51 +1,17 @@
-import React from "react"
 import { connectCurrentRefinements } from "react-instantsearch-core"
-import styled from "styled-components/macro"
 import { compose } from "recompose"
 import { withRouter } from "react-router-dom"
 import { withBreakpoints } from "react-breakpoints"
 
-import ResultsCount from "../ResultsCount"
-
 import { itemDataHelpers, route } from "../../utils"
+
+import { ResultsCount } from "../ResultsCount"
+
+import { ClearFiltersButton, Item, Container, OuterContainer } from "./CurrentFilters.styles"
 
 const { formatSize } = itemDataHelpers
 
-const OuterContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-`
-
-const ClearFiltersButton = styled.div`
-  color: var(--danger50);
-  font-weight: var(--semi-bold);
-  :hover {
-    text-decoration: underline;
-  }
-  cursor: pointer;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex: 0 0 var(--width);
-  margin-left: var(--spacing2);
-`
-
-const Container = styled.div`
-  font-size: var(--font-size--xs);
-  display: flex;
-  flex-flow: row wrap;
-  margin: calc(-1 * var(--spacing1));
-`
-
-const Item = styled.div`
-  padding: var(--spacing2);
-  background: white;
-  border: 1px solid var(--gray75);
-  margin: var(--spacing1);
-`
-
-const CurrentFilters = ({ items, history, clearFilters, refine, currentBreakpoint }) => {
+const CurrentFilters = ({ items, history, clearFilters, currentBreakpoint }) => {
   // ignore the isArchived refinement
   items = items.filter((a) => a.attribute !== "isArchived")
 

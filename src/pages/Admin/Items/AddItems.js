@@ -1,4 +1,4 @@
-import React, { Component } from "react"
+import { Component } from "react"
 import { Form, Field } from "react-final-form"
 import { nanoid } from "nanoid"
 
@@ -11,12 +11,7 @@ import { ITEM_SCHEMA, CONST } from "../../../constants"
 import categories from "../../../constants/itemCategories"
 import sizes from "../../../constants/sizes"
 import { formatItemDataForDb, MODE } from "../../../utils/formatting/formatItemData"
-
-function randInt(min, max) {
-  min = Math.ceil(min)
-  max = Math.floor(max)
-  return Math.floor(Math.random() * (max - min + 1)) + min
-}
+import getRandomInteger from "../../../utils/getRandomInteger"
 
 class NewItemPage extends Component {
   state = { isLoading: false }
@@ -85,29 +80,29 @@ class NewItemPage extends Component {
 
     for (let i = 0; i < values.numberOfItems; i++) {
       // name
-      const name = availableNames[randInt(0, availableNames.length - 1)]
+      const name = availableNames[getRandomInteger(0, availableNames.length - 1)]
 
       // category
-      const category = availableCategories[randInt(0, availableCategories.length - 1)]
+      const category = availableCategories[getRandomInteger(0, availableCategories.length - 1)]
 
       // designers
       let designers = []
-      const nOfDesigners = randInt(1, 3)
+      const nOfDesigners = getRandomInteger(1, 3)
       for (let i = 0; i < nOfDesigners; i++) {
-        designers.push(availableDesigners[randInt(0, availableDesigners.length - 1)].label)
+        designers.push(availableDesigners[getRandomInteger(0, availableDesigners.length - 1)].label)
       }
       designers = designers.reduce((acc, curr) => (!acc.includes(curr) ? [...acc, curr] : acc), [])
 
       // price
-      const price = randInt(50, 3500)
+      const price = getRandomInteger(50, 3500)
 
       // userId
       const userId = values.randomUsers
-        ? availableUserIds[randInt(0, availableUserIds.length - 1)]
+        ? availableUserIds[getRandomInteger(0, availableUserIds.length - 1)]
         : this.props.authUser.uid
 
       // condition
-      const condition = randInt(5, 11)
+      const condition = getRandomInteger(5, 11)
 
       // size
       let sizeCategory
@@ -121,7 +116,7 @@ class NewItemPage extends Component {
 
       let size
       const availableSizes = sizes[sizeCategory]
-      size = sizeCategory + "-" + availableSizes[randInt(0, availableSizes.length - 1)]
+      size = sizeCategory + "-" + availableSizes[getRandomInteger(0, availableSizes.length - 1)]
 
       // description
       let description = await fetch("https://baconipsum.com/api/?type=meat-and-filler&paras=1")
@@ -129,9 +124,9 @@ class NewItemPage extends Component {
 
       // files
       const nOfAllFiles = values.files.length
-      const nOfFiles = Math.min(nOfAllFiles, randInt(1, CONST.ATTACHMENTS_MAX_COUNT))
+      const nOfFiles = Math.min(nOfAllFiles, getRandomInteger(1, CONST.ATTACHMENTS_MAX_COUNT))
       const lastAvailableStartIndex = nOfAllFiles - nOfFiles
-      const startIndex = randInt(0, lastAvailableStartIndex)
+      const startIndex = getRandomInteger(0, lastAvailableStartIndex)
 
       let files = values.files.slice(startIndex, startIndex + nOfFiles)
 

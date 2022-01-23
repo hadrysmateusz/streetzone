@@ -1,5 +1,6 @@
-import useFirebase from "./useFirebase"
 import { useState, useEffect } from "react"
+
+import useFirebase from "./useFirebase"
 
 export const useDesigner = (selectedDesigner) => {
   const [designer, setDesigner] = useState(null)

@@ -1,9 +1,10 @@
-import { AuthUserContext } from "../components/UserSession"
 import { useContext } from "react"
 
-export default (verbose = false) => {
-	const authUser = useContext(AuthUserContext)
-	const isAuthenticated = !!authUser
+import { AuthUserContext } from "../components/UserSession"
 
-	return verbose ? [authUser, isAuthenticated] : authUser
+export const useAuthentication = () => {
+  const authUser = useContext(AuthUserContext)
+  return authUser
 }
+
+export default useAuthentication

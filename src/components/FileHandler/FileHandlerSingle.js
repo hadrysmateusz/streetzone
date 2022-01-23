@@ -1,61 +1,13 @@
-import React, { useCallback, useEffect } from "react"
-// import PropTypes from "prop-types"
+import { useCallback, useEffect } from "react"
 import { useDropzone } from "react-dropzone"
-import styled, { css } from "styled-components/macro"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+// import PropTypes from "prop-types"
 
 import { CustomFile } from "."
 import { IconContainer, Overlay } from "./common"
-import { FormElementContainer, commonStyles } from "../FormElements"
+import { FormElementContainer } from "../FormElements"
 import { TextBlock } from "../StyledComponents"
-
-export const smallSquare = css`
-  width: 260px;
-  height: 260px;
-`
-
-const FileHandlerSingleContainer = styled.div`
-  ${commonStyles.basicStyles}
-  min-height: 150px;
-
-  &[disabled] {
-    ${commonStyles.disabledStyles}
-  }
-
-  &:not([disabled]) {
-    :hover {
-      ${commonStyles.hoverStyles}
-    }
-    :focus {
-      ${commonStyles.focusStyles}
-    }
-  }
-
-  height: 100%;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden;
-  position: relative;
-
-  img {
-    object-fit: cover;
-    width: 100%;
-    height: 100%;
-  }
-
-  ${(p) => {
-    switch (p.variant) {
-      case "small-square":
-        return smallSquare
-      default:
-        return ""
-    }
-  }}
-
-  ${(p) => p.containerStyles}
-`
+import { FileHandlerSingleContainer } from "./FileHandlerSingle.styles"
 
 const FileHandlerSingle = ({
   info,

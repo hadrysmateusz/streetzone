@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react"
-import useFirebase from "./useFirebase"
 
 import { makeReactSelectOption } from "../utils"
+
+import useFirebase from "./useFirebase"
 
 export const useTagsOptions = () => {
   const firebase = useFirebase()

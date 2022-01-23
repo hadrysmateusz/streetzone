@@ -1,4 +1,3 @@
-import React from "react"
 import ReactDOM from "react-dom"
 import { ThemeProvider } from "styled-components/macro"
 import ReactBreakpoints from "react-breakpoints"
@@ -12,9 +11,9 @@ import "./normalize.css"
 import "./config/fontAwesomeConfig"
 
 import breakpoints from "./constants/breakpoints"
-import App from "./components/App"
 import { Firebase, FirebaseContext } from "./components/Firebase"
-import GlobalStyles from "./components/GlobalStyles"
+import GlobalStyles from "./components/globalStyles"
+import App from "./components/App"
 
 // set moment.js locale
 moment.locale("pl")
@@ -28,7 +27,7 @@ moment.locale("pl")
 ReactDOM.render(
   <FirebaseContext.Provider value={new Firebase()}>
     <ThemeProvider theme={{ breakpoints }}>
-      <ReactBreakpoints breakpoints={{ ...breakpoints }}>
+      <ReactBreakpoints breakpoints={{ ...breakpoints }} debounceResize={true} debounceDelay={100}>
         <GlobalStyles />
         <App />
       </ReactBreakpoints>

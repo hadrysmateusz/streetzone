@@ -1,15 +1,14 @@
-import React, { useState } from "react"
+import { useState } from "react"
 import { withRouter } from "react-router-dom"
 import { nanoid } from "nanoid"
 
 import { PageContainer } from "../../../components/Containers"
 
-import useFirebase from "../../../hooks/useFirebase"
+import { useFlash, useFirebase } from "../../../hooks"
 import { formatPostDataForDb, MODE } from "../../../utils/formatting/formatPostData"
 import { route } from "../../../utils"
 
 import PostForm from "./Form"
-import { useFlash } from "../../../hooks"
 
 const AddPost = ({ history }) => {
   const firebase = useFirebase()

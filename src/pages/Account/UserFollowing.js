@@ -1,18 +1,10 @@
-import React, { useState, useEffect } from "react"
+import { useState, useEffect } from "react"
 
 import { PageContainer } from "../../components/Containers"
-import { UsersView } from "../../components/UserPreview/big"
+import { UsersView } from "../../components/UserPreview/BigUserPreview"
 import EmptyState from "../../components/EmptyState"
 
-import { HeaderContainer } from "./Common"
-
-const Header = ({ numUsers = 0 }) => {
-  return (
-    <HeaderContainer>
-      Obserwowani użytkownicy <div className="count">{numUsers}</div>
-    </HeaderContainer>
-  )
-}
+import { Header } from "./Header"
 
 const UserSavedUsers = ({ user }) => {
   const [followedUsers, setFollowedUsers] = useState(null)
@@ -29,7 +21,7 @@ const UserSavedUsers = ({ user }) => {
 
   return (
     <PageContainer extraWide>
-      <Header numUsers={numUsers} />
+      <Header count={numUsers}>Obserwowani użytkownicy</Header>
       {error ? (
         <div>Wystąpił problem, spróbuj odświeżyć stronę</div>
       ) : hasUsers ? (

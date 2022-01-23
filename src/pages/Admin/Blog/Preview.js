@@ -2,7 +2,7 @@ import React from "react"
 
 import styled from "styled-components/macro"
 
-import Button, { ButtonContainer, LinkButton } from "../../../components/Button"
+import { Button, ButtonContainer, LinkButton } from "../../../components/Button"
 import { TextBlock } from "../../../components/StyledComponents"
 
 import { route } from "../../../utils"

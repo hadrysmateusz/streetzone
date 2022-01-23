@@ -1,14 +1,12 @@
-import React from "react"
 import { withRouter } from "react-router-dom"
 import { PageContainer } from "../../../components/Containers"
 
-import useFirebase from "../../../hooks/useFirebase"
 import { formatDropDataForDb, MODE } from "../../../utils/formatting/formatDropData"
 import { CONST } from "../../../constants"
 import { route } from "../../../utils"
+import { useFlash, useFirebase } from "../../../hooks"
 
-import DropForm from "./Form"
-import { useFlash } from "../../../hooks"
+import DropForm from "./DropsForm"
 
 const AddDrop = ({ history }) => {
   const firebase = useFirebase()

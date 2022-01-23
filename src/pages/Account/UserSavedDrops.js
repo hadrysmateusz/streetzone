@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react"
-import styled from "styled-components/macro"
+import { useState, useEffect } from "react"
 
 import LoadingSpinner from "../../components/LoadingSpinner"
 import { PageContainer } from "../../components/Containers"
@@ -8,24 +7,8 @@ import EmptyState from "../../components/EmptyState"
 
 import { useFirebase } from "../../hooks"
 
-import { HeaderContainer } from "./Common"
-
-const DropsList = styled.div`
-  display: grid;
-  gap: var(--spacing3);
-  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
-  @media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
-    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-  }
-`
-
-const Header = ({ numDrops = 0 }) => {
-  return (
-    <HeaderContainer>
-      Obserwowane dropy <div className="count">{numDrops}</div>
-    </HeaderContainer>
-  )
-}
+import { DropsList } from "./Common.styles"
+import { Header } from "./Header"
 
 const UserSavedDrops = ({ user }) => {
   const firebase = useFirebase()
@@ -93,7 +76,7 @@ const UserSavedDrops = ({ user }) => {
 
   return (
     <PageContainer>
-      <Header numDrops={numDrops} />
+      <Header count={numDrops}>Obserwowane dropy</Header>
       {error ? (
         <div>Wystąpił problem, spróbuj odświeżyć stronę</div>
       ) : isLoading ? (

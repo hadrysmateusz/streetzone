@@ -6,16 +6,16 @@ import { useState, useEffect } from "react"
  * @param {boolean} defaultState the state the hook will return while inactive
  */
 const useStateButton = (defaultState = false) => {
-	const [state, setState] = useState(defaultState)
-	const trigger = () => {
-		setState(true)
-	}
+  const [state, setState] = useState(defaultState)
+  const trigger = () => {
+    setState(true)
+  }
 
-	useEffect(() => {
-		setState(false)
-	}, [state])
+  useEffect(() => {
+    setState(false)
+  }, [state])
 
-	return [state, trigger]
+  return [state, trigger]
 }
 
 export default useStateButton

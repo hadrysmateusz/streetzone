@@ -1,50 +1,14 @@
-import React from "react"
-import styled from "styled-components/macro"
 import Ratio from "react-ratio"
-// import PropTypes from "prop-types"
-import { TextBlock } from "../StyledComponents"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+// import PropTypes from "prop-types"
+
+import { TextBlock } from "../StyledComponents"
+
 import { IconContainer, ErrorContainer, Overlay } from "./common"
-
-const Thumbnail = styled.div`
-  background: var(--gray);
-  display: flex;
-  height: 100%;
-  width: 100%;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden;
-  position: relative;
-
-  border: 1px solid;
-  border-color: ${(p) => (p.hasError ? "var(--danger50)" : "var(--gray25)")};
-
-  img {
-    object-fit: cover;
-    width: 100%;
-    height: 100%;
-  }
-`
-
-const IndicatorIcon = styled(FontAwesomeIcon)`
-  color: ${(p) => p.color};
-  position: relative;
-  z-index: 75;
-`
-
-const IndicatorsContainer = styled.div`
-  position: absolute;
-  z-index: 77;
-  top: var(--spacing2);
-  right: var(--spacing2);
-  display: grid;
-  gap: var(--spacing2);
-`
+import { IndicatorIcon, IndicatorsContainer, Thumbnail } from "./FileItem.styles"
 
 const PureFileItem = ({ id, previewUrl, error, actions, isMain = false, uploadProgress }) => {
   const hasError = !!error
-
-  console.log("file items", actions)
 
   return (
     <Ratio ratio={6 / 7}>

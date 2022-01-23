@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import { useState } from "react"
 
 import { useFunctionWithReauthentication } from "../../../pages/Auth/Reauthentication"
 import { useFirebase, useAuthentication } from "../../../hooks"
@@ -6,7 +6,8 @@ import { useFirebase, useAuthentication } from "../../../hooks"
 import InfoBox from "../../InfoBox"
 import ErrorBox from "../../ErrorBox"
 
-import { Heading } from "../common"
+import { Heading } from "../Heading"
+
 import PasswordForm from "./PasswordForm"
 
 const AddPassword = ({ onSuccess }) => {

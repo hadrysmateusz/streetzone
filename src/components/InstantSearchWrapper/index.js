@@ -1,4 +1,4 @@
-import SearchWrapper from "./stateful"
-import StatelessSearchWrapper, { SearchWrapperContext } from "./stateless"
+import StatefulSearchWrapper from "./StatefulSearchWrapper"
+import StatelessSearchWrapper, { SearchWrapperContext } from "./StatelessSearchWrapper"
 
-export { SearchWrapper, StatelessSearchWrapper, SearchWrapperContext }
+export { StatefulSearchWrapper, StatelessSearchWrapper, SearchWrapperContext }

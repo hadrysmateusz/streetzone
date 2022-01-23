@@ -2,7 +2,7 @@
 // import moment from "moment"
 // import styled from "styled-components/macro"
 
-// import Button, { ButtonContainer } from "../../../components/Button"
+// import { Button, ButtonContainer } from "../../../components/Button"
 
 // import { useDeleteDocument, useLiveCollection } from "../../../hooks"
 // import LoadingSpinner from "../../../components/LoadingSpinner"

@@ -1,59 +1,22 @@
-import React, { memo } from "react"
+import { memo } from "react"
 import { Link } from "react-router-dom"
-import styled from "styled-components/macro"
 import moment from "moment"
-
-import FirebaseImage from "../FirebaseImage"
 
 import { route } from "../../utils"
 
+import FirebaseImage from "../FirebaseImage"
+import DropCountdown from "../DropCountdown"
+
 import {
-  Designers,
   TopContainer,
   MiddleContainer,
   BottomContainer,
   DateContainer,
   InfoContainer,
-  cardBorder,
-} from "./Common"
-import DropCountdown from "../DropCountdown"
-
-const Container = styled.div`
-  min-width: 0; /* this has to be on the outermost component*/
-  max-width: 580px;
-  width: 100%;
-  background: white;
-  /* box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.1); */
-
-  a {
-    ${cardBorder}
-    overflow: hidden;
-    display: grid;
-    grid-template-columns: 100%;
-    grid-template-rows: 180px min-content;
-    @media (min-width: ${(p) => p.theme.breakpoints[0]}px) {
-      grid-template-rows: 200px min-content;
-    }
-    @media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
-      grid-template-rows: 270px min-content;
-    }
-  }
-`
-
-const Name = styled.div`
-  --line-height: 1.5em;
-
-  color: var(--black0);
-  font-size: var(--fs-s);
-  font-family: var(--font-family--serif);
-  font-weight: bold;
-  line-height: var(--line-height);
-  height: calc(2 * var(--line-height));
-  overflow: hidden;
-  @media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
-    font-size: var(--fs-m);
-  }
-`
+  BigCardContainer,
+  BigCardTitle,
+} from "./Common.styles"
+import { Designers } from "./Common"
 
 const BigDropCard = memo(
   ({
@@ -66,7 +29,7 @@ const BigDropCard = memo(
     dropsAtApproxTimestamp,
     dropsAtString,
   }) => (
-    <Container>
+    <BigCardContainer>
       <Link to={route("DROP_DETAILS", { id })}>
         <FirebaseImage storageRef={attachments[mainImageIndex]} size="M" />
         <InfoContainer>
@@ -75,7 +38,7 @@ const BigDropCard = memo(
             <Designers value={designers} />
           </TopContainer>
           <MiddleContainer flex>
-            <Name>{name}</Name>
+            <BigCardTitle>{name}</BigCardTitle>
             <div className="align-right">
               <DropCountdown dropsAt={dropsAtString} id={id} />
             </div>
@@ -85,7 +48,7 @@ const BigDropCard = memo(
           </BottomContainer>
         </InfoContainer>
       </Link>
-    </Container>
+    </BigCardContainer>
   )
 )
 

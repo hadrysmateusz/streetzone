@@ -1,5 +1,3 @@
-import React from "react"
-
 import LoadingSpinner from "../../components/LoadingSpinner"
 import { ButtonContainer, LinkButton } from "../../components/Button"
 import { TextBlock } from "../../components/StyledComponents"
@@ -20,8 +18,6 @@ const ManagementTemplate = ({
 }) => {
   const { results, isEmpty, isLoading } = useLiveCollection(firestoreCollection)
 
-  console.log("ManagementTemplate", results)
-
   return isLoading ? (
     <LoadingSpinner fixedHeight />
   ) : (
@@ -39,7 +35,7 @@ const ManagementTemplate = ({
       </ButtonContainer>
 
       <List>
-        {!isEmpty && results.map((hit, i) => <PreviewComponent key={hit.id ?? i} {...hit} />)}
+        {!isEmpty ? results.map((hit, i) => <PreviewComponent key={hit.id ?? i} {...hit} />) : null}
       </List>
     </PageContainer>
   )
