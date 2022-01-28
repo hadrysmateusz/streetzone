@@ -4,12 +4,6 @@ import FileHandler from "./FileHandler"
 import FileHandlerSingle from "./FileHandlerSingle"
 import FileHandlerText from "./FileHandlerText"
 import LiveFileHandler from "./LiveFileHandler"
+export * from "./helpers"
 
-export {
-	CustomFile,
-	FileItem,
-	FileHandler,
-	FileHandlerSingle,
-	FileHandlerText,
-	LiveFileHandler
-}
+export { CustomFile, FileItem, FileHandler, FileHandlerSingle, FileHandlerText, LiveFileHandler }

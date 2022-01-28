@@ -15,7 +15,7 @@ export const FullPageSpinner = ({ delay = 350 }) => {
   )
 }
 
-const LoadingSpinner = ({ size = 9, color = "#cfcfcf", delay = 200 }) => {
+export const LoadingSpinner = ({ size = 9, color = "#cfcfcf", delay = 200 }) => {
   return useNewDelayRender(
     <SpinnerContainer size={size}>
       {/* <BarLoader size={size} color={color || "#cfcfcf"} /> */}

@@ -1,4 +1,4 @@
-import formatUserData from "../../utils/formatUserData"
+import { userModel } from "../../schema"
 
 // constants - don't change in production
 const FACEBOOK_NAME = "facebook"
@@ -24,17 +24,19 @@ export const socialMediaSites = {
 export const getUserInfoFromSocialProfile = (nameOfSite, socialAuthUser) => {
   switch (nameOfSite) {
     case GOOGLE_NAME:
-      return formatUserData({
+      return userModel.formatForCreate({
+        id: socialAuthUser.user.uid,
         name: socialAuthUser.user.displayName,
         email: socialAuthUser.user.email,
-        picture: socialAuthUser.picture,
+        profilePictureURLs: [socialAuthUser.picture],
         importedFrom: GOOGLE_NAME,
       })
     case FACEBOOK_NAME:
-      return formatUserData({
+      return userModel.formatForCreate({
+        id: socialAuthUser.user.uid,
         name: socialAuthUser.additionalUserInfo.profile.name,
         email: socialAuthUser.additionalUserInfo.profile.email,
-        picture: socialAuthUser.picture,
+        profilePictureURLs: [socialAuthUser.picture],
         importedFrom: FACEBOOK_NAME,
       })
     default:

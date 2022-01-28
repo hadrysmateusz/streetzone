@@ -1,13 +1,13 @@
+import { useCallback } from "react"
 import { nanoid } from "nanoid"
 
 import { withAuthorization } from "../../components/UserSession"
 import { PageContainer } from "../../components/Containers"
 import HelmetBasics from "../../components/HelmetBasics"
-
-import { formatItemDataForDb, MODE } from "../../utils/formatting/formatItemData"
+import { getMainImageIndex } from "../../components/FileHandler"
 import { CONST } from "../../constants"
 import { useAuthentication, useFirebase, useFlash } from "../../hooks"
-import { route } from "../../utils"
+import { resetFormAndRedirect } from "../../utils"
 
 import NewItemForm from "./NewItemForm"
 
@@ -16,48 +16,40 @@ const NewItemPage = ({ history }) => {
   const authUser = useAuthentication()
   const flashMessage = useFlash()
 
-  const onSubmit = async (values, form) => {
-    try {
-      const files = values.files
-      const userId = authUser.uid
-      const itemId = nanoid()
+  const onSubmit = useCallback(
+    async (values, form) => {
+      try {
+        const files = values.files
+        const userId = authUser.uid
+        const itemId = nanoid()
 
-      // Upload files to storage and get their refs
-      const attachments = await firebase.batchUploadFiles(
-        `${CONST.STORAGE_BUCKET_ITEM_ATTACHMENTS}/${userId}/${itemId}`,
-        files
-      )
+        // Upload files to storage and get their refs
+        const attachments = await firebase.batchGetAttachmentRefFromCustomFile(
+          `${CONST.STORAGE_BUCKET_ITEM_ATTACHMENTS}/${userId}/${itemId}`,
+          files
+        )
 
-      // Get main image ref
-      const mainImageIndex = files.findIndex((a) => a.isMain)
+        // Get main image ref
+        const mainImageIndex = getMainImageIndex(files)
 
-      // Format the values for db
-      const formattedData = formatItemDataForDb(
-        { ...values, mainImageIndex, attachments, userId, itemId },
-        MODE.CREATE
-      )
-
-      // Add item to database
-      await firebase.item(formattedData.id).set(formattedData)
-
-      setTimeout(() => {
-        form.reset()
-        flashMessage({
-          type: "success",
-          text: "Dodano ogłoszenie!",
-          details: "Odśwież stronę za kilka sekund by zobaczyć zmiany",
+        // Add item to database
+        firebase.createItem({
+          ...values,
+          mainImageIndex,
+          attachments,
+          userId,
+          id: itemId,
         })
-        history.push(route("ACCOUNT_ITEMS", { id: userId }))
-      })
-    } catch (error) {
-      console.error(error)
-      flashMessage({
-        type: "error",
-        text: "Wystąpił błąd",
-        details: "Ogłoszenie mogło nie zostać dodane",
-      })
-    }
-  }
+
+        flashMessage(SUCCESS_MESSAGE)
+        resetFormAndRedirect(form, history)("ACCOUNT_ITEMS", { id: userId })
+      } catch (error) {
+        console.error(error)
+        flashMessage(ERROR_MESSAGE)
+      }
+    },
+    [authUser.uid, firebase, flashMessage, history]
+  )
 
   return (
     <PageContainer maxWidth={2}>
@@ -67,6 +59,19 @@ const NewItemPage = ({ history }) => {
   )
 }
 
-const condition = (authUser) => (!!authUser ? true : "Zaloguj się by zacząć sprzedawać")
+const SUCCESS_MESSAGE = {
+  type: "success",
+  text: "Dodano ogłoszenie!",
+  details: "Odśwież stronę za kilka sekund by zobaczyć zmiany",
+}
+
+const ERROR_MESSAGE = {
+  type: "error",
+  text: "Wystąpił błąd",
+  details: "Ogłoszenie mogło nie zostać dodane",
+}
+
+const condition = (authUser) =>
+  !!authUser ? true : "Zaloguj się by zacząć sprzedawać"
 
 export default withAuthorization(condition)(NewItemPage)

@@ -4,13 +4,12 @@ import { Form } from "react-final-form"
 import { TextFF, FileHandlerSingleFF, TextareaFF } from "../../../components/FinalFormFields"
 import { LoaderButton, ButtonContainer } from "../../../components/Button"
 import DisplayJSONButton from "../../../components/DisplayJSONButton"
-import LoadingSpinner from "../../../components/LoadingSpinner"
 import { StyledForm } from "../../../components/BasicStyledForm"
 
-const DealsForm = ({ onSubmit, initialValues, edit }) =>
-  !initialValues && edit ? (
-    <LoadingSpinner />
-  ) : (
+import { FormWrapper } from "../FormWrapper"
+
+const DealsForm = ({ onSubmit, initialValues, edit }) => (
+  <FormWrapper edit={edit} initialValues={initialValues}>
     <Form
       onSubmit={onSubmit}
       initialValues={initialValues}
@@ -55,6 +54,7 @@ const DealsForm = ({ onSubmit, initialValues, edit }) =>
         </StyledForm>
       )}
     />
-  )
+  </FormWrapper>
+)
 
 export default DealsForm

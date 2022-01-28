@@ -3,7 +3,7 @@ export const encodeURL = (state: any, baseRoute: string = "") =>
 
 export const decodeURL = (searchString: string) => {
   // get the encoded search parameter from URL
-  var searchParams = new URLSearchParams(searchString)
+  const searchParams = new URLSearchParams(searchString)
   const search = searchParams.get("s")
 
   // decode and parse the search paramter

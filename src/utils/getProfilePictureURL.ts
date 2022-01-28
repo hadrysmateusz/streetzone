@@ -1,9 +1,9 @@
 import { ThumbnailSizePostfix } from "../types"
+import {User} from "../schema";
 
-import { IFormattedUserData } from "./formatUserData"
 
 export interface IWithProfilePictures {
-  profilePictureURLs: IFormattedUserData["profilePictureURLs"]
+  profilePictureURLs: User["profilePictureURLs"]
 }
 
 export function getProfilePictureURL(

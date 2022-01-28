@@ -1,5 +1,5 @@
 import { useEffect, useContext, useCallback } from "react"
-import throttle from "lodash.throttle"
+import throttle from "lodash/throttle"
 
 import { getHeightDifference } from "./helpers"
 import useLoadableElements from "./useLoadableElements"

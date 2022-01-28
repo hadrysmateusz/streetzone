@@ -29,12 +29,10 @@ const SocialSignInButton = ({
       }
 
       // extract relevant data from user profile
-      const userId = socialAuthUser.user.uid
-      let userData = getUserInfoFromSocialProfile(nameOfSite, socialAuthUser)
-      userData = { ...userData, uid: userId }
+      const userData = getUserInfoFromSocialProfile(nameOfSite, socialAuthUser)
 
       // upload the data to firebase
-      await firebase.user(userId).set(userData)
+      await firebase.user(userData.id).set(userData)
 
       // exit successfully
       return onSuccess(`Witaj w ${CONST.BRAND_NAME}!`)

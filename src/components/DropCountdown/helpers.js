@@ -1,6 +1,6 @@
 import moment from "moment"
 
-import { dateFormat } from "../../utils/formatting/formatDropData"
+import { dateFormat } from "../../schema"
 
 export const formatValue = (dropsAt) => {
   const then = moment(dropsAt, dateFormat)

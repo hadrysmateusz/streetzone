@@ -27,16 +27,18 @@ import HelmetBasics from "../../../components/HelmetBasics"
 import { PopularArticles } from "../../../components/SidebarComponents"
 
 import { useFirebase } from "../../../hooks"
-import { dateFormat } from "../../../utils/formatting/formatDropData"
 import { itemDataHelpers, route } from "../../../utils"
 import { CONST } from "../../../constants"
+import { dateFormat } from "../../../schema"
 
 import WhereToBuyModal from "./WhereToBuyModal"
 import { DisclaimerContainer } from "./DropPage.styles"
 
 const { formatDesigners } = itemDataHelpers
 
-const sidebarElements = [{ title: "Blog StreetZone", component: PopularArticles }]
+const sidebarElements = [
+  { title: "Blog StreetZone", component: PopularArticles },
+]
 
 const DropDetailsPage = ({ match }) => {
   const firebase = useFirebase()
@@ -116,7 +118,9 @@ const DropDetailsPage = ({ match }) => {
 
             <DetailsContainer>
               <InfoItem name="Data Dropu">{dropsAtDate}</InfoItem>
-              {isTimeKnown && <InfoItem name="Data Dropu">{dropsAtTime}</InfoItem>}
+              {isTimeKnown && (
+                <InfoItem name="Data Dropu">{dropsAtTime}</InfoItem>
+              )}
               <SaveIconButton type="drop" id={drop.id} scale={1.6} />
             </DetailsContainer>
 
@@ -127,7 +131,11 @@ const DropDetailsPage = ({ match }) => {
               </Description>
             )}
 
-            <ButtonContainer noMargin vertical style={{ marginBottom: "var(--spacing3)" }}>
+            <ButtonContainer
+              noMargin
+              vertical
+              style={{ marginBottom: "var(--spacing3)" }}
+            >
               <WhereToBuyModal links={drop.buyAt}>
                 {({ open }) => (
                   <Button primary fullWidth big onClick={open}>
@@ -140,9 +148,13 @@ const DropDetailsPage = ({ match }) => {
             </ButtonContainer>
 
             <DisclaimerContainer>
-              Podane informacje mogą ulec zmianie. Jeśli któraś z informacji jest nieaktualna, daj
-              nam znać na <a href={`mailto:${CONST.CONTACT_EMAIL}`}>{CONST.CONTACT_EMAIL}</a> Możesz
-              również obserwować dropa by otrzymywać update'y i przypomnienia
+              Podane informacje mogą ulec zmianie. Jeśli któraś z informacji
+              jest nieaktualna, daj nam znać na{" "}
+              <a href={`mailto:${CONST.CONTACT_EMAIL}`}>
+                {CONST.CONTACT_EMAIL}
+              </a>{" "}
+              Możesz również obserwować dropa by otrzymywać update'y i
+              przypomnienia
             </DisclaimerContainer>
           </InfoContainer>
         </ItemContainer>

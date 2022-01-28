@@ -1,5 +1,7 @@
-import type { Location } from "react-router"
+import type { useLocation } from "react-router"
 import { route } from "./route"
+
+type Location = ReturnType<typeof useLocation>
 
 interface IWithRedirectTo {
   redirectTo: IWithPathname

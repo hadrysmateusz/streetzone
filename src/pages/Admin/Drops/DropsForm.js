@@ -9,10 +9,9 @@ import DisplayJSONButton from "../../../components/DisplayJSONButton"
 import { StyledForm } from "../../../components/BasicStyledForm"
 import LoadingSpinner from "../../../components/LoadingSpinner"
 import { Input } from "../../../components/FormElements"
-
-import { dateFormat } from "../../../utils/formatting/formatDropData"
 import { ITEM_SCHEMA } from "../../../constants"
 import { useDesignerOptions } from "../../../hooks"
+import {dateFormat} from "../../../schema";
 
 import { BuyAtGroup, Label } from "./DropsForm.styles"
 

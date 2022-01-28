@@ -5,15 +5,13 @@ import { withRouter } from "react-router-dom"
 import { withAuthentication } from "../../components/UserSession"
 import LoadingSpinner from "../../components/LoadingSpinner"
 import { PageContainer } from "../../components/Containers"
-import { CustomFile } from "../../components/FileHandler"
+import { CustomFile, getMainImageIndex } from "../../components/FileHandler"
 import ItemNotFound from "../../components/ItemNotFound"
 import PageHeading from "../../components/PageHeading"
 import HelmetBasics from "../../components/HelmetBasics"
-
 import { NotFoundError } from "../../errors"
 import { useAuthentication, useFirebase, useFlash } from "../../hooks"
-import { route } from "../../utils"
-import { formatItemDataForDb, MODE } from "../../utils/formatting/formatItemData"
+import { route ,resetFormAndGoBack} from "../../utils"
 import { CONST } from "../../constants"
 
 import EditItemForm from "./EditItemForm"
@@ -28,7 +26,7 @@ const EditItemPage = ({ match, history, location }) => {
   const [item, setItem] = useState(null)
 
   useEffect(() => {
-    const getItem = async () => {
+    ;(async () => {
       try {
         // Get item from database
         let item = await firebase.getItemData(match.params.id)
@@ -74,69 +72,42 @@ const EditItemPage = ({ match, history, location }) => {
           throw err
         }
       }
-    }
-
-    getItem()
+    })()
   }, [match, authUser, firebase, history, location])
 
   const onSubmit = async ({ files, price, description, condition }, form) => {
     try {
-      // Upload NEW files and get ALL refs
-      const newRefs = await Promise.all(
-        files.map(async (file) => {
-          // If file already has a ref, return it
-          if (file.storageRef) return file.storageRef
+      const itemId = match.params.id
 
-          // Upload the new file and return promise containing ref
-          const snapshot = await firebase.uploadFile(
-            `${CONST.STORAGE_BUCKET_ITEM_ATTACHMENTS}/${item.userId}/${item.id}`,
-            file.data
-          )
-          return snapshot.ref.fullPath
-        })
-      )
+      const newAttachmentRefs =
+        await firebase.batchGetAttachmentRefFromCustomFile(
+          `${CONST.STORAGE_BUCKET_ITEM_ATTACHMENTS}/${item.userId}/${item.id}`,
+          files
+        )
 
       // Get main image ref
-      const mainImageIndex = files.findIndex((a) => a.isMain)
+      const mainImageIndex = getMainImageIndex(files)
 
-      // Format the data
-      const data = formatItemDataForDb(
-        { price, description, condition, mainImageIndex, attachments: newRefs },
-        MODE.EDIT
-      )
-
-      // Update item
-      await firebase.item(match.params.id).update(data)
+      // Update item in firestore
+      await firebase.updateItem(itemId, {
+        price,
+        description,
+        condition,
+        mainImageIndex,
+        attachments: newAttachmentRefs,
+      })
 
       // Get just the old refs
       let oldRefs = initialData.files.map((file) => file.storageRef)
 
-      // Old refs no longer present in new refs are marked for deletion
-      let refsToDelete = oldRefs.filter((oldRef) => !newRefs.includes(oldRef))
+      // Remove files associated with removed images
+      await firebase.deleteRemovedImagesFromStorage(oldRefs, newAttachmentRefs)
 
-      // Remove files associated with the marked refs
-      for (const storageRef of refsToDelete) {
-        firebase.removeAllImagesOfRef(storageRef)
-      }
-
-      setTimeout(() => {
-        flashMessage({
-          type: "success",
-          text: "Edytowano pomyślnie",
-          details: "Odśwież stronę za kilka sekund by zobaczyć zmiany",
-          ttl: 6000,
-        })
-        form.reset()
-        history.goBack()
-        return
-      })
+      flashMessage(SUCCESS_MESSAGE)
+      resetFormAndGoBack(form, history)()
     } catch (error) {
       console.error(error)
-      flashMessage({
-        type: "error",
-        text: "Wystąpił błąd",
-        details: "Zmiany mogły nie zostać zapisane",
-      })
+      flashMessage(ERROR_MESSAGE)
     }
   }
 
@@ -157,6 +128,19 @@ const EditItemPage = ({ match, history, location }) => {
       </PageContainer>
     </>
   )
+}
+
+const SUCCESS_MESSAGE = {
+  type: "success",
+  text: "Edytowano pomyślnie",
+  details: "Odśwież stronę za kilka sekund by zobaczyć zmiany",
+  ttl: 6000,
+}
+
+const ERROR_MESSAGE = {
+  type: "error",
+  text: "Wystąpił błąd",
+  details: "Zmiany mogły nie zostać zapisane",
 }
 
 export default compose(withAuthentication, withRouter)(EditItemPage)

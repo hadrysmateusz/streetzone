@@ -2,9 +2,7 @@ import { Form } from "react-final-form"
 
 import { LoaderButton } from "../../../components/Button"
 import { TextFF } from "../../../components/FinalFormFields"
-
 import { CONST } from "../../../constants"
-import formatUserData from "../../../utils/formatUserData"
 import { useFirebase } from "../../../hooks"
 
 import validate from "./validate"
@@ -15,7 +13,7 @@ const SignUpForm = ({ onSuccess, onError }) => {
 
   const onSubmit = async (values, form) => {
     try {
-      // get values and attempt sign-up
+      // Get values and attempt sign-up
       const { name, email, password } = values
       const authUser = await firebase.signUpWithEmail(email, password)
 
@@ -26,8 +24,15 @@ const SignUpForm = ({ onSuccess, onError }) => {
 
       // Create user in db
       const userId = authUser.user.uid
-      const userData = formatUserData({ name, email, uid: userId })
-      await firebase.user(userId).set(userData)
+
+      // Upload the data to firebase
+      await firebase.createUser({
+        name,
+        email,
+        id: userId,
+        profilePictureURLs: [],
+        importedFrom: null,
+      })
 
       // reset the form
       setTimeout(form.reset)

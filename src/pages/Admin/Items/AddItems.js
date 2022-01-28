@@ -6,11 +6,10 @@ import { withAuthentication } from "../../../components/UserSession"
 import { LoaderButton } from "../../../components/Button"
 import { FieldLabel } from "../../../components/Basics"
 import { FormError, Input } from "../../../components/FormElements"
-import { FileHandler } from "../../../components/FileHandler"
+import { FileHandler, getMainImageIndex } from "../../../components/FileHandler"
 import { ITEM_SCHEMA, CONST } from "../../../constants"
 import categories from "../../../constants/itemCategories"
 import sizes from "../../../constants/sizes"
-import { formatItemDataForDb, MODE } from "../../../utils/formatting/formatItemData"
 import getRandomInteger from "../../../utils/getRandomInteger"
 
 class NewItemPage extends Component {
@@ -21,36 +20,31 @@ class NewItemPage extends Component {
       const { firebase } = this.props
       const files = values.files
       const itemId = nanoid()
+      const userId = values.userId
 
       // Look for the document with correct id
-      const userSnap = await this.props.firebase.user(values.userId).get()
+      const userSnap = await this.props.firebase.user(userId).get()
       // If the user isn't found throw an error
       if (!userSnap.exists) throw new Error("Nie znaleziono użytkownika")
 
       // Get main image ref
-      const mainImageIndex = files.findIndex((a) => a.isMain)
+      const mainImageIndex = getMainImageIndex(files)
 
       // Upload files to storage and get their refs
-      const attachments = await Promise.all(
-        files.map(async (file) => {
-          const snapshot = await firebase.uploadFile(
-            `${CONST.STORAGE_BUCKET_ITEM_ATTACHMENTS}/${values.userId}/${itemId}`,
-            file.data
-          )
-          return snapshot.ref.fullPath
-        })
-      )
-
-      // Format data
-      const formattedData = formatItemDataForDb(
-        { ...values, attachments, mainImageIndex, itemId },
-        MODE.CREATE
-      )
+      const newAttachmentRefs =
+        await firebase.batchGetAttachmentRefFromCustomFile(
+          `${CONST.STORAGE_BUCKET_ITEM_ATTACHMENTS}/${userId}/${itemId}`,
+          files
+        )
 
       // Add item to database
-      await firebase.item(formattedData.id).set(formattedData)
-
-      return
+      // TODO: ensure 'values' contains proper values
+      firebase.createItem({
+        ...values,
+        attachments: newAttachmentRefs,
+        mainImageIndex,
+        id: itemId,
+      })
     } catch (error) {
       alert("Wystąpił problem podczas wystawiania przedmiotu")
       console.error(error)
@@ -80,18 +74,26 @@ class NewItemPage extends Component {
 
     for (let i = 0; i < values.numberOfItems; i++) {
       // name
-      const name = availableNames[getRandomInteger(0, availableNames.length - 1)]
+      const name =
+        availableNames[getRandomInteger(0, availableNames.length - 1)]
 
       // category
-      const category = availableCategories[getRandomInteger(0, availableCategories.length - 1)]
+      const category =
+        availableCategories[getRandomInteger(0, availableCategories.length - 1)]
 
       // designers
       let designers = []
       const nOfDesigners = getRandomInteger(1, 3)
       for (let i = 0; i < nOfDesigners; i++) {
-        designers.push(availableDesigners[getRandomInteger(0, availableDesigners.length - 1)].label)
+        designers.push(
+          availableDesigners[getRandomInteger(0, availableDesigners.length - 1)]
+            .label
+        )
       }
-      designers = designers.reduce((acc, curr) => (!acc.includes(curr) ? [...acc, curr] : acc), [])
+      designers = designers.reduce(
+        (acc, curr) => (!acc.includes(curr) ? [...acc, curr] : acc),
+        []
+      )
 
       // price
       const price = getRandomInteger(50, 3500)
@@ -116,15 +118,23 @@ class NewItemPage extends Component {
 
       let size
       const availableSizes = sizes[sizeCategory]
-      size = sizeCategory + "-" + availableSizes[getRandomInteger(0, availableSizes.length - 1)]
+      size =
+        sizeCategory +
+        "-" +
+        availableSizes[getRandomInteger(0, availableSizes.length - 1)]
 
       // description
-      let description = await fetch("https://baconipsum.com/api/?type=meat-and-filler&paras=1")
+      let description = await fetch(
+        "https://baconipsum.com/api/?type=meat-and-filler&paras=1"
+      )
       description = (await description.json())[0]
 
       // files
       const nOfAllFiles = values.files.length
-      const nOfFiles = Math.min(nOfAllFiles, getRandomInteger(1, CONST.ATTACHMENTS_MAX_COUNT))
+      const nOfFiles = Math.min(
+        nOfAllFiles,
+        getRandomInteger(1, CONST.ATTACHMENTS_MAX_COUNT)
+      )
       const lastAvailableStartIndex = nOfAllFiles - nOfFiles
       const startIndex = getRandomInteger(0, lastAvailableStartIndex)
 
@@ -149,11 +159,12 @@ class NewItemPage extends Component {
     return (
       <Form
         onSubmit={this.onSubmit}
-        render={({ form, handleSubmit, submitting, pristine, values, ...rest }) => {
+        render={({ handleSubmit, submitting, pristine }) => {
           return (
             <form onSubmit={handleSubmit}>
               {/* Number of items */}
               <div>
+                {/* TODO: fix missing attribute name */}
                 <Field>
                   {({ input, meta }) => {
                     const error = meta.error && meta.touched ? meta.error : null
@@ -173,12 +184,16 @@ class NewItemPage extends Component {
 
               {/* Random users */}
               <div>
+                {/* TODO: fix missing attribute name */}
                 <Field name="randomUsers">
                   {({ input, meta }) => (
                     <>
                       <FieldLabel>Random users </FieldLabel>
                       <input {...input} type="checkbox" />
-                      <FormError message={meta.error} show={meta.error && meta.touched} />
+                      <FormError
+                        message={meta.error}
+                        show={meta.error && meta.touched}
+                      />
                     </>
                   )}
                 </Field>
@@ -190,9 +205,16 @@ class NewItemPage extends Component {
 
                 <Field name="files">
                   {({ input, meta }) => {
-                    const error = meta.error && meta.touched ? meta.error.main : null
+                    const error =
+                      meta.error && meta.touched ? meta.error.main : null
                     const itemErrors = meta.error ? meta.error.specific : null
-                    return <FileHandler {...input} error={error} itemErrors={itemErrors} />
+                    return (
+                      <FileHandler
+                        {...input}
+                        error={error}
+                        itemErrors={itemErrors}
+                      />
+                    )
                   }}
                 </Field>
               </div>

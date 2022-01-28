@@ -3,16 +3,16 @@ import { withRouter } from "react-router-dom"
 import { nanoid } from "nanoid"
 
 import { PageContainer } from "../../../components/Containers"
+import { getMainImageIndex } from "../../../components/FileHandler"
 
 import { useFlash, useFirebase } from "../../../hooks"
-import { formatPostDataForDb, MODE } from "../../../utils/formatting/formatPostData"
-import { route } from "../../../utils"
+import { resetFormAndRedirect } from "../../../utils"
 
 import PostForm from "./Form"
 
 const AddPost = ({ history }) => {
   const firebase = useFirebase()
-  const [postId] = useState(nanoid())
+  const [postId] = useState(() => nanoid())
   const flashMessage = useFlash()
 
   const onSubmit = async (values, form) => {
@@ -23,29 +23,22 @@ const AddPost = ({ history }) => {
       const attachments = files.map((file) => file.ref)
 
       // Get main image index
-      const mainImageIndex = files.findIndex((a) => a.isMain)
-
-      // Format the values for db
-      const formattedData = formatPostDataForDb(
-        { ...values, mainImageIndex, attachments },
-        MODE.CREATE
-      )
+      const mainImageIndex = getMainImageIndex(files)
 
       // Add post to database
-      await firebase.post(formattedData.id).set(formattedData)
+      await firebase.createPost({
+        ...values,
+        mainImageIndex,
+        attachments,
+        id: postId,
+      })
 
-      // Reset form
-      setTimeout(form.reset)
-
-      // Redirect
-      history.push(route("ADMIN_BLOG"))
+      // Reset form and redirect
+      // TODO: add success flash message
+      resetFormAndRedirect(form, history)("ADMIN_DROPS")
     } catch (error) {
       console.error(error)
-      flashMessage({
-        type: "error",
-        text: "Wystąpił błąd",
-        details: "Więcej informacji w konsoli",
-      })
+      flashMessage(ERROR_MESSAGE)
     }
   }
 
@@ -55,6 +48,12 @@ const AddPost = ({ history }) => {
       <PostForm onSubmit={onSubmit} postId={postId} />
     </PageContainer>
   )
+}
+
+const ERROR_MESSAGE = {
+  type: "error",
+  text: "Wystąpił błąd",
+  details: "Więcej informacji w konsoli",
 }
 
 export default withRouter(AddPost)

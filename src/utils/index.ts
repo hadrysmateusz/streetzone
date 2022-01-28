@@ -9,6 +9,8 @@ import makeReactSelectOption from "./makeReactSelectOption"
 export * from "./getImageUrl"
 export * from "./getIPAddress"
 export * from "./getProfilePictureURL"
+export * from "./notIn"
+export * from "./resetFormAndRedirect"
 
 export {
   mapN,
