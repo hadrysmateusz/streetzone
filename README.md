@@ -1,6 +1,6 @@
 # StreetZone
 
-![Project screenshot](./screenshot.png)
+![Project screenshot](./mockup.png)
 
 ## 📑 Table of contents
 * [General info](#ℹ-general-info)
