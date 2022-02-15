@@ -5,7 +5,9 @@
 ## 📑 Table of contents
 * [General info](#ℹ-general-info)
 * [Technologies](#-technologies)
+* [Migration notice](#-migration-in-progress)
 * [View project](#-view-project)
+* [Notes to self](#notes-to-self)
 
 ## ℹ General info
 
@@ -26,6 +28,8 @@ Some of the technologies used in this project:
 ## 🚧 Migration in progress
 
 The project is currently being migrated to TypeScript and currently contains both JavaScript and TypeScript code.
+
+> ⚠ _The app may not be fully stable until the transition is complete._
 
 ## 👀 View project
 
