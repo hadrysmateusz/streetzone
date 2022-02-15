@@ -1,6 +1,6 @@
-import {  removeDuplicates,  } from "../helpers"
+import { removeDuplicates } from "../helpers"
 import { createModel } from "../createModel"
-import {KeyType, ModelledFirestoreCollectionNames, Schema} from "../types"
+import { KeyType, ModelledFirestoreCollectionNames, Schema } from "../types"
 
 import {
   User,
@@ -32,7 +32,7 @@ const userSchema: Schema<
     messengerLink: KeyType.EDITABLE,
     profilePictureRef: KeyType.EDITABLE,
     roles: KeyType.EDITABLE,
-    feedback: KeyType.EDITABLE,
+    // feedback: KeyType.EDITABLE,
     badges: KeyType.EDITABLE,
     preferences: KeyType.EDITABLE,
     savedItems: KeyType.EDITABLE,
@@ -53,7 +53,7 @@ const userSchema: Schema<
     messengerLink: null,
     profilePictureRef: null,
     roles: [],
-    feedback: [],
+    // feedback: [],
     badges: [],
     preferences: [],
     savedItems: [],
@@ -70,7 +70,7 @@ const userSchema: Schema<
   }),
   formatEditable: (editable) => {
     editable.roles = removeDuplicates(editable.roles)
-    editable.feedback = removeDuplicates(editable.feedback)
+    // editable.feedback = removeDuplicates(editable.feedback)
     editable.badges = removeDuplicates(editable.badges)
     editable.savedItems = removeDuplicates(editable.savedItems)
     editable.savedFilters = removeDuplicates(editable.savedFilters)

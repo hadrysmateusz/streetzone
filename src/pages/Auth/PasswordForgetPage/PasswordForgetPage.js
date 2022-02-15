@@ -1,14 +1,14 @@
 import { useState } from "react"
 
 import { StyledLink } from "../../../components/Basics"
-import FormError from "../../../components/FormElements/FormError"
+import FormError from "../../../components/FormElements/HelperComponents/FormError"
 import HelmetBasics from "../../../components/HelmetBasics"
 import { CenteredContainer } from "../../../components/Containers"
 import Separator from "../../../components/Separator"
 
 import { route } from "../../../utils"
 
-import { Heading } from "./../Common.styles"
+import { Heading } from "../Common.styles"
 
 import { OuterContainer, SuccessBox } from "./PasswordForgetPage.styles"
 import { PasswordForgetForm } from "./PasswordForgetForm"
@@ -29,8 +29,9 @@ const PasswordForget = () => {
     <OuterContainer>
       {isEmailSent ? (
         <SuccessBox>
-          Na podany adres e-mail została wysłana wiadomość z linkiem do zresetowania hasła. (Jeśli
-          nie otrzymasz wiadomości w ciągu 5 minut, sprawdź folder ze spamem)
+          Na podany adres e-mail została wysłana wiadomość z linkiem do
+          zresetowania hasła. (Jeśli nie otrzymasz wiadomości w ciągu 5 minut,
+          sprawdź folder ze spamem)
         </SuccessBox>
       ) : (
         <div>

@@ -73,7 +73,7 @@ const MarketplacePage = ({ currentBreakpoint }) => {
         <GridContainer>
           <Topbar toggleFilters={toggleFilters} sortingOptions={sortingOptions} />
 
-          <CurrentFilters toggle={toggleFilters} clearFilters={clearFiltersFn} />
+          <CurrentFilters clearFilters={clearFiltersFn} />
 
           <MainGrid>
             <Sidebar hidden={!areFiltersOpen && !(currentBreakpoint > 2)}>

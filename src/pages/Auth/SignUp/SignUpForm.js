@@ -1,7 +1,6 @@
 import { Form } from "react-final-form"
 
-import { LoaderButton } from "../../../components/Button"
-import { TextFF } from "../../../components/FinalFormFields"
+import { FormSubmitButton, TextFF } from "../../../components/FinalFormFields"
 import { CONST } from "../../../constants"
 import { useFirebase } from "../../../hooks"
 
@@ -49,7 +48,7 @@ const SignUpForm = ({ onSuccess, onError }) => {
     <Form
       onSubmit={onSubmit}
       validate={validate}
-      render={({ handleSubmit, submitting, pristine }) => (
+      render={({ handleSubmit }) => (
         <StyledForm onSubmit={handleSubmit}>
           <TextFF label="Nazwa użytkownika" name="name" />
 
@@ -59,14 +58,7 @@ const SignUpForm = ({ onSuccess, onError }) => {
 
           <TextFF label="Potwierdź hasło" password name="passwordConfirm" />
 
-          <LoaderButton
-            text="Gotowe"
-            type="submit"
-            fullWidth
-            primary
-            isLoading={submitting}
-            disabled={submitting || pristine}
-          />
+          <FormSubmitButton text="Gotowe" />
         </StyledForm>
       )}
     />

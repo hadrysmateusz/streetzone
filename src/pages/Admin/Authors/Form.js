@@ -1,10 +1,14 @@
 import { Form } from "react-final-form"
 
-import { TextFF, TextareaFF, UserImageFF } from "../../../components/FinalFormFields"
-import { LoaderButton, ButtonContainer } from "../../../components/Button"
+import {
+  FormSubmitButton,
+  TextareaFF,
+  TextFF,
+  UserImageFF,
+} from "../../../components/FinalFormFields"
+import { ButtonContainer } from "../../../components/Button"
 import LoadingSpinner from "../../../components/LoadingSpinner"
-
-import { StyledForm } from "../Common"
+import { StyledForm } from "../../../components/BasicStyledForm"
 
 import validate from "./Form.validate"
 
@@ -16,9 +20,13 @@ const AuthorsForm = ({ onSubmit, initialValues, edit }) =>
       onSubmit={onSubmit}
       validate={validate}
       initialValues={initialValues}
-      render={({ handleSubmit, submitting, pristine }) => (
+      render={({ handleSubmit }) => (
         <StyledForm onSubmit={handleSubmit}>
-          <TextFF name="name" label="Imię / Pseudonim" placeholder="Imię / Pseudonim" />
+          <TextFF
+            name="name"
+            label="Imię / Pseudonim"
+            placeholder="Imię / Pseudonim"
+          />
 
           <TextareaFF
             name="about"
@@ -29,13 +37,7 @@ const AuthorsForm = ({ onSubmit, initialValues, edit }) =>
           <UserImageFF label="Zdjęcie (OPCJONALNE)" name="image" />
 
           <ButtonContainer centered>
-            <LoaderButton
-              text="Gotowe"
-              type="submit"
-              isLoading={submitting}
-              disabled={submitting || pristine}
-              primary
-            />
+            <FormSubmitButton text="Gotowe" fullWidth={false} />
           </ButtonContainer>
         </StyledForm>
       )}

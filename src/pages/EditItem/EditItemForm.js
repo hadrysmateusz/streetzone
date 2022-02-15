@@ -1,16 +1,23 @@
 import { Form } from "react-final-form"
-import { withRouter, Prompt } from "react-router-dom"
 
-import { NumberFF, DropdownFF, TextareaFF, FileHandlerFF } from "../../components/FinalFormFields"
-import { Button, LoaderButton, ButtonContainer } from "../../components/Button"
+import {
+  DropdownFF,
+  FileHandlerFF,
+  FormCancelButton,
+  FormSubmitButton,
+  NumberFF,
+  TextareaFF,
+  UnsavedChangesPrompt,
+} from "../../components/FinalFormFields"
+import { ButtonContainer } from "../../components/Button"
 import LoadingSpinner from "../../components/LoadingSpinner"
 import { StyledForm } from "../../components/BasicStyledForm"
 
-import { ITEM_SCHEMA, CONST } from "../../constants"
+import { CONST, ITEM_SCHEMA } from "../../constants"
 
 import validate from "./validate"
 
-const EditItemForm = ({ onSubmit, initialValues, history }) =>
+const EditItemForm = ({ onSubmit, initialValues }) =>
   !initialValues ? (
     <LoadingSpinner />
   ) : (
@@ -18,14 +25,26 @@ const EditItemForm = ({ onSubmit, initialValues, history }) =>
       onSubmit={onSubmit}
       initialValues={initialValues}
       validate={validate}
-      render={({ handleSubmit, submitting, pristine, values, dirty }) => (
+      render={({ handleSubmit }) => (
         <StyledForm onSubmit={handleSubmit}>
-          <Prompt
-            when={Object.values(values).length > 0 && dirty && !submitting}
-            message={() => "Zmiany nie zostały zapisane. Czy napewno chcesz wyjść?"}
+          <UnsavedChangesPrompt
+            when={({ formState }) => {
+              if (!(formState?.values)) return false
+              return (
+                Object.values(formState.values).length > 0 &&
+                formState.dirty &&
+                !formState.submitting
+              )
+            }}
           />
 
-          <NumberFF label="Cena" placeholder="Cena" name="price" min="0" step="1" />
+          <NumberFF
+            label="Cena"
+            placeholder="Cena"
+            name="price"
+            min="0"
+            step="1"
+          />
 
           <DropdownFF
             label="Stan"
@@ -33,34 +52,24 @@ const EditItemForm = ({ onSubmit, initialValues, history }) =>
             name="condition"
             options={ITEM_SCHEMA.conditionOptions}
             isSearchable={false}
+            isMulti={false}
           />
 
-          <TextareaFF label="Opis" placeholder={CONST.ITEM_DESC_PLACEHOLDER} name="description" />
+          <TextareaFF
+            label="Opis"
+            placeholder={CONST.ITEM_DESC_PLACEHOLDER}
+            name="description"
+          />
 
           <FileHandlerFF label="Zdjęcia" name="files" />
 
           <ButtonContainer>
-            <LoaderButton
-              text="Gotowe"
-              type="submit"
-              primary
-              fullWidth
-              isLoading={submitting}
-              disabled={submitting || pristine}
-            />
-            <Button
-              text="Anuluj"
-              type="button"
-              fullWidth
-              disabled={submitting}
-              onClick={() => history.goBack()}
-            >
-              Anuluj
-            </Button>
+            <FormSubmitButton text="Gotowe" />
+            <FormCancelButton text="Anuluj" />
           </ButtonContainer>
         </StyledForm>
       )}
     />
   )
 
-export default withRouter(EditItemForm)
+export default EditItemForm

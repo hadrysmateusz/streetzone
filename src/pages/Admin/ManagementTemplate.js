@@ -6,7 +6,7 @@ import { PageContainer } from "../../components/Containers"
 import { useLiveCollection } from "../../hooks"
 import { route } from "../../utils"
 
-import { List } from "./Common"
+import { List } from "./Common.styles"
 
 const ManagementTemplate = ({
   firestoreCollection,
@@ -35,7 +35,11 @@ const ManagementTemplate = ({
       </ButtonContainer>
 
       <List>
-        {!isEmpty ? results.map((hit, i) => <PreviewComponent key={hit.id ?? i} {...hit} />) : null}
+        {!isEmpty
+          ? results.map((hit, i) => (
+              <PreviewComponent key={hit.id ?? i} {...hit} />
+            ))
+          : null}
       </List>
     </PageContainer>
   )

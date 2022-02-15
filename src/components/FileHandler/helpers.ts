@@ -1,11 +1,12 @@
 import { CustomFile } from "./CustomFile"
+import { Firebase } from "../Firebase"
 
 // TODO: consider throwing when index is -1 (not found)
 export function getMainImageIndex(files: CustomFile[]) {
   return files.findIndex((a) => a.isMain)
 }
 
-export function getAttachmentRefFromCustomFile(firebase: any) {
+export function getAttachmentRefFromCustomFile(firebase: Firebase) {
   /**
    * If file object already has a storageRef (which means it's already been uploaded) return that,
    * if not, upload the file to firebase storage, to the specified bucket and return the new ref
@@ -22,14 +23,16 @@ export function getAttachmentRefFromCustomFile(firebase: any) {
   }
 }
 
-export function batchGetAttachmentRefFromCustomFile(firebase: any) {
+export function batchGetAttachmentRefFromCustomFile(firebase: Firebase) {
   /**
-   * Batch version of 'getAttachmentRefFromCustomFile'fied bucket and return the new ref
+   * Batch version of 'getAttachmentRefFromCustomFile'
    * @returns firebase storage refs corresponding to the files
    */
   return async function (bucket: string, files: CustomFile[]) {
     return await Promise.all(
-      files.map((file) => getAttachmentRefFromCustomFile(firebase)(bucket, file))
+      files.map((file) =>
+        getAttachmentRefFromCustomFile(firebase)(bucket, file)
+      )
     )
   }
 }

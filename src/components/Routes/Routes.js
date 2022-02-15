@@ -1,14 +1,14 @@
-import { useEffect } from "react"
-import { Route, Switch, withRouter } from "react-router-dom"
+import {useEffect} from "react"
+import {Route, Switch, withRouter} from "react-router-dom"
 import Loadable from "react-loadable"
 
 import NotFound from "../../pages/NotFound"
 
-import { BASE_ROUTES, ROUTES } from "../../constants"
+import {BASE_ROUTES, ROUTES} from "../../constants"
 
-import { LoadableComponentSpinner } from "../LoadingSpinner"
+import {LoadableComponentSpinner} from "../LoadingSpinner"
 import ErrorBoundary from "../ErrorBoundary"
-import { PageContainer, MainPageContainer } from "../Containers"
+import {MainPageContainer, PageContainer} from "../Containers"
 
 // ===== HOME PAGE =====
 const Home = Loadable({
@@ -32,7 +32,7 @@ const PasswordForget = Loadable({
 
 // ===== ACCOUNT ======
 const MyAccount = Loadable({
-  loader: () => import("../../pages/Account/MyAccount"),
+  loader: () => import("../../pages/Account/MyAccountPage"),
   loading: LoadableComponentSpinner,
 })
 const Account = Loadable({
@@ -40,27 +40,27 @@ const Account = Loadable({
   loading: LoadableComponentSpinner,
 })
 const UserItems = Loadable({
-  loader: () => import("../../pages/Account/UserItems"),
+  loader: () => import("../../pages/Account/UserSections/UserItems"),
   loading: LoadableComponentSpinner,
 })
 const UserLiked = Loadable({
-  loader: () => import("../../pages/Account/UserLiked"),
+  loader: () => import("../../pages/Account/UserSections/UserLiked"),
   loading: LoadableComponentSpinner,
 })
 const UserFollowing = Loadable({
-  loader: () => import("../../pages/Account/UserFollowing"),
+  loader: () => import("../../pages/Account/UserSections/UserFollowing"),
   loading: LoadableComponentSpinner,
 })
 const UserSavedDrops = Loadable({
-  loader: () => import("../../pages/Account/UserSavedDrops"),
+  loader: () => import("../../pages/Account/UserSections/UserSavedDrops"),
   loading: LoadableComponentSpinner,
 })
 const UserFeedback = Loadable({
-  loader: () => import("../../pages/Account/UserFeedback"),
+  loader: () => import("../../pages/Account/UserSections/UserFeedback"),
   loading: LoadableComponentSpinner,
 })
 const UserSettings = Loadable({
-  loader: () => import("../../pages/Account/UserSettings"),
+  loader: () => import("../../pages/Account/UserSections/UserSettings"),
   loading: LoadableComponentSpinner,
 })
 
@@ -232,7 +232,7 @@ const Chat = Loadable({
   loading: LoadableComponentSpinner,
 })
 const ChatRoom = Loadable({
-  loader: () => import("../../pages/Chat/ChatRoom"),
+  loader: () => import("../../pages/Chat"), // this import being same as Chat is intentional as it's a wrapper responsible for rendering both routes
   loading: LoadableComponentSpinner,
 })
 const Search = Loadable({
@@ -687,7 +687,7 @@ const routes = [
 ]
 
 const ErrorComponent = ({ error, errorInfo }) => {
-  console.log(error, errorInfo)
+  console.error(error, errorInfo)
   return (
     <PageContainer>
       <h2>Wystąpił problem</h2>

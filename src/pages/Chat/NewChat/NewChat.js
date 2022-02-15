@@ -1,14 +1,18 @@
 import { useHistory } from "react-router-dom"
 import { nanoid } from "nanoid"
-import { Form, Field } from "react-final-form"
+import { Field, Form } from "react-final-form"
 
-import { LoaderButton, ButtonContainer } from "../../../components/Button"
+import { ButtonContainer } from "../../../components/Button"
 import { Textarea } from "../../../components/FormElements"
 
-import { useFirebase, useAuthentication } from "../../../hooks"
+import { useAuthentication, useFirebase } from "../../../hooks"
 import { route } from "../../../utils"
 
 import { validate } from "./validate"
+import {
+  FormSubmitButton,
+  getFormError,
+} from "../../../components/FinalFormFields"
 
 export const NewChat = ({ userId, flexibleTextarea = false }) => {
   const authUser = useAuthentication()
@@ -26,7 +30,11 @@ export const NewChat = ({ userId, flexibleTextarea = false }) => {
     const recipientId = userId
 
     // get common room for both users
-    let roomSnap = await firebase.currentUser().collection("rooms").doc(userId).get()
+    let roomSnap = await firebase
+      .currentUser()
+      .collection("rooms")
+      .doc(userId)
+      .get()
 
     // Create room if it doesn't exist yet
     if (!roomSnap.exists) {
@@ -56,13 +64,18 @@ export const NewChat = ({ userId, flexibleTextarea = false }) => {
     }
 
     // add message to room
-    await firebase.db.collection("rooms").doc(roomId).collection("messages").doc(messageId).set({
-      id: messageId,
-      createdAt: Date.now(),
-      message,
-      author: senderId,
-      unread: true,
-    })
+    await firebase.db
+      .collection("rooms")
+      .doc(roomId)
+      .collection("messages")
+      .doc(messageId)
+      .set({
+        id: messageId,
+        createdAt: Date.now(),
+        message,
+        author: senderId,
+        unread: true,
+      })
 
     // navigate to correct room in chat view
     history.push(route("CHAT_ROOM", { roomId }))
@@ -72,34 +85,23 @@ export const NewChat = ({ userId, flexibleTextarea = false }) => {
     <Form
       onSubmit={onSubmit}
       validate={validate}
-      render={({ handleSubmit, submitting, pristine, values }) => (
+      render={({ handleSubmit }) => (
         <form onSubmit={handleSubmit}>
           {/* Comment */}
           <Field name="message">
-            {({ input, meta }) => {
-              const error = meta.error && meta.touched ? meta.error : null
-              return (
-                <Textarea
-                  {...input}
-                  autoResize={flexibleTextarea ? true : false}
-                  numberOfLines={flexibleTextarea ? undefined : 3}
-                  placeholder="Wiadomość"
-                  error={error}
-                />
-              )
-            }}
+            {({ input, meta }) => (
+              <Textarea
+                {...input}
+                autoResize={flexibleTextarea}
+                numberOfLines={flexibleTextarea ? undefined : 3}
+                placeholder="Wiadomość"
+                error={getFormError(meta)}
+              />
+            )}
           </Field>
 
           <ButtonContainer>
-            <LoaderButton
-              text="Wyślij"
-              type="submit"
-              isLoading={submitting}
-              disabled={submitting || pristine}
-              primary
-              big
-              fullWidth
-            />
+            <FormSubmitButton text="Wyślij" big />
           </ButtonContainer>
         </form>
       )}

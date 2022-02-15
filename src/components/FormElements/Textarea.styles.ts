@@ -1,7 +1,7 @@
 import styled from "styled-components/macro"
 import AutosizeTextarea from "react-textarea-autosize"
 
-import commonStyles from "./commonStyles"
+import commonStyles from "./Common.styles"
 
 interface StyledTextareaProps {
   hasError: boolean
@@ -22,5 +22,5 @@ export const StyledTextarea = styled(AutosizeTextarea)<StyledTextareaProps>`
 
   ${commonStyles}
 
-	border-color: ${(p) => p.hasError && "var(--danger50)"};
+  border-color: ${(p) => p.hasError && "var(--danger50)"};
 `

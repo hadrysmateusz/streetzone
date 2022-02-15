@@ -1,10 +1,9 @@
 import { Form } from "react-final-form"
 
 import { StyledForm } from "../../../components/BasicStyledForm"
-import { TextFF } from "../../../components/FinalFormFields"
-import { LoaderButton } from "../../../components/Button"
+import { FormSubmitButton, TextFF } from "../../../components/FinalFormFields"
 
-import { FORM_ERR, CONST } from "../../../constants"
+import { CONST, FORM_ERR } from "../../../constants"
 
 const validate = (values) => {
   const { email, password } = values
@@ -25,24 +24,17 @@ const validate = (values) => {
   return errors
 }
 
-const SignInForm = ({ onSubmit, onError }) => (
+const SignInForm = ({ onSubmit }) => (
   <Form
     onSubmit={onSubmit}
     validate={validate}
-    render={({ form, handleSubmit, submitting, pristine, values, ...rest }) => (
+    render={({ handleSubmit }) => (
       <StyledForm onSubmit={handleSubmit}>
         <TextFF label="E-mail" name="email" />
 
         <TextFF label="Hasło" password name="password" />
 
-        <LoaderButton
-          text="Gotowe"
-          type="submit"
-          fullWidth
-          primary
-          isLoading={submitting}
-          disabled={submitting || pristine}
-        />
+        <FormSubmitButton text="Gotowe" />
       </StyledForm>
     )}
   />

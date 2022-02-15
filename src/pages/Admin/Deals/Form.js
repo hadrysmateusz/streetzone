@@ -1,28 +1,32 @@
-import { Prompt } from "react-router-dom"
 import { Form } from "react-final-form"
 
-import { TextFF, FileHandlerSingleFF, TextareaFF } from "../../../components/FinalFormFields"
-import { LoaderButton, ButtonContainer } from "../../../components/Button"
-import DisplayJSONButton from "../../../components/DisplayJSONButton"
+import {
+  FileHandlerSingleFF,
+  TextareaFF,
+  TextFF,
+  UnsavedChangesPrompt,
+} from "../../../components/FinalFormFields"
 import { StyledForm } from "../../../components/BasicStyledForm"
 
 import { FormWrapper } from "../FormWrapper"
+import { AdminFormButtons } from "../AdminFormButtons"
 
 const DealsForm = ({ onSubmit, initialValues, edit }) => (
   <FormWrapper edit={edit} initialValues={initialValues}>
     <Form
       onSubmit={onSubmit}
       initialValues={initialValues}
-      render={({ handleSubmit, submitting, pristine, values }) => (
+      render={({ handleSubmit }) => (
         <StyledForm onSubmit={handleSubmit}>
-          <Prompt
-            when={Object.values(values).length > 0 && !pristine}
-            message={() => "Zmiany nie zostały zapisane. Czy napewno chcesz wyjść?"}
-          />
+          <UnsavedChangesPrompt />
 
           <TextFF label="Tytuł" placeholder="Tytuł" name="title" />
 
-          <TextareaFF label="Opis" placeholder="Gdzie, jak, ile itd." name="description" />
+          <TextareaFF
+            label="Opis"
+            placeholder="Gdzie, jak, ile itd."
+            name="description"
+          />
 
           <TextFF
             label="Wartość"
@@ -39,18 +43,7 @@ const DealsForm = ({ onSubmit, initialValues, edit }) => (
 
           <FileHandlerSingleFF label="Zdjęcie" name="file" />
 
-          <ButtonContainer>
-            <LoaderButton
-              text="Gotowe"
-              type="submit"
-              big
-              fullWidth
-              primary
-              isLoading={submitting}
-              disabled={submitting || pristine}
-            />
-            <DisplayJSONButton big values={values} />
-          </ButtonContainer>
+          <AdminFormButtons />
         </StyledForm>
       )}
     />

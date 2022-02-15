@@ -1,45 +1,44 @@
-import { useState, useEffect } from "react"
-import { Link } from "react-router-dom"
-import moment from "moment"
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import moment from "moment";
 
-import HelmetBasics from "../../components/HelmetBasics"
-import { Button, ButtonContainer } from "../../components/Button"
-import DeleteItemButton from "../../components/DeleteItemButton"
-import { SmallTextBlock } from "../../components/StyledComponents"
-import { SaveButton } from "../../components/SaveButton"
-import LoadingSpinner from "../../components/LoadingSpinner"
-import { PageContainer } from "../../components/Containers"
-import ImageGallery from "../../components/ImageGallery"
-import UserPreview from "../../components/UserPreview"
-import ItemNotFound from "../../components/ItemNotFound"
-import PageNav from "../../components/PageNav"
-import InfoItem from "../../components/InfoItem"
-import ContactModal from "../../components/ContactModal"
-import { LayoutManager, Sidebar, Main } from "../../components/LayoutManager"
-// import { PopularArticles } from "../../components/SidebarComponents"
-import { ThematicGroup } from "../../components/ThematicGroup"
-import { SmallItemCard } from "../../components/Cards"
-import Share from "../../components/Share"
+import HelmetBasics from "../../components/HelmetBasics";
+import { Button, ButtonContainer } from "../../components/Button";
+import DeleteItemButton from "../../components/DeleteItemButton";
+import { SmallTextBlock } from "../../components/StyledComponents";
+import { SaveButton } from "../../components/SaveButton";
+import LoadingSpinner from "../../components/LoadingSpinner";
+import { PageContainer } from "../../components/Containers";
+import ImageGallery from "../../components/ImageGallery";
+import UserPreview from "../../components/UserPreview";
+import ItemNotFound from "../../components/ItemNotFound";
+import PageNav from "../../components/PageNav";
+import InfoItem from "../../components/InfoItem";
+import ContactModal from "../../components/ContactModal";
+import { LayoutManager, Main, Sidebar } from "../../components/LayoutManager";
+import { PopularArticles } from "../../components/SidebarComponents";
+import { ThematicGroup } from "../../components/ThematicGroup";
+import { SmallItemCard } from "../../components/Cards";
+import Share from "../../components/Share";
 import {
-  Header,
-  DetailsContainer,
   Brands,
   Description,
-  ItemContainer,
+  DetailsContainer,
+  Header,
   InfoContainer,
-  MiscBar,
-} from "../../components/ItemDetails"
+  ItemContainer,
+  MiscBar
+} from "../../components/ItemDetails";
 
-import { useFirebase, useAuthentication } from "../../hooks"
-import { translateCondition } from "../../constants/itemSchema"
-import { CONST } from "../../constants"
-import { route, itemDataHelpers } from "../../utils"
+import { useAuthentication, useFirebase } from "../../hooks";
+import { CONST, translateCondition } from "../../constants";
+import { itemDataHelpers, route } from "../../utils";
 
-import { DatesContainer } from "./ItemDetailsPage.styles"
+import { DatesContainer } from "./ItemDetailsPage.styles";
 
 const { formatDesigners, formatPrice, formatSize } = itemDataHelpers
 
-// const sidebarElements = [{ title: "Blog StreetZone", component: PopularArticles }]
+const sidebarElements = [{ title: "Blog StreetZone", component: PopularArticles }]
 
 const ItemDetailsPage = ({ match }) => {
   const firebase = useFirebase()
@@ -189,7 +188,7 @@ const ItemDetailsPage = ({ match }) => {
               limit={3}
             />
           </Main>
-          <Sidebar availableElements={[{ component: () => <div />, title: "Placeholder" }]} />
+          <Sidebar availableElements={sidebarElements} />
         </LayoutManager>
       </PageContainer>
     </>

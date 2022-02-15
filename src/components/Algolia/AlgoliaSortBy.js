@@ -29,6 +29,7 @@ const AlgoliaSortBy = ({
             defaultValue={defaultRefinement}
             onChange={onChangeDesktop}
             isSearchable={false}
+            isMulti={false}
           />
         ) : (
           <Container {...rest}>

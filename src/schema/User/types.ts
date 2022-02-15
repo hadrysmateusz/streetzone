@@ -1,10 +1,10 @@
-export interface UserFeedback {
-  author: string
-  comment: string
-  createdAt: number
-  id: string
-  rating: number
-}
+// export interface UserFeedback {
+//   author: string
+//   comment: string
+//   createdAt: number
+//   id: string
+//   rating: number
+// }
 
 export interface User {
   name: string
@@ -18,7 +18,7 @@ export interface User {
   profilePictureRef: string | null
   profilePictureURLs: string[]
   roles: string[] // TODO: make use a union type
-  feedback: UserFeedback[]
+  // feedback: UserFeedback[]
   badges: any[]
   preferences: {} // TODO: check
   savedItems: string[]

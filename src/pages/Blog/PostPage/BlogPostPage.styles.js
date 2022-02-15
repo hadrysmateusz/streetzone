@@ -40,7 +40,7 @@ export const HeaderBox = styled.div`
   background: var(--black25);
   color: white;
   padding-top: 20px;
-  padding-bottom: var(--spacing5);
+  padding-bottom: var(--spacing4);
 
   --inner-width: 750px;
 

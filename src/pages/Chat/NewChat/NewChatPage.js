@@ -1,20 +1,24 @@
-import { compose } from "recompose"
-import { withRouter } from "react-router-dom"
+import { useRouteMatch } from "react-router-dom"
 
-import { withAuthorization } from "../../../components/UserSession"
+import {
+  withAuthorization,
+  isAuthenticated,
+} from "../../../components/UserSession"
 import { PageContainer } from "../../../components/Containers"
 import UserPreview from "../../../components/UserPreview"
 import PageHeading from "../../../components/PageHeading"
 
-import { useUser } from "../../../hooks"
+import { useUserData } from "../../../hooks"
 
 import { OuterContainer, UserPreviewContainer } from "./NewChatPage.styles"
 import { NewChat } from "./NewChat"
 
-const NewChatPage = ({ match }) => {
+const NewChatPage = () => {
+  const match = useRouteMatch()
+
   const userId = match.params.id
 
-  const [user, error] = useUser(userId)
+  const [user, error] = useUserData(userId)
 
   if (error) throw new Error("Nie znaleziono użytkownika")
 
@@ -31,6 +35,7 @@ const NewChatPage = ({ match }) => {
   ) : null
 }
 
-const condition = (authUser) => !!authUser
-
-export default compose(withRouter, withAuthorization(condition))(NewChatPage)
+export default withAuthorization(
+  isAuthenticated,
+  "Zaloguj się by skorzystać z czatu"
+)(NewChatPage)

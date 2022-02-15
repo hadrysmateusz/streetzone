@@ -1,8 +1,8 @@
-import { withRouter, Link } from "react-router-dom"
+import { Link } from "react-router-dom"
 import moment from "moment"
 
-import { useUser } from "../../hooks"
-import { route, getProfilePictureURL } from "../../utils"
+import { useFirestoreCollectionNew, useUserData } from "../../hooks"
+import { getProfilePictureURL, route } from "../../utils"
 
 import { Button, ButtonContainer } from "../Button"
 import ProfilePicture from "../ProfilePicture"
@@ -13,8 +13,12 @@ import { SaveIconButton } from "../SaveButton"
 
 import { Container, DetailsContainer, UsersList } from "./BigUserPreview.styles"
 
-const BigUserPreview = withRouter(({ userId }) => {
-  const [user, error] = useUser(userId)
+const BigUserPreview = ({ userId }) => {
+  const [user, error] = useUserData(userId)
+
+  const { data: opinions } = useFirestoreCollectionNew(
+    `users/${userId}/opinions`
+  )
 
   if (error) {
     return (
@@ -36,7 +40,7 @@ const BigUserPreview = withRouter(({ userId }) => {
   const numDays = moment().diff(user.userSince, "days")
   // TODO: consider a different way to implement items counter
   // const numItems = user.items ? user.items.length : 0
-  const numOpinions = user.feedback ? user.feedback.length : 0
+  const numOpinions = opinions.length
 
   return (
     <Container>
@@ -75,11 +79,12 @@ const BigUserPreview = withRouter(({ userId }) => {
       </ButtonContainer>
     </Container>
   )
-})
+}
 
 export const UsersView = ({ users }) => (
   <UsersList>
-    {users && users.map((userId) => <BigUserPreview key={userId} userId={userId} />)}
+    {users &&
+      users.map((userId) => <BigUserPreview key={userId} userId={userId} />)}
   </UsersList>
 )
 

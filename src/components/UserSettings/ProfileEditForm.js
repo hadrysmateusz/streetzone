@@ -1,9 +1,15 @@
 import { Form } from "react-final-form"
-import { Prompt } from "react-router-dom"
 
 import LoadingSpinner from "../LoadingSpinner"
-import { Button, LoaderButton, ButtonContainer } from "../Button"
-import { UserImageFF, TextFF, TextareaFF } from "../FinalFormFields"
+import { ButtonContainer } from "../Button"
+import {
+  FormCancelButton,
+  FormSubmitButton,
+  TextareaFF,
+  TextFF,
+  UserImageFF,
+  UnsavedChangesPrompt
+} from "../FinalFormFields"
 import { StyledForm } from "../BasicStyledForm"
 
 import { Heading } from "./Heading"
@@ -17,16 +23,17 @@ export const ProfileEditForm = ({ onSubmit, initialValues, onCancel }) =>
       onSubmit={onSubmit}
       validate={validate}
       initialValues={initialValues}
-      render={({ form, handleSubmit, submitting, pristine, values }) => (
+      render={({ handleSubmit, submitting, pristine }) => (
         <StyledForm onSubmit={handleSubmit}>
-          <Prompt
-            when={Object.values(values).length > 0 && !pristine}
-            message={() => "Zmiany nie zostały zapisane. Czy napewno chcesz wyjść?"}
-          />
+          <UnsavedChangesPrompt />
 
           <Heading>Informacje i Zdjęcie profilowe</Heading>
 
-          <TextFF name="name" label="Nazwa użytkownika" placeholder="Nazwa użytkownika" />
+          <TextFF
+            name="name"
+            label="Nazwa użytkownika"
+            placeholder="Nazwa użytkownika"
+          />
 
           <TextFF name="city" label="Miasto" placeholder="Miasto" />
 
@@ -44,31 +51,24 @@ export const ProfileEditForm = ({ onSubmit, initialValues, onCancel }) =>
             info="Do kontaktu"
           />
 
-          <TextareaFF name="info" label="Opis" placeholder="Dodatkowe informacje" />
+          <TextareaFF
+            name="info"
+            label="Opis"
+            placeholder="Dodatkowe informacje"
+          />
 
           <UserImageFF name="file" />
 
           <ButtonContainer centered>
-            <LoaderButton
-              text="Zapisz"
-              type="submit"
-              isLoading={submitting}
-              disabled={submitting || pristine}
-              primary
-              fullWidth
-            />
-            <Button
+            <FormSubmitButton text="Zapisz" />
+            <FormCancelButton
               text="Anuluj"
-              type="button"
-              disabled={submitting || pristine}
-              onClick={() => {
+              disabled={(submitting || pristine) ?? undefined}
+              onCancel={({ form }) => {
                 form.reset()
                 onCancel()
               }}
-              fullWidth
-            >
-              Anuluj
-            </Button>
+            />
           </ButtonContainer>
         </StyledForm>
       )}

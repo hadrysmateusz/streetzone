@@ -4,7 +4,7 @@ import { withRouter } from "react-router-dom"
 import { StyledLink } from "../../../components/Basics"
 import { CenteredContainer } from "../../../components/Containers"
 import Separator from "../../../components/Separator"
-import FormError from "../../../components/FormElements/FormError"
+import FormError from "../../../components/FormElements/HelperComponents/FormError"
 import HelmetBasics from "../../../components/HelmetBasics"
 
 import { useFlash } from "../../../hooks"

@@ -6,7 +6,7 @@ import styled from "styled-components/macro"
 
 import { FormElementContainer, Textarea } from "../FormElements"
 
-import { Overlay } from "./common"
+import { Overlay } from "./Common.styles"
 import { Button, ButtonContainer } from "../Button"
 
 const FileHandlerContainer = styled.div`
@@ -50,13 +50,14 @@ const FileHandlerText = ({
 
   const isEmpty = !value || value.length === 0
 
-  const { getRootProps, getInputProps, isDragActive, inputRef, open } = useDropzone({
-    onDrop,
-    onDropRejected,
-    accept: "text/*,.md",
-    noClick: true,
-    multiple: false,
-  })
+  const { getRootProps, getInputProps, isDragActive, inputRef, open } =
+    useDropzone({
+      onDrop,
+      onDropRejected,
+      accept: "text/*,.md",
+      noClick: true,
+      multiple: false,
+    })
 
   const clickDropzone = () => {
     open()
@@ -69,7 +70,9 @@ const FileHandlerText = ({
           {!isEmpty ? "Dodaj plik" : "Wybierz plik"}
         </Button>
       </ButtonContainer>
-      <FileHandlerContainer {...getRootProps({ hasError: !!error, isEmpty, containerStyles })}>
+      <FileHandlerContainer
+        {...getRootProps({ hasError: !!error, isEmpty, containerStyles })}
+      >
         <input {...getInputProps()} />
 
         <Textarea

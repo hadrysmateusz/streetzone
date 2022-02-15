@@ -1,7 +1,7 @@
 import { useState } from "react"
 
 import { IconButton } from "../Button"
-import Modal from "../Modal/old"
+import Modal from "../Modal/DEPRECATED_old"
 
 const DisplayJSONButton = ({ values, ...rest }) => {
   const [isOpen, setIsOpen] = useState(false)

@@ -1,19 +1,24 @@
-import { Prompt } from "react-router-dom"
-import { Form, Field } from "react-final-form"
+import { Form } from "react-final-form"
 import arrayMutators from "final-form-arrays"
 import { FieldArray } from "react-final-form-arrays"
 
-import { TextFF, DropdownFF, FileHandlerFF, TextareaFF } from "../../../components/FinalFormFields"
-import { LoaderButton, ButtonContainer, Button } from "../../../components/Button"
-import DisplayJSONButton from "../../../components/DisplayJSONButton"
+import {
+  DropdownFF,
+  FileHandlerFF,
+  TextareaFF,
+  TextFF,
+  TextInputFFUnwrapped,
+  UnsavedChangesPrompt,
+} from "../../../components/FinalFormFields"
+import { Button, ButtonContainer } from "../../../components/Button"
 import { StyledForm } from "../../../components/BasicStyledForm"
 import LoadingSpinner from "../../../components/LoadingSpinner"
-import { Input } from "../../../components/FormElements"
 import { ITEM_SCHEMA } from "../../../constants"
 import { useDesignerOptions } from "../../../hooks"
-import {dateFormat} from "../../../schema";
+import { dateFormat } from "../../../schema"
 
 import { BuyAtGroup, Label } from "./DropsForm.styles"
+import { AdminFormButtons } from "../AdminFormButtons"
 
 const DropsForm = ({ onSubmit, initialValues, edit }) => {
   const designerOptions = useDesignerOptions()
@@ -32,15 +37,9 @@ const DropsForm = ({ onSubmit, initialValues, edit }) => {
           mutators: { push },
         },
         handleSubmit,
-        submitting,
-        pristine,
-        values,
       }) => (
         <StyledForm onSubmit={handleSubmit}>
-          <Prompt
-            when={Object.values(values).length > 0 && !pristine}
-            message={(_location) => "Zmiany nie zostały zapisane. Czy napewno chcesz wyjść?"}
-          />
+          <UnsavedChangesPrompt />
 
           <TextFF label="Nazwa przedmiotu" placeholder="Nazwa" name="name" />
 
@@ -74,6 +73,7 @@ const DropsForm = ({ onSubmit, initialValues, edit }) => {
             name="itemCategory"
             options={ITEM_SCHEMA.categoryOptions}
             isSearchable={false}
+            isMulti={false}
             placeholder="Kategoria"
           />
 
@@ -92,34 +92,16 @@ const DropsForm = ({ onSubmit, initialValues, edit }) => {
                   <div key={name}>
                     <Label>Link #{index + 1}</Label>
                     <BuyAtGroup>
-                      <Field name={`${name}.name`}>
-                        {({ input, meta }) => {
-                          const error = meta.error && meta.touched ? meta.error : null
-                          return (
-                            <Input
-                              {...input}
-                              type="text"
-                              placeholder="Nazwa"
-                              error={error}
-                              info="Nazwa sklepu/strony"
-                            />
-                          )
-                        }}
-                      </Field>
-                      <Field name={`${name}.link`}>
-                        {({ input, meta }) => {
-                          const error = meta.error && meta.touched ? meta.error : null
-                          return (
-                            <Input
-                              {...input}
-                              type="text"
-                              placeholder="Link"
-                              error={error}
-                              info="Link (affiliate lub zwykły)"
-                            />
-                          )
-                        }}
-                      </Field>
+                      <TextInputFFUnwrapped
+                        name={`${name}.name`}
+                        placeholder="Nazwa"
+                        info="Nazwa sklepu/strony"
+                      />
+                      <TextInputFFUnwrapped
+                        name={`${name}.link`}
+                        placeholder="Link"
+                        info="Link (affiliate lub zwykły)"
+                      />
                       <Button danger onClick={() => fields.remove(index)}>
                         Usuń
                       </Button>
@@ -143,18 +125,7 @@ const DropsForm = ({ onSubmit, initialValues, edit }) => {
 
           <FileHandlerFF label="Zdjęcia" name="files" />
 
-          <ButtonContainer>
-            <LoaderButton
-              text="Gotowe"
-              type="submit"
-              big
-              fullWidth
-              primary
-              isLoading={submitting}
-              disabled={submitting || pristine}
-            />
-            <DisplayJSONButton big values={values} />
-          </ButtonContainer>
+          <AdminFormButtons />
         </StyledForm>
       )}
     />

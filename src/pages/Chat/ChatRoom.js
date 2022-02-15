@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef, useContext } from "react"
+import { useEffect, useState, useRef, useContext, forwardRef } from "react"
 import { Link } from "react-router-dom"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
@@ -6,11 +6,9 @@ import LoadingSpinner from "../../components/LoadingSpinner"
 import UserPreview from "../../components/UserPreview/old"
 import ProfilePicture from "../../components/ProfilePicture"
 import { Header, FullscreenMenuContext } from "../../components/FullscreenMenu"
-
 import { useFirebase, useUserData } from "../../hooks"
 import { route, getProfilePictureURL } from "../../utils"
 
-import { NewChat } from "./NewChat"
 import {
   ChatRoomContainer,
   MobileRoomStyles,
@@ -19,6 +17,7 @@ import {
   MobileUserInfo,
 } from "./StyledComponents"
 import { Message } from "./Message"
+import { NewChat } from "./NewChat"
 
 const ChatRoomTopContainerMobile = ({ user }) => (
   <TopContainerMobile>
@@ -29,12 +28,16 @@ const ChatRoomTopContainerMobile = ({ user }) => (
       </div>
     </Link>
 
-    {user && (
+    {user ? (
       <MobileUserInfo>
-        <ProfilePicture size="30px" url={getProfilePictureURL(user, "S")} inline />
+        <ProfilePicture
+          size="30px"
+          url={getProfilePictureURL(user, "S")}
+          inline
+        />
         <span className="name">{user.name}</span>
       </MobileUserInfo>
-    )}
+    ) : null}
   </TopContainerMobile>
 )
 
@@ -43,10 +46,13 @@ const MessagesList = ({ messages, authUser, roomId }) =>
     <Message {...message} key={message.id} user={authUser} roomId={roomId} />
   ))
 
-export const ChatRoom = ({ id: roomId, otherUserId, authUser, isMobile, closeChat }) => {
+export const ChatRoom = (props) => {
+  console.log("ChatRoom props", props)
+  const { id: roomId, otherUserId, authUser, isMobile, closeChat } = props
   const firebase = useFirebase()
-  const [messages, setMessages] = useState()
   const [otherUser, error] = useUserData(otherUserId)
+
+  const [messages, setMessages] = useState()
   const fullscreenContext = useContext(FullscreenMenuContext)
   const desktopMessagesRef = useRef()
 
@@ -85,43 +91,56 @@ export const ChatRoom = ({ id: roomId, otherUserId, authUser, isMobile, closeCha
 
   if (!messages) return <LoadingSpinner />
 
-  // render mobile
-  if (isMobile) {
-    return (
-      <ChatRoomContainer>
+  return (
+    <ChatRoomContainer>
+      {isMobile ? (
+        // render mobile
         <MobileRoomStyles>
           <Header>
             <ChatRoomTopContainerMobile user={otherUser} />
           </Header>
 
-          <div className="messages">
-            <MessagesList messages={messages} authUser={authUser} roomId={roomId} />
-          </div>
-
-          <div className="bottom-container">
-            <NewChat userId={otherUserId} />
-          </div>
+          <ChatRoomCommon
+            messages={messages}
+            authUser={authUser}
+            roomId={roomId}
+            otherUserId={otherUserId}
+          />
         </MobileRoomStyles>
-      </ChatRoomContainer>
-    )
-  }
+      ) : (
+        // render desktop
+        <DesktopRoomStyles>
+          <div className="top-container">
+            <UserPreview id={otherUserId} />
+          </div>
 
-  // render desktop
-  return (
-    <ChatRoomContainer>
-      <DesktopRoomStyles>
-        <div className="top-container">
-          <UserPreview id={otherUserId} />
-        </div>
-
-        <div className="messages" ref={desktopMessagesRef}>
-          <MessagesList messages={messages} authUser={authUser} roomId={roomId} />
-        </div>
-
-        <div className="bottom-container">
-          <NewChat userId={otherUserId} />
-        </div>
-      </DesktopRoomStyles>
+          <ChatRoomCommon
+            messages={messages}
+            authUser={authUser}
+            roomId={roomId}
+            otherUserId={otherUserId}
+            ref={desktopMessagesRef}
+          />
+        </DesktopRoomStyles>
+      )}
     </ChatRoomContainer>
   )
 }
+
+const ChatRoomCommon = forwardRef((props, ref) => {
+  console.log("ChatRoomCommon props", props)
+  const { messages, authUser, roomId, otherUserId } = props
+  return (
+    <>
+      <div className="messages" ref={ref}>
+        <MessagesList messages={messages} authUser={authUser} roomId={roomId} />
+      </div>
+
+      <div className="bottom-container">
+        <NewChat userId={otherUserId} />
+      </div>
+    </>
+  )
+})
+
+export default ChatRoom

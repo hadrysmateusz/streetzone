@@ -50,7 +50,7 @@ export const MobileRoomStyles = styled.div`
     display: grid;
     align-content: start;
     gap: var(--spacing3);
-    margin-bottom: var(--bottom-container-height);
+    padding-bottom: calc(var(--bottom-container-height) + var(--spacing3));
   }
 
   .bottom-container {

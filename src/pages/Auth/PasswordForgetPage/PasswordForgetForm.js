@@ -1,7 +1,5 @@
 import { Form } from "react-final-form"
-
-import { LoaderButton } from "../../../components/Button"
-import { TextFF } from "../../../components/FinalFormFields"
+import { FormSubmitButton, TextFF } from "../../../components/FinalFormFields"
 
 import { useFirebase } from "../../../hooks"
 
@@ -30,18 +28,10 @@ export const PasswordForgetForm = ({ onSuccess, onError }) => {
     <Form
       onSubmit={onSubmit}
       validate={validate}
-      render={({ handleSubmit, submitting, pristine }) => (
+      render={({ handleSubmit }) => (
         <StyledForm onSubmit={handleSubmit}>
           <TextFF label="E-mail" name="email" />
-
-          <LoaderButton
-            text="Zresetuj hasło"
-            type="submit"
-            fullWidth
-            primary
-            isLoading={submitting}
-            disabled={submitting || pristine}
-          />
+          <FormSubmitButton text="Zresetuj hasło" />
         </StyledForm>
       )}
     />

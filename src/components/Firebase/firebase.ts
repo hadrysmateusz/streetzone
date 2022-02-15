@@ -42,7 +42,6 @@ import {
 } from "../FileHandler"
 
 import config from "./config"
-
 import FirestoreDataConverter = firebase.firestore.FirestoreDataConverter
 import DocumentReference = firebase.firestore.DocumentReference
 
@@ -237,7 +236,13 @@ class Firebase {
   // Messaging API ====================================================================================================
 
   sendNotificationTokenToDb = async (token: string) => {
-    const currentUser = this.currentUser()
+    let currentUser
+    try {
+      currentUser = this.currentUser()
+    } catch (e) {
+      console.error(e)
+      return
+    }
 
     if (!currentUser) {
       console.error(
@@ -299,7 +304,12 @@ class Firebase {
   getUserData = async (
     userId: string
   ): Promise<
-    | { user: firebase.firestore.DocumentData | undefined; error?: undefined } // TODO: better user type
+    | {
+        user:
+          | FirestoreCollectionDataTypes[ModelledFirestoreCollectionNames.users]
+          | undefined
+        error?: undefined
+      } // TODO: better user type
     | { user?: undefined; error: string }
   > => {
     // Look for the document with correct id
@@ -313,8 +323,12 @@ class Firebase {
     }
   }
   currentUser = () => {
-    const authUser = this.authUser()
-    return authUser ? this.user(authUser.uid) : null
+    try {
+      const authUser = this.authUser()
+      return this.user(authUser.uid)
+    } catch (error) {
+      return null
+    }
   }
   createUser = async (inputData: UserCreateInputData) =>
     this.__createFirestoreDocument(userModel, inputData)
@@ -501,7 +515,10 @@ class Firebase {
     return this.file(ref).getDownloadURL()
   }
 
-  batchGetImageURLs = async (refs: string[], size?: ThumbnailSizePostfix) => {
+  batchGetImageURLs = async (
+    refs: string[],
+    size?: ThumbnailSizePostfix
+  ): Promise<string[]> => {
     return refs
       ? Promise.all(refs.map((ref) => this.getImageURL(ref, size)))
       : []
@@ -519,40 +536,51 @@ class Firebase {
 
   // Merge Auth and DB Users ===========================================================================================
 
-  onAuthUserListener = (
-    next: (user: MergedUser) => void,
-    fallback: () => void
-  ) =>
-    this.auth.onAuthStateChanged(async (authUser) => {
+  onAuthUserListener = (next: (user: MergedUser | null) => void) => {
+    return this.auth.onAuthStateChanged(async (authUser) => {
       if (!authUser) {
-        return fallback()
-      }
-      // get current user's info from database
-      const dbUser = await this.getUserById(authUser.uid)
-
-      // merge auth and db user
-      const mergedUser: MergedUser = {
-        uid: authUser.uid,
-        emailVerified: authUser.emailVerified,
-        ...dbUser,
+        next(null)
+        return
       }
 
-      // TODO: disable this request for permission (and replace with a better one)
       if (areNotificationsSupported()) {
+        // TODO: disable this request for permission (and replace with a better one)
         if (Notification.permission !== "granted") {
           // TODO: support Safari's old callback API https://developer.mozilla.org/en-US/docs/Web/API/Notifications_API/Using_the_Notifications_API
-          Notification.requestPermission().then((permission) => {
-            if (permission === "granted") {
-              this.messaging.getToken().then((token) => {
-                this.sendNotificationTokenToDb(token)
-              })
-            }
-          })
+          const permission = await Notification.requestPermission()
+          if (permission === "granted") {
+            const token = await this.messaging.getToken()
+            await this.sendNotificationTokenToDb(token)
+          }
+        } else {
+          // TODO: handle different permission scenarios
         }
       }
 
-      next(mergedUser)
+      const userId = authUser.uid
+
+      this.user(userId).onSnapshot(async (user) => {
+        // get current user's info from database
+        const dbUser = user.data()
+
+        if (!dbUser) {
+          // TODO: handle this better
+          throw new Error("No data in db for this user")
+        }
+
+        // merge auth and db user
+        const mergedUser: MergedUser = {
+          uid: userId,
+          emailVerified: authUser.emailVerified,
+          ...dbUser,
+        }
+
+        localStorage.setItem("authUser", JSON.stringify(authUser))
+
+        next(mergedUser)
+      })
     })
+  }
 }
 
 export default Firebase

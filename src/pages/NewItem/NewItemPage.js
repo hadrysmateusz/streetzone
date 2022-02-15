@@ -1,7 +1,10 @@
 import { useCallback } from "react"
 import { nanoid } from "nanoid"
 
-import { withAuthorization } from "../../components/UserSession"
+import {
+  withAuthorization,
+  isAuthenticated,
+} from "../../components/UserSession"
 import { PageContainer } from "../../components/Containers"
 import HelmetBasics from "../../components/HelmetBasics"
 import { getMainImageIndex } from "../../components/FileHandler"
@@ -33,7 +36,7 @@ const NewItemPage = ({ history }) => {
         const mainImageIndex = getMainImageIndex(files)
 
         // Add item to database
-        firebase.createItem({
+        await firebase.createItem({
           ...values,
           mainImageIndex,
           attachments,
@@ -71,7 +74,7 @@ const ERROR_MESSAGE = {
   details: "Ogłoszenie mogło nie zostać dodane",
 }
 
-const condition = (authUser) =>
-  !!authUser ? true : "Zaloguj się by zacząć sprzedawać"
-
-export default withAuthorization(condition)(NewItemPage)
+export default withAuthorization(
+  isAuthenticated,
+  "Zaloguj się by zacząć sprzedawać"
+)(NewItemPage)

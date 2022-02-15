@@ -1,10 +1,7 @@
+import React from "react"
 import styled, { css } from "styled-components/macro"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { IconProp } from "@fortawesome/fontawesome-svg-core"
-import { withRouter } from "react-router-dom"
-import { Link } from "react-router-dom"
 
-import { ellipsis, resetButtonStyles, SPIN } from "../../style-utils"
+import { ellipsis } from "../../style-utils"
 
 const primary = css`
   border-color: var(--black0);
@@ -82,6 +79,7 @@ const messenger = ({ disabled }: { disabled: boolean }) => css`
     background-image: linear-gradient(to bottom, #00c6ff, #0078ff);
   `}
   border: none;
+
   :not([disabled]) {
     :hover {
       background: #00c6ff;
@@ -93,6 +91,7 @@ const facebook = ({ disabled }: { disabled: boolean }) => css`
   color: white;
   background-color: ${disabled ? "#7D8EB2" : "#3b5998"};
   border-color: ${disabled ? "#7D8EB2" : "#3b5998"};
+
   :not([disabled]) {
     :hover {
       background-color: #2b4988;
@@ -115,7 +114,13 @@ const google = ({ disabled }: { disabled: boolean }) => css`
 `
 
 type SocialButtonTypes = "messenger" | "facebook" | "google"
-const social = ({ name, ...props }: { disabled: boolean; name: SocialButtonTypes }) => {
+const social = ({
+  name,
+  ...props
+}: {
+  disabled: boolean
+  name: SocialButtonTypes
+}) => {
   switch (name) {
     case "messenger":
       return messenger(props)
@@ -135,10 +140,9 @@ const disabled = css`
   font-weight: normal;
 `
 
-type ButtonProps = {
-  type?: "button" | "submit" | "reset" | undefined
-  fullWidth?: boolean
+export type ButtonStylingProps = {
   disabled?: boolean
+  fullWidth?: boolean
   big?: boolean
   wide?: boolean
 
@@ -150,6 +154,13 @@ type ButtonProps = {
 
   social?: SocialButtonTypes
 }
+
+export type ButtonProps = ButtonStylingProps & {
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void
+  title?: string
+  type?: "button" | "submit" | "reset" | undefined
+}
+
 // use type=button by default to prevent accidental form submits
 export const Button = styled.button.attrs((props) => ({
   type: props.type ?? "button",
@@ -175,112 +186,30 @@ export const Button = styled.button.attrs((props) => ({
   font-size: var(--font-size--xs);
 
   /* Add spacing between children */
+
   * + * {
     margin-left: var(--spacing2);
   }
 
   /* Change cursor if button isn't disabled */
-  ${(p) => (p.disabled ? "cursor: default;" : "cursor: pointer;")}
-
-  /* Variant styles */
-	${(p) =>
-    p.accent ? accent : p.primary ? primary : p.danger ? danger : p.blackBox ? blackBox : basic}
-
-	/* Social styles */
-	${(p) => p.social && social({ name: p.social, disabled: p.disabled ?? false })}
-
-	/* Disabled styles */
-	${(p) => p.disabled && disabled}
- 
-	/* Full-width styling */
-	${(p) => p.fullWidth && "width: 100%;"}
-
-	/* Prevent text overflow */
-	${ellipsis}
+  ${(p) =>
+    p.disabled
+      ? "cursor: default;"
+      : "cursor: pointer;"} /* Variant styles */ ${(p) =>
+    p.accent
+      ? accent
+      : p.primary
+      ? primary
+      : p.danger
+      ? danger
+      : p.blackBox
+      ? blackBox
+      : basic} /* Social styles */ ${(p) =>
+    p.social &&
+    social({
+      name: p.social,
+      disabled: p.disabled ?? false,
+    })} /* Disabled styles */ ${(p) =>
+    p.disabled && disabled} /* Full-width styling */ ${(p) =>
+    p.fullWidth && "width: 100%;"} /* Prevent text overflow */ ${ellipsis}
 `
-
-type ButtonContainerProps = {
-  vertical?: boolean
-  noMargin?: boolean
-  alignRight?: boolean
-  centered?: boolean
-}
-export const ButtonContainer = styled.div<ButtonContainerProps>`
-  width: 100%;
-  display: flex;
-  ${(p) => p.vertical && "flex-direction: column;"}
-  ${(p) => !p.noMargin && "margin: var(--spacing2) 0;"}
-	${(p) => p.alignRight && "justify-content: flex-end;"}
-	${(p) => p.centered && "justify-content: center;"}
-	> * + * {
-    ${(p) => (p.vertical ? "margin-top: var(--spacing2);" : "margin-left: var(--spacing2);")}
-  }
-`
-
-export const UnstyledButton = styled.button`
-  ${resetButtonStyles}
-`
-
-type IconButtonProps = { icon: IconProp } & ButtonProps
-const IconButtonUnstyled: React.FC<IconButtonProps> = ({ icon, ...rest }) => (
-  <Button {...rest}>
-    <FontAwesomeIcon icon={icon} fixedWidth />
-  </Button>
-)
-
-// TODO: move from boolean big prop to a size prop
-export const IconButton = styled(IconButtonUnstyled)`
-  padding: 0;
-  height: ${(p) => (p.big ? "48px" : "40px")};
-  width: ${(p) => (p.big ? "48px" : "40px")};
-  flex-shrink: 0;
-`
-
-type LoaderButtonProps = {
-  isLoading: boolean
-  text: string
-  loadingText?: string
-  // onClick?: () => void
-} & ButtonProps
-const LoaderButtonUnstyled: React.FC<LoaderButtonProps> = ({
-  isLoading,
-  text,
-  loadingText = text,
-  ...rest
-}) => (
-  <Button {...rest}>
-    <span className="contentContainer">
-      {isLoading && <FontAwesomeIcon className="spinner" icon={"spinner"} />}
-      <span className="text">{isLoading ? loadingText : text}</span>
-    </span>
-  </Button>
-)
-
-export const LoaderButton = styled(LoaderButtonUnstyled)`
-  .contentContainer {
-    position: relative;
-    width: auto;
-  }
-  .spinner {
-    margin-right: var(--spacing2);
-    position: absolute;
-    top: 0.2rem;
-    left: -1.3rem;
-    animation: ${SPIN} 1.3s linear infinite;
-  }
-`
-
-type LinkButtonProps = ({ to: string; href?: undefined } | { to?: undefined; href: string }) &
-  ButtonProps
-export const LinkButton: React.FC<LinkButtonProps> = ({ to, href, ...rest }) => (
-  <Button as={href ? "a" : Link} to={to} href={href} {...rest} />
-)
-
-// has to be type button to prevent accidental submits
-export const BackButton: React.FC = withRouter(
-  ({ history, children = "Wróć" }: { history: any; children?: React.ReactNode }) => (
-    <Button type="button" onClick={() => history.goBack()}>
-      {children}
-    </Button>
-  )
-)

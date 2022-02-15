@@ -2,12 +2,16 @@ import { withRouter } from "react-router-dom"
 import { Form } from "react-final-form"
 import { nanoid } from "nanoid"
 
-import { LoaderButton, ButtonContainer, BackButton } from "../../components/Button"
+import { BackButton, ButtonContainer } from "../../components/Button"
 import { PageContainer } from "../../components/Containers"
-import { TextFF } from "../../components/FinalFormFields"
+import {
+  FormCancelButton,
+  FormSubmitButton,
+  TextFF,
+} from "../../components/FinalFormFields"
 import PageHeading from "../../components/PageHeading"
 import HelmetBasics from "../../components/HelmetBasics"
-import { useFirebase, useAuthentication, useFlash } from "../../hooks"
+import { useAuthentication, useFirebase, useFlash } from "../../hooks"
 
 import validate from "./validate"
 import { Info, StyledForm } from "./RequestDesignerPage.styles"
@@ -43,12 +47,12 @@ const RequestDesigner = ({ history }) => {
       flashMessage({
         type: "success",
         text: "Wysłano prośbę o dodanie",
-        details: "Włącz powiadomienia, a my damy ci znać gdy marka zostanie dodana",
+        details:
+          "Włącz powiadomienia, a my damy ci znać gdy marka zostanie dodana",
         ttl: 6000,
       })
       form.reset()
       history.goBack()
-      return
     })
   }
 
@@ -60,20 +64,30 @@ const RequestDesigner = ({ history }) => {
       <Form
         onSubmit={onSubmit}
         validate={validate}
-        render={({ handleSubmit, submitting }) => (
+        render={({ handleSubmit }) => (
           <StyledForm onSubmit={handleSubmit}>
             <Info>
               {/* TODO: make this copy more accurate once all of the functionality is finished */}
-              Podaj nazwę marki lub projektanta. Po weryfikacji, dodamy ją do systemu. W
-              międzyczasie możesz użyć marki "Inny" by wystawić swój przedmiot. Gdy marka zostanie
-              dodana, będziesz mógł zedytować swoje ogłoszenie.
+              Podaj nazwę marki lub projektanta. Po weryfikacji, dodamy ją do
+              systemu. W międzyczasie możesz użyć marki "Inny" by wystawić swój
+              przedmiot. Gdy marka zostanie dodana, będziesz mógł zedytować
+              swoje ogłoszenie.
             </Info>
 
-            <TextFF label="Nazwa projektanta / marki" placeholder="Nazwa" name="name" />
+            <TextFF
+              label="Nazwa projektanta / marki"
+              placeholder="Nazwa"
+              name="name"
+            />
 
             <ButtonContainer vertical>
-              <LoaderButton text="OK" isLoading={submitting} primary big />
+              <FormSubmitButton text="OK" big fullWidth={false} />
               <BackButton />
+              <FormCancelButton
+                text="Wróć"
+                fullWidth={false}
+                onCancel={({ history }) => history.goBack()}
+              />
             </ButtonContainer>
           </StyledForm>
         )}

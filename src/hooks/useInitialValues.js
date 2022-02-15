@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 
-import { getImageUrl } from "../utils/getImageUrl"
+import { getImageUrl } from "../utils"
 import { CustomFile } from "../components/FileHandler"
 
 import { useFirebase } from "./useFirebase"
@@ -10,6 +10,7 @@ const defaultTransformFunction = (data) => data
 
 const defaultImagesConfig = []
 
+// TODO: use this hook in all admin edit forms
 /**
  * Fetches and prepares data for an edit form, it's important for the config to be the same array every time to prevent an endless loop
  * @param {string} path path of document to fetch
@@ -45,7 +46,7 @@ const useInitialValues = (
               })
           )
         } else {
-          // otherwise process the single element
+          // otherwise, process the single element
           data[name] = new CustomFile({
             storageRef: value,
             previewUrl: getImageUrl(value, "M"),

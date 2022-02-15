@@ -2,7 +2,7 @@ import { useMemo } from "react"
 import { Link } from "react-router-dom"
 import moment from "moment"
 
-import { useUser } from "../../hooks"
+import { useUserData } from "../../hooks"
 import { route, getProfilePictureURL } from "../../utils"
 
 import { Button } from "../Button"
@@ -10,7 +10,11 @@ import ProfilePicture from "../ProfilePicture"
 import LoadingSpinner from "../LoadingSpinner"
 // import UserRating from "../UserRating"
 
-import { ButtonContainer, Container, InfoItemContainer } from "./UserPreview.styles"
+import {
+  ButtonContainer,
+  Container,
+  InfoItemContainer,
+} from "./UserPreview.styles"
 
 const InfoItem = ({ name, children }) => (
   <InfoItemContainer>
@@ -27,7 +31,10 @@ const DumbUserPreview = ({
   onlyInfo = false,
   noButton = false,
 }) => {
-  const time = useMemo(() => moment().diff(user.userSince, "days"), [user.userSince])
+  const time = useMemo(
+    () => moment().diff(user.userSince, "days"),
+    [user.userSince]
+  )
   return (
     <Container onlyInfo={onlyInfo}>
       {error ? (
@@ -58,7 +65,7 @@ const DumbUserPreview = ({
 }
 
 const SmartUserPreview = ({ userId, ...rest }) => {
-  const [user, error] = useUser(userId)
+  const [user, error] = useUserData(userId)
   const profilePictureUrl = getProfilePictureURL(user, "S")
   return user ? (
     <DumbUserPreview
@@ -75,7 +82,12 @@ const NewUserPreviewWrapper = ({ user, id, ...rest }) => {
   if (user) {
     const profilePictureUrl = getProfilePictureURL(user, "S")
     return (
-      <DumbUserPreview user={user} userId={id} profilePictureUrl={profilePictureUrl} {...rest} />
+      <DumbUserPreview
+        user={user}
+        userId={id}
+        profilePictureUrl={profilePictureUrl}
+        {...rest}
+      />
     )
   } else {
     return <SmartUserPreview userId={id} {...rest} />

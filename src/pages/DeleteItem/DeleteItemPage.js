@@ -13,7 +13,11 @@ import HelmetBasics from "../../components/HelmetBasics"
 import { NotFoundError } from "../../errors"
 import { useFlash, useFirebase, useAuthentication } from "../../hooks"
 import { getRedirectTo, route } from "../../utils"
-import { Disclaimer, ItemContainer, OuterContainer } from "./DeleteItemPage.styles"
+import {
+  Disclaimer,
+  ItemContainer,
+  OuterContainer,
+} from "./DeleteItemPage.styles"
 
 // the id is passed in because the loading state should only refer to a single item
 const useDeleteItem = (id) => {
@@ -23,7 +27,9 @@ const useDeleteItem = (id) => {
   const deleteItem = async () => {
     setIsDeleting(true)
     try {
-      await firebase.item(id).update({ isArchived: true, archivedAt: Date.now() })
+      await firebase
+        .item(id)
+        .update({ isArchived: true, archivedAt: Date.now() })
     } catch (err) {
       throw err
     } finally {
@@ -113,7 +119,9 @@ const DeleteItem = withRouter(({ match, history, location }) => {
               <ItemContainer>
                 <SmallItemCard {...item} />
               </ItemContainer>
-              <Disclaimer>Na pewno usunąć? Tej akcji nie da się cofnąć.</Disclaimer>
+              <Disclaimer>
+                Na pewno usunąć? Tej akcji nie da się cofnąć.
+              </Disclaimer>
               <ButtonContainer vertical noMargin>
                 <LoaderButton
                   text="Tak, Usuń"

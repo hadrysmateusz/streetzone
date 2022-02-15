@@ -1,19 +1,19 @@
 import { useState } from "react"
 import { withRouter } from "react-router-dom"
 
-import FormError from "../../../components/FormElements/FormError"
+import FormError from "../../../components/FormElements/HelperComponents/FormError"
 import { CenteredContainer } from "../../../components/Containers"
 import { StyledLink } from "../../../components/Basics"
 import Separator from "../../../components/Separator"
 import HelmetBasics from "../../../components/HelmetBasics"
 
-import { useFlash, useFirebase } from "../../../hooks"
+import { useFirebase, useFlash } from "../../../hooks"
 import { getRedirectTo, route } from "../../../utils"
 
 import { Heading, LinkContainer } from "../Common.styles"
 
 import EmailSignInForm from "./EmailSignInForm"
-import { GoogleButton, FacebookButton } from "./SocialSignInButton"
+import { FacebookButton, GoogleButton } from "./SocialSignInButton"
 import {
   BannerContainer,
   BannerMessage,
@@ -29,7 +29,8 @@ const PasswordForgetLink = () => (
 
 const SignUpLink = () => (
   <LinkContainer>
-    Nie masz jeszcze konta? <StyledLink to={route("SIGN_UP")}>Utwórz konto</StyledLink>
+    Nie masz jeszcze konta?{" "}
+    <StyledLink to={route("SIGN_UP")}>Utwórz konto</StyledLink>
   </LinkContainer>
 )
 

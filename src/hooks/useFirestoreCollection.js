@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useEffect, useState } from "react"
 
 import useFirebase from "./useFirebase"
 
@@ -8,10 +8,12 @@ export const useFirestoreCollection = (collection) => {
 
   useEffect(() => {
     const getData = () => {
-      const unsubscribe = firebase.db.collection(collection).onSnapshot((snap) => {
-        const itemsData = snap.docs.map((doc) => doc.data())
-        setItems(itemsData)
-      })
+      const unsubscribe = firebase.db
+        .collection(collection)
+        .onSnapshot((snap) => {
+          const itemsData = snap.docs.map((doc) => doc.data())
+          setItems(itemsData)
+        })
 
       return unsubscribe
     }
@@ -32,23 +34,25 @@ export const useLiveCollection = (collection) => {
   const [isEmpty, setIsEmpty] = useState(false)
 
   useEffect(() => {
-    const unsubscribe = firebase.db.collection(collection).onSnapshot((snap) => {
-      if (snap.empty) {
-        setIsEmpty(true)
-        setResults([])
-        return
-      } else {
-        setIsEmpty(false)
-      }
+    const unsubscribe = firebase.db
+      .collection(collection)
+      .onSnapshot((snap) => {
+        if (snap.empty) {
+          setIsEmpty(true)
+          setResults([])
+          return
+        } else {
+          setIsEmpty(false)
+        }
 
-      const __results = snap.docs.map((doc) => doc.data())
-      setResults(__results)
-    })
+        const __results = snap.docs.map((doc) => doc.data())
+        setResults(__results)
+      })
 
     return unsubscribe
   }, [collection, firebase.db])
 
-  // results are returned under the name of the collection for convenience, but also under the 'results' key for the rare situations where the you don't know or can't change the key
+  // results are returned under the name of the collection for convenience, but also under the 'results' key for the rare situations where you don't know or can't change the key
   return {
     results,
     [collection]: results,

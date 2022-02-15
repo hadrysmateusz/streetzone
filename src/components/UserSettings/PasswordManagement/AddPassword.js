@@ -18,7 +18,7 @@ const AddPassword = ({ onSuccess }) => {
   // get linkWithCredential wrapped with reauthentication
   const [linkWithCredentialWithReauthentication, reauthenticationModal] =
     useFunctionWithReauthentication(async (credential) => {
-      await firebase.auth.currentUser.linkWithCredential(credential)
+      await firebase.authUser().linkWithCredential(credential)
       onSuccess("Hasło dodano pomyślnie")
     })
 

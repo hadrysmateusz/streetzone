@@ -4,10 +4,10 @@ import { useDropzone } from "react-dropzone"
 import useFirebase from "../../hooks/useFirebase"
 
 import { FormElementContainer } from "../FormElements"
-import { ButtonContainer, Button } from "../Button"
+import { Button, ButtonContainer } from "../Button"
 
 import SmartFileItem from "./SmartFileItem"
-import { Overlay, FileHandlerContainer, EmptyState } from "./common"
+import { EmptyState, FileHandlerContainer, Overlay } from "./Common.styles"
 import { CustomFile } from "./CustomFile"
 
 const LiveFileHandler = ({
@@ -113,12 +113,13 @@ const LiveFileHandler = ({
   const isEmpty = !items || items.length === 0
   const hasMain = items.find((fileItem) => fileItem.isMain)
 
-  const { getRootProps, getInputProps, isDragActive, inputRef, open } = useDropzone({
-    onDrop,
-    onDropRejected,
-    accept: "image/jpeg,image/png",
-    noClick: !isEmpty,
-  })
+  const { getRootProps, getInputProps, isDragActive, inputRef, open } =
+    useDropzone({
+      onDrop,
+      onDropRejected,
+      accept: "image/jpeg,image/png",
+      noClick: !isEmpty,
+    })
 
   const clickDropzone = () => {
     open()
@@ -137,10 +138,14 @@ const LiveFileHandler = ({
       <FileHandlerContainer {...getRootProps({ hasError: !!error, isEmpty })}>
         <input {...getInputProps()} />
 
-        {isDragActive && <Overlay alwaysShow>Upuść pliki tutaj aby dodać</Overlay>}
+        {isDragActive && (
+          <Overlay alwaysShow>Upuść pliki tutaj aby dodać</Overlay>
+        )}
 
         {isEmpty
-          ? !isDragActive && <EmptyState>Wybierz lub przeciągnij pliki</EmptyState>
+          ? !isDragActive && (
+              <EmptyState>Wybierz lub przeciągnij pliki</EmptyState>
+            )
           : items.map((file, i) => {
               // if no item has isMain, default to the first item
               const isMain = hasMain ? file.isMain : i === 0

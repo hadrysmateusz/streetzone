@@ -1,21 +1,26 @@
 import React from "react"
-import FormElementContainer from "./FormElementContainer"
+import { FieldInputProps } from "react-final-form"
+
+import FormElementContainer from "./HelperComponents/FormElementContainer"
 import { StyledTextarea } from "./Textarea.styles"
 
-interface TextareaProps {
-  info: string
-  error: string
-  disabled: boolean
-  autoResize: boolean
-  numberOfLines: number
+interface ResizableTextareaProps
+  extends FieldInputProps<string, HTMLTextAreaElement> {
+  info?: string
+  error?: string
+  placeholder?: string
+  disabled?: boolean
+  autoResize?: boolean
+  numberOfLines?: number
 }
 
-const Textarea: React.FC<TextareaProps> = ({
+const Textarea: React.FC<ResizableTextareaProps> = ({
   info,
   error,
-  disabled,
-  autoResize = true,
+  disabled = false,
   numberOfLines = 4,
+  placeholder,
+  autoResize = true,
   ...rest
 }) => (
   <FormElementContainer error={error} info={info}>
@@ -24,6 +29,7 @@ const Textarea: React.FC<TextareaProps> = ({
       numberOfLines={numberOfLines}
       hasError={!!error}
       autoResize={autoResize}
+      placeholder={placeholder}
       {...rest}
     />
   </FormElementContainer>

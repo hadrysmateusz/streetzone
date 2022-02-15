@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 // import PropTypes from "prop-types"
 
 import { CustomFile } from "."
-import { IconContainer, Overlay } from "./common"
+import { IconContainer, Overlay } from "./Common.styles"
 import { FormElementContainer } from "../FormElements"
 import { TextBlock } from "../StyledComponents"
 import { FileHandlerSingleContainer } from "./FileHandlerSingle.styles"

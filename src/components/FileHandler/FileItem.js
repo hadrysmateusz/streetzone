@@ -1,13 +1,23 @@
 import Ratio from "react-ratio"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 // import PropTypes from "prop-types"
-
 import { TextBlock } from "../StyledComponents"
 
-import { IconContainer, ErrorContainer, Overlay } from "./common"
-import { IndicatorIcon, IndicatorsContainer, Thumbnail } from "./FileItem.styles"
+import { ErrorContainer, IconContainer, Overlay } from "./Common.styles"
+import {
+  IndicatorIcon,
+  IndicatorsContainer,
+  Thumbnail,
+} from "./FileItem.styles"
 
-const PureFileItem = ({ id, previewUrl, error, actions, isMain = false, uploadProgress }) => {
+const PureFileItem = ({
+  id,
+  previewUrl,
+  error,
+  actions,
+  isMain = false,
+  uploadProgress,
+}) => {
   const hasError = !!error
 
   return (
@@ -15,7 +25,11 @@ const PureFileItem = ({ id, previewUrl, error, actions, isMain = false, uploadPr
       <Thumbnail hasError={hasError}>
         <IndicatorsContainer>
           {hasError && (
-            <IndicatorIcon color="var(--danger50)" title={error} icon="exclamation-circle" />
+            <IndicatorIcon
+              color="var(--danger50)"
+              title={error}
+              icon="exclamation-circle"
+            />
           )}
           {isMain && <IndicatorIcon color="var(--accent50)" icon="star" />}
         </IndicatorsContainer>
@@ -26,7 +40,10 @@ const PureFileItem = ({ id, previewUrl, error, actions, isMain = false, uploadPr
         ) : null}
         <Overlay>
           {actions.map((action) => (
-            <IconContainer key={action.label} onClick={() => action.handler(id)}>
+            <IconContainer
+              key={action.label}
+              onClick={() => action.handler(id)}
+            >
               <FontAwesomeIcon icon={action.icon} size="2x" fixedWidth />
               <TextBlock centered>{action.label}</TextBlock>
             </IconContainer>

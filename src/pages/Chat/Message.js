@@ -1,4 +1,4 @@
-import { useEffect } from "react"
+import {useEffect, useMemo} from "react"
 import moment from "moment"
 
 import { useFirebase } from "../../hooks"
@@ -7,7 +7,8 @@ import { MessageStyles } from "./StyledComponents"
 
 export const Message = ({ id, roomId, message, createdAt, author, user, unread }) => {
   const firebase = useFirebase()
-  const formattedCreatedAt = moment().to(createdAt)
+
+  const formattedCreatedAt = useMemo(()=>moment().to(createdAt),[createdAt])
   const isAuthor = author === user.uid
 
   useEffect(() => {

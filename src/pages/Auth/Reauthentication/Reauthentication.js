@@ -3,7 +3,7 @@ import { useState } from "react"
 import { useFirebase } from "../../../hooks"
 
 import { Button } from "../../../components/Button"
-import FormError from "../../../components/FormElements/FormError"
+import FormError from "../../../components/FormElements/HelperComponents/FormError"
 import Separator from "../../../components/Separator"
 import { Modal } from "../../../components/Modal"
 
@@ -47,7 +47,10 @@ export const useFunctionWithReauthentication = (fn) => {
 
   const renderModal = () =>
     isModalOpen ? (
-      <ReauthenticationModal onSuccess={() => fn(...args)} onRequestClose={closeModal} />
+      <ReauthenticationModal
+        onSuccess={() => fn(...args)}
+        onRequestClose={closeModal}
+      />
     ) : null
 
   return [wrappedFunction, renderModal]
@@ -114,7 +117,10 @@ const ReauthenticationModal = ({ onSuccess, onRequestClose }) => {
     try {
       // get credentials from firebase
       const user = firebase.auth.currentUser
-      const credential = firebase.emailAuthProvider.credential(user.email, values.password)
+      const credential = firebase.emailAuthProvider.credential(
+        user.email,
+        values.password
+      )
 
       // reauthenticate with new credentials
       await user.reauthenticateWithCredential(credential)
@@ -135,7 +141,8 @@ const ReauthenticationModal = ({ onSuccess, onRequestClose }) => {
     <Modal onRequestClose={onRequestClose}>
       <ModalOuterContainer>
         <InfoContainer>
-          Aby dokończyć tę czynność, potwierdź że jesteś właścicielem tego konta.
+          Aby dokończyć tę czynność, potwierdź że jesteś właścicielem tego
+          konta.
         </InfoContainer>
         <Separator>użyj konta społecznościowego </Separator>
         <SocialContainer>

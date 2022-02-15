@@ -1,8 +1,6 @@
 import { useState, useEffect } from "react"
-import { compose } from "recompose"
-import { withRouter } from "react-router-dom"
+import { useHistory, useLocation } from "react-router-dom"
 
-import { withAuthentication } from "../../components/UserSession"
 import LoadingSpinner from "../../components/LoadingSpinner"
 import { PageContainer } from "../../components/Containers"
 import { CustomFile, getMainImageIndex } from "../../components/FileHandler"
@@ -11,16 +9,19 @@ import PageHeading from "../../components/PageHeading"
 import HelmetBasics from "../../components/HelmetBasics"
 import { NotFoundError } from "../../errors"
 import { useAuthentication, useFirebase, useFlash } from "../../hooks"
-import { route ,resetFormAndGoBack} from "../../utils"
+import { route, resetFormAndGoBack } from "../../utils"
 import { CONST } from "../../constants"
 
 import EditItemForm from "./EditItemForm"
 import { formatDataForEditForm } from "./helpers"
 
-const EditItemPage = ({ match, history, location }) => {
+const EditItemPage = ({ match }) => {
   const firebase = useFirebase()
   const authUser = useAuthentication()
   const flashMessage = useFlash()
+  const history = useHistory()
+  const location = useLocation()
+
   const [error, setError] = useState(null)
   const [initialData, setInitialData] = useState(null)
   const [item, setItem] = useState(null)
@@ -143,4 +144,4 @@ const ERROR_MESSAGE = {
   details: "Zmiany mogły nie zostać zapisane",
 }
 
-export default compose(withAuthentication, withRouter)(EditItemPage)
+export default EditItemPage

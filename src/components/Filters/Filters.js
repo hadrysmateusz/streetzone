@@ -9,15 +9,16 @@ import { Button, ButtonContainer } from "../Button"
 // import Header from "../FullscreenMenu/Header"
 
 import {
-  FiltersContainer,
-  FilterInnerContainer,
-  Section,
   ActionsContainer,
-} from "./StyledComponents"
+  FilterInnerContainer,
+  FiltersContainer,
+  Section,
+} from "./Common.styles"
 import ClearAllFiltersButton from "./ClearAllFiltersButton"
 
 const FiltersBase = forwardRef((props, ref) => {
-  const { tabOptions, defaultTab, toggle, clear, currentBreakpoint, children } = props
+  const { tabOptions, defaultTab, toggle, clear, currentBreakpoint, children } =
+    props
   const [openTab, switchTab, tabs] = useTabs(tabOptions, defaultTab)
 
   const isMobile = +currentBreakpoint < 3

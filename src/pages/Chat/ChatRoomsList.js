@@ -11,20 +11,25 @@ import { EmptyRoomTab, RoomTabStyles } from "./StyledComponents"
 const RoomTab = ({ id, otherUserId }) => {
   const [user, error] = useUserData(otherUserId)
 
-  return !error && user ? (
+  return (
     <RoomTabStyles>
       <Link to={route("CHAT_ROOM", { roomId: id })}>
-        <ProfilePicture size="30px" url={getProfilePictureURL(user, "S")} inline />
-        <span className="name">{user.name}</span>
-      </Link>
-    </RoomTabStyles>
-  ) : (
-    <RoomTabStyles>
-      <Link to={route("CHAT_ROOM", { roomId: id })}>
-        <EmptyRoomTab>Konto usunięte</EmptyRoomTab>
+        {!error && user ? (
+          <>
+            <ProfilePicture
+              size="30px"
+              url={getProfilePictureURL(user, "S")}
+              inline
+            />
+            <span className="name">{user.name}</span>
+          </>
+        ) : (
+          <EmptyRoomTab>Konto usunięte</EmptyRoomTab>
+        )}
       </Link>
     </RoomTabStyles>
   )
 }
 
-export const ChatRoomsList = ({ rooms }) => rooms.map((room) => <RoomTab key={room.id} {...room} />)
+export const ChatRoomsList = ({ rooms }) =>
+  rooms.map((room) => <RoomTab key={room.id} {...room} />)
