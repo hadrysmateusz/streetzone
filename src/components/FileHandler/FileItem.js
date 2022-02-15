@@ -1,57 +1,35 @@
-import React from "react"
-import styled from "styled-components/macro"
 import Ratio from "react-ratio"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 // import PropTypes from "prop-types"
 import { TextBlock } from "../StyledComponents"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { IconContainer, ErrorContainer, Overlay } from "./common"
 
-const Thumbnail = styled.div`
-  background: var(--gray);
-  display: flex;
-  height: 100%;
-  width: 100%;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden;
-  position: relative;
+import { ErrorContainer, IconContainer, Overlay } from "./Common.styles"
+import {
+  IndicatorIcon,
+  IndicatorsContainer,
+  Thumbnail,
+} from "./FileItem.styles"
 
-  border: 1px solid;
-  border-color: ${(p) => (p.hasError ? "var(--danger50)" : "var(--gray25)")};
-
-  img {
-    object-fit: cover;
-    width: 100%;
-    height: 100%;
-  }
-`
-
-const IndicatorIcon = styled(FontAwesomeIcon)`
-  color: ${(p) => p.color};
-  position: relative;
-  z-index: 75;
-`
-
-const IndicatorsContainer = styled.div`
-  position: absolute;
-  z-index: 77;
-  top: var(--spacing2);
-  right: var(--spacing2);
-  display: grid;
-  gap: var(--spacing2);
-`
-
-const PureFileItem = ({ id, previewUrl, error, actions, isMain = false, uploadProgress }) => {
+const PureFileItem = ({
+  id,
+  previewUrl,
+  error,
+  actions,
+  isMain = false,
+  uploadProgress,
+}) => {
   const hasError = !!error
-
-  console.log("file items", actions)
 
   return (
     <Ratio ratio={6 / 7}>
       <Thumbnail hasError={hasError}>
         <IndicatorsContainer>
           {hasError && (
-            <IndicatorIcon color="var(--danger50)" title={error} icon="exclamation-circle" />
+            <IndicatorIcon
+              color="var(--danger50)"
+              title={error}
+              icon="exclamation-circle"
+            />
           )}
           {isMain && <IndicatorIcon color="var(--accent50)" icon="star" />}
         </IndicatorsContainer>
@@ -62,7 +40,10 @@ const PureFileItem = ({ id, previewUrl, error, actions, isMain = false, uploadPr
         ) : null}
         <Overlay>
           {actions.map((action) => (
-            <IconContainer key={action.label} onClick={() => action.handler(id)}>
+            <IconContainer
+              key={action.label}
+              onClick={() => action.handler(id)}
+            >
               <FontAwesomeIcon icon={action.icon} size="2x" fixedWidth />
               <TextBlock centered>{action.label}</TextBlock>
             </IconContainer>

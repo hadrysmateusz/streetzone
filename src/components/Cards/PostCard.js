@@ -1,11 +1,10 @@
-import React, { memo } from "react"
+import { memo } from "react"
 import { Link } from "react-router-dom"
-import styled from "styled-components/macro"
 import moment from "moment"
 
-import FirebaseImage from "../FirebaseImage"
-
 import { route } from "../../utils"
+
+import FirebaseImage from "../FirebaseImage"
 
 import {
   Name,
@@ -14,29 +13,11 @@ import {
   MiddleContainer,
   BottomContainer,
   InfoContainer,
-  cardBorder,
-} from "./Common"
-
-export const Container = styled.div`
-  min-width: 0; /* this has to be on the outermost component*/
-  width: 100%;
-  max-width: 310px;
-  background: white;
-
-  a {
-    ${cardBorder}
-    overflow: hidden;
-    display: grid;
-    grid-template-columns: 100%;
-    grid-template-rows: 140px min-content;
-    @media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
-      grid-template-rows: 175px min-content;
-    }
-  }
-`
+  SmallCardContainer,
+} from "./Common.styles"
 
 const PostCard = memo(({ id, title, category, attachments, mainImageIndex, createdAt }) => (
-  <Container>
+  <SmallCardContainer>
     <Link to={route("BLOG_POST", { id })}>
       <FirebaseImage storageRef={attachments[mainImageIndex]} size="M" />
       <InfoContainer>
@@ -49,7 +30,7 @@ const PostCard = memo(({ id, title, category, attachments, mainImageIndex, creat
         </BottomContainer>
       </InfoContainer>
     </Link>
-  </Container>
+  </SmallCardContainer>
 ))
 
 export default PostCard

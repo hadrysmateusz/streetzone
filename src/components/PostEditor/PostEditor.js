@@ -1,16 +1,14 @@
-import React, { useCallback, useState } from "react"
+import { useCallback, useState } from "react"
 import styled from "styled-components/macro"
 import { useDropzone } from "react-dropzone"
 
-import { Textarea } from "../FormElements"
-import { Button, ButtonContainer, IconButton } from "../Button"
-import { Overlay } from "../FileHandler/common"
-
 import { useFlash } from "../../hooks"
 
-import { AttachmentsManager, PostPreview } from "."
+import { Textarea } from "../FormElements"
+import { Button, ButtonContainer, IconButton } from "../Button"
+import { Overlay } from "../FileHandler/Common.styles"
 
-export const OuterContainer = styled.div``
+import { AttachmentsManager, PostPreview } from "."
 
 const FileHandlerContainer = styled.div`
   position: relative;
@@ -32,7 +30,7 @@ const HelpButton = () => (
   </a>
 )
 
-const PostEditor = (props) => {
+export const PostEditor = (props) => {
   const [isEditing, setIsEditing] = useState(true)
   const flashMessage = useFlash()
 
@@ -72,13 +70,14 @@ const PostEditor = (props) => {
     flashMessage({ type: "error", text: "Błąd", details: "Nieprawidłowy plik" })
   }
 
-  const { getRootProps, getInputProps, isDragActive, inputRef, open } = useDropzone({
-    onDrop,
-    onDropRejected,
-    accept: "text/*,.md",
-    noClick: true,
-    multiple: false,
-  })
+  const { getRootProps, getInputProps, isDragActive, inputRef, open } =
+    useDropzone({
+      onDrop,
+      onDropRejected,
+      accept: "text/*,.md",
+      noClick: true,
+      multiple: false,
+    })
 
   const isEmpty = !value || value.length === 0
   const openFilePicker = open
@@ -89,13 +88,18 @@ const PostEditor = (props) => {
         <Button onClick={openFilePicker} fullWidth>
           Wybierz plik
         </Button>
-        <AttachmentsManager value={attachmentsValue} onChange={onAttachmentsChange} />
+        <AttachmentsManager
+          value={attachmentsValue}
+          onChange={onAttachmentsChange}
+        />
         <ViewSwitchButton isEditing={isEditing} setIsEditing={setIsEditing} />
         <HelpButton />
       </ButtonContainer>
-      <OuterContainer>
+      <div>
         {isEditing ? (
-          <FileHandlerContainer {...getRootProps({ hasError: !!error, isEmpty })}>
+          <FileHandlerContainer
+            {...getRootProps({ hasError: !!error, isEmpty })}
+          >
             <input {...getInputProps()} />
 
             <Textarea
@@ -109,14 +113,14 @@ const PostEditor = (props) => {
               error={error}
             />
 
-            {isDragActive && <Overlay alwaysShow>Upuść tutaj aby dodać</Overlay>}
+            {isDragActive && (
+              <Overlay alwaysShow>Upuść tutaj aby dodać</Overlay>
+            )}
           </FileHandlerContainer>
         ) : (
           <PostPreview attachments={attachmentsValue} markdownSource={value} />
         )}
-      </OuterContainer>
+      </div>
     </div>
   )
 }
-
-export default PostEditor

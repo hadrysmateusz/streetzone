@@ -22,7 +22,7 @@ const removeItemFromUserList = async (snapshot, context) => {
 	console.log("userData", userData)
 
 	// filter out the removed item
-	const newItems = userData.items.filter((item) => item.id !== itemId)
+	const newItems = userData.items.filter((item) => item.id !== itemId) // TODO: items is currently not used on user objects
 
 	// update the db with the new items list
 	return db

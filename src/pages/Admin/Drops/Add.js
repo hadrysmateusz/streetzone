@@ -1,16 +1,17 @@
-import React from "react"
-import { withRouter } from "react-router-dom"
+import { useHistory } from "react-router-dom"
+
 import { PageContainer } from "../../../components/Containers"
 
-import useFirebase from "../../../hooks/useFirebase"
-import { formatDropDataForDb, MODE } from "../../../utils/formatting/formatDropData"
+import { getMainImageIndex } from "../../../components/FileHandler"
 import { CONST } from "../../../constants"
 import { route } from "../../../utils"
+import { useFlash, useFirebase } from "../../../hooks"
+import { dropModel } from "../../../schema"
 
-import DropForm from "./Form"
-import { useFlash } from "../../../hooks"
+import DropForm from "./DropsForm"
 
-const AddDrop = ({ history }) => {
+const AddDrop = () => {
+  const history = useHistory()
   const firebase = useFirebase()
   const flashMessage = useFlash()
 
@@ -19,19 +20,22 @@ const AddDrop = ({ history }) => {
       const files = values.files
 
       // Upload files to storage and get their refs
-      const attachments = await firebase.batchUploadFiles(
+      const attachments = await firebase.batchGetAttachmentRefFromCustomFile(
         CONST.STORAGE_BUCKET_DROP_ATTACHMENTS,
         files
       )
 
       // Get main image index
-      const mainImageIndex = files.findIndex((a) => a.isMain)
+      const mainImageIndex = getMainImageIndex(files)
 
       // Format the values for db
-      const formattedData = formatDropDataForDb(
-        { ...values, mainImageIndex, attachments },
-        MODE.CREATE
-      )
+      const formattedData = dropModel.formatForCreate({
+        ...values,
+        mainImageIndex,
+        attachments,
+      })
+
+      console.log(formattedData)
 
       // Add drop to database
       await firebase.drop(formattedData.id).set(formattedData)
@@ -57,4 +61,4 @@ const AddDrop = ({ history }) => {
   )
 }
 
-export default withRouter(AddDrop)
+export default AddDrop

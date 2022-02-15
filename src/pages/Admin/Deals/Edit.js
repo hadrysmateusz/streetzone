@@ -1,88 +1,81 @@
-import React, { useState, useEffect } from "react"
-import { withRouter } from "react-router-dom"
+import { useState, useEffect, useCallback } from "react"
+import { useRouteMatch, useHistory } from "react-router-dom"
 
 import { CustomFile } from "../../../components/FileHandler"
-import { PageContainer } from "../../../components/Containers"
-
-import { formatDealDataForDb, MODE } from "../../../utils/formatting/formatDealData"
-import useFirebase from "../../../hooks/useFirebase"
+import { GENERIC_ERROR__DETAILS_IN_CONSOLE } from "../../../components/FlashMessages"
+import { useFlash, useFirebase } from "../../../hooks"
 import { CONST } from "../../../constants"
-import { route } from "../../../utils"
+import { resetFormAndRedirect } from "../../../utils"
 
-import Form from "./Form"
-import { useFlash } from "../../../hooks"
+import DealsForm from "./Form"
 
-const Edit = ({ match, history }) => {
-	const firebase = useFirebase()
-	const [initialValues, setInitialValues] = useState(null)
-	const id = match.params.id
-	const flashMessage = useFlash()
+const Edit = () => {
+  const history = useHistory()
+  const match = useRouteMatch()
+  const firebase = useFirebase()
+  const flashMessage = useFlash()
 
-	useEffect(() => {
-		const getData = async () => {
-			const snap = await firebase.deal(id).get()
+  const [initialValues, setInitialValues] = useState(null)
 
-			let data = snap.data()
+  const id = match?.params?.id
 
-			// Get attachment urls for previews
-			const imageUrl = await firebase.getImageURL(data.imageRef)
+  // TODO: handle missing id
+  useEffect(() => {
+    ;(async () => {
+      setInitialValues(null)
 
-			// create CustomFile objects with the fetched previewUrls
-			const file = new CustomFile({
-				storageRef: data.imageRef,
-				previewUrl: imageUrl,
-				isUploaded: true
-			})
+      const snap = await firebase.deal(id).get()
 
-			setInitialValues({ ...data, file })
-		}
+      let data = snap.data()
 
-		getData()
-	}, [firebase, id])
+      // Get attachment urls for previews
+      const imageUrl = await firebase.getImageURL(data.imageRef)
 
-	const onSubmit = async (values, form) => {
-		try {
-			const file = values.file
+      // create CustomFile objects with the fetched previewUrls
+      const file = new CustomFile({
+        storageRef: data.imageRef,
+        previewUrl: imageUrl,
+        isUploaded: true,
+      })
 
-			// If file was changed, upload it to storage and get its ref
-			if (file.data && !file.isUploaded) {
-				const snapshot = await firebase.uploadFile(
-					CONST.STORAGE_BUCKET_DEAL_ATTACHMENTS,
-					file.data
-				)
-				values.imageRef = snapshot.ref.fullPath
-			} else {
-				values.imageRef = initialValues.imageRef
-			}
+      setInitialValues({ ...data, file })
+    })()
+  }, [firebase, id])
 
-			// Format the values for db
-			const formattedData = formatDealDataForDb({ ...values }, MODE.EDIT)
+  const onSubmit = useCallback(
+    async (values, form) => {
+      try {
+        const file = values.file
 
-			// Update
-			await firebase.deal(id).update(formattedData)
+        // If file was changed, upload it to storage and get its ref
+        if (file.data && !file.isUploaded) {
+          const snapshot = await firebase.uploadFile(
+            CONST.STORAGE_BUCKET_DEAL_ATTACHMENTS,
+            file.data
+          )
+          values.imageRef = snapshot.ref.fullPath
+        } else {
+          values.imageRef = initialValues.imageRef
+        }
 
-			// Remove files associated with the old ref
-			await firebase.removeAllImagesOfRef(initialValues.imageRef)
+        // Update
+        await firebase.updateDeal(id, { ...values })
 
-			// Reset form
-			setTimeout(form.reset)
+        // Remove files associated with the old ref
+        await firebase.removeAllImagesOfRef(initialValues.imageRef)
 
-			// Redirect
-			history.push(route("ADMIN_DEALS"))
-		} catch (error) {
-			console.error(error)
-			flashMessage({
-				type: "error",
-				text: "Wystąpił błąd",
-				details: "Więcej informacji w konsoli"
-			})
-		}
-	}
-	return (
-		<PageContainer>
-			<Form onSubmit={onSubmit} initialValues={initialValues} edit />
-		</PageContainer>
-	)
+        resetFormAndRedirect(form, history)("ADMIN_DEALS")
+      } catch (error) {
+        console.error(error)
+        flashMessage(GENERIC_ERROR__DETAILS_IN_CONSOLE)
+      }
+    },
+    [firebase, flashMessage, history, id, initialValues.imageRef]
+  )
+
+  return (
+    <DealsForm onSubmit={onSubmit} initialValues={initialValues} edit={true} />
+  )
 }
 
-export default withRouter(Edit)
+export default Edit

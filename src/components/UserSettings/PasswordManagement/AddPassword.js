@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import { useState } from "react"
 
 import { useFunctionWithReauthentication } from "../../../pages/Auth/Reauthentication"
 import { useFirebase, useAuthentication } from "../../../hooks"
@@ -6,7 +6,8 @@ import { useFirebase, useAuthentication } from "../../../hooks"
 import InfoBox from "../../InfoBox"
 import ErrorBox from "../../ErrorBox"
 
-import { Heading } from "../common"
+import { Heading } from "../Heading"
+
 import PasswordForm from "./PasswordForm"
 
 const AddPassword = ({ onSuccess }) => {
@@ -17,7 +18,7 @@ const AddPassword = ({ onSuccess }) => {
   // get linkWithCredential wrapped with reauthentication
   const [linkWithCredentialWithReauthentication, reauthenticationModal] =
     useFunctionWithReauthentication(async (credential) => {
-      await firebase.auth.currentUser.linkWithCredential(credential)
+      await firebase.authUser().linkWithCredential(credential)
       onSuccess("Hasło dodano pomyślnie")
     })
 

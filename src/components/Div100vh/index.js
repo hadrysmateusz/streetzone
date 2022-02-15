@@ -1,14 +1,10 @@
-import React, { forwardRef, useState, useEffect, useCallback } from "react"
-
-function getWindowHeight() {
-  return window.innerHeight
-}
+import { forwardRef, useState, useEffect, useCallback } from "react"
 
 const Div100vh = forwardRef(({ style = {}, ...rest }, ref) => {
   const [newStyle, setNewStyle] = useState()
 
   const updateStyle = useCallback(() => {
-    const height = getWindowHeight()
+    const height = window.innerHeight
     const newStyle = height ? { ...style, height: height + "px" } : style
     setNewStyle(newStyle)
   }, [style])

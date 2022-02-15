@@ -1,97 +1,75 @@
-import React from "react"
 import { Form } from "react-final-form"
-import styled from "styled-components/macro"
-import { withRouter, Prompt } from "react-router-dom"
 
-import Button, { LoaderButton, ButtonContainer } from "../../components/Button"
-import LoadingSpinner from "../../components/LoadingSpinner"
 import {
-	NumberFF,
-	DropdownFF,
-	TextareaFF,
-	FileHandlerFF
+  DropdownFF,
+  FileHandlerFF,
+  FormCancelButton,
+  FormSubmitButton,
+  NumberFF,
+  TextareaFF,
+  UnsavedChangesPrompt,
 } from "../../components/FinalFormFields"
+import { ButtonContainer } from "../../components/Button"
+import LoadingSpinner from "../../components/LoadingSpinner"
+import { StyledForm } from "../../components/BasicStyledForm"
 
-import { ITEM_SCHEMA, CONST } from "../../constants"
+import { CONST, ITEM_SCHEMA } from "../../constants"
 
 import validate from "./validate"
 
-// const StyledForm = styled.form`
-// 	display: grid;
-// 	grid-template-columns: 1fr 1fr;
-// 	gap: var(--spacing3);
-// 	grid-template-areas:
-// 		"price condition"
-// 		"description description"
-// 		"files files";
-// `
+const EditItemForm = ({ onSubmit, initialValues }) =>
+  !initialValues ? (
+    <LoadingSpinner />
+  ) : (
+    <Form
+      onSubmit={onSubmit}
+      initialValues={initialValues}
+      validate={validate}
+      render={({ handleSubmit }) => (
+        <StyledForm onSubmit={handleSubmit}>
+          <UnsavedChangesPrompt
+            when={({ formState }) => {
+              if (!(formState?.values)) return false
+              return (
+                Object.values(formState.values).length > 0 &&
+                formState.dirty &&
+                !formState.submitting
+              )
+            }}
+          />
 
-export const StyledForm = styled.form`
-	display: grid;
-	gap: var(--spacing3);
-	grid-template-columns: 100%;
-`
+          <NumberFF
+            label="Cena"
+            placeholder="Cena"
+            name="price"
+            min="0"
+            step="1"
+          />
 
-const EditItemForm = ({ onSubmit, initialValues, history }) => {
-	return !initialValues ? (
-		<LoadingSpinner />
-	) : (
-		<Form
-			onSubmit={onSubmit}
-			initialValues={initialValues}
-			validate={validate}
-			render={({ form, handleSubmit, submitting, pristine, values, dirty, ...rest }) => {
-				return (
-					<StyledForm onSubmit={handleSubmit}>
-						<Prompt
-							when={Object.values(values).length > 0 && dirty && !submitting}
-							message={(location) =>
-								"Zmiany nie zostały zapisane. Czy napewno chcesz wyjść?"
-							}
-						/>
+          <DropdownFF
+            label="Stan"
+            placeholder="Stan"
+            name="condition"
+            options={ITEM_SCHEMA.conditionOptions}
+            isSearchable={false}
+            isMulti={false}
+          />
 
-						<NumberFF label="Cena" placeholder="Cena" name="price" min="0" step="1" />
+          <TextareaFF
+            label="Opis"
+            placeholder={CONST.ITEM_DESC_PLACEHOLDER}
+            name="description"
+          />
 
-						<DropdownFF
-							label="Stan"
-							placeholder="Stan"
-							name="condition"
-							options={ITEM_SCHEMA.conditionOptions}
-							isSearchable={false}
-						/>
+          <FileHandlerFF label="Zdjęcia" name="files" />
 
-						<TextareaFF
-							label="Opis"
-							placeholder={CONST.ITEM_DESC_PLACEHOLDER}
-							name="description"
-						/>
+          <ButtonContainer>
+            <FormSubmitButton text="Gotowe" />
+            <FormCancelButton text="Anuluj" />
+          </ButtonContainer>
+        </StyledForm>
+      )}
+    />
+  )
 
-						<FileHandlerFF label="Zdjęcia" name="files" />
-
-						<ButtonContainer>
-							<LoaderButton
-								text="Gotowe"
-								type="submit"
-								primary
-								fullWidth
-								isLoading={submitting}
-								disabled={submitting || pristine}
-							/>
-							<Button
-								text="Anuluj"
-								type="button"
-								fullWidth
-								disabled={submitting}
-								onClick={() => history.goBack()}
-							>
-								Anuluj
-							</Button>
-						</ButtonContainer>
-					</StyledForm>
-				)
-			}}
-		/>
-	)
-}
-
-export default withRouter(EditItemForm)
+export default EditItemForm

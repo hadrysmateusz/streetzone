@@ -1,15 +1,13 @@
-import React from "react"
 import { withRouter } from "react-router-dom"
 import { nanoid } from "nanoid"
 
 import { PageContainer } from "../../../components/Containers"
-
-import { CONST } from "../../../constants"
+import { TextBlock } from "../../../components/StyledComponents"
 import { useFirebase, useFlash } from "../../../hooks"
+import { CONST } from "../../../constants"
 
 import Form from "./Form"
 import RequestedDesigners from "./RequestedDesigners"
-import { TextBlock } from "../../../components/StyledComponents"
 
 const AddDesigner = withRouter(({ history }) => {
   const firebase = useFirebase()

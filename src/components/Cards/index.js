@@ -8,12 +8,12 @@ import PostCard from "./PostCard"
 import OwnerItemCard from "./OwnerItemCard"
 
 export {
-	SmallDropCard,
-	SmallItemCard,
-	PostCard,
-	BigItemCard,
-	BigDropCard,
-	OwnerItemCard,
-	BigDealCard,
-	SmallDealCard
+  SmallDropCard,
+  SmallItemCard,
+  PostCard,
+  BigItemCard,
+  BigDropCard,
+  OwnerItemCard,
+  BigDealCard,
+  SmallDealCard,
 }

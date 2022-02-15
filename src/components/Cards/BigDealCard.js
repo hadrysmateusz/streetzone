@@ -1,81 +1,21 @@
-import React, { memo } from "react"
+import { memo } from "react"
 import { Link } from "react-router-dom"
-import styled from "styled-components/macro"
 import moment from "moment"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
-import FirebaseImage from "../FirebaseImage"
-
 import { route } from "../../utils"
+
+import FirebaseImage from "../FirebaseImage"
 
 import {
   MiddleContainer,
   BottomContainer,
   DateContainer,
   InfoContainer,
-  cardBorder,
-} from "./Common"
-
-const Container = styled.div`
-  min-width: 0; /* this has to be on the outermost component*/
-  max-width: 580px;
-  width: 100%;
-  background: white;
-  /* box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.1); */
-
-  > a {
-    ${cardBorder}
-    overflow: hidden;
-    display: grid;
-    grid-template-columns: 100%;
-    grid-template-rows: 180px min-content;
-    @media (min-width: ${(p) => p.theme.breakpoints[0]}px) {
-      grid-template-rows: 200px min-content;
-    }
-    @media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
-      grid-template-rows: 270px min-content;
-    }
-  }
-`
-
-const Title = styled.div`
-  --line-height: 1.5em;
-
-  color: var(--black0);
-  font-size: var(--fs-s);
-  font-family: var(--font-family--serif);
-  font-weight: bold;
-  line-height: var(--line-height);
-  height: calc(2 * var(--line-height));
-  overflow: hidden;
-  @media (min-width: ${(p) => p.theme.breakpoints[1]}px) {
-    font-size: var(--fs-m);
-  }
-`
-
-const ValueContainer = styled.div`
-  border: 1px solid var(--gray75);
-  border-radius: 4px;
-  position: relative;
-  color: var(--gray0);
-  white-space: nowrap;
-  margin-left: var(--spacing1);
-  display: flex;
-  align-items: center;
-
-  .value-container {
-    padding: var(--spacing1) var(--spacing2);
-    border-right: 1px solid var(--gray75);
-  }
-`
-
-const ExternalLink = styled.a`
-  padding: var(--spacing1) 7px;
-  font-size: 1.3rem;
-  :hover {
-    color: var(--black0);
-  }
-`
+  BigCardContainer,
+  BigCardTitle,
+} from "./Common.styles"
+import { ExternalLink, ValueContainer } from "./BigDealCard.styles"
 
 const Value = ({ value, link }) => (
   <ValueContainer>
@@ -87,7 +27,7 @@ const Value = ({ value, link }) => (
 )
 
 const BigDealCard = memo(({ id, title, imageRef, value, link, createdAt }) => (
-  <Container>
+  <BigCardContainer>
     <Link to={route("DEAL_DETAILS", { id })}>
       <FirebaseImage storageRef={imageRef} size="M" />
       <InfoContainer>
@@ -95,7 +35,7 @@ const BigDealCard = memo(({ id, title, imageRef, value, link, createdAt }) => (
 					<Designers value={designers} />
 				</TopContainer> */}
         <MiddleContainer flex>
-          <Title>{title}</Title>
+          <BigCardTitle>{title}</BigCardTitle>
           <div className="align-right">
             <Value value={value} link={link} />
           </div>
@@ -105,7 +45,7 @@ const BigDealCard = memo(({ id, title, imageRef, value, link, createdAt }) => (
         </BottomContainer>
       </InfoContainer>
     </Link>
-  </Container>
+  </BigCardContainer>
 ))
 
 export default BigDealCard

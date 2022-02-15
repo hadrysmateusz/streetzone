@@ -1,5 +1,7 @@
 import { useCallback } from "react"
-import { useFlash, useFirebase } from "."
+
+import { useFlash } from "./useFlash"
+import { useFirebase } from "./useFirebase"
 
 /**
  * Returns a function that will delete a document in firestore and provides feedback on the results, a path can be passed to the returned function to override the one set in the hook
@@ -8,37 +10,37 @@ import { useFlash, useFirebase } from "."
  * @todo test overriding the path
  */
 const useDeleteDocument = (path, message = "Na pewno? Tej akcji nie da się cofnąć.") => {
-	const flashMessage = useFlash()
-	const firebase = useFirebase()
+  const flashMessage = useFlash()
+  const firebase = useFirebase()
 
-	const deleteDocument = useCallback(
-		async (overridePath) => {
-			try {
-				const shouldDelete = window.confirm(message)
+  const deleteDocument = useCallback(
+    async (overridePath) => {
+      try {
+        const shouldDelete = window.confirm(message)
 
-				if (!shouldDelete) return
+        if (!shouldDelete) return
 
-				// check if overridePath is an actual path and not undefined or an event object
-				if (typeof overridePath === "string") {
-					await firebase.db.doc(overridePath).delete()
-				} else {
-					await firebase.db.doc(path).delete()
-				}
+        // check if overridePath is an actual path and not undefined or an event object
+        if (typeof overridePath === "string") {
+          await firebase.db.doc(overridePath).delete()
+        } else {
+          await firebase.db.doc(path).delete()
+        }
 
-				flashMessage({ type: "success", text: "Usunięto" })
-			} catch (error) {
-				console.error(error)
-				flashMessage({
-					type: "error",
-					text: "Błąd",
-					details: "Więcej informacji w konsoli"
-				})
-			}
-		},
-		[firebase, flashMessage, message, path]
-	)
+        flashMessage({ type: "success", text: "Usunięto" })
+      } catch (error) {
+        console.error(error)
+        flashMessage({
+          type: "error",
+          text: "Błąd",
+          details: "Więcej informacji w konsoli",
+        })
+      }
+    },
+    [firebase, flashMessage, message, path]
+  )
 
-	return deleteDocument
+  return deleteDocument
 }
 
 export default useDeleteDocument

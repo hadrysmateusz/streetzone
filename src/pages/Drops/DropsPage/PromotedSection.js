@@ -1,5 +1,3 @@
-import React from "react"
-import styled from "styled-components/macro"
 import { withBreakpoints } from "react-breakpoints"
 
 import PlaceholderWrapper from "../../../components/PlaceholderWrapper"
@@ -8,23 +6,8 @@ import { StatelessSearchWrapper } from "../../../components/InstantSearchWrapper
 
 import { CONST } from "../../../constants"
 
-import PromotedDrop from "../PromotedDrop"
-
-const PromotedContainer = styled.div`
-  display: grid;
-  gap: var(--spacing2);
-
-  @media (min-width: ${(p) => p.theme.breakpoints[2]}px) {
-    grid-template-columns: 1fr 1fr;
-    gap: var(--spacing3);
-    height: 40vw;
-    max-height: 500px;
-  }
-`
-
-const OuterContainer = styled.div`
-  padding-bottom: var(--spacing3);
-`
+import PromotedDrop from "./PromotedDrop"
+import { OuterContainer, PromotedContainer } from "./PromotedSection.styles"
 
 const PromotedSection = withBreakpoints(({ currentBreakpoint }) => {
   const isMobile = currentBreakpoint <= 1

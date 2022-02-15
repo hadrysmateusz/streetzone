@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import throttle from "lodash.throttle"
+import throttle from "lodash/throttle"
 
 export const useScrollPosition = (limit = 200) => {
   const [value, setScroll] = useState(window.scrollY)

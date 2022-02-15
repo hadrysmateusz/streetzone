@@ -1,87 +1,84 @@
-import React from "react"
 import { Form } from "react-final-form"
 
 import BlackBox from "../../../components/BlackBox"
-import { LoaderButton, ButtonContainer } from "../../../components/Button"
-import DisplayJSONButton from "../../../components/DisplayJSONButton"
 import LoadingSpinner from "../../../components/LoadingSpinner"
-import PreventFormTransition from "../../../components/PreventFormTransition"
 import {
-	TextFF,
-	DropdownFF,
-	LiveFileHandlerFF,
-	TextareaFF,
-	TagsInputFF
+  DropdownFF,
+  LiveFileHandlerFF,
+  TagsInputFF,
+  TextareaFF,
+  TextFF,
+  UnsavedChangesPrompt,
 } from "../../../components/FinalFormFields"
 import { FinalFormPostEditor } from "../../../components/PostEditor"
-
+import { StyledForm } from "../../../components/BasicStyledForm"
 import { CONST } from "../../../constants"
+
+import { AdminFormButtons } from "../AdminFormButtons"
 
 import categoryOptions from "./postCategoryOptions"
 import authorOptions from "./authorOptions"
-import { StyledForm } from "../Common"
 
-export default ({ onSubmit, initialValues, edit, postId }) => {
-	// use postId to group images by the post they belong to
-	const imagesPath = `${CONST.STORAGE_BUCKET_BLOG_ATTACHMENTS}/${postId}`
+export const BlogForm = ({ onSubmit, initialValues, edit, postId }) => {
+  // use postId to group images by the post they belong to
+  const imagesPath = `${CONST.STORAGE_BUCKET_BLOG_ATTACHMENTS}/${postId}`
 
-	return !initialValues && edit ? (
-		<LoadingSpinner />
-	) : (
-		<Form
-			onSubmit={onSubmit}
-			initialValues={initialValues}
-			render={({ handleSubmit, submitting, pristine, values }) => {
-				return (
-					<StyledForm onSubmit={handleSubmit}>
-						<PreventFormTransition />
+  return !initialValues && edit ? (
+    <LoadingSpinner />
+  ) : (
+    <Form
+      onSubmit={onSubmit}
+      initialValues={initialValues}
+      render={({ handleSubmit }) => (
+        <StyledForm onSubmit={handleSubmit}>
+          <UnsavedChangesPrompt when={(formState) => formState.dirty} />
 
-						<DropdownFF label="Autor" name="author" options={authorOptions} />
+          <DropdownFF
+            label="Autor"
+            name="author"
+            options={authorOptions}
+            isMulti={false}
+          />
 
-						<TextFF label="Tytuł" placeholder="Tytuł" name="title" />
+          <TextFF label="Tytuł" placeholder="Tytuł" name="title" />
 
-						<DropdownFF
-							label="Kategoria"
-							name="category"
-							options={categoryOptions}
-							isSearchable={false}
-						/>
+          <DropdownFF
+            label="Kategoria"
+            name="category"
+            options={categoryOptions}
+            isSearchable={false}
+            isMulti={false}
+          />
 
-						<LiveFileHandlerFF label="Zdjęcia" name="files" uploadPath={imagesPath} />
+          <LiveFileHandlerFF
+            label="Zdjęcia"
+            name="files"
+            uploadPath={imagesPath}
+          />
 
-						<BlackBox>
-							Pamiętaj usunąć nieużyte zdjęcia przed opuszczeniem strony
-						</BlackBox>
+          <BlackBox>
+            Pamiętaj usunąć nieużyte zdjęcia przed opuszczeniem strony
+          </BlackBox>
 
-						<FinalFormPostEditor
-							label="Treść"
-							contentName="mainContent"
-							attachmentsName="attachments"
-						/>
+          <FinalFormPostEditor
+            label="Treść"
+            contentName="mainContent"
+            attachmentsName="attachments"
+          />
 
-						<TextareaFF
-							label="Streszczenie"
-							placeholder="Krótkie streszczenie zachęcające do przeczytania. Ewentualnie pierwsze zdanie lub dwa."
-							name="excerpt"
-						/>
+          <TextareaFF
+            label="Streszczenie"
+            placeholder="Krótkie streszczenie zachęcające do przeczytania. Ewentualnie pierwsze zdanie lub dwa."
+            name="excerpt"
+          />
 
-						<TagsInputFF label="Tagi" placeholder="Tagi" name="tags" disabled />
+          <TagsInputFF label="Tagi" placeholder="Tagi" name="tags" disabled />
 
-						<ButtonContainer>
-							<LoaderButton
-								text="Gotowe"
-								type="submit"
-								big
-								fullWidth
-								primary
-								isLoading={submitting}
-								disabled={submitting || pristine}
-							/>
-							<DisplayJSONButton big values={values} />
-						</ButtonContainer>
-					</StyledForm>
-				)
-			}}
-		/>
-	)
+          <AdminFormButtons />
+        </StyledForm>
+      )}
+    />
+  )
 }
+
+export default BlogForm

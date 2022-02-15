@@ -1,9 +1,6 @@
-import React from "react"
-
-import Foldable from "../../Foldable"
+import { Foldable } from "../../Foldable"
 import { Text } from "../../StyledComponents"
 
-import BoxItem from "./BoxItem"
 import {
   FilterItem,
   NoResults,
@@ -11,21 +8,21 @@ import {
   SizeCategoriesContainer,
 } from "../StyledComponents"
 
-const BoxItemsContainer = ({ title, items, refine }) => {
-  return (
-    <Foldable title={title} onlyVisual startFolded>
-      {items && items.length > 0 ? (
-        <OptionsContainer boxGrid>
-          {items.map((item) => (
-            <BoxItem key={item.value} item={item} refine={refine} />
-          ))}
-        </OptionsContainer>
-      ) : (
-        <NoResults>Brak</NoResults>
-      )}
-    </Foldable>
-  )
-}
+import BoxItem from "./BoxItem"
+
+const BoxItemsContainer = ({ title, items, refine }) => (
+  <Foldable title={title} onlyVisual startFolded>
+    {items && items.length > 0 ? (
+      <OptionsContainer boxGrid>
+        {items.map((item) => (
+          <BoxItem key={item.value} item={item} refine={refine} />
+        ))}
+      </OptionsContainer>
+    ) : (
+      <NoResults>Brak</NoResults>
+    )}
+  </Foldable>
+)
 
 export const BoxOptionsList = ({ items, refine }) => {
   if (items && items.length > 0) {
@@ -79,5 +76,3 @@ export const OptionsList = ({ items, refine, showCount, multiColumn }) => {
     return <NoResults>Brak</NoResults>
   }
 }
-
-export default OptionsList

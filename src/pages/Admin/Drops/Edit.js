@@ -1,110 +1,83 @@
-import React, { useState, useEffect } from "react"
-import { withRouter } from "react-router-dom"
+import { useState, useEffect, useCallback } from "react"
+import { useRouteMatch, useHistory } from "react-router-dom"
 
-import { CustomFile } from "../../../components/FileHandler"
+import { CustomFile, getMainImageIndex } from "../../../components/FileHandler"
 import { PageContainer } from "../../../components/Containers"
 
-import { formatDropDataForDb, MODE } from "../../../utils/formatting/formatDropData"
-import useFirebase from "../../../hooks/useFirebase"
-import { useFlash } from "../../../hooks"
-import { route } from "../../../utils"
+import { useFlash, useFirebase } from "../../../hooks"
+import { resetFormAndRedirect } from "../../../utils"
 import { CONST } from "../../../constants"
 
-import DropForm from "./Form"
+import DropForm from "./DropsForm"
 
-const { S_THUMB_POSTFIX, M_THUMB_POSTFIX, L_THUMB_POSTFIX } = CONST
-
-const EditDrop = ({ match, history }) => {
+const EditDrop = () => {
+  const match = useRouteMatch()
+  const history = useHistory()
   const firebase = useFirebase()
-  const [initialValues, setInitialValues] = useState(null)
   const flashMessage = useFlash()
+
+  const [initialValues, setInitialValues] = useState(null)
 
   const id = match.params.id
 
-  useEffect(() => {
-    const getData = async () => {
-      const snap = await firebase.drop(id).get()
+  const getInitialValues = useCallback(async () => {
+    let data = await firebase.getDropById(id)
 
-      let data = snap.data()
+    // Get attachment urls for previews
+    const imageURLs = await firebase.batchGetImageURLs(data.attachments)
 
-      // Get attachment urls for previews
-      const imageURLs = await firebase.batchGetImageURLs(data.attachments)
-
-      // create CustomFile objects with the fetched previewUrls
-      const files = data.attachments.map((attachment, i) => {
-        return new CustomFile({
+    // create CustomFile objects with the fetched previewUrls
+    const files = data.attachments.map(
+      (attachment, i) =>
+        new CustomFile({
           storageRef: attachment,
           previewUrl: imageURLs[i],
           isUploaded: true,
         })
-      })
+    )
 
-      setInitialValues({ ...data, files })
-    }
-
-    getData()
+    return { ...data, files }
   }, [firebase, id])
+
+  useEffect(() => {
+    getInitialValues().then((values) => setInitialValues(values))
+  }, [getInitialValues])
 
   const onSubmit = async (values, form) => {
     try {
+      // We fetch here again because data in initialValues state is meant for the form, and this ensures the data is fresh
+      const prevData = await firebase.getDropById(id)
+
       const files = values.files
 
-      // Upload NEW files and get ALL refs
-      const newRefs = await Promise.all(
-        files.map(async (file) => {
-          // If file already has a ref, return it
-          if (file.storageRef) return file.storageRef
+      const newAttachmentRefs =
+        await firebase.batchGetAttachmentRefFromCustomFile(
+          CONST.STORAGE_BUCKET_DROP_ATTACHMENTS,
+          files
+        )
+      const imageUrls = await firebase.batchGetImageURLs(newAttachmentRefs)
+      const mainImageIndex = getMainImageIndex(files)
 
-          // Upload the new file and return promise containing ref
-          const snapshot = await firebase.uploadFile(
-            CONST.STORAGE_BUCKET_DROP_ATTACHMENTS,
-            file.data
-          )
-          return snapshot.ref.fullPath
-        })
+      // Update the drop in firestore
+      await firebase.updateDrop(id, {
+        ...values,
+        mainImageIndex,
+        attachments: newAttachmentRefs,
+        imageUrls, // TODO: standardize naming to either Urls or URLs
+      })
+
+      // Delete any removed images from cloud storage
+      await firebase.deleteRemovedImagesFromStorage(
+        prevData.attachments,
+        newAttachmentRefs
       )
 
-      const urlPromises = newRefs.map((storageRef) => firebase.getImageURL(storageRef))
-      const imageUrls = await Promise.all(urlPromises)
-
-      // Get main image index
-      const mainImageIndex = files.findIndex((a) => a.isMain)
-
-      // Format the values for db
-      const formattedData = formatDropDataForDb(
-        { ...values, mainImageIndex, attachments: newRefs, imageUrls },
-        MODE.EDIT
-      )
-
-      // Update drop
-      await firebase.drop(id).update(formattedData)
-
-      // Get just the old refs
-      let oldRefs = initialValues.files.map((file) => file.storageRef)
-
-      // Old refs no longer present in new refs are marked for deletion
-      let refsToDelete = oldRefs.filter((oldRef) => !newRefs.includes(oldRef))
-
-      // Remove files associated with the marked refs
-      for (const storageRef of refsToDelete) {
-        await firebase.removeFile(storageRef)
-        await firebase.removeFile(storageRef + L_THUMB_POSTFIX)
-        await firebase.removeFile(storageRef + M_THUMB_POSTFIX)
-        await firebase.removeFile(storageRef + S_THUMB_POSTFIX)
-      }
-
-      // Reset form
-      setTimeout(form.reset)
-
-      // Redirect
-      history.push(route("ADMIN_DROPS"))
+      // Reset form and redirect
+      // TODO: add success flash message
+      resetFormAndRedirect(form, history)("ADMIN_DROPS")
     } catch (error) {
       console.error(error)
-      flashMessage({
-        type: "error",
-        text: "Wystąpił błąd",
-        details: "Więcej informacji w konsoli",
-      })
+      flashMessage(ERROR_MESSAGE)
     }
   }
   return (
@@ -114,4 +87,35 @@ const EditDrop = ({ match, history }) => {
   )
 }
 
-export default withRouter(EditDrop)
+const ERROR_MESSAGE = {
+  type: "error",
+  text: "Wystąpił błąd",
+  details: "Więcej informacji w konsoli",
+}
+
+export default EditDrop
+
+// // Format the values for db
+// const formattedData = formatDropDataForDbEdit(prevData, {
+//   ...values,
+//   mainImageIndex,
+//   attachments: newAttachmentRefs,
+//   imageUrls, // TODO: standardize naming to either Urls or URLs
+// })
+
+// // Update drop
+// await firebase.drop(id).set(formattedData)
+
+// const newAttachmentRefs = await Promise.all(
+//   files.map(async (file) => {
+//     // If file already has a ref, return it
+//     if (file.storageRef) return file.storageRef
+
+//     // Upload the new file and return promise containing ref
+//     const snapshot = await firebase.uploadFile(
+//       CONST.STORAGE_BUCKET_DROP_ATTACHMENTS,
+//       file.data
+//     )
+//     return snapshot.ref.fullPath
+//   })
+// )

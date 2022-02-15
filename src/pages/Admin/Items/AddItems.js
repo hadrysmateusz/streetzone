@@ -1,223 +1,230 @@
-import React, { Component } from "react"
-import { Form, Field } from "react-final-form"
-import { nanoid } from "nanoid"
+import { useCallback } from "react";
+import { Field, Form } from "react-final-form";
+import { nanoid } from "nanoid";
 
-import { withAuthentication } from "../../../components/UserSession"
-import { LoaderButton } from "../../../components/Button"
-import { FieldLabel } from "../../../components/Basics"
-import { FormError, Input } from "../../../components/FormElements"
-import { FileHandler } from "../../../components/FileHandler"
-import { ITEM_SCHEMA, CONST } from "../../../constants"
-import categories from "../../../constants/itemCategories"
-import sizes from "../../../constants/sizes"
-import { formatItemDataForDb, MODE } from "../../../utils/formatting/formatItemData"
+import { FieldLabel } from "../../../components/Basics";
+import { FormError, Input } from "../../../components/FormElements";
+import { FileHandler, getMainImageIndex } from "../../../components/FileHandler";
+import { CONST, ITEM_SCHEMA } from "../../../constants";
+import categories from "../../../constants/itemCategories";
+import sizes from "../../../constants/sizes";
+import getRandomInteger from "../../../utils/getRandomInteger";
+import { useAuthentication, useFirebase } from "../../../hooks";
+import { FormSubmitButton, getFormError } from "../../../components/FinalFormFields";
 
-function randInt(min, max) {
-  min = Math.ceil(min)
-  max = Math.floor(max)
-  return Math.floor(Math.random() * (max - min + 1)) + min
-}
+const AVAILABLE_NAMES = [
+  "Fajne ale drogie",
+  "O takie coś",
+  "Rzecz",
+  "Przykładowy itemek",
+  "Kolejny cuś",
+  "Super cośtam 2000",
+  "Przedmiot 75"
+];
 
-class NewItemPage extends Component {
-  state = { isLoading: false }
+const AVAILABLE_CATEGORIES = Object.values(ITEM_SCHEMA.categories);
 
-  uploadItem = async (values) => {
+const AddItemsPage = () => {
+  const firebase = useFirebase();
+  const authUser = useAuthentication();
+
+  const uploadItem = useCallback(async (values) => {
     try {
-      const { firebase } = this.props
-      const files = values.files
-      const itemId = nanoid()
+      const files = values.files;
+      const itemId = nanoid();
+      const userId = values.userId;
 
       // Look for the document with correct id
-      const userSnap = await this.props.firebase.user(values.userId).get()
+      const userData = firebase.getUserById();
       // If the user isn't found throw an error
-      if (!userSnap.exists) throw new Error("Nie znaleziono użytkownika")
+      if (!userData) throw new Error("Nie znaleziono użytkownika");
 
       // Get main image ref
-      const mainImageIndex = files.findIndex((a) => a.isMain)
+      const mainImageIndex = getMainImageIndex(files);
 
       // Upload files to storage and get their refs
-      const attachments = await Promise.all(
-        files.map(async (file) => {
-          const snapshot = await firebase.uploadFile(
-            `${CONST.STORAGE_BUCKET_ITEM_ATTACHMENTS}/${values.userId}/${itemId}`,
-            file.data
-          )
-          return snapshot.ref.fullPath
-        })
-      )
-
-      // Format data
-      const formattedData = formatItemDataForDb(
-        { ...values, attachments, mainImageIndex, itemId },
-        MODE.CREATE
-      )
+      const newAttachmentRefs =
+        await firebase.batchGetAttachmentRefFromCustomFile(
+          `${CONST.STORAGE_BUCKET_ITEM_ATTACHMENTS}/${userId}/${itemId}`,
+          files
+        );
 
       // Add item to database
-      await firebase.item(formattedData.id).set(formattedData)
-
-      return
+      // TODO: ensure 'values' contains proper values
+      await firebase.createItem({
+        ...values,
+        attachments: newAttachmentRefs,
+        mainImageIndex,
+        id: itemId
+      });
     } catch (error) {
-      alert("Wystąpił problem podczas wystawiania przedmiotu")
-      console.error(error)
+      alert("Wystąpił problem podczas wystawiania przedmiotu");
+      console.error(error);
     }
-  }
+  }, [firebase]);
 
-  onSubmit = async (values, form) => {
-    const availableDesigners = (
-      await this.props.firebase.db.collection("designers").get()
-    ).docs.map((doc) => doc.data())
+  const onSubmit = useCallback(
+    async (values, form) => {
+      const designersSnap = await firebase.designers().get();
+      const availableDesigners = designersSnap.docs.map((doc) => doc.data());
 
-    const availableNames = [
-      "Fajne ale drogie",
-      "O takie coś",
-      "Rzecz",
-      "Przykładowy itemek",
-      "Kolejny cuś",
-      "Super cośtam 2000",
-      "Przedmiot 75",
-    ]
+      const usersSnapshot = await firebase.users().get();
+      const availableUserIds = usersSnapshot.docs.map((doc) => doc.id);
 
-    const availableCategories = Object.values(ITEM_SCHEMA.categories)
+      for (let i = 0; i < values.numberOfItems; i++) {
+        // name
+        const name =
+          AVAILABLE_NAMES[getRandomInteger(0, AVAILABLE_NAMES.length - 1)];
 
-    const usersSnapshot = await this.props.firebase.db.collection("users").get()
-    const usersDocsSnapshot = usersSnapshot.docs
-    const availableUserIds = usersDocsSnapshot.map((doc) => doc.id)
+        // category
+        const category =
+          AVAILABLE_CATEGORIES[
+            getRandomInteger(0, AVAILABLE_CATEGORIES.length - 1)
+            ];
 
-    for (let i = 0; i < values.numberOfItems; i++) {
-      // name
-      const name = availableNames[randInt(0, availableNames.length - 1)]
+        // designers
+        let designers = [];
+        const nOfDesigners = getRandomInteger(1, 3);
+        for (let i = 0; i < nOfDesigners; i++) {
+          designers.push(
+            availableDesigners[
+              getRandomInteger(0, availableDesigners.length - 1)
+              ].label
+          );
+        }
+        designers = designers.reduce(
+          (acc, curr) => (!acc.includes(curr) ? [...acc, curr] : acc),
+          []
+        );
 
-      // category
-      const category = availableCategories[randInt(0, availableCategories.length - 1)]
+        // price
+        const price = getRandomInteger(50, 3500);
 
-      // designers
-      let designers = []
-      const nOfDesigners = randInt(1, 3)
-      for (let i = 0; i < nOfDesigners; i++) {
-        designers.push(availableDesigners[randInt(0, availableDesigners.length - 1)].label)
+        // userId
+        const userId = values.randomUsers
+          ? availableUserIds[getRandomInteger(0, availableUserIds.length - 1)]
+          : authUser.uid;
+
+        // condition
+        const condition = getRandomInteger(5, 11);
+
+        // size
+        let sizeCategory;
+        if (category === categories.akcesoria) {
+          sizeCategory = "accessories";
+        } else if (category === categories.buty) {
+          sizeCategory = "shoes";
+        } else {
+          sizeCategory = "clothes";
+        }
+
+        let size;
+        const availableSizes = sizes[sizeCategory];
+        size =
+          sizeCategory +
+          "-" +
+          availableSizes[getRandomInteger(0, availableSizes.length - 1)];
+
+        // description
+        let description = await fetch(
+          "https://baconipsum.com/api/?type=meat-and-filler&paras=1"
+        );
+        description = (await description.json())[0];
+
+        // files
+        const nOfAllFiles = values.files.length;
+        const nOfFiles = Math.min(
+          nOfAllFiles,
+          getRandomInteger(1, CONST.ATTACHMENTS_MAX_COUNT)
+        );
+        const lastAvailableStartIndex = nOfAllFiles - nOfFiles;
+        const startIndex = getRandomInteger(0, lastAvailableStartIndex);
+
+        let files = values.files.slice(startIndex, startIndex + nOfFiles);
+
+        await uploadItem({
+          name,
+          designers,
+          price,
+          userId,
+          category,
+          condition,
+          size,
+          description,
+          files
+        });
       }
-      designers = designers.reduce((acc, curr) => (!acc.includes(curr) ? [...acc, curr] : acc), [])
+      setTimeout(form.reset);
+    },
+    [authUser.uid, firebase, uploadItem]
+  );
 
-      // price
-      const price = randInt(50, 3500)
+  return (
+    <Form
+      onSubmit={onSubmit}
+      render={({ handleSubmit }) => (
+        <form onSubmit={handleSubmit}>
+          {/* Number of items */}
+          <div>
+            {/* TODO: fix missing attribute name */}
+            <Field>
+              {({ input, meta }) => {
+                return (
+                  <Input
+                    {...input}
+                    type="number"
+                    min="0"
+                    step="1"
+                    placeholder="Number of items"
+                    error={getFormError(meta)}
+                  />
+                );
+              }}
+            </Field>
+          </div>
 
-      // userId
-      const userId = values.randomUsers
-        ? availableUserIds[randInt(0, availableUserIds.length - 1)]
-        : this.props.authUser.uid
+          {/* Random users */}
+          <div>
+            {/* TODO: fix missing attribute name */}
+            <Field name="randomUsers">
+              {({ input, meta }) => (
+                <>
+                  <FieldLabel>Random users </FieldLabel>
+                  <input {...input} type="checkbox" />
+                  <FormError
+                    message={meta.error}
+                    show={meta.error && meta.touched}
+                  />
+                </>
+              )}
+            </Field>
+          </div>
 
-      // condition
-      const condition = randInt(5, 11)
+          {/* Files (handled by separate component) */}
+          <div>
+            <FieldLabel>Zdjęcia</FieldLabel>
 
-      // size
-      let sizeCategory
-      if (category === categories.akcesoria) {
-        sizeCategory = "accessories"
-      } else if (category === categories.buty) {
-        sizeCategory = "shoes"
-      } else {
-        sizeCategory = "clothes"
-      }
+            <Field name="files">
+              {({ input, meta }) => {
+                const error =
+                  meta.error && meta.touched ? meta.error.main : null;
+                const itemErrors = meta.error ? meta.error.specific : null;
+                return (
+                  <FileHandler
+                    {...input}
+                    error={error}
+                    itemErrors={itemErrors}
+                  />
+                );
+              }}
+            </Field>
+          </div>
 
-      let size
-      const availableSizes = sizes[sizeCategory]
-      size = sizeCategory + "-" + availableSizes[randInt(0, availableSizes.length - 1)]
+          <FormSubmitButton text="Gotowe" fullWidth={false} />
+        </form>
+      )}
+    />
+  );
+};
 
-      // description
-      let description = await fetch("https://baconipsum.com/api/?type=meat-and-filler&paras=1")
-      description = (await description.json())[0]
-
-      // files
-      const nOfAllFiles = values.files.length
-      const nOfFiles = Math.min(nOfAllFiles, randInt(1, CONST.ATTACHMENTS_MAX_COUNT))
-      const lastAvailableStartIndex = nOfAllFiles - nOfFiles
-      const startIndex = randInt(0, lastAvailableStartIndex)
-
-      let files = values.files.slice(startIndex, startIndex + nOfFiles)
-
-      await this.uploadItem({
-        name,
-        designers,
-        price,
-        userId,
-        category,
-        condition,
-        size,
-        description,
-        files,
-      })
-    }
-    setTimeout(form.reset)
-  }
-
-  render() {
-    return (
-      <Form
-        onSubmit={this.onSubmit}
-        render={({ form, handleSubmit, submitting, pristine, values, ...rest }) => {
-          return (
-            <form onSubmit={handleSubmit}>
-              {/* Number of items */}
-              <div>
-                <Field>
-                  {({ input, meta }) => {
-                    const error = meta.error && meta.touched ? meta.error : null
-                    return (
-                      <Input
-                        {...input}
-                        type="number"
-                        min="0"
-                        step="1"
-                        placeholder="Number of items"
-                        error={error}
-                      />
-                    )
-                  }}
-                </Field>
-              </div>
-
-              {/* Random users */}
-              <div>
-                <Field name="randomUsers">
-                  {({ input, meta }) => (
-                    <>
-                      <FieldLabel>Random users </FieldLabel>
-                      <input {...input} type="checkbox" />
-                      <FormError message={meta.error} show={meta.error && meta.touched} />
-                    </>
-                  )}
-                </Field>
-              </div>
-
-              {/* Files (handled by separate component) */}
-              <div>
-                <FieldLabel>Zdjęcia</FieldLabel>
-
-                <Field name="files">
-                  {({ input, meta }) => {
-                    const error = meta.error && meta.touched ? meta.error.main : null
-                    const itemErrors = meta.error ? meta.error.specific : null
-                    return <FileHandler {...input} error={error} itemErrors={itemErrors} />
-                  }}
-                </Field>
-              </div>
-
-              <LoaderButton
-                text="Gotowe"
-                type="submit"
-                isLoading={submitting}
-                disabled={submitting || pristine}
-              />
-              {/* 
-								{process.env.NODE_ENV === "development" && (
-									<pre>{JSON.stringify(values, 0, 2)}</pre>
-								)} */}
-            </form>
-          )
-        }}
-      />
-    )
-  }
-}
-
-export default withAuthentication(NewItemPage)
+export default AddItemsPage;

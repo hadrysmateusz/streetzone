@@ -1,21 +1,14 @@
-import React from "react"
-
-import ArticleList from "./ArticleList"
+import { CONST } from "../../constants"
 
 import { StatelessSearchWrapper } from "../InstantSearchWrapper"
 
-import { CONST } from "../../constants"
+import ArticleList from "./ArticleList"
 
-const SimilarArticles = () => {
-	return (
-		<StatelessSearchWrapper
-			indexName={CONST.BLOG_POST_ALGOLIA_INDEX}
-			limit={3}
-			refinements={{}}
-		>
-			{(results) => <ArticleList articles={results} />}
-		</StatelessSearchWrapper>
-	)
-}
+// TODO: add actual refinements
+const SimilarArticles = () => (
+  <StatelessSearchWrapper indexName={CONST.BLOG_POST_ALGOLIA_INDEX} limit={3} refinements={{}}>
+    {(results) => <ArticleList articles={results} />}
+  </StatelessSearchWrapper>
+)
 
 export default SimilarArticles

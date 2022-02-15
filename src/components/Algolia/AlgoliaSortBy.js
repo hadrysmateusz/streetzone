@@ -1,78 +1,54 @@
-import React from "react"
-import styled from "styled-components/macro"
-import { Media } from "react-breakpoints"
+import { useCallback } from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { connectSortBy } from "react-instantsearch-dom"
+import { Media } from "react-breakpoints"
 
-import Dropdown from "../FormElements/dropdown"
+import Dropdown from "../FormElements/Dropdown"
 
-const StyledSelect = styled.select`
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 100%;
-  opacity: 0;
-`
+import { Container, StyledSelect } from "./AlgoliaSortBy.styles"
 
-const Container = styled.label`
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-width: 0;
-  background: white;
-  padding: 0 var(--spacing3);
-  border: 1px solid var(--gray75);
-  :hover {
-    border: 1px solid var(--gray25);
-  }
-  svg {
-    margin-right: var(--spacing2);
-  }
-  height: var(--form-element-height);
-`
+const AlgoliaSortBy = ({
+  items,
+  defaultRefinement,
+  placeholder,
 
-class AlgoliaSortBy extends React.Component {
-  render() {
-    const { refine, currentRefinement, items, placeholder, defaultRefinement, ...rest } = this.props
+  refine,
+  currentRefinement,
+  ...rest
+}) => {
+  const onChangeDesktop = useCallback((data, _action) => refine(data.value), [refine])
+  const onChangeMobile = useCallback((e) => refine(e.currentTarget.value), [refine])
 
-    console.log("sort by", items)
-
-    return (
-      <Media>
-        {({ currentBreakpoint }) => {
-          if (currentBreakpoint > 0) {
-            return (
-              <Dropdown
-                {...rest}
-                options={items}
-                defaultValue={defaultRefinement}
-                onChange={(data, action) => refine(data.value)}
-                isSearchable={false}
-              />
-            )
-          } else {
-            return (
-              <Container {...rest}>
-                <label htmlFor="filter-select">
-                  <FontAwesomeIcon icon="sort" />
-                  Sortuj
-                </label>
-                <StyledSelect id="filter-select" onChange={(e) => refine(e.currentTarget.value)}>
-                  {items.map((item) => (
-                    <option key={item.value} value={item.value}>
-                      {item.label}
-                    </option>
-                  ))}
-                </StyledSelect>
-              </Container>
-            )
-          }
-        }}
-      </Media>
-    )
-  }
+  return (
+    <Media>
+      {({ currentBreakpoint }) =>
+        currentBreakpoint > 0 ? (
+          <Dropdown
+            {...rest}
+            options={items}
+            defaultValue={defaultRefinement}
+            onChange={onChangeDesktop}
+            isSearchable={false}
+            isMulti={false}
+          />
+        ) : (
+          <Container {...rest}>
+            <label htmlFor="filter-select">
+              <FontAwesomeIcon icon="sort" />
+              Sortuj
+            </label>
+            <StyledSelect id="filter-select" onChange={onChangeMobile}>
+              {items.map((item) => (
+                <option key={item.value} value={item.value}>
+                  {item.label}
+                </option>
+              ))}
+            </StyledSelect>
+          </Container>
+        )
+      }
+    </Media>
+  )
 }
 
 export default connectSortBy(AlgoliaSortBy)
