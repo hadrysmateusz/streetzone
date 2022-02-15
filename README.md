@@ -23,6 +23,10 @@ Some of the technologies used in this project:
 - [styled-components](https://styled-components.com)
 - [Axios](https://github.com/axios/axios)
 
+## 🚧 Migration in progress
+
+The project is currently being migrated to TypeScript and currently contains both JavaScript and TypeScript code.
+
 ## 👀 View project
 
 While the project was never launched to the public, it can still be [viewed live here](https://streetwear-app.web.app).
